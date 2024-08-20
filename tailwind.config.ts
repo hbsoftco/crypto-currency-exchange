@@ -1,47 +1,56 @@
 import type { Config } from 'tailwindcss';
-// import defaultTheme from 'tailwindcss/defaultTheme';
 
-export default {
+export default <Partial<Config>>{
 	theme: {
 		extend: {
 			colors: {
-				primaryGray: {
+				'primary-yellow': {
+					50: '#fffcea',
+					100: '#fff4c5',
+					200: '#ffe985',
+					300: '#ffd746',
+					400: '#ffc107',
+					500: '#ffa000',
+					600: '#e27800',
+					700: '#bb5202',
+					800: '#983f08',
+					900: '#7c340b',
+					950: '#481900',
+					DEFAULT: '#ffa000',
+				},
+				'primaryGray': {
 					dark: '#2B2B2B',
 					light: '#EDEDED',
 				},
-				secondaryGray: {
+				'secondaryGray': {
 					dark: '#4A4A4A',
 					light: '#C0C0C0',
 				},
-				text: {
+				'text': {
 					dark: '#FFFFFF',
 					light: '#212121',
 				},
-				subtleText: {
+				'subtleText': {
 					dark: '#B3B3B3',
 					light: '#757575',
 				},
-				background: {
+				'background': {
 					dark: '#121212',
 					light: '#FFFFFF',
 				},
-				hover: {
+				'hover': {
 					dark: '#181818',
 					light: '#F8F8F8',
 				},
-				hover2: {
+				'hover2': {
 					dark: '#1A1A1A',
 					light: '#F4F4F4',
 				},
-				transparency: {
+				'transparency': {
 					dark: 'rgba(43, 43, 43, 0.76)',
 					light: 'rgba(150, 150, 150, 0.6)',
 				},
-				primaryYellow: {
-					dark: '#FFC107',
-					light: '#FFA000',
-				},
-				accent: {
+				'accent': {
 					secondaryYellow: '#FFD54F',
 					blue: '#2196F3',
 					green: '#4CAF50',
@@ -50,4 +59,5 @@ export default {
 			},
 		},
 	},
-} as Partial<Config>;
+	darkMode: 'class',
+};

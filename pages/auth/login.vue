@@ -16,10 +16,17 @@
 				Sepia
 			</option>
 		</select>
+
+		<h1 class="p-20 bg-primaryGray-light dark:bg-primaryGray-dark">
+			hossein bajan
+		</h1>
 	</div>
 </template>
 
 <script setup>
+definePageMeta({
+	layout: 'empty',
+});
 const colorMode = useColorMode();
 </script>
 
