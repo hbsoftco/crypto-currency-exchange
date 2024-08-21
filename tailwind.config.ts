@@ -57,6 +57,9 @@ export default <Partial<Config>>{
 					red: '#F44336',
 				},
 			},
+			fontFamily: {
+				dana: ['dana'],
+			},
 		},
 	},
 	darkMode: 'class',

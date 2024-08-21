@@ -5,7 +5,7 @@ export default withNuxt({
 	rules: {
 		'no-console': 'warn',
 		'semi': ['error', 'always'],
-		'import/no-unresolved': 'error',
+		'import/no-unresolved': 'off',
 		'import/named': 'error',
 		'import/order': [
 			'error',

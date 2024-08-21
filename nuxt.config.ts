@@ -10,7 +10,11 @@ export default defineNuxtConfig({
 		'@formkit/auto-animate',
 		'@pinia/nuxt',
 		'nuxt-svgo',
+		'@nuxt/image',
 	],
+	i18n: {
+		vueI18n: './i18n.config.ts',
+	},
 	eslint: {
 		checker: true,
 		config: {
@@ -28,4 +32,7 @@ export default defineNuxtConfig({
 	svgo: {
 		autoImportPath: './assets/svg-icons/',
 	},
+	css: [
+		'~/assets/css/style.css',
+	],
 });

@@ -3,7 +3,7 @@
 		<UButton
 			:icon="isDark ? 'i-heroicons-moon-20-solid' : 'i-heroicons-sun-20-solid'"
 			color="gray"
-			variant="ghost"
+			class="text-text-dark dark:text-text-dark"
 			aria-label="Theme"
 			@click="isDark = !isDark"
 		/>
