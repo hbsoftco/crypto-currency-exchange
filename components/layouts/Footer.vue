@@ -2,7 +2,10 @@
 	<footer class="bg-[#2B2B2B] bottom-0 left-0 w-full px-[6.25rem] py-8">
 		<div class="flex justify-between">
 			<div class="w-[19.313rem]">
-				<img src="/images/svg/brand-logo.svg">
+				<img
+					src="/images/svg/brand-logo.svg"
+					alt="brand-logo"
+				>
 				<p class="font-extrabold leading-loose">
 					بیت لند، محصول شرکت عصر زراندیشان آراد
 				</p>
@@ -43,19 +46,58 @@
 				<div>
 					<span class="text-[#A6A6A6] text-[0.875rem] font-extrabold">مارا در شبکه های اجتماعی دنبال کنید</span>
 					<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 p-4">
-						<img src="/images/svg/google.svg">
-						<img src="/images/svg/instagram.svg">
-						<img src="/images/svg/facebook.svg">
-						<img src="/images/svg/linkedin.svg">
-						<img src="/images/svg/messenger.svg">
-						<img src="/images/svg/microsoft-team.svg">
-						<img src="/images/svg/telegram.svg">
-						<img src="/images/svg/twitch.svg">
-						<img src="/images/svg/twitter.svg">
-						<img src="/images/svg/viber.svg">
-						<img src="/images/svg/wechat.svg">
-						<img src="/images/svg/whatsapp.svg">
-						<img src="/images/svg/youtube.svg">
+						<img
+							src="/images/svg/google.svg"
+							alt="google"
+						>
+						<img
+							src="/images/svg/instagram.svg"
+							alt="instagram"
+						>
+						<img
+							src="/images/svg/facebook.svg"
+							alt="facebook"
+						>
+						<img
+							src="/images/svg/linkedin.svg"
+							alt="linkedin"
+						>
+						<img
+							src="/images/svg/messenger.svg"
+							alt="messenger"
+						>
+						<img
+							src="/images/svg/microsoft-team.svg"
+							alt="microsoft-team"
+						>
+						<img
+							src="/images/svg/telegram.svg"
+							alt="telegram"
+						>
+						<img
+							src="/images/svg/twitch.svg"
+							alt="twitch"
+						>
+						<img
+							src="/images/svg/twitter.svg"
+							alt="twitter"
+						>
+						<img
+							src="/images/svg/viber.svg"
+							alt="viber"
+						>
+						<img
+							src="/images/svg/wechat.svg"
+							alt="wechat"
+						>
+						<img
+							src="/images/svg/whatsapp.svg"
+							alt="whatsapp"
+						>
+						<img
+							src="/images/svg/youtube.svg"
+							alt="youtube"
+						>
 					</div>
 				</div>
 				<div>

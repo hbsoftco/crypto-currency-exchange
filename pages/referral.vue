@@ -1,7 +1,10 @@
 <template>
 	<div>
 		<div class="w-[90.094rem] h-[38.688rem] relative">
-			<img src="/images/svg/invite.svg">
+			<img
+				src="/images/svg/invite.svg"
+				alt="invite"
+			>
 			<div class="absolute top-[12.938rem] left-[52rem]">
 				<h1 class="text-[#FFC107] text-[4rem] font-extrabold">
 					دعوت از دوستان
@@ -17,8 +20,10 @@
 					</p>
 				</div>
 			</div>
+		</div>
+		<div class="relative h-[4rem]">
 			<div
-				class="absolute top-[35rem] w-[46.125rem] bg-[#181818] py-[2.5rem] px-[2rem] transform -translate-x-1/2 "
+				class="absolute top-[-5rem] w-[46.125rem] bg-[#181818] py-[2.5rem] px-[2rem] transform -translate-x-1/2 "
 			>
 				<p class="text-[#FFC107] text-[1.5rem] font-extrabold pb-4">
 					چگونه شروع کنم؟
@@ -51,36 +56,43 @@
 					<p class="pl-2">
 						شروع کنید
 					</p>
-					<img src="/images/svg/arrow-left.svg">
+					<img
+						src="/images/svg/arrow-left.svg"
+						alt="arrow-left"
+					>
 				</div>
 			</div>
-			<div class="mt-[25rem] flex justify-between px-[10rem] mb-10">
-				<div>
-					<img src="/images/svg/platform.svg">
-				</div>
-				<div class="pr-8">
-					<p class="text-[2.5rem] font-extrabold pb-8">
-						جدول درآمدزایی پلتفرم بیت لند
-					</p>
-					<ul class="list-disc text-[1rem]">
-						<li>
-							کارمزد شما از سطح اول زیر مجموعه های خود از ۳۰ درصد تا ۴۵ درصد نسبت به سطح کسب درآمدی شما متغیر می باشد.
-						</li><br>
-						<li>
-							کارمزد شما از سطح دوم ۵ درصد‌‌، سطح سوم ۲/۵ درصد و سطح چهارم ۱/۶ درصد میباشد که ثابت بوده و قابل تغییر نیست.
-						</li><br>
-						<li>
-							تمامی کارمزد های شما در ساعات مشخصی از روز محاسبه و به حساب کاربری شما واریز می گردد.
-						</li><br>
-						<li>
-							صرافی بیت لند آماده همکاری با اشخاص مطرح، شرکت ها و سازمان ها با تسهیلات و خدمات ویژه می باشد.
-						</li>
-					</ul>
-				</div>
-				<div />
-			</div>
-			<CommonDownloadApp />
 		</div>
+
+		<div class="mt-[25rem] flex justify-between px-[10rem] mb-10">
+			<div>
+				<img
+					src="/images/svg/platform.svg"
+					alt="platform"
+				>
+			</div>
+			<div class="pr-8">
+				<p class="text-[2.5rem] font-extrabold pb-8">
+					جدول درآمدزایی پلتفرم بیت لند
+				</p>
+				<ul class="list-disc text-[1rem]">
+					<li>
+						کارمزد شما از سطح اول زیر مجموعه های خود از ۳۰ درصد تا ۴۵ درصد نسبت به سطح کسب درآمدی شما متغیر می باشد.
+					</li><br>
+					<li>
+						کارمزد شما از سطح دوم ۵ درصد‌‌، سطح سوم ۲/۵ درصد و سطح چهارم ۱/۶ درصد میباشد که ثابت بوده و قابل تغییر نیست.
+					</li><br>
+					<li>
+						تمامی کارمزد های شما در ساعات مشخصی از روز محاسبه و به حساب کاربری شما واریز می گردد.
+					</li><br>
+					<li>
+						صرافی بیت لند آماده همکاری با اشخاص مطرح، شرکت ها و سازمان ها با تسهیلات و خدمات ویژه می باشد.
+					</li>
+				</ul>
+			</div>
+			<div />
+		</div>
+		<CommonDownloadApp />
 	</div>
 </template>
 
