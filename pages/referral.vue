@@ -54,7 +54,7 @@
 					<img src="/images/svg/arrow-left.svg">
 				</div>
 			</div>
-			<div class="mt-[30rem] flex justify-between px-[10rem] mb-10">
+			<div class="mt-[25rem] flex justify-between px-[10rem] mb-10">
 				<div>
 					<img src="/images/svg/platform.svg">
 				</div>
