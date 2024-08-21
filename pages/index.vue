@@ -1,7 +1,5 @@
 <template>
-	<div>
-		<UiThemeToggle />
-	</div>
+	<div />
 </template>
 
 <script setup lang="ts">
