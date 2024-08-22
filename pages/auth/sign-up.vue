@@ -1,10 +1,13 @@
 <template>
 	<div>
-		<h1 class="text-center">
-			sign-up
-		</h1>
+		<SignUp />
 	</div>
 </template>
 
-<script setup lang="ts">
+<script setup>
+import SignUp from '~/components/pages/Auth/SignUp/SignUp.vue';
+
+definePageMeta({
+	layout: 'auth',
+});
 </script>

@@ -17,20 +17,34 @@ export default <Partial<Config>>{
 					900: '#7c340b',
 					950: '#481900',
 					DEFAULT: '#ffa000',
+					dark: '#FFC107',
+					light: '#FFA000',
 				},
-				'primaryGray': {
+				'primary-gray': {
+					50: '#f6f6f6',
+					100: '#EDEDED',
+					200: '#d1d1d1',
+					300: '#b0b0b0',
+					400: '#888888',
+					500: '#6d6d6d',
+					600: '#5d5d5d',
+					700: '#4f4f4f',
+					800: '#454545',
+					900: '#2b2b2b',
+					950: '#2b2b2b',
+					DEFAULT: '#2b2b2b',
 					dark: '#2B2B2B',
 					light: '#EDEDED',
 				},
-				'secondaryGray': {
+				'secondary-gray': {
 					dark: '#4A4A4A',
 					light: '#C0C0C0',
 				},
 				'text': {
-					dark: '#FFFFFF',
-					light: '#212121',
+					dark: '#212121',
+					light: '#FFFFFF',
 				},
-				'subtleText': {
+				'subtle-text': {
 					dark: '#B3B3B3',
 					light: '#757575',
 				},

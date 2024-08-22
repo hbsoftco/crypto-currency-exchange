@@ -1,72 +1,59 @@
 <template>
-	<div>
-		<div class="w-full">
-			<div class="mb-4">
-				<label
-					class="block text-sm mb-2"
-					for="phone"
-				>شماره تلفن</label>
-				<input
-					id="phone"
-					class="w-full p-2 bg-gray-700 text-white rounded"
-					type="text"
-					placeholder="شماره تلفن"
+	<Auth title="signup">
+		<UTabs :items="items">
+			<template #default="{ item, selected }">
+				<span
+					class="truncate"
+					:class="[selected && 'text-primary-500 dark:text-primary-400']"
+				>{{ $t(item.label) }}</span>
+			</template>
+			<template #item="{ item }">
+				<div
+					v-if="item.key === 'phoneNumber'"
+					class="space-y-3"
 				>
-			</div>
-
-			<div class="mb-4">
-				<label
-					class="block text-sm mb-2"
-					for="password"
-				>رمز عبور</label>
-				<input
-					id="password"
-					class="w-full p-2 bg-gray-700 text-white rounded"
-					type="password"
-					placeholder="رمز عبور"
+					<PagesAuthSignUpWithMobile />
+				</div>
+				<div
+					v-else-if="item.key === 'email'"
+					class="space-y-3"
 				>
-				<p class="text-xs text-gray-400 mt-2">
-					حداقل دارای ۸ کاراکتر
-				</p>
-			</div>
+					<PagesAuthSignUpWithEmail />
+				</div>
+			</template>
+		</UTabs>
 
-			<div class="mb-4">
-				<label
-					class="block text-sm mb-2"
-					for="referral"
-				>کد معرف دارید؟</label>
-				<input
-					id="referral"
-					class="w-full p-2 bg-gray-700 text-white rounded"
-					type="text"
-					placeholder="کد معرف"
+		<div class="flex justify-center items-center mt-8">
+			<div>
+				<span class="ml-2 text-sm">{{ $t("haveAccount") }}</span>
+				<ULink
+					to="/auth/login"
+					class="text-accent-green text-sm font-bold"
+					active-class="text-green"
+					inactive-class=""
 				>
+					{{ $t('login') }}
+				</ULink>
 			</div>
-
-			<div class="mb-4 flex items-center">
-				<input
-					id="terms"
-					type="checkbox"
-				>
-				<label
-					class="text-sm ml-2"
-					for="terms"
-				>قوانین و شرایط استفاده</label>
-			</div>
-
-			<button
-				class="w-full bg-yellow-500 text-black py-2 rounded hover:bg-yellow-600"
-				type="submit"
-			>
-				ثبت نام
-			</button>
 		</div>
-		<p class="mt-4 text-sm">
-			حساب کاربری دارید؟
-			<a
-				href="#"
-				class="text-yellow-500"
-			>ورود</a>
-		</p>
-	</div>
+	</Auth>
 </template>
+
+<script setup>
+import Auth from '../Auth.vue';
+
+const items = [
+	{
+		key: 'phoneNumber',
+		label: 'phoneNumber',
+		content: 'This is the content shown for Tab1',
+	},
+	{
+		key: 'email',
+		label: 'email',
+		content: 'And, this is the content for Tab2',
+	},
+];
+</script>
+
+<style></style>

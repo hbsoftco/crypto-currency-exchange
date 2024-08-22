@@ -1,20 +1,40 @@
 export default defineAppConfig({
 	ui: {
 		primary: 'primary-yellow',
-		gray: 'primaryGray',
+		gray: 'primary-gray',
 		button: {
-			default: {
-				// color: 'primary-yellow',
-				variant: 'solid',
+			rounded: 'rounded-lg',
+			padding: {
+				md: 'p-0',
 			},
+			font: 'font-bold',
 			color: {
-				primary: {
-					solid: 'text-xl',
-					ghost: 'text-black hover:bg-primary-50 disabled:bg-transparent focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500',
+				gray: {
+					solid: 'text-black dark:text-white',
 				},
-				// white: {
-				// 	solid: 'shadow-sm text-black bg-white hover:bg-gray-50 disabled:bg-white focus-visible:ring-2 focus-visible:ring-primary-500',
-				// },
+				white: {
+					solid: 'text-black dark:text-white',
+				},
+				black: {
+					solid: 'text-black dark:text-white',
+				},
+			},
+		},
+		tabs: {
+			list: {
+				width: 'w-auto',
+				background: 'bg-transparent dark:bg-transparent',
+				marker: {
+					background: 'bg-transparent dark:bg-transparent border-b-2 border-primary-yellow-400',
+					rounded: 'rounded-none',
+				},
+				tab: {
+					background: 'bg-transparent dark:bg-transparent ',
+					active: 'text-gray-900 dark:text-white',
+					inactive: 'text-gray-500 dark:text-gray-400',
+					font: 'font-bold',
+					size: 'text-base',
+				},
 			},
 		},
 	},

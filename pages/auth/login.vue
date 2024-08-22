@@ -11,6 +11,3 @@ definePageMeta({
 	layout: 'auth',
 });
 </script>
-
-  <style>
-  </style>
