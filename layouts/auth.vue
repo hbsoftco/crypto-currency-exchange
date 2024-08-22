@@ -9,9 +9,9 @@
 				/>
 			</div>
 		</div>
-		<div class="bg-primaryGray-light dark:bg-primaryGray-dark text-white w-1/2 flex flex-col items-center justify-center p-8 relative">
+		<div class="bg-primaryGray-light dark:bg-primaryGray-dark text-white w-full md:w-1/2 flex flex-col items-center justify-center p-8 relative">
 			<div class="w-full md:w-[22.5rem] absolute left-0 right-0 top-0 m-auto mt-10">
-				<div class="flex justify-between items-center">
+				<div class="flex justify-between items-center px-8">
 					<div>
 						<NuxtImg
 							src="/images/svg/brand-logo.svg"

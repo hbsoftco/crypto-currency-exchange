@@ -1,8 +1,6 @@
 <template>
 	<div>
-		<LayoutsHeader />
-		<slot />
-		<LayoutsFooter />
+		<!-- <FormsFieldInput /> -->
 	</div>
 </template>
 
