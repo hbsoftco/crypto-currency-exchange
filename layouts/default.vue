@@ -1,8 +1,8 @@
 <template>
 	<div>
-		<LayoutsHeader class="hidden md:block" />
+		<LayoutsDefaultHeader class="hidden md:block" />
 		<slot />
-		<LayoutsFooter />
+		<LayoutsDefaultFooter />
 	</div>
 </template>
 

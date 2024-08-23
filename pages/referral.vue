@@ -1,97 +1,123 @@
 <template>
 	<div>
-		<div class="w-[90.094rem] h-[38.688rem] relative">
-			<img
+		<section class="relative">
+			<NuxtImg
 				src="/images/svg/invite.svg"
 				alt="invite"
-			>
-			<div class="absolute top-[12.938rem] left-[52rem]">
-				<h1 class="text-[#FFC107] text-[4rem] font-extrabold">
-					دعوت از دوستان
-				</h1>
-				<div
-					class="p-[0.625rem] bg-[#2B2B2BC2] text-white w-[30rem] h-[7.875rem] opacity-75"
-				>
-					<p>
-						بیت لند تنها پلتفرم درآمدزایی در ایران با امکان کسب درآمد تا ۵ سطح
-						زیر مجموعه <br>
-						شما در بیت لند علاوه بر معاملات خود، میتوانید به عنوان یکی از اعضای
-						بیت لند از بیت لند کسب درآمد داشته باشید. پس نباید وقتو تلف کنید !
-					</p>
-				</div>
-			</div>
-		</div>
-		<div class="relative h-[4rem]">
-			<div
-				class="absolute top-[-5rem] w-[46.125rem] bg-[#181818] py-[2.5rem] px-[2rem] transform -translate-x-1/2 "
-			>
-				<p class="text-[#FFC107] text-[1.5rem] font-extrabold pb-4">
-					چگونه شروع کنم؟
-				</p>
-				<ul class="list-disc text-[1rem] custom-list px-4 pb-4">
-					<li class="pb-3">
-						<!-- <div class="w-2 h-2 bg-[#2196F3] rounded-full"></div> -->
-						<b>ثبت نام در بیت لند !</b><br>
-						<p>
-							با ثبت نام در وبسایت بیت لند، امکان دعوت از طریق لینک برای شما
-							فعال میشود.
-						</p>
-					</li>
-					<li class="pb-3">
-						<b>دعوت دوستان</b><br>
-						<p>
-							شما با اشتراک گذاری لینک دعوت خود با دوستان میتوانید به چرخه ما
-							بپیوندید.
-						</p>
-					</li>
-					<li class="pb-3">
-						<b>دریافت کمیسیون!</b><br>
-						<p>
-							حال شما میتوانید ۳۰ تا ۴۵ درصد از زیرمجموعه های شاخه اول و ۵ درصد
-							بصورت ثابت تا شاخه پنجم درامد کسب کنید.
-						</p>
-					</li>
-				</ul>
-				<div class="flex text-[#FFC107] font-extrabold text-[1rem] justify-center">
-					<p class="pl-2">
-						شروع کنید
-					</p>
-					<img
-						src="/images/svg/arrow-left.svg"
-						alt="arrow-left"
+				class="w-full"
+			/>
+			<UContainer class="absolute top-5 md:top-48">
+				<div class="w-full">
+					<h1
+						class="text-light dark:text-dark text-lg md:text-7xl font-extrabold mb-2 md:mb-8"
 					>
+						{{ $t("inviteFriends") }}
+					</h1>
+					<div
+						class="p-3 bg-primary-gray-light dark:bg-primary-gray-dark shadow-md text-white w-full md:w-[30rem] h-auto opacity-75"
+					>
+						<b class="text-text-dark dark:text-text-light text-sm md:text-base">
+							بیت لند تنها پلتفرم درآمدزایی در ایران با امکان کسب درآمد تا ۵ سطح
+							زیر مجموعه </b><br>
+						<p
+							class="text-text-dark dark:text-text-light mt-1 md:mt-4 text-sm md:text-base"
+						>
+							شما در بیت لند علاوه بر معاملات خود، میتوانید به عنوان یکی از
+							اعضای بیت لند از بیت لند کسب درآمد داشته باشید. پس نباید وقتو تلف
+							کنید !
+						</p>
+					</div>
 				</div>
-			</div>
-		</div>
+			</UContainer>
+		</section>
 
-		<div class="mt-[25rem] flex justify-between px-[10rem] mb-10">
-			<div>
-				<img
-					src="/images/svg/platform.svg"
-					alt="platform"
+		<section>
+			<UContainer class="md:mx-80 md:relative">
+				<div
+					class="md:absolute md:-top-20 bg-hover-light dark:bg-hover-dark py-10 px-8 md:mx-30 rounded-sm shadow-lg"
 				>
+					<p
+						class="text-primary-yellow-light dark:text-primary-yellow-dark text-2xl font-extrabold pb-4"
+					>
+						{{ $t("howStart") }}
+					</p>
+					<ul class="list-disc text-base custom-list px-4 pb-4">
+						<li class="pb-3">
+							<b>{{ $t("registerBitland") }}</b><br>
+							<p>
+								با ثبت نام در وبسایت بیت لند، امکان دعوت از طریق لینک برای شما
+								فعال میشود.
+							</p>
+						</li>
+						<li class="pb-3">
+							<b>{{ $t("inviteFriends") }}</b><br>
+							<p>
+								شما با اشتراک گذاری لینک دعوت خود با دوستان میتوانید به چرخه ما
+								بپیوندید.
+							</p>
+						</li>
+						<li class="pb-3">
+							<b>{{ $t("receiveCommission") }}</b><br>
+							<p>
+								حال شما میتوانید ۳۰ تا ۴۵ درصد از زیرمجموعه های شاخه اول و ۵
+								درصد بصورت ثابت تا شاخه پنجم درامد کسب کنید.
+							</p>
+						</li>
+					</ul>
+					<div class="flex justify-center">
+						<p
+							class="pl-2 text-primary-yellow-light dark:text-primary-yellow-dark font-extrabold text-base"
+						>
+							{{ $t("getStarted") }}
+						</p>
+						<img
+							src="/images/svg/arrow-left.svg"
+							alt="arrow-left"
+						>
+					</div>
+				</div>
+			</UContainer>
+		</section>
+
+		<section>
+			<div class="mt-20 md:mt-96 md:flex md:justify-between px-10 md:px-40 mb-10">
+				<div>
+					<NuxtImg
+						src="/images/svg/platform.svg"
+						alt="platform"
+						class="w-full"
+					/>
+				</div>
+				<div class="pr-8">
+					<p class="text-lg md:text-4xl font-extrabold pb-8">
+						{{ $t("bitlandPlatformMonetizationTable") }}
+					</p>
+					<ul class="list-disc text-base font-medium">
+						<li>
+							کارمزد شما از سطح اول زیر مجموعه های خود از ۳۰ درصد تا ۴۵ درصد
+							نسبت به سطح کسب درآمدی شما متغیر می باشد.
+						</li>
+						<br>
+						<li>
+							کارمزد شما از سطح دوم ۵ درصد‌‌، سطح سوم ۲/۵ درصد و سطح چهارم ۱/۶
+							درصد میباشد که ثابت بوده و قابل تغییر نیست.
+						</li>
+						<br>
+						<li>
+							تمامی کارمزد های شما در ساعات مشخصی از روز محاسبه و به حساب کاربری
+							شما واریز می گردد.
+						</li>
+						<br>
+						<li>
+							صرافی بیت لند آماده همکاری با اشخاص مطرح، شرکت ها و سازمان ها با
+							تسهیلات و خدمات ویژه می باشد.
+						</li>
+					</ul>
+				</div>
+				<div />
 			</div>
-			<div class="pr-8">
-				<p class="text-[2.5rem] font-extrabold pb-8">
-					جدول درآمدزایی پلتفرم بیت لند
-				</p>
-				<ul class="list-disc text-[1rem]">
-					<li>
-						کارمزد شما از سطح اول زیر مجموعه های خود از ۳۰ درصد تا ۴۵ درصد نسبت به سطح کسب درآمدی شما متغیر می باشد.
-					</li><br>
-					<li>
-						کارمزد شما از سطح دوم ۵ درصد‌‌، سطح سوم ۲/۵ درصد و سطح چهارم ۱/۶ درصد میباشد که ثابت بوده و قابل تغییر نیست.
-					</li><br>
-					<li>
-						تمامی کارمزد های شما در ساعات مشخصی از روز محاسبه و به حساب کاربری شما واریز می گردد.
-					</li><br>
-					<li>
-						صرافی بیت لند آماده همکاری با اشخاص مطرح، شرکت ها و سازمان ها با تسهیلات و خدمات ویژه می باشد.
-					</li>
-				</ul>
-			</div>
-			<div />
-		</div>
+		</section>
+
 		<CommonDownloadApp />
 	</div>
 </template>
@@ -100,7 +126,7 @@
 
 <style scoped>
 .custom-list li::marker {
-    color: #007BFF;
-    font-size: 2rem;
+  color: #007bff;
+  font-size: 2rem;
 }
 </style>

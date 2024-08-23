@@ -1,25 +1,16 @@
 <template>
 	<div class="w-full px-4 h-14 bg-primary-gray-light dark:bg-primary-gray-dark shadow-md">
-		<div class="flex  justify-between items-center">
+		<div class="flex  justify-between items-center h-full">
 			<NuxtImg
 				src="/images/svg/brand-logo.svg"
 				alt="Brand Logo"
 			/>
 			<ul class="flex space-x-4">
 				<li class="flex items-center space-x-2">
-					<img src="/images/svg/menu.svg">
-					<img src="/images/svg/arrow-down.svg">
+					<LayoutsDefaultHeaderQuickAccessMenu />
 				</li>
 				<li class="flex items-center">
 					<span>بازار</span>
-				</li>
-				<li class="flex items-center space-x-2">
-					<span>معامله</span>
-					<img src="/images/svg/arrow-down.svg">
-				</li>
-				<li class="flex items-center space-x-2">
-					<span>فیوچرز</span>
-					<img src="/images/svg/arrow-down.svg">
 				</li>
 				<li class="flex items-center">
 					<span>جوایز</span>
@@ -66,6 +57,7 @@
 	</div>
 </template>
 
-<script></script>
+<script>
+</script>
 
 <style lang="scss" scoped></style>
