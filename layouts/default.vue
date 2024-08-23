@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<LayoutsHeader />
+		<LayoutsHeader class="hidden md:block" />
 		<slot />
 		<LayoutsFooter />
 	</div>

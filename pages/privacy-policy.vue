@@ -1,37 +1,38 @@
 <template>
 	<div class="">
-		<section>
+		<section class="relative">
 			<NuxtImg
 				src="/images/svg/privacy.svg"
 				alt="privacy"
-				class="w-full relative"
+				class="w-full"
 			/>
-			<UContainer>
+			<UContainer class="absolute top-5 md:top-48">
 				<div class="w-full">
-					<div class="absolute top-48">
-						<h1 class="text-light dark:text-dark text-7xl font-extrabold mb-8">
-							{{ $t("termsRules") }}
-						</h1>
-						<div
-							class="p-[0.625rem] bg-primary-gray-light dark:bg-primary-gray-dark shadow-md text-white w-[30rem] h-28 opacity-75"
+					<h1
+						class="text-light dark:text-dark text-lg md:text-7xl font-extrabold mb-2 md:mb-8"
+					>
+						{{ $t("termsRules") }}
+					</h1>
+					<div
+						class="p-3 bg-primary-gray-light dark:bg-primary-gray-dark shadow-md text-white w-full md:w-[30rem] h-auto opacity-75"
+					>
+						<b class="text-text-dark dark:text-text-light text-sm md:text-base">شرایط و قوانین فعالیت در بستر تبادل دارایی‌های دیجیتال بیت لند</b><br>
+						<p
+							class="text-text-dark dark:text-text-light mt-1 md:mt-4 text-sm md:text-base"
 						>
-							<b class="text-text-dark dark:text-text-light">شرایط و قوانین فعالیت در بستر تبادل دارایی‌های دیجیتال بیت
-								لند</b><br>
-							<p class="text-text-dark dark:text-text-light mt-4">
-								کاربران موظف هستند قبل از ثبت‌نام تمامی شرایط و قوانین را مطالعه
-								نموده و صرفا در صورت پذیرش آن اقدام به ثبت نام نمایند.
-							</p>
-						</div>
+							کاربران موظف هستند قبل از ثبت‌نام تمامی شرایط و قوانین را مطالعه
+							نموده و صرفا در صورت پذیرش آن اقدام به ثبت نام نمایند.
+						</p>
 					</div>
 				</div>
 			</UContainer>
 		</section>
 		<section>
-			<UContainer>
+			<UContainer class="md:mx-8">
 				<div
 					v-for="(item, index) in items"
 					:key="index"
-					class="w-[58.5rem] mx-auto my-6 py-4 px-8 bg-primary-gray-light dark:bg-primary-gray-dark rounded-lg shadow"
+					class="mx-auto my-6 py-4 px-8 bg-primary-gray-light dark:bg-primary-gray-dark rounded-lg shadow"
 				>
 					<b class="pb-8 text-xl font-bold">{{ $t(item.title) }}</b>
 					<ul class="list-disc list-inside pt-6">
@@ -41,7 +42,8 @@
 							class="pb-4 text-base font-medium"
 						>
 							{{ desc }}<br>
-						</li><br>
+						</li>
+						<br>
 					</ul>
 				</div>
 			</UContainer>
