@@ -1,6 +1,12 @@
 <template>
 	<div>
-		<h1>search</h1>
+		<UInput
+			icon="i-heroicons-magnifying-glass-20-solid"
+			size="sm"
+			color="white"
+			:trailing="false"
+			placeholder="جستجو"
+		/>
 	</div>
 </template>
 
