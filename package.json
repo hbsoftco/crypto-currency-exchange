@@ -18,7 +18,9 @@
     "nuxt": "^3.12.4",
     "nuxt-svgo": "^4.0.3",
     "pinia": "^2.2.1",
-    "vue": "latest"
+    "vue": "latest",
+    "vue-slider-captcha": "^0.1.2",
+    "vue3-otp-input": "^0.5.21"
   },
   "devDependencies": {
     "@formkit/auto-animate": "^0.8.2",

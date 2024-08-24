@@ -13,6 +13,11 @@ const persian = {
 	haveReferralCode: 'کد معرف دارید؟',
 	termsAndConditions: 'قوانین و شرایط استفاده',
 	agreeWithConditions: ' از بیت لند را خوانده‌ام و موافقم.',
+	forgotPasswordNoQuestion: 'فراموشی رمز عبور',
+	phoneOrEmail: 'شماره تلفن یا ایمیل',
+	enterPhoneOrEmail: 'شماره تلفن یا ایمیل خود را وارد کنید',
+	sendCode: 'ارسال کد',
+	confirm: 'تایید',
 };
 
 export default persian;

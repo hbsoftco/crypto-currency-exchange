@@ -1,10 +1,11 @@
 <template>
 	<div>
-		<h1 class="text-center">
-			login
-		</h1>
+		<PagesAuthForgetPassword />
 	</div>
 </template>
 
-<script setup lang="ts">
+<script setup>
+definePageMeta({
+	layout: 'auth',
+});
 </script>
