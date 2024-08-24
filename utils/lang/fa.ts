@@ -43,6 +43,11 @@ const persian = {
 	quickTrade: 'معامله سریع',
 	fees: 'کارمزدها',
 	userLevel: 'سطح کاربری',
+	forgotPasswordNoQuestion: 'فراموشی رمز عبور',
+	phoneOrEmail: 'شماره تلفن یا ایمیل',
+	enterPhoneOrEmail: 'شماره تلفن یا ایمیل خود را وارد کنید',
+	sendCode: 'ارسال کد',
+	confirm: 'تایید',
 };
 
 export default persian;

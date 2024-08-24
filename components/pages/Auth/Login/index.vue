@@ -1,5 +1,5 @@
 <template>
-	<Auth title="login">
+	<PagesAuth title="login">
 		<UTabs :items="items">
 			<template #default="{ item, selected }">
 				<span
@@ -43,7 +43,7 @@
 			</div>
 			<div>
 				<ULink
-					to="/auth/sign-up"
+					to="/auth/forget-password"
 					class="text-accent-red text-sm font-bold"
 					active-class="text-green"
 					inactive-class=""
@@ -52,12 +52,10 @@
 				</ULink>
 			</div>
 		</div>
-	</Auth>
+	</PagesAuth>
 </template>
 
 <script setup>
-import Auth from '../Auth.vue';
-
 const items = [
 	{
 		key: 'phoneNumber',
