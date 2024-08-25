@@ -13,11 +13,13 @@
 			<div class="w-full md:w-[22.5rem] absolute left-0 right-0 top-0 m-auto mt-10">
 				<div class="flex justify-between items-center px-8">
 					<div>
-						<NuxtImg
-							src="/images/svg/brand-logo.svg"
-							alt="Brand Logo Icon"
-							class="w-[77.6px] h-[32px]"
-						/>
+						<ULink to="/">
+							<NuxtImg
+								src="/images/svg/brand-logo.svg"
+								alt="Brand Logo Icon"
+								class="w-[77.6px] h-[32px]"
+							/>
+						</ULink>
 					</div>
 					<div>
 						<UiThemeToggle />

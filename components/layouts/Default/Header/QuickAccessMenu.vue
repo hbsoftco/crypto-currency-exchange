@@ -1,7 +1,7 @@
 <template>
-	<div>
+	<div class="mx-3">
 		<div
-			class="flex group relative items-center space-x-2"
+			class="flex group relative items-center space-x-2 cursor-pointer"
 			@mouseover="showMenu"
 			@mouseleave="hideMenu"
 		>
@@ -18,19 +18,23 @@
 			/>
 			<div
 				v-if="hover"
-				class=" absolute top-6 -right-32 mt-1 p-4 opacity-0 group-hover:opacity-100"
+				class="absolute top-6 -right-32 mt-1 p-4 opacity-0 group-hover:opacity-100 z-10"
 				@mouseover="showMenu"
 				@mouseleave="hideMenu"
 			>
 				<div
-					class="w-[1200px] bg-hover-light dark:bg-hover-dark shadow-lg rounded transition-opacity duration-200"
+					class="w-[75rem] bg-hover-light dark:bg-hover-dark shadow-lg rounded transition-all duration-200"
 				>
-					<div class="text-base font-bold border-b-secondary-gray-dark dark:border-b-secondary-gray-light border-b-[1px] mx-4 py-4">{{ $t('quickAccess') }}</div>
-					<ul class="grid grid-cols-4 gap-2">
+					<div
+						class="text-base font-bold border-b-primary-gray-light dark:border-b-primary-gray-dark border-b-[1px] mx-4 py-4"
+					>
+						{{ $t("quickAccess") }}
+					</div>
+					<ul class="grid grid-cols-4 gap-2 p-4">
 						<li
 							v-for="(item, index) in menuItems"
 							:key="index"
-							class="flex justify-between p-4 hover:bg-hover2-light dark:hover:bg-hover2-dark border-transparent border-r-[3px] hover:border-r-[3px] hover:border-primary-yellow-light hover:dark:border-r-[3px] dark:hover:border-primary-yellow-dark"
+							class="flex justify-between rounded-md overflow-hidden transition-all duration-200 p-4 hover:bg-hover2-light dark:hover:bg-[#1f1f1f] border-transparent border-r-[3px] hover:border-r-[3px] hover:border-primary-yellow-light hover:dark:border-r-[3px] dark:hover:border-primary-yellow-dark"
 						>
 							<ULink
 								to="#"
@@ -38,12 +42,14 @@
 							>
 								<component
 									:is="item.icon"
-									class="text-4xl"
+									class="text-4xl dark:text-subtle-text-50"
 								/>
 								<div class="text-base mr-4">
-									{{ $t(item.name) }}
+									<h5 class="font-bold">
+										{{ $t(item.name) }}
+									</h5>
 
-									<p class="text-sm">
+									<p class="text-sm dark:text-subtle-text-50">
 										{{ item.description }}
 									</p>
 								</div>
@@ -175,5 +181,3 @@ const menuItems = ref([
 	},
 ]);
 </script>
-
-<style lang="scss" scoped></style>

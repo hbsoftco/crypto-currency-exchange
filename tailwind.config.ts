@@ -47,6 +47,7 @@ export default <Partial<Config>>{
 				'subtle-text': {
 					dark: '#B3B3B3',
 					light: '#757575',
+					50: '#A6A6A6',
 				},
 				'background': {
 					dark: '#121212',

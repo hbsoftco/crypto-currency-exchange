@@ -49,14 +49,22 @@
 			<LayoutsDefaultHeaderSearch />
 
 			<div class="flex items-center space-x-4">
-				<div class="text-center w-[7.063rem] px-1 py-2">
-					<span>ورود</span>
-				</div>
-				<div
-					class="bg-[#FFC107] text-[#1C1B19] text-center w-[7.063rem] px-1 py-2"
+				<ULink
+					to="/auth/login"
+					class="text-text-dark dark:text-text-light font-medium px-2 mx-4 text-base "
+					active-class="text-green"
+					inactive-class=""
 				>
-					<span>ثبت نام</span>
-				</div>
+					{{ $t('login') }}
+				</ULink>
+
+				<UButton
+					size="lg"
+					class="text-base font-medium px-6 py-2"
+					to="/auth/sign-up"
+				>
+					{{ $t('signup') }}
+				</UButton>
 			</div>
 
 			<div class="flex items-center space-x-4">
