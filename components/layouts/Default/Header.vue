@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="w-full px-14 h-14 bg-primary-gray-light dark:bg-primary-gray-dark shadow-md"
+		class="w-full px-14 h-14 bg-primary-gray-light dark:bg-primary-gray-dark shadow-md z-20"
 	>
 		<div class="flex justify-between items-center h-full">
 			<div class="flex justify-between">
@@ -68,12 +68,12 @@
 			</div>
 
 			<div class="flex items-center space-x-4">
-				<div class="">
+				<div>
 					<LayoutsDefaultHeaderDownload />
 				</div>
 				<div>
 					<!-- <img src="/images/svg/setting.svg"> -->
-					<UiThemeToggle />
+					<LayoutsDefaultHeaderSetting />
 				</div>
 			</div>
 		</div>

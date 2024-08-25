@@ -20,7 +20,7 @@
 			/>
 			<div
 				v-if="hover"
-				class="absolute top-4 -right-10 mt-1 p-6 opacity-0 group-hover:opacity-100"
+				class="absolute top-4 -right-10 mt-1 p-6 opacity-0 group-hover:opacity-100 z-10"
 				@mouseover="showMenu"
 				@mouseleave="hideMenu"
 			>
@@ -216,7 +216,7 @@ const showMenu = () => {
 
 const hideMenu = () => {
 	hover.value = false;
-	showDropdown.value = []; // hide dropdowns when menu is hidden
+	showDropdown.value = [];
 };
 
 watch(hover, (newHover) => {
