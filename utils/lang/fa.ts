@@ -48,6 +48,17 @@ const persian = {
 	enterPhoneOrEmail: 'شماره تلفن یا ایمیل خود را وارد کنید',
 	sendCode: 'ارسال کد',
 	confirm: 'تایید',
+	guid: 'راهنما',
+	transaction: 'معامله',
+	buyingSellingSpot: 'خرید و فروش در اسپات',
+	professionalDeal: 'معامله حرفه ای',
+	listOrdersTransactions: 'لیست سفارشات و معاملات',
+	trialTransaction: 'معامله آزمایشی',
+	all: 'همه',
+	feeFree: 'کارمزد رایگان',
+	mobileSoftware: 'نرم افزار موبایلی',
+	scanQR: 'برای دانلود نرم افزار بیت لند QR کد را اسکن کنید و تجارت یکپارچه را در بیت لند تجربه کنید.',
+	showMore: 'نمایش بیشتر',
 };
 
 export default persian;

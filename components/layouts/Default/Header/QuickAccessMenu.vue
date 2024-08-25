@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div
-			class="flex group relative items-center"
+			class="flex group relative items-center space-x-2"
 			@mouseover="showMenu"
 			@mouseleave="hideMenu"
 		>
@@ -18,33 +18,36 @@
 			/>
 			<div
 				v-if="hover"
-				class=" absolute top-6 -right-40 mt-1 p-4 opacity-0 group-hover:opacity-100"
+				class=" absolute top-6 -right-32 mt-1 p-4 opacity-0 group-hover:opacity-100"
 				@mouseover="showMenu"
 				@mouseleave="hideMenu"
 			>
 				<div
 					class="w-[1200px] bg-hover-light dark:bg-hover-dark shadow-lg rounded transition-opacity duration-200"
 				>
-					<ul class="grid grid-cols-4 gap-4">
+					<div class="text-base font-bold border-b-secondary-gray-dark dark:border-b-secondary-gray-light border-b-[1px] mx-4 py-4">{{ $t('quickAccess') }}</div>
+					<ul class="grid grid-cols-4 gap-2">
 						<li
 							v-for="(item, index) in menuItems"
 							:key="index"
-							class="flex justify-between p-4 hover:bg-hover2-light dark:hover:bg-hover2-dark hover:border-r-2 hover:border-primary-yellow-light hover:dark:border-r-2 dark:hover:border-primary-yellow-dark"
+							class="flex justify-between p-4 hover:bg-hover2-light dark:hover:bg-hover2-dark border-transparent border-r-[3px] hover:border-r-[3px] hover:border-primary-yellow-light hover:dark:border-r-[3px] dark:hover:border-primary-yellow-dark"
 						>
-							<component
-								:is="item.icon"
-								class="text-4xl"
-							/>
-							<div class="text-base mr-4">
-								<ULink
-									to="#"
-								>
+							<ULink
+								to="#"
+								class="flex justify-between"
+							>
+								<component
+									:is="item.icon"
+									class="text-4xl"
+								/>
+								<div class="text-base mr-4">
 									{{ $t(item.name) }}
-								</ULink>
-								<p class="text-sm">
-									{{ item.description }}
-								</p>
-							</div>
+
+									<p class="text-sm">
+										{{ item.description }}
+									</p>
+								</div>
+							</ULink>
 						</li>
 					</ul>
 				</div>
