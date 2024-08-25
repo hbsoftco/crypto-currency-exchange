@@ -59,6 +59,15 @@ const persian = {
 	mobileSoftware: 'نرم افزار موبایلی',
 	scanQR: 'برای دانلود نرم افزار بیت لند QR کد را اسکن کنید و تجارت یکپارچه را در بیت لند تجربه کنید.',
 	showMore: 'نمایش بیشتر',
+	verificationCodeSentToEmail: 'کد تایید ارسالی به ایمیل',
+	verificationCodeSentToMobile: 'کد تایید ارسالی به موبایل',
+	sentVerificationCodeToEmail: 'کد تایید به آدرس ایمیل',
+	sentVerificationCodeToMobile: 'کد تایید به شماره موبایل',
+	sent: 'ارسال شد.',
+	createPassword: 'ایجاد رمز عبور',
+	rePassword: 'تکرار رمز عبور جدید',
+	newPassword: 'رمز عبور جدید',
+	enterNewPassword: 'رمز عبور جدید را وارد کنید',
 };
 
 export default persian;

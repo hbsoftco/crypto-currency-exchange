@@ -25,12 +25,14 @@
 			/>
 		</div>
 		<div>
-			<UButton
-				size="lg"
-				block
-			>
-				{{ $t('login') }}
-			</UButton>
+			<div>
+				<UButton
+					size="lg"
+					block
+				>
+					{{ $t('login') }}
+				</UButton>
+			</div>
 		</div>
 	</div>
 </template>

@@ -1,7 +1,8 @@
 <template>
 	<PagesAuth title="forgotPasswordNoQuestion">
 		<div>
-			<PagesAuthForgetPasswordGetCode />
+			<PagesAuthForgetPasswordGetCode v-if="false" />
+			<PagesAuthForgetPasswordSetCode />
 		</div>
 
 		<div class="flex justify-center items-center mt-8">
@@ -23,5 +24,3 @@
 <script setup>
 
 </script>
-
-<style></style>

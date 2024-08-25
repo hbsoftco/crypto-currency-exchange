@@ -1,0 +1,122 @@
+<template>
+	<div class="relative">
+		<div class="my-8 h-11 block px-2.5 pl-10 pb-2.5 pt-3 w-full text-sm text-text-dark dark:text-text-light bg-transparent rounded-lg border border-gray-600 cursor-text appearance-none focus:outline-none focus:ring-0 focus:border-yellow-500 peer">
+			<ClientOnly>
+				<v-otp-input
+					ref="otpInput"
+					v-model:value="bindModal"
+					input-classes="otp-input border-none outline-none bg-transparent"
+					:conditional-class="['w-5', 'w-5', 'w-5', 'w-5', 'w-5', 'w-5']"
+					separator=""
+					input-type="letter-numeric"
+					:num-inputs="6"
+					:should-auto-focus="true"
+					:should-focus-order="true"
+					:placeholder="['-', '-', '-', '-', '-', '-']"
+					@on-change="handleOnChange"
+					@on-complete="handleOnComplete"
+				/>
+			</ClientOnly>
+
+			<div class="absolute right-5 top-4">
+				<strong>{{ countdown }}</strong>
+				<span> S</span>
+			</div>
+
+			<label
+				:for="id"
+				class="absolute text-sm font-medium text-text-dark dark:text-text-light duration-300 transform -translate-y-5 scale-78 top-3 z-10 origin-[0] bg-background-light cursor-text dark:bg-background-dark px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-78 peer-focus:-translate-y-5 right-2 rounded-lg"
+			>{{ $t(label) }}</label>
+		</div>
+		<label
+			:for="id"
+			class="absolute text-sm font-medium text-text-dark dark:text-text-light duration-300 transform -translate-y-5 scale-78 top-3 z-10 origin-[0] bg-background-light cursor-text dark:bg-background-dark px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-78 peer-focus:-translate-y-5 right-2 rounded-lg"
+		>{{ $t(label) }}</label>
+	</div>
+</template>
+
+<script setup lang="ts">
+import type VOtpInput from 'vue3-otp-input';
+
+const otpInput = ref<InstanceType<typeof VOtpInput> | null>(null);
+const bindModal = ref('');
+const countdown = ref(60);
+let interval: NodeJS.Timeout | undefined;
+
+const handleOnComplete = (value: string) => {
+	// eslint-disable-next-line no-console
+	console.log('OTP completed: ', value);
+};
+
+const handleOnChange = (value: string) => {
+	// eslint-disable-next-line no-console
+	console.log('OTP changed: ', value);
+};
+
+const startCountdown = () => {
+	interval = setInterval(() => {
+		if (countdown.value > 0) {
+			countdown.value -= 1;
+		}
+		else {
+			if (interval !== undefined) {
+				clearInterval(interval);
+			}
+		}
+	}, 1000);
+};
+
+onMounted(() => {
+	startCountdown();
+});
+
+onUnmounted(() => {
+	if (interval) {
+		clearInterval(interval);
+	}
+});
+// const clearInput = () => {
+// 	otpInput.value?.clearInput();
+// };
+
+// const fillInput = (value: string) => {
+// 	// eslint-disable-next-line no-console
+// 	console.log(value);
+// 	otpInput.value?.fillInput(value);
+// };
+
+interface Props {
+	id: string;
+	modelValue: string;
+	type?: string;
+	label: string;
+	placeholder?: string;
+	required?: boolean;
+	disabled?: boolean;
+	inputClass?: string;
+	labelClass?: string;
+	icon?: string;
+}
+
+const props = defineProps<Props>();
+
+interface EmitDefinition {
+	(event: 'update:modelValue', value: unknown): void;
+}
+const emit = defineEmits<EmitDefinition>();
+
+const internalValue = ref(props.modelValue);
+// const isPasswordVisible = ref(false);
+
+watch(internalValue, (newValue) => {
+	emit('update:modelValue', newValue);
+});
+
+// const onInput = (event: Event) => {
+// 	internalValue.value = (event.target as HTMLInputElement).value;
+// };
+
+// const togglePasswordVisibility = () => {
+// 	isPasswordVisible.value = !isPasswordVisible.value;
+// };
+</script>
