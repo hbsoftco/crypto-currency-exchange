@@ -5,26 +5,56 @@
 			@mouseover="showMenu"
 			@mouseleave="hideMenu"
 		>
-			<IconDownload />
+			<IconDownload class="text-2xl  hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark" />
 		</div>
 		<div
 			v-if="hover"
-			class="absolute top-10 left-20 mt-1 p-6 bg-white dark:bg-gray-800 shadow-lg rounded opacity-100 transition-opacity duration-200"
+			class="absolute left-20 p-4 opacity-100 transition-opacity duration-200"
 			@mouseover="showMenu"
 			@mouseleave="hideMenu"
 		>
-			<div class="flex flex-col items-start space-y-2">
-				<div class="flex items-center space-x-2">
-					<IconPhone />
-					<p>{{ $t('mobileSoftware') }}</p>
-				</div>
-				<p>{{ $t('scanQR') }}</p>
-				<div class="flex items-center space-x-2 cursor-pointer">
-					<p>{{ $t('showMore') }}</p>
-					<IconArrowLeft />
-				</div>
-				<div>
-					<IconQR />
+			<div class="w-[30rem] bg-hover-light dark:bg-hover-dark shadow-lg rounded p-4">
+				<div class="flex justify-between">
+					<div class="m-2">
+						<div class="flex items-center space-x-2">
+							<div class="bg-primary-gray-light dark:bg-primary-gray-dark shadow-lg rounded p-1 ml-4 items-center">
+								<IconPhone
+									class="text-primary-yellow-light dark:text-primary-yellow-dark"
+								/>
+							</div>
+							<p class="text-base font-bold">
+								{{ $t("mobileSoftware") }}
+							</p>
+						</div>
+						<p
+							class="text-subtle-text-light dark:text-subtle-text-dark text-base font-medium pt-6"
+						>
+							{{ $t("scanQR") }}
+						</p>
+						<div class="flex items-center space-x-2 cursor-pointer mt-6">
+							<ULink
+								to="#"
+								class="flex"
+							>
+								<p
+									class="ml-2 text-primary-yellow-light dark:text-primary-yellow-dark text-base font-medium"
+								>
+									{{ $t("showMore") }}
+								</p>
+								<IconArrowLeftQR
+									class="text-primary-yellow-light dark:text-primary-yellow-dark mt-1"
+								/>
+
+							</ULink>
+						</div>
+					</div>
+					<div class="m-2">
+						<NuxtImg
+							src="/images/QR.png"
+							alt="QR"
+							class=""
+						/>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -36,16 +66,19 @@ import { ref } from 'vue';
 
 import IconDownload from '~/assets/svg-icons/menu/could-download.svg';
 import IconPhone from '~/assets/svg-icons/menu/phone.svg';
-import IconQR from '~/assets/svg-icons/menu/QR.svg';
-import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
+import IconArrowLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';
 
 const hover = ref(false);
+let timeout = null;
 
 const showMenu = () => {
+	if (timeout) clearTimeout(timeout);
 	hover.value = true;
 };
 
 const hideMenu = () => {
-	hover.value = false;
+	timeout = setTimeout(() => {
+		hover.value = false;
+	}, 300);
 };
 </script>

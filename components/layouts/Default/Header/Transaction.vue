@@ -216,7 +216,7 @@ const showMenu = () => {
 
 const hideMenu = () => {
 	hover.value = false;
-	showDropdown.value = []; // hide dropdowns when menu is hidden
+	showDropdown.value = [];
 };
 
 watch(hover, (newHover) => {
