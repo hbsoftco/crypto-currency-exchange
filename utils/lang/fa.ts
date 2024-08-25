@@ -59,6 +59,9 @@ const persian = {
 	mobileSoftware: 'نرم افزار موبایلی',
 	scanQR: 'برای دانلود نرم افزار بیت لند QR کد را اسکن کنید و تجارت یکپارچه را در بیت لند تجربه کنید.',
 	showMore: 'نمایش بیشتر',
+	theme: 'تم سایت',
+	displayNumbers: 'نمایش اعداد',
+	language: 'زبان',
 };
 
 export default persian;

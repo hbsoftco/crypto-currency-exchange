@@ -9,7 +9,7 @@
 		</div>
 		<div
 			v-if="hover"
-			class="absolute left-20 p-4 opacity-100 transition-opacity duration-200"
+			class="absolute left-20 p-4 opacity-100 transition-opacity duration-200 z-10"
 			@mouseover="showMenu"
 			@mouseleave="hideMenu"
 		>
