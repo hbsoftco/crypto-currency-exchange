@@ -27,6 +27,7 @@
     "@nuxtjs/i18n": "^8.3.3",
     "@pinia/nuxt": "^0.5.3",
     "@vite-pwa/nuxt": "^0.9.1",
+    "nuxt-echarts": "^0.2.2",
     "vite-plugin-eslint2": "^4.4.0"
   }
 }

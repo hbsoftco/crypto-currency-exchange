@@ -75,6 +75,19 @@ export default <Partial<Config>>{
 			fontFamily: {
 				dana: ['dana'],
 			},
+			container: {
+				center: true,
+				screens: {
+					// 'sm': '100%',
+					// 'md': '800px',
+					// 'lg': '1024px',
+					// 'xl': '1280px',
+					// '2xl': {
+					// 	max: '1836px',
+					// 	min: '1536px',
+					// },
+				},
+			},
 		},
 	},
 	darkMode: 'class',

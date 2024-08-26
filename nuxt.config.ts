@@ -12,6 +12,7 @@ export default defineNuxtConfig({
 		'@pinia/nuxt',
 		'nuxt-svgo',
 		'@nuxt/image',
+		'nuxt-echarts',
 	],
 	i18n: {
 		vueI18n: './i18n.config.ts',
