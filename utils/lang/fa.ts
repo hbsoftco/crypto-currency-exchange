@@ -75,7 +75,13 @@ const persian = {
 	newMessage: 'پیام جدید',
 	readAll: 'خواندن همه',
 	more: 'بیشتر',
-
+	showAccount: 'نمایش حساب کاربری',
+	setting: 'تنظیمات',
+	whiteList: 'لیست سفید',
+	exit: 'خروج',
+	manageAPI: 'مدیریت API',
+	security: 'امنیت',
+	requestVIPAccount: 'درخواست حساب VIP',
 };
 
 export default persian;
