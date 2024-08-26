@@ -17,41 +17,56 @@
 		>
 			<div class="w-56 bg-hover-light dark:bg-hover-dark shadow-lg rounded p-4">
 				<ul class="flex flex-col space-y-2">
-					<li class="flex justify-between">
+					<li
+						class="flex justify-between pb-2 hover:bg-hover2-light dark:hover:bg-hover2-dark border-b-[1px] border-b-secondary-gray-light dark:border-b-secondary-gray-dark"
+					>
 						<p class="text-base font-bold">
 							{{ $t("theme") }}
 						</p>
 						<UiThemeToggleSwitch />
 					</li>
 
-					<li>
+					<li
+						class="flex justify-between hover:bg-hover2-light dark:hover:bg-hover2-dark pb-2 border-b-[1px] border-b-secondary-gray-light dark:border-b-secondary-gray-dark"
+					>
 						<p class="text-base font-bold">
 							{{ $t("displayNumbers") }}
 						</p>
 						<UiLangToggle />
 					</li>
 
-					<li @click="toggleLanguageMenu">
-						<p class="text-base font-bold">
-							{{ $t("language") }}
-						</p>
-						<p>{{ selectedLanguage }}</p>
-						<div
-							v-if="showLanguageOptions"
-							class="mt-2 bg-hover-light dark:bg-hover-dark shadow-lg rounded p-2"
-						>
-							<ul class="space-y-2">
-								<li
-									v-for="language in languages"
-									:key="language.code"
-									class="cursor-pointer hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark"
-									@click="changeLanguage(language)"
-								>
-									{{ language.name }}
-								</li>
-							</ul>
+					<li
+						class="relative flex justify-between hover:bg-hover2-light dark:hover:bg-hover2-dark"
+						@click="toggleLanguageMenu"
+					>
+						<div>
+							<p class="text-base font-bold">
+								{{ $t("language") }}
+							</p>
+							<p
+								class="text-sm text-subtle-text-light dark:text-subtle-text-dark"
+							>
+								{{ selectedLanguage }}
+							</p>
 						</div>
+
+						<IconArrowLeft />
 					</li>
+					<div
+						v-if="showLanguageOptions"
+						class="mt-2 w-52 absolute -right-48 top-0 bg-hover-light dark:bg-hover-dark shadow-lg rounded p-4"
+					>
+						<ul class="space-y-2">
+							<li
+								v-for="language in languages"
+								:key="language.code"
+								class="text-base font-medium pb-1 cursor-pointer hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark border-b-[1px] border-b-secondary-gray-light dark:border-b-secondary-gray-dark"
+								@click="changeLanguage(language)"
+							>
+								{{ language.name }}
+							</li>
+						</ul>
+					</div>
 				</ul>
 			</div>
 		</div>
@@ -62,6 +77,7 @@
 import { ref } from 'vue';
 
 import IconSetting from '~/assets/svg-icons/menu/setting.svg';
+import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
 
 const hover = ref(false);
 let timeout = null;
@@ -80,10 +96,10 @@ const hideMenu = () => {
 const selectedLanguage = ref('English');
 const showLanguageOptions = ref(false);
 const languages = ref([
-	{ code: 'en', name: 'English' },
 	{ code: 'fa', name: 'فارسی' },
-	{ code: 'ar', name: 'العربية' },
-	{ code: 'fr', name: 'Français' },
+	{ code: 'en', name: 'انگلیسی' },
+	{ code: 'ar', name: 'عربی' },
+	{ code: 'fr', name: 'فرانسه' },
 ]);
 
 const toggleLanguageMenu = () => {

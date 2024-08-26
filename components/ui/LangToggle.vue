@@ -2,27 +2,17 @@
 	<ClientOnly>
 		<UToggle
 			:model-value="isFa"
-			class="text-hover-light dark:text-hover-dark bg-primary-yellow-light dark:bg-primary-yellow-dark rounded-full flex items-center justify-between px-1"
+			:on-icon="IconArrowUp"
+			:off-icon="IconArrowDown"
+			class="text-hover-light dark:text-hover-dark bg-secondary-gray-light dark:bg-secondary-gray-dark rounded-full"
 			size="lg"
-			aria-label="Number Format"
-			@update:model-value="toggleNumberFormat"
-		>
-			<template #checked>
-				<div class="text-sm font-bold text-center w-full">
-					FA
-				</div>
-			</template>
-			<template #unchecked>
-				<div class="text-sm font-bold text-center w-full">
-					EN
-				</div>
-			</template>
-		</UToggle>
+			aria-label="Theme"
+			@update:model-value="toggleTheme"
+		/>
 
-		<!-- نمایش اعداد به فرمت انتخابی -->
-		<p class="mt-4 text-lg font-bold">
+		<!-- <p class="mt-4 text-lg font-bold">
 			{{ formattedNumber }}
-		</p>
+		</p> -->
 
 		<template #fallback>
 			<div class="w-8 h-8" />
@@ -31,6 +21,9 @@
 </template>
 
 <script setup lang="ts">
+import IconArrowUp from '~/assets/svg-icons/menu/arrow-up.svg';
+import IconArrowDown from '~/assets/svg-icons/menu/arrow-down.svg';
+
 const loadNumberFormat = () => {
 	const savedFormat = localStorage.getItem('number-type');
 	return savedFormat === 'fa' ? true : false;
@@ -38,7 +31,7 @@ const loadNumberFormat = () => {
 
 const isFa = ref(loadNumberFormat());
 
-const toggleNumberFormat = (value: boolean) => {
+const toggleTheme = (value: boolean) => {
 	isFa.value = value;
 	localStorage.setItem('number-type', value ? 'fa' : 'en');
 };
@@ -51,3 +44,7 @@ const formattedNumber = computed(() => {
 		: number.value.toLocaleString('en-US');
 });
 </script>
+
+  <style scoped>
+  /* شما می‌توانید استایل‌های اضافی برای آیکون‌ها یا توگل اضافه کنید */
+  </style>
