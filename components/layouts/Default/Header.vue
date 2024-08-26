@@ -47,32 +47,13 @@
 				</ul>
 			</div>
 			<LayoutsDefaultHeaderSearch />
-
-			<div class="flex items-center space-x-4">
-				<ULink
-					to="/auth/login"
-					class="text-text-dark dark:text-text-light font-medium px-2 mx-4 text-base "
-					active-class="text-green"
-					inactive-class=""
-				>
-					{{ $t('login') }}
-				</ULink>
-
-				<UButton
-					size="lg"
-					class="text-base font-medium px-6 py-2"
-					to="/auth/sign-up"
-				>
-					{{ $t('signup') }}
-				</UButton>
-			</div>
+			<LayoutsDefaultHeaderUserLogin />
 
 			<div class="flex items-center space-x-4">
 				<div>
 					<LayoutsDefaultHeaderDownload />
 				</div>
 				<div>
-					<!-- <img src="/images/svg/setting.svg"> -->
 					<ClientOnly>
 						<LayoutsDefaultHeaderSetting />
 					</ClientOnly>

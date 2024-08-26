@@ -57,7 +57,8 @@ const persian = {
 	all: 'همه',
 	feeFree: 'کارمزد رایگان',
 	mobileSoftware: 'نرم افزار موبایلی',
-	scanQR: 'برای دانلود نرم افزار بیت لند QR کد را اسکن کنید و تجارت یکپارچه را در بیت لند تجربه کنید.',
+	scanQR:
+    'برای دانلود نرم افزار بیت لند QR کد را اسکن کنید و تجارت یکپارچه را در بیت لند تجربه کنید.',
 	showMore: 'نمایش بیشتر',
 	theme: 'تم سایت',
 	displayNumbers: 'نمایش اعداد',
@@ -71,6 +72,10 @@ const persian = {
 	rePassword: 'تکرار رمز عبور جدید',
 	newPassword: 'رمز عبور جدید',
 	enterNewPassword: 'رمز عبور جدید را وارد کنید',
+	newMessage: 'پیام جدید',
+	readAll: 'خواندن همه',
+	more: 'بیشتر',
+
 };
 
 export default persian;

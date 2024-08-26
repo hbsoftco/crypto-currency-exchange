@@ -58,7 +58,6 @@
 								v-if="item.subItems && item.subItems.length > 0 && item.hover"
 								class="absolute w-72 right-full -mt-1 bg-hover2-light dark:bg-hover2-dark shadow-lg rounded transition-opacity duration-200"
 							>
-								<!-- Tabs -->
 								<div
 									class="flex justify-end space-x-4 border-b-[1px] border-b-secondary-gray-light dark:border-b-secondary-gray-dark"
 								>
@@ -77,11 +76,8 @@
 										{{ $t(tab.name) }}
 									</div>
 								</div>
-								<!-- Tab Content -->
 								<div class="">
-									<!-- "همه" و "بیشتر" گزینه‌ها -->
 									<div class="flex justify-end px-4 py-2">
-										<!-- انتخاب ساده برای "بیشتر" -->
 										<div
 											class="relative flex items-center text-xs font-bold cursor-pointer"
 											@click="toggleDropdown"
@@ -95,7 +91,6 @@
 											>
 												{{ $t("بیشتر") }}
 											</span>
-											<!-- Dropdown for "بیشتر" -->
 											<div
 												v-if="showDropdown"
 												class="absolute right-0 top-full mt-2 w-32 shadow-lg rounded bg-white dark:bg-gray-800"
@@ -337,28 +332,23 @@ const moreOptions = ref([
 	{ name: 'Model 3' },
 ]);
 
-// فیلتر کردن آیتم‌های زیرمنو بر اساس تب فعال
 const filteredSubItems = (subItems, activeTab) => {
 	return subItems.filter((subItem) => subItem.tabIndex === activeTab);
 };
 
-// تابع برای نمایش زیرمنو
 const showSubmenu = (index) => {
 	menuItems.value[index].hover = true;
 };
 
-// تابع برای مخفی کردن زیرمنو
 const hideSubmenu = (index) => {
 	menuItems.value[index].hover = false;
 };
 
-// تابع برای نمایش یا مخفی کردن منوی کشویی "بیشتر" در تب‌ها
 const toggleDropdown = (subIndex) => {
 	showDropdown.value[subIndex] = !showDropdown.value[subIndex];
 	isMoreActive.value = !isMoreActive.value;
 };
 
-// تابع برای مدیریت حالت فعال دکمه‌ها
 const setActive = (buttonType) => {
 	isMoreActive.value = buttonType === 'more';
 	isAllActive.value = buttonType === 'all';

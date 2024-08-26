@@ -62,8 +62,6 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-
 import IconDownload from '~/assets/svg-icons/menu/could-download.svg';
 import IconPhone from '~/assets/svg-icons/menu/phone.svg';
 import IconArrowLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';

@@ -10,10 +10,6 @@
 			@update:model-value="toggleTheme"
 		/>
 
-		<!-- <p class="mt-4 text-lg font-bold">
-			{{ formattedNumber }}
-		</p> -->
-
 		<template #fallback>
 			<div class="w-8 h-8" />
 		</template>
@@ -35,16 +31,7 @@ const toggleTheme = (value: boolean) => {
 	isFa.value = value;
 	localStorage.setItem('number-type', value ? 'fa' : 'en');
 };
-
-const number = ref(1234567890);
-
-const formattedNumber = computed(() => {
-	return isFa.value
-		? number.value.toLocaleString('fa-IR')
-		: number.value.toLocaleString('en-US');
-});
 </script>
 
   <style scoped>
-  /* شما می‌توانید استایل‌های اضافی برای آیکون‌ها یا توگل اضافه کنید */
   </style>
