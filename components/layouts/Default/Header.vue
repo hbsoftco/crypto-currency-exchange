@@ -73,7 +73,9 @@
 				</div>
 				<div>
 					<!-- <img src="/images/svg/setting.svg"> -->
-					<LayoutsDefaultHeaderSetting />
+					<ClientOnly>
+						<LayoutsDefaultHeaderSetting />
+					</ClientOnly>
 				</div>
 			</div>
 		</div>
