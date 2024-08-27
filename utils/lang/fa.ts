@@ -84,12 +84,14 @@ const persian = {
 	requestVIPAccount: 'درخواست حساب VIP',
 	claimYourPrizeNow: 'همین حالا جایزه بگیر!',
 	identityVerification: 'احراز هویت',
-	registerAndVerifyBonus: 'با ثبت نام و احراز هویت ۵۰۰ میلیون بیبی دوج از بیت لند هدیه بگیرید.',
+	registerAndVerifyBonus:
+    'با ثبت نام و احراز هویت ۵۰۰ میلیون بیبی دوج از بیت لند هدیه بگیرید.',
 	firstDeposit: 'اولین واریز',
 	transferToFutureWallet: 'انتقال ۳۰۰ تتر به کیف پول آتی',
 	transfer: 'انتقال',
 	futuresTrading: 'معاملات آتی',
-	completeFirstFuturesTrade: 'اولین معامله آتی را با حجم ۱۰۰۰ تتر را کامل کنید.',
+	completeFirstFuturesTrade:
+    'اولین معامله آتی را با حجم ۱۰۰۰ تتر را کامل کنید.',
 	trade: 'معامله',
 	tradingMarkets: 'بازارهای معاملاتی',
 	hottest: 'داغ‌ترین‌ها',
@@ -100,6 +102,16 @@ const persian = {
 	detail: 'جزئیات',
 	showAllMarkets: 'نمایش همه بازارها',
 	changeCaptcha: 'تغییر کپچا',
+	walletOverview: 'نمای کلی کیف پول ',
+	deposit: 'واریز',
+	pickedUp: 'برداشت',
+	overView: 'نمای کلی',
+	assets: 'دارایی ها',
+	history: 'تاریخچه',
+	aboutUs: 'درباره ما',
+	services: 'سرویس ها',
+	guidCenter: 'مرکز راهنمایی',
+	followUs: 'مارا در شبکه های اجتماعی دنبال کنید',
 };
 
 export default persian;

@@ -36,7 +36,7 @@
 							@mouseleave="hideSubmenu(index)"
 						>
 							<div
-								class="flex justify-between items-center w-full mx-3 p-2 border-b-[1px] border-b-secondary-gray-light dark:border-b-secondary-gray-dark"
+								class="flex justify-between items-center w-full mx-3 p-2 border-b-primary-gray-light dark:border-b-primary-gray-dark border-b"
 							>
 								<ULink
 									to="#"
@@ -146,7 +146,7 @@
 												activeTab,
 											)"
 											:key="subIndex"
-											class="flex items-center mx-4 p-2 border-b-[1px] border-b-secondary-gray-light dark:border-b-secondary-gray-dark hover:bg-hover2-light dark:hover:bg-hover2-dark"
+											class="flex items-center mx-4 p-2 border-b-primary-gray-light dark:border-b-primary-gray-dark border-b hover:bg-hover2-light dark:hover:bg-hover2-dark"
 											@click="selectOption(subItem)"
 										>
 											<div class="ml-2">
