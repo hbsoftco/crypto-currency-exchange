@@ -20,7 +20,7 @@
 			<div class="flex justify-center items-center max-w-40 m-auto">
 				<WeeklyChart
 					:data="[180, 220, 160, 240, 200, 140, 190]"
-					color="green"
+					color="red"
 				/>
 			</div>
 		</td>

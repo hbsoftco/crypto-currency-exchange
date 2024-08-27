@@ -13,6 +13,12 @@
 
 		<section>
 			<UContainer>
+				<TopSlider />
+			</UContainer>
+		</section>
+
+		<section>
+			<UContainer>
 				<TradingMarkets />
 			</UContainer>
 		</section>
@@ -27,5 +33,6 @@
 
 <script setup lang="ts">
 import Prize from '~/components/pages/Site/MainPage/Prize.vue';
+import TopSlider from '~/components/pages/Site/MainPage/TopSlider.vue';
 import TradingMarkets from '~/components/pages/Site/MainPage/TradingMarkets.vue';
 </script>
