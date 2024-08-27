@@ -52,6 +52,7 @@ export default <Partial<Config>>{
 				'background': {
 					dark: '#121212',
 					light: '#FFFFFF',
+					50: '#4b4b4b',
 				},
 				'hover': {
 					dark: '#181818',

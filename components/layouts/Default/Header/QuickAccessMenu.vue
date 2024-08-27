@@ -26,7 +26,7 @@
 					class="w-[75rem] bg-hover-light dark:bg-hover-dark shadow-lg rounded transition-all duration-200"
 				>
 					<div
-						class="text-base font-bold border-b-primary-gray-light dark:border-b-primary-gray-dark border-b-[1px] mx-4 py-4"
+						class="text-base font-bold border-b-primary-gray-light dark:border-b-primary-gray-dark border-b mx-4 py-4"
 					>
 						{{ $t("quickAccess") }}
 					</div>
@@ -49,9 +49,9 @@
 										{{ $t(item.name) }}
 									</h5>
 
-									<p class="text-sm dark:text-subtle-text-50">
+									<span class="text-sm dark:text-subtle-text-50">
 										{{ item.description }}
-									</p>
+									</span>
 								</div>
 							</ULink>
 						</li>
