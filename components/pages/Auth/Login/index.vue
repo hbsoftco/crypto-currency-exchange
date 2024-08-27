@@ -12,19 +12,19 @@
 					v-if="item.key === 'phoneNumber'"
 					class="space-y-3"
 				>
-					<PagesAuthLoginWithMobile />
+					<WithMobile />
 				</div>
 				<div
 					v-else-if="item.key === 'email'"
 					class="space-y-3"
 				>
-					<PagesAuthLoginWithEmail />
+					<WithEmail />
 				</div>
 				<div
 					v-else-if="item.key === 'qrCode'"
 					class="space-y-3"
 				>
-					<PagesAuthLoginWithQRCode />
+					<WithQRCode />
 				</div>
 			</template>
 		</UTabs>
@@ -56,6 +56,10 @@
 </template>
 
 <script setup>
+const WithEmail = defineAsyncComponent(() => import('./WithEmail.vue'));
+const WithMobile = defineAsyncComponent(() => import('./WithMobile.vue'));
+const WithQRCode = defineAsyncComponent(() => import('./WithQRCode.vue'));
+
 const items = [
 	{
 		key: 'phoneNumber',

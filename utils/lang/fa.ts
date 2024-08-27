@@ -99,6 +99,7 @@ const persian = {
 	weeklyChart: 'نمودار هفتگی',
 	detail: 'جزئیات',
 	showAllMarkets: 'نمایش همه بازارها',
+	changeCaptcha: 'تغییر کپچا',
 };
 
 export default persian;

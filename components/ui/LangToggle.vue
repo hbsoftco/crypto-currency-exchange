@@ -1,9 +1,9 @@
 <template>
 	<ClientOnly>
+		<!-- :on-icon="IconArrowUp" -->
+		<!-- :off-icon="IconArrowDown" -->
 		<UToggle
 			:model-value="isFa"
-			:on-icon="IconArrowUp"
-			:off-icon="IconArrowDown"
 			class="text-hover-light dark:text-hover-dark bg-secondary-gray-light dark:bg-secondary-gray-dark rounded-full"
 			size="lg"
 			aria-label="Theme"
@@ -17,8 +17,8 @@
 </template>
 
 <script setup lang="ts">
-import IconArrowUp from '~/assets/svg-icons/menu/arrow-up.svg';
-import IconArrowDown from '~/assets/svg-icons/menu/arrow-down.svg';
+// import IconArrowUp from '~/assets/svg-icons/menu/arrow-up.svg';
+// import IconArrowDown from '~/assets/svg-icons/menu/arrow-down.svg';
 
 const loadNumberFormat = () => {
 	const savedFormat = localStorage.getItem('number-type');
