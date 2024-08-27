@@ -28,6 +28,10 @@
 				<Prize />
 			</UContainer>
 		</section>
+
+		<section>
+			{{ data }}
+		</section>
 	</div>
 </template>
 
@@ -35,4 +39,10 @@
 import Prize from '~/components/pages/Site/MainPage/Prize.vue';
 import TopSlider from '~/components/pages/Site/MainPage/TopSlider.vue';
 import TradingMarkets from '~/components/pages/Site/MainPage/TradingMarkets.vue';
+import { currencyRepository } from '~/repositories/currency.repository';
+
+const { $api } = useNuxtApp();
+const tags = currencyRepository($api);
+
+const { data } = await useAsyncData(() => tags.getTagList());
 </script>
