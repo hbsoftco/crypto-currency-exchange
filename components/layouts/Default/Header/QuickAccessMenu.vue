@@ -26,7 +26,7 @@
 					class="w-[75rem] bg-hover-light dark:bg-hover-dark shadow-lg rounded transition-all duration-200"
 				>
 					<div
-						class="text-base font-bold border-b-primary-gray-light dark:border-b-primary-gray-dark border-b-[1px] mx-4 py-4"
+						class="text-base font-bold border-b-primary-gray-light dark:border-b-primary-gray-dark border-b mx-4 py-4"
 					>
 						{{ $t("quickAccess") }}
 					</div>
@@ -74,7 +74,7 @@ import IconWithdrawCurrency from '~/assets/svg-icons/menu/quick-menu/withdraw-cu
 import IconDepositWithdrawalHistory from '~/assets/svg-icons/menu/quick-menu/deposit-Withdrawal-history.svg';
 import IconCreateAPI from '~/assets/svg-icons/menu/quick-menu/create-API.svg';
 import IconBlog from '~/assets/svg-icons/menu/quick-menu/blog.svg';
-import IconDepositToman from '~/assets/svg-icons/menu/quick-menu/currency-deposit.svg';
+import IconDepositToman from '~/assets/svg-icons/menu/quick-menu/deposit-toman.svg';
 import IconPortfolio from '~/assets/svg-icons/menu/quick-menu/portfolio.svg';
 import IconTopUsers from '~/assets/svg-icons/menu/quick-menu/top-users.svg';
 import IconAwards from '~/assets/svg-icons/menu/quick-menu/awards.svg';

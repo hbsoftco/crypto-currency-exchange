@@ -107,6 +107,10 @@ const persian = {
 	overView: 'نمای کلی',
 	assets: 'دارایی ها',
 	history: 'تاریخچه',
+	aboutUs: 'درباره ما',
+	services: 'سرویس ها',
+	guidCenter: 'مرکز راهنمایی',
+	followUs: 'مارا در شبکه های اجتماعی دنبال کنید',
 };
 
 export default persian;

@@ -27,7 +27,7 @@
 					</li>
 
 					<li
-						class="flex justify-between hover:bg-hover2-light dark:hover:bg-hover2-dark pb-2 border-b-[1px] border-b-secondary-gray-light dark:border-b-secondary-gray-dark"
+						class="flex justify-between hover:bg-hover2-light dark:hover:bg-hover2-dark pb-2 border-b-primary-gray-light dark:border-b-primary-gray-dark border-b"
 					>
 						<p class="text-base font-bold">
 							{{ $t("displayNumbers") }}
@@ -60,7 +60,7 @@
 							<li
 								v-for="language in languages"
 								:key="language.code"
-								class="text-base font-medium pb-1 cursor-pointer hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark  border-b-primary-gray-light dark:border-b-primary-gray-dark border-b-[1px]"
+								class="text-base font-medium pb-1 cursor-pointer hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark border-b-primary-gray-light dark:border-b-primary-gray-dark border-b"
 								@click="changeLanguage(language)"
 							>
 								{{ language.name }}

@@ -71,7 +71,7 @@
 							@mouseleave="hideSubmenu(index)"
 						>
 							<div
-								class="flex justify-between items-center w-full mx-3 p-2 border-b border-b-secondary-gray-light dark:border-b-secondary-gray-dark"
+								class="flex justify-between items-center w-full mx-3 p-2 border-b-primary-gray-light dark:border-b-primary-gray-dark border-b"
 							>
 								<ULink
 									to="#"
