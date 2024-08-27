@@ -71,6 +71,23 @@ const persian = {
 	rePassword: 'تکرار رمز عبور جدید',
 	newPassword: 'رمز عبور جدید',
 	enterNewPassword: 'رمز عبور جدید را وارد کنید',
+	claimYourPrizeNow: 'همین حالا جایزه بگیر!',
+	identityVerification: 'احراز هویت',
+	registerAndVerifyBonus: 'با ثبت نام و احراز هویت ۵۰۰ میلیون بیبی دوج از بیت لند هدیه بگیرید.',
+	firstDeposit: 'اولین واریز',
+	transferToFutureWallet: 'انتقال ۳۰۰ تتر به کیف پول آتی',
+	transfer: 'انتقال',
+	futuresTrading: 'معاملات آتی',
+	completeFirstFuturesTrade: 'اولین معامله آتی را با حجم ۱۰۰۰ تتر را کامل کنید.',
+	trade: 'معامله',
+	tradingMarkets: 'بازارهای معاملاتی',
+	hottest: 'داغ‌ترین‌ها',
+	toman: 'تومان',
+	lastPrice: 'آخرین قیمت',
+	change24h: 'تغییر 24h',
+	weeklyChart: 'نمودار هفتگی',
+	detail: 'جزئیات',
+	showAllMarkets: 'نمایش همه بازارها',
 };
 
 export default persian;

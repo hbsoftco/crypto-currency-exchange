@@ -3,7 +3,7 @@ export default defineAppConfig({
 		primary: 'primary-yellow',
 		gray: 'primary-gray',
 		button: {
-			rounded: 'rounded-lg',
+			rounded: 'rounded-md',
 			padding: {
 				md: 'p-0',
 			},
