@@ -1,7 +1,7 @@
 <template>
 	<div class="relative">
 		<NuxtImg
-			:src="`/images/bg/${isDark? 'dark.webp': 'light.webp'}`"
+			:src="`/images/svg/site/cover.svg`"
 			alt="bg-cover"
 			class="w-full"
 		/>
@@ -12,13 +12,4 @@
 </template>
 
 <script setup lang="ts">
-const colorMode = useColorMode();
-const isDark = computed({
-	get() {
-		return colorMode.value === 'dark';
-	},
-	set() {
-		colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark';
-	},
-});
 </script>
