@@ -4,7 +4,7 @@
 			:model-value="isDark"
 			on-icon="i-heroicons-moon-20-solid"
 			off-icon="heroicons:sun-20-solid"
-			class="text-hover-light dark:text-hover-dark bg-primary-yellow-light dark:bg-primary-yellow-dark  rounded-full"
+			class="text-hover-light dark:text-hover-dark bg-secondary-gray-light dark:bg-secondary-gray-dark  rounded-full"
 			size="lg"
 			aria-label="Theme"
 			@update:model-value="toggleTheme"
