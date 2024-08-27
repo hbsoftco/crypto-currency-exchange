@@ -18,7 +18,7 @@
 			<div class="w-56 bg-hover-light dark:bg-hover-dark shadow-lg rounded p-4">
 				<ul class="flex flex-col space-y-2">
 					<li
-						class="flex justify-between pb-2 hover:bg-hover2-light dark:hover:bg-hover2-dark border-b-[1px] border-b-secondary-gray-light dark:border-b-secondary-gray-dark"
+						class="flex justify-between pb-2 hover:bg-hover2-light dark:hover:bg-hover2-dark border-b-primary-gray-light dark:border-b-primary-gray-dark border-b-[1px]"
 					>
 						<p class="text-base font-bold">
 							{{ $t("theme") }}
@@ -60,7 +60,7 @@
 							<li
 								v-for="language in languages"
 								:key="language.code"
-								class="text-base font-medium pb-1 cursor-pointer hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark border-b-[1px] border-b-secondary-gray-light dark:border-b-secondary-gray-dark"
+								class="text-base font-medium pb-1 cursor-pointer hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark  border-b-primary-gray-light dark:border-b-primary-gray-dark border-b-[1px]"
 								@click="changeLanguage(language)"
 							>
 								{{ language.name }}

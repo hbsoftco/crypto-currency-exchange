@@ -49,9 +49,9 @@
 										{{ $t(item.name) }}
 									</h5>
 
-									<p class="text-sm dark:text-subtle-text-50">
+									<span class="text-sm dark:text-subtle-text-50">
 										{{ item.description }}
-									</p>
+									</span>
 								</div>
 							</ULink>
 						</li>
@@ -74,7 +74,7 @@ import IconWithdrawCurrency from '~/assets/svg-icons/menu/quick-menu/withdraw-cu
 import IconDepositWithdrawalHistory from '~/assets/svg-icons/menu/quick-menu/deposit-Withdrawal-history.svg';
 import IconCreateAPI from '~/assets/svg-icons/menu/quick-menu/create-API.svg';
 import IconBlog from '~/assets/svg-icons/menu/quick-menu/blog.svg';
-import IconDepositToman from '~/assets/svg-icons/menu/quick-menu/deposit-toman.svg';
+import IconDepositToman from '~/assets/svg-icons/menu/quick-menu/currency-deposit.svg';
 import IconPortfolio from '~/assets/svg-icons/menu/quick-menu/portfolio.svg';
 import IconTopUsers from '~/assets/svg-icons/menu/quick-menu/top-users.svg';
 import IconAwards from '~/assets/svg-icons/menu/quick-menu/awards.svg';
