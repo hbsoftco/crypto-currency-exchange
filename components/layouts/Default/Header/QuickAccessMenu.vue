@@ -18,7 +18,7 @@
 			/>
 			<div
 				v-if="hover"
-				class="absolute top-6 -right-32 mt-1 p-4 opacity-0 group-hover:opacity-100 z-10"
+				class="absolute -right-32 mt-1 top-4 py-6 opacity-0 group-hover:opacity-100 z-10"
 				@mouseover="showMenu"
 				@mouseleave="hideMenu"
 			>
@@ -62,7 +62,7 @@
 	</div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import IconMenu from '~/assets/svg-icons/menu/menu.svg';
 import IconArrowDown from '~/assets/svg-icons/menu/arrow-down.svg';
 import IconArrowUp from '~/assets/svg-icons/menu/arrow-up.svg';
@@ -98,7 +98,7 @@ watch(hover, (newHover) => {
 	showArrowDown.value = !newHover;
 });
 
-const menuItems = ref([
+const menuItems = [
 	{
 		name: 'currencyDeposit',
 		description: 'توضیحات توضیحات توضیحات توضیحات',
@@ -179,5 +179,5 @@ const menuItems = ref([
 		description: 'توضیحات توضیحات توضیحات توضیحات',
 		icon: IconUserLevel,
 	},
-]);
+];
 </script>

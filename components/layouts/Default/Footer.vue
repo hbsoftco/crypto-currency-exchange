@@ -83,7 +83,7 @@
 	</footer>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import IconGoogle from '~/assets/svg-icons/social/google.svg';
 import IconInstagram from '~/assets/svg-icons/social/instagram.svg';
 import IconLinkedin from '~/assets/svg-icons/social/linkedin.svg';
@@ -97,7 +97,7 @@ import IconWechat from '~/assets/svg-icons/social/wechat.svg';
 import IconWhatsapp from '~/assets/svg-icons/social/whatsapp.svg';
 import IconYoutube from '~/assets/svg-icons/social/youtube.svg';
 
-const footerItems = ref([
+const footerItems = [
 	{
 		title: 'درباره ما',
 		subItems: [
@@ -306,7 +306,7 @@ const footerItems = ref([
 			},
 		],
 	},
-]);
+];
 </script>
 
 <style scoped></style>

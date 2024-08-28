@@ -112,6 +112,8 @@ const persian = {
 	services: 'سرویس ها',
 	guidCenter: 'مرکز راهنمایی',
 	followUs: 'مارا در شبکه های اجتماعی دنبال کنید',
+	loading: 'صبر کنید',
+	search: 'جستجو',
 };
 
 export default persian;

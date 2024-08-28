@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h1>Futures</h1>
+		<h1>فیوچر</h1>
 	</div>
 </template>
 

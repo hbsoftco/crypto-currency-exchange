@@ -4,10 +4,12 @@
 	>
 		<div class="flex justify-between items-center h-full">
 			<div class="flex justify-between">
-				<NuxtImg
-					src="/images/svg/brand-logo.svg"
-					alt="Brand Logo"
-				/>
+				<ULink to="/">
+					<NuxtImg
+						src="/images/svg/brand-logo.svg"
+						alt="Brand Logo"
+					/>
+				</ULink>
 
 				<ul class="flex space-x-4 mr-8">
 					<li class="flex items-center space-x-2">
@@ -46,23 +48,28 @@
 					</li>
 				</ul>
 			</div>
-			<LayoutsDefaultHeaderSearch />
-			<LayoutsDefaultHeaderUserLogin />
-
-			<div class="flex items-center space-x-4">
-				<div>
-					<LayoutsDefaultHeaderDownload />
+			<div class="flex justify-between items-center">
+				<div class="mx-4">
+					<LayoutsDefaultHeaderSearch />
 				</div>
-				<div>
-					<ClientOnly>
-						<LayoutsDefaultHeaderSetting />
-					</ClientOnly>
+				<div class="mx-4">
+					<LayoutsDefaultHeaderUserLogin />
+				</div>
+				<div class="flex items-center space-x-4">
+					<div>
+						<LayoutsDefaultHeaderDownload />
+					</div>
+					<div>
+						<ClientOnly>
+							<LayoutsDefaultHeaderSetting />
+						</ClientOnly>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </template>
 
-<script></script>
+<script setup lang="ts"></script>
 
 <style lang="scss" scoped></style>

@@ -39,6 +39,10 @@ export default defineNuxtConfig({
 	svgo: {
 		autoImportPath: './assets/svg-icons/',
 	},
+	// ui: {
+	// Ensure Nuxt UI is properly configured
+	// icons: ['heroicons', 'simpleicons'],
+	// },
 	css: [
 		'~/assets/css/style.css',
 	],

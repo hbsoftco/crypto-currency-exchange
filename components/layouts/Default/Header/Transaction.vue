@@ -191,8 +191,6 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-
 import IconArrowDown from '~/assets/svg-icons/menu/arrow-down.svg';
 import IconArrowUp from '~/assets/svg-icons/menu/arrow-up.svg';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
@@ -218,7 +216,7 @@ watch(hover, (newHover) => {
 	showArrowDown.value = !newHover;
 });
 
-const menuItems = ref([
+const menuItems = [
 	{
 		name: 'quickTrade',
 		description: 'buyingSellingSpot',
@@ -322,7 +320,7 @@ const menuItems = ref([
 		description: 'buyingSellingSpot',
 		hover: false,
 	},
-]);
+];
 
 const tabs = ref([{ name: 'تومان' }, { name: 'BTC' }, { name: 'USDT' }]);
 

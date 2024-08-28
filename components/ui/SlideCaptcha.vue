@@ -29,6 +29,8 @@
 					size="2xl"
 					:min="0"
 					:max="200"
+					@mousedown="startDrag"
+					@mouseup="endDrag"
 				/>
 			</div>
 			<div
@@ -59,7 +61,7 @@ interface PropsDefinition {
 }
 
 interface EmitDefinition {
-	(event: 'close' | 'refresh'): void;
+	(event: 'close' | 'refresh' | 'slider-value', sliderValue?: number): void;
 }
 
 const props = defineProps<PropsDefinition>();
@@ -81,5 +83,13 @@ const refreshCaptcha = () => {
 
 const closeCaptcha = () => {
 	emit('close');
+};
+
+const startDrag = () => {
+	// console.log('Dragging started');
+};
+
+const endDrag = () => {
+	emit('slider-value', sliderValue.value);
 };
 </script>

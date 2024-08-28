@@ -12,3 +12,6 @@ a {
   @apply outline-none;
 }
 
+svg {
+  margin-bottom: 0 !important;
+}

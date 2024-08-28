@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div
-			v-if="isLoggedIn"
+			v-if="!isLoggedIn"
 			class="flex items-center space-x-4"
 		>
 			<ULink
@@ -32,11 +32,11 @@
 	</div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const isLoggedIn = ref(false);
 
 const checkLoginStatus = () => {
-	isLoggedIn.value = localStorage.getItem('isLoggedIn') === 'true';
+	isLoggedIn.value = localStorage.getItem('isLoggedIn') === 'false';
 };
 
 onMounted(() => {
