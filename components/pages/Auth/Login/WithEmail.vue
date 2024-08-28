@@ -41,8 +41,8 @@
 				:data="captchaData!"
 				@close="showCaptcha = false"
 				@slider-value="getCaptchaValue"
+				@refresh="refreshCaptcha({ username: email, action: 'login' })"
 			/>
-			<!-- @refresh="refreshCaptcha()" -->
 		</div>
 	</div>
 </template>
@@ -54,9 +54,9 @@ import { useCaptcha } from '~/composables/auth/useCaptcha';
 const email = ref<string>('hossein.bajan@gmail.com');
 const password = ref<string>('123456');
 
-const { captchaData, showCaptcha, loading, generateCaptcha, getCaptchaValue } = useCaptcha();
+const { captchaData, showCaptcha, loading, generateCaptcha, getCaptchaValue, refreshCaptcha } = useCaptcha();
 
 const login = () => {
-	generateCaptcha(email.value, 'login');
+	generateCaptcha({ username: email.value, action: 'login' });
 };
 </script>
