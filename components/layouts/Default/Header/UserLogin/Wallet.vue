@@ -94,7 +94,7 @@
 	</div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import IconWallet from '~/assets/svg-icons/menu/wallet.svg';
 import IconArrowDownRed from '~/assets/svg-icons/arrow-down-red.svg';
 import IconArrowUpGreen from '~/assets/svg-icons/arrow-up-green.svg';

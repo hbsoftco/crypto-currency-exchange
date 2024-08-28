@@ -71,7 +71,7 @@
 	</div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import IconDownload from '~/assets/svg-icons/menu/could-download.svg';
 import IconDownloadFill from '~/assets/svg-icons/menu/could-download-fill.svg';
 import IconPhone from '~/assets/svg-icons/menu/phone.svg';
