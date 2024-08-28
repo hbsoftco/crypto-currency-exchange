@@ -114,6 +114,9 @@ const persian = {
 	followUs: 'مارا در شبکه های اجتماعی دنبال کنید',
 	loading: 'صبر کنید',
 	search: 'جستجو',
+	hotTopics: 'داغترین ها',
+	newArrivals: 'جدیدترین ها',
+	latestNews: 'آخرین اخبار',
 };
 
 export default persian;
