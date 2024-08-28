@@ -40,7 +40,7 @@
 				v-if="showCaptcha"
 				:data="captchaData!"
 				@close="showCaptcha = false"
-				@slider-value="getCaptchaValue"
+				@slider-value="handleCaptchaValidation"
 				@refresh="refreshCaptcha({ username: email, action: 'login' })"
 			/>
 		</div>
@@ -54,9 +54,25 @@ import { useCaptcha } from '~/composables/auth/useCaptcha';
 const email = ref<string>('hossein.bajan@gmail.com');
 const password = ref<string>('123456');
 
-const { captchaData, showCaptcha, loading, generateCaptcha, getCaptchaValue, refreshCaptcha } = useCaptcha();
+const { captchaData, showCaptcha, loading, generateCaptcha, validateCaptcha, refreshCaptcha } = useCaptcha();
 
 const login = () => {
 	generateCaptcha({ username: email.value, action: 'login' });
+};
+
+const handleCaptchaValidation = async (sliderValue?: number) => {
+	if (sliderValue === undefined) {
+		alert('Slider value is required. Please try again.');
+		return;
+	}
+
+	const result = await validateCaptcha(sliderValue);
+
+	if (result instanceof Error) {
+		alert('Captcha validation failed. Please try again.');
+	}
+	else {
+		showCaptcha.value = false;
+	}
 };
 </script>

@@ -114,6 +114,8 @@ const persian = {
 	followUs: 'مارا در شبکه های اجتماعی دنبال کنید',
 	loading: 'صبر کنید',
 	search: 'جستجو',
+	error: 'خطا',
+	captchaIsNotValid: 'کپچا معتبر نیست!',
 };
 
 export default persian;

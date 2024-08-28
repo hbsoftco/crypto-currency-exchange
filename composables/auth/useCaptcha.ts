@@ -8,6 +8,8 @@ type GenerateCaptchaInput = {
 };
 
 export const useCaptcha = () => {
+	const toast = useToast();
+
 	const { $api } = useNuxtApp();
 	const auth = authRepository($api);
 
@@ -41,33 +43,45 @@ export const useCaptcha = () => {
 		}
 	};
 
-	const getCaptchaValue = async (sliderValue: number | undefined) => {
+	const validateCaptcha = async (sliderValue: number | undefined): Promise<string | Error> => {
 		if (sliderValue !== undefined && captchaData.value?.id) {
 			loading.value = true;
 			try {
 				const captchaResponse = await auth.validateCaptcha({
 					captchaKey: captchaData.value?.id,
 					points: [
-						{ x: sliderValue },
+						{ x: captchaRange(sliderValue) },
 					],
 				});
 
-				console.log(captchaResponse);
-
-				// if (captchaResponse.stateId !== 11) {
-				// 	captchaData.value = captchaResponse;
-				// 	showCaptcha.value = true;
-				// }
+				if (captchaResponse.statusCode === 200) {
+					toast.add({
+						title: '',
+						timeout: 3000,
+						color: 'primary-yellow',
+					});
+					return captchaData.value.id;
+				}
+				else {
+					throw new Error('Captcha validation failed.');
+				}
 			}
 			catch (error) {
-				return error;
+				toast.add({
+					title: useT('error'),
+					timeout: 3000,
+					description: useT('captchaIsNotValid'),
+					color: 'red',
+				});
+
+				throw new Error(`Error ${error}`);
 			}
 			finally {
 				loading.value = false;
 			}
 		}
 		else {
-			// console.error('Slider value is undefined');
+			return new Error('Slider value is undefined or captcha data is missing.');
 		}
 	};
 
@@ -77,6 +91,6 @@ export const useCaptcha = () => {
 		loading,
 		refreshCaptcha,
 		generateCaptcha,
-		getCaptchaValue,
+		validateCaptcha,
 	};
 };
