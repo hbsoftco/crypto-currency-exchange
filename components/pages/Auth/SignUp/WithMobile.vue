@@ -2,8 +2,8 @@
 	<div>
 		<div class="my-8">
 			<FormsFieldInput
-				id="phoneNumber"
-				v-model="phoneNumber"
+				id="mobile"
+				v-model="mobile"
 				type="text"
 				input-class="text-left"
 				label="phoneNumber"
@@ -14,7 +14,7 @@
 		</div>
 		<div>
 			<FormsFieldInput
-				id="password"
+				id="mobile_password"
 				v-model="password"
 				type="password"
 				input-class="text-left"
@@ -26,8 +26,8 @@
 		</div>
 		<div class="my-8">
 			<FormsFieldInput
-				id="haveReferralCode"
-				v-model="referralCode"
+				id="refereeCode"
+				v-model="refereeCode"
 				type="text"
 				input-class="text-left"
 				label="haveReferralCode"
@@ -36,9 +36,9 @@
 			/>
 		</div>
 		<div class="mb-3">
-			<UCheckbox>
+			<UCheckbox v-model="isAgreeChecked">
 				<template #label>
-					<span class="">
+					<span>
 						<ULink
 							to="/auth/login"
 							class="text-primary-yellow-light dark:text-primary-yellow-dark font-bold text-sm"
@@ -56,15 +56,90 @@
 			<UButton
 				size="lg"
 				block
+				:loading="loading"
+				:disabled="!isAgreeChecked"
+				@click="signup"
 			>
 				{{ $t('signup') }}
 			</UButton>
+		</div>
+		<div>
+			<SlideCaptcha
+				v-if="showCaptcha"
+				:data="captchaData!"
+				@close="showCaptcha = false"
+				@slider-value="handleCaptchaValidation"
+				@refresh="refreshCaptcha({ username: mobile, action: 'signup' })"
+			/>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-const phoneNumber = ref<string>('');
-const referralCode = ref<string>('');
-const password = ref<string>('');
+import SlideCaptcha from '~/components/ui/SlideCaptcha.vue';
+import { useCaptcha } from '~/composables/auth/useCaptcha';
+import { useAuth } from '~/composables/auth/useAuth';
+
+const { signupByMobile } = useAuth();
+
+const mobile = ref<string>('+989155859539');
+const refereeCode = ref<string>('');
+const password = ref<string>('123@qweQWE');
+const isAgreeChecked = ref<boolean>(false);
+
+const {
+	captchaData,
+	showCaptcha,
+	loading,
+	generateCaptcha,
+	validateCaptcha,
+	refreshCaptcha } = useCaptcha();
+
+const signup = async () => {
+	const captchaResult = await generateCaptcha({ username: mobile.value, action: 'signup' });
+	if (captchaResult instanceof Error) {
+		alert('Failed to generate captcha. Please try again.');
+		return;
+	}
+
+	showCaptcha.value = true;
+};
+
+const handleCaptchaValidation = async (sliderValue?: number) => {
+	if (sliderValue === undefined) {
+		alert('Slider value is required. Please try again.');
+		return;
+	}
+
+	const result = await validateCaptcha(sliderValue);
+
+	if (result instanceof Error) {
+		alert('Captcha validation failed. Please try again.');
+	}
+	else {
+		showCaptcha.value = false;
+		await doSignup();
+	}
+};
+
+const doSignup = async () => {
+	if (!captchaData.value) {
+		alert('Captcha data is missing. Please try again.');
+		return;
+	}
+
+	const response = await signupByMobile({
+		captchaKey: captchaData.value.id,
+		password: password.value,
+		mobile: mobile.value,
+		refereeCode: refereeCode.value || null,
+	});
+
+	if (response instanceof Error) {
+		alert('Signup failed. Please try again.');
+	}
+	else {
+		alert('Signup successful!');
+	}
+};
 </script>

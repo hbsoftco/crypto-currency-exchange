@@ -2,15 +2,27 @@ import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
 import type { CaptchaResponse } from '~/types/captcha-response.types';
 import type { CaptchaRequestDto } from '~/types/dto/generate-captcha.dto';
+import type { LoginByEmailDto, LoginByMobileDto } from '~/types/dto/login.dto';
+import type { SignupByEmailDto, SignupByMobileDto } from '~/types/dto/signup.dto';
 import type { ValidateCaptchaDto } from '~/types/dto/validate-captcha.dto';
 import type { ResposneType } from '~/types/response.types';
 
 type AuthRepository = {
+	// Captcha
 	generateCaptcha: (data: CaptchaRequestDto) => Promise<CaptchaResponse>;
 	validateCaptcha: (data: ValidateCaptchaDto) => Promise<ResposneType>;
+	// SignUp
+	signupByMobile: (data: SignupByMobileDto) => Promise<ResposneType>;
+	signupByEmail: (data: SignupByEmailDto) => Promise<ResposneType>;
+	// Login
+	loginByMobile: (data: LoginByMobileDto) => Promise<ResposneType>;
+	loginByEmail: (data: LoginByEmailDto) => Promise<ResposneType>;
+
 };
 
-export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthRepository => ({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const authRepository = (fetch: $Fetch<any, NitroFetchRequest>): AuthRepository => ({
+	// Captcha
 	async generateCaptcha(data: CaptchaRequestDto): Promise<CaptchaResponse> {
 		const { result } = await fetch<ResposneType>(`/v1/captcha/generate`, {
 			params: {
@@ -23,6 +35,36 @@ export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthR
 	},
 	async validateCaptcha(data: ValidateCaptchaDto): Promise<ResposneType> {
 		const response = await fetch<ResposneType>(`/v1/captcha/validate`, {
+			method: 'POST',
+			body: data,
+		});
+		return response;
+	},
+	// SignUp
+	async signupByMobile(data: SignupByMobileDto): Promise<ResposneType> {
+		const response = await fetch<ResposneType>(`/v1/auth/signup/by_mobile`, {
+			method: 'POST',
+			body: data,
+		});
+		return response;
+	},
+	async signupByEmail(data: SignupByEmailDto): Promise<ResposneType> {
+		const response = await fetch<ResposneType>(`/v1/auth/signup/by_email`, {
+			method: 'POST',
+			body: data,
+		});
+		return response;
+	},
+	// Login
+	async loginByMobile(data: LoginByMobileDto): Promise<ResposneType> {
+		const response = await fetch<ResposneType>(`/v1/auth/login/by_mobile`, {
+			method: 'POST',
+			body: data,
+		});
+		return response;
+	},
+	async loginByEmail(data: LoginByEmailDto): Promise<ResposneType> {
+		const response = await fetch<ResposneType>(`/v1/auth/login/by_mobile`, {
 			method: 'POST',
 			body: data,
 		});

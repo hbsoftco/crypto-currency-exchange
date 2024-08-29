@@ -29,7 +29,6 @@
 				size="lg"
 				block
 				:loading="loading"
-				class=" "
 				@click="login"
 			>
 				{{ $t('login') }}
