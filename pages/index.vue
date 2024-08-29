@@ -32,6 +32,10 @@
 		<section>
 			{{ data }}
 		</section>
+
+		<section>
+			<CommonDownloadApp />
+		</section>
 	</div>
 </template>
 

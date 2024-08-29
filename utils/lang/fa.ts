@@ -117,6 +117,7 @@ const persian = {
 	hotTopics: 'داغترین ها',
 	newArrivals: 'جدیدترین ها',
 	latestNews: 'آخرین اخبار',
+	currencyInformation: 'اطلاعات ارز',
 };
 
 export default persian;
