@@ -34,7 +34,7 @@
 		</section>
 
 		<section>
-			<CommonDownloadApp />
+			<CommonDownloadApp class="hidden md:block" />
 		</section>
 	</div>
 </template>

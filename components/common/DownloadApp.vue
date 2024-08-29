@@ -1,51 +1,60 @@
 <template>
-	<div class="bg-[#FFC107] flex px-[5rem] py-10">
-		<div class="text-[#1C1B19]">
-			<p class="text-[1.5rem] font-semibold">
-				دانلود نرم افزار بیت لند
-			</p>
-			<p class="text-[1rem] font-semibold pb-10">
-				شما میتوانید با دانلود نرم افزار های موبایل بیت لند، همیشه و در همه جا
-				به آسانی به خدمات بیت لند دسترسی داشته باشید.
-			</p>
-			<div class="flex justify-between mb-4">
-				<img
-					src="/images/svg/app-store.svg"
-					alt="app-store"
-				>
-				<img
-					src="/images/svg/google-play.svg"
-					alt="google-play"
-				>
-				<img
-					src="/images/svg/windows.svg"
-					alt="windows"
-				>
-			</div>
+	<div class=" bg-primary-yellow-light dark:bg-primary-yellow-dark py-32">
+		<UContainer>
 			<div class="flex justify-between">
-				<img
-					src="/images/svg/app-store.svg"
-					alt="app-store"
-				>
-				<img
-					src="/images/svg/google-play.svg"
-					alt="google-play"
-				>
-				<img
-					src="/images/svg/windows.svg"
-					alt="windows"
-				>
+				<div class="">
+					<p class="text-black dark:text-black text-2xl font-semibold">
+						دانلود نرم افزار بیت لند
+					</p>
+					<p class="text-black dark:text-black text-base font-semibold pb-10">
+						شما میتوانید با دانلود نرم افزار های موبایل بیت لند، همیشه و در همه
+						جا به آسانی به خدمات بیت لند دسترسی داشته باشید.
+					</p>
+					<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+						<ULink to=""><NuxtImg
+							src="/images/svg/app-store.svg"
+							alt="app-store"
+						/></ULink>
+						<ULink to="">
+							<NuxtImg
+								src="/images/svg/google-play.svg"
+								alt="google-play"
+							/></ULink>
+						<ULink to="">
+							<NuxtImg
+								src="/images/svg/windows.svg"
+								alt="windows"
+							/></ULink>
+						<ULink to="">
+							<NuxtImg
+								src="/images/svg/app-store.svg"
+								alt="app-store"
+							/></ULink>
+						<ULink to="">
+							<NuxtImg
+								src="/images/svg/google-play.svg"
+								alt="google-play"
+							/></ULink>
+						<ULink to="">
+							<NuxtImg
+								src="/images/svg/windows.svg"
+								alt="windows"
+							/></ULink>
+					</div>
+				</div>
+				<div>
+					<NuxtImg
+						src="/images/svg/icon-download-app.svg"
+						alt="platform"
+						class="w-full"
+					/>
+				</div>
 			</div>
-		</div>
-		<div>
-			<img
-				src="/images/svg/icon-download-app.svg"
-				alt="icon-download-app"
-			>
-		</div>
+		</UContainer>
 	</div>
 </template>
 
-<script></script>
+<script setup lang="ts">
+</script>
 
 <style scoped></style>
