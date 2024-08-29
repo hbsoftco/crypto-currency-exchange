@@ -126,6 +126,9 @@ const persian = {
 	pleaseEnterValidPhoneNumber: 'لطفا شماره موبایل معتبر وارد کنید',
 	thisFieldMustBeNumeric: 'لطفا عدد وارد کنید',
 	fieldIsRequired: 'این فیلد اجباری است!',
+	articleAuthor: 'نویسنده مقاله',
+	lastBlogArticles: 'آخرین مقالات بلاگ',
+	textMore: 'مطالب بیشتر',
 };
 
 export default persian;
