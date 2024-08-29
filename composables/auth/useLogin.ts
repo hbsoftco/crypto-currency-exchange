@@ -14,13 +14,13 @@ export const useLogin = () => {
 	const loginByMobileForm = reactive<LoginByMobileDto>({
 		captchaKey: '',
 		ignore2FA: null,
-		password: '',
-		mobile: '',
+		password: '123@qwe!@#QWE',
+		mobile: '+989155859539',
 
 	});
 
 	const loginByMobileRules = {
-		captchaKey: { required: validations.required },
+		captchaKey: { },
 		ignore2FA: { },
 		password: { required: validations.required },
 		mobile: { required: validations.required },
@@ -36,7 +36,6 @@ export const useLogin = () => {
 
 	const loginByEmailRules = {
 		captchaKey: { },
-		// captchaKey: { required: validations.required },
 		ignore2FA: { },
 		password: { required: validations.required },
 		email: { required: validations.required },

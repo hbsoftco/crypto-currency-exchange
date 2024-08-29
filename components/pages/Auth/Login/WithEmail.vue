@@ -41,7 +41,7 @@
 				v-if="showCaptcha"
 				:data="captchaData!"
 				@close="showCaptcha = false"
-				@refresh="refreshCaptcha({ username: email, action: 'login' })"
+				@refresh="refreshCaptcha({ username: loginByMobileForm.email, action: 'login' })"
 				@slider-value="captchaValidation"
 			/>
 		</div>

@@ -1,12 +1,10 @@
 <template>
 	<div>
-		<SignUp />
+		<PagesAuthSignUp />
 	</div>
 </template>
 
-<script setup>
-import SignUp from '~/components/pages/Auth/SignUp/SignUp.vue';
-
+<script setup lang="ts">
 definePageMeta({
 	layout: 'auth',
 });
