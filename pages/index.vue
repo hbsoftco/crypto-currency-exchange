@@ -34,6 +34,14 @@
 		</section>
 
 		<section>
+			<PagesSiteMainPageWhyBitland class="hidden md:block" />
+		</section>
+
+		<section>
+			<PagesSiteMainPageAlwaysBitland class="hidden md:block" />
+		</section>
+
+		<section>
 			<CommonDownloadApp class="hidden md:block" />
 		</section>
 	</div>

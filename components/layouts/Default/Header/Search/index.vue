@@ -1,10 +1,14 @@
 <template>
-	<div class="relative" ref="container">
+	<div
+		ref="container"
+		class="relative"
+	>
 		<div
 			:class="[
 				'relative bg-background-light dark:bg-background-dark max-w-52 w-52 h-8 rounded-lg overflow-hidden p-1',
 				{
-					'border-primary-yellow-light dark:border-primary-yellow-dark border': isFocused && !showAdditionalBox,
+					'border-primary-yellow-light dark:border-primary-yellow-dark border':
+						isFocused && !showAdditionalBox,
 				},
 			]"
 		>
@@ -84,16 +88,22 @@
 			class="absolute -left-20 top-5 py-7 opacity-100 transition-opacity duration-200 z-20"
 		>
 			<div class="w-96 bg-hover-light dark:bg-hover-dark shadow-lg rounded p-2">
-				<div class="bg-background-light dark:bg-background-dark p-2 rounded shadow">
+				<div
+					class="bg-background-light dark:bg-background-dark p-2 rounded shadow"
+				>
 					<div class="flex justify-between">
-						<span class="text-sm font-bold">{{ $t('transaction') }}</span>
+						<span class="text-sm font-bold">{{ $t("transaction") }}</span>
 						<div>
 							<ULink
 								to="/"
 								class="w-full text-right flex items-center"
 							>
-								<span class="text-sm font-medium text-primary-yellow-light dark:text-primary-yellow-dark ml-1">{{ $t('market') }}</span>
-								<IconArrowLeftQR class="text-primary-yellow-light dark:text-primary-yellow-dark" />
+								<span
+									class="text-sm font-medium text-primary-yellow-light dark:text-primary-yellow-dark ml-1"
+								>{{ $t("market") }}</span>
+								<IconArrowLeftQR
+									class="text-primary-yellow-light dark:text-primary-yellow-dark"
+								/>
 							</ULink>
 						</div>
 					</div>
@@ -105,13 +115,13 @@
 						<LayoutsDefaultHeaderSearchMarketRows />
 					</div>
 					<UButton
-						class="flex justify-center w-full my-4 text-primary-yellow-light dark:text-primary-yellow-dark text-base hover:text-hover-light dark:hover:text-hover-light  bg-hover-light dark:bg-hover-dark shadow-none border border-primary-yellow"
+						class="flex justify-center w-full my-4 text-primary-yellow-light dark:text-primary-yellow-dark text-base hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-yellow"
 					>
 						{{ $t("showMore") }}
 					</UButton>
 				</div>
 				<div class="my-8">
-					<span class="text-sm font-bold">{{ $t('currencyInformation') }}</span>
+					<span class="text-sm font-bold">{{ $t("currencyInformation") }}</span>
 					<LayoutsDefaultHeaderSearchCurrencyInfo class="mt-1" />
 				</div>
 				<div class="flex items-center mb-1 mt-3">
@@ -132,7 +142,7 @@
 
 				<div class="mx-4">
 					<UButton
-						class="flex justify-center w-full my-4 text-primary-yellow-light dark:text-primary-yellow-dark text-base hover:text-hover-light dark:hover:text-hover-light  bg-hover-light dark:bg-hover-dark shadow-none border border-primary-yellow"
+						class="flex justify-center w-full my-4 text-primary-yellow-light dark:text-primary-yellow-dark text-base hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-yellow"
 					>
 						{{ $t("showMore") }}
 					</UButton>
@@ -184,5 +194,4 @@ onBeforeUnmount(() => {
 const gridItems = [1, 2, 3];
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

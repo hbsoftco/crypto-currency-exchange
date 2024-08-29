@@ -118,6 +118,8 @@ const persian = {
 	newArrivals: 'جدیدترین ها',
 	latestNews: 'آخرین اخبار',
 	currencyInformation: 'اطلاعات ارز',
+	whyBitland: 'چرا بیت لند',
+	alwaysBitland: 'بیت لند همیشه و در همه جا',
 };
 
 export default persian;
