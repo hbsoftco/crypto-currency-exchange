@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div
-			class="relative group items-center space-x-2"
+			class="relative group items-center space-x-2 mt-20"
 			@mouseover="showMenu"
 			@mouseleave="hideMenu"
 		>
@@ -71,7 +71,7 @@
 	</div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import IconDownload from '~/assets/svg-icons/menu/could-download.svg';
 import IconDownloadFill from '~/assets/svg-icons/menu/could-download-fill.svg';
 import IconPhone from '~/assets/svg-icons/menu/phone.svg';

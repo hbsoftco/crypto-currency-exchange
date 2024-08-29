@@ -3,8 +3,8 @@
 		class="w-full h-auto bg-primary-gray-light dark:bg-primary-gray-dark shadow-md z-20"
 	>
 		<UContainer>
-			<div class="flex justify-between pt-6">
-				<div class="w-96 p-6">
+			<div class="flex-row md:flex md:justify-between pt-6">
+				<div class="p-6 w-96">
 					<NuxtImg
 						src="/images/svg/brand-logo.svg"
 						alt="Brand Logo"
@@ -18,15 +18,11 @@
 						رمز نگاری شده نیاز دارید گرد آوری شده است.
 					</p>
 					<div>
-						<span class="leading-loose text-sm font-normal">
-							شماره تماس :
-						</span>
+						<span class="leading-loose text-sm font-normal">شماره تماس :</span>
 						<span class="leading-loose text-sm font-normal">۰۲۱۲۸۲۲۳۱۳۱</span>
 					</div>
 					<div>
-						<span class="leading-loose text-sm font-normal">
-							آدرس ایمیل :
-						</span>
+						<span class="leading-loose text-sm font-normal">آدرس ایمیل :</span>
 						<span class="leading-loose text-sm font-normal">
 							admin@bitland.ir
 						</span>
@@ -39,34 +35,38 @@
 					>
 						<span
 							class="text-subtle-text-light dark:text-subtle-text-dark text-sm font-bold"
-						>{{ item.title }}</span>
-						<ul class="mt-2">
-							<li
-								v-for="(subItem, subIndex) in item.subItems"
-								:key="subIndex"
-								class="text-sm font-medium pb-2"
-							>
-								<!-- شرط برای نمایش لینک یا آیکون -->
-								<ULink
-									v-if="item.title !== 'مارا در شبکه‌های اجتماعی دنبال کنید'"
-									:to="subItem.url"
-								>
-									{{ subItem.name }}
-								</ULink>
+						>
+							{{ $t(item.title) }}
+						</span>
+						<div class="mt-2">
+							<div v-if="item.title !== followUs">
 								<div
-									v-else
-
-									class="grid grid-cols-5 sm:grid-cols-5 lg:grid-cols-5"
+									v-for="(subItem, subIndex) in item.subItems"
+									:key="subIndex"
+									class="text-sm font-medium pb-2"
 								>
-									<div>
-										<component
-											:is="subItem.name"
-											class="w-6 h-6 grid"
-										/>
-									</div>
+									<ULink :to="subItem.url">
+										{{ subItem.name }}
+									</ULink>
 								</div>
-							</li>
-						</ul>
+							</div>
+
+							<div
+								v-else
+								class="grid grid-cols-4 gap-2"
+							>
+								<ULink
+									v-for="(subItem, subIndex) in item.subItems"
+									:key="subIndex"
+									:href="subItem.url"
+									class="w-6 h-6"
+								>
+									<component
+										:is="subItem.name"
+									/>
+								</ULink>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -97,213 +97,89 @@ import IconWechat from '~/assets/svg-icons/social/wechat.svg';
 import IconWhatsapp from '~/assets/svg-icons/social/whatsapp.svg';
 import IconYoutube from '~/assets/svg-icons/social/youtube.svg';
 
+const followUs = 'followUs';
+
 const footerItems = [
 	{
-		title: 'درباره ما',
+		title: 'aboutUs',
 		subItems: [
-			{
-				name: 'درباره بیت لند',
-				url: '#',
-			},
-			{
-				name: 'قوانین و مقررات',
-				url: '#',
-			},
-			{
-				name: 'توافق نامه ریسک',
-				url: '#',
-			},
-			{
-				name: 'اخبار',
-				url: '#',
-			},
-			{
-				name: 'تحلیل کاربران',
-				url: '#',
-			},
+			{ name: 'درباره بیت لند', url: '#' },
+			{ name: 'قوانین و مقررات', url: '#' },
+			{ name: 'توافق نامه ریسک', url: '#' },
+			{ name: 'اخبار', url: '#' },
+			{ name: 'تحلیل کاربران', url: '#' },
 		],
 	},
 	{
-		title: 'سرویس ها',
+		title: 'services',
 		subItems: [
-			{
-				name: 'خرید رمز ارز',
-				url: '#',
-			},
-			{
-				name: 'نرم افزار بیت لند',
-				url: '#',
-			},
-			{
-				name: 'کارمزدها',
-				url: '#',
-			},
-			{
-				name: 'باشگاه مشتریان ویژه',
-				url: '#',
-			},
+			{ name: 'خرید رمز ارز', url: '#' },
+			{ name: 'نرم افزار بیت لند', url: '#' },
+			{ name: 'کارمزدها', url: '#' },
+			{ name: 'باشگاه مشتریان ویژه', url: '#' },
 		],
 	},
 	{
-		title: 'مرکز راهنمایی',
+		title: 'guidCenter',
 		subItems: [
-			{
-				name: 'API',
-				url: '#',
-			},
-			{
-				name: 'تایید بیت لند',
-				url: '#',
-			},
-			{
-				name: 'چطور خرید کنم؟',
-				url: '#',
-			},
-			{
-				name: 'قیمت رمز ارز',
-				url: '#',
-			},
+			{ name: 'API', url: '#' },
+			{ name: 'تایید بیت لند', url: '#' },
+			{ name: 'چطور خرید کنم؟', url: '#' },
+			{ name: 'قیمت رمز ارز', url: '#' },
 		],
 	},
 	{
-		title: 'مارا در شبکه‌های اجتماعی دنبال کنید',
+		title: followUs,
 		subItems: [
-			{
-				name: IconGoogle,
-				url: '#',
-			},
-			{
-				name: IconInstagram,
-				url: '#',
-			},
-			{
-				name: IconLinkedin,
-				url: '#',
-			},
-			{
-				name: IconMessenger,
-				url: '#',
-			},
-			{
-				name: IconMicrosoftTeam,
-				url: '#',
-			},
-			{
-				name: IconTelegram,
-				url: '#',
-			},
-			{
-				name: IconTwitch,
-				url: '#',
-			},
-			{
-				name: IconTwitter,
-				url: '#',
-			},
-			{
-				name: IconViber,
-				url: '#',
-			},
-			{
-				name: IconWechat,
-				url: '#',
-			},
-			{
-				name: IconWhatsapp,
-				url: '#',
-			},
-			{
-				name: IconYoutube,
-				url: '#',
-			},
+			{ name: IconGoogle, url: '#' },
+			{ name: IconInstagram, url: '#' },
+			{ name: IconLinkedin, url: '#' },
+			{ name: IconMessenger, url: '#' },
+			{ name: IconMicrosoftTeam, url: '#' },
+			{ name: IconTelegram, url: '#' },
+			{ name: IconTwitch, url: '#' },
+			{ name: IconTwitter, url: '#' },
+			{ name: IconViber, url: '#' },
+			{ name: IconWechat, url: '#' },
+			{ name: IconWhatsapp, url: '#' },
+			{ name: IconYoutube, url: '#' },
 		],
 	},
 	{
-		title: 'درباره ما',
+		title: 'aboutUs',
 		subItems: [
-			{
-				name: 'درباره بیت لند',
-				url: '#',
-			},
-			{
-				name: 'قوانین و مقررات',
-				url: '#',
-			},
-			{
-				name: 'توافق نامه ریسک',
-				url: '#',
-			},
-			{
-				name: 'اخبار',
-				url: '#',
-			},
-			{
-				name: 'تحلیل کاربران',
-				url: '#',
-			},
+			{ name: 'درباره بیت لند', url: '#' },
+			{ name: 'قوانین و مقررات', url: '#' },
+			{ name: 'توافق نامه ریسک', url: '#' },
+			{ name: 'اخبار', url: '#' },
+			{ name: 'تحلیل کاربران', url: '#' },
 		],
 	},
 	{
-		title: 'سرویس ها',
+		title: 'services',
 		subItems: [
-			{
-				name: 'خرید رمز ارز',
-				url: '#',
-			},
-			{
-				name: 'نرم افزار بیت لند',
-				url: '#',
-			},
-			{
-				name: 'کارمزدها',
-				url: '#',
-			},
-			{
-				name: 'باشگاه مشتریان ویژه',
-				url: '#',
-			},
+			{ name: 'خرید رمز ارز', url: '#' },
+			{ name: 'نرم افزار بیت لند', url: '#' },
+			{ name: 'کارمزدها', url: '#' },
+			{ name: 'باشگاه مشتریان ویژه', url: '#' },
 		],
 	},
 	{
-		title: 'مرکز راهنمایی',
+		title: 'guidCenter',
 		subItems: [
-			{
-				name: 'API',
-				url: '#',
-			},
-			{
-				name: 'تایید بیت لند',
-				url: '#',
-			},
-			{
-				name: 'چطور خرید کنم؟',
-				url: '#',
-			},
-			{
-				name: 'قیمت رمز ارز',
-				url: '#',
-			},
+			{ name: 'API', url: '#' },
+			{ name: 'تایید بیت لند', url: '#' },
+			{ name: 'چطور خرید کنم؟', url: '#' },
+			{ name: 'قیمت رمز ارز', url: '#' },
 		],
 	},
 	{
-		title: 'مرکز راهنمایی',
+		title: 'guidCenter',
 		subItems: [
-			{
-				name: 'API',
-				url: '#',
-			},
-			{
-				name: 'تایید بیت لند',
-				url: '#',
-			},
-			{
-				name: 'چطور خرید کنم؟',
-				url: '#',
-			},
-			{
-				name: 'قیمت رمز ارز',
-				url: '#',
-			},
+			{ name: 'API', url: '#' },
+			{ name: 'تایید بیت لند', url: '#' },
+			{ name: 'چطور خرید کنم؟', url: '#' },
+			{ name: 'قیمت رمز ارز', url: '#' },
 		],
 	},
 ];

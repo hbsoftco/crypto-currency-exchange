@@ -101,7 +101,7 @@
 	</div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import IconNotification from '~/assets/svg-icons/menu/notification.svg';
 import IconNotificationFill from '~/assets/svg-icons/menu/notification-fill.svg';
 import IconArrowLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';
