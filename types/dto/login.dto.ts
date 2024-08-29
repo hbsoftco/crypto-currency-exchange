@@ -8,7 +8,7 @@ type LoginByMobileDto = {
 type LoginByEmailDto = {
 	captchaKey: string;
 	password: string;
-	mobile: string;
+	email: string;
 	ignore2FA?: boolean | null;
 };
 

@@ -64,7 +64,7 @@ export const authRepository = (fetch: $Fetch<any, NitroFetchRequest>): AuthRepos
 		return response;
 	},
 	async loginByEmail(data: LoginByEmailDto): Promise<ResposneType> {
-		const response = await fetch<ResposneType>(`/v1/auth/login/by_mobile`, {
+		const response = await fetch<ResposneType>(`/v1/auth/login/by_email`, {
 			method: 'POST',
 			body: data,
 		});

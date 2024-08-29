@@ -1,6 +1,5 @@
 import { authRepository } from '~/repositories/auth.repository';
 import type { CaptchaResponse } from '~/types/captcha-response.types';
-import { useNuxtApp } from '#app';
 
 type GenerateCaptchaInput = {
 	username: string;
@@ -33,6 +32,10 @@ export const useCaptcha = () => {
 			if (captchaResponse.stateId !== 11) {
 				captchaData.value = captchaResponse;
 				showCaptcha.value = true;
+			}
+			else {
+				captchaData.value.id = captchaResponse.id;
+				showCaptcha.value = false;
 			}
 		}
 		catch (error) {

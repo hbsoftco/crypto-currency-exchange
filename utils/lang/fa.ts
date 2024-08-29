@@ -116,6 +116,10 @@ const persian = {
 	search: 'جستجو',
 	error: 'خطا',
 	captchaIsNotValid: 'کپچا معتبر نیست!',
+	thisFieldIsRequired: 'این فیلد اجباری است',
+	pleaseEnterValidPhoneNumber: 'لطفا شماره موبایل معتبر وارد کنید',
+	thisFieldMustBeNumeric: 'لطفا عدد وارد کنید',
+	fieldIsRequired: 'این فیلد اجباری است!',
 };
 
 export default persian;

@@ -1,5 +1,5 @@
 <template>
-	<div class="relative">
+	<div class="relative mb-8">
 		<UIcon
 			v-if="icon && type !== 'password'"
 			:name="icon"
@@ -17,8 +17,11 @@
 			:type="
 				type === 'password' ? (isPasswordVisible ? 'text' : 'password') : type
 			"
-			:class="inputClass"
-			class="my-8 block px-2.5 pl-10 pb-2.5 pt-3 w-full text-sm text-text-dark dark:text-text-light bg-transparent rounded-lg border border-gray-600 appearance-none focus:outline-none focus:ring-0 focus:border-yellow-500 peer"
+			:class="[
+				inputClass,
+				'mt-8 block px-2.5 pl-10 pb-2.5 pt-3 w-full text-sm text-text-dark dark:text-text-light bg-transparent rounded-lg border appearance-none focus:outline-none focus:ring-0 peer',
+				errorMessage? 'border-accent-red focus:border-accent-red' : 'border-gray-600  focus:border-primary-yellow-light dark:focus:border-primary-yellow-dark',
+			]"
 			:placeholder="placeholder"
 			:required="required"
 			:disabled="disabled"
@@ -28,12 +31,17 @@
 			:for="id"
 			class="absolute text-sm font-medium text-text-dark dark:text-text-light duration-300 transform -translate-y-5 scale-78 top-3 z-10 origin-[0] bg-background-light cursor-text dark:bg-background-dark px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-78 peer-focus:-translate-y-5 right-2 rounded-lg"
 		>{{ $t(label) }}</label>
+		<div
+			v-if="errorMessage"
+			class="text-accent-red dark:text-accent-red text-xs mt-1 text-right"
+			dir="rtl"
+		>
+			{{ errorMessage }}
+		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-
 interface Props {
 	id: string;
 	modelValue: string;
@@ -45,6 +53,7 @@ interface Props {
 	inputClass?: string;
 	labelClass?: string;
 	icon?: string;
+	errorMessage?: string;
 }
 
 const props = defineProps<Props>();
@@ -57,7 +66,7 @@ const emit = defineEmits<EmitDefinition>();
 const internalValue = ref(props.modelValue);
 const isPasswordVisible = ref(false);
 
-watch(internalValue, (newValue) => {
+watch(internalValue, (newValue: string) => {
 	emit('update:modelValue', newValue);
 });
 
