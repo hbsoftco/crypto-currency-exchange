@@ -120,6 +120,12 @@ const persian = {
 	currencyInformation: 'اطلاعات ارز',
 	whyBitland: 'چرا بیت لند',
 	alwaysBitland: 'بیت لند همیشه و در همه جا',
+	error: 'خطا',
+	captchaIsNotValid: 'کپچا معتبر نیست!',
+	thisFieldIsRequired: 'این فیلد اجباری است',
+	pleaseEnterValidPhoneNumber: 'لطفا شماره موبایل معتبر وارد کنید',
+	thisFieldMustBeNumeric: 'لطفا عدد وارد کنید',
+	fieldIsRequired: 'این فیلد اجباری است!',
 };
 
 export default persian;
