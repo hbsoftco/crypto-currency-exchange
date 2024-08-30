@@ -89,7 +89,7 @@ const captchaRefresh = async () => {
 const handleCaptchaValidation = async (sliderValue: number) => {
 	try {
 		const { captchaKey, validate } = await validateCaptcha(sliderValue);
-		if (validate) {
+		if (validate && captchaKey) {
 			loginByEmailForm.captchaKey = captchaKey;
 			captchaHasError.value = false;
 			closeCaptcha();

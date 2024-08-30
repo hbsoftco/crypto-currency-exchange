@@ -46,7 +46,6 @@
 import type VOtpInput from 'vue3-otp-input';
 
 const otpInput = ref<InstanceType<typeof VOtpInput> | null>(null);
-const bindModal = ref('');
 const countdown = ref(60);
 let interval: NodeJS.Timeout | undefined;
 

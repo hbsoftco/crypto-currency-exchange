@@ -12,21 +12,27 @@ export const useAuthStore = defineStore('auth', () => {
 	const userId = ref<number | null>(null);
 	const userSecretKey = ref<number | null>(null);
 
+	const isLoggedIn = computed(() => !!otc.value);
+
 	const saveAuthData = ({ otc: newOTC, userId: newUserId, userSecretKey: newUserSecretKey }: AuthData) => {
 		otc.value = newOTC;
 		userId.value = newUserId;
 		userSecretKey.value = newUserSecretKey;
 
-		localStorage.setItem('authData', JSON.stringify({ otc: newOTC, userId: newUserId, userSecretKey: newUserSecretKey }));
+		if (import.meta.client) {
+			localStorage.setItem('authData', JSON.stringify({ otc: newOTC, userId: newUserId, userSecretKey: newUserSecretKey }));
+		}
 	};
 
 	const loadAuthData = () => {
-		const authData = localStorage.getItem('authData');
-		if (authData) {
-			const { otc: storedOTC, userId: storedUserId, userSecretKey: storedUserSecretKey } = JSON.parse(authData);
-			otc.value = storedOTC;
-			userId.value = storedUserId;
-			userSecretKey.value = storedUserSecretKey;
+		if (import.meta.client) {
+			const authData = localStorage.getItem('authData');
+			if (authData) {
+				const { otc: storedOTC, userId: storedUserId, userSecretKey: storedUserSecretKey } = JSON.parse(authData);
+				otc.value = storedOTC;
+				userId.value = storedUserId;
+				userSecretKey.value = storedUserSecretKey;
+			}
 		}
 	};
 
@@ -34,13 +40,17 @@ export const useAuthStore = defineStore('auth', () => {
 		otc.value = null;
 		userId.value = null;
 		userSecretKey.value = null;
-		localStorage.removeItem('authData');
+
+		if (import.meta.client) {
+			localStorage.removeItem('authData');
+		}
 	};
 
 	return {
 		otc,
 		userId,
 		userSecretKey,
+		isLoggedIn,
 		saveAuthData,
 		loadAuthData,
 		clearAuthData,

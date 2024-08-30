@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div
-			v-if="!isLoggedIn"
+			v-if="!authStore.isLoggedIn"
 			class="flex items-center space-x-4"
 		>
 			<ULink
@@ -33,15 +33,7 @@
 </template>
 
 <script setup lang="ts">
-const isLoggedIn = ref(false);
+const authStore = useAuthStore();
 
-const checkLoginStatus = () => {
-	isLoggedIn.value = localStorage.getItem('isLoggedIn') === 'false';
-};
-
-onMounted(() => {
-	checkLoginStatus();
-});
+authStore.loadAuthData();
 </script>
-
-<style lang="scss" scoped></style>

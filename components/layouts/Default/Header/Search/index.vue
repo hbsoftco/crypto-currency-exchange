@@ -5,9 +5,9 @@
 	>
 		<div
 			:class="[
-				'relative bg-background-light dark:bg-background-dark max-w-52 w-52 h-8 rounded-lg overflow-hidden p-1',
+				'relative bg-background-light dark:bg-background-dark max-w-52 border border-background-light dark:border-background-dark w-52 h-8 rounded-lg overflow-hidden p-1',
 				{
-					'border-primary-yellow-light dark:border-primary-yellow-dark border':
+					'border-primary-yellow-light dark:border-primary-yellow-dark':
 						isFocused && !showAdditionalBox,
 				},
 			]"
@@ -19,7 +19,7 @@
 				@focus="handleFocus"
 				@input="handleInput"
 			>
-			<IconSearch class="absolute text-2xl top-1 right-1.5" />
+			<IconSearch class="absolute text-2xl top-0.5 right-1.5" />
 		</div>
 
 		<div

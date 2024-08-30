@@ -53,16 +53,16 @@
 					<LayoutsDefaultHeaderSearch />
 				</div>
 				<div class="mx-4">
-					<LayoutsDefaultHeaderUserLogin />
+					<ClientOnly>
+						<LayoutsDefaultHeaderUserLogin />
+					</ClientOnly>
 				</div>
 				<div class="flex items-center space-x-4">
 					<div>
 						<LayoutsDefaultHeaderDownload />
 					</div>
 					<div>
-						<ClientOnly>
-							<LayoutsDefaultHeaderSetting />
-						</ClientOnly>
+						<LayoutsDefaultHeaderSetting />
 					</div>
 				</div>
 			</div>
@@ -70,6 +70,7 @@
 	</div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+</script>
 
 <style lang="scss" scoped></style>

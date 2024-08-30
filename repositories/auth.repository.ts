@@ -76,7 +76,7 @@ export const authRepository = (fetch: $Fetch<any, NitroFetchRequest>): AuthRepos
 	},
 	// Verification
 	async checkCodeVerification(data: CheckCodeDto): Promise<VerificationCheckCodeResponse> {
-		const response = await fetch<ResposneType>(`/v1/verification/check_code`, {
+		const response = await fetch<VerificationCheckCodeResponse>(`/v1/verification/check_code`, {
 			method: 'POST',
 			body: data,
 		});

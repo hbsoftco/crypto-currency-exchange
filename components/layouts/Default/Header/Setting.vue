@@ -39,7 +39,7 @@
 							<p class="text-base font-bold">
 								{{ $t("displayNumbers") }}
 							</p>
-							<UiLangToggle />
+							<ToggleButton />
 						</li>
 
 						<li
@@ -85,6 +85,7 @@
 import IconSetting from '~/assets/svg-icons/menu/setting.svg';
 import IconSettingFill from '~/assets/svg-icons/menu/setting-fill.svg';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
+import ToggleButton from '~/components/ui/ToggleButton.vue';
 
 const hover = ref(false);
 
