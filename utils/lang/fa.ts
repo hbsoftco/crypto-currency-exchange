@@ -135,6 +135,9 @@ const persian = {
 	articleAuthor: 'نویسنده مقاله',
 	lastBlogArticles: 'آخرین مقالات بلاگ',
 	textMore: 'مطالب بیشتر',
+	MarketplaceBuyingSelling: 'بازار خرید و فروش',
+	latestCurrencies: 'جدیدترین ارزها',
+	tradeStart: 'شروع معامله',
 };
 
 export default persian;

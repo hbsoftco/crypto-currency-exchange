@@ -1,12 +1,9 @@
 <template>
 	<div>
-		<section>
+		<section class="hidden md:block">
 			<PagesImageCover>
 				<UContainer>
-					<!-- <div>
-						hossein
-					</div>
-					<h1>hossein2</h1> -->
+					<PagesSiteMainPageTopBanner />
 				</UContainer>
 			</PagesImageCover>
 		</section>
@@ -26,6 +23,12 @@
 		<section>
 			<UContainer>
 				<Prize />
+			</UContainer>
+		</section>
+
+		<section>
+			<UContainer>
+				<PagesSiteMainPageNewCurrencies />
 			</UContainer>
 		</section>
 
