@@ -34,6 +34,7 @@
 <script setup lang="ts">
 import OtpFieldInput from '~/components/forms/OtpFieldInput.vue';
 import { useVerification } from '~/composables/auth/useVerification';
+import capitalizer from '~/utils/capitalizer';
 
 const { checkCodeVerification, loading, validate, v$, checkCodeVerificationForm } = useVerification();
 const { verificationData } = useVerificationStore();
@@ -43,7 +44,7 @@ const route = useRoute();
 const router = useRouter();
 
 const typeData = ref<string>();
-const type = ref<string>(route.query.type);
+const type = ref<string>(route.query.type as string);
 const verificationCodeText = ref<string>('');
 
 typeData.value = verificationData.username;
