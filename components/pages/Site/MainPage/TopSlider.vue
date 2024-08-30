@@ -19,10 +19,10 @@
 			indicators
 			class="rounded-lg overflow-hidden pb-10"
 		>
-			<div class="px-4">
+			<div class="px-4 mb-2">
 				<img
 					:src="item"
-					class="w-64 h-40 mx-2"
+					class="w-64 h-40 mx-2 shadow-sm"
 					draggable="false"
 				>
 			</div>
