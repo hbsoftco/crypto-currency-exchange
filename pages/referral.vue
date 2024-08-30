@@ -1,38 +1,42 @@
 <template>
 	<div>
 		<section class="relative">
-			<NuxtImg
-				src="/images/svg/invite.svg"
-				alt="invite"
-				class="w-full"
-			/>
-			<UContainer class="absolute top-5 md:top-48">
-				<div class="w-full">
-					<h1
-						class="text-light dark:text-dark text-lg md:text-7xl font-extrabold mb-2 md:mb-8"
-					>
-						{{ $t("inviteFriends") }}
-					</h1>
-					<div
-						class="p-3 bg-primary-gray-light dark:bg-primary-gray-dark shadow-md text-white w-full md:w-[30rem] h-auto opacity-75"
-					>
-						<b class="text-text-dark dark:text-text-light text-sm md:text-base">
-							بیت لند تنها پلتفرم درآمدزایی در ایران با امکان کسب درآمد تا ۵ سطح
-							زیر مجموعه </b><br>
-						<p
-							class="text-text-dark dark:text-text-light mt-1 md:mt-4 text-sm md:text-base"
-						>
-							شما در بیت لند علاوه بر معاملات خود، میتوانید به عنوان یکی از
-							اعضای بیت لند از بیت لند کسب درآمد داشته باشید. پس نباید وقتو تلف
-							کنید !
-						</p>
+			<PagesImageCover>
+				<UContainer class=" h-full">
+					<div class="w-full h-full relative flex justify-between">
+						<div class="absolute  top-0 md:top-40">
+							<h1
+								class="text-light dark:text-dark text-lg md:text-7xl font-extrabold mb-2 md:mb-8"
+							>
+								{{ $t("inviteFriends") }}
+							</h1>
+							<div
+								class="p-3 bg-primary-gray-light dark:bg-primary-gray-dark shadow-md text-white w-full md:w-[30rem] h-auto opacity-75"
+							>
+								<b class="text-text-dark dark:text-text-light text-sm md:text-base">
+									بیت لند تنها پلتفرم درآمدزایی در ایران با امکان کسب درآمد تا ۵ سطح
+									زیر مجموعه </b><br>
+								<p
+									class="text-text-dark dark:text-text-light mt-1 md:mt-4 text-sm md:text-base"
+								>
+									شما در بیت لند علاوه بر معاملات خود، میتوانید به عنوان یکی از
+									اعضای بیت لند از بیت لند کسب درآمد داشته باشید. پس نباید وقتو تلف
+									کنید !
+								</p>
+							</div>
+						</div>
+						<NuxtImg
+							src="/images/svg/invite.svg"
+							alt="invite"
+							class="absolute bottom-0 left-0 hidden md:block"
+						/>
 					</div>
-				</div>
-			</UContainer>
+				</UContainer>
+			</PagesImageCover>
 		</section>
 
 		<section>
-			<UContainer class="md:mx-80 md:relative">
+			<UContainer class="md:mx-80 md:relative mt-10">
 				<div
 					class="md:absolute md:-top-20 bg-hover-light dark:bg-hover-dark py-10 px-8 md:mx-30 rounded-sm shadow-lg"
 				>

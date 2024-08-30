@@ -10,6 +10,7 @@
 
 		<section>
 			<UContainer>
+				<PagesSiteMainPageInfo />
 				<TopSlider />
 			</UContainer>
 		</section>

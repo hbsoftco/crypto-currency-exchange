@@ -1,6 +1,7 @@
 <template>
 	<div>
 		<LayoutsDefaultHeader class="hidden md:block" />
+		<LayoutsDefaultNotif class="hidden md:block" />
 		<PagesSupportButtons />
 		<slot />
 		<LayoutsDefaultFooter />
