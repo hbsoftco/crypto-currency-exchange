@@ -26,8 +26,8 @@
 <script setup lang="ts">
 const route = useRoute();
 
-const action = ref<string>(route.query.action);
-const type = ref<string>(route.query.type);
+const action = ref<string | undefined>(route.query.action as string || '');
+const type = ref<string | undefined>(route.query.type as string || '');
 
 const title = ref<string>('');
 
@@ -37,6 +37,4 @@ if (
 ) {
 	title.value = 'loginToAccount';
 }
-
-console.log();
 </script>

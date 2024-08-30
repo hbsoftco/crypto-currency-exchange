@@ -17,7 +17,7 @@
 			</span>
 			<span
 				v-if="isToggled"
-				class="absolute ltr:left-1 rtl:right-1 text-[0.7rem] text-subtle-text-50 font-bold "
+				class="absolute ltr:left-1 rtl:right-1 text-[0.7rem] text-subtle-text-50 font-bold"
 			>
 				EN
 			</span>
@@ -35,14 +35,17 @@
 </template>
 
 <script setup lang="ts">
+const { setLanguage, getLanguage } = useChangeNumber();
+
 const isToggled = ref(false);
 const direction = ref('rtl');
 
 const toggleSwitch = () => {
 	isToggled.value = !isToggled.value;
+	setLanguage(isToggled.value ? 'fa' : 'en');
 };
-</script>
 
-  <style scoped>
-  /* استایل‌های سفارشی */
-  </style>
+onMounted(() => {
+	isToggled.value = getLanguage() === 'fa';
+});
+</script>
