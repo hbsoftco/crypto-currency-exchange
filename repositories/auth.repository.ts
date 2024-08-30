@@ -8,6 +8,7 @@ import type { ValidateCaptchaDto } from '~/types/dto/validate-captcha.dto';
 import type { CheckCodeDto } from '~/types/dto/verification.dto';
 import type { ResposneType } from '~/types/response.types';
 import type { LoginByEmailResponse } from '~/types/response/login.types';
+import type { VerificationCheckCodeResponse } from '~/types/response/verification.types';
 
 type AuthRepository = {
 	// Captcha
@@ -20,7 +21,7 @@ type AuthRepository = {
 	loginByMobile: (data: LoginByMobileDto) => Promise<ResposneType>;
 	loginByEmail: (data: LoginByEmailDto) => Promise<LoginByEmailResponse>;
 	// Verification
-	checkCodeVerification: (data: CheckCodeDto) => Promise<ResposneType>;
+	checkCodeVerification: (data: CheckCodeDto) => Promise<VerificationCheckCodeResponse>;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -74,7 +75,7 @@ export const authRepository = (fetch: $Fetch<any, NitroFetchRequest>): AuthRepos
 		return response;
 	},
 	// Verification
-	async checkCodeVerification(data: CheckCodeDto): Promise<ResposneType> {
+	async checkCodeVerification(data: CheckCodeDto): Promise<VerificationCheckCodeResponse> {
 		const response = await fetch<ResposneType>(`/v1/verification/check_code`, {
 			method: 'POST',
 			body: data,

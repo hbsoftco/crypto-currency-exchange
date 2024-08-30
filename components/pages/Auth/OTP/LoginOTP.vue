@@ -8,13 +8,14 @@
 		<div class="my-8">
 			<OtpFieldInput
 				id="verificationCodeText"
-				v-model="verificationCode"
+				v-model="checkCodeVerificationForm.verificationCode"
 				type="text"
 				input-class="text-left"
 				:label="`verificationCodeSentTo${capitalizer(type)}`"
 				placeholder=""
 				icon=""
 				dir="ltr"
+				:error-message="v$.verificationCode.$error? $t('fieldIsRequired') : ''"
 			/>
 		</div>
 		<div>
@@ -32,24 +33,18 @@
 
 <script setup lang="ts">
 import OtpFieldInput from '~/components/forms/OtpFieldInput.vue';
-import type { CheckCodeDto } from '~/types/dto/verification.dto';
 import { useVerification } from '~/composables/auth/useVerification';
 
-const { checkCodeVerification, loading } = useVerification();
+const { checkCodeVerification, loading, validate, v$, checkCodeVerificationForm } = useVerification();
 const { verificationData } = useVerificationStore();
+const authStore = useAuthStore();
 
 const route = useRoute();
+const router = useRouter();
 
 const typeData = ref<string>();
 const type = ref<string>(route.query.type);
 const verificationCodeText = ref<string>('');
-const verificationCode = ref<number>('');
-
-const formData: CheckCodeDto = {
-	userId: verificationData.userId,
-	verificationId: verificationData.verificationId,
-	verificationCode: verificationCode,
-};
 
 typeData.value = verificationData.username;
 
@@ -61,14 +56,20 @@ else {
 }
 
 const handleLogin = async () => {
-	// if (!validate(LOGIN.BY_EMAIL)) return;
+	checkCodeVerificationForm.userId = verificationData.userId;
+	checkCodeVerificationForm.verificationId = verificationData.verificationId;
 
-	// await generateCaptcha({
-	// 	username: loginByEmailForm.email,
-	// 	action: 'login',
-	// });
+	if (!validate()) return;
+
 	// Send request to verification code
-	const result = await checkCodeVerification(formData);
-	console.log(result);
+	const { result } = await checkCodeVerification();
+
+	authStore.saveAuthData({
+		otc: result.otc,
+		userId: result.userId,
+		userSecretKey: result.userSecretKey,
+	});
+
+	router.push({ path: '/'	});
 };
 </script>
