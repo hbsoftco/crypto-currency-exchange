@@ -31,6 +31,7 @@
 							<IconAuthentication class="text-2xl ml-2 dark:text-subtle-text-50" />
 							<span
 								id="copy-text"
+								ref="textRef"
 								class="text-xs font-bold ml-1"
 							>65555910</span>
 							<IconCopy
@@ -50,33 +51,206 @@
 							<IconArrowLeft class="text-hover-dark dark:text-hover-dark" />
 						</div>
 					</ULink>
-					<ul class="flex flex-col space-y-2">
-						<li
-							v-for="(item, index) in profileItems"
-							:key="index"
-							:class="[
-								'flex justify-between py-2 border-b-primary-gray-light dark:border-b-primary-gray-dark border-b-[1px] hover:bg-hover2-light dark:hover:bg-hover2-dark',
-								{ 'border-b-0': index === profileItems.length - 1 },
-							]"
-						>
-							<div class="flex items-center">
-								<component
-									:is="item.icon"
-									:class="item.name === 'exit' ? 'text-2xl text-accent-red' : 'text-2xl dark:text-subtle-text-50'"
-								/>
-								<div class="text-xs mr-2">
-									<h5 class="font-bold">
-										{{ $t(item.name) }}
-									</h5>
-								</div>
-							</div>
-							<span
-								v-if="item.description"
-								class="text-xs font-normal p-1 text-primary-yellow-light dark:text-primary-yellow-dark border-primary-gray-light dark:border-primary-gray-dark border-[1px]"
+					<ul class="flex flex-col">
+						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
+							<ULink
+								to=""
+								class="flex justify-between items-center w-full py-2.5"
 							>
-								{{ item.description }}
-							</span>
+								<div class="flex justify-start items-center">
+									<div class="ml-2">
+										<IconUser class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
+									</div>
+									<p class="mb-0 text-xs font-bold">
+										{{ $t('showAccount') }}
+									</p>
+								</div>
+							</ULink>
 						</li>
+						<!-- showAccount -->
+						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark mt-0">
+							<ULink
+								to=""
+								class="flex justify-between items-center w-full py-1.5"
+							>
+								<div class="flex justify-start items-center">
+									<div class="ml-2">
+										<IconAuthentication class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
+									</div>
+									<p class="mb-0 text-xs font-bold">
+										{{ $t('authentication') }}
+									</p>
+								</div>
+								<div>
+									<span class="text-primary-yellow-light dark:text-primary-yellow-dark rounded-sm p-0.5 px-1 border border-background-light dark:border-background-50 text-[0.625rem]">سطح ۲</span>
+								</div>
+							</ULink>
+						</li>
+						<!-- authentication -->
+						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
+							<ULink
+								to=""
+								class="flex justify-between items-center w-full py-2.5"
+							>
+								<div class="flex justify-start items-center">
+									<div class="ml-2">
+										<IconSecurity class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
+									</div>
+									<p class="mb-0 text-xs font-bold">
+										{{ $t('security') }}
+									</p>
+								</div>
+							</ULink>
+						</li>
+						<!-- security -->
+						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
+							<ULink
+								to=""
+								class="flex justify-between items-center w-full py-2.5"
+							>
+								<div class="flex justify-start items-center">
+									<div class="ml-2">
+										<IconFees class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
+									</div>
+									<p class="mb-0 text-xs font-bold">
+										{{ $t('fees') }}
+									</p>
+								</div>
+							</ULink>
+						</li>
+						<!-- fees -->
+						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark mt-0">
+							<ULink
+								to=""
+								class="flex justify-between items-center w-full py-1.5"
+							>
+								<div class="flex justify-start items-center">
+									<div class="ml-2">
+										<IconUserLevel class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
+									</div>
+									<p class="mb-0 text-xs font-bold">
+										{{ $t('userLevel') }}
+									</p>
+								</div>
+								<div>
+									<span class="text-primary-yellow-light dark:text-primary-yellow-dark rounded-sm p-0.5 px-1 border border-background-light dark:border-background-50 text-[0.625rem]">نهنگ گوژ پشت</span>
+								</div>
+							</ULink>
+						</li>
+						<!-- userLevel -->
+						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
+							<ULink
+								to=""
+								class="flex justify-between items-center w-full py-2.5"
+							>
+								<div class="flex justify-start items-center">
+									<div class="ml-2">
+										<IconManageAPI class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
+									</div>
+									<p class="mb-0 text-xs font-bold">
+										{{ $t('manageAPI') }}
+									</p>
+								</div>
+							</ULink>
+						</li>
+						<!-- manageAPI -->
+						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
+							<ULink
+								to="/referral"
+								class="flex justify-between items-center w-full py-2.5"
+							>
+								<div class="flex justify-start items-center">
+									<div class="ml-2">
+										<IconInviteFriends class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
+									</div>
+									<p class="mb-0 text-xs font-bold">
+										{{ $t('inviteFriends') }}
+									</p>
+								</div>
+							</ULink>
+						</li>
+						<!-- inviteFriends -->
+						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
+							<ULink
+								to=""
+								class="flex justify-between items-center w-full py-2.5"
+							>
+								<div class="flex justify-start items-center">
+									<div class="ml-2">
+										<IconAwards class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
+									</div>
+									<p class="mb-0 text-xs font-bold">
+										{{ $t('awards') }}
+									</p>
+								</div>
+							</ULink>
+						</li>
+						<!-- awards -->
+						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
+							<ULink
+								to=""
+								class="flex justify-between items-center w-full py-2.5"
+							>
+								<div class="flex justify-start items-center">
+									<div class="ml-2">
+										<IconTopUsers class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
+									</div>
+									<p class="mb-0 text-xs font-bold">
+										{{ $t('topUsers') }}
+									</p>
+								</div>
+							</ULink>
+						</li>
+						<!-- topUsers -->
+						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
+							<ULink
+								to=""
+								class="flex justify-between items-center w-full py-2.5"
+							>
+								<div class="flex justify-start items-center">
+									<div class="ml-2">
+										<IconSetting class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
+									</div>
+									<p class="mb-0 text-xs font-bold">
+										{{ $t('setting') }}
+									</p>
+								</div>
+							</ULink>
+						</li>
+						<!-- setting -->
+						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
+							<ULink
+								to=""
+								class="flex justify-between items-center w-full py-2.5"
+							>
+								<div class="flex justify-start items-center">
+									<div class="ml-2">
+										<IconWhiteList class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
+									</div>
+									<p class="mb-0 text-xs font-bold">
+										{{ $t('whiteList') }}
+									</p>
+								</div>
+							</ULink>
+						</li>
+						<!-- whiteList -->
+						<li class="">
+							<ULink
+								to=""
+								class="flex justify-between items-center w-full py-2.5"
+								@click.prevent="logout"
+							>
+								<div class="flex justify-start items-center">
+									<div class="ml-2">
+										<IconExit class="text-base dark: text-accent-red" />
+									</div>
+									<p class="mb-0 text-xs font-bold">
+										{{ $t('exit') }}
+									</p>
+								</div>
+							</ULink>
+						</li>
+						<!-- exit -->
 					</ul>
 				</div>
 			</div>
@@ -85,11 +259,11 @@
 </template>
 
 <script setup lang="ts">
+import IconAuthentication from '~/assets/svg-icons/menu/authentication.svg';
 import IconMessage from '~/assets/svg-icons/menu/message.svg';
 import IconCopy from '~/assets/svg-icons/menu/copy.svg';
 import IconCrown from '~/assets/svg-icons/menu/crown.svg';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
-import IconAuthentication from '~/assets/svg-icons/menu/authentication.svg';
 import IconSecurity from '~/assets/svg-icons/menu/security.svg';
 import IconFees from '~/assets/svg-icons/menu/quick-menu/fees.svg';
 import IconUser from '~/assets/svg-icons/menu/user.svg';
@@ -98,9 +272,14 @@ import IconUserLevel from '~/assets/svg-icons/menu/quick-menu/user-level.svg';
 import IconManageAPI from '~/assets/svg-icons/menu/api.svg';
 import IconInviteFriends from '~/assets/svg-icons/menu/invite-friends.svg';
 import IconAwards from '~/assets/svg-icons/menu/quick-menu/awards.svg';
-import IconWhiteList from '~/assets/svg-icons/menu/white-list.svg';
 import IconTopUsers from '~/assets/svg-icons/menu/quick-menu/top-users.svg';
+import IconWhiteList from '~/assets/svg-icons/menu/white-list.svg';
+import IconSetting from '~/assets/svg-icons/menu/setting.svg';
 import IconExit from '~/assets/svg-icons/menu/exit.svg';
+
+const authStore = useAuthStore();
+
+const textRef = ref<HTMLElement | null>(null);
 
 const hover = ref(false);
 
@@ -112,66 +291,24 @@ const hideMenu = () => {
 	hover.value = false;
 };
 
-const profileItems = [
-	{
-		name: 'authentication',
-		description: 'سطح 2',
-		icon: IconAuthentication,
-	},
-	{
-		name: 'security',
-		description: '',
-		icon: IconSecurity,
-	},
-	{
-		name: 'fees',
-		description: '',
-		icon: IconFees,
-	},
-	{
-		name: 'userLevel',
-		description: 'نهنگ گوژ پشت',
-		icon: IconUserLevel,
-	},
-	{
-		name: 'manageAPI',
-		description: '',
-		icon: IconManageAPI,
-	},
-	{
-		name: 'inviteFriends',
-		description: '',
-		icon: IconInviteFriends,
-	},
-	{
-		name: 'awards',
-		description: '',
-		icon: IconAwards,
-	},
-	{
-		name: 'topUsers',
-		description: '',
-		icon: IconTopUsers,
-	},
-	{
-		name: 'whiteList',
-		description: '',
-		icon: IconWhiteList,
-	},
-	{
-		name: 'exit',
-		description: '',
-		icon: IconExit,
-	},
-];
+const logout = () => {
+	authStore.clearAuthData();
+};
 
 const copyText = () => {
-	// const textToCopy = document.getElementById('copy-text').textContent;
-	// navigator.clipboard.writeText(textToCopy).then(() => {
-	// 	// console.log('Text copied');
-	// }).catch((err) => {
-	// 	return err;
-	// 	// console.error('Error copying text: ', err);
-	// });
+	if (textRef.value) {
+		const textToCopy = textRef.value.textContent || '';
+
+		navigator.clipboard.writeText(textToCopy)
+			.then(() => {
+				alert(textToCopy);
+			})
+			.catch((err: Error) => {
+				throw new Error(`${err}`);
+			});
+	}
+	else {
+		throw new Error(`Text element not found.`);
+	}
 };
 </script>
