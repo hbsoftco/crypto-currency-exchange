@@ -2,7 +2,7 @@
 	<div class="flex justify-between items-center">
 		<div class="flex">
 			<NuxtImg
-				src="/images/bitcoin.png"
+				src="/images/delete/bitcoin.png"
 				alt="bitcoin Logo"
 				class="w-5 h-5 ml-1"
 			/>

@@ -6,7 +6,7 @@
 		>
 			<div class="flex bg-background-light dark:bg-background-dark h-full">
 				<NuxtImg
-					src="/images/news1.png"
+					src="/images/delete/news1.png"
 					alt="news"
 					class="w-16 h-full"
 				/>
