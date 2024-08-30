@@ -10,7 +10,9 @@
 				dir="rtl"
 				class="text-left pl-8"
 			>
-				<span class="text-base font-medium">1.550.451.051</span>
+				<span class="text-base font-medium">
+					{{ useNumber('1550451051') }}
+				</span>
 			</div>
 		</td>
 		<td class="">
@@ -31,4 +33,5 @@
 import ChangeIndicator from '~/components/ui/ChangeIndicator.vue';
 import TradingAction from '~/components/ui/TradingAction.vue';
 import WeeklyChart from '~/components/ui/WeeklyChart.vue';
+import { useNumber } from '~/composables/useNumber';
 </script>

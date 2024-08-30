@@ -73,7 +73,7 @@ interface PropsDefinition {
 }
 
 interface EmitDefinition {
-	(event: 'close' | 'refresh' | 'slider-value', sliderValue?: number): void;
+	(event: 'close' | 'refresh' | 'slider-value', sliderValue: number): void;
 }
 
 const props = defineProps<PropsDefinition>();
@@ -103,7 +103,7 @@ const refreshCaptcha = () => {
 };
 
 const closeCaptcha = () => {
-	emit('close');
+	emit('close', sliderValue.value);
 };
 
 const startDrag = () => {};

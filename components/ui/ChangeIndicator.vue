@@ -11,15 +11,14 @@
 		<span
 			:class="textClass"
 			class="text-base font-medium"
-		>{{ formattedChange }}</span>
+		>{{ useNumber(formattedChange) }}</span>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-
 import IconArrowDown from '~/assets/svg-icons/arrow-down-red.svg';
 import IconArrowUp from '~/assets/svg-icons/arrow-up-green.svg';
+import { useNumber } from '~/composables/useNumber';
 
 interface Props {
 	change: number;
