@@ -40,6 +40,10 @@
 		<section>
 			<DownloadApp class="hidden md:block" />
 		</section>
+
+		<section>
+			<PagesSiteMainPageArticleBlog />
+		</section>
 	</div>
 </template>
 

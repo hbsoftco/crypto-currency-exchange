@@ -132,7 +132,9 @@ const persian = {
 	continueVerificationCode: 'ارسال شده است. کد تایید را وارد کنید تا حساب کاربری خود را فعال کنید.',
 	needAlternativeVerification: 'آیا به احراز هویت از راه دیگری احتیاج دارید؟',
 	clickHere: 'کلیک کنید',
-
+	articleAuthor: 'نویسنده مقاله',
+	lastBlogArticles: 'آخرین مقالات بلاگ',
+	textMore: 'مطالب بیشتر',
 };
 
 export default persian;
