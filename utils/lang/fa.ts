@@ -126,6 +126,13 @@ const persian = {
 	pleaseEnterValidPhoneNumber: 'لطفا شماره موبایل معتبر وارد کنید',
 	thisFieldMustBeNumeric: 'لطفا عدد وارد کنید',
 	fieldIsRequired: 'این فیلد اجباری است!',
+	loginToAccount: 'ورود به حساب کاربری',
+	verificationCode6charSentToEmail: 'کد تایید ۶ رقمی به آدرس',
+	verificationCode6charSentToMobile: 'کد تایید ۶ رقمی به شماره موبایل',
+	continueVerificationCode: 'ارسال شده است. کد تایید را وارد کنید تا حساب کاربری خود را فعال کنید.',
+	needAlternativeVerification: 'آیا به احراز هویت از راه دیگری احتیاج دارید؟',
+	clickHere: 'کلیک کنید',
+
 };
 
 export default persian;

@@ -39,10 +39,11 @@
 		<div>
 			<SlideCaptcha
 				v-if="showCaptcha"
+				:has-error="captchaHasError"
 				:data="captchaData!"
 				@close="showCaptcha = false"
-				@refresh="refreshCaptcha({ username: loginByMobileForm.email, action: 'login' })"
-				@slider-value="captchaValidation"
+				@slider-value="handleCaptchaValidation"
+				@refresh="captchaRefresh"
 			/>
 		</div>
 	</div>
@@ -54,7 +55,21 @@ import { useCaptcha } from '~/composables/auth/useCaptcha';
 import { useLogin } from '~/composables/auth/useLogin';
 
 const { loginByEmailForm, loginByEmail, vbyEmail$, validate } = useLogin();
-const { captchaData, showCaptcha, loading, refreshCaptcha, generateCaptcha, validateCaptcha } = useCaptcha();
+const {
+	captchaData,
+	showCaptcha,
+	loading,
+	closeCaptcha,
+	refreshCaptcha,
+	generateCaptcha,
+	validateCaptcha,
+} = useCaptcha();
+
+const verificationStore = useVerificationStore();
+
+const router = useRouter();
+
+const captchaHasError = ref(false);
 
 const handleLogin = async () => {
 	if (!validate(LOGIN.BY_EMAIL)) return;
@@ -65,12 +80,39 @@ const handleLogin = async () => {
 	});
 };
 
-const captchaValidation = async (sliderValue: number) => {
+const captchaRefresh = async () => {
+	captchaHasError.value = false;
+	await refreshCaptcha({ username: loginByEmailForm.email, action: 'signup' });
+	captchaHasError.value = true;
+};
+
+const handleCaptchaValidation = async (sliderValue: number) => {
 	try {
-		const captchaKey = await validateCaptcha(sliderValue);
-		if (captchaKey) {
+		const { captchaKey, validate } = await validateCaptcha(sliderValue);
+		if (validate) {
 			loginByEmailForm.captchaKey = captchaKey;
-			await loginByEmail();
+			captchaHasError.value = false;
+			closeCaptcha();
+
+			// Check login
+			const { result } = await loginByEmail();
+
+			// Save data into store
+			verificationStore.setVerificationData({
+				verificationId: result.verificationId,
+				userId: result.userId,
+				wloId: result.wloId,
+				type: 'email',
+				username: loginByEmailForm.email,
+			});
+
+			router.push({
+				path: '/auth/otp',
+				query: { action: 'login', type: 'email' },
+			});
+		}
+		else {
+			captchaRefresh();
 		}
 	}
 	catch (error) {

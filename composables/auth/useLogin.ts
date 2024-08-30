@@ -2,6 +2,7 @@ import { useVuelidate } from '@vuelidate/core';
 
 import { authRepository } from '~/repositories/auth.repository';
 import type { LoginByMobileDto, LoginByEmailDto } from '~/types/dto/login.dto';
+import type { LoginByEmailResponse } from '~/types/response/login.types';
 
 export const useLogin = () => {
 	// const toast = useToast();
@@ -79,7 +80,7 @@ export const useLogin = () => {
 		}
 	};
 
-	const loginByEmail = async () => {
+	const loginByEmail = async (): Promise<LoginByEmailResponse> => {
 		try {
 			loading.value = true;
 			const loginResponse = await auth.loginByEmail({
@@ -92,7 +93,7 @@ export const useLogin = () => {
 			return loginResponse;
 		}
 		catch (error) {
-			return error;
+			throw new Error(`Invalid response format ${error}`);
 		}
 		finally {
 			loading.value = false;

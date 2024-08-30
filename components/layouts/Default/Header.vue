@@ -5,12 +5,10 @@
 		<div class="flex justify-between items-center h-full">
 			<div class="flex justify-between">
 				<ULink to="/">
-					<ClientOnly>
-						<NuxtImg
-							src="/images/svg/brand-logo.svg"
-							alt="Brand Logo"
-						/>
-					</ClientOnly>
+					<NuxtImg
+						src="/images/svg/brand-logo.svg"
+						alt="Brand Logo"
+					/>
 				</ULink>
 
 				<ul class="flex space-x-4 mr-8">

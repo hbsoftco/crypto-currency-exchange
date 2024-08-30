@@ -6,8 +6,15 @@ type GenerateCaptchaInput = {
 	action: 'login' | 'signup';
 };
 
+type ValidateCaptchaResponse = {
+	validate: boolean;
+	statusCode: number;
+	message?: string;
+	captchaKey?: string;
+};
+
 export const useCaptcha = () => {
-	const toast = useToast();
+	// const toast = useToast();
 
 	const { $api } = useNuxtApp();
 	const auth = authRepository($api);
@@ -15,13 +22,20 @@ export const useCaptcha = () => {
 	const captchaData = ref<CaptchaResponse>();
 	const showCaptcha = ref(false);
 	const loading = ref(false);
+	const validateData = ref<ValidateCaptchaResponse>({
+		validate: false,
+		statusCode: 0,
+		message: '',
+		captchaKey: '',
+	});
 
-	const refreshCaptcha = (input: GenerateCaptchaInput) => {
-		generateCaptcha(input);
+	const refreshCaptcha = async (input: GenerateCaptchaInput) => {
+		await generateCaptcha(input);
 	};
 
 	const generateCaptcha = async (input: GenerateCaptchaInput) => {
 		loading.value = true;
+		resetValidateDate();
 		try {
 			const captchaResponse = await auth.generateCaptcha({
 				username: input.username,
@@ -46,7 +60,7 @@ export const useCaptcha = () => {
 		}
 	};
 
-	const validateCaptcha = async (sliderValue: number | undefined): Promise<string | Error> => {
+	const validateCaptcha = async (sliderValue: number | undefined) => {
 		if (sliderValue !== undefined && captchaData.value?.id) {
 			loading.value = true;
 			try {
@@ -57,35 +71,54 @@ export const useCaptcha = () => {
 					],
 				});
 
+				validateData.value.statusCode = captchaResponse.statusCode;
+
 				if (captchaResponse.statusCode === 200) {
-					toast.add({
-						title: '',
-						timeout: 3000,
-						color: 'primary-yellow',
-					});
-					return captchaData.value.id;
+					validateData.value.validate = true;
+					validateData.value.captchaKey = captchaData.value.id;
+					validateData.value.message = String(captchaResponse.result);
+
+					closeCaptcha();
+
+					return validateData.value;
 				}
 				else {
-					throw new Error('Captcha validation failed.');
+					validateData.value.validate = false;
+					validateData.value.message = '';
+
+					return validateData.value;
 				}
 			}
 			catch (error) {
-				toast.add({
-					title: useT('error'),
-					timeout: 3000,
-					description: useT('captchaIsNotValid'),
-					color: 'red',
-				});
-
-				throw new Error(`Error ${error}`);
+				validateData.value.statusCode = 400;
+				validateData.value.validate = false;
+				validateData.value.message = String(error);
 			}
 			finally {
 				loading.value = false;
 			}
+
+			return validateData.value;
 		}
 		else {
-			return new Error('Slider value is undefined or captcha data is missing.');
+			validateData.value.validate = false;
+			validateData.value.message = 'Slider value is undefined or captcha data is missing.';
 		}
+
+		return validateData.value;
+	};
+
+	const resetValidateDate = () => {
+		validateData.value = {
+			validate: false,
+			statusCode: 0,
+			message: '',
+			captchaKey: '',
+		};
+	};
+
+	const closeCaptcha = () => {
+		showCaptcha.value = false;
 	};
 
 	return {
@@ -95,5 +128,7 @@ export const useCaptcha = () => {
 		refreshCaptcha,
 		generateCaptcha,
 		validateCaptcha,
+		resetValidateDate,
+		closeCaptcha,
 	};
 };

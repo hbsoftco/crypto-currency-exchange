@@ -13,29 +13,29 @@ export const useSignUp = () => {
 
 	const signupByMobileForm = reactive<SignupByMobileDto>({
 		captchaKey: '',
-		refereeCode: null,
-		password: '',
-		mobile: '',
+		refereeCode: '',
+		password: '123@qwe!@#QWE',
+		mobile: '+989155859539',
 
 	});
 
 	const signupByMobileRules = {
-		captchaKey: { required: validations.required },
-		refereeCode: { required: validations.required },
+		captchaKey: { },
+		refereeCode: { },
 		password: { required: validations.required },
 		mobile: { required: validations.required },
 	};
 
 	const signupByEmailForm = reactive<SignupByEmailDto>({
 		captchaKey: '',
-		refereeCode: null,
-		password: '',
-		email: '',
+		refereeCode: '',
+		password: '123@qwe!@#QWE',
+		email: 'hossein.bajan@gmail.com',
 
 	});
 
 	const signupByEmailRules = {
-		captchaKey: { required: validations.required },
+		captchaKey: { },
 		refereeCode: { },
 		password: { required: validations.required },
 		email: { required: validations.required },
@@ -55,18 +55,14 @@ export const useSignUp = () => {
 		}
 	};
 
-	const signupByMobile = async (input: SignupByMobileDto) => {
+	const signupByMobile = async () => {
 		try {
-			if (!validate(SIGNUP.BY_MOBILE)) {
-				return Promise.resolve({ success: false });
-			}
-
 			loading.value = true;
 			const signupResponse = await auth.signupByMobile({
-				captchaKey: input.captchaKey,
-				refereeCode: input.refereeCode,
-				password: btoa(input.password),
-				mobile: input.mobile,
+				captchaKey: signupByMobileForm.captchaKey,
+				refereeCode: signupByMobileForm.refereeCode,
+				password: btoa(signupByMobileForm.password),
+				mobile: signupByMobileForm.mobile,
 			});
 
 			return signupResponse;
@@ -79,18 +75,14 @@ export const useSignUp = () => {
 		}
 	};
 
-	const signupByEmail = async (input: SignupByEmailDto) => {
+	const signupByEmail = async () => {
 		try {
-			if (!validate(SIGNUP.BY_EMAIL)) {
-				return Promise.resolve({ success: false });
-			}
-
 			loading.value = true;
 			const signupResponse = await auth.signupByEmail({
-				captchaKey: input.captchaKey,
-				refereeCode: input.refereeCode,
-				password: btoa(input.password),
-				email: input.email,
+				captchaKey: signupByEmailForm.captchaKey,
+				refereeCode: signupByEmailForm.refereeCode,
+				password: btoa(signupByEmailForm.password),
+				email: signupByEmailForm.email,
 			});
 
 			return signupResponse;
@@ -110,5 +102,6 @@ export const useSignUp = () => {
 		signupByEmailForm,
 		signupByEmail,
 		vbyEmail$,
+		validate,
 	};
 };

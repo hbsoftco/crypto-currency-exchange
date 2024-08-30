@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div
-			class="relative group items-center space-x-2 mt-20"
+			class="relative group items-center space-x-2"
 			@mouseover="showMenu"
 			@mouseleave="hideMenu"
 		>
