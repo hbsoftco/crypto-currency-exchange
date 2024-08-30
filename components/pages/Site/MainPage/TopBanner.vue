@@ -1,9 +1,11 @@
 <template>
 	<div class="flex justify-between mt-5 2xl:mt-20">
-		<div class="w-[39.6rem] mt-32">
-			<h1 class="text-5xl font-black leading-[5rem]">
+		<div class="w-full xl:w-[39.6rem] mt-10 xl:mt-32">
+			<h1 class="text-4xl lg:text-5xl font-black lg:leading-[5rem]">
 				با
-				<span class="text-primary-yellow-light dark:text-primary-yellow-dark px-2 text-[4rem]">بیت لند</span>
+				<span
+					class="text-primary-yellow-light dark:text-primary-yellow-dark px-2 text-[4rem]"
+				>بیت لند</span>
 				بایک قدم به جلو، صد قدم نزدیک تر به موفقیت!
 			</h1>
 
@@ -39,13 +41,15 @@
 			</div>
 		</div>
 		<div
-			class="bg-transparency-light dark:bg-transparency-dark rounded-full w-[36rem] h-[36rem] flex items-center justify-center"
+			class="bg-transparency-light hidden xl:block dark:bg-transparency-dark rounded-full w-[36rem] h-[36rem]"
 		>
-			<NuxtImg
-				src="/images/delete/phone-banner-home.webp"
-				alt="Brand Logo"
-				class="px-36"
-			/>
+			<div class="flex items-center justify-center w-full h-full">
+				<NuxtImg
+					src="/images/delete/phone-banner-home.webp"
+					alt="Brand Logo"
+					class="px-36"
+				/>
+			</div>
 		</div>
 	</div>
 </template>
