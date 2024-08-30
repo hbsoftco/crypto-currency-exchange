@@ -152,7 +152,7 @@
 											<div class="ml-2">
 												<div class="flex items-center">
 													<NuxtImg
-														src="/images/bitcoin.png"
+														src="/images/delete/bitcoin.png"
 														alt="Brand Logo"
 														class="w-4 h-4"
 													/>

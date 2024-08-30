@@ -9,7 +9,7 @@
 				class="flex items-center bg-background-light dark:bg-background-dark rounded shadow-lg h-full p-2"
 			>
 				<NuxtImg
-					src="/images/bitcoin.png"
+					src="/images/delete/bitcoin.png"
 					alt="bitcoin Logo"
 					class="w-5 h-5"
 				/>
