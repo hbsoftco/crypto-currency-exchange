@@ -95,6 +95,10 @@ const persian = {
 	trade: 'معامله',
 	tradingMarkets: 'بازارهای معاملاتی',
 	hottest: 'داغ‌ترین‌ها',
+	mostProfitable: 'پرسودترین‌ها',
+	newest: 'جدیدترین‌ها',
+	mostVoluminous: 'پر حجم‌ترین‌ها',
+	myFavorites: 'منتخب من',
 	toman: 'تومان',
 	lastPrice: 'آخرین قیمت',
 	change24h: 'تغییر 24h',
@@ -142,6 +146,7 @@ const persian = {
 	futures: 'فیوچرز',
 	riskAgreement: 'توافق نامه ریسک',
 	readMore: 'ادامه مطلب',
+	tether: 'تتر',
 };
 
 export default persian;

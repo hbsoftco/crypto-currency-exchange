@@ -3,14 +3,14 @@
 		<section class="hidden md:block">
 			<PagesImageCover>
 				<UContainer>
-					<PagesSiteMainPageTopBanner />
+					<TopBanner />
 				</UContainer>
 			</PagesImageCover>
 		</section>
 
 		<section>
 			<UContainer>
-				<PagesSiteMainPageInfo class="hidden md:block" />
+				<Info class="hidden md:block" />
 				<TopSlider />
 			</UContainer>
 		</section>
@@ -53,8 +53,10 @@
 
 <script setup lang="ts">
 import DownloadApp from '~/components/common/DownloadApp.vue';
+import Info from '~/components/pages/Site/MainPage/Info.vue';
 // import AlwaysBitland from '~/components/pages/Site/MainPage/AlwaysBitland.vue';
 import Prize from '~/components/pages/Site/MainPage/Prize.vue';
+import TopBanner from '~/components/pages/Site/MainPage/TopBanner.vue';
 import TopSlider from '~/components/pages/Site/MainPage/TopSlider.vue';
 import TradingMarkets from '~/components/pages/Site/MainPage/TradingMarkets.vue';
 // import WhyBitland from '~/components/pages/Site/MainPage/WhyBitland.vue';
