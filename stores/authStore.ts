@@ -1,6 +1,8 @@
 // stores/auth.ts
 import { defineStore } from 'pinia';
 
+import { useCookie } from '#app';
+
 interface AuthData {
 	otc: string;
 	userId: number;
@@ -14,25 +16,22 @@ export const useAuthStore = defineStore('auth', () => {
 
 	const isLoggedIn = computed(() => !!otc.value);
 
+	const authCookie = useCookie('authData', { path: '/', maxAge: 60 * 60 * 24 * 365 });
+
 	const saveAuthData = ({ otc: newOTC, userId: newUserId, userSecretKey: newUserSecretKey }: AuthData) => {
 		otc.value = newOTC;
 		userId.value = newUserId;
 		userSecretKey.value = newUserSecretKey;
 
-		if (import.meta.client) {
-			localStorage.setItem('authData', JSON.stringify({ otc: newOTC, userId: newUserId, userSecretKey: newUserSecretKey }));
-		}
+		authCookie.value = JSON.stringify({ otc: newOTC, userId: newUserId, userSecretKey: newUserSecretKey });
 	};
 
 	const loadAuthData = () => {
-		if (import.meta.client) {
-			const authData = localStorage.getItem('authData');
-			if (authData) {
-				const { otc: storedOTC, userId: storedUserId, userSecretKey: storedUserSecretKey } = JSON.parse(authData);
-				otc.value = storedOTC;
-				userId.value = storedUserId;
-				userSecretKey.value = storedUserSecretKey;
-			}
+		const authData: AuthData = authCookie.value as unknown as AuthData;
+		if (authData) {
+			otc.value = authData.otc;
+			userId.value = authData.userId;
+			userSecretKey.value = authData.userSecretKey;
 		}
 	};
 
@@ -41,9 +40,7 @@ export const useAuthStore = defineStore('auth', () => {
 		userId.value = null;
 		userSecretKey.value = null;
 
-		if (import.meta.client) {
-			localStorage.removeItem('authData');
-		}
+		authCookie.value = null;
 	};
 
 	return {

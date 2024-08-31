@@ -1,34 +1,39 @@
 <template>
 	<div class="">
 		<section class="relative">
-			<NuxtImg
-				src="/images/svg/privacy.svg"
-				alt="privacy"
-				class="w-full"
-			/>
-			<UContainer class="absolute top-5 md:top-48">
-				<div class="w-full">
-					<h1
-						class="text-light dark:text-dark text-lg md:text-7xl font-extrabold mb-2 md:mb-8"
-					>
-						{{ $t("termsRules") }}
-					</h1>
-					<div
-						class="p-3 bg-primary-gray-light dark:bg-primary-gray-dark shadow-md text-white w-full md:w-[30rem] h-auto opacity-75"
-					>
-						<b class="text-text-dark dark:text-text-light text-sm md:text-base">شرایط و قوانین فعالیت در بستر تبادل دارایی‌های دیجیتال بیت لند</b><br>
-						<p
-							class="text-text-dark dark:text-text-light mt-1 md:mt-4 text-sm md:text-base"
-						>
-							کاربران موظف هستند قبل از ثبت‌نام تمامی شرایط و قوانین را مطالعه
-							نموده و صرفا در صورت پذیرش آن اقدام به ثبت نام نمایند.
-						</p>
+			<PagesImageCover>
+				<UContainer class=" h-full">
+					<div class="w-full h-full relative flex justify-between">
+						<div class="absolute top-0 md:top-40">
+							<h1
+								class="text-light dark:text-dark text-lg md:text-7xl font-extrabold mb-2 md:mb-8"
+							>
+								{{ $t("termsRules") }}
+							</h1>
+							<div
+								class="p-3 bg-primary-gray-light dark:bg-primary-gray-dark shadow-md text-white w-full md:w-[30rem] h-auto opacity-75"
+							>
+								<b class="text-text-dark dark:text-text-light text-sm md:text-base">شرایط و قوانین فعالیت در بستر تبادل دارایی‌های دیجیتال بیت لند</b><br>
+								<p
+									class="text-text-dark dark:text-text-light mt-1 md:mt-4 text-sm md:text-base"
+								>
+									کاربران موظف هستند قبل از ثبت‌نام تمامی شرایط و قوانین را مطالعه
+									نموده و صرفا در صورت پذیرش آن اقدام به ثبت نام نمایند.
+								</p>
+							</div>
+						</div>
+						<NuxtImg
+							src="/images/svg/privacy.svg"
+							alt="invite"
+							class="absolute bottom-0 left-0 hidden md:block"
+						/>
 					</div>
-				</div>
-			</UContainer>
+				</UContainer>
+			</PagesImageCover>
 		</section>
+
 		<section>
-			<UContainer class="md:mx-8">
+			<UContainer class="md:mx-8 mt-12">
 				<div
 					v-for="(item, index) in items"
 					:key="index"

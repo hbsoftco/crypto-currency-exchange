@@ -140,6 +140,7 @@ const persian = {
 	tradeStart: 'شروع معامله',
 	home: 'خانه',
 	futures: 'فیوچرز',
+	riskAgreement: 'توافق نامه ریسک',
 };
 
 export default persian;

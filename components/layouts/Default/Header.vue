@@ -53,9 +53,9 @@
 					<LayoutsDefaultHeaderSearch />
 				</div>
 				<div class="mx-4">
-					<ClientOnly>
-						<LayoutsDefaultHeaderUserLogin />
-					</ClientOnly>
+					<!-- <ClientOnly> -->
+					<LayoutsDefaultHeaderUserLogin />
+					<!-- </ClientOnly> -->
 				</div>
 				<div class="flex items-center space-x-4">
 					<div>
