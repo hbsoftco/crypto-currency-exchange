@@ -138,6 +138,8 @@ const persian = {
 	MarketplaceBuyingSelling: 'بازار خرید و فروش',
 	latestCurrencies: 'جدیدترین ارزها',
 	tradeStart: 'شروع معامله',
+	home: 'خانه',
+	futures: 'فیوچرز',
 };
 
 export default persian;
