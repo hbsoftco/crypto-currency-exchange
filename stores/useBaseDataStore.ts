@@ -3,15 +3,18 @@ import { defineStore } from 'pinia';
 import { sliderRepository } from '~/repositories/slider.repository';
 import { Language } from '~/utils/enums/language.enum';
 import type { SliderItem } from '~/types/response/slider.types';
+import type { PinListRow } from '~/types/response/pin-list.types';
+import { baseDateRepository } from '~/repositories/base-date.repository';
 
 export const useBaseDataStore = defineStore('baseData', () => {
+	const { $api } = useNuxtApp();
+
 	const slides = ref<SliderItem[]>([]);
-	const isFetched = ref(false);
+	const isSliderDataFetched = ref(false);
 
 	const fetchSlides = async () => {
-		if (isFetched.value) return;
+		if (isSliderDataFetched.value) return;
 
-		const { $api } = useNuxtApp();
 		const slider = sliderRepository($api);
 
 		try {
@@ -21,7 +24,7 @@ export const useBaseDataStore = defineStore('baseData', () => {
 					mediaUrl: row.mediaUrl,
 					header: row.info[0]?.header || '',
 				}));
-				isFetched.value = true;
+				isSliderDataFetched.value = true;
 			}
 		}
 		catch (error) {
@@ -29,5 +32,28 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		}
 	};
 
-	return { slides, fetchSlides };
+	const pinItems = ref<PinListRow[]>([]);
+	const isPinDataFetched = ref(false);
+
+	const fetchPinItems = async () => {
+		if (isPinDataFetched.value) return;
+
+		const pins = baseDateRepository($api);
+
+		try {
+			const response = await pins.getPinList({ languageId: Language.PERSIAN, group: 'Home_Pinbar' });
+			if (response.result?.rows) {
+				pinItems.value = response.result.rows;
+				isPinDataFetched.value = true;
+			}
+		}
+		catch (error) {
+			throw Error(String(error));
+		}
+	};
+
+	return {
+		slides, fetchSlides,
+		pinItems, fetchPinItems,
+	};
 });
