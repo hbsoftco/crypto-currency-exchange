@@ -5,7 +5,7 @@
 	>
 		<div
 			:class="[
-				'relative bg-background-light dark:bg-background-dark max-w-52 border border-background-light dark:border-background-dark w-52 h-8 rounded-lg overflow-hidden p-1',
+				'relative bg-primary-gray-light md:bg-background-light dark:bg-primary-gray-dark  md:dark:bg-background-dark max-w-52 border border-background-light dark:border-background-dark w-52 h-8 rounded-lg overflow-hidden p-1',
 				{
 					'border-primary-yellow-light dark:border-primary-yellow-dark':
 						isFocused && !showAdditionalBox,
@@ -14,7 +14,7 @@
 		>
 			<input
 				type="text"
-				class="w-full h-full outline-none pr-8 text-sm"
+				class="w-full h-full outline-none pr-8 text-sm bg-primary-gray-light md:bg-background-light dark:bg-primary-gray-dark  md:dark:bg-background-dark "
 				:placeholder="$t('search')"
 				@focus="handleFocus"
 				@input="handleInput"
@@ -87,7 +87,7 @@
 			v-if="showAdditionalBox"
 			class="absolute -left-20 top-5 py-7 opacity-100 transition-opacity duration-200 z-20"
 		>
-			<div class="w-96 bg-hover-light dark:bg-hover-dark shadow-lg rounded p-2">
+			<div class="w-full md:w-96 bg-hover-light dark:bg-hover-dark shadow-lg rounded p-2">
 				<div
 					class="bg-background-light dark:bg-background-dark p-2 rounded shadow"
 				>
