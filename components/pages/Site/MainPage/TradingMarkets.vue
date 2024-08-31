@@ -1,23 +1,23 @@
 <template>
-	<div class="py-20">
+	<div class="pt-20 pb-4 md:pb-20">
 		<TradingMarketsHeader />
 
-		<div class="p-4">
+		<div class="p-0 md:p-4 pt-2 md:pt-0">
 			<table
 				class="min-w-full bg-background-light dark:bg-background-dark text-text-dark dark:text-text-light"
 			>
-				<thead class="">
-					<tr class="text-center text-base font-medium">
-						<th class="py-3 px-2 text-right max-w-80 w-80 pr-14">
+				<thead>
+					<tr class="text-center font-normal md:font-medium text-sm md:text-base">
+						<th class="py-2 md:py-3 px-2 text-right max-w-36 w-36 md:max-w-80 md:w-80 pr-6 md:pr-14">
 							{{ $t("market") }}
 						</th>
-						<th class="py-3">
+						<th class="py-2 md:py-3 text-center md:text-center">
 							{{ $t("lastPrice") }}
 						</th>
-						<th class="py-3">
+						<th class="py-2 md:py-3 text-right md:text-center ">
 							{{ $t("change24h") }}
 						</th>
-						<th class="py-3">
+						<th class="py-2 md:py-3 hidden md:block">
 							{{ $t("weeklyChart") }}
 						</th>
 					</tr>

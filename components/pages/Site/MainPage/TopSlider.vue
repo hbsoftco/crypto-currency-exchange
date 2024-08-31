@@ -7,7 +7,7 @@
 			v-slot="{ item }"
 			:items="items"
 			:ui="{
-				item: 'basis-full md:basis-1/3 lg:basis-1/4 snap-start',
+				item: 'basis-full md:basis-1/3 lg:basis-1/4 snap-center md:snap-start',
 				indicators: {
 					wrapper: 'flex items-center justify-center gap-3 inset-x-0',
 					base: 'rounded h-2 w-4',
@@ -19,10 +19,10 @@
 			indicators
 			class="rounded-lg overflow-hidden pb-10"
 		>
-			<div class="px-4 mb-2">
+			<div class="px-0 md:px-4 mb-2">
 				<img
 					:src="item"
-					class="w-64 h-40 mx-2 shadow-sm"
+					class="w-full md:w-64 h-40 mx-2 shadow-sm"
 					draggable="false"
 				>
 			</div>

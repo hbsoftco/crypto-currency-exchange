@@ -1,16 +1,17 @@
 <template>
 	<div
-		class="flex justify-start items-center pl-8"
+		:class="containerClass"
+		class="flex justify-start items-center pl-4 md:pl-8"
 		dir="ltr"
 	>
 		<component
 			:is="iconComponent"
 			:class="iconClass"
-			class="w-4 h-4 mr-2"
+			class="w-4 h-4 mr-2 hidden md:block"
 		/>
 		<span
 			:class="textClass"
-			class="text-base font-medium"
+			class="text-sm md:text-base font-medium py-1"
 		>{{ useNumber(formattedChange) }}</span>
 	</div>
 </template>
@@ -35,7 +36,11 @@ const iconClass = computed(() => {
 });
 
 const textClass = computed(() => {
-	return props.change > 0 ? 'text-accent-green' : 'text-accent-red';
+	return props.change > 0 ? 'text-white md:text-accent-green' : 'text-white md:text-accent-red';
+});
+
+const containerClass = computed(() => {
+	return props.change > 0 ? 'bg-accent-green md:bg-transparent rounded-md' : 'bg-accent-red md:bg-transparent rounded-md';
 });
 
 const formattedChange = computed(() => {
