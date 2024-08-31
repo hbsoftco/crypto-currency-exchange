@@ -5,7 +5,7 @@
 	>
 		<UCarousel
 			v-slot="{ item }"
-			:items="items"
+			:items="slides"
 			:ui="{
 				item: 'basis-full md:basis-1/3 lg:basis-1/4 snap-center md:snap-start',
 				indicators: {
@@ -14,15 +14,15 @@
 					active: 'bg-primary-yellow-light dark:bg-primary-yellow-dark h-2 w-8',
 					inactive: 'bg-secondary-gray-light dark:bg-secondary-gray-dark',
 				},
-
 			}"
 			indicators
 			class="rounded-lg overflow-hidden pb-10"
 		>
-			<div class="px-0 md:px-4 mb-2">
+			<div class="px-0 md:px-4 mb-2 w-full md:w-auto">
 				<img
-					:src="item"
-					class="w-full md:w-64 h-40 mx-2 shadow-sm"
+					:src="item.mediaUrl"
+					:alt="item.header"
+					class="w-full md:w-64 h-40 mx-0 md:mx-2 shadow-sm rounded-md"
 					draggable="false"
 				>
 			</div>
@@ -31,17 +31,9 @@
 </template>
 
 <script setup lang="ts">
-import ImgSlider1 from '~/public/images/delete/slider1.webp';
-import ImgSlider2 from '~/public/images/delete/slider2.webp';
-import ImgSlider3 from '~/public/images/delete/slider3.webp';
-import ImgSlider4 from '~/public/images/delete/slider4.webp';
-import ImgSlider5 from '~/public/images/delete/slider5.webp';
+const baseDataStore = useBaseDataStore();
 
-const items = [
-	ImgSlider1,
-	ImgSlider2,
-	ImgSlider3,
-	ImgSlider4,
-	ImgSlider5,
-];
+await baseDataStore.fetchSlides();
+
+const slides = baseDataStore.slides;
 </script>

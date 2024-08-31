@@ -23,8 +23,20 @@ type SliderInfo = {
 	content: string;
 };
 
+type GetSlidesParams = {
+	languageId: number;
+	group?: string;
+};
+
+type SliderItem = {
+	mediaUrl: string;
+	header: string;
+};
+
 export type {
 	SliderResponse,
 	SliderRow,
 	SliderInfo,
+	GetSlidesParams,
+	SliderItem,
 };

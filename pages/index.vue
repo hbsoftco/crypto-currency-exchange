@@ -21,7 +21,7 @@
 			</UContainer>
 		</section>
 
-		<section>
+		<section class="hidden md:block">
 			<UContainer>
 				<Prize />
 			</UContainer>

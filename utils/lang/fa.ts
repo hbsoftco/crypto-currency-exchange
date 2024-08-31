@@ -141,6 +141,7 @@ const persian = {
 	home: 'خانه',
 	futures: 'فیوچرز',
 	riskAgreement: 'توافق نامه ریسک',
+	readMore: 'ادامه مطلب',
 };
 
 export default persian;
