@@ -4,6 +4,7 @@
 			<NuxtImg
 				:src="data.imgSrc"
 				alt="slider img"
+				class="w-full"
 			/>
 			<div class="bg-primary-gray-light dark:bg-primary-gray-dark text-right p-4 ">
 				<div class="flex flex-row-reverse justify-between py-3">
@@ -26,7 +27,7 @@
 					<span
 						dir="rtl"
 						class="text-sm font-bold text-right text-primary-yellow-light dark:text-primary-yellow-dark"
-					>ادامه مطلب...</span>
+					>{{ $t('readMore') }}...</span>
 				</ULink>
 			</div>
 		</div>
