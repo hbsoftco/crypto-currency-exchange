@@ -1,7 +1,7 @@
 <template>
 	<div
 		dir="ltr"
-		class="relative -top-14"
+		class="relative top-14 md:-top-14"
 	>
 		<UCarousel
 			v-slot="{ item }"

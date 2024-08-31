@@ -19,7 +19,6 @@
 </template>
 
 <script setup lang="ts">
-import type { UContainer } from '#build/components';
 </script>
 
 <style scoped>

@@ -1,8 +1,10 @@
 <template>
 	<div>
 		<LayoutsDefaultHeader class="hidden md:block" />
-		<LayoutsDefaultNotif class="hidden md:block" />
-		<PagesSupportButtons />
+		<LayoutsDefaultMobileHeader class="block md:hidden" />
+
+		<!-- <LayoutsDefaultNotif class="hidden md:block" /> -->
+		<PagesSupportButtons class="hidden md:block" />
 		<slot />
 		<LayoutsDefaultFooter />
 		<LayoutsDefaultMobileFooter class="block md:hidden" />

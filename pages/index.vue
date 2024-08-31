@@ -10,7 +10,7 @@
 
 		<section>
 			<UContainer>
-				<PagesSiteMainPageInfo />
+				<PagesSiteMainPageInfo class="hidden md:block" />
 				<TopSlider />
 			</UContainer>
 		</section>

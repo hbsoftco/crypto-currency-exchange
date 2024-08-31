@@ -5,18 +5,19 @@
 				<ULink
 					v-for="(item, index) in footerItems"
 					:key="index"
-					class="group cursor-pointer justify-between"
+					class="group cursor-pointer w-full"
 					:to="item.url"
 					@click="setActive(index)"
 				>
 					<img
 						:src="activeIndex === index ? item.activeIcon : item.icon"
+						class="w-6 h-6 m-auto text-center text-subtle-text-light dark:text-subtle-text-dark"
 					>
-					<span
-						class="text-sm font-bold text-subtle-text-light dark:text-subtle-text-dark group-hover:font-medium group-hover:text-white dark:group-hover:text-white text-center"
+					<div
+						class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark group-hover:font-bold group-hover:text-dark dark:group-hover:text-white text-center"
 					>
-						{{ $t(item.name) }}
-					</span>
+						<span>{{ $t(item.name) }}</span>
+					</div>
 				</ULink>
 			</div>
 		</UContainer>
@@ -33,25 +34,25 @@ const footerItems = [
 	},
 	{
 		name: 'market',
-		url: '',
+		url: '/',
 		icon: '/images/svg/footer/market.svg',
 		activeIcon: '/images/svg/footer/active-market.svg',
 	},
 	{
 		name: 'transaction',
-		url: '',
+		url: '/',
 		icon: '/images/svg/footer/transaction.svg',
 		activeIcon: '/images/svg/footer/active-transaction.svg',
 	},
 	{
 		name: 'futures',
-		url: '',
+		url: '/',
 		icon: '/images/svg/footer/futures.svg',
 		activeIcon: '/images/svg/footer/active-futures.svg',
 	},
 	{
 		name: 'wallet',
-		url: '',
+		url: '/',
 		icon: '/images/svg/footer/wallet.svg',
 		activeIcon: '/images/svg/footer/active-wallet.svg',
 	},
