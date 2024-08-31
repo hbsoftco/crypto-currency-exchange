@@ -5,6 +5,7 @@
 		<PagesSupportButtons />
 		<slot />
 		<LayoutsDefaultFooter />
+		<LayoutsDefaultMobileFooter class="block md:hidden" />
 	</div>
 </template>
 
