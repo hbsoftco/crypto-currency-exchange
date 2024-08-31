@@ -138,6 +138,7 @@ const persian = {
 	MarketplaceBuyingSelling: 'بازار خرید و فروش',
 	latestCurrencies: 'جدیدترین ارزها',
 	tradeStart: 'شروع معامله',
+	riskAgreement: 'توافق نامه ریسک',
 };
 
 export default persian;
