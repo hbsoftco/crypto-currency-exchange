@@ -1,5 +1,5 @@
 <template>
-	<footer class="fixed bottom-0 left-0 right-0 bg-hover-light dark:bg-hover-dark mt-4">
+	<footer class="fixed bottom-0 left-0 right-0 bg-hover-light dark:bg-hover-dark mt-4 py-1">
 		<UContainer>
 			<div class="py-1 flex justify-between">
 				<ULink
@@ -10,11 +10,12 @@
 					@click="setActive(index)"
 				>
 					<img
-						:src="activeIndex === index ? item.activeIcon : item.icon"
+						:src="isActive(item.url) ? item.activeIcon : item.icon"
 						class="w-6 h-6 m-auto text-center text-subtle-text-light dark:text-subtle-text-dark"
 					>
 					<div
-						class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark group-hover:font-bold group-hover:text-dark dark:group-hover:text-white text-center"
+						:class="isActive(item.url) ? 'font-bold text-dark dark:text-white' : 'font-normal text-subtle-text-light dark:text-subtle-text-dark'"
+						class="text-sm mt-1 text-center group-hover:font-bold group-hover:text-dark dark:group-hover:text-white"
 					>
 						<span>{{ $t(item.name) }}</span>
 					</div>
@@ -34,35 +35,40 @@ const footerItems = [
 	},
 	{
 		name: 'market',
-		url: '/',
+		url: '/market',
 		icon: '/images/svg/footer/market.svg',
 		activeIcon: '/images/svg/footer/active-market.svg',
 	},
 	{
 		name: 'transaction',
-		url: '/',
+		url: '/transaction',
 		icon: '/images/svg/footer/transaction.svg',
 		activeIcon: '/images/svg/footer/active-transaction.svg',
 	},
 	{
 		name: 'futures',
-		url: '/',
+		url: '/futures',
 		icon: '/images/svg/footer/futures.svg',
 		activeIcon: '/images/svg/footer/active-futures.svg',
 	},
 	{
 		name: 'wallet',
-		url: '/',
+		url: '/wallet',
 		icon: '/images/svg/footer/wallet.svg',
 		activeIcon: '/images/svg/footer/active-wallet.svg',
 	},
 ];
 
 const activeIndex = ref<number | null>(null);
+const route = useRoute();
 
 function setActive(index: number) {
 	activeIndex.value = index;
 }
+
+const isActive = (url: string): boolean => {
+	return route.path === url;
+};
 </script>
 
 <style scoped></style>
