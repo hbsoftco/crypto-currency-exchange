@@ -1,7 +1,7 @@
 <template>
 	<div class="">
 		<IconUser
-			class="w-8 h-8 cursor-pointer"
+			class="text-2xl cursor-pointer"
 			@click="open = true"
 		/>
 		<div
@@ -16,7 +16,10 @@
 		>
 			<div class="flex justify-between items-center py-4">
 				<div class="flex items-center">
-					<IconArrowRight class="text-2xl" />
+					<IconArrowRight
+						class="text-2xl cursor-pointer"
+						@click="close"
+					/>
 					<div
 						class="bg-primary-yellow-light dark:bg-primary-yellow-dark rounded-full mr-1 w-12 h-12 p-2 text-center"
 					>
@@ -26,13 +29,9 @@
 				</div>
 				<UiThemeToggle />
 			</div>
-			<div v-if="authStore.isLoggedIn">
+			<div v-if="!authStore.isLoggedIn">
 				<div class="flex items-center">
-					<NuxtImg
-						src="/images/logo.png"
-						alt="logo"
-						class="w-5 h-6 ml-2"
-					/>
+					<IconLogo class="text-primary-yellow-light dark:text-primary-yellow-dark text-3xl" />
 					<h5>
 						به
 						<span
@@ -40,11 +39,11 @@
 						>بیت لند</span>خوش آمدید.
 					</h5>
 				</div>
-				<div class="flex items-center mt-1">
-					<IconUser class="ml-2" />
+				<div class="flex items-center mt-2">
+					<IconAccount class="ml-2 text-subtle-text-light dark:text-subtle-text-dark  text-xl" />
 					<span class="text-sm font-semibold">لطفا وارد حساب خود شوید یا ثبت نام کنید.</span>
 				</div>
-				<div class="flex justify-between items-center mt-4 w-full">
+				<div class="flex justify-between items-center mt-6 pb-6 w-full">
 					<UButton
 						size="lg"
 						class="text-base font-medium px-16 py-2 text-center bg-transparent-light dark:bg-transparency-dark text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark hover:text-text-light hover:dark:text-text-light "
@@ -60,6 +59,106 @@
 						{{ $t("signup") }}
 					</UButton>
 				</div>
+				<ul class="flex flex-col mt-2">
+					<li
+						class="border-b border-primary-gray-light dark:border-primary-gray-dark"
+					>
+						<ULink
+							to=""
+							class="flex justify-between items-center w-full py-2.5"
+						>
+							<div class="flex justify-start items-center">
+								<div class="ml-2">
+									<IconSetting
+										class="text-base dark: text-subtle-text-light dark:text-subtle-text-50"
+									/>
+								</div>
+								<p class="mb-0 text-xs font-bold">
+									{{ $t("setting") }}
+								</p>
+							</div>
+						</ULink>
+					</li>
+					<!-- setting -->
+					<li
+						class="border-b border-primary-gray-light dark:border-primary-gray-dark"
+					>
+						<ULink
+							to=""
+							class="flex justify-between items-center w-full py-2.5"
+						>
+							<div class="flex justify-start items-center">
+								<div class="ml-2">
+									<IconGuidCenter
+										class="text-base dark: text-subtle-text-light dark:text-subtle-text-50"
+									/>
+								</div>
+								<p class="mb-0 text-xs font-bold">
+									{{ $t("guidCenter") }}
+								</p>
+							</div>
+						</ULink>
+					</li>
+					<!-- GuidCenter -->
+					<li
+						class="border-b border-primary-gray-light dark:border-primary-gray-dark"
+					>
+						<ULink
+							to=""
+							class="flex justify-between items-center w-full py-2.5"
+						>
+							<div class="flex justify-start items-center">
+								<div class="ml-2">
+									<IconSuggest
+										class="text-base dark: text-subtle-text-light dark:text-subtle-text-50"
+									/>
+								</div>
+								<p class="mb-0 text-xs font-bold">
+									{{ $t("suggestionsAndCriticism") }}
+								</p>
+							</div>
+						</ULink>
+					</li>
+					<!-- suggest -->
+					<li
+						class="border-b border-primary-gray-light dark:border-primary-gray-dark"
+					>
+						<ULink
+							to=""
+							class="flex justify-between items-center w-full py-2.5"
+						>
+							<div class="flex justify-start items-center">
+								<div class="ml-2">
+									<IconCallWithSupport
+										class="text-base dark: text-subtle-text-light dark:text-subtle-text-50"
+									/>
+								</div>
+								<p class="mb-0 text-xs font-bold">
+									{{ $t("callWithSupport") }}
+								</p>
+							</div>
+						</ULink>
+					</li>
+					<!-- callWithSupport -->
+					<li
+						class="border-b border-primary-gray-light dark:border-primary-gray-dark"
+					>
+						<ULink
+							to=""
+							class="flex justify-between items-center w-full py-2.5"
+						>
+							<div class="flex justify-start items-center">
+								<div class="ml-2">
+									<IconLogo class="text-primary-yellow-light dark:text-primary-yellow-dark text-lg" />
+								</div>
+								<p class="mb-0 text-xs font-bold">
+									{{ $t("aboutUs") }}
+								</p>
+							</div>
+						</ULink>
+					</li>
+					<!-- aboutUs -->
+				</ul>
 			</div>
 			<div v-else>
 				<div>
@@ -349,12 +448,30 @@
 					<!-- exit -->
 				</ul>
 			</div>
+			<div class="flex justify-between mt-8 mx-10 mb-4">
+				<ULink to="">
+					<IconTwitter class="text-3xl text-subtle-text-light dark:text-subtle-text-dark" />
+				</ULink>
+				<ulink to="">
+					<IconLinkedin class="text-3xl text-subtle-text-light dark:text-subtle-text-dark" />
+				</ulink>
+				<ULink to="">
+					<IconInstagram class="text-3xl text-subtle-text-light dark:text-subtle-text-dark" />
+				</ULink>
+				<ULink to="">
+					<IconWhatsapp class="text-3xl text-subtle-text-light dark:text-subtle-text-dark" />
+				</ULink>
+				<ULink to="">
+					<IconTelegram class="text-3xl text-subtle-text-light dark:text-subtle-text-dark" />
+				</ULink>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import IconUser from '~/assets/svg-icons/menu/user.svg';
+import IconAccount from '~/assets/svg-icons/menu/account.svg';
 import IconUserFill from '~/assets/svg-icons/menu/user-fill.svg';
 import IconArrowRight from '~/assets/svg-icons/menu/arrow-right.svg';
 import IconAuthentication from '~/assets/svg-icons/menu/authentication.svg';
@@ -372,6 +489,15 @@ import IconTopUsers from '~/assets/svg-icons/menu/quick-menu/top-users.svg';
 import IconWhiteList from '~/assets/svg-icons/menu/white-list.svg';
 import IconSetting from '~/assets/svg-icons/menu/setting.svg';
 import IconExit from '~/assets/svg-icons/menu/exit.svg';
+import IconGuidCenter from '~/assets/svg-icons/menu/guid-center.svg';
+import IconSuggest from '~/assets/svg-icons/menu/suggest.svg';
+import IconCallWithSupport from '~/assets/svg-icons/menu/phone-support.svg';
+import IconLogo from '~/assets/svg-icons/menu/logo.svg';
+import IconTwitter from '~/assets/svg-icons/social/twitter.svg';
+import IconLinkedin from '~/assets/svg-icons/social/linkedin.svg';
+import IconInstagram from '~/assets/svg-icons/social/instagram.svg';
+import IconWhatsapp from '~/assets/svg-icons/social/whatsapp.svg';
+import IconTelegram from '~/assets/svg-icons/social/telegram.svg';
 
 const authStore = useAuthStore();
 

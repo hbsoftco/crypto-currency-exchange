@@ -1,16 +1,18 @@
 <template>
-	<header class="fixed top-0 left-0 right-0 bg-background-light dark:bg-background-dark mb-6 py-3 z-10">
+	<header class="fixed top-0 left-0 right-0 w-full bg-background-light dark:bg-background-dark mb-6 py-3 z-10">
 		<UContainer>
-			<div class="flex justify-between items-center">
+			<div class="flex justify-between items-center w-full">
 				<div>
 					<LayoutsDefaultMobileHeaderUserLogin />
 				</div>
-				<LayoutsDefaultHeaderSearch />
-				<div>
-					<LayoutsDefaultMobileHeaderScan />
+				<div class="flex-1 mx-2">
+					<LayoutsDefaultHeaderSearch />
 				</div>
 				<div>
 					<LayoutsDefaultMobileHeaderSupport />
+				</div>
+				<div class="mr-2">
+					<LayoutsDefaultHeaderUserLoginNotification />
 				</div>
 			</div>
 		</UContainer>
