@@ -5,7 +5,7 @@
 	>
 		<UCarousel
 			v-slot="{ item }"
-			:items="items"
+			:items="tags"
 			:ui="{ item: 'snap-start' }"
 			:prev-button="{
 				variant: 'link',
@@ -29,27 +29,25 @@
 				"
 				@click="selectItem(item)"
 			>
-				{{ item }}
+				{{ useNumber(item.tag) }}
 			</span>
 		</UCarousel>
 	</div>
 </template>
 
 <script setup lang="ts">
-const items = ref([
-	'همه',
-	'قرارداد هوشمند',
-	'اوراکل',
-	'دیفای',
-	'استیبل کوین',
-	'متاورس',
-	'NFT',
-	'میم کوین',
-	'وب 3.0',
-]);
-const selectedItem = ref(items.value[0]);
+import { useNumber } from '~/composables/useNumber';
+import type { Tag } from '~/types/response/tag.types';
 
-const selectItem = (item: string) => {
+const baseDataStore = useBaseDataStore();
+
+await baseDataStore.fetchTagItems();
+
+const tags = baseDataStore.tagItems;
+
+const selectedItem = ref(tags[0]);
+
+const selectItem = (item: Tag) => {
 	selectedItem.value = item;
 };
 </script>
