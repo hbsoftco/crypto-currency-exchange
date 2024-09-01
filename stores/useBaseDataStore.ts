@@ -6,6 +6,8 @@ import type { SliderItem } from '~/types/response/slider.types';
 import type { PinListRow } from '~/types/response/pin-list.types';
 import { baseDateRepository } from '~/repositories/base-date.repository';
 import type { Tag } from '~/types/response/tag.types';
+import type { QuoteListResponse } from '~/types/response/quote-list.types';
+import type { BriefItem } from '~/types/response/brief-list.types';
 
 export const useBaseDataStore = defineStore('baseData', () => {
 	const { $api } = useNuxtApp();
@@ -73,9 +75,51 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		}
 	};
 
+	const quoteItems = ref<QuoteListResponse['result']>([]);
+	const isQuoteDataFetched = ref(false);
+
+	const fetchQuoteItems = async (marketTypeId: number) => {
+		if (isQuoteDataFetched.value) return;
+
+		const api = baseDateRepository($api);
+
+		try {
+			const response = await api.getQuoteList({ marketTypeId });
+			if (response.result) {
+				quoteItems.value = response.result;
+				isQuoteDataFetched.value = true;
+			}
+		}
+		catch (error) {
+			throw Error(String(error));
+		}
+	};
+
+	const briefItems = ref<BriefItem[]>([]);
+	const isBriefDataFetched = ref(false);
+
+	const fetchBriefItems = async () => {
+		if (isBriefDataFetched.value) return;
+
+		const api = baseDateRepository($api);
+
+		try {
+			const response = await api.getBriefList();
+			if (response.result) {
+				briefItems.value = response.result;
+				isBriefDataFetched.value = true;
+			}
+		}
+		catch (error) {
+			throw Error(String(error));
+		}
+	};
+
 	return {
 		slides, fetchSlides,
 		pinItems, fetchPinItems,
 		tagItems, fetchTagItems,
+		quoteItems, fetchQuoteItems,
+		briefItems, fetchBriefItems,
 	};
 });
