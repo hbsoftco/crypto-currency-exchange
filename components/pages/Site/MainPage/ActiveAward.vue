@@ -11,7 +11,7 @@
 					<div
 						class="w-8 h-8 bg-primary-yellow-light dark:bg-primary-yellow-dark rounded-full text-center flex justify-center items-center my-auto"
 					>
-						<span class="text-base font-bold">1</span>
+						<span class="text-base font-bold">{{ useNumber('1') }}</span>
 					</div>
 					<h1 class="text-2xl font-bold text-primary-yellow-light dark:text-primary-yellow-dark mr-2">
 						{{ $t("activeAward") }}
@@ -45,6 +45,7 @@
 <script setup lang="ts">
 import IconArrowLeft from '~/assets/svg-icons/arrow-left-orange.svg';
 import IconArrowRight from '~/assets/svg-icons/arrow-right-orange.svg';
+import { useNumber } from '~/composables/useNumber';
 </script>
 
 <style scoped></style>

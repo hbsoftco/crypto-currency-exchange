@@ -29,7 +29,14 @@
 			</UContainer>
 		</section>
 
-		<section>
+		<section class="block md:hidden">
+			<UContainer>
+				<PagesSiteMainPageTradingProgress />
+				<PagesSiteMainPageQuickMenuMobile />
+			</UContainer>
+		</section>
+
+		<section class="hidden md:block">
 			<UContainer>
 				<PagesSiteMainPageActiveAward />
 			</UContainer>
@@ -41,7 +48,10 @@
 			</UContainer>
 		</section>
 
-		<section class="hidden md:block">
+		<section
+			v-if="authStore.isLoggedIn"
+			class="hidden md:block"
+		>
 			<UContainer>
 				<Prize />
 			</UContainer>
