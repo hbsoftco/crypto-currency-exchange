@@ -8,7 +8,7 @@
 					<NuxtImg
 						src="/images/svg/brand-logo.svg"
 						alt="Brand Logo"
-						class="mb-3"
+						class="mb-3 w-28 h-12"
 					/>
 					<span class="font-bold leading-loose text-base">
 						بیت لند، محصول شرکت عصر زراندیشان آراد

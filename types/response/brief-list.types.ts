@@ -1,3 +1,5 @@
+import type { IconItem } from './icon.types';
+
 type MarketBriefItem = {
 	id: number;
 	cbId: number;
@@ -6,6 +8,9 @@ type MarketBriefItem = {
 	stateId: number;
 	mSymbol: string;
 	tickSize: string;
+	currencyBriefItem?: CurrencyBriefItem | null;
+	quoteItem?: CurrencyBriefItem | null;
+	icon?: IconItem | null;
 };
 
 type MarketBriefListResponse = {

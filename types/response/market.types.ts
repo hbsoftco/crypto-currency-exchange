@@ -1,3 +1,5 @@
+import type { MarketBriefItem } from './brief-list.types';
+
 type MarketListWithSparkLineChartResponse = {
 	statusCode: number;
 	result: {
@@ -11,6 +13,7 @@ type MarketListWithSparkLineChartItem = {
 	indexPrice: string;
 	priceChangePercIn24H: string;
 	sparklineChart: number[];
+	marketBriefItem?: MarketBriefItem | null;
 };
 
 export type {

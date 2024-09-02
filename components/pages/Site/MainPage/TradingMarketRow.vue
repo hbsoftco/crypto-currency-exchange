@@ -3,8 +3,10 @@
 		class="hover:bg-hover-light hover:rounded-lg dark:hover:bg-hover-dark"
 	>
 		<td class="py-2 px-0 md:px-2 flex justify-start items-center space-x-2 max-w-36 w-36 md:max-w-80 md:w-80">
-			<TradingAction />
-			<!-- {{ getMarketItemById(row.id) }} -->
+			<TradingAction
+				v-if="row.marketBriefItem"
+				:coin="row.marketBriefItem"
+			/>
 		</td>
 		<td class="py-2">
 			<div
@@ -18,7 +20,6 @@
 		</td>
 		<td class="">
 			<ChangeIndicator :change="parseFloat(row.priceChangePercIn24H)" />
-			<!-- {{ row.id }} -->
 		</td>
 		<td class="py-2  hidden md:block">
 			<div class="flex justify-center items-center max-w-40 m-auto">
@@ -43,8 +44,4 @@ interface Props {
 }
 
 defineProps<Props>();
-
-const marketStore = useMarketStore();
-const { getMarketItemById } = marketStore;
-console.log(getMarketItemById(1832));
 </script>

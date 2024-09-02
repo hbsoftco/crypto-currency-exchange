@@ -54,12 +54,7 @@ import TradingMarketRow from './TradingMarketRow.vue';
 
 const marketStore = useMarketStore();
 const baseDataStore = useBaseDataStore();
-const { marketBriefItems } = baseDataStore;
-
-// await baseDataStore.fetchMarketBriefItems();
 await useAsyncData('fetchMarketBriefItems', () => baseDataStore.fetchMarketBriefItems());
-
-console.log(marketBriefItems);
 
 const params = ref({
 	sortMode: 'ByMarketCaps',

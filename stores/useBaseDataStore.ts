@@ -8,6 +8,7 @@ import { baseDateRepository } from '~/repositories/base-date.repository';
 import type { Tag } from '~/types/response/tag.types';
 import type { QuoteItem } from '~/types/response/quote-list.types';
 import type { CurrencyBriefItem, MarketBriefItem } from '~/types/response/brief-list.types';
+import type { IconItem } from '~/types/response/icon.types';
 
 export const useBaseDataStore = defineStore('baseData', () => {
 	const { $api } = useNuxtApp();
@@ -171,6 +172,56 @@ export const useBaseDataStore = defineStore('baseData', () => {
 			.filter((item) => item !== undefined) as CurrencyBriefItem[];
 	});
 
+	const bigIcons = ref<IconItem[]>([]);
+	const isBigIconsFetched = ref(false);
+	const isBigIconsLoading = ref(false);
+
+	const fetchBigIcons = async () => {
+		const api = baseDateRepository($api);
+
+		if (isBigIconsFetched.value || isBigIconsLoading.value) return;
+		isBigIconsLoading.value = true;
+
+		try {
+			const response = await api.getBigIconsList();
+			if (response.result) {
+				bigIcons.value = response.result;
+				isBigIconsFetched.value = true;
+			}
+		}
+		catch (error) {
+			throw Error(String(error));
+		}
+		finally {
+			isBigIconsLoading.value = false;
+		}
+	};
+
+	const icons = ref<IconItem[]>([]);
+	const isIconsFetched = ref(false);
+	const isIconsLoading = ref(false);
+
+	const fetchIcons = async () => {
+		const api = baseDateRepository($api);
+
+		if (isIconsFetched.value || isIconsLoading.value) return;
+		isIconsLoading.value = true;
+
+		try {
+			const response = await api.getIconsList();
+			if (response.result) {
+				icons.value = response.result;
+				isIconsFetched.value = true;
+			}
+		}
+		catch (error) {
+			throw Error(String(error));
+		}
+		finally {
+			isIconsLoading.value = false;
+		}
+	};
+
 	return {
 		slides, fetchSlides, isSliderLoading,
 		pinItems, fetchPinItems, isPinLoading,
@@ -178,6 +229,8 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		quoteItems, fetchQuoteItems, isQuoteLoading,
 		marketBriefItems, fetchMarketBriefItems, isMarketBriefLoading,
 		currencyBriefItems, fetchCurrencyBriefItems, isCurrencyBriefLoading,
+		bigIcons, fetchBigIcons, isBigIconsLoading,
+		icons, fetchIcons, isIconsLoading,
 		getMatchedCurrencyItems,
 	};
 });

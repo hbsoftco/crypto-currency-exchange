@@ -1,25 +1,25 @@
 <template>
 	<div class="flex items-center">
-		<img
-			src="https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=022"
+		<NuxtImg
+			:src="coin.icon?.imageUrl"
 			alt="Bitcoin Logo"
-			class="w-4 h-4 md:w-8 md:h-8"
-		>
+			class="w-4 h-4 md:w-8 md:h-8 rounded-full"
+		/>
 		<div class="mr-2 md:mr-4">
 			<div
 				class="border-b border-primary-gray-light dark:border-primary-gray-dark pb-0 md:pb-1"
 			>
-				<strong class="text-sm md:text-base text-text-dark dark:text-text-light">بیت کوین</strong>
+				<strong class="text-sm md:text-base text-text-dark dark:text-text-light">{{ coin.currencyBriefItem?.cName }}</strong>
 				<span class="text-sm md:text-base text-subtle-text-light dark:text-subtle-text-50 px-1">/</span>
-				<span class="text-sm md:text-base text-subtle-text-light dark:text-subtle-text-50">تومان</span>
+				<span class="text-sm md:text-base text-subtle-text-light dark:text-subtle-text-50">{{ coin.quoteItem?.cName }}</span>
 			</div>
 			<div
 				class="block md:hidden text-right"
 				dir="ltr"
 			>
-				<strong class="text-sm md:text-base text-text-dark dark:text-text-light">USDT</strong>
+				<strong class="text-sm md:text-base text-text-dark dark:text-text-light">{{ coin.currencyBriefItem?.cSymbol }}</strong>
 				<span class="text-sm md:text-base text-subtle-text-light dark:text-subtle-text-50 px-1">/</span>
-				<span class="text-sm md:text-base text-subtle-text-light dark:text-subtle-text-50">TMN</span>
+				<span class="text-sm md:text-base text-subtle-text-light dark:text-subtle-text-50">{{ coin.quoteItem?.cSymbol }}</span>
 			</div>
 			<div class="hidden md:block">
 				<UButton
@@ -40,4 +40,12 @@
 	</div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import type { MarketBriefItem } from '~/types/response/brief-list.types';
+
+interface Props {
+	coin: MarketBriefItem;
+}
+
+defineProps<Props>();
+</script>
