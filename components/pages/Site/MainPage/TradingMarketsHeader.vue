@@ -65,12 +65,11 @@ import TradingMarketsHeaderItems from './TradingMarketsHeaderItems.vue';
 import { Language } from '~/utils/enums/language.enum';
 
 const baseDataStore = useBaseDataStore();
+const { currencyBriefItems, isCurrencyBriefLoading } = baseDataStore;
 
 await baseDataStore.fetchTagItems();
 
-baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
-
-const { currencyBriefItems, isCurrencyBriefLoading } = baseDataStore;
+await baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
 
 console.log('currencyBriefItems', currencyBriefItems);
 console.log('isCurrencyBriefLoading', isCurrencyBriefLoading);

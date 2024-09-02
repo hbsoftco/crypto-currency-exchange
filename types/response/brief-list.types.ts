@@ -13,13 +13,24 @@ type MarketBriefListResponse = {
 	statusCode: number;
 };
 
+type CurrencyBriefItem = {
+	cName: string;
+	cSymbol: string;
+	id: number;
+	rank: number;
+	stateId: number;
+	typeId: number;
+	unit: number;
+};
+
 type CurrencyBriefListResponse = {
-	result: MarketBriefItem[];
+	result: CurrencyBriefItem[];
 	statusCode: number;
 };
 
 export type {
 	CurrencyBriefListResponse,
+	CurrencyBriefItem,
 	MarketBriefListResponse,
 	MarketBriefItem,
 };

@@ -7,7 +7,7 @@ import type { PinListRow } from '~/types/response/pin-list.types';
 import { baseDateRepository } from '~/repositories/base-date.repository';
 import type { Tag } from '~/types/response/tag.types';
 import type { QuoteListResponse } from '~/types/response/quote-list.types';
-import type { CurrencyBriefListResponse, MarketBriefItem } from '~/types/response/brief-list.types';
+import type { CurrencyBriefItem, MarketBriefItem } from '~/types/response/brief-list.types';
 
 export const useBaseDataStore = defineStore('baseData', () => {
 	const { $api } = useNuxtApp();
@@ -140,7 +140,7 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		}
 	};
 
-	const currencyBriefItems = ref<CurrencyBriefListResponse['result']>([]);
+	const currencyBriefItems = ref<CurrencyBriefItem[]>([]);
 	const isCurrencyBriefDataFetched = ref(false);
 	const isCurrencyBriefLoading = ref(false);
 
