@@ -155,6 +155,8 @@ const persian = {
 	dollarMarketFee: 'کارمزد بازار دلاری',
 	tomanMarketFee: 'کارمزد بازار تومان',
 	getYourReward: 'جایزتو بگیر',
+	compeleteAccount: 'تکمیل حساب کاربری',
+	cryptocurrencyDeposit: 'واریز رمز ارز',
 };
 
 export default persian;

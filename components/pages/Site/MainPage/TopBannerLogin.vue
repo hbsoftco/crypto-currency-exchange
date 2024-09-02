@@ -17,10 +17,10 @@
 			class="my-6 flex flex-col text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
 		>
 			<div class="mb-4">
-				<span>{{ $t("dollarMarketFee") }}:</span><span> ، میکر : ۰.۲% تیکر: ۰.۴%</span>
+				<span>{{ $t("dollarMarketFee") }}،</span><span>  میکر : ۰.۲% تیکر: ۰.۴%</span>
 			</div>
 			<div>
-				<span>{{ $t("tomanMarketFee") }}:</span><span> ، میکر : ۰.۲% تیکر: ۰.۴%</span>
+				<span>{{ $t("tomanMarketFee") }}،</span><span>  میکر : ۰.۲% تیکر: ۰.۴%</span>
 			</div>
 		</div>
 		<div class="flex">
@@ -39,22 +39,22 @@
 				{{ $t("depositToman") }}
 			</UButton>
 			<ULink
-				class="flex items-center bg-text-light dark:bg-transparency-dark opacity-70 mx-1"
+				class="flex items-center bg-transparency-light dark:bg-transparency-dark opacity-70 mx-1"
 			>
 				<IconQR class="text-3xl mx-7 m1-2" />
 			</ULink>
 			<ULink
-				class="flex items-center bg-text-light dark:bg-transparency-dark opacity-70 mx-1"
+				class="flex items-center bg-transparency-light dark:bg-transparency-dark opacity-70 mx-1"
 			>
 				<IconPlayStore class="text-3xl mx-7 m1-2" />
 			</ULink>
 			<ULink
-				class="flex items-center bg-text-light dark:bg-transparency-dark opacity-70 mx-1"
+				class="flex items-center bg-transparency-light dark:bg-transparency-dark opacity-70 mx-1"
 			>
 				<IconApple class="text-3xl mx-7 m1-2" />
 			</ULink>
 		</div>
-		<ul class="flex bg-text-light dark:bg-transparency-dark opacity-90 mt-8 py-2 mx-6">
+		<ul class="flex bg-transparency-light dark:bg-transparency-dark opacity-90 mt-8 py-2 mx-6">
 			<li
 				class="px-4 py-2 border-l border-primary-gray-light dark:border-primary-gray-dark"
 			>
