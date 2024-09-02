@@ -147,6 +147,14 @@ const persian = {
 	riskAgreement: 'توافق نامه ریسک',
 	readMore: 'ادامه مطلب',
 	tether: 'تتر',
+	suggestionsAndCriticism: 'انتقادات و پیشنهادات',
+	callWithSupport: 'تماس با پشتیبانی',
+	activeAward: 'جایزه فعال',
+	receiveAward: 'دریافت جایزه',
+	yourLevel: 'سطح شما',
+	dollarMarketFee: 'کارمزد بازار دلاری',
+	tomanMarketFee: 'کارمزد بازار تومان',
+	getYourReward: 'جایزتو بگیر',
 };
 
 export default persian;

@@ -5,7 +5,7 @@
 	>
 		<div
 			:class="[
-				'relative bg-primary-gray-light md:bg-background-light dark:bg-primary-gray-dark  md:dark:bg-background-dark max-w-52 border border-background-light dark:border-background-dark w-52 h-8 rounded-lg overflow-hidden p-1',
+				'relative bg-primary-gray-light md:bg-background-light dark:bg-primary-gray-dark  md:dark:bg-background-dark md:max-w-52 border border-background-light dark:border-background-dark md:w-52 h-8 rounded-lg overflow-hidden p-1',
 				{
 					'border-primary-yellow-light dark:border-primary-yellow-dark':
 						isFocused && !showAdditionalBox,
@@ -24,9 +24,9 @@
 
 		<div
 			v-if="showBox && !showAdditionalBox"
-			class="absolute -left-20 top-5 py-7 opacity-100 transition-opacity duration-200 z-10"
+			class="absolute left-0 md:-left-20 top-5 py-7 opacity-100 transition-opacity duration-200 z-10"
 		>
-			<div class="bg-hover-light dark:bg-hover-dark shadow-lg rounded p-2">
+			<div class="w-auto md:w-96 bg-hover-light dark:bg-hover-dark shadow-lg rounded p-2">
 				<div class="flex items-center mb-1">
 					<span class="text-sm font-bold ml-1">{{ $t("hotTopics") }}</span>
 					<NuxtImg
@@ -85,9 +85,9 @@
 
 		<div
 			v-if="showAdditionalBox"
-			class="absolute -left-20 top-5 py-7 opacity-100 transition-opacity duration-200 z-20"
+			class="absolute left-0 md:-left-20 top-5 py-7 opacity-100 transition-opacity duration-200 z-20"
 		>
-			<div class="w-full md:w-96 bg-hover-light dark:bg-hover-dark shadow-lg rounded p-2">
+			<div class="w-auto md:w-96 bg-hover-light dark:bg-hover-dark shadow-lg rounded p-2">
 				<div
 					class="bg-background-light dark:bg-background-dark p-2 rounded shadow"
 				>

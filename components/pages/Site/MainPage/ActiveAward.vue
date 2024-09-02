@@ -1,0 +1,50 @@
+<template>
+	<div class="flex justify-between items-center">
+		<IconArrowLeft class="text-9xl text-primary-yellow-light dark:text-primary-yellow-dark" />
+		<div class="flex justify-between items-center px-20">
+			<NuxtImg
+				src="/images/award.png"
+				alt="award"
+			/>
+			<div class="px-20">
+				<div class="flex">
+					<div
+						class="w-8 h-8 bg-primary-yellow-light dark:bg-primary-yellow-dark rounded-full text-center flex justify-center items-center my-auto"
+					>
+						<span class="text-base font-bold">1</span>
+					</div>
+					<h1 class="text-2xl font-bold text-primary-yellow-light dark:text-primary-yellow-dark mr-2">
+						{{ $t("activeAward") }}
+					</h1>
+				</div>
+				<h1 class="text-base font-bold text-black dark:text-white mt-6">
+					جایزه هاتو از
+					<span
+						class="text-base font-bold text-primary-yellow-light dark:text-primary-yellow-dark"
+					>
+						بیت لند</span>
+					گرفتی ؟
+				</h1>
+				<p class="text-sm font-medium text-black dark:text-white mt-2">
+					بیت به شما جایزه داده حالا شما میتوانید با کلیک روی دکمه زیر جایزه
+					خودتان را دریافت کنید!
+				</p>
+				<UButton
+					size="lg"
+					variant="ghost"
+					class="px-8 mt-6 font-bold text-sm text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark"
+				>
+					{{ $t('receiveAward') }}
+				</UButton>
+			</div>
+		</div>
+		<IconArrowRight class="text-9xl text-primary-yellow-light dark:text-primary-yellow-dark" />
+	</div>
+</template>
+
+<script setup lang="ts">
+import IconArrowLeft from '~/assets/svg-icons/arrow-left-orange.svg';
+import IconArrowRight from '~/assets/svg-icons/arrow-right-orange.svg';
+</script>
+
+<style scoped></style>
