@@ -92,6 +92,7 @@ const {
 	refreshCaptcha,
 	generateCaptcha,
 	validateCaptcha,
+	validateData,
 } = useCaptcha();
 
 const isAgreeChecked = ref(false);
@@ -100,10 +101,17 @@ const captchaHasError = ref(false);
 const handleSignup = async () => {
 	if (!validate(SIGNUP.BY_EMAIL)) return;
 
-	await generateCaptcha({
+	const captchaResponse = await generateCaptcha({
 		username: signupByEmailForm.email,
 		action: 'signup',
 	});
+
+	if (captchaResponse && captchaResponse.stateId === 11) {
+		await handleSuccessfulCaptcha();
+	}
+	else {
+		showCaptcha.value = true;
+	}
 };
 
 const captchaRefresh = async () => {
@@ -112,10 +120,35 @@ const captchaRefresh = async () => {
 	captchaHasError.value = true;
 };
 
+const handleSuccessfulCaptcha = async () => {
+	try {
+		if (validateData.value.captchaKey) {
+			signupByEmailForm.captchaKey = validateData.value.captchaKey;
+			await signupByEmail();
+
+			// verificationStore.setVerificationData({
+			// 	verificationId: result.verificationId,
+			// 	userId: result.userId,
+			// 	wloId: result.wloId,
+			// 	type: 'email',
+			// 	username: loginByEmailForm.email,
+			// });
+
+			// router.push({
+			// 	path: '/auth/otp',
+			// 	query: { action: 'login', type: 'email' },
+			// });
+		}
+	}
+	catch (error) {
+		throw new Error(`Login failed. ${error}`);
+	}
+};
+
 const handleCaptchaValidation = async (sliderValue: number) => {
 	try {
 		const { captchaKey, validate } = await validateCaptcha(sliderValue);
-		if (validate) {
+		if (validate && captchaKey) {
 			signupByEmailForm.captchaKey = captchaKey;
 			captchaHasError.value = false;
 			closeCaptcha();

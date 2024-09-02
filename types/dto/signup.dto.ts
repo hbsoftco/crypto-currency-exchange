@@ -1,13 +1,13 @@
 type SignupByMobileDto = {
 	captchaKey: string;
-	refereeCode?: string | null;
+	refereeCode: string | '';
 	password: string;
 	mobile: string;
 };
 
 type SignupByEmailDto = {
 	captchaKey: string;
-	refereeCode?: string | null;
+	refereeCode: string | '';
 	password: string;
 	email: string;
 };

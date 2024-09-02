@@ -14,8 +14,6 @@ type ValidateCaptchaResponse = {
 };
 
 export const useCaptcha = () => {
-	// const toast = useToast();
-
 	const { $api } = useNuxtApp();
 	const auth = authRepository($api);
 
@@ -33,7 +31,7 @@ export const useCaptcha = () => {
 		await generateCaptcha(input);
 	};
 
-	const generateCaptcha = async (input: GenerateCaptchaInput) => {
+	const generateCaptcha = async (input: GenerateCaptchaInput): Promise<CaptchaResponse> => {
 		loading.value = true;
 		resetValidateDate();
 		try {
@@ -43,17 +41,26 @@ export const useCaptcha = () => {
 				captchaType: 'Slide',
 			});
 
+			captchaData.value = captchaResponse;
+
 			if (captchaResponse.stateId !== 11) {
 				captchaData.value = captchaResponse;
 				showCaptcha.value = true;
 			}
 			else {
 				captchaData.value.id = captchaResponse.id;
+				validateData.value.captchaKey = captchaData.value.id;
+				validateData.value.validate = true;
+				validateData.value.statusCode = 200;
+
 				showCaptcha.value = false;
 			}
+
+			return captchaResponse;
 		}
+		// eslint-disable-next-line no-useless-catch
 		catch (error) {
-			return error;
+			throw error;
 		}
 		finally {
 			loading.value = false;
@@ -122,6 +129,7 @@ export const useCaptcha = () => {
 	};
 
 	return {
+		validateData,
 		captchaData,
 		showCaptcha,
 		loading,

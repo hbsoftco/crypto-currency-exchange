@@ -63,6 +63,7 @@ const {
 	refreshCaptcha,
 	generateCaptcha,
 	validateCaptcha,
+	validateData,
 } = useCaptcha();
 
 const verificationStore = useVerificationStore();
@@ -74,16 +75,48 @@ const captchaHasError = ref(false);
 const handleLogin = async () => {
 	if (!validate(LOGIN.BY_EMAIL)) return;
 
-	await generateCaptcha({
+	const captchaResponse = await generateCaptcha({
 		username: loginByEmailForm.email,
 		action: 'login',
 	});
+
+	if (captchaResponse && captchaResponse.stateId === 11) {
+		await handleSuccessfulCaptcha();
+	}
+	else {
+		showCaptcha.value = true;
+	}
 };
 
 const captchaRefresh = async () => {
 	captchaHasError.value = false;
 	await refreshCaptcha({ username: loginByEmailForm.email, action: 'signup' });
 	captchaHasError.value = true;
+};
+
+const handleSuccessfulCaptcha = async () => {
+	try {
+		if (validateData.value.captchaKey) {
+			loginByEmailForm.captchaKey = validateData.value.captchaKey;
+			const { result } = await loginByEmail();
+
+			verificationStore.setVerificationData({
+				verificationId: result.verificationId,
+				userId: result.userId,
+				wloId: result.wloId,
+				type: 'email',
+				username: loginByEmailForm.email,
+			});
+
+			router.push({
+				path: '/auth/otp',
+				query: { action: 'login', type: 'email' },
+			});
+		}
+	}
+	catch (error) {
+		throw new Error(`Login failed. ${error}`);
+	}
 };
 
 const handleCaptchaValidation = async (sliderValue: number) => {
