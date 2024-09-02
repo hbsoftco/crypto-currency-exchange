@@ -8,6 +8,7 @@
 					<NuxtImg
 						src="/images/svg/brand-logo.svg"
 						alt="Brand Logo"
+						class="w-20 h-8"
 					/>
 				</ULink>
 
