@@ -2,7 +2,7 @@
 	<div class="relative">
 		<!-- <ClientOnly> -->
 		<NuxtImg
-			src="/images/svg/site/cover.svg"
+			src="/images/svg/site/banner-mobile-light.svg"
 			alt="bg-cover"
 			class="w-full"
 		/>

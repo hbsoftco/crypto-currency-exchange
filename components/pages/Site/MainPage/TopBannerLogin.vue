@@ -11,7 +11,7 @@
 				alt="fish"
 				class="w-6 h-6 ml-2"
 			/>
-			<span>{{ $t("yourLevel") }}:</span><span>اسکلت</span>
+			<span class="ml-1">{{ $t("yourLevel") }}: </span><span>اسکلت </span>
 		</div>
 		<div
 			class="my-6 flex flex-col text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
@@ -38,21 +38,21 @@
 			>
 				{{ $t("depositToman") }}
 			</UButton>
-			<div
-				class="flex items-center bg-transparent-light dark:bg-transparency-dark opacity-70 mx-1"
+			<ULink
+				class="flex items-center bg-text-light dark:bg-transparency-dark opacity-70 mx-1"
 			>
 				<IconQR class="text-3xl mx-7 m1-2" />
-			</div>
-			<div
-				class="flex items-center bg-transparent-light dark:bg-transparency-dark opacity-70 mx-1"
+			</ULink>
+			<ULink
+				class="flex items-center bg-text-light dark:bg-transparency-dark opacity-70 mx-1"
 			>
 				<IconPlayStore class="text-3xl mx-7 m1-2" />
-			</div>
-			<div
-				class="flex items-center bg-transparent-light dark:bg-transparency-dark opacity-70 mx-1"
+			</ULink>
+			<ULink
+				class="flex items-center bg-text-light dark:bg-transparency-dark opacity-70 mx-1"
 			>
 				<IconApple class="text-3xl mx-7 m1-2" />
-			</div>
+			</ULink>
 		</div>
 		<ul class="flex bg-text-light dark:bg-transparency-dark opacity-90 mt-8 py-2 mx-6">
 			<li
