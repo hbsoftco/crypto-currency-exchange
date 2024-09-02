@@ -23,12 +23,11 @@
 					</tr>
 				</thead>
 				<tbody>
-					<TradingMarketRow />
-					<TradingMarketRow />
-					<TradingMarketRow />
-					<TradingMarketRow />
-					<TradingMarketRow />
-					<TradingMarketRow />
+					<TradingMarketRow
+						v-for="(row, index) in marketData || []"
+						:key="row.id || index"
+						:row="row"
+					/>
 				</tbody>
 			</table>
 
@@ -52,4 +51,24 @@
 <script setup lang="ts">
 import TradingMarketsHeader from './TradingMarketsHeader.vue';
 import TradingMarketRow from './TradingMarketRow.vue';
+
+const marketStore = useMarketStore();
+const baseDataStore = useBaseDataStore();
+const { marketBriefItems } = baseDataStore;
+
+// await baseDataStore.fetchMarketBriefItems();
+await useAsyncData('fetchMarketBriefItems', () => baseDataStore.fetchMarketBriefItems());
+
+console.log(marketBriefItems);
+
+const params = ref({
+	sortMode: 'ByMarketCaps',
+	currencyQuoteId: '1',
+	marketTypeId: 'Spot',
+	tagTypeId: '1',
+});
+
+const { data: marketData } = await useAsyncData('fetchMarketList', () =>
+	marketStore.fetchMarketListWithSparkLineChart(params.value),
+);
 </script>
