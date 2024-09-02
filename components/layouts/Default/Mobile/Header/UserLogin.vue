@@ -452,9 +452,9 @@
 				<ULink to="">
 					<IconTwitter class="text-3xl text-subtle-text-light dark:text-subtle-text-dark" />
 				</ULink>
-				<ulink to="">
+				<ULink to="">
 					<IconLinkedin class="text-3xl text-subtle-text-light dark:text-subtle-text-dark" />
-				</ulink>
+				</ULink>
 				<ULink to="">
 					<IconInstagram class="text-3xl text-subtle-text-light dark:text-subtle-text-dark" />
 				</ULink>
