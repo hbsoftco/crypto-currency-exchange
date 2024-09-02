@@ -3,6 +3,11 @@ type GetPinParams = {
 	group?: string;
 };
 
+type GetLanguageParams = {
+	languageId: number;
+};
+
 export type {
 	GetPinParams,
+	GetLanguageParams,
 };

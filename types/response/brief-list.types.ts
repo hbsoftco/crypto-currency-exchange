@@ -1,4 +1,4 @@
-type BriefItem = {
+type MarketBriefItem = {
 	id: number;
 	cbId: number;
 	cqId: number;
@@ -8,12 +8,18 @@ type BriefItem = {
 	tickSize: string;
 };
 
-type BriefListResponse = {
-	result: BriefItem[];
+type MarketBriefListResponse = {
+	result: MarketBriefItem[];
+	statusCode: number;
+};
+
+type CurrencyBriefListResponse = {
+	result: MarketBriefItem[];
 	statusCode: number;
 };
 
 export type {
-	BriefListResponse,
-	BriefItem,
+	CurrencyBriefListResponse,
+	MarketBriefListResponse,
+	MarketBriefItem,
 };

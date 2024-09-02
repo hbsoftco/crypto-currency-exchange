@@ -1,20 +1,21 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { GetPinParams } from '~/types/base.types';
-import type { BriefListResponse } from '~/types/response/brief-list.types';
+import type { GetLanguageParams, GetPinParams } from '~/types/base.types';
+import type { MarketBriefListResponse, CurrencyBriefListResponse } from '~/types/response/brief-list.types';
 import type { PinListResponse } from '~/types/response/pin-list.types';
 import type { GetQuoteParams, QuoteListResponse } from '~/types/response/quote-list.types';
-import type { GetTagParams, TagResponse } from '~/types/response/tag.types';
+import type { TagResponse } from '~/types/response/tag.types';
 
 type BaseDateRepository = {
-	getTagList: (params: GetTagParams) => Promise<TagResponse>;
+	getTagList: (params: GetLanguageParams) => Promise<TagResponse>;
 	getPinList: (params: GetPinParams) => Promise<PinListResponse>;
 	getQuoteList: (params: GetQuoteParams) => Promise<QuoteListResponse>;
-	getBriefList: () => Promise<BriefListResponse>;
+	getMarketBriefList: () => Promise<MarketBriefListResponse>;
+	getCurrencyBriefList: (params: GetLanguageParams) => Promise<CurrencyBriefListResponse>;
 };
 
 export const baseDateRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): BaseDateRepository => ({
-	async getTagList({ languageId }: GetTagParams): Promise<TagResponse> {
+	async getTagList({ languageId }: GetLanguageParams): Promise<TagResponse> {
 		const query = new URLSearchParams({ languageId: languageId.toString() });
 		return fetch<TagResponse>(`/v1/currency/routine/tag_list?${query.toString()}`);
 	},
@@ -27,7 +28,11 @@ export const baseDateRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): B
 		return fetch<QuoteListResponse>(`/v1/market/routine/quote_list?${query.toString()}`,
 		);
 	},
-	async getBriefList(): Promise<BriefListResponse> {
-		return fetch<BriefListResponse>(`/v1/market/routine/brief_list`);
+	async getMarketBriefList(): Promise<MarketBriefListResponse> {
+		return fetch<MarketBriefListResponse>(`/v1/market/routine/brief_list`);
+	},
+	async getCurrencyBriefList({ languageId }: GetLanguageParams): Promise<CurrencyBriefListResponse> {
+		const query = new URLSearchParams({ languageId: languageId.toString() });
+		return fetch<CurrencyBriefListResponse>(`/v1/currency/routine/brief_list?${query.toString()}`);
 	},
 });

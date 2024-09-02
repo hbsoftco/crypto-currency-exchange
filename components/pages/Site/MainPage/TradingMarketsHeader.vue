@@ -62,6 +62,19 @@
 <script setup lang="ts">
 import TradingMarketsHeaderItems from './TradingMarketsHeaderItems.vue';
 
+import { Language } from '~/utils/enums/language.enum';
+
+const baseDataStore = useBaseDataStore();
+
+await baseDataStore.fetchTagItems();
+
+baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
+
+const { currencyBriefItems, isCurrencyBriefLoading } = baseDataStore;
+
+console.log('currencyBriefItems', currencyBriefItems);
+console.log('isCurrencyBriefLoading', isCurrencyBriefLoading);
+
 const currencyOptions = [
 	[
 		{

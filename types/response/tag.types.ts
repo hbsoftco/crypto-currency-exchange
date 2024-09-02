@@ -8,12 +8,7 @@ type Tag = {
 	tag: string;
 };
 
-type GetTagParams = {
-	languageId: number;
-};
-
 export type {
-	GetTagParams,
 	TagResponse,
 	Tag,
 };

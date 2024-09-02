@@ -7,18 +7,20 @@ import type { PinListRow } from '~/types/response/pin-list.types';
 import { baseDateRepository } from '~/repositories/base-date.repository';
 import type { Tag } from '~/types/response/tag.types';
 import type { QuoteListResponse } from '~/types/response/quote-list.types';
-import type { BriefItem } from '~/types/response/brief-list.types';
+import type { CurrencyBriefListResponse, MarketBriefItem } from '~/types/response/brief-list.types';
 
 export const useBaseDataStore = defineStore('baseData', () => {
 	const { $api } = useNuxtApp();
 
 	const slides = ref<SliderItem[]>([]);
 	const isSliderDataFetched = ref(false);
+	const isSliderLoading = ref(false);
 
 	const fetchSlides = async () => {
-		if (isSliderDataFetched.value) return;
+		if (isSliderDataFetched.value || isSliderLoading.value) return;
 
 		const slider = sliderRepository($api);
+		isSliderLoading.value = true;
 
 		try {
 			const response = await slider.getSlides({ languageId: Language.PERSIAN, group: 'Home_Slider' });
@@ -33,15 +35,20 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		catch (error) {
 			throw Error(String(error));
 		}
+		finally {
+			isSliderLoading.value = false;
+		}
 	};
 
 	const tagItems = ref<Tag[]>([]);
 	const isTagDataFetched = ref(false);
+	const isTagLoading = ref(false);
 
 	const fetchTagItems = async () => {
-		if (isTagDataFetched.value) return;
+		if (isTagDataFetched.value || isTagLoading.value) return;
 
 		const api = baseDateRepository($api);
+		isTagLoading.value = true;
 
 		try {
 			const response = await api.getTagList({ languageId: Language.PERSIAN });
@@ -53,15 +60,20 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		catch (error) {
 			throw Error(String(error));
 		}
+		finally {
+			isTagLoading.value = false;
+		}
 	};
 
 	const pinItems = ref<PinListRow[]>([]);
 	const isPinDataFetched = ref(false);
+	const isPinLoading = ref(false);
 
 	const fetchPinItems = async () => {
-		if (isPinDataFetched.value) return;
+		if (isPinDataFetched.value || isPinLoading.value) return;
 
 		const api = baseDateRepository($api);
+		isPinLoading.value = true;
 
 		try {
 			const response = await api.getPinList({ languageId: Language.PERSIAN, group: 'Home_Pinbar' });
@@ -73,15 +85,20 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		catch (error) {
 			throw Error(String(error));
 		}
+		finally {
+			isPinLoading.value = false;
+		}
 	};
 
 	const quoteItems = ref<QuoteListResponse['result']>([]);
 	const isQuoteDataFetched = ref(false);
+	const isQuoteLoading = ref(false);
 
 	const fetchQuoteItems = async (marketTypeId: number) => {
-		if (isQuoteDataFetched.value) return;
+		if (isQuoteDataFetched.value || isQuoteLoading.value) return;
 
 		const api = baseDateRepository($api);
+		isQuoteLoading.value = true;
 
 		try {
 			const response = await api.getQuoteList({ marketTypeId });
@@ -93,33 +110,67 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		catch (error) {
 			throw Error(String(error));
 		}
+		finally {
+			isQuoteLoading.value = false;
+		}
 	};
 
-	const briefItems = ref<BriefItem[]>([]);
-	const isBriefDataFetched = ref(false);
+	const marketBriefItems = ref<MarketBriefItem[]>([]);
+	const isMarketBriefDataFetched = ref(false);
+	const isMarketBriefLoading = ref(false);
 
-	const fetchBriefItems = async () => {
-		if (isBriefDataFetched.value) return;
+	const fetchMarketBriefItems = async () => {
+		if (isMarketBriefDataFetched.value || isMarketBriefLoading.value) return;
 
 		const api = baseDateRepository($api);
+		isMarketBriefLoading.value = true;
 
 		try {
-			const response = await api.getBriefList();
+			const response = await api.getMarketBriefList();
 			if (response.result) {
-				briefItems.value = response.result;
-				isBriefDataFetched.value = true;
+				marketBriefItems.value = response.result;
+				isMarketBriefDataFetched.value = true;
 			}
 		}
 		catch (error) {
 			throw Error(String(error));
 		}
+		finally {
+			isMarketBriefLoading.value = false;
+		}
+	};
+
+	const currencyBriefItems = ref<CurrencyBriefListResponse['result']>([]);
+	const isCurrencyBriefDataFetched = ref(false);
+	const isCurrencyBriefLoading = ref(false);
+
+	const fetchCurrencyBriefItems = async (languageId: number) => {
+		if (isCurrencyBriefDataFetched.value || isCurrencyBriefLoading.value) return;
+
+		const api = baseDateRepository($api);
+		isCurrencyBriefLoading.value = true;
+
+		try {
+			const response = await api.getCurrencyBriefList({ languageId });
+			if (response.result) {
+				currencyBriefItems.value = response.result;
+				isCurrencyBriefDataFetched.value = true;
+			}
+		}
+		catch (error) {
+			throw Error(String(error));
+		}
+		finally {
+			isCurrencyBriefLoading.value = false;
+		}
 	};
 
 	return {
-		slides, fetchSlides,
-		pinItems, fetchPinItems,
-		tagItems, fetchTagItems,
-		quoteItems, fetchQuoteItems,
-		briefItems, fetchBriefItems,
+		slides, fetchSlides, isSliderLoading,
+		pinItems, fetchPinItems, isPinLoading,
+		tagItems, fetchTagItems, isTagLoading,
+		quoteItems, fetchQuoteItems, isQuoteLoading,
+		marketBriefItems, fetchMarketBriefItems, isMarketBriefLoading,
+		currencyBriefItems, fetchCurrencyBriefItems, isCurrencyBriefLoading,
 	};
 });
