@@ -3,11 +3,16 @@ type GetQuoteParams = {
 };
 
 type QuoteListResponse = {
-	result: { id: number }[];
+	result: QuoteItem[];
 	statusCode: number;
 };
 
+type QuoteItem = {
+	id: number;
+};
+
 export type {
+	QuoteItem,
 	QuoteListResponse,
 	GetQuoteParams,
 };

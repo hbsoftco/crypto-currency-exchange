@@ -62,30 +62,26 @@
 <script setup lang="ts">
 import TradingMarketsHeaderItems from './TradingMarketsHeaderItems.vue';
 
+import { MarketType } from '~/utils/enums/market.enum';
 import { Language } from '~/utils/enums/language.enum';
+import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
 
 const baseDataStore = useBaseDataStore();
-const { currencyBriefItems, isCurrencyBriefLoading } = baseDataStore;
+const { getMatchedCurrencyItems } = baseDataStore;
 
 await baseDataStore.fetchTagItems();
-
 await baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
+await baseDataStore.fetchQuoteItems(MarketType.SPOT);
 
-console.log('currencyBriefItems', currencyBriefItems);
-console.log('isCurrencyBriefLoading', isCurrencyBriefLoading);
-
-const currencyOptions = [
-	[
-		{
-			label: useT('toman'),
-			click: () => handleSelectCurrency('toman'),
-		},
-		{
-			label: useT('tether'),
-			click: () => handleSelectCurrency('tether'),
-		},
-	],
-];
+const currencyOptions = computed(() => {
+	return [
+		getMatchedCurrencyItems.map((item) => ({
+			id: item.id,
+			label: item.cName,
+			click: () => handleSelectCurrency(item),
+		})),
+	];
+});
 
 const marketFilters = [
 	[
@@ -115,8 +111,8 @@ const marketFilters = [
 const selectedCurrency = ref({ label: useT('toman') });
 const selectedMarketFilter = ref({ label: useT('hottest') });
 
-const handleSelectCurrency = (selectedLabel: string) => {
-	selectedCurrency.value = { label: useT(selectedLabel) };
+const handleSelectCurrency = (selectedItem: CurrencyBriefItem) => {
+	selectedCurrency.value = { label: selectedItem.cName };
 };
 
 const handleSelectMarketFilter = (selectedLabel: string) => {

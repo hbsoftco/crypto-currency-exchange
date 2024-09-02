@@ -6,7 +6,7 @@ import type { SliderItem } from '~/types/response/slider.types';
 import type { PinListRow } from '~/types/response/pin-list.types';
 import { baseDateRepository } from '~/repositories/base-date.repository';
 import type { Tag } from '~/types/response/tag.types';
-import type { QuoteListResponse } from '~/types/response/quote-list.types';
+import type { QuoteItem } from '~/types/response/quote-list.types';
 import type { CurrencyBriefItem, MarketBriefItem } from '~/types/response/brief-list.types';
 
 export const useBaseDataStore = defineStore('baseData', () => {
@@ -90,7 +90,7 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		}
 	};
 
-	const quoteItems = ref<QuoteListResponse['result']>([]);
+	const quoteItems = ref<QuoteItem[]>([]);
 	const isQuoteDataFetched = ref(false);
 	const isQuoteLoading = ref(false);
 
@@ -165,6 +165,12 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		}
 	};
 
+	const getMatchedCurrencyItems = computed((): CurrencyBriefItem[] => {
+		return quoteItems.value
+			.map((quote) => currencyBriefItems.value.find((currency) => currency.id === quote.id))
+			.filter((item) => item !== undefined) as CurrencyBriefItem[];
+	});
+
 	return {
 		slides, fetchSlides, isSliderLoading,
 		pinItems, fetchPinItems, isPinLoading,
@@ -172,5 +178,6 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		quoteItems, fetchQuoteItems, isQuoteLoading,
 		marketBriefItems, fetchMarketBriefItems, isMarketBriefLoading,
 		currencyBriefItems, fetchCurrencyBriefItems, isCurrencyBriefLoading,
+		getMatchedCurrencyItems,
 	};
 });
