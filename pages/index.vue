@@ -1,6 +1,9 @@
 <template>
 	<div>
-		<section class="hidden md:block">
+		<section
+			v-if="!authStore.isLoggedIn"
+			class="hidden md:block"
+		>
 			<PagesImageCover>
 				<UContainer>
 					<TopBanner />
@@ -8,10 +11,27 @@
 			</PagesImageCover>
 		</section>
 
+		<section
+			v-if="authStore.isLoggedIn"
+			class="hidden md:block"
+		>
+			<PagesImageCoverLogin>
+				<UContainer>
+					<PagesSiteMainPageTopBannerLogin />
+				</UContainer>
+			</PagesImageCoverLogin>
+		</section>
+
 		<section>
 			<UContainer>
 				<Info class="hidden md:block" />
 				<TopSlider />
+			</UContainer>
+		</section>
+
+		<section>
+			<UContainer>
+				<PagesSiteMainPageActiveAward />
 			</UContainer>
 		</section>
 
@@ -66,4 +86,8 @@ import TradingMarkets from '~/components/pages/Site/MainPage/TradingMarkets.vue'
 // const tags = currencyRepository($api);
 
 // const { data } = await useAsyncData(() => tags.getTagList());
+
+const authStore = useAuthStore();
+
+authStore.loadAuthData();
 </script>

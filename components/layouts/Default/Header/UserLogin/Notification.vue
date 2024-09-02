@@ -23,11 +23,11 @@
 			</div>
 			<div
 				v-if="hover"
-				class="absolute -left-20 top-5 py-6 opacity-100 transition-opacity duration-200 z-10"
+				class="absolute left-0  md:-left-20 top-5 py-6 opacity-100 transition-opacity duration-200 z-10"
 				@mouseover="showMenu"
 				@mouseleave="hideMenu"
 			>
-				<div class="w-96 bg-hover-light dark:bg-hover-dark shadow-lg rounded p-4">
+				<div class="w-72 md:w-96 bg-hover-light dark:bg-hover-dark shadow-lg rounded p-4">
 					<div>
 						<div
 							class="flex justify-between items-center p-2 bg-background-light dark:bg-background-dark"
