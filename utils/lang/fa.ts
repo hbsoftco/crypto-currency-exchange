@@ -157,6 +157,8 @@ const persian = {
 	getYourReward: 'جایزتو بگیر',
 	compeleteAccount: 'تکمیل حساب کاربری',
 	cryptocurrencyDeposit: 'واریز رمز ارز',
+	currenciesWayBitland: 'ارز های در راه بیت لند',
+	marketStatisticalInformation: 'اطلاعات آماری بازار',
 };
 
 export default persian;
