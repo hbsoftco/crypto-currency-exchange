@@ -38,7 +38,7 @@
 					alt="wallet"
 					class="w-6 h-6 mb-2"
 				/>
-				<span>{{ $t('fees') }}</span>
+				<span class="text-sm">{{ $t('fees') }}</span>
 			</ULink>
 			<ULink
 				to=""
@@ -49,7 +49,7 @@
 					alt="invite"
 					class="w-6 h-6 mb-2"
 				/>
-				<span>{{ $t('inviteFriends') }}</span>
+				<span class="text-sm">{{ $t('inviteFriends') }}</span>
 			</ULink>
 			<ULink
 				to=""
@@ -60,7 +60,7 @@
 					alt="cigarettes"
 					class="w-6 h-6 mb-2"
 				/>
-				<span>{{ $t('quickTrade') }}</span>
+				<span class="text-sm">{{ $t('quickTrade') }}</span>
 			</ULink>
 			<ULink
 				to=""
@@ -71,7 +71,7 @@
 					alt="blog"
 					class="w-6 h-6 mb-2"
 				/>
-				<span>{{ $t('blog') }}</span>
+				<span class="text-sm">{{ $t('blog') }}</span>
 			</ULink>
 			<ULink
 				to=""
@@ -82,7 +82,7 @@
 					alt="question"
 					class="w-6 h-6 mb-2"
 				/>
-				<span>{{ $t('guid') }}</span>
+				<span class="text-sm">{{ $t('guid') }}</span>
 			</ULink>
 			<ULink
 				to=""
@@ -93,7 +93,7 @@
 					alt="more"
 					class="w-6 h-6 mb-2"
 				/>
-				<span>{{ $t('more') }}</span>
+				<span class="text-sm">{{ $t('more') }}</span>
 			</ULink>
 		</div>
 	</div>

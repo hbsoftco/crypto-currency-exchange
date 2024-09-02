@@ -18,7 +18,7 @@
 		</td>
 		<td class="">
 			<ChangeIndicator :change="parseFloat(row.priceChangePercIn24H)" />
-			{{ row.id }}
+			<!-- {{ row.id }} -->
 		</td>
 		<td class="py-2  hidden md:block">
 			<div class="flex justify-center items-center max-w-40 m-auto">

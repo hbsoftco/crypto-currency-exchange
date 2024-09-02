@@ -1,5 +1,5 @@
 <template>
-	<div class="mt-20 2xl:mt-20">
+	<div class="mt-40 2xl:mt-80">
 		<h1 class="text-4xl font-bold">
 			با
 			<span class="text-primary-yellow-light dark:text-primary-yellow-dark">بیت لند</span>
@@ -17,23 +17,26 @@
 			class="my-6 flex flex-col text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
 		>
 			<div class="mb-4">
-				<span>{{ $t("dollarMarketFee") }}،</span><span>  میکر : ۰.۲% تیکر: ۰.۴%</span>
+				<span>{{ $t("dollarMarketFee") }}،</span><span>  میکر: ۰.۲% تیکر: ۰.۴%</span>
 			</div>
 			<div>
-				<span>{{ $t("tomanMarketFee") }}،</span><span>  میکر : ۰.۲% تیکر: ۰.۴%</span>
+				<span>{{ $t("tomanMarketFee") }}،</span><span>  میکر: ۰.۲% تیکر: ۰.۴%</span>
 			</div>
 		</div>
-		<div class="flex">
+		<ULink
+			to=""
+			class="flex"
+		>
 			<span
 				class="text-base font-medium text-primary-yellow-light dark:text-primary-yellow-dark"
 			>{{ $t("showMore") }}</span>
 			<IconLeftQR
 				class="text-2xl text-primary-yellow-light dark:text-primary-yellow-dark mr-2"
 			/>
-		</div>
+		</ULink>
 		<div class="flex mt-6">
 			<UButton
-				class="px-8 font-medium text-sm mx-1"
+				class="px-20 font-bold text-sm ml-1"
 				size="lg"
 			>
 				{{ $t("depositToman") }}
@@ -54,7 +57,7 @@
 				<IconApple class="text-3xl mx-7 m1-2" />
 			</ULink>
 		</div>
-		<ul class="flex bg-transparency-light dark:bg-transparency-dark opacity-90 mt-8 py-2 mx-6">
+		<ul class="flex bg-transparency-light dark:bg-transparency-dark opacity-90 mt-8 py-2 rounded-md">
 			<li
 				class="px-4 py-2 border-l border-primary-gray-light dark:border-primary-gray-dark"
 			>

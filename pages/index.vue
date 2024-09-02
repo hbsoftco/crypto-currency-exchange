@@ -4,22 +4,22 @@
 			v-if="!authStore.isLoggedIn"
 			class="hidden md:block"
 		>
-			<PagesImageCover>
+			<ImageCover>
 				<UContainer>
 					<TopBanner />
 				</UContainer>
-			</PagesImageCover>
+			</ImageCover>
 		</section>
 
 		<section
 			v-if="authStore.isLoggedIn"
 			class="hidden md:block"
 		>
-			<PagesImageCoverLogin>
+			<ImageCoverLogin>
 				<UContainer>
-					<PagesSiteMainPageTopBannerLogin />
+					<TopBannerLogin />
 				</UContainer>
-			</PagesImageCoverLogin>
+			</ImageCoverLogin>
 		</section>
 
 		<section>
@@ -31,14 +31,14 @@
 
 		<section class="block md:hidden">
 			<UContainer>
-				<PagesSiteMainPageTradingProgress />
-				<PagesSiteMainPageQuickMenuMobile />
+				<TradingProgress />
+				<QuickMenuMobile />
 			</UContainer>
 		</section>
 
 		<section class="hidden md:block">
 			<UContainer>
-				<PagesSiteMainPageActiveAward />
+				<ActiveAward />
 			</UContainer>
 		</section>
 
@@ -83,12 +83,18 @@
 
 <script setup lang="ts">
 import DownloadApp from '~/components/common/DownloadApp.vue';
+import ImageCover from '~/components/pages/ImageCover.vue';
+import ImageCoverLogin from '~/components/pages/ImageCoverLogin.vue';
+import ActiveAward from '~/components/pages/Site/MainPage/ActiveAward.vue';
 import Info from '~/components/pages/Site/MainPage/Info.vue';
 // import AlwaysBitland from '~/components/pages/Site/MainPage/AlwaysBitland.vue';
 import Prize from '~/components/pages/Site/MainPage/Prize.vue';
+import QuickMenuMobile from '~/components/pages/Site/MainPage/QuickMenuMobile.vue';
 import TopBanner from '~/components/pages/Site/MainPage/TopBanner.vue';
+import TopBannerLogin from '~/components/pages/Site/MainPage/TopBannerLogin.vue';
 import TopSlider from '~/components/pages/Site/MainPage/TopSlider.vue';
 import TradingMarkets from '~/components/pages/Site/MainPage/TradingMarkets.vue';
+import TradingProgress from '~/components/pages/Site/MainPage/TradingProgress.vue';
 // import WhyBitland from '~/components/pages/Site/MainPage/WhyBitland.vue';
 // import { currencyRepository } from '~/repositories/currency.repository';
 
