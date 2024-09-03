@@ -159,6 +159,24 @@ const persian = {
 	cryptocurrencyDeposit: 'واریز رمز ارز',
 	currenciesWayBitland: 'ارز های در راه بیت لند',
 	marketStatisticalInformation: 'اطلاعات آماری بازار',
+	marketSpot: 'بازارهای اسپات',
+	marketFutures: 'بازارهای فیوچرز',
+	searchMarket: 'جستجوی رمزارز / ETF / Futures',
+	tradingPair: 'جفت معاملاتی',
+	currentPrice: 'قیمت لحظه ای',
+	roof24h: 'سقف (24H)',
+	floor24h: 'کف (24H)',
+	volume24h: 'حجم (24H)',
+	liveInstantPriceInformation: 'داده ها و اطلاعات قیمت زنده و لحظه ای',
+	pricePerformanceAgainstDollar: 'عملکرد قیمت نسبت به دلار',
+	course: 'دوره',
+	changeUSD: 'تغییر (USD)',
+	changePersent: 'تغییر (%)',
+	today: 'امروز',
+	from30DaysAgo: 'از ۳۰ روز پیش',
+	from60DaysAgo: 'از ۶۰ روز پیش',
+	from90DaysAgo: 'از ۹۰ روز پیش',
+
 };
 
 export default persian;
