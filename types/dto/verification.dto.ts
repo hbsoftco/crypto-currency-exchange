@@ -1,7 +1,7 @@
 type CheckCodeDto = {
-	verificationId: number;
-	verificationCode: string;
-	userId: number;
+	verificationId: number | null;
+	verificationCode: string | null;
+	userId: number | null;
 };
 
 export type {

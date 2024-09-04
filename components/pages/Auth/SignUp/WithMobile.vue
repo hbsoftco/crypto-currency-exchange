@@ -25,14 +25,15 @@
 			/>
 		</div>
 		<div class="my-8">
-			<FormsFieldInput
-				id="refereeCode"
+			<ReferralFieldInput
+				id="mobile_refereeCode"
 				v-model="refereeCode"
 				type="text"
 				input-class="text-left"
 				label="haveReferralCode"
 				placeholder=""
 				dir="ltr"
+				:is-visible="isVisible"
 			/>
 		</div>
 		<div class="mb-3">
@@ -79,13 +80,27 @@
 import SlideCaptcha from '~/components/ui/SlideCaptcha.vue';
 import { useCaptcha } from '~/composables/auth/useCaptcha';
 import { useAuth } from '~/composables/auth/useAuth';
+import ReferralFieldInput from '~/components/forms/ReferralFieldInput.vue';
 
 const { signupByMobile } = useAuth();
+
+interface PropsDefinition {
+	inviter: string | null;
+}
+
+const props = defineProps<PropsDefinition>();
 
 const mobile = ref<string>('+989155859539');
 const refereeCode = ref<string>('');
 const password = ref<string>('123@qweQWE');
 const isAgreeChecked = ref<boolean>(false);
+
+const isVisible = ref(false);
+
+if (props.inviter) {
+	refereeCode.value = props.inviter;
+	isVisible.value = true;
+}
 
 const {
 	captchaData,
@@ -132,7 +147,7 @@ const doSignup = async () => {
 		captchaKey: captchaData.value.id,
 		password: password.value,
 		mobile: mobile.value,
-		refereeCode: refereeCode.value || null,
+		refereeCode: refereeCode.value || '',
 	});
 
 	if (response instanceof Error) {

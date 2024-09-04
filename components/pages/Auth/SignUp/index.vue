@@ -12,13 +12,13 @@
 					v-if="item.key === 'phoneNumber'"
 					class="space-y-3"
 				>
-					<PagesAuthSignUpWithMobile />
+					<PagesAuthSignUpWithMobile :inviter="inviter ? String(inviter) : null" />
 				</div>
 				<div
 					v-else-if="item.key === 'email'"
 					class="space-y-3"
 				>
-					<PagesAuthSignUpWithEmail />
+					<PagesAuthSignUpWithEmail :inviter="inviter ? String(inviter) : null" />
 				</div>
 			</template>
 		</UTabs>
@@ -39,7 +39,10 @@
 	</PagesAuth>
 </template>
 
-<script setup>
+<script setup lang="ts">
+const route = useRoute();
+const inviter = route.query.inviter || null;
+
 const items = [
 	{
 		key: 'phoneNumber',

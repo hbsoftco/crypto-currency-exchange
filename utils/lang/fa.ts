@@ -157,6 +157,9 @@ const persian = {
 	getYourReward: 'جایزتو بگیر',
 	compeleteAccount: 'تکمیل حساب کاربری',
 	cryptocurrencyDeposit: 'واریز رمز ارز',
+	activateAccount: 'فعال‌سازی حساب',
+	incorrectInformation: 'آیا اطلاعات وارد شده صحیح نیست؟',
+	resend: 'ارسال مجدد',
 };
 
 export default persian;

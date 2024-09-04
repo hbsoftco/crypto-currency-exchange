@@ -4,6 +4,8 @@
 			:src="coin.icon?.imageUrl"
 			alt="Bitcoin Logo"
 			class="w-4 h-4 md:w-8 md:h-8 rounded-full"
+			format="webp"
+			densities="x1"
 		/>
 		<div class="mr-2 md:mr-4">
 			<div
