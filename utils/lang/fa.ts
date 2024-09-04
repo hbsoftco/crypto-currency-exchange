@@ -160,6 +160,10 @@ const persian = {
 	activateAccount: 'فعال‌سازی حساب',
 	incorrectInformation: 'آیا اطلاعات وارد شده صحیح نیست؟',
 	resend: 'ارسال مجدد',
+	USDT: 'USDT',
+	BTC: 'BTC',
+	freeFees: 'کارمزد رایگان',
+	allItems: 'همه',
 };
 
 export default persian;

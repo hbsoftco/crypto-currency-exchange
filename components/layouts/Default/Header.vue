@@ -16,9 +16,9 @@
 					<li class="flex items-center space-x-2">
 						<LayoutsDefaultHeaderQuickAccessMenu />
 					</li>
-					<li class="flex items-center space-x-2 ">
+					<li class="flex items-center space-x-2">
 						<ULink to="#">
-							<span class=" text-sm font-medium hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all">{{ $t('market') }}</span>
+							<span class="text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all">{{ $t('market') }}</span>
 						</ULink>
 					</li>
 					<li class="flex items-center space-x-2">
@@ -29,22 +29,22 @@
 					</li>
 					<li class="flex items-center">
 						<ULink to="#">
-							<span class=" text-sm font-medium hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all">{{ $t('awards') }}</span>
+							<span class="text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all">{{ $t('awards') }}</span>
 						</ULink>
 					</li>
 					<li class="flex items-center">
 						<ULink to="#">
-							<span class=" text-sm font-medium hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all"> {{ $t('inviteFriends') }} </span>
+							<span class="text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all"> {{ $t('inviteFriends') }} </span>
 						</ULink>
 					</li>
 					<li class="flex items-center">
 						<ULink to="#">
-							<span class=" text-sm font-medium hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all"> {{ $t('blog') }} </span>
+							<span class="text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all"> {{ $t('blog') }} </span>
 						</ULink>
 					</li>
 					<li class="flex items-center">
 						<ULink to="#">
-							<span class=" text-sm font-medium hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all"> {{ $t('guid') }} </span>
+							<span class="text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all"> {{ $t('guid') }} </span>
 						</ULink>
 					</li>
 				</ul>

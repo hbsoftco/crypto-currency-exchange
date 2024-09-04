@@ -61,6 +61,7 @@ export default <Partial<Config>>{
 				'hover2': {
 					dark: '#1A1A1A',
 					light: '#F4F4F4',
+					50: '#1F1F1F',
 				},
 				'transparency': {
 					dark: 'rgba(43, 43, 43, 0.76)',
