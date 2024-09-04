@@ -1,5 +1,8 @@
 <template>
-	<div class="border border-secondary-gray-light  dark:border-secondary-gray-dark py-4 px-6">
+	<div
+		class="border border-secondary-gray-light  dark:border-secondary-gray-dark py-4 px-6 w-64 max-w-64 rounded"
+		dir="rtl"
+	>
 		<div class="flex flex-row-reverse items-center">
 			<NuxtImg
 				src="/images/delete/bitcoin.png"

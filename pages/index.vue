@@ -36,7 +36,10 @@
 			</UContainer>
 		</section>
 
-		<section class="hidden md:block">
+		<section
+			v-if="authStore.isLoggedIn"
+			class="hidden md:block"
+		>
 			<UContainer>
 				<ActiveAward />
 			</UContainer>
@@ -49,7 +52,7 @@
 		</section>
 
 		<section
-			v-if="authStore.isLoggedIn"
+			v-if="!authStore.isLoggedIn"
 			class="hidden md:block"
 		>
 			<UContainer>

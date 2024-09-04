@@ -9,7 +9,7 @@
 			<strong class="font-bold text-2xl">{{ $t('claimYourPrizeNow') }}</strong>
 		</h5>
 
-		<div class="grid gap-4 grid-cols-3 grid-rows-3">
+		<div class="grid gap-4 grid-cols-3">
 			<div class="px-6">
 				<h6 class="border-b pb-3 border-primary-gray-light dark:border-primary-gray-dark mb-3 flex justify-start items-center">
 					<span class="bg-accent-blue w-6 h-6 rounded-full flex justify-center items-center ml-3 font-bold text-text-light">۱</span>
