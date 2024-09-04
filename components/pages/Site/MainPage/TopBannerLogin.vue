@@ -2,7 +2,7 @@
 	<div class="mt-40 2xl:mt-80">
 		<h1 class="text-4xl font-bold">
 			با
-			<span class="text-primary-yellow-light dark:text-primary-yellow-dark">بیت لند</span>
+			<span class="text-primary-yellow-light dark:text-primary-yellow-dark">بیت‌لند</span>
 			کمترین کارمزد و بالاترین سود را تجربه کنید!
 		</h1>
 		<div class="flex mt-6">
@@ -90,7 +90,7 @@
 					}}</span>
 				</div>
 				<p class="text-xs font-normal ml-2 mt-2 text-text-dark dark:text-text-light">
-					شما در بیت لند میتوانید به عنوان یکی از اعضای بیت لند با دعوت دوستانتان کسب درآمد داشته باشید!
+					شما در بیت‌لند میتوانید به عنوان یکی از اعضای بیت‌لند با دعوت دوستانتان کسب درآمد داشته باشید!
 				</p>
 			</li>
 			<li
@@ -124,7 +124,7 @@
 					}}</span>
 				</div>
 				<p class="text-xs font-normal ml-2 mt-2 text-text-dark dark:text-text-light">
-					با معامله در بیت لند، در جهانی از فرصت‌ ها به موفقیت خود برسید!
+					با معامله در بیت‌لند، در جهانی از فرصت‌ ها به موفقیت خود برسید!
 				</p>
 			</li>
 		</ul>

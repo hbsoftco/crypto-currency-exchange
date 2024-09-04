@@ -23,7 +23,7 @@
 					<span
 						class="text-base font-bold text-primary-yellow-light dark:text-primary-yellow-dark"
 					>
-						بیت لند</span>
+						بیت‌لند</span>
 					گرفتی ؟
 				</h1>
 				<p class="text-sm font-medium text-black dark:text-white mt-2">

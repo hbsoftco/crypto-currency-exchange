@@ -4,11 +4,11 @@
 			<div class="flex justify-between">
 				<div class="">
 					<p class="text-black dark:text-black text-2xl font-semibold">
-						دانلود نرم افزار بیت لند
+						دانلود نرم افزار بیت‌لند
 					</p>
 					<p class="text-black dark:text-black text-base font-semibold pb-10">
-						شما میتوانید با دانلود نرم افزار های موبایل بیت لند، همیشه و در همه
-						جا به آسانی به خدمات بیت لند دسترسی داشته باشید.
+						شما میتوانید با دانلود نرم افزار های موبایل بیت‌لند، همیشه و در همه
+						جا به آسانی به خدمات بیت‌لند دسترسی داشته باشید.
 					</p>
 					<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 						<ULink to=""><NuxtImg

@@ -5,7 +5,7 @@
 				با
 				<span
 					class="text-primary-yellow-light dark:text-primary-yellow-dark px-2 text-[4rem]"
-				>بیت لند</span>
+				>بیت‌لند</span>
 				بایک قدم به جلو، صد قدم نزدیک تر به موفقیت!
 			</h1>
 
@@ -13,7 +13,7 @@
 				<UButton
 					class="flex justify-center w-[18.8rem] my-4 bg-primary-yellow-light dark:bg-primary-yellow-dark shadow-none border border-primary-yellow"
 				>
-					<span class="text-base font-extrabold">قیمت تتر در بیت لند</span>
+					<span class="text-base font-extrabold">قیمت تتر در بیت‌لند</span>
 					<div
 						class="flex mr-6 text-base font-extrabold text-text-dark dark:text-text-dark"
 					>
@@ -34,8 +34,8 @@
 			</div>
 			<div class="w-[27.3rem]">
 				<p class="text-sm font-medium">
-					با ورود به سایت بیت لند، دنیایی از ارزهای دیجیتال را در دسترس خود
-					خواهید داشت و می‌توانید با دانلود نرم افزار ما از خدمات بیت لند در هر
+					با ورود به سایت بیت‌لند، دنیایی از ارزهای دیجیتال را در دسترس خود
+					خواهید داشت و می‌توانید با دانلود نرم افزار ما از خدمات بیت‌لند در هر
 					کجا و هر زمان بهره مند شوید.
 				</p>
 			</div>

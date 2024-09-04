@@ -11,10 +11,10 @@
 						class="mb-3 w-28 h-12"
 					/>
 					<span class="font-bold leading-loose text-base">
-						بیت لند، محصول شرکت عصر زراندیشان آراد
+						بیت  لند، محصول شرکت عصر زراندیشان آراد
 					</span>
 					<p class="leading-loose text-sm font-normal">
-						صرافی بیت لند، محیطی که هر آنچه در باره جهان پول دیجیتال و ارز های
+						صرافی بیت‌لند، محیطی که هر آنچه در باره جهان پول دیجیتال و ارز های
 						رمز نگاری شده نیاز دارید گرد آوری شده است.
 					</p>
 					<div>
@@ -76,7 +76,7 @@
 				<p
 					class="text-subtle-text-light dark:text-subtle-text-dark text-sm font-normal p-2"
 				>
-					تمامی حقوق مادی و معنوی وب سایت متعلق به مجموعه بیت لند می باشد
+					تمامی حقوق مادی و معنوی وب سایت متعلق به مجموعه بیت‌لند می باشد
 				</p>
 			</div>
 		</UContainer>
@@ -103,9 +103,9 @@ const footerItems = [
 	{
 		title: 'aboutUs',
 		subItems: [
-			{ name: 'درباره بیت لند', url: '#' },
-			{ name: 'قوانین و مقررات', url: '#' },
-			{ name: 'توافق نامه ریسک', url: '#' },
+			{ name: useT('aboutBitland'), url: '#' },
+			{ name: 'قوانین و مقررات', url: '/privacy-policy' },
+			{ name: 'توافق نامه ریسک', url: '/risk-agreement' },
 			{ name: 'اخبار', url: '#' },
 			{ name: 'تحلیل کاربران', url: '#' },
 		],
@@ -114,7 +114,7 @@ const footerItems = [
 		title: 'services',
 		subItems: [
 			{ name: 'خرید رمز ارز', url: '#' },
-			{ name: 'نرم افزار بیت لند', url: '#' },
+			{ name: 'نرم افزار بیت‌لند', url: '#' },
 			{ name: 'کارمزدها', url: '#' },
 			{ name: 'باشگاه مشتریان ویژه', url: '#' },
 		],
@@ -123,7 +123,7 @@ const footerItems = [
 		title: 'guidCenter',
 		subItems: [
 			{ name: 'API', url: '#' },
-			{ name: 'تایید بیت لند', url: '#' },
+			{ name: 'تایید بیت‌لند', url: '#' },
 			{ name: 'چطور خرید کنم؟', url: '#' },
 			{ name: 'قیمت رمز ارز', url: '#' },
 		],
@@ -148,7 +148,7 @@ const footerItems = [
 	{
 		title: 'aboutUs',
 		subItems: [
-			{ name: 'درباره بیت لند', url: '#' },
+			{ name: 'درباره بیت‌لند', url: '#' },
 			{ name: 'قوانین و مقررات', url: '#' },
 			{ name: 'توافق نامه ریسک', url: '#' },
 			{ name: 'اخبار', url: '#' },
@@ -159,7 +159,7 @@ const footerItems = [
 		title: 'services',
 		subItems: [
 			{ name: 'خرید رمز ارز', url: '#' },
-			{ name: 'نرم افزار بیت لند', url: '#' },
+			{ name: 'نرم افزار بیت‌لند', url: '#' },
 			{ name: 'کارمزدها', url: '#' },
 			{ name: 'باشگاه مشتریان ویژه', url: '#' },
 		],
@@ -168,7 +168,7 @@ const footerItems = [
 		title: 'guidCenter',
 		subItems: [
 			{ name: 'API', url: '#' },
-			{ name: 'تایید بیت لند', url: '#' },
+			{ name: 'تایید بیت‌لند', url: '#' },
 			{ name: 'چطور خرید کنم؟', url: '#' },
 			{ name: 'قیمت رمز ارز', url: '#' },
 		],
@@ -177,7 +177,7 @@ const footerItems = [
 		title: 'guidCenter',
 		subItems: [
 			{ name: 'API', url: '#' },
-			{ name: 'تایید بیت لند', url: '#' },
+			{ name: 'تایید بیت‌لند', url: '#' },
 			{ name: 'چطور خرید کنم؟', url: '#' },
 			{ name: 'قیمت رمز ارز', url: '#' },
 		],

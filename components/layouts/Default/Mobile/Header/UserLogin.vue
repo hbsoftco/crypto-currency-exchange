@@ -36,7 +36,7 @@
 						به
 						<span
 							class="text-primary-yellow-light dark:text-primary-yellow-dark text-sm font-semibold ml-1"
-						>بیت لند</span>خوش آمدید.
+						>بیت‌لند</span>خوش آمدید.
 					</h5>
 				</div>
 				<div class="flex items-center mt-2">
