@@ -24,7 +24,7 @@ const persian = {
 	receiveCommission: 'دریافت کمیسیون!',
 	howStart: 'چگونه شروع کنم؟',
 	getStarted: 'شروع کنید',
-	bitlandPlatformMonetizationTable: 'جدول درآمدزایی پلتفرم بیت لند',
+	bitlandPlatformMonetizationTable: 'جدول درآمدزایی پلتفرم بیت‌لند',
 	market: 'بازار',
 	currencyDeposit: 'واریز ارز',
 	quickAccess: 'دسترسی سریع',

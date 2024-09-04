@@ -1,17 +1,17 @@
 <template>
-	<div>
+	<div class="mt-20 md:mt-0">
 		<section class="relative">
 			<PagesImageCover>
 				<UContainer class=" h-full">
 					<div class="w-full h-full relative flex justify-between">
-						<div class="absolute  top-0 md:top-40">
+						<div class="absolute top-0 md:top-40 lg:top-56">
 							<h1
 								class="text-light dark:text-dark text-lg md:text-7xl font-extrabold mb-2 md:mb-8"
 							>
 								{{ $t("inviteFriends") }}
 							</h1>
 							<div
-								class="p-3 bg-primary-gray-light dark:bg-primary-gray-dark shadow-md text-white w-full md:w-[30rem] h-auto opacity-75"
+								class="p-1 md:p-3 rounded bg-primary-gray-light dark:bg-primary-gray-dark shadow-md text-white w-full md:w-[30rem] h-auto opacity-75"
 							>
 								<b class="text-text-dark dark:text-text-light text-sm md:text-base">
 									بیت لند تنها پلتفرم درآمدزایی در ایران با امکان کسب درآمد تا ۵ سطح
@@ -27,8 +27,8 @@
 						</div>
 						<NuxtImg
 							src="/images/svg/invite.svg"
-							alt="invite"
-							class="absolute bottom-0 left-0 hidden md:block"
+							alt="invite-friends"
+							class="absolute bottom-0 left-0 hidden md:block w-[32.5rem] h-[32.5rem]"
 						/>
 					</div>
 				</UContainer>
@@ -36,9 +36,9 @@
 		</section>
 
 		<section>
-			<UContainer class="md:mx-80 md:relative mt-10">
+			<UContainer>
 				<div
-					class="md:absolute md:-top-20 bg-hover-light dark:bg-hover-dark py-10 px-8 md:mx-30 rounded-sm shadow-lg"
+					class="relative max-w-full w-full md:max-w-[46.125rem] md:w-[46.125rem] m-auto top-0 md:-top-32 bg-hover-light dark:bg-hover-dark py-10 px-8 md:mx-30 rounded-lg shadow-lg"
 				>
 					<p
 						class="text-primary-yellow-light dark:text-primary-yellow-dark text-2xl font-extrabold pb-4"
@@ -84,41 +84,43 @@
 		</section>
 
 		<section>
-			<div class="mt-20 md:mt-96 md:flex md:justify-between px-10 md:px-40 mb-10">
-				<div>
-					<NuxtImg
-						src="/images/svg/platform.svg"
-						alt="platform"
-						class="w-full"
-					/>
+			<UContainer>
+				<div class="mt-16 md:mt-0 md:flex md:justify-between mb-20">
+					<div>
+						<NuxtImg
+							src="/images/svg/platform.svg"
+							alt="platform"
+							class="w-[66rem]"
+						/>
+					</div>
+					<div class="px-4 md:px-28 mt-8 md:mt-10">
+						<p class="text-2xl md:text-4xl font-extrabold pb-8">
+							{{ $t("bitlandPlatformMonetizationTable") }}
+						</p>
+						<ul class="list-disc text-base font-medium">
+							<li>
+								کارمزد شما از سطح اول زیر مجموعه های خود از ۳۰ درصد تا ۴۵ درصد
+								نسبت به سطح کسب درآمدی شما متغیر می باشد.
+							</li>
+							<br>
+							<li>
+								کارمزد شما از سطح دوم ۵ درصد‌‌، سطح سوم ۲/۵ درصد و سطح چهارم ۱/۶
+								درصد میباشد که ثابت بوده و قابل تغییر نیست.
+							</li>
+							<br>
+							<li>
+								تمامی کارمزد های شما در ساعات مشخصی از روز محاسبه و به حساب کاربری
+								شما واریز می گردد.
+							</li>
+							<br>
+							<li>
+								صرافی بیت لند آماده همکاری با اشخاص مطرح، شرکت ها و سازمان ها با
+								تسهیلات و خدمات ویژه می باشد.
+							</li>
+						</ul>
+					</div>
 				</div>
-				<div class="pr-8">
-					<p class="text-lg md:text-4xl font-extrabold pb-8">
-						{{ $t("bitlandPlatformMonetizationTable") }}
-					</p>
-					<ul class="list-disc text-base font-medium">
-						<li>
-							کارمزد شما از سطح اول زیر مجموعه های خود از ۳۰ درصد تا ۴۵ درصد
-							نسبت به سطح کسب درآمدی شما متغیر می باشد.
-						</li>
-						<br>
-						<li>
-							کارمزد شما از سطح دوم ۵ درصد‌‌، سطح سوم ۲/۵ درصد و سطح چهارم ۱/۶
-							درصد میباشد که ثابت بوده و قابل تغییر نیست.
-						</li>
-						<br>
-						<li>
-							تمامی کارمزد های شما در ساعات مشخصی از روز محاسبه و به حساب کاربری
-							شما واریز می گردد.
-						</li>
-						<br>
-						<li>
-							صرافی بیت لند آماده همکاری با اشخاص مطرح، شرکت ها و سازمان ها با
-							تسهیلات و خدمات ویژه می باشد.
-						</li>
-					</ul>
-				</div>
-			</div>
+			</UContainer>
 		</section>
 
 		<CommonDownloadApp />
