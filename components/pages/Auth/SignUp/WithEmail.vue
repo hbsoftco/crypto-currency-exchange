@@ -98,7 +98,13 @@ interface PropsDefinition {
 
 const props = defineProps<PropsDefinition>();
 
-const { signupByEmailForm, signupByEmail, vbyEmail$, validate } = useSignUp();
+const {
+	signupByEmailForm,
+	signupByEmail,
+	vbyEmail$,
+	validate,
+	errorMessage,
+} = useSignUp();
 const {
 	captchaData,
 	showCaptcha,
@@ -188,8 +194,6 @@ const handleCaptchaValidation = async (sliderValue: number) => {
 
 			// Check signup
 			const { result } = await signupByEmail();
-			console.log(result);
-			return;
 
 			// Save data into store
 			verificationStore.setVerificationData({
@@ -206,11 +210,17 @@ const handleCaptchaValidation = async (sliderValue: number) => {
 			});
 		}
 		else {
-			captchaRefresh();
+			if (!errorMessage.value) {
+				captchaRefresh();
+			}
+
+			errorMessage.value = null;
 		}
 	}
 	catch (error) {
-		captchaRefresh();
+		if (!errorMessage.value) {
+			captchaRefresh();
+		}
 		return `${error}`;
 	}
 };

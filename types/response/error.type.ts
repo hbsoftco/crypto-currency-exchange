@@ -12,4 +12,5 @@ type BodyErrorResponse = {
 
 export type {
 	ErrorResponse,
+	BodyErrorResponse,
 };

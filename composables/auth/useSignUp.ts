@@ -2,7 +2,7 @@ import { useVuelidate } from '@vuelidate/core';
 
 import { authRepository } from '~/repositories/auth.repository';
 import type { SignupByEmailDto, SignupByMobileDto } from '~/types/dto/signup.dto';
-import type { ErrorResponse } from '~/types/response/error.type';
+import type { BodyErrorResponse, ErrorResponse } from '~/types/response/error.type';
 import type { SignUpResponse } from '~/types/response/sign-up.types';
 
 export const useSignUp = () => {
@@ -12,6 +12,7 @@ export const useSignUp = () => {
 	const auth = authRepository($api);
 
 	const loading = ref(false);
+	const errorMessage = ref<BodyErrorResponse | null>(null);
 
 	const signupByMobileForm = reactive<SignupByMobileDto>({
 		captchaKey: '',
@@ -91,6 +92,7 @@ export const useSignUp = () => {
 		}
 		catch (error: unknown) {
 			const err = error as ErrorResponse;
+			errorMessage.value = err.response._data;
 
 			toast.add({
 				title: useT('error'),
@@ -101,7 +103,7 @@ export const useSignUp = () => {
 
 			throw createError({
 				statusCode: 500,
-				statusMessage: 'An unknown error occurred',
+				statusMessage: `${err.response._data.message}`,
 			});
 		}
 		finally {
@@ -117,5 +119,6 @@ export const useSignUp = () => {
 		signupByEmail,
 		vbyEmail$,
 		validate,
+		errorMessage,
 	};
 };

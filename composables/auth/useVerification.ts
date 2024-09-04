@@ -2,15 +2,17 @@ import { useVuelidate } from '@vuelidate/core';
 
 import { authRepository } from '~/repositories/auth.repository';
 import type { CheckCodeDto } from '~/types/dto/verification.dto';
+import type { BodyErrorResponse, ErrorResponse } from '~/types/response/error.type';
 import type { VerificationCheckCodeResponse } from '~/types/response/verification.types';
 
 export const useVerification = () => {
-	// const toast = useToast();
+	const toast = useToast();
 
 	const { $api } = useNuxtApp();
 	const auth = authRepository($api);
 
 	const loading = ref(false);
+	const verificationErrorMessage = ref<BodyErrorResponse | null>(null);
 
 	const checkCodeVerificationForm = reactive<CheckCodeDto>({
 		userId: null,
@@ -39,8 +41,21 @@ export const useVerification = () => {
 
 			return verificationResponse;
 		}
-		catch (error) {
-			throw new Error(`Invalid response format ${error}`);
+		catch (error: unknown) {
+			const err = error as ErrorResponse;
+			verificationErrorMessage.value = err.response._data;
+
+			toast.add({
+				title: useT('error'),
+				description: `${err.response._data.message}`,
+				timeout: 5000,
+				color: 'red',
+			});
+
+			throw createError({
+				statusCode: 500,
+				statusMessage: `${err.response._data.message}`,
+			});
 		}
 		finally {
 			loading.value = false;
@@ -53,5 +68,6 @@ export const useVerification = () => {
 		checkCodeVerificationForm,
 		v$,
 		validate,
+		verificationErrorMessage,
 	};
 };
