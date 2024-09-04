@@ -197,6 +197,9 @@ const persian = {
 	calculator: 'ماشین حساب',
 	count: 'تعداد',
 	showLess: 'نمایش کمتر',
+	activateAccount: 'فعال‌سازی حساب',
+	incorrectInformation: 'آیا اطلاعات وارد شده صحیح نیست؟',
+	resend: 'ارسال مجدد',
 };
 
 export default persian;

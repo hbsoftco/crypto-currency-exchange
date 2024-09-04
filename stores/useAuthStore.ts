@@ -17,6 +17,11 @@ export const useAuthStore = defineStore('auth', () => {
 	const isLoggedIn = computed(() => !!otc.value);
 
 	const authCookie = useCookie('authData', { path: '/', maxAge: 60 * 60 * 24 * 365 });
+	const passwordCookie = useCookie('password', { path: '/', maxAge: 60 * 60 * 24 * 365 });
+
+	const savePassword = (password: string) => {
+		passwordCookie.value = password;
+	};
 
 	const saveAuthData = ({ otc: newOTC, userId: newUserId, userSecretKey: newUserSecretKey }: AuthData) => {
 		otc.value = newOTC;
@@ -41,6 +46,7 @@ export const useAuthStore = defineStore('auth', () => {
 		userSecretKey.value = null;
 
 		authCookie.value = null;
+		passwordCookie.value = null;
 	};
 
 	return {
@@ -51,5 +57,6 @@ export const useAuthStore = defineStore('auth', () => {
 		saveAuthData,
 		loadAuthData,
 		clearAuthData,
+		savePassword,
 	};
 });

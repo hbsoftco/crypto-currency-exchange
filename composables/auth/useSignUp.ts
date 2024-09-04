@@ -2,14 +2,17 @@ import { useVuelidate } from '@vuelidate/core';
 
 import { authRepository } from '~/repositories/auth.repository';
 import type { SignupByEmailDto, SignupByMobileDto } from '~/types/dto/signup.dto';
+import type { BodyErrorResponse, ErrorResponse } from '~/types/response/error.type';
+import type { SignUpResponse } from '~/types/response/sign-up.types';
 
 export const useSignUp = () => {
-	// const toast = useToast();
+	const toast = useToast();
 
 	const { $api } = useNuxtApp();
 	const auth = authRepository($api);
 
 	const loading = ref(false);
+	const errorMessage = ref<BodyErrorResponse | null>(null);
 
 	const signupByMobileForm = reactive<SignupByMobileDto>({
 		captchaKey: '',
@@ -30,7 +33,7 @@ export const useSignUp = () => {
 		captchaKey: '',
 		refereeCode: '',
 		password: '123@qwe!@#QWE',
-		email: 'hossein.bajan@gmail.com',
+		email: 'hossein.bajan@yahoo.com',
 
 	});
 
@@ -75,7 +78,7 @@ export const useSignUp = () => {
 		}
 	};
 
-	const signupByEmail = async () => {
+	const signupByEmail = async (): Promise<SignUpResponse> => {
 		try {
 			loading.value = true;
 			const signupResponse = await auth.signupByEmail({
@@ -87,8 +90,21 @@ export const useSignUp = () => {
 
 			return signupResponse;
 		}
-		catch (error) {
-			return error;
+		catch (error: unknown) {
+			const err = error as ErrorResponse;
+			errorMessage.value = err.response._data;
+
+			toast.add({
+				title: useT('error'),
+				description: `${err.response._data.message}`,
+				timeout: 5000,
+				color: 'red',
+			});
+
+			throw createError({
+				statusCode: 500,
+				statusMessage: `${err.response._data.message}`,
+			});
 		}
 		finally {
 			loading.value = false;
@@ -103,5 +119,6 @@ export const useSignUp = () => {
 		signupByEmail,
 		vbyEmail$,
 		validate,
+		errorMessage,
 	};
 };

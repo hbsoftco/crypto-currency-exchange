@@ -3,12 +3,13 @@ import { defineStore } from 'pinia';
 import { marketRepository } from '~/repositories/market.repository';
 import type { MarketListWithSparkLineChartItem, MarketListWithSparkLineChartResponse } from '~/types/response/market.types';
 import type { GetMarketListWithSparkLineChartParams } from '~/types/base.types';
+import { Language } from '~/utils/enums/language.enum';
 
 export const useMarketStore = defineStore('market', () => {
-	const baseDataStore = useBaseDataStore();
-
 	const { $api } = useNuxtApp();
 	const api = marketRepository($api);
+
+	const baseDataStore = useBaseDataStore();
 
 	const marketList = ref<MarketListWithSparkLineChartItem[]>([]);
 	const isMarketListLoading = ref(false);
@@ -26,6 +27,41 @@ export const useMarketStore = defineStore('market', () => {
 			})) || [];
 			isMarketListFetched.value = true;
 
+			await baseDataStore.fetchMarketBriefItems();
+			await baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
+			await baseDataStore.fetchIcons();
+
+			marketList.value = marketList.value.map((marketItem) => {
+				const matchedBriefItem = baseDataStore.marketBriefItems.find(
+					(briefItem) => briefItem.id === marketItem.id,
+				);
+
+				if (matchedBriefItem) {
+					// Match cbId with currencyBriefItems to add currencyBriefItem
+					const matchedCurrencyBriefItem = baseDataStore.currencyBriefItems.find(
+						(currencyItem) => currencyItem.id === matchedBriefItem.cbId,
+					);
+					matchedBriefItem.currencyBriefItem = matchedCurrencyBriefItem || null;
+
+					// Match cqId with currencyBriefItems to add quoteItem
+					const matchedQuoteItem = baseDataStore.currencyBriefItems.find(
+						(currencyItem) => currencyItem.id === matchedBriefItem.cqId,
+					);
+					matchedBriefItem.quoteItem = matchedQuoteItem || null;
+
+					// Match cbId with icons to add icon
+					const matchedIcon = baseDataStore.icons.find(
+						(icon) => icon.currencyId === matchedBriefItem.cbId,
+					);
+					matchedBriefItem.icon = matchedIcon || null;
+				}
+
+				return {
+					...marketItem,
+					marketBriefItem: matchedBriefItem || null,
+				};
+			});
+
 			return marketList.value;
 		}
 		catch (error) {
@@ -37,44 +73,10 @@ export const useMarketStore = defineStore('market', () => {
 		}
 	};
 
-	const binarySearch = <T extends { id: number }>(arr: T[], targetId: number): T | null => {
-		let left = 0;
-		let right = arr.length - 1;
-
-		while (left <= right) {
-			const mid = Math.floor((left + right) / 2);
-			if (arr[mid].id === targetId) {
-				return arr[mid];
-			}
-			else if (arr[mid].id < targetId) {
-				left = mid + 1;
-			}
-			else {
-				right = mid - 1;
-			}
-		}
-		return null;
-	};
-
-	const getMarketItemById = (id: number) => {
-		const marketItem = binarySearch(marketList.value, id);
-		if (!marketItem) return null;
-
-		const marketBrief = binarySearch(baseDataStore.marketBriefItems, id);
-		const currencyBrief = binarySearch(baseDataStore.currencyBriefItems, id);
-
-		return {
-			...marketItem,
-			marketBrief,
-			currencyBrief,
-		};
-	};
-
 	return {
 		marketList,
 		isMarketListLoading,
 		isMarketListFetched,
 		fetchMarketListWithSparkLineChart,
-		getMarketItemById,
 	};
 });

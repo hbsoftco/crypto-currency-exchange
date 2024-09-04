@@ -33,6 +33,9 @@ export default defineNuxtConfig({
 			},
 		},
 	},
+	image: {
+		domains: ['https://api-bitland.site'],
+	},
 	colorMode: {
 		classPrefix: '',
 	},

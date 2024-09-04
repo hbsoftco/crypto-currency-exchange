@@ -22,9 +22,20 @@
 				/>
 			</ClientOnly>
 
-			<div class="absolute right-5 top-4">
-				<strong>{{ countdown }}</strong>
+			<div
+				v-if="countdown>0"
+				class="absolute right-5 top-4"
+			>
+				<strong>{{ useNumber(countdown) }}</strong>
 				<span> S</span>
+			</div>
+
+			<div
+				v-else
+				class="flex justify-center flex-row-reverse cursor-pointer items-center absolute right-5 top-3.5"
+			>
+				<span class="ml-1 text-sm text-accent-green">{{ $t('resend') }}</span>
+				<IconRefresh class="text-accent-green" />
 			</div>
 
 			<label
@@ -44,6 +55,9 @@
 
 <script setup lang="ts">
 import type VOtpInput from 'vue3-otp-input';
+
+import IconRefresh from '~/assets/svg-icons/refresh.svg';
+import { useNumber } from '~/composables/useNumber';
 
 const otpInput = ref<InstanceType<typeof VOtpInput> | null>(null);
 const countdown = ref(60);

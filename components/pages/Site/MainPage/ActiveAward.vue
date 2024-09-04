@@ -5,6 +5,7 @@
 			<NuxtImg
 				src="/images/award.png"
 				alt="award"
+				class="w-[19.5rem] h-[22.813rem]"
 			/>
 			<div class="px-20">
 				<div class="flex">

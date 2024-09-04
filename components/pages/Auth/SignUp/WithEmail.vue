@@ -27,7 +27,7 @@
 			/>
 		</div>
 		<div class="my-8">
-			<FormsFieldInput
+			<ReferralFieldInput
 				id="email_refereeCode"
 				v-model="signupByEmailForm.refereeCode"
 				type="text"
@@ -35,6 +35,7 @@
 				label="haveReferralCode"
 				placeholder=""
 				dir="ltr"
+				:is-visible="isVisible"
 			/>
 		</div>
 		<div class="mb-3">
@@ -79,11 +80,31 @@
 </template>
 
 <script setup lang="ts">
+import md5 from 'md5';
+
+import ReferralFieldInput from '~/components/forms/ReferralFieldInput.vue';
 import SlideCaptcha from '~/components/ui/SlideCaptcha.vue';
 import { useCaptcha } from '~/composables/auth/useCaptcha';
 import { useSignUp } from '~/composables/auth/useSignUp';
 
-const { signupByEmailForm, signupByEmail, vbyEmail$, validate } = useSignUp();
+const authStore = useAuthStore();
+const verificationStore = useVerificationStore();
+
+const router = useRouter();
+
+interface PropsDefinition {
+	inviter: string | null;
+}
+
+const props = defineProps<PropsDefinition>();
+
+const {
+	signupByEmailForm,
+	signupByEmail,
+	vbyEmail$,
+	validate,
+	errorMessage,
+} = useSignUp();
 const {
 	captchaData,
 	showCaptcha,
@@ -92,18 +113,39 @@ const {
 	refreshCaptcha,
 	generateCaptcha,
 	validateCaptcha,
+	validateData,
 } = useCaptcha();
 
 const isAgreeChecked = ref(false);
 const captchaHasError = ref(false);
+const isVisible = ref(false);
+
+if (props.inviter) {
+	signupByEmailForm.refereeCode = props.inviter;
+	isVisible.value = true;
+}
+
+const savePassword = (password: string): string => {
+	const md5Password = md5(password);
+	authStore.savePassword(md5Password);
+
+	return md5Password;
+};
 
 const handleSignup = async () => {
 	if (!validate(SIGNUP.BY_EMAIL)) return;
 
-	await generateCaptcha({
+	const captchaResponse = await generateCaptcha({
 		username: signupByEmailForm.email,
 		action: 'signup',
 	});
+
+	if (captchaResponse && captchaResponse.stateId === 11) {
+		await handleSuccessfulCaptcha();
+	}
+	else {
+		showCaptcha.value = true;
+	}
 };
 
 const captchaRefresh = async () => {
@@ -112,22 +154,73 @@ const captchaRefresh = async () => {
 	captchaHasError.value = true;
 };
 
+const handleSuccessfulCaptcha = async () => {
+	try {
+		loading.value = true;
+		if (validateData.value.captchaKey) {
+			signupByEmailForm.captchaKey = validateData.value.captchaKey;
+			const response = await signupByEmail();
+
+			if (response.statusCode === 200) {
+				savePassword(signupByEmailForm.password);
+
+				verificationStore.setVerificationData({
+					verificationId: response.result.verificationId,
+					userId: response.result.userId,
+					wloId: response.result.wloId,
+					type: 'email',
+					username: signupByEmailForm.email,
+				});
+
+				router.push({
+					path: '/auth/otp',
+					query: { action: 'signup', type: 'email' },
+				});
+			}
+		}
+	}
+	catch (error) {
+		throw new Error(`Login failed. ${error}`);
+	}
+};
+
 const handleCaptchaValidation = async (sliderValue: number) => {
 	try {
 		const { captchaKey, validate } = await validateCaptcha(sliderValue);
-		if (validate) {
+		if (validate && captchaKey) {
 			signupByEmailForm.captchaKey = captchaKey;
 			captchaHasError.value = false;
 			closeCaptcha();
 
-			await signupByEmail();
+			// Check signup
+			const { result } = await signupByEmail();
+
+			// Save data into store
+			verificationStore.setVerificationData({
+				verificationId: result.verificationId,
+				userId: result.userId,
+				wloId: result.wloId,
+				type: 'email',
+				username: signupByEmailForm.email,
+			});
+
+			router.push({
+				path: '/auth/otp',
+				query: { action: 'signup', type: 'email' },
+			});
 		}
 		else {
-			captchaRefresh();
+			if (!errorMessage.value) {
+				captchaRefresh();
+			}
+
+			errorMessage.value = null;
 		}
 	}
 	catch (error) {
-		captchaRefresh();
+		if (!errorMessage.value) {
+			captchaRefresh();
+		}
 		return `${error}`;
 	}
 };

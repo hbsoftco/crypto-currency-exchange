@@ -8,6 +8,7 @@ import type { ValidateCaptchaDto } from '~/types/dto/validate-captcha.dto';
 import type { CheckCodeDto } from '~/types/dto/verification.dto';
 import type { ResposneType } from '~/types/response.types';
 import type { LoginByEmailResponse } from '~/types/response/login.types';
+import type { SignUpResponse } from '~/types/response/sign-up.types';
 import type { VerificationCheckCodeResponse } from '~/types/response/verification.types';
 
 type AuthRepository = {
@@ -16,7 +17,7 @@ type AuthRepository = {
 	validateCaptcha: (data: ValidateCaptchaDto) => Promise<ResposneType>;
 	// SignUp
 	signupByMobile: (data: SignupByMobileDto) => Promise<ResposneType>;
-	signupByEmail: (data: SignupByEmailDto) => Promise<ResposneType>;
+	signupByEmail: (data: SignupByEmailDto) => Promise<SignUpResponse>;
 	// Login
 	loginByMobile: (data: LoginByMobileDto) => Promise<ResposneType>;
 	loginByEmail: (data: LoginByEmailDto) => Promise<LoginByEmailResponse>;
@@ -24,8 +25,7 @@ type AuthRepository = {
 	checkCodeVerification: (data: CheckCodeDto) => Promise<VerificationCheckCodeResponse>;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const authRepository = (fetch: $Fetch<any, NitroFetchRequest>): AuthRepository => ({
+export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthRepository => ({
 	// Captcha
 	async generateCaptcha(data: CaptchaRequestDto): Promise<CaptchaResponse> {
 		const { result } = await fetch<ResposneType>(`/v1/captcha/generate`, {
@@ -52,8 +52,8 @@ export const authRepository = (fetch: $Fetch<any, NitroFetchRequest>): AuthRepos
 		});
 		return response;
 	},
-	async signupByEmail(data: SignupByEmailDto): Promise<ResposneType> {
-		const response = await fetch<ResposneType>(`/v1/auth/signup/by_email`, {
+	async signupByEmail(data: SignupByEmailDto): Promise<SignUpResponse> {
+		const response = await fetch<SignUpResponse>(`/v1/auth/signup/by_email`, {
 			method: 'POST',
 			body: data,
 		});

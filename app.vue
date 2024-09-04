@@ -1,5 +1,6 @@
 <template>
 	<div dir="rtl">
+		<NuxtLoadingIndicator />
 		<NuxtLayout>
 			<NuxtPage />
 		</NuxtLayout>
