@@ -176,7 +176,27 @@ const persian = {
 	from30DaysAgo: 'از ۳۰ روز پیش',
 	from60DaysAgo: 'از ۶۰ روز پیش',
 	from90DaysAgo: 'از ۹۰ روز پیش',
-
+	priceInformation: 'اطلاعات قیمت',
+	hours24Lowest: '۲۴ ساعت / پایین ترین',
+	hours24Highest: '۲۴ ساعت / بالاترین',
+	generalHighest: 'کلی / بالاترین ترین',
+	priceChangeOneHour: 'تغییر قیمت / یک ساعته',
+	priceChange24Hour: 'تغییر قیمت / ۲۴ ساعته',
+	priceChange7day: 'تغییر قیمت / ۷ روزه',
+	globalMarketInformation: 'اطلاعات بازار جهانی',
+	totalMarketValue: 'ارزش کل بازار',
+	tradingVolume24Hours: 'حجم معاملات / ۲۴ ساعت',
+	currencyCirculation: 'ارز در گردش',
+	marketDominance: 'تسلط به بازار (%)',
+	marketRank: 'رتبه بازار',
+	dateCreation: 'تاریخ پیدایش',
+	whatBitlandToken: 'توکن بیت لند چیست ؟',
+	howBuyBitlandTokens: 'نحوه خرید توکن بیت لند',
+	whatBitlandTokenFuturesTrading: 'معاملات فیوچرز توکن بیت لند چیست؟',
+	FAQ: 'سوالات متداول',
+	calculator: 'ماشین حساب',
+	count: 'تعداد',
+	showLess: 'نمایش کمتر',
 };
 
 export default persian;
