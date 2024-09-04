@@ -58,9 +58,7 @@
 		</section>
 
 		<section>
-			<UContainer>
-				<PagesSiteMainPageNewCurrencies />
-			</UContainer>
+			<NewCurrencies />
 		</section>
 
 		<!-- <section>
@@ -89,6 +87,7 @@ import ActiveAward from '~/components/pages/Site/MainPage/ActiveAward.vue';
 import Info from '~/components/pages/Site/MainPage/Info.vue';
 // import AlwaysBitland from '~/components/pages/Site/MainPage/AlwaysBitland.vue';
 import Prize from '~/components/pages/Site/MainPage/Prize.vue';
+import NewCurrencies from '~/components/pages/Site/MainPage/NewCurrencies/index.vue';
 import QuickMenuMobile from '~/components/pages/Site/MainPage/QuickMenuMobile.vue';
 import TopBanner from '~/components/pages/Site/MainPage/TopBanner.vue';
 import TopBannerLogin from '~/components/pages/Site/MainPage/TopBannerLogin.vue';

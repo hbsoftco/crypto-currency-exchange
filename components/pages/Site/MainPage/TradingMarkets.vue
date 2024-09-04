@@ -31,19 +31,10 @@
 				</tbody>
 			</table>
 
-			<div class="text-center py-5">
-				<UButton
-					:padded="false"
-					color="primary"
-					variant="link"
-				>
-					<span class="ml-2">{{ $t('showAllMarkets') }}</span>
-					<UIcon
-						name="i-heroicons-arrow-left-16-solid"
-						class="w-6 h-6"
-					/>
-				</UButton>
-			</div>
+			<UiSeeMore
+				link="/"
+				text="showAllMarkets"
+			/>
 		</div>
 	</div>
 </template>

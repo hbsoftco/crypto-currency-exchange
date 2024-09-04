@@ -19,8 +19,14 @@ export default defineNuxtConfig({
 	},
 	echarts: {
 		ssr: false,
-		components: ['TitleComponent', 'TooltipComponent', 'GridComponent'],
-		charts: ['LineChart'],
+		renderer: ['canvas', 'svg'],
+		charts: ['BarChart', 'LineChart', 'PieChart', 'FunnelChart'],
+		components: [
+			'DatasetComponent',
+			'GridComponent',
+			'TooltipComponent',
+			'ToolboxComponent',
+		],
 	},
 	eslint: {
 		checker: true,

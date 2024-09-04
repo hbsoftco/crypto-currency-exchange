@@ -12,20 +12,20 @@
 					/>
 				</ULink>
 
-				<ul class="flex space-x-4 mr-8">
+				<ul class="flex items-center space-x-4 mr-8">
 					<li class="flex items-center space-x-2">
-						<LayoutsDefaultHeaderQuickAccessMenu />
+						<QuickAccessMenu />
 					</li>
-					<li class="flex items-center space-x-2 ">
+					<li>
 						<ULink to="/market">
-							<span class=" text-sm font-medium hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all">{{ $t('market') }}</span>
+							<span class="text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all">{{ $t('market') }}</span>
 						</ULink>
 					</li>
-					<li class="flex items-center space-x-2">
-						<LayoutsDefaultHeaderTransaction />
+					<li>
+						<Transaction />
 					</li>
-					<li class="flex items-center space-x-2">
-						<LayoutsDefaultHeaderFutures />
+					<li class="flex items-centers space-x-2">
+						<Futures />
 					</li>
 					<li class="flex items-center">
 						<ULink to="#">
@@ -51,19 +51,17 @@
 			</div>
 			<div class="flex justify-between items-center">
 				<div class="mx-4">
-					<LayoutsDefaultHeaderSearch />
+					<Search />
 				</div>
 				<div class="mx-4">
-					<!-- <ClientOnly> -->
-					<LayoutsDefaultHeaderUserLogin />
-					<!-- </ClientOnly> -->
+					<UserLogin />
 				</div>
 				<div class="flex items-center space-x-4">
 					<div>
-						<LayoutsDefaultHeaderDownload />
+						<Download />
 					</div>
 					<div>
-						<LayoutsDefaultHeaderSetting />
+						<Setting />
 					</div>
 				</div>
 			</div>
@@ -72,6 +70,13 @@
 </template>
 
 <script setup lang="ts">
+import Search from './Header/Search/index.vue';
+import Download from './Header/Download.vue';
+import Futures from './Header/Futures.vue';
+import QuickAccessMenu from './Header/QuickAccessMenu.vue';
+import Setting from './Header/Setting.vue';
+import Transaction from './Header/Transaction.vue';
+import UserLogin from './Header/UserLogin/index.vue';
 </script>
 
 <style lang="scss" scoped></style>

@@ -6,7 +6,7 @@
 			@mouseleave="hideMenu"
 		>
 			<IconMenu
-				class="text-2xl text-subtle-text-light dark:text-subtle-text-dark group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark duration-200 transition-all ml-1"
+				class="text-2xl text-subtle-text-light dark:text-subtle-text-dark group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark duration-200 transition-all ml-2"
 			/>
 			<IconArrowDown
 				v-if="!hover && showArrowDown"
