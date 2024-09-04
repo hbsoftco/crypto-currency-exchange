@@ -1,7 +1,7 @@
 <template>
-	<div class="py-20 bg-black text-white">
-		<h3 class="mb-14 text-center">
-			<span class="text-[2.5rem] font-black">{{ $t("latestCurrencies") }}</span>
+	<div class="py-6 md:py-20 bg-black text-white">
+		<h3 class="mb-6 md:mb-14 text-center">
+			<span class="text-2xl md:text-[2.5rem] font-black">{{ $t("latestCurrencies") }}</span>
 		</h3>
 
 		<div class="currency-row overflow-hidden">
@@ -40,7 +40,7 @@
 		<UiSeeMore
 			link="/"
 			text="tradeStart"
-			class="mt-12 block mx-auto"
+			class="mt-4 md:mt-12 block mx-auto"
 		/>
 	</div>
 </template>

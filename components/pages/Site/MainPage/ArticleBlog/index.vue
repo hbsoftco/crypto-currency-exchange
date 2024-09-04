@@ -1,7 +1,7 @@
 <template>
 	<div
 		dir="ltr"
-		class="text-center my-14"
+		class="text-center my-6 md:my-14"
 	>
 		<UContainer>
 			<span class="text-2xl font-semibold">{{ $t('lastBlogArticles') }}</span>
