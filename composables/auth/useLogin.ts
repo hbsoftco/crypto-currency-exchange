@@ -2,15 +2,17 @@ import { useVuelidate } from '@vuelidate/core';
 
 import { authRepository } from '~/repositories/auth.repository';
 import type { LoginByMobileDto, LoginByEmailDto } from '~/types/dto/login.dto';
+import type { BodyErrorResponse, ErrorResponse } from '~/types/response/error.type';
 import type { LoginByEmailResponse } from '~/types/response/login.types';
 
 export const useLogin = () => {
-	// const toast = useToast();
+	const toast = useToast();
 
 	const { $api } = useNuxtApp();
 	const auth = authRepository($api);
 
 	const loading = ref(false);
+	const errorMessage = ref<BodyErrorResponse | null>(null);
 
 	const loginByMobileForm = reactive<LoginByMobileDto>({
 		captchaKey: '',
@@ -93,7 +95,20 @@ export const useLogin = () => {
 			return loginResponse;
 		}
 		catch (error) {
-			throw new Error(`Invalid response format ${error}`);
+			const err = error as ErrorResponse;
+			errorMessage.value = err.response._data;
+
+			toast.add({
+				title: useT('error'),
+				description: `${err.response._data.message}`,
+				timeout: 5000,
+				color: 'red',
+			});
+
+			throw createError({
+				statusCode: 500,
+				statusMessage: `${err.response._data.message}`,
+			});
 		}
 		finally {
 			loading.value = false;
@@ -108,5 +123,6 @@ export const useLogin = () => {
 		loginByEmail,
 		vbyEmail$,
 		validate,
+		errorMessage,
 	};
 };

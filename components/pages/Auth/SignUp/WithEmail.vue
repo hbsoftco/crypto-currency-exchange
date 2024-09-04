@@ -186,6 +186,7 @@ const handleSuccessfulCaptcha = async () => {
 
 const handleCaptchaValidation = async (sliderValue: number) => {
 	try {
+		loading.value = true;
 		const { captchaKey, validate } = await validateCaptcha(sliderValue);
 		if (validate && captchaKey) {
 			signupByEmailForm.captchaKey = captchaKey;

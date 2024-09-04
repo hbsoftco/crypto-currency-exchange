@@ -54,7 +54,13 @@ import SlideCaptcha from '~/components/ui/SlideCaptcha.vue';
 import { useCaptcha } from '~/composables/auth/useCaptcha';
 import { useLogin } from '~/composables/auth/useLogin';
 
-const { loginByEmailForm, loginByEmail, vbyEmail$, validate } = useLogin();
+const {
+	loginByEmailForm,
+	loginByEmail,
+	vbyEmail$,
+	validate,
+	errorMessage,
+} = useLogin();
 const {
 	captchaData,
 	showCaptcha,
@@ -96,6 +102,7 @@ const captchaRefresh = async () => {
 
 const handleSuccessfulCaptcha = async () => {
 	try {
+		loading.value = true;
 		if (validateData.value.captchaKey) {
 			loginByEmailForm.captchaKey = validateData.value.captchaKey;
 			const { result } = await loginByEmail();
@@ -121,6 +128,7 @@ const handleSuccessfulCaptcha = async () => {
 
 const handleCaptchaValidation = async (sliderValue: number) => {
 	try {
+		loading.value = true;
 		const { captchaKey, validate } = await validateCaptcha(sliderValue);
 		if (validate && captchaKey) {
 			loginByEmailForm.captchaKey = captchaKey;
@@ -145,11 +153,18 @@ const handleCaptchaValidation = async (sliderValue: number) => {
 			});
 		}
 		else {
-			captchaRefresh();
+			if (!errorMessage.value) {
+				captchaRefresh();
+			}
+
+			errorMessage.value = null;
 		}
 	}
 	catch (error) {
-		throw new Error(`Captcha validation failed. ${error}`);
+		if (!errorMessage.value) {
+			captchaRefresh();
+		}
+		return `${error}`;
 	}
 };
 </script>
