@@ -17,7 +17,7 @@
 						<LayoutsDefaultHeaderQuickAccessMenu />
 					</li>
 					<li class="flex items-center space-x-2 ">
-						<ULink to="#">
+						<ULink to="/market">
 							<span class=" text-sm font-medium hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all">{{ $t('market') }}</span>
 						</ULink>
 					</li>
