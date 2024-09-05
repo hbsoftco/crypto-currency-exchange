@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import md5 from 'md5';
 
 import { marketRepository } from '~/repositories/market.repository';
 import type { MarketListWithSparkLineChartItem, MarketListWithSparkLineChartResponse } from '~/types/response/market.types';
@@ -14,10 +15,14 @@ export const useMarketStore = defineStore('market', () => {
 	const marketList = ref<MarketListWithSparkLineChartItem[]>([]);
 	const isMarketListLoading = ref(false);
 	const isMarketListFetched = ref(false);
+	const lastParamsHash = ref(''); // To store the hash of last parameters
 
 	const fetchMarketListWithSparkLineChart = async (params: GetMarketListWithSparkLineChartParams) => {
-		if (isMarketListLoading.value) return;
+		const currentParamsHash = md5(JSON.stringify(params)); // Hash the current parameters
+		if (isMarketListLoading.value && lastParamsHash.value === currentParamsHash) return;
+
 		isMarketListLoading.value = true;
+		lastParamsHash.value = currentParamsHash;
 
 		try {
 			const response: MarketListWithSparkLineChartResponse = await api.getMarketListWithSparkLineChart(params);
@@ -37,23 +42,15 @@ export const useMarketStore = defineStore('market', () => {
 				);
 
 				if (matchedBriefItem) {
-					// Match cbId with currencyBriefItems to add currencyBriefItem
 					const matchedCurrencyBriefItem = baseDataStore.currencyBriefItems.find(
 						(currencyItem) => currencyItem.id === matchedBriefItem.cbId,
 					);
 					matchedBriefItem.currencyBriefItem = matchedCurrencyBriefItem || null;
 
-					// Match cqId with currencyBriefItems to add quoteItem
 					const matchedQuoteItem = baseDataStore.currencyBriefItems.find(
 						(currencyItem) => currencyItem.id === matchedBriefItem.cqId,
 					);
 					matchedBriefItem.quoteItem = matchedQuoteItem || null;
-
-					// Match cbId with icons to add icon
-					const matchedIcon = baseDataStore.icons.find(
-						(icon) => icon.currencyId === matchedBriefItem.cbId,
-					);
-					matchedBriefItem.icon = matchedIcon || null;
 				}
 
 				return {

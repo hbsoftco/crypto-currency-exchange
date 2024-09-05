@@ -45,15 +45,16 @@ import TradingMarketRow from './TradingMarketRow.vue';
 
 import type { ErrorResponse } from '~/types/response/error.type';
 import type { MarketListWithSparkLineChartItem } from '~/types/response/market.types';
+import { MarketType, SortMode } from '~/utils/enums/market.enum';
 
 const marketStore = useMarketStore();
 // const baseDataStore = useBaseDataStore();
 // await useAsyncData('fetchMarketBriefItems', () => baseDataStore.fetchMarketBriefItems());
 
 const params = ref({
-	sortMode: 'ByMarketCaps',
+	sortMode: String(SortMode.BY_MARKET_CAPS),
 	currencyQuoteId: '1',
-	marketTypeId: 'Spot',
+	marketTypeId: String(MarketType.SPOT),
 	tagTypeId: '1',
 });
 
