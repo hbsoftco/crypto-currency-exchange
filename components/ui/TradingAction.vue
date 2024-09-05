@@ -1,7 +1,7 @@
 <template>
 	<div class="flex items-center">
 		<NuxtImg
-			:src="coin.icon?.imageUrl"
+			:src="`https://api-bitland.site/media/currency/${coin.currencyBriefItem?.cSymbol}.png`"
 			alt="Bitcoin Logo"
 			class="w-4 h-4 md:w-8 md:h-8 rounded-full"
 			format="webp"

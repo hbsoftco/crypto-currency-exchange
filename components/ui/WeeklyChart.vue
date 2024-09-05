@@ -1,8 +1,10 @@
 <template>
-	<VChart
-		:option="chartOptions"
-		style="height: 3rem; width: 100%;"
-	/>
+	<ClientOnly>
+		<VChart
+			:option="chartOptions"
+			style="height: 3rem; width: 100%;"
+		/>
+	</ClientOnly>
 </template>
 
 <script setup lang="ts">

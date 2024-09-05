@@ -3,6 +3,28 @@ import configs from './utils/app-config';
 export default defineNuxtConfig({
 	compatibilityDate: '2024-04-03',
 	devtools: { enabled: true },
+	app: {
+		pageTransition: { name: 'page', mode: 'out-in' },
+		layoutTransition: { name: 'layout', mode: 'out-in' },
+		head: {
+			charset: 'utf-8',
+			viewport:
+			'width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes',
+			htmlAttrs: {
+				lang: 'fa',
+				dir: 'rtl',
+			},
+			title: 'Bitland',
+			meta: [
+				{ name: 'theme-color', content: '#000000' },
+				{
+					hid: 'description',
+					name: 'description',
+					content: 'Your description here',
+				},
+			],
+		},
+	},
 	modules: [
 		'@nuxt/ui',
 		'@nuxt/eslint',
@@ -40,7 +62,7 @@ export default defineNuxtConfig({
 		},
 	},
 	image: {
-		domains: ['https://api-bitland.site'],
+		// domains: ['https://api-bitland.site'],
 	},
 	colorMode: {
 		classPrefix: '',

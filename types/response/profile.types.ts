@@ -1,14 +1,14 @@
-type Pair = {
+type ProfilePair = {
 	key: string;
 	value: string;
 };
 
 type ProfileResponse = {
-	result: Pair[];
+	result: ProfilePair[];
 	statusCode: number;
 };
 
 export type {
 	ProfileResponse,
-	Pair,
+	ProfilePair,
 };

@@ -62,7 +62,7 @@ export const useMarketStore = defineStore('market', () => {
 				};
 			});
 
-			return marketList.value;
+			return marketList.value || null;
 		}
 		catch (error) {
 			isMarketListFetched.value = false;

@@ -44,8 +44,8 @@ import TradingMarketsHeader from './TradingMarketsHeader.vue';
 import TradingMarketRow from './TradingMarketRow.vue';
 
 const marketStore = useMarketStore();
-const baseDataStore = useBaseDataStore();
-await useAsyncData('fetchMarketBriefItems', () => baseDataStore.fetchMarketBriefItems());
+// const baseDataStore = useBaseDataStore();
+// await useAsyncData('fetchMarketBriefItems', () => baseDataStore.fetchMarketBriefItems());
 
 const params = ref({
 	sortMode: 'ByMarketCaps',
@@ -54,7 +54,19 @@ const params = ref({
 	tagTypeId: '1',
 });
 
-const { data: marketData } = await useAsyncData('fetchMarketList', () =>
-	marketStore.fetchMarketListWithSparkLineChart(params.value),
-);
+const marketData = ref<any>([]);
+
+// const { data: marketData } = await useAsyncData('fetchMarketList', () =>
+// 	marketStore.fetchMarketListWithSparkLineChart(params.value),
+// );
+
+onMounted(async () => {
+	try {
+		const response = await marketStore.fetchMarketListWithSparkLineChart(params.value);
+		marketData.value = response;
+	}
+	catch (error) {
+		console.error('Error fetching market data:', error);
+	}
+});
 </script>

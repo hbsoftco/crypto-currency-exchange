@@ -25,15 +25,18 @@
 			v-else
 			class="flex items-center space-x-4"
 		>
-			<LayoutsDefaultHeaderUserLoginWallet />
-			<LayoutsDefaultHeaderUserLoginProfile />
-			<LayoutsDefaultHeaderUserLoginNotification />
+			<Wallet />
+			<Profile />
+			<Notification />
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-const authStore = useAuthStore();
+import Notification from './Notification.vue';
+import Profile from './Profile.vue';
+import Wallet from './Wallet.vue';
 
+const authStore = useAuthStore();
 authStore.loadAuthData();
 </script>

@@ -22,6 +22,8 @@ export const useProfile = () => {
 				const authStore = useAuthStore();
 
 				await authStore.fetchNewOTC();
+
+				await getCurrentUser();
 			}
 
 			throw createError({

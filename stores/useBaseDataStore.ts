@@ -129,7 +129,7 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		try {
 			const response = await api.getMarketBriefList();
 			if (response.result) {
-				marketBriefItems.value = response.result;
+				marketBriefItems.value = response.result || [];
 				isMarketBriefDataFetched.value = true;
 			}
 		}

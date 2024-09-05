@@ -15,12 +15,12 @@ export const useAuthStore = defineStore('auth', () => {
 	const otc = ref<string | null>(null);
 	const userId = ref<number | null>(null);
 	const userSecretKey = ref<number | null>(null);
+	// const intervalId = ref<number | NodeJS.Timeout | null>(null);
 
 	const isLoggedIn = computed(() => !!otc.value);
 
 	const authCookie = useCookie('authData', { path: '/', maxAge: 60 * 60 * 24 * 365 });
 	const passwordCookie = useCookie('password', { path: '/', maxAge: 60 * 60 * 24 * 365 });
-	// const tokenCookie = useCookie('token', { path: '/', maxAge: 60 * 60 * 24 * 365 });
 
 	const savePassword = (password: string) => {
 		passwordCookie.value = password;
@@ -47,10 +47,39 @@ export const useAuthStore = defineStore('auth', () => {
 		otc.value = null;
 		userId.value = null;
 		userSecretKey.value = null;
-
+		// stopOtcUpdate();
 		authCookie.value = null;
 		passwordCookie.value = null;
 	};
+
+	// const startOtcUpdate = () => {
+	// 	if (intervalId.value) return;
+
+	// 	intervalId.value = setInterval(async () => {
+	// 		try {
+	// 			await fetchNewOTC();
+	// 		}
+	// 		catch (error) {
+	// 			console.error('Failed to update OTC:', error);
+	// 		}
+	// 	}, 20000);
+	// };
+
+	// const stopOtcUpdate = () => {
+	// 	if (intervalId.value) {
+	// 		clearInterval(intervalId.value);
+	// 		intervalId.value = null;
+	// 	}
+	// };
+
+	// watch(isLoggedIn, () => {
+	// 	if (isLoggedIn.value === true) {
+	// 		startOtcUpdate();
+	// 	}
+	// 	else {
+	// 		stopOtcUpdate();
+	// 	}
+	// }, { immediate: true });
 
 	const fetchNewOTC = async () => {
 		const { $api } = useNuxtApp();
