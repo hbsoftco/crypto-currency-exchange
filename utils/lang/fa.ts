@@ -205,6 +205,8 @@ const persian = {
 	freeFees: 'کارمزد رایگان',
 	allItems: 'همه',
 	aboutBitland: 'درباره بیت‌لند',
+	USDTMTransaction: 'معامله USDT-M',
+	buyingSellingFutures: 'خرید و فروش در فیوچرز',
 };
 
 export default persian;

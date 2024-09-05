@@ -11,42 +11,55 @@
 						جا به آسانی به خدمات بیت‌لند دسترسی داشته باشید.
 					</p>
 					<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-						<ULink to=""><NuxtImg
-							src="/images/svg/app-store.svg"
-							alt="app-store"
-						/></ULink>
-						<ULink to="">
-							<NuxtImg
-								src="/images/svg/google-play.svg"
-								alt="google-play"
-							/></ULink>
-						<ULink to="">
-							<NuxtImg
-								src="/images/svg/windows.svg"
-								alt="windows"
-							/></ULink>
 						<ULink to="">
 							<NuxtImg
 								src="/images/svg/app-store.svg"
 								alt="app-store"
-							/></ULink>
+								class="w-52 h-16"
+							/>
+						</ULink>
 						<ULink to="">
 							<NuxtImg
 								src="/images/svg/google-play.svg"
 								alt="google-play"
-							/></ULink>
+								class="w-52 h-16"
+							/>
+						</ULink>
 						<ULink to="">
 							<NuxtImg
 								src="/images/svg/windows.svg"
 								alt="windows"
-							/></ULink>
+								class="w-52 h-16"
+							/>
+						</ULink>
+						<ULink to="">
+							<NuxtImg
+								src="/images/svg/app-store.svg"
+								alt="app-store"
+								class="w-52 h-16"
+							/>
+						</ULink>
+						<ULink to="">
+							<NuxtImg
+								src="/images/svg/google-play.svg"
+								alt="google-play"
+								class="w-52 h-16"
+							/>
+						</ULink>
+						<ULink to="">
+							<NuxtImg
+								src="/images/svg/windows.svg"
+								alt="windows"
+								class="w-52 h-16"
+							/>
+						</ULink>
 					</div>
 				</div>
 				<div>
 					<NuxtImg
 						src="/images/svg/icon-download-app.svg"
 						alt="platform"
-						class="w-full"
+						class="w-[35.875rem] h-80"
 					/>
 				</div>
 			</div>

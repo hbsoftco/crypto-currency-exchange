@@ -24,13 +24,13 @@
 			<template #item="{ item }">
 				<div class="border-t border-t-primary-gray-light dark:border-t-primary-gray-dark p-2">
 					<div v-if="item.key === 'USDT'">
-						<MenuTradeCoins />
+						<MenuFutureCoins />
 					</div>
 					<div v-else-if="item.key === 'BTC'">
-						<MenuTradeCoins />
+						<MenuFutureCoins />
 					</div>
 					<div v-else-if="item.key === 'toman'">
-						<MenuTradeCoins />
+						<MenuFutureCoins />
 					</div>
 				</div>
 			</template>
@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import MenuTradeCoins from './MenuTradeCoins.vue';
+import MenuFutureCoins from './MenuFuturesCoins.vue';
 
 const items = [
 	{

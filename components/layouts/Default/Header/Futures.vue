@@ -61,7 +61,7 @@
 								class="absolute top-0 right-full ml-2 shadow-lg overflow-hidden rounded z-10 transition-opacity duration-200 max-w-72 w-72"
 							>
 								<ul>
-									<MenuTrade />
+									<MenuFutures />
 								</ul>
 							</div>
 						</li>
@@ -73,7 +73,7 @@
 </template>
 
 <script setup>
-import MenuTrade from './MenuTrade.vue';
+import MenuFutures from './MenuFutures.vue';
 
 import IconArrowDown from '~/assets/svg-icons/menu/arrow-down.svg';
 import IconArrowUp from '~/assets/svg-icons/menu/arrow-up.svg';
@@ -92,25 +92,19 @@ const hideMenu = () => {
 
 const menuItems = ref([
 	{
-		name: 'quickTrade',
-		description: 'buyingSellingSpot',
+		name: 'USDTMTransaction',
+		description: 'buyingSellingFutures',
 		hover: false,
 		subItems: [{ name: 'Sub-item 1' }, { name: 'Sub-item 2' }],
 	},
 	{
-		name: 'professionalDeal',
-		description: 'buyingSellingSpot',
-		hover: false,
-		subItems: [{ name: 'Sub-item 3' }, { name: 'Sub-item 4' }],
-	},
-	{
 		name: 'listOrdersTransactions',
-		description: 'buyingSellingSpot',
+		description: 'buyingSellingFutures',
 		hover: false,
 	},
 	{
 		name: 'trialTransaction',
-		description: 'buyingSellingSpot',
+		description: 'buyingSellingFutures',
 		hover: false,
 	},
 ]);
