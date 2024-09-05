@@ -226,6 +226,12 @@ const persian = {
 	cryptocurrencyPrice: 'قیمت رمز ارز',
 	titleReferral: 'بیت‌لند تنها پلتفرم درآمدزایی در ایران با امکان کسب درآمد تا ۵ سطح زیر مجموعه ',
 	subTitleReferral: 'شما در بیت‌لند علاوه بر معاملات خود، میتوانید به عنوان یکی از اعضای بیت‌لند از بیت‌لند کسب درآمد داشته باشید. پس نباید وقتو تلف کنید !',
+	oneDay: 'یک روزه',
+	sevenDays: 'هفت روزه',
+	oneMonth: 'یک ماهه',
+	threeMonth: 'سه ماهه',
+	oneYear: 'یک ساله',
+	YTD: 'YTD',
 };
 
 export default persian;

@@ -22,11 +22,15 @@
 				@mouseover="showMenu"
 				@mouseleave="hideMenu"
 			>
-				<div class="w-[30rem] bg-hover-light dark:bg-hover-dark shadow-lg rounded p-4">
+				<div
+					class="w-[30rem] bg-hover-light dark:bg-hover-dark shadow-lg rounded p-4"
+				>
 					<div class="flex justify-between">
 						<div class="m-2">
 							<div class="flex items-center space-x-2">
-								<div class="bg-primary-gray-light dark:bg-primary-gray-dark shadow-lg rounded p-1 ml-4 items-center">
+								<div
+									class="bg-primary-gray-light dark:bg-primary-gray-dark shadow-lg rounded p-1 ml-4 items-center"
+								>
 									<IconPhone
 										class="text-primary-yellow-light dark:text-primary-yellow-dark"
 									/>

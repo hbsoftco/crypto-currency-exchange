@@ -1,5 +1,35 @@
 <template>
 	<div class="w-full h-80">
+		<div class="flex justify-between mt-4 mb-7">
+			<div dir="ltr">
+				<span
+					class="text-base font-bold text-subtle-text-light dark:text-subtle-text-dark"
+				>{{ useNumber("$2.83") }}</span>
+				<span class="text-sm font-normal text-accent-green mx-1">{{
+					useNumber("$2.83")
+				}}</span>
+				<span
+					class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark"
+				>(id)</span>
+			</div>
+			<ul class="flex">
+				<li class="mx-1 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark cursor-pointer group">
+					<span class="group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark group-hover:font-bold">{{ $t('oneDay') }}</span>
+				</li>
+				<li class="mx-1 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark cursor-pointer group">
+					<span class="group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark group-hover:font-bold">{{ $t('sevenDays') }}</span>
+				</li>
+				<li class="mx-1 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark cursor-pointer group">
+					<span class="group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark group-hover:font-bold">{{ $t('oneMonth') }}</span>
+				</li>
+				<li class="mx-1 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark cursor-pointer group">
+					<span class="group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark group-hover:font-bold">{{ $t('oneYear') }}</span>
+				</li>
+				<li class="mx-1 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark cursor-pointer group">
+					<span class="group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark group-hover:font-bold">{{ $t('YTD') }}</span>
+				</li>
+			</ul>
+		</div>
 		<ClientOnly>
 			<VChart
 				:option="chartOptions"
@@ -10,6 +40,8 @@
 </template>
 
 <script setup lang="ts">
+import { useNumber } from '~/composables/useNumber';
+
 const data = [
 	2.74, 2.76, 2.78, 2.77, 2.75, 2.78, 49.8, 48.82, 2.78, 2.83, 2.81, 2.84, 2.83,
 ];
