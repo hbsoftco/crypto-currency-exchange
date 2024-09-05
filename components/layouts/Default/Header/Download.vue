@@ -22,11 +22,15 @@
 				@mouseover="showMenu"
 				@mouseleave="hideMenu"
 			>
-				<div class="w-[30rem] bg-hover-light dark:bg-hover-dark shadow-lg rounded p-4">
+				<div
+					class="w-[30rem] bg-hover-light dark:bg-hover-dark shadow-lg rounded p-4"
+				>
 					<div class="flex justify-between">
 						<div class="m-2">
 							<div class="flex items-center space-x-2">
-								<div class="bg-primary-gray-light dark:bg-primary-gray-dark shadow-lg rounded p-1 ml-4 items-center">
+								<div
+									class="bg-primary-gray-light dark:bg-primary-gray-dark shadow-lg rounded p-1 ml-4 items-center"
+								>
 									<IconPhone
 										class="text-primary-yellow-light dark:text-primary-yellow-dark"
 									/>
@@ -40,21 +44,11 @@
 							>
 								{{ $t("scanQR") }}
 							</p>
-							<div class="flex items-center space-x-2 cursor-pointer mt-6">
-								<ULink
-									to="#"
-									class="flex"
-								>
-									<p
-										class="ml-2 text-primary-yellow-light dark:text-primary-yellow-dark text-base font-medium"
-									>
-										{{ $t("showMore") }}
-									</p>
-									<IconArrowLeftQR
-										class="text-primary-yellow-light dark:text-primary-yellow-dark mt-1"
-									/>
-
-								</ULink>
+							<div class="flex justify-start">
+								<UiSeeMore
+									link="/"
+									text="showMore"
+								/>
 							</div>
 						</div>
 						<div class="m-2">
@@ -75,7 +69,6 @@
 import IconDownload from '~/assets/svg-icons/menu/could-download.svg';
 import IconDownloadFill from '~/assets/svg-icons/menu/could-download-fill.svg';
 import IconPhone from '~/assets/svg-icons/menu/phone.svg';
-import IconArrowLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';
 
 const hover = ref(false);
 

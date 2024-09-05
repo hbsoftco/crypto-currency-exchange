@@ -1,5 +1,5 @@
 <template>
-	<div class="py-6 md:py-20 bg-black text-white">
+	<div class="py-6 md:py-20">
 		<h3 class="mb-6 md:mb-14 text-center">
 			<span class="text-2xl md:text-[2.5rem] font-black">{{ $t("latestCurrencies") }}</span>
 		</h3>
