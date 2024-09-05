@@ -15,7 +15,6 @@ export const useAuthStore = defineStore('auth', () => {
 	const otc = ref<string | null>(null);
 	const userId = ref<number | null>(null);
 	const userSecretKey = ref<number | null>(null);
-	// const intervalId = ref<number | NodeJS.Timeout | null>(null);
 
 	const isLoggedIn = computed(() => !!otc.value);
 
@@ -47,41 +46,12 @@ export const useAuthStore = defineStore('auth', () => {
 		otc.value = null;
 		userId.value = null;
 		userSecretKey.value = null;
-		// stopOtcUpdate();
+
 		authCookie.value = null;
 		passwordCookie.value = null;
 	};
 
-	// const startOtcUpdate = () => {
-	// 	if (intervalId.value) return;
-
-	// 	intervalId.value = setInterval(async () => {
-	// 		try {
-	// 			await fetchNewOTC();
-	// 		}
-	// 		catch (error) {
-	// 			console.error('Failed to update OTC:', error);
-	// 		}
-	// 	}, 20000);
-	// };
-
-	// const stopOtcUpdate = () => {
-	// 	if (intervalId.value) {
-	// 		clearInterval(intervalId.value);
-	// 		intervalId.value = null;
-	// 	}
-	// };
-
-	// watch(isLoggedIn, () => {
-	// 	if (isLoggedIn.value === true) {
-	// 		startOtcUpdate();
-	// 	}
-	// 	else {
-	// 		stopOtcUpdate();
-	// 	}
-	// }, { immediate: true });
-
-	const fetchNewOTC = async () => {
+	const refreshOTC = async () => {
 		const { $api } = useNuxtApp();
 		const auth = authRepository($api);
 
@@ -116,11 +86,6 @@ export const useAuthStore = defineStore('auth', () => {
 			const password = passwordCookie.value;
 
 			if (!authData || !password) {
-				// throw createError({
-				// 	statusCode: 500,
-				// 	statusMessage: `Authentication data or password is missing`,
-				// });
-
 				return;
 			}
 
@@ -155,6 +120,6 @@ export const useAuthStore = defineStore('auth', () => {
 		clearAuthData,
 		savePassword,
 		getAuthHeaders,
-		fetchNewOTC,
+		refreshOTC,
 	};
 });

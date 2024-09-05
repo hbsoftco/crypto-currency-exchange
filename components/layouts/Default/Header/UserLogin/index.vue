@@ -37,6 +37,10 @@ import Notification from './Notification.vue';
 import Profile from './Profile.vue';
 import Wallet from './Wallet.vue';
 
+const profileStore = useProfileStore();
+
+console.log(profileStore.userProfile);
+
 const authStore = useAuthStore();
 authStore.loadAuthData();
 </script>

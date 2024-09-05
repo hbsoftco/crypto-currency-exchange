@@ -10,6 +10,8 @@ export const useProfileStore = defineStore('profile', () => {
 	const { $api } = useNuxtApp();
 	const profileRepo = profileRepository($api);
 
+	const authStore = useAuthStore();
+
 	const fetchProfile = async () => {
 		if (isProfileDataFetched.value || loading.value) return;
 
@@ -36,10 +38,15 @@ export const useProfileStore = defineStore('profile', () => {
 	};
 
 	const userProfile = computed(async () => {
-		if (!profile.value) {
-			await fetchProfile();
+		if (authStore.isLoggedIn) {
+			if (!profile.value) {
+				await fetchProfile();
+			}
+			return profile.value;
 		}
-		return profile.value;
+		else {
+			return null;
+		}
 	});
 
 	return {

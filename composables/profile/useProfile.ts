@@ -21,7 +21,7 @@ export const useProfile = () => {
 			if (err && err.response._data.statusCode === StatusCodes.OTC_EXPIRED.fa) {
 				const authStore = useAuthStore();
 
-				await authStore.fetchNewOTC();
+				await authStore.refreshOTC();
 
 				await getCurrentUser();
 			}

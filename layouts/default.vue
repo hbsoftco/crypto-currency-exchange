@@ -5,7 +5,9 @@
 
 		<!-- <LayoutsDefaultNotif class="hidden md:block" /> -->
 		<PagesSupportButtons class="hidden md:block" />
-		<slot />
+		<div>
+			<slot />
+		</div>
 		<LayoutsDefaultFooter />
 		<LayoutsDefaultMobileFooter class="block md:hidden" />
 	</div>
