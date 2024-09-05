@@ -2,7 +2,7 @@
 	<div class="">
 		<section class="relative">
 			<PagesImageCover>
-				<UContainer class=" h-full">
+				<UContainer class="h-full">
 					<div class="w-full h-full relative flex justify-between">
 						<div class="absolute top-0 md:top-40">
 							<h1
@@ -25,15 +25,15 @@
 						<NuxtImg
 							src="/images/svg/privacy.svg"
 							alt="invite"
-							class="absolute bottom-0 left-0 hidden md:block"
+							class="absolute bottom-0 left-0 hidden md:block w-[30rem] h-[36.125rem]"
 						/>
 					</div>
 				</UContainer>
 			</PagesImageCover>
 		</section>
 
-		<section>
-			<UContainer class="md:mx-8 mt-12">
+		<section class="md:mx-8 mt-12">
+			<UContainer>
 				<div
 					v-for="(item, index) in items"
 					:key="index"

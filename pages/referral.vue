@@ -13,15 +13,13 @@
 							<div
 								class="p-1 md:p-3 rounded bg-primary-gray-light dark:bg-primary-gray-dark shadow-md text-white w-full md:w-[30rem] h-auto opacity-75"
 							>
-								<b class="text-text-dark dark:text-text-light text-sm md:text-base">
-									بیت‌لند تنها پلتفرم درآمدزایی در ایران با امکان کسب درآمد تا ۵ سطح
-									زیر مجموعه </b><br>
+								<b class="text-text-dark dark:text-text-light text-sm md:text-base">								{{ $t("inviteFriends") }}
+									{{ $t("titleReferral") }}
+								</b><br>
 								<p
 									class="text-text-dark dark:text-text-light mt-1 md:mt-4 text-sm md:text-base"
 								>
-									شما در بیت‌لند علاوه بر معاملات خود، میتوانید به عنوان یکی از
-									اعضای بیت‌لند از بیت‌لند کسب درآمد داشته باشید. پس نباید وقتو تلف
-									کنید !
+									{{ $t("subTitleReferral") }}
 								</p>
 							</div>
 						</div>
@@ -38,7 +36,7 @@
 		<section>
 			<UContainer>
 				<div
-					class="relative max-w-full w-full md:max-w-[46.125rem] md:w-[46.125rem] m-auto top-0 md:-top-32 bg-hover-light dark:bg-hover-dark py-10 px-8 md:mx-30 rounded-lg shadow-lg"
+					class="relative max-w-full w-full md:max-w-[46.125rem] md:w-[46.125rem] m-auto top-0 md:-top-32 lg:-top-24 bg-hover-light dark:bg-hover-dark py-10 px-8 md:mx-30 rounded-lg shadow-lg"
 				>
 					<p
 						class="text-primary-yellow-light dark:text-primary-yellow-dark text-2xl font-extrabold pb-4"
@@ -49,36 +47,26 @@
 						<li class="pb-3">
 							<b>{{ $t("registerBitland") }}</b><br>
 							<p>
-								با ثبت نام در وبسایت بیت‌لند، امکان دعوت از طریق لینک برای شما
-								فعال میشود.
+								{{ $t("textRegisterBitland") }}
 							</p>
 						</li>
 						<li class="pb-3">
 							<b>{{ $t("inviteFriends") }}</b><br>
 							<p>
-								شما با اشتراک گذاری لینک دعوت خود با دوستان میتوانید به چرخه ما
-								بپیوندید.
+								{{ $t("textInviteFriends") }}
 							</p>
 						</li>
 						<li class="pb-3">
 							<b>{{ $t("receiveCommission") }}</b><br>
 							<p>
-								حال شما میتوانید ۳۰ تا ۴۵ درصد از زیرمجموعه های شاخه اول و ۵
-								درصد بصورت ثابت تا شاخه پنجم درامد کسب کنید.
+								{{ $t("textReceiveCommission") }}
 							</p>
 						</li>
 					</ul>
-					<div class="flex justify-center">
-						<p
-							class="pl-2 text-primary-yellow-light dark:text-primary-yellow-dark font-extrabold text-base"
-						>
-							{{ $t("getStarted") }}
-						</p>
-						<img
-							src="/images/svg/arrow-left.svg"
-							alt="arrow-left"
-						>
-					</div>
+					<UiSeeMore
+						link="/"
+						text="getStarted"
+					/>
 				</div>
 			</UContainer>
 		</section>
@@ -99,23 +87,19 @@
 						</p>
 						<ul class="list-disc text-base font-medium">
 							<li>
-								کارمزد شما از سطح اول زیر مجموعه های خود از ۳۰ درصد تا ۴۵ درصد
-								نسبت به سطح کسب درآمدی شما متغیر می باشد.
+								{{ $t("bitlandPlatformMonetizationTableItem1") }}
 							</li>
 							<br>
 							<li>
-								کارمزد شما از سطح دوم ۵ درصد‌‌، سطح سوم ۲/۵ درصد و سطح چهارم ۱/۶
-								درصد میباشد که ثابت بوده و قابل تغییر نیست.
+								{{ $t("bitlandPlatformMonetizationTableItem2") }}
 							</li>
 							<br>
 							<li>
-								تمامی کارمزد های شما در ساعات مشخصی از روز محاسبه و به حساب کاربری
-								شما واریز می گردد.
+								{{ $t("bitlandPlatformMonetizationTableItem3") }}
 							</li>
 							<br>
 							<li>
-								صرافی بیت‌لند آماده همکاری با اشخاص مطرح، شرکت ها و سازمان ها با
-								تسهیلات و خدمات ویژه می باشد.
+								{{ $t("bitlandPlatformMonetizationTableItem4") }}
 							</li>
 						</ul>
 					</div>

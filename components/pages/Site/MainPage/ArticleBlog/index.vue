@@ -32,23 +32,17 @@
 					/>
 				</div>
 			</UCarousel>
-
-			<ULink to="">
-				<div
-					class="flex items-center justify-center mt-14"
-					dir="rtl"
-				>
-					<span class="text-base font-medium ml-1 text-primary-yellow-light dark:text-primary-yellow-dark">{{ $t('textMore') }}</span>
-					<IconArrowLeftQR class="text-accent-secondaryYellow mt-1 w-6 h-6" />
-				</div>
-			</ULink>
+			<div dir="rtl">
+				<UiSeeMore
+					link="/"
+					text="textMore"
+				/>
+			</div>
 		</UContainer>
 	</div>
 </template>
 
 <script setup lang="ts">
-import IconArrowLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';
-
 const items = [
 	[
 		{

@@ -20,11 +20,18 @@ const persian = {
 	wallet: 'کیف پول',
 	provideServices: 'نحوه ارائه خدمات',
 	inviteFriends: 'دعوت از دوستان',
+	textInviteFriends: 'شما با اشتراک گذاری لینک دعوت خود با دوستان میتوانید به چرخه مابپیوندید.',
 	registerBitland: 'ثبت نام در بیت‌لند !',
+	textRegisterBitland: 'با ثبت نام در وبسایت بیت‌لند، امکان دعوت از طریق لینک برای شما فعال میشود.',
 	receiveCommission: 'دریافت کمیسیون!',
+	textReceiveCommission: 'حال شما میتوانید ۳۰ تا ۴۵ درصد از زیرمجموعه های شاخه اول و ۵ درصد بصورت ثابت تا شاخه پنجم درامد کسب کنید.',
 	howStart: 'چگونه شروع کنم؟',
 	getStarted: 'شروع کنید',
 	bitlandPlatformMonetizationTable: 'جدول درآمدزایی پلتفرم بیت‌لند',
+	bitlandPlatformMonetizationTableItem1: 'کارمزد شما از سطح اول زیر مجموعه های خود از ۳۰ درصد تا ۴۵ درصدنسبت به سطح کسب درآمدی شما متغیر می باشد.',
+	bitlandPlatformMonetizationTableItem2: 'کارمزد شما از سطح دوم ۵ درصد‌‌، سطح سوم ۲/۵ درصد و سطح چهارم ۱/۶ درصد میباشد که ثابت بوده و قابل تغییر نیست.',
+	bitlandPlatformMonetizationTableItem3: 'تمامی کارمزد های شما در ساعات مشخصی از روز محاسبه و به حساب کاربری شما واریز می گردد.',
+	bitlandPlatformMonetizationTableItem4: 'صرافی بیت‌لند آماده همکاری با اشخاص مطرح، شرکت ها و سازمان ها با تسهیلات و خدمات ویژه می باشد.',
 	market: 'بازار',
 	currencyDeposit: 'واریز ارز',
 	quickAccess: 'دسترسی سریع',
@@ -217,6 +224,8 @@ const persian = {
 	bitlandApproval: 'تایید بیت‌لند',
 	howBuy: 'چطور خرید کنیم',
 	cryptocurrencyPrice: 'قیمت رمز ارز',
+	titleReferral: 'بیت‌لند تنها پلتفرم درآمدزایی در ایران با امکان کسب درآمد تا ۵ سطح زیر مجموعه ',
+	subTitleReferral: 'شما در بیت‌لند علاوه بر معاملات خود، میتوانید به عنوان یکی از اعضای بیت‌لند از بیت‌لند کسب درآمد داشته باشید. پس نباید وقتو تلف کنید !',
 };
 
 export default persian;

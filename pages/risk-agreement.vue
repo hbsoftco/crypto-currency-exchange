@@ -26,15 +26,15 @@
 						<NuxtImg
 							src="/images/svg/risk.svg"
 							alt="invite"
-							class="absolute bottom-0 left-0 hidden md:block"
+							class="absolute bottom-0 left-0 hidden md:block w-[42.875rem] h-[38.313rem]"
 						/>
 					</div>
 				</UContainer>
 			</PagesImageCover>
 		</section>
 
-		<section>
-			<UContainer class="md:mx-40 mt-12">
+		<section class="md:mx-40 mt-12">
+			<UContainer>
 				<div
 					class="mx-auto my-6 py-8 px-10 text-justify leading-loose bg-primary-gray-light dark:bg-primary-gray-dark rounded-lg shadow"
 				>
@@ -239,8 +239,8 @@
 			</UContainer>
 		</section>
 
-		<section>
-			<UContainer class="md:mx-40 mt-12">
+		<section class="md:mx-40 mt-12">
+			<UContainer>
 				<div
 					class="mx-auto my-6 py-8 px-10 text-justify leading-loose bg-primary-gray-light dark:bg-primary-gray-dark rounded-lg shadow"
 				>
@@ -278,8 +278,8 @@
 			</UContainer>
 		</section>
 
-		<section>
-			<UContainer class="md:mx-40 mt-12">
+		<section class="md:mx-40 mt-12">
+			<UContainer>
 				<div
 					class="mx-auto my-6 py-8 px-10 text-justify leading-loose bg-primary-gray-light dark:bg-primary-gray-dark rounded-lg shadow"
 				>
