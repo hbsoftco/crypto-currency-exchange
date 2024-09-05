@@ -17,8 +17,16 @@
 						<QuickAccessMenu />
 					</li>
 					<li>
-						<ULink to="/market">
-							<span class="text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all">{{ $t('market') }}</span>
+						<ULink
+							to="/market"
+							:class="{
+								'text-primary-yellow-light dark:text-primary-yellow-dark': route.path === '/market',
+								'text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all': true,
+							}"
+						>
+							<span>
+								{{ $t('market') }}
+							</span>
 						</ULink>
 					</li>
 					<li>
@@ -28,23 +36,55 @@
 						<Futures />
 					</li>
 					<li class="flex items-center">
-						<ULink to="#">
-							<span class="text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all">{{ $t('awards') }}</span>
+						<ULink
+							to="#"
+							:class="{
+								'text-primary-yellow-light dark:text-primary-yellow-dark': route.path === '',
+								'text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all': true,
+							}"
+						>
+							<span>
+								{{ $t('awards') }}
+							</span>
 						</ULink>
 					</li>
 					<li class="flex items-center">
-						<ULink to="/referral">
-							<span class="text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all"> {{ $t('inviteFriends') }} </span>
+						<ULink
+							to="/referral"
+							:class="{
+								'text-primary-yellow-light dark:text-primary-yellow-dark': route.path === '/referral',
+								'text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all': true,
+							}"
+						>
+							<span>
+								{{ $t('inviteFriends') }}
+							</span>
 						</ULink>
 					</li>
 					<li class="flex items-center">
-						<ULink to="#">
-							<span class="text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all"> {{ $t('blog') }} </span>
+						<ULink
+							to="#"
+							:class="{
+								'text-primary-yellow-light dark:text-primary-yellow-dark': route.path === '',
+								'text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all': true,
+							}"
+						>
+							<span>
+								{{ $t('blog') }}
+							</span>
 						</ULink>
 					</li>
 					<li class="flex items-center">
-						<ULink to="#">
-							<span class="text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all"> {{ $t('guid') }} </span>
+						<ULink
+							to="#"
+							:class="{
+								'text-primary-yellow-light dark:text-primary-yellow-dark': route.path === '',
+								'text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all': true,
+							}"
+						>
+							<span>
+								{{ $t('guid') }}
+							</span>
 						</ULink>
 					</li>
 				</ul>
@@ -70,6 +110,8 @@
 </template>
 
 <script setup lang="ts">
+import { useRoute } from 'vue-router';
+
 import Search from './Header/Search/index.vue';
 import Download from './Header/Download.vue';
 import Futures from './Header/Futures.vue';
@@ -77,6 +119,8 @@ import QuickAccessMenu from './Header/QuickAccessMenu.vue';
 import Setting from './Header/Setting.vue';
 import Transaction from './Header/Transaction.vue';
 import UserLogin from './Header/UserLogin/index.vue';
+
+const route = useRoute();
 </script>
 
 <style lang="scss" scoped></style>
