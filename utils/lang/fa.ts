@@ -207,6 +207,16 @@ const persian = {
 	aboutBitland: 'درباره بیت‌لند',
 	USDTMTransaction: 'معامله USDT-M',
 	buyingSellingFutures: 'خرید و فروش در فیوچرز',
+	rulesRegulations: 'قوانین و مقررات',
+	news: 'اخبار',
+	userAnalysis: 'تحلیل کاربران',
+	buyCryptocurrency: 'خرید رمز ارز',
+	bitlandSoftware: 'نرم افزار بیت‌لند',
+	specialCustomersClub: 'باشگاه مشتریان ویژه',
+	api: 'API',
+	bitlandApproval: 'تایید بیت‌لند',
+	howBuy: 'چطور خرید کنیم',
+	cryptocurrencyPrice: 'قیمت رمز ارز',
 };
 
 export default persian;
