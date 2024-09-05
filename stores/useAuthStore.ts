@@ -1,8 +1,5 @@
-// stores/auth.ts
 import { defineStore } from 'pinia';
 
-import { useCookie } from '#app';
-import { authRepository } from '~/repositories/auth.repository';
 import type { ErrorResponse } from '~/types/response/error.type';
 
 interface AuthData {
@@ -51,33 +48,11 @@ export const useAuthStore = defineStore('auth', () => {
 		passwordCookie.value = null;
 	};
 
-	const refreshOTC = async () => {
-		const { $api } = useNuxtApp();
-		const auth = authRepository($api);
+	const saveNewOTC = (newOTC: string) => {
+		const authData: AuthData = authCookie.value as unknown as AuthData;
+		const { userId, userSecretKey } = authData;
 
-		try {
-			const response = await auth.generateNewOTC();
-
-			const authData: AuthData = authCookie.value as unknown as AuthData;
-
-			const { userId, userSecretKey } = authData;
-
-			if (!authData) {
-				throw createError({
-					statusCode: 500,
-					statusMessage: `Authentication data is missing`,
-				});
-			}
-
-			saveAuthData({ otc: response.result, userId, userSecretKey: userSecretKey });
-		}
-		catch (error: unknown) {
-			const err = error as ErrorResponse;
-			throw createError({
-				statusCode: 500,
-				statusMessage: `${err}`,
-			});
-		}
+		authCookie.value = JSON.stringify({ otc: newOTC, userId, userSecretKey });
 	};
 
 	const getAuthHeaders = async () => {
@@ -103,6 +78,7 @@ export const useAuthStore = defineStore('auth', () => {
 		}
 		catch (error: unknown) {
 			const err = error as ErrorResponse;
+
 			throw createError({
 				statusCode: 500,
 				statusMessage: `${err}`,
@@ -120,6 +96,6 @@ export const useAuthStore = defineStore('auth', () => {
 		clearAuthData,
 		savePassword,
 		getAuthHeaders,
-		refreshOTC,
+		saveNewOTC,
 	};
 });

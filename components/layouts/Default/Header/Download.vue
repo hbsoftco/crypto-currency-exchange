@@ -46,7 +46,7 @@
 							</p>
 							<div class="flex justify-start">
 								<UiSeeMore
-									link="/"
+									link="/app"
 									text="showMore"
 								/>
 							</div>

@@ -10,6 +10,7 @@
 		</div>
 		<LayoutsDefaultFooter />
 		<LayoutsDefaultMobileFooter class="block md:hidden" />
+		<UiToast />
 	</div>
 </template>
 

@@ -25,15 +25,15 @@
 					<div>
 						<div class="flex items-center mb-2">
 							<IconMessage class="text-2xl ml-2 dark:text-subtle-text-50" />
-							<span class="text-xs font-bold">ashoja89@gmail.com</span>
+							<span class="text-xs font-bold mr-1">{{ getValueByKey(profileData, 'EMAIL') }}</span>
 						</div>
 						<div class="flex items-center">
 							<IconAuthentication class="text-2xl ml-2 dark:text-subtle-text-50" />
 							<span
 								id="copy-text"
 								ref="textRef"
-								class="text-xs font-bold ml-1"
-							>65555910</span>
+								class="text-xs font-bold mx-1"
+							>{{ useNumber(String(getValueByKey(profileData, 'UID'))) }}</span>
 							<IconCopy
 								class="cursor-pointer"
 								@click="copyText"
@@ -133,7 +133,7 @@
 									</p>
 								</div>
 								<div>
-									<span class="text-primary-yellow-light dark:text-primary-yellow-dark rounded-sm p-0.5 px-1 border border-background-light dark:border-background-50 text-[0.625rem]">نهنگ گوژ پشت</span>
+									<span class="text-primary-yellow-light dark:text-primary-yellow-dark rounded-sm p-0.5 px-1 border border-background-light dark:border-background-50 text-[0.625rem]">{{ useNumber(String(getValueByKey(profileData, 'TRD_LVL_NAME'))) }}</span>
 								</div>
 							</ULink>
 						</li>
@@ -276,8 +276,9 @@ import IconTopUsers from '~/assets/svg-icons/menu/quick-menu/top-users.svg';
 import IconWhiteList from '~/assets/svg-icons/menu/white-list.svg';
 import IconSetting from '~/assets/svg-icons/menu/setting.svg';
 import IconExit from '~/assets/svg-icons/menu/exit.svg';
-
-const authStore = useAuthStore();
+import type { ProfilePair } from '~/types/response/profile.types';
+import { getValueByKey } from '~/utils/find-value-by-key';
+import { useNumber } from '~/composables/useNumber';
 
 const textRef = ref<HTMLElement | null>(null);
 
@@ -292,16 +293,27 @@ const hideMenu = () => {
 };
 
 const logout = () => {
+	const authStore = useAuthStore();
 	authStore.clearAuthData();
 };
 
+const profileStore = useProfileStore();
+const profileData: ProfilePair[] = await profileStore.userProfile;
+
 const copyText = () => {
 	if (textRef.value) {
+		const toast = useToast();
+
 		const textToCopy = textRef.value.textContent || '';
 
 		navigator.clipboard.writeText(textToCopy)
 			.then(() => {
-				alert(textToCopy);
+				toast.add({
+					title: useT('copy'),
+					description: useT('codeCopiedSuccessfully'),
+					timeout: 5000,
+					color: 'green',
+				});
 			})
 			.catch((err: Error) => {
 				throw new Error(`${err}`);

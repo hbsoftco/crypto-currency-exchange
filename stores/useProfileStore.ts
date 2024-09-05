@@ -1,14 +1,11 @@
-import { profileRepository } from '~/repositories/profile.repository';
+import { useProfile } from '~/composables/profile/useProfile';
 import type { ProfilePair } from '~/types/response/profile.types';
 
 export const useProfileStore = defineStore('profile', () => {
-	const profile = ref<ProfilePair[] | null>(null);
+	const profile = ref<ProfilePair[]>([]);
 	const isProfileDataFetched = ref(false);
 	const loading = ref(false);
 	const error = ref<string | null>(null);
-
-	const { $api } = useNuxtApp();
-	const profileRepo = profileRepository($api);
 
 	const authStore = useAuthStore();
 
@@ -19,7 +16,8 @@ export const useProfileStore = defineStore('profile', () => {
 		error.value = null;
 
 		try {
-			const response = await profileRepo.getCurrentUser();
+			const { getCurrentUser } = useProfile();
+			const response = await getCurrentUser();
 			profile.value = response.result;
 			isProfileDataFetched.value = true;
 		}
@@ -33,19 +31,19 @@ export const useProfileStore = defineStore('profile', () => {
 	};
 
 	const clearProfile = () => {
-		profile.value = null;
+		profile.value = [];
 		isProfileDataFetched.value = false;
 	};
 
 	const userProfile = computed(async () => {
 		if (authStore.isLoggedIn) {
-			if (!profile.value) {
+			if (!profile.value.length) {
 				await fetchProfile();
 			}
 			return profile.value;
 		}
 		else {
-			return null;
+			return [];
 		}
 	});
 

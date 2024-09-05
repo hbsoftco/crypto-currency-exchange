@@ -22,11 +22,11 @@
 			</div>
 			<div class="w-24 h-14">
 				<ClientOnly>
-					<!-- <VChart
+					<VChart
 						v-if="data.length"
 						:option="chartOptions"
 						class="w-24 h-14"
-					/> -->
+					/>
 				</ClientOnly>
 			</div>
 		</div>
@@ -36,56 +36,56 @@
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
 
-// const data = [1, 2, -1, 11, 33, 5, 6, 3];
-// const chartOptions = computed(() => ({
-// 	grid: {
-// 		left: 0,
-// 		right: 0,
-// 		top: 0,
-// 		bottom: 0,
-// 	},
-// 	xAxis: {
-// 		type: 'category',
-// 		data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-// 		show: false,
-// 	},
-// 	yAxis: {
-// 		type: 'value',
-// 		show: false,
-// 	},
-// 	series: [
-// 		{
-// 			data: data,
-// 			type: 'line',
-// 			smooth: true,
-// 			lineStyle: {
-// 				color: '#4CAF50',
-// 				width: 2,
-// 			},
-// 			itemStyle: {
-// 				opacity: 0,
-// 			},
-// 			areaStyle: {
-// 				color: {
-// 					type: 'linear',
-// 					x: 0,
-// 					y: 0,
-// 					x2: 0,
-// 					y2: 1,
-// 					colorStops: [
-// 						{
-// 							offset: 0,
-// 							color: 'rgba(76, 175, 80, 0.6)',
-// 						},
-// 						{
-// 							offset: 1,
-// 							color: 'rgba(76, 175, 80, 0)',
-// 						},
-// 					],
-// 					global: false,
-// 				},
-// 			},
-// 		},
-// 	],
-// }));
+const data = [1, 2, -1, 11, 33, 5, 6, 3];
+const chartOptions = computed(() => ({
+	grid: {
+		left: 0,
+		right: 0,
+		top: 0,
+		bottom: 0,
+	},
+	xAxis: {
+		type: 'category',
+		data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+		show: false,
+	},
+	yAxis: {
+		type: 'value',
+		show: false,
+	},
+	series: [
+		{
+			data: data,
+			type: 'line',
+			smooth: true,
+			lineStyle: {
+				color: '#4CAF50',
+				width: 2,
+			},
+			itemStyle: {
+				opacity: 0,
+			},
+			areaStyle: {
+				color: {
+					type: 'linear',
+					x: 0,
+					y: 0,
+					x2: 0,
+					y2: 1,
+					colorStops: [
+						{
+							offset: 0,
+							color: 'rgba(76, 175, 80, 0.6)',
+						},
+						{
+							offset: 1,
+							color: 'rgba(76, 175, 80, 0)',
+						},
+					],
+					global: false,
+				},
+			},
+		},
+	],
+}));
 </script>

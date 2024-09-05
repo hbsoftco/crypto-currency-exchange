@@ -236,6 +236,8 @@ const persian = {
 	textDownloadApp: 'با دانلود اپلیکیشن بیت لند، به راحتی معاملات خود را با ارزهای دیجیتال انجام دهید و به سرعت از فرصت‌های سودآور استفاده کنید. ',
 	suggestDownloadApp: 'شما میتوانید QR کد زیر را اسکن کنید .',
 	titrDownloadApp: 'یا به طور مستقیم از فروشگاه نرم افرازی خود دانلود کنید.',
+	codeCopiedSuccessfully: 'کد با موفقیت کپی شد',
+	copy: 'کپی',
 };
 
 export default persian;

@@ -1,3 +1,7 @@
+// import { useAuth } from '../auth/useAuth';
+
+import { useAuth } from '../auth/useAuth';
+
 import { profileRepository } from '~/repositories/profile.repository';
 import type { ErrorResponse } from '~/types/response/error.type';
 import { StatusCodes } from '~/utils/constants/status-codes';
@@ -19,9 +23,9 @@ export const useProfile = () => {
 			const err = error as ErrorResponse;
 
 			if (err && err.response._data.statusCode === StatusCodes.OTC_EXPIRED.fa) {
-				const authStore = useAuthStore();
+				const { refreshOTC } = useAuth();
 
-				await authStore.refreshOTC();
+				await refreshOTC();
 
 				await getCurrentUser();
 			}

@@ -1,25 +1,20 @@
 import { authRepository } from '~/repositories/auth.repository';
-import type { SignupByMobileDto } from '~/types/dto/signup.dto';
 
 export const useAuth = () => {
-	// const toast = useToast();
-
 	const { $api } = useNuxtApp();
 	const auth = authRepository($api);
 
 	const loading = ref(false);
 
-	const signupByMobile = async (input: SignupByMobileDto) => {
+	const refreshOTC = async () => {
 		loading.value = true;
 		try {
-			const signupResponse = await auth.signupByMobile({
-				captchaKey: input.captchaKey,
-				refereeCode: input.refereeCode,
-				password: btoa(input.password),
-				mobile: input.mobile,
-			});
+			const response = await auth.generateNewOTC();
 
-			return signupResponse;
+			const authStore = useAuthStore();
+			authStore.saveNewOTC(response.result);
+
+			return response;
 		}
 		catch (error) {
 			return error;
@@ -30,6 +25,6 @@ export const useAuth = () => {
 	};
 
 	return {
-		signupByMobile,
+		refreshOTC,
 	};
 };
