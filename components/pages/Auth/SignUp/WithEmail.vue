@@ -80,8 +80,6 @@
 </template>
 
 <script setup lang="ts">
-import md5 from 'md5';
-
 import ReferralFieldInput from '~/components/forms/ReferralFieldInput.vue';
 import SlideCaptcha from '~/components/ui/SlideCaptcha.vue';
 import { useCaptcha } from '~/composables/auth/useCaptcha';
@@ -126,7 +124,7 @@ if (props.inviter) {
 }
 
 const savePassword = (password: string): string => {
-	const md5Password = md5(password);
+	const md5Password = md5WithUtf16LE(password);
 	authStore.savePassword(md5Password);
 
 	return md5Password;

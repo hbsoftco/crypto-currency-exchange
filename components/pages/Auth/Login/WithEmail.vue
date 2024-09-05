@@ -72,11 +72,19 @@ const {
 	validateData,
 } = useCaptcha();
 
+const authStore = useAuthStore();
 const verificationStore = useVerificationStore();
 
 const router = useRouter();
 
 const captchaHasError = ref(false);
+
+const savePassword = (password: string): string => {
+	const md5Password = md5WithUtf16LE(password);
+	authStore.savePassword(md5Password);
+
+	return md5Password;
+};
 
 const handleLogin = async () => {
 	if (!validate(LOGIN.BY_EMAIL)) return;
@@ -106,6 +114,8 @@ const handleSuccessfulCaptcha = async () => {
 		if (validateData.value.captchaKey) {
 			loginByEmailForm.captchaKey = validateData.value.captchaKey;
 			const { result } = await loginByEmail();
+
+			savePassword(loginByEmailForm.password);
 
 			verificationStore.setVerificationData({
 				verificationId: result.verificationId,

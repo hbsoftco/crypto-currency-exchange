@@ -105,6 +105,8 @@ import TradingProgress from '~/components/pages/Site/MainPage/TradingProgress.vu
 
 // const { data } = await useAsyncData(() => tags.getTagList());
 
+console.log(md5WithUtf16LE('password'));
+
 const authStore = useAuthStore();
 
 authStore.loadAuthData();
