@@ -148,6 +148,8 @@ const handleCaptchaValidation = async (sliderValue: number) => {
 			// Check login
 			const { result } = await loginByEmail();
 
+			savePassword(loginByEmailForm.password);
+
 			// Save data into store
 			verificationStore.setVerificationData({
 				verificationId: result.verificationId,

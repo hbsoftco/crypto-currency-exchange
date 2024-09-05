@@ -94,7 +94,7 @@ export const useLogin = () => {
 
 			return loginResponse;
 		}
-		catch (error) {
+		catch (error: unknown) {
 			const err = error as ErrorResponse;
 			errorMessage.value = err.response._data;
 

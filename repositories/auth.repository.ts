@@ -1,12 +1,14 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
 import type { CaptchaResponse } from '~/types/captcha-response.types';
+import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import type { CaptchaRequestDto } from '~/types/dto/generate-captcha.dto';
 import type { LoginByEmailDto, LoginByMobileDto } from '~/types/dto/login.dto';
 import type { SignupByEmailDto, SignupByMobileDto } from '~/types/dto/signup.dto';
 import type { ValidateCaptchaDto } from '~/types/dto/validate-captcha.dto';
 import type { CheckCodeDto } from '~/types/dto/verification.dto';
 import type { ResposneType } from '~/types/response.types';
+import type { CheckOTCResponse } from '~/types/response/check-otc.types';
 import type { LoginByEmailResponse } from '~/types/response/login.types';
 import type { SignUpResponse } from '~/types/response/sign-up.types';
 import type { VerificationCheckCodeResponse } from '~/types/response/verification.types';
@@ -23,6 +25,8 @@ type AuthRepository = {
 	loginByEmail: (data: LoginByEmailDto) => Promise<LoginByEmailResponse>;
 	// Verification
 	checkCodeVerification: (data: CheckCodeDto) => Promise<VerificationCheckCodeResponse>;
+	// OTC
+	generateNewOTC: () => Promise<CheckOTCResponse>;
 };
 
 export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthRepository => ({
@@ -34,7 +38,8 @@ export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthR
 				action: data.action,
 				captchaType: data.captchaType,
 			},
-		});
+			noAuth: true,
+		} as CustomNitroFetchOptions);
 		return result as CaptchaResponse;
 	},
 	async validateCaptcha(data: ValidateCaptchaDto): Promise<ResposneType> {
@@ -80,6 +85,13 @@ export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthR
 			method: 'POST',
 			body: data,
 		});
+		return response;
+	},
+	// OTC
+	async generateNewOTC(): Promise<CheckOTCResponse> {
+		const response = await fetch<CheckOTCResponse>(`/v1/otc/check`, {
+			noAuth: false,
+		} as CustomNitroFetchOptions);
 		return response;
 	},
 });

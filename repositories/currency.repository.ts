@@ -1,6 +1,6 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { Tag } from '~/types/tag.types';
+import type { Tag } from '~/types/response/tag.types';
 
 type CurrencyRepository = {
 	getTagList: () => Promise<Tag[]>;

@@ -18,6 +18,10 @@ export const StatusCodes = {
 		fa: -1311431,
 		en: 0,
 	},
+	OTC_EXPIRED: {
+		fa: 419,
+		en: 419,
+	},
 };
 
 export const statusMessages: StatusMessage = {
@@ -32,5 +36,9 @@ export const statusMessages: StatusMessage = {
 	INVALID_CODE: {
 		fa: 'کد معتبر نیست',
 		en: 'Invalid code',
+	},
+	OTC_EXPIRED: {
+		fa: 'OTC Fail : OTC is expired, Get new OTC',
+		en: 'OTC Fail : OTC is expired, Get new OTC',
 	},
 };

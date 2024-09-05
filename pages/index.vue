@@ -97,15 +97,18 @@ import TopBannerLogin from '~/components/pages/Site/MainPage/TopBannerLogin.vue'
 import TopSlider from '~/components/pages/Site/MainPage/TopSlider.vue';
 import TradingMarkets from '~/components/pages/Site/MainPage/TradingMarkets.vue';
 import TradingProgress from '~/components/pages/Site/MainPage/TradingProgress.vue';
+import { useProfile } from '~/composables/profile/useProfile';
 // import WhyBitland from '~/components/pages/Site/MainPage/WhyBitland.vue';
 // import { currencyRepository } from '~/repositories/currency.repository';
 
 // const { $api } = useNuxtApp();
 // const tags = currencyRepository($api);
 
-// const { data } = await useAsyncData(() => tags.getTagList());
+const { getCurrentUser } = useProfile();
 
-console.log(md5WithUtf16LE('password'));
+console.log(getCurrentUser());
+
+// const { data } = await useAsyncData(() => tags.getTagList());
 
 const authStore = useAuthStore();
 
