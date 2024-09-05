@@ -1,27 +1,27 @@
 <template>
 	<div>
-		<UContainer>
-			<div class="flex justify-between px-5 py-12 mt-20">
-				<div>
-					<NuxtImg
-						src="/images/svg/always-bitland.svg"
-						alt="always-bitland"
-						class="w-full"
-					/>
-				</div>
-				<div class="flex flex-col w-[532px] pr-8">
-					<span class="text-4xl font-black">
-						{{ $t("alwaysBitland") }}
-					</span>
-					<span class="text-base font-bold mt-4 ">امنیت در اولویت ماست، ما از آخرین تکنولوژی ها و روش های امنیتی برای حفاظت از اموال شما استفاده می کنیم.</span>
-					<div class="text-base font-medium mt-10 leading-loose">
-						<p>چشم انداز بیت‌لند کمک و سرعت بخشیدن به روند استفاده از ارزهای دیجیتال است ؛ تا شما و همه سرمایه گذاران در سرتاسر جهان بتوانند از قدرت فوق العاده ارزهای دیجیتال استفاده کنند.</p>
-						<p>پلتفرم بیت‌لند ، با استفاده از مجموعه ابزار های فنی و تکنیک هایی مانند ذخیره سازی سرد و فرایند شناسایی دو عاملی به بهترین نحو از دارایی شما نگهداری خواهد کرد.</p>
-						<p>بیت‌لند سعی میکند از بیشتر رمزارزهای معروف و مطرح پشتیبانی کند و همچنین امکان معامله با جفت ارزهای مختلف را به کاربران خود بدهد.</p>
-					</div>
+		<div class="flex justify-between py-8">
+			<div class="max-w-[31rem] max-h-[31rem] h-[31rem] w-[31rem]">
+				<NuxtImg
+					src="/images/always-bitland.png"
+					alt="always-bitland"
+					class="w-full"
+				/>
+			</div>
+			<div class="flex flex-col w-[33rem] pr-8">
+				<span class="text-[2.5rem] font-black">
+					{{ $t("alwaysBitland") }}
+				</span>
+				<p class="text-base font-bold mt-4 text-subtle-text-light dark:text-subtle-text-50">
+					{{ $t('securityPriority') }}
+				</p>
+				<div class="text-base font-medium mt-10 leading-loose">
+					<p>{{ $t('bitlandVision') }}</p>
+					<p>{{ $t('bitlandPlatformSecurity') }}</p>
+					<p>{{ $t('bitlandSupport') }}</p>
 				</div>
 			</div>
-		</UContainer>
+		</div>
 	</div>
 </template>
 

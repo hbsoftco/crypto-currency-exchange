@@ -16,9 +16,9 @@
 				/>
 				<span
 					v-if="messageItems.length > 0"
-					class="absolute -top-1 -right-1 flex items-center justify-center h-4 w-4 text-xs font-bold text-white bg-[#FF2211] rounded-full"
+					class="absolute -top-1 -right-1 flex items-center justify-center h-4 w-4 text-xs font-bold text-white bg-accent-red rounded-full"
 				>
-					{{ messageItems.length }}
+					{{ useNumber(messageItems.length) }}
 				</span>
 			</div>
 			<div
@@ -34,7 +34,7 @@
 						>
 							<div class="text-sm font-bold">
 								<ULink to="#">
-									<span>{{ messageItems.length }}</span>
+									<span>{{ useNumber(messageItems.length) }}</span>
 									<span class="mr-1">{{ $t("newMessage") }}</span>
 								</ULink>
 								<ULink to="#">
@@ -106,6 +106,7 @@ import IconNotification from '~/assets/svg-icons/menu/notification.svg';
 import IconNotificationFill from '~/assets/svg-icons/menu/notification-fill.svg';
 import IconArrowLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';
 import IconMessage from '~/assets/svg-icons/menu/message.svg';
+import { useNumber } from '~/composables/useNumber';
 
 const hover = ref(false);
 

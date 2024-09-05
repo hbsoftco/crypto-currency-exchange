@@ -68,9 +68,11 @@
 			<WhyBitland class="hidden md:block" />
 		</section> -->
 
-		<!-- <section>
-			<AlwaysBitland class="hidden md:block" />
-		</section> -->
+		<section>
+			<UContainer>
+				<AlwaysBitland class="hidden md:block" />
+			</UContainer>
+		</section>
 
 		<section>
 			<DownloadApp class="hidden md:block" />
@@ -88,7 +90,7 @@ import ImageCover from '~/components/pages/ImageCover.vue';
 import ImageCoverLogin from '~/components/pages/ImageCoverLogin.vue';
 import ActiveAward from '~/components/pages/Site/MainPage/ActiveAward.vue';
 import Info from '~/components/pages/Site/MainPage/Info.vue';
-// import AlwaysBitland from '~/components/pages/Site/MainPage/AlwaysBitland.vue';
+import AlwaysBitland from '~/components/pages/Site/MainPage/AlwaysBitland.vue';
 import Prize from '~/components/pages/Site/MainPage/Prize.vue';
 import NewCurrencies from '~/components/pages/Site/MainPage/NewCurrencies/index.vue';
 import QuickMenuMobile from '~/components/pages/Site/MainPage/QuickMenuMobile.vue';

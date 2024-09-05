@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="border border-secondary-gray-light  dark:border-secondary-gray-dark py-4 px-6 pr-4 w-64 min-w-64 max-w-64 rounded"
+		class="border border-secondary-gray-light hover:shadow-lg hover:cursor-pointer dark:border-secondary-gray-dark py-4 px-6 pr-4 w-64 min-w-64 max-w-64 rounded"
 		dir="rtl"
 	>
 		<div class="flex flex-row-reverse items-center">
