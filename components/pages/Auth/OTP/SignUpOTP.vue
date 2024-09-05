@@ -64,7 +64,6 @@ const handleSignUp = async () => {
 
 	// Send request to verification code
 	const { result } = await checkCodeVerification();
-	console.log(result);
 	return;
 	authStore.saveAuthData({
 		otc: result.otc,

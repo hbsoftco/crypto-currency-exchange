@@ -43,6 +43,9 @@
 import TradingMarketsHeader from './TradingMarketsHeader.vue';
 import TradingMarketRow from './TradingMarketRow.vue';
 
+import type { ErrorResponse } from '~/types/response/error.type';
+import type { MarketListWithSparkLineChartItem } from '~/types/response/market.types';
+
 const marketStore = useMarketStore();
 // const baseDataStore = useBaseDataStore();
 // await useAsyncData('fetchMarketBriefItems', () => baseDataStore.fetchMarketBriefItems());
@@ -54,7 +57,7 @@ const params = ref({
 	tagTypeId: '1',
 });
 
-const marketData = ref<any>([]);
+const marketData = ref<MarketListWithSparkLineChartItem[]>();
 
 // const { data: marketData } = await useAsyncData('fetchMarketList', () =>
 // 	marketStore.fetchMarketListWithSparkLineChart(params.value),
@@ -65,8 +68,12 @@ onMounted(async () => {
 		const response = await marketStore.fetchMarketListWithSparkLineChart(params.value);
 		marketData.value = response;
 	}
-	catch (error) {
-		console.error('Error fetching market data:', error);
+	catch (error: unknown) {
+		const err = error as ErrorResponse;
+		throw createError({
+			statusCode: 500,
+			statusMessage: `${err.response._data.message}`,
+		});
 	}
 });
 </script>
