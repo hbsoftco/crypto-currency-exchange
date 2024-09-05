@@ -238,6 +238,7 @@ const persian = {
 	titrDownloadApp: 'یا به طور مستقیم از فروشگاه نرم افرازی خود دانلود کنید.',
 	codeCopiedSuccessfully: 'کد با موفقیت کپی شد',
 	copy: 'کپی',
+	level: 'سطح',
 };
 
 export default persian;

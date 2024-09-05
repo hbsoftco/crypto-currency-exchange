@@ -82,7 +82,9 @@
 									</p>
 								</div>
 								<div>
-									<span class="text-primary-yellow-light dark:text-primary-yellow-dark rounded-sm p-0.5 px-1 border border-background-light dark:border-background-50 text-[0.625rem]">سطح ۲</span>
+									<span class="text-primary-yellow-light dark:text-primary-yellow-dark rounded-sm p-0.5 px-1 border border-background-light dark:border-background-50 text-[0.625rem]">
+										{{ `${$t('level')} ${useNumber(String(getValueByKey(profileData, 'KYC_LVL_ID')?getValueByKey(profileData, 'KYC_LVL_ID'): 0))}` }}
+									</span>
 								</div>
 							</ULink>
 						</li>

@@ -4,7 +4,7 @@
 	>
 		<UContainer>
 			<div class="flex-row md:flex md:justify-between pt-6">
-				<div class="p-6 w-96">
+				<div class="p-6 w-full md:w-96">
 					<NuxtImg
 						src="/images/svg/brand-logo.svg"
 						alt="Brand Logo"
