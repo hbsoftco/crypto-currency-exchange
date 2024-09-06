@@ -1,9 +1,9 @@
 <template>
 	<div>
-		<div class="flex justify-between mt-10">
+		<div class="grid grid-cols-2 mt-10">
 			<UButton
 				size="lg"
-				class="flex justify-center bg-hover2-light dark:bg-hover2-dark px-9"
+				class="flex justify-center bg-hover2-light dark:bg-hover2-dark px-0 md:px-9"
 			>
 				<span class="text-sm font-medium text-dark dark:text-white">{{
 					$t("cryptocurrencyDeposit")
@@ -16,7 +16,7 @@
 			</UButton>
 			<UButton
 				size="lg"
-				class="flex justify-center bg-hover2-light dark:bg-hover2-dark px-9"
+				class="flex justify-center bg-hover2-light dark:bg-hover2-dark px-0 md:px-9"
 			>
 				<span class="text-sm font-medium text-dark dark:text-white">{{
 					$t("depositToman")
