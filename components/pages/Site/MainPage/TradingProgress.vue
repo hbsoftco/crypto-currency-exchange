@@ -1,11 +1,11 @@
 <template>
 	<div class="mt-28">
-		<div class="flex justify-center">
+		<div class="grid grid-cols-3 w-full pl-4">
 			<div
-				class="relative w-16 border-t-2 border-primary-yellow-light dark:border-primary-yellow-dark"
+				class="relative w-full h-24 -pr-10 border-t-2 border-primary-yellow-light dark:border-primary-yellow-dark"
 			>
 				<div
-					class="absolute w-full -top-9 right-10 z-10"
+					class="absolute -top-10 -left-5 z-10"
 					@click="toggleSignIn"
 				>
 					<div class="flex flex-col items-center w-full">
@@ -38,10 +38,11 @@
 				</div>
 			</div>
 			<div
-				class="relative w-32 border-t-2 border-secondary-gray-light dark:border-secondary-gray-dark"
+				class="relative w-full border-t-2 border-secondary-gray-light dark:border-secondary-gray-dark"
 			>
 				<div
-					class="absolute w-full -top-9 right-14 z-10"
+					class="absolute -top-10 -left-5 z-10"
+
 					@click="toggleDeposit"
 				>
 					<div class="flex flex-col items-center">
@@ -74,10 +75,11 @@
 				</div>
 			</div>
 			<div
-				class="relative w-32 border-t-2 border-secondary-gray-light dark:border-secondary-gray-dark"
+				class="relative w-full border-t-2 border-secondary-gray-light dark:border-secondary-gray-dark"
 			>
 				<div
-					class="absolute w-full -top-9 right-14"
+					class="absolute -top-10 -left-5 z-10"
+
 					@click="toggleTransaction"
 				>
 					<div class="flex flex-col items-center">

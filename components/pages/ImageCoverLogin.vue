@@ -1,5 +1,5 @@
 <template>
-	<div class="relative mt-0 lg:-mt-40">
+	<div class="relative">
 		<NuxtImg
 			src="/images/svg/site/bg-cover-dark.svg"
 			alt="bg-cover"

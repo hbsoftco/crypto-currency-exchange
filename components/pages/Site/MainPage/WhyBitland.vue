@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<UContainer>
-			<div class="text-center">
+			<div class="text-center mb-16">
 				<span class="text-4xl font-black">{{ $t('whyBitland') }}</span>
 				<p class="text-base font-medium mt-14 leading-loose">
 					بدون شک سرمایه‌گذاری موفق و به دست آوردن موفقیت‌های مالی پیش‌نیازهای زیادی دارد. علاوه بر داشتن آگاهی و تخصص در این حوزه انتخاب یک پلتفرم حرفه ای با رابط کاربری آسان یک ضرورت مهم در حوزه ارز های دیجیتال می باشد، بیت‌لند با تهیه یک محیط حرفه ای به شما تجربه ای بسیار نزدیک به پلتفرم های بزرگ جهانی هدیه می دهد.
@@ -9,7 +9,7 @@
 			</div>
 			<div>
 				<NuxtImg
-					src="/images/svg/why-bitland.svg"
+					src="/images/why-bitland.png"
 					alt="platform"
 					class="w-full mt-14"
 				/>

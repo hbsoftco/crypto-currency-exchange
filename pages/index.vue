@@ -31,7 +31,7 @@
 
 		<section class="block md:hidden">
 			<UContainer>
-				<!-- <TradingProgress /> -->
+				<TradingProgress />
 				<QuickMenuMobile />
 			</UContainer>
 		</section>
@@ -64,9 +64,9 @@
 			<NewCurrencies />
 		</section>
 
-		<!-- <section>
+		<section>
 			<WhyBitland class="hidden md:block" />
-		</section> -->
+		</section>
 
 		<section>
 			<UContainer>
@@ -98,9 +98,9 @@ import TopBanner from '~/components/pages/Site/MainPage/TopBanner.vue';
 import TopBannerLogin from '~/components/pages/Site/MainPage/TopBannerLogin.vue';
 import TopSlider from '~/components/pages/Site/MainPage/TopSlider.vue';
 import TradingMarkets from '~/components/pages/Site/MainPage/TradingMarkets.vue';
-// import TradingProgress from '~/components/pages/Site/MainPage/TradingProgress.vue';
+import TradingProgress from '~/components/pages/Site/MainPage/TradingProgress.vue';
 // import { useProfile } from '~/composables/profile/useProfile';
-// import WhyBitland from '~/components/pages/Site/MainPage/WhyBitland.vue';
+import WhyBitland from '~/components/pages/Site/MainPage/WhyBitland.vue';
 // import { currencyRepository } from '~/repositories/currency.repository';
 
 // const { $api } = useNuxtApp();
