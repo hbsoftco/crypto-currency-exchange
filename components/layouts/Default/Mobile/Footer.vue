@@ -35,13 +35,13 @@ const footerItems = [
 	},
 	{
 		name: 'market',
-		url: '/market',
+		url: '/markets',
 		icon: '/images/svg/footer/market.svg',
 		activeIcon: '/images/svg/footer/active-market.svg',
 	},
 	{
 		name: 'transaction',
-		url: '/market/32',
+		url: '/markets/32',
 		icon: '/images/svg/footer/transaction.svg',
 		activeIcon: '/images/svg/footer/active-transaction.svg',
 	},

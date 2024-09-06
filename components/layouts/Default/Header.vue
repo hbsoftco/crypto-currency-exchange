@@ -19,7 +19,7 @@
 						</li>
 						<li>
 							<ULink
-								to="/market"
+								to="/markets"
 								:class="{
 									'text-primary-yellow-light dark:text-primary-yellow-dark': route.path === '/market',
 									'text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all': true,
