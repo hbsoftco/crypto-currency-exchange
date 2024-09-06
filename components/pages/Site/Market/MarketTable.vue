@@ -6,28 +6,29 @@
 			>
 				<thead>
 					<tr class="text-center font-normal md:font-medium text-sm md:text-base py-3">
-						<th class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-16 md:px-10">
+						<th class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-0 md:px-10">
 							<span class="hidden md:block">{{ $t("tradingPair") }}</span>
 							<span class="block md:hidden">{{ $t("market") }}</span>
 						</th>
-						<th class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-1 md:px-10">
+						<th class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-0 md:px-10">
 							<span class="hidden md:block">{{ $t("currentPrice") }}</span>
 							<span class="block md:hidden">{{ $t("lastPrice") }}</span>
 						</th>
-						<th class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-1 md:px-10">
-							<span>{{ $t("change24h") }}</span>
+						<th class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-0 md:px-10">
+							{{ $t("change24h") }}
 						</th>
-						<th class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-10">
-							<span class="hidden md:block">{{ $t("roof24h") }}</span>
+						<th class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-10 md:table-cell hidden">
+							{{ $t("roof24h") }}
 						</th>
-						<th class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-10">
-							<span class="hidden md:block">{{ $t("floor24h") }}</span>
+						<th class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-10 md:table-cell hidden">
+							{{ $t("floor24h") }}
 						</th>
-						<th class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-10">
-							<span class="hidden md:block">{{ $t("volume24h") }}</span>
+						<th class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-10 md:table-cell hidden">
+							{{ $t("volume24h") }}
 						</th>
 					</tr>
 				</thead>
+
 				<tbody>
 					<MarketTableRow />
 					<MarketTableRow />

@@ -76,14 +76,14 @@
 				<IconArrowDownRed class="hidden md:block text-base text-accent-red mr-1" />
 			</div>
 		</td>
-		<td class="text-sm font-normal px-10">
-			<span class="hidden md:block">{{ useNumber("2.8466") }}</span>
+		<td class="text-sm font-normal px-10 md:table-cell hidden">
+			{{ useNumber("2.8466") }}
 		</td>
-		<td class="text-sm font-normal px-10">
-			<span class="hidden md:block">{{ useNumber("2.8466") }}</span>
+		<td class="text-sm font-normal px-10 md:table-cell hidden">
+			{{ useNumber("2.8466") }}
 		</td>
-		<td class="text-sm font-normal px-10">
-			<span class="hidden md:block">{{ useNumber("3.1m") }}</span>
+		<td class="text-sm font-normal px-10 md:table-cell hidden">
+			{{ useNumber("3.1m") }}
 		</td>
 	</tr>
 </template>
