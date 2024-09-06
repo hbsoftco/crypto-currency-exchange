@@ -1,38 +1,40 @@
 <template>
 	<div
-		dir="ltr"
 		class="text-center my-6 md:my-14"
 	>
 		<UContainer>
-			<span class="text-2xl font-semibold">{{ $t('lastBlogArticles') }}</span>
+			<span class="text-2xl font-bold">{{ $t('lastBlogArticles') }}</span>
 			<p class="text-base font-medium my-8">
-				همیشه از آخرین اخبار و رویدادهای ارز دیجیتال زودتر از همه باخبر باشید.
+				{{ $t('stayUpdated') }}
 			</p>
-			<UCarousel
-				v-slot="{ item }"
-				:items="items"
-				:ui="{
-					item: 'basis-full md:basis-1/3 lg:basis-1/3 snap-start',
-					indicators: {
-						wrapper: 'flex items-center justify-center gap-3 inset-x-0',
-						base: 'rounded h-2 w-4',
-						active: 'bg-primary-yellow-light dark:bg-primary-yellow-dark h-2 w-8',
-						inactive: 'bg-secondary-gray-light dark:bg-secondary-gray-dark',
-					},
-				}"
-				indicators
-				class="rounded-lg overflow-hidden pb-10"
-			>
-				<div class="px-1 flex justify-between">
-					<PagesSiteMainPageArticleBlogBlogs
-						v-for="(article, index) in item"
-						:key="index"
-						:data="article"
-						class=" px-4"
-					/>
-				</div>
-			</UCarousel>
-			<div dir="rtl">
+			<div dir="ltr">
+				<UCarousel
+					v-slot="{ item }"
+					:items="items"
+					:ui="{
+						item: 'basis-full md:basis-1/3 lg:basis-1/3 snap-start',
+						indicators: {
+							wrapper: 'flex items-center justify-center gap-3 inset-x-0',
+							base: 'rounded h-2 w-4',
+							active: 'bg-primary-yellow-light dark:bg-primary-yellow-dark h-2 w-8',
+							inactive: 'bg-secondary-gray-light dark:bg-secondary-gray-dark',
+						},
+					}"
+					indicators
+					class="rounded-lg overflow-hidden pb-10"
+				>
+					<div class="px-1 flex justify-between">
+						<PagesSiteMainPageArticleBlogBlogs
+							v-for="(article, index) in item"
+							:key="index"
+							:data="article"
+							class=" px-4"
+						/>
+					</div>
+				</UCarousel>
+			</div>
+
+			<div>
 				<UiSeeMore
 					link="/"
 					text="textMore"
