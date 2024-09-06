@@ -31,7 +31,7 @@
 				</UDropdown>
 			</div>
 			<div class="col-span-6 hidden md:block">
-				<TradingMarketsHeaderItems class="" />
+				<TradingMarketsHeaderItems @tag-selected="updateTagFilter" />
 			</div>
 			<div class="col-span-2 pr-8 text-center flex justify-center items-center">
 				<UDropdown
@@ -62,9 +62,16 @@
 <script setup lang="ts">
 import TradingMarketsHeaderItems from './TradingMarketsHeaderItems.vue';
 
-import { MarketType } from '~/utils/enums/market.enum';
+import { MarketType, SortMode } from '~/utils/enums/market.enum';
 import { Language } from '~/utils/enums/language.enum';
 import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
+
+interface EmitDefinition {
+	(event: 'filter-change' | 'tag-change', value: number): void;
+	(event: 'currency-change', selectedId: string): void;
+}
+
+const emit = defineEmits<EmitDefinition>();
 
 const baseDataStore = useBaseDataStore();
 const { getMatchedCurrencyItems } = baseDataStore;
@@ -72,6 +79,10 @@ const { getMatchedCurrencyItems } = baseDataStore;
 await baseDataStore.fetchTagItems();
 await baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
 await baseDataStore.fetchQuoteItems(MarketType.SPOT);
+
+const updateTagFilter = async (value: number) => {
+	emit('tag-change', value);
+};
 
 const currencyOptions = computed(() => {
 	return [
@@ -87,35 +98,54 @@ const marketFilters = [
 	[
 		{
 			label: useT('hottest'),
-			click: () => handleSelectMarketFilter('hottest'),
+			value: SortMode.BY_RECENTLY_CHANGED,
+			click: () => handleSelectMarketFilter(SortMode.BY_RECENTLY_CHANGED),
 		},
 		{
 			label: useT('mostProfitable'),
-			click: () => handleSelectMarketFilter('mostProfitable'),
+			value: SortMode.BY_MOST_PROFIT,
+			click: () => handleSelectMarketFilter(SortMode.BY_MOST_PROFIT),
 		},
 		{
 			label: useT('newest'),
-			click: () => handleSelectMarketFilter('newest'),
+			value: SortMode.BY_NEWEST_COINS,
+			click: () => handleSelectMarketFilter(SortMode.BY_NEWEST_COINS),
 		},
 		{
 			label: useT('mostVoluminous'),
-			click: () => handleSelectMarketFilter('mostVoluminous'),
+			value: SortMode.BY_TRADE_COUNT,
+			click: () => handleSelectMarketFilter(SortMode.BY_TRADE_COUNT),
 		},
 		{
 			label: useT('myFavorites'),
-			click: () => handleSelectMarketFilter('myFavorites'),
+			value: SortMode.BY_FAVORITES,
+			click: () => handleSelectMarketFilter(SortMode.BY_FAVORITES),
 		},
 	],
 ];
 
+const selectedMarketFilter = ref({
+	label: useT('hottest'),
+	value: SortMode.BY_RECENTLY_CHANGED,
+});
+
+const handleSelectMarketFilter = (selectedValue: SortMode) => {
+	const selectedFilter = marketFilters[0].find(
+		(filter) => filter.value === selectedValue,
+	);
+
+	selectedMarketFilter.value = selectedFilter || {
+		label: useT('defaultLabel'),
+		value: SortMode.BY_RECENTLY_CHANGED,
+	};
+
+	emit('filter-change', selectedValue);
+};
+
 const selectedCurrency = ref({ label: useT('toman') });
-const selectedMarketFilter = ref({ label: useT('hottest') });
 
 const handleSelectCurrency = (selectedItem: CurrencyBriefItem) => {
 	selectedCurrency.value = { label: selectedItem.cName };
-};
-
-const handleSelectMarketFilter = (selectedLabel: string) => {
-	selectedMarketFilter.value = { label: useT(selectedLabel) };
+	emit('currency-change', String(selectedItem.id));
 };
 </script>

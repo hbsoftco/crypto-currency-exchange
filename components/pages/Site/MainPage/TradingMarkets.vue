@@ -1,6 +1,10 @@
 <template>
 	<div class="pt-20 pb-4 md:pb-20">
-		<TradingMarketsHeader />
+		<TradingMarketsHeader
+			@filter-change="updateFilter"
+			@currency-change="updateCurrency"
+			@tag-change="updateTag"
+		/>
 
 		<div class="p-0 md:p-4 pt-2 md:pt-0">
 			<table
@@ -48,8 +52,6 @@ import type { MarketListWithSparkLineChartItem } from '~/types/response/market.t
 import { MarketType, SortMode } from '~/utils/enums/market.enum';
 
 const marketStore = useMarketStore();
-// const baseDataStore = useBaseDataStore();
-// await useAsyncData('fetchMarketBriefItems', () => baseDataStore.fetchMarketBriefItems());
 
 const params = ref({
 	sortMode: String(SortMode.BY_MARKET_CAPS),
@@ -60,11 +62,22 @@ const params = ref({
 
 const marketData = ref<MarketListWithSparkLineChartItem[]>();
 
-// const { data: marketData } = await useAsyncData('fetchMarketList', () =>
-// 	marketStore.fetchMarketListWithSparkLineChart(params.value),
-// );
+const updateFilter = async (selectedValue: SortMode) => {
+	params.value.sortMode = String(selectedValue);
+	await fetchMarketData();
+};
 
-onMounted(async () => {
+const updateTag = async (selectedValue: SortMode) => {
+	params.value.tagTypeId = String(selectedValue);
+	await fetchMarketData();
+};
+
+const updateCurrency = async (selectedId: string) => {
+	params.value.currencyQuoteId = selectedId;
+	await fetchMarketData();
+};
+
+const fetchMarketData = async () => {
 	try {
 		const response = await marketStore.fetchMarketListWithSparkLineChart(params.value);
 		marketData.value = response;
@@ -76,5 +89,15 @@ onMounted(async () => {
 			statusMessage: `${err.response._data.message}`,
 		});
 	}
+};
+
+onMounted(async () => {
+	await fetchMarketData();
 });
+
+// const { data: marketData } = await useAsyncData('fetchMarketList', () =>
+// 	marketStore.fetchMarketListWithSparkLineChart(params.value),
+// );
+// const baseDataStore = useBaseDataStore();
+// await useAsyncData('fetchMarketBriefItems', () => baseDataStore.fetchMarketBriefItems());
 </script>

@@ -3,7 +3,6 @@
 		class="hover:bg-hover-light hover:rounded-lg dark:hover:bg-hover-dark"
 	>
 		<td class="py-2 px-0 md:px-2 flex justify-start items-center space-x-2 max-w-36 w-36 md:max-w-80 md:w-80">
-			<!-- <pre dir="ltr" class="text-left">{{ row.marketBriefItem }}</pre> -->
 			<TradingAction
 				v-if="row.marketBriefItem"
 				:coin="row.marketBriefItem"
@@ -27,7 +26,7 @@
 				<WeeklyChart
 					v-if="row.sparklineChart.length"
 					:data="row.sparklineChart"
-					color="red"
+					:color="chartColor"
 				/>
 			</div>
 		</td>
@@ -45,5 +44,9 @@ interface Props {
 	row: MarketListWithSparkLineChartItem;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+const chartColor = computed(() => {
+	return parseFloat(props.row.priceChangePercIn24H) >= 0 ? 'green' : 'red';
+});
 </script>

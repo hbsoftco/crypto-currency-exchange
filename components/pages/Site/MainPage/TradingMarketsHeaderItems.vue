@@ -39,6 +39,8 @@
 import { useNumber } from '~/composables/useNumber';
 import type { Tag } from '~/types/response/tag.types';
 
+const emit = defineEmits(['tag-selected']);
+
 const baseDataStore = useBaseDataStore();
 
 await baseDataStore.fetchTagItems();
@@ -49,5 +51,6 @@ const selectedItem = ref(tags[0]);
 
 const selectItem = (item: Tag) => {
 	selectedItem.value = item;
+	emit('tag-selected', item.id);
 };
 </script>
