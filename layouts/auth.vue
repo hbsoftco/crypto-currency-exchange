@@ -1,6 +1,6 @@
 <template>
 	<div class="min-h-screen flex">
-		<div class="bg-yellow-400 w-full md:w-1/2 flex items-center justify-center hidden md:flex">
+		<div class="bg-yellow-400 w-full md:w-1/2 items-center justify-center hidden md:flex">
 			<div class="w-full h-full flex items-center justify-center">
 				<NuxtImg
 					src="/images/svg/market.svg"

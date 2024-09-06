@@ -6,21 +6,16 @@
 		>
 			<div class="flex">
 				<IconSound class="text-accent-blue" />
-				<p class="hidden md:block text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark mr-2">
-					چشم انداز بیت‌لند کمک و سرعت بخشیدن به روند استفاده از ارزهای دیجیتال است
-					؛ تا شما و همه سرمایه گذاران در سرتاسر جهان بتوانند از قدرت فوق العاده
-					ارزهای دیجیتال استفاده کنند , پلتفرم بیت‌لند ، با استفاده  ...
-				</p>
-				<p class="block md:hidden text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark mr-2">
-					چشم انداز بیت‌لند کمک و سرعت بخشیدن به روند...
+				<p class="hidden md:block text-xs font-normal text-primary-gray-600 dark:text-subtle-text-dark mr-2">
+					{{ pinWithTagUp?.info[0]?.text }}
 				</p>
 			</div>
 			<div class="flex items-center">
 				<ULink to="">
-					<span class="text-xs font-normal text-accent-blue ml-2 hidden md:block">{{ $t('showMore') }}</span>
+					<span class="text-xs font-bold text-accent-blue ml-2 hidden md:block">{{ $t('showMore') }}</span>
 				</ULink>
 				<IconClose
-					class="cursor-pointer"
+					class="cursor-pointer text-accent-blue"
 					@click="closeComponent"
 				/>
 			</div>
@@ -37,6 +32,14 @@ const isVisible = ref(true);
 function closeComponent() {
 	isVisible.value = false;
 }
+
+const baseDataStore = useBaseDataStore();
+
+await baseDataStore.fetchPinItems();
+
+const pins = baseDataStore.pinItems;
+
+const pinWithTagUp = computed(() => pins.find((pin) => pin.tag === 'up'));
 </script>
 
 <style scoped></style>
