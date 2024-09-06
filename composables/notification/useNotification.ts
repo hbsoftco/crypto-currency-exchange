@@ -1,31 +1,25 @@
-// import { useAuth } from '../auth/useAuth';
-
-import { profileRepository } from '~/repositories/profile.repository';
+import { notificationRepository } from '~/repositories/notification.repository';
 import type { ErrorResponse } from '~/types/response/error.type';
 import { StatusCodes } from '~/utils/constants/status-codes';
+import type { NotificationRequestDto } from '~/types/dto/notification.dto';
 
-export const useProfile = () => {
+export const useNotification = () => {
 	const { $api } = useNuxtApp();
-	const profile = profileRepository($api);
+	const notification = notificationRepository($api);
 
 	const loading = ref(false);
 
-	const getCurrentUser = async () => {
+	const getNotifications = async (params: NotificationRequestDto) => {
 		loading.value = true;
 		try {
-			const profileResponse = await profile.getCurrentUser();
-
-			return profileResponse;
+			const response = await notification.getNotifications(params);
+			return response;
 		}
 		catch (error: unknown) {
 			const err = error as ErrorResponse;
 
 			if (err && err.response._data.statusCode === StatusCodes.OTC_EXPIRED.fa) {
-				// const { refreshOTC } = useAuth();
-
-				// await refreshOTC();
-
-				// await getCurrentUser();
+				console.log(err.response);
 			}
 
 			throw createError({
@@ -39,6 +33,6 @@ export const useProfile = () => {
 	};
 
 	return {
-		getCurrentUser,
+		getNotifications,
 	};
 };

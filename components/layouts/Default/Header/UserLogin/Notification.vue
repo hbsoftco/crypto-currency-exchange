@@ -37,7 +37,7 @@
 									<span>{{ useNumber(messageItems.length) }}</span>
 									<span class="mr-1">{{ $t("newMessage") }}</span>
 								</ULink>
-								<ULink to="#">
+								<ULink to="">
 									<span
 										class="mr-1 text-xs font-bold text-primary-yellow-light dark:text-primary-yellow-dark"
 									>
@@ -45,7 +45,7 @@
 									</span>
 								</ULink>
 							</div>
-							<ULink to="#">
+							<ULink to="/account/notifications">
 								<div class="flex justify-between items-center">
 									<span
 										class="ml-1 text-xs font-bold text-primary-yellow-light dark:text-primary-yellow-dark"
