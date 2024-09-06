@@ -1,71 +1,67 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import type { FetchResponse } from 'ofetch';
+
 import { useAuth } from '~/composables/auth/useAuth';
 import type { CustomFetchContext } from '~/types/custom-fetch-options.types';
-// import type { ErrorResponse } from '~/types/response/error.type';
+import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import { StatusCodes } from '~/utils/constants/status-codes';
 
-export default defineNuxtPlugin({
-	setup() {
-		const authStore = useAuthStore();
-		const baseURL: string = useEnv('apiBaseUrl');
+export default defineNuxtPlugin(() => {
+	const authStore = useAuthStore();
+	const baseURL = useEnv('apiBaseUrl');
+	const apiName = ref<string>('');
 
-		const api = $fetch.create({
-			baseURL,
-			async onRequest({ options }: CustomFetchContext<unknown>) {
-				if (options.noAuth) {
-					return;
-				}
+	const api = $fetch.create({
+		baseURL,
+		async onRequest({ options }: CustomFetchContext<unknown>) {
+			if (options.noAuth !== false) return;
+			apiName.value = options.apiName;
+			options.headers = { ...options.headers, ...(await authStore.getAuthHeaders()) };
+		},
+		async onResponseError({ response, options }: CustomFetchContext<unknown> & { response: FetchResponse<any>; options: CustomNitroFetchOptions }): Promise<void> {
+			const { doRequest } = useAPIClient();
+			if (response && response?._data && response?._data?.statusCode === StatusCodes.OTC_EXPIRED.fa) {
+				const { refreshOTC } = useAuth();
+				await refreshOTC();
+				await doRequest('GET', `${baseURL}${options.apiName}`, options);
+			}
+			throw response;
+		},
+	});
 
-				try {
-					const headers = await authStore.getAuthHeaders();
-					if (headers) {
-						options.headers = {
-							...options.headers,
-							...headers,
-						};
-					}
-				}
-				catch (error) {
-					throw createError({
-						statusCode: 500,
-						statusMessage: `${error}`,
-					});
-				}
-			},
-
-			// async onResponseError({ response, options }: CustomFetchContext<unknown> & { response: Response }): Promise<unknown> {
-			async onResponseError({ response, options }): Promise<void> {
-				// const res = response as ErrorResponse;
-				if (response._data.statusCode === StatusCodes.OTC_EXPIRED.fa) {
-					try {
-						console.log('yaaaaaa hosssein');
-
-						const { refreshOTC } = useAuth();
-						await refreshOTC();
-
-						options.headers = {
-							...(await authStore.getAuthHeaders()),
-							...options.headers,
-						};
-
-						return await api(options as any);
-					}
-					catch (error) {
-						console.log(error);
-
-						throw createError({
-							statusCode: 500,
-							statusMessage: 'خطا در به‌روزرسانی OTC',
-						});
-					}
-				}
-				throw response;
-			},
-		});
-
-		return {
-			provide: {
-				api,
-			},
-		};
-	},
+	return {
+		provide: { api } };
 });
+
+const useAPIClient = () => {
+	const { refreshSession, invalidateSession } = useAuthProxyClient();
+
+	const doRequest = async (method: string, endpoint: string, config: any) => {
+		try {
+			return await $fetch(endpoint, { method, ...config });
+		}
+		catch (error: any) {
+			// if (error.response?.status === 401) {
+			await refreshSession();
+			return await doRequest(method, endpoint, config);
+			// }
+			await invalidateSession();
+			throw error;
+		}
+	};
+
+	return { doRequest };
+};
+
+const useAuthProxyClient = () => {
+	const refreshSession = async () => {
+		const { refreshOTC } = useAuth();
+		await refreshOTC();
+	};
+
+	const invalidateSession = async () => {
+		// Logic for invalidating session
+	};
+
+	return { refreshSession, invalidateSession };
+};

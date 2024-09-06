@@ -11,8 +11,11 @@ type ProfileRepository = {
 export const profileRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): ProfileRepository => ({
 	// Profile
 	async getCurrentUser(): Promise<ProfileResponse> {
-		const response = await fetch<ProfileResponse>(`/v1/user/profile/get`,
-			{ noAuth: false } as CustomNitroFetchOptions);
+		const url = `/v1/user/profile/get`;
+		const response = await fetch<ProfileResponse>(url, {
+			noAuth: false,
+			apiName: url,
+		} as CustomNitroFetchOptions);
 
 		return response;
 	},

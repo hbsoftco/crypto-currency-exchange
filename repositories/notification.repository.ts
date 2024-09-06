@@ -10,7 +10,8 @@ type NotificationRepository = {
 
 export const notificationRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): NotificationRepository => ({
 	async getNotifications(params: NotificationRequestDto): Promise<NotificationResponse> {
-		const result = await fetch<NotificationResponse>(`/v1/user/logs/notice_list`, {
+		const url = `/v1/user/logs/notice_list`;
+		const result = await fetch<NotificationResponse>(url, {
 			params: {
 				from: params.from,
 				action: params.to,
@@ -19,6 +20,7 @@ export const notificationRepository = (fetch: $Fetch<unknown, NitroFetchRequest>
 				pageSize: params.pageSize,
 			},
 			noAuth: false,
+			apiName: url,
 		} as CustomNitroFetchOptions);
 		return result;
 	},

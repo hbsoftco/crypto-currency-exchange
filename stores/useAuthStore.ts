@@ -15,7 +15,9 @@ export const useAuthStore = defineStore('auth', () => {
 
 	const isLoggedIn = computed(() => !!otc.value);
 
-	const authCookie = useCookie('authData', { path: '/', maxAge: 60 * 60 * 24 * 365 });
+	const otcCookie = useCookie('otc', { path: '/', maxAge: 60 * 60 * 24 * 365 });
+	const userIdCookie = useCookie('userId', { path: '/', maxAge: 60 * 60 * 24 * 365 });
+	const userSecretKeyCookie = useCookie('userSecretKey', { path: '/', maxAge: 60 * 60 * 24 * 365 });
 	const passwordCookie = useCookie('password', { path: '/', maxAge: 60 * 60 * 24 * 365 });
 
 	const savePassword = (password: string) => {
@@ -27,16 +29,15 @@ export const useAuthStore = defineStore('auth', () => {
 		userId.value = newUserId;
 		userSecretKey.value = newUserSecretKey;
 
-		authCookie.value = JSON.stringify({ otc: newOTC, userId: newUserId, userSecretKey: newUserSecretKey });
+		otcCookie.value = newOTC;
+		userIdCookie.value = newUserId.toString();
+		userSecretKeyCookie.value = newUserSecretKey.toString();
 	};
 
 	const loadAuthData = () => {
-		const authData: AuthData = authCookie.value as unknown as AuthData;
-		if (authData) {
-			otc.value = authData.otc;
-			userId.value = authData.userId;
-			userSecretKey.value = authData.userSecretKey;
-		}
+		otc.value = otcCookie.value || null;
+		userId.value = userIdCookie.value ? parseInt(userIdCookie.value) : null;
+		userSecretKey.value = userSecretKeyCookie.value ? parseInt(userSecretKeyCookie.value) : null;
 	};
 
 	const clearAuthData = () => {
@@ -44,35 +45,37 @@ export const useAuthStore = defineStore('auth', () => {
 		userId.value = null;
 		userSecretKey.value = null;
 
-		authCookie.value = null;
+		otcCookie.value = null;
+		userIdCookie.value = null;
+		userSecretKeyCookie.value = null;
 		passwordCookie.value = null;
 	};
 
 	const saveNewOTC = (newOTC: string) => {
-		const authData: AuthData = authCookie.value as unknown as AuthData;
-		const { userId, userSecretKey } = authData;
-
-		authCookie.value = JSON.stringify({ otc: newOTC, userId, userSecretKey });
+		otc.value = newOTC;
+		otcCookie.value = newOTC;
 	};
 
 	const getAuthHeaders = async () => {
 		try {
-			const authData: AuthData = authCookie.value as unknown as AuthData;
 			const password = passwordCookie.value;
 
-			if (!authData || !password) {
-				return;
+			if (!otc.value || !userId.value || !userSecretKey.value || !password) {
+				console.error('اطلاعات احراز هویت ناقص است:', { otc: otc.value, userId: userId.value, userSecretKey: userSecretKey.value }, password);
+				throw createError({
+					statusCode: 500,
+					statusMessage: `Missed data`,
+				});
 			}
 
-			const { otc, userId, userSecretKey } = authData;
 			const systemTime = Date.now().toString();
-			const signature = md5WithUtf16LE(password + otc + systemTime).toUpperCase();
+			const signature = md5WithUtf16LE(password + otc.value + systemTime).toUpperCase();
 
 			return {
 				'Signature': signature,
 				'Request-Time': systemTime,
-				'Uid': userId.toString(),
-				'Usid': userSecretKey.toString(),
+				'Uid': userId.value.toString(),
+				'Usid': userSecretKey.value.toString(),
 				'Platform': 'User',
 			};
 		}

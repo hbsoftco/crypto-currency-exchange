@@ -1,6 +1,5 @@
 import { notificationRepository } from '~/repositories/notification.repository';
 import type { ErrorResponse } from '~/types/response/error.type';
-import { StatusCodes } from '~/utils/constants/status-codes';
 import type { NotificationRequestDto } from '~/types/dto/notification.dto';
 
 export const useNotification = () => {
@@ -17,11 +16,6 @@ export const useNotification = () => {
 		}
 		catch (error: unknown) {
 			const err = error as ErrorResponse;
-
-			if (err && err.response._data.statusCode === StatusCodes.OTC_EXPIRED.fa) {
-				console.log(err.response);
-			}
-
 			throw createError({
 				statusCode: 500,
 				statusMessage: `${err.response._data.message}`,
