@@ -14,8 +14,13 @@ type GetMarketListWithSparkLineChartParams = {
 	tagTypeId?: string;
 };
 
+type GetMarketStatusParams = {
+	rowCount: number;
+};
+
 export type {
 	GetPinParams,
 	GetLanguageParams,
 	GetMarketListWithSparkLineChartParams,
+	GetMarketStatusParams,
 };

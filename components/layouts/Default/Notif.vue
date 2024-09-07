@@ -4,13 +4,11 @@
 			v-if="isVisible"
 			class="relative flex justify-between items-center px-2 md:px-6 py-1 bg-transparency-light dark:bg-transparency-dark opacity-70"
 		>
-			<div class="flex">
+			<div class="flex w-full">
 				<IconSound class="text-accent-blue" />
-				<p class="hidden md:block text-xs font-normal text-primary-gray-600 dark:text-subtle-text-dark mr-2">
+				<p class="text-ellipsis overflow-hidden truncate text-xs font-normal text-primary-gray-600 dark:text-subtle-text-dark mr-2">
 					{{ pinWithTagUp?.info[0]?.text }}
 				</p>
-			</div>
-			<div class="flex items-center">
 				<ULink to="">
 					<span class="text-xs font-bold text-accent-blue ml-2 hidden md:block">{{ $t('showMore') }}</span>
 				</ULink>

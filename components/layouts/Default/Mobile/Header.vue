@@ -18,7 +18,7 @@
 				</div>
 			</UContainer>
 		</header>
-		<Notif class="block md:hidden mt-14" />
+		<Notif class="mt-14" />
 	</div>
 </template>
 
