@@ -1,6 +1,7 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
 import type { GetMarketListWithSparkLineChartParams } from '~/types/base.types';
+import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import type { MarketListWithSparkLineChartResponse } from '~/types/response/market.types';
 
 type MarketRepository = {
@@ -10,7 +11,11 @@ type MarketRepository = {
 export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): MarketRepository => ({
 	async getMarketListWithSparkLineChart({ sortMode = '', currencyQuoteId = '', marketTypeId, tagTypeId = '' }: GetMarketListWithSparkLineChartParams): Promise<MarketListWithSparkLineChartResponse> {
 		const query = new URLSearchParams({ sortMode, marketTypeId, currencyQuoteId, tagTypeId });
+		const url = '/v1/market/routine/l21_f';
+		const response = fetch<MarketListWithSparkLineChartResponse>(`${url}?${query.toString()}`, {
+			noAuth: true,
+		} as CustomNitroFetchOptions);
 
-		return fetch<MarketListWithSparkLineChartResponse>(`/v1/market/routine/l21_f?${query.toString()}`);
+		return response;
 	},
 });
