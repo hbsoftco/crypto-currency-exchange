@@ -16,7 +16,14 @@ type MarketListWithSparkLineChartItem = {
 	marketBriefItem?: MarketBriefItem | null;
 };
 
+type MarketState = {
+	indexPrice: number;
+	priceChange24h: number;
+	marketTypeName: string;
+};
+
 export type {
 	MarketListWithSparkLineChartResponse,
 	MarketListWithSparkLineChartItem,
+	MarketState,
 };
