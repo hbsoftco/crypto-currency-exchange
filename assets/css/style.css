@@ -15,3 +15,7 @@ a {
 svg {
   margin: 0 !important;
 }
+
+.text-active * {
+  @apply text-primary-yellow-light dark:text-primary-yellow-dark;
+}

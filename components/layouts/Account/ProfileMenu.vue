@@ -6,7 +6,7 @@
 				<ULink
 					to="/account"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
-					active-class="text-white dark:text-white"
+					active-class="text-active"
 				>
 					<div class="flex justify-start items-center">
 						<div class="ml-2">
@@ -24,7 +24,7 @@
 				<ULink
 					to="/account/authentication"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
-					active-class="text-white dark:text-white"
+					active-class="text-active"
 				>
 					<div class="flex justify-start items-center">
 						<div class="ml-2">
@@ -42,7 +42,7 @@
 				<ULink
 					to="/account/security"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
-					active-class="text-white dark:text-white"
+					active-class="text-active"
 				>
 					<div class="flex justify-start items-center">
 						<div class="ml-2">
@@ -60,7 +60,7 @@
 				<ULink
 					to="/account/fees"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
-					active-class="text-white dark:text-white"
+					active-class="text-active"
 				>
 					<div class="flex justify-start items-center">
 						<div class="ml-2">
@@ -78,7 +78,7 @@
 				<ULink
 					to="/account/user-level"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
-					active-class="text-white dark:text-white"
+					active-class="text-active"
 				>
 					<div class="flex justify-start items-center">
 						<div class="ml-2">
@@ -96,7 +96,7 @@
 				<ULink
 					to="/account/manage-api"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
-					active-class="text-white dark:text-white"
+					active-class="text-active"
 				>
 					<div class="flex justify-start items-center">
 						<div class="ml-2">
@@ -114,7 +114,7 @@
 				<ULink
 					to="/account/invite-friends"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
-					active-class="text-white dark:text-white"
+					active-class="text-active"
 				>
 					<div class="flex justify-start items-center">
 						<div class="ml-2">
@@ -130,9 +130,9 @@
 			<!-- awards -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
-					to="/account/awards"
+					to="/account/rewards"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
-					active-class="text-white dark:text-white"
+					active-class="text-active"
 				>
 					<div class="flex justify-start items-center">
 						<div class="ml-2">
@@ -150,7 +150,7 @@
 				<ULink
 					to="/account/top-users"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
-					active-class="text-white dark:text-white"
+					active-class="text-active"
 				>
 					<div class="flex justify-start items-center">
 						<div class="ml-2">
@@ -168,7 +168,7 @@
 				<ULink
 					to="/account/settings"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
-					active-class="text-white dark:text-white"
+					active-class="text-active"
 				>
 					<div class="flex justify-start items-center">
 						<div class="ml-2">
@@ -186,7 +186,7 @@
 				<ULink
 					to="/account/white-list"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
-					active-class="text-white dark:text-white"
+					active-class="text-active"
 				>
 					<div class="flex justify-start items-center">
 						<div class="ml-2">
