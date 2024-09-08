@@ -29,39 +29,39 @@ export default defineNuxtPlugin(() => {
 		},
 	});
 
-	return {
-		provide: { api } };
+	return { provide: { api } };
 });
 
 const useAPIClient = () => {
-	const { refreshSession, invalidateSession } = useAuthProxyClient();
+	// const { refreshSession, invalidateSession } = useAuthProxyClient();
 
 	const doRequest = async (method: string, endpoint: string, config: any) => {
 		try {
 			return await $fetch(endpoint, { method, ...config });
 		}
 		catch (error: any) {
+			console.log(error);
 			// if (error.response?.status === 401) {
-			await refreshSession();
-			return await doRequest(method, endpoint, config);
-			// }
-			await invalidateSession();
-			throw error;
+			// await refreshSession();
+			// return await doRequest(method, endpoint, config);
+			// // }
+			// await invalidateSession();
+			// throw error;
 		}
 	};
 
 	return { doRequest };
 };
 
-const useAuthProxyClient = () => {
-	const refreshSession = async () => {
-		const { refreshOTC } = useAuth();
-		await refreshOTC();
-	};
+// const useAuthProxyClient = () => {
+// 	const refreshSession = async () => {
+// 		const { refreshOTC } = useAuth();
+// 		await refreshOTC();
+// 	};
 
-	const invalidateSession = async () => {
-		// Logic for invalidating session
-	};
+// 	const invalidateSession = async () => {
+// 		// Logic for invalidating session
+// 	};
 
-	return { refreshSession, invalidateSession };
-};
+// 	return { refreshSession, invalidateSession };
+// };

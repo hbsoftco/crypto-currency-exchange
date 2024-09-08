@@ -14,7 +14,9 @@
     "class",
     "className",
     "ngClass",
-    "ui"
+    "ui",
+    "active-class",
+    "inactive-class"
   ],
   "vue3snippets.enable-compile-vue-file-on-did-save-code": false
 }

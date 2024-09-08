@@ -41,7 +41,7 @@ const footerItems = [
 	},
 	{
 		name: 'transaction',
-		url: '/markets/32',
+		url: '/markets/market-detail/32',
 		icon: '/images/svg/footer/transaction.svg',
 		activeIcon: '/images/svg/footer/active-transaction.svg',
 	},

@@ -3,7 +3,6 @@
 		<LayoutsDefaultHeader class="hidden md:block" />
 		<LayoutsDefaultMobileHeader class="block md:hidden" />
 
-		<!-- <LayoutsDefaultNotif class="hidden md:block" /> -->
 		<PagesSupportButtons class="hidden md:block" />
 		<div>
 			<slot />

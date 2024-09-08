@@ -52,8 +52,10 @@ export const useAuthStore = defineStore('auth', () => {
 	};
 
 	const saveNewOTC = (newOTC: string) => {
-		otc.value = newOTC;
-		otcCookie.value = newOTC;
+		if (newOTC) {
+			otc.value = newOTC;
+			otcCookie.value = newOTC;
+		}
 	};
 
 	const getAuthHeaders = async () => {

@@ -12,7 +12,9 @@ export const useAuth = () => {
 			const response = await auth.generateNewOTC();
 
 			const authStore = useAuthStore();
-			authStore.saveNewOTC(response.result);
+			if (response.result) {
+				authStore.saveNewOTC(response.result);
+			}
 
 			return response;
 		}

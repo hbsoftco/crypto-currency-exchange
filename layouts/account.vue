@@ -1,0 +1,23 @@
+<template>
+	<div>
+		<LayoutsAccountHeader class="hidden md:block" />
+		<LayoutsDefaultMobileHeader class="block md:hidden" />
+
+		<div class="flex justify-start">
+			<aside class="w-[16.25rem] p-2 border-l border-primary-gray-light dark:border-primary-gray-dark">
+				<ProfileMenu />
+			</aside>
+			<main class="w-full p-5">
+				<slot />
+			</main>
+		</div>
+
+		<LayoutsDefaultFooter />
+		<LayoutsDefaultMobileFooter class="block md:hidden" />
+		<UiToast />
+	</div>
+</template>
+
+<script setup lang="ts">
+import ProfileMenu from '~/components/layouts/Account/ProfileMenu.vue';
+</script>
