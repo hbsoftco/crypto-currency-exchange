@@ -1,5 +1,7 @@
 <template>
-	<div class="text-center py-5">
+	<div
+		:class="[align, py]"
+	>
 		<UButton
 			:to="link"
 			:padded="false"
@@ -19,7 +21,12 @@
 interface PropsDefinition {
 	text: string;
 	link: string;
+	align?: string;
+	py?: string;
 }
 
-defineProps<PropsDefinition>();
+withDefaults(defineProps<PropsDefinition>(), {
+	align: 'text-center',
+	py: 'py-5',
+});
 </script>

@@ -39,6 +39,7 @@ export default <Partial<Config>>{
 				'secondary-gray': {
 					dark: '#4A4A4A',
 					light: '#C0C0C0',
+					50: '#4B4B4B',
 				},
 				'text': {
 					dark: '#212121',
