@@ -112,7 +112,7 @@
 			<!-- inviteFriends -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
-					to="/account/referral"
+					to="/account/invite-friends"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
 					active-class="text-white dark:text-white"
 				>
