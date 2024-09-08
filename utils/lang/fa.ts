@@ -256,6 +256,9 @@ const persian = {
 	education: 'آموزش',
 	learnAboutCrypto: 'همه چیز درباره کریپتو بیاموزید. همه سوالات، پاسخ داده شده است.',
 	inviteFriendsToEarn: 'دوستان را برای کسب درآمد به بیت‌لند دعوت کنید.',
+	marketStatistics: 'اطلاعات آماری بازارها',
+	numberOfDecliningMarkets: 'تعداد بازارهای ریزشی',
+	numberOfRisingMarkets: 'تعداد بازارهای افزایشی',
 
 };
 

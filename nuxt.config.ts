@@ -44,6 +44,7 @@ export default defineNuxtConfig({
 		renderer: ['canvas', 'svg'],
 		charts: ['BarChart', 'LineChart', 'PieChart', 'FunnelChart'],
 		components: [
+			'TitleComponent',
 			'DatasetComponent',
 			'GridComponent',
 			'TooltipComponent',
