@@ -1,179 +1,200 @@
 <template>
 	<div class="p-4">
 		<ul class="flex flex-col">
+			<!-- showAccount -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
 					to="/account"
-					class="flex justify-between items-center w-full py-3.5"
+					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
+					active-class="text-white dark:text-white"
 				>
 					<div class="flex justify-start items-center">
 						<div class="ml-2">
-							<IconUser class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
+							<IconUser class="text-base" />
 						</div>
-						<p class="mb-0 text-base font-medium text-subtle-text-light dark:text-subtle-text-50">
+						<span class="mb-0 text-base font-medium">
 							{{ $t('showAccount') }}
-						</p>
+						</span>
 					</div>
 				</ULink>
 			</li>
-			<!-- showAccount -->
+
+			<!-- authentication -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark mt-0">
 				<ULink
-					to=""
-					class="flex justify-between items-center w-full py-3.5"
+					to="/account/authentication"
+					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
+					active-class="text-white dark:text-white"
 				>
 					<div class="flex justify-start items-center">
 						<div class="ml-2">
-							<IconAuthentication class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
+							<IconAuthentication class="text-base" />
 						</div>
-						<p class="mb-0 text-base font-medium text-subtle-text-light dark:text-subtle-text-50">
+						<span class="mb-0 text-base font-medium">
 							{{ $t('authentication') }}
-						</p>
+						</span>
 					</div>
 				</ULink>
 			</li>
-			<!-- authentication -->
-			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
-				<ULink
-					to="/account/security"
-					class="flex justify-between items-center w-full py-3.5"
-				>
-					<div class="flex justify-start items-center">
-						<div class="ml-2">
-							<IconSecurity class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
-						</div>
-						<p class="mb-0 text-base font-medium text-subtle-text-light dark:text-subtle-text-50">
-							{{ $t('security') }}
-						</p>
-					</div>
-				</ULink>
-			</li>
+
 			<!-- security -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
-					to=""
-					class="flex justify-between items-center w-full py-3.5"
+					to="/account/security"
+					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
+					active-class="text-white dark:text-white"
 				>
 					<div class="flex justify-start items-center">
 						<div class="ml-2">
-							<IconFees class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
+							<IconSecurity class="text-base" />
 						</div>
-						<p class="mb-0 text-base font-medium text-subtle-text-light dark:text-subtle-text-50">
-							{{ $t('fees') }}
-						</p>
+						<span class="mb-0 text-base font-medium">
+							{{ $t('security') }}
+						</span>
 					</div>
 				</ULink>
 			</li>
+
 			<!-- fees -->
-			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark mt-0">
-				<ULink
-					to=""
-					active-class="font-bold"
-					class="flex justify-between items-center w-full py-3.5"
-				>
-					<div class="flex justify-start items-center">
-						<div class="ml-2">
-							<IconUserLevel class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
-						</div>
-						<p class="mb-0 text-base font-medium text-subtle-text-light dark:text-subtle-text-50">
-							{{ $t('userLevel') }}
-						</p>
-					</div>
-				</ULink>
-			</li>
-			<!-- userLevel -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
-					to=""
-					class="flex justify-between items-center w-full py-3.5"
+					to="/account/fees"
+					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
+					active-class="text-white dark:text-white"
 				>
 					<div class="flex justify-start items-center">
 						<div class="ml-2">
-							<IconManageAPI class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
+							<IconFees class="text-base" />
 						</div>
-						<p class="mb-0 text-base font-medium text-subtle-text-light dark:text-subtle-text-50">
-							{{ $t('manageAPI') }}
-						</p>
+						<span class="mb-0 text-base font-medium">
+							{{ $t('fees') }}
+						</span>
 					</div>
 				</ULink>
 			</li>
+
+			<!-- userLevel -->
+			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark mt-0">
+				<ULink
+					to="/account/user-level"
+					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
+					active-class="text-white dark:text-white"
+				>
+					<div class="flex justify-start items-center">
+						<div class="ml-2">
+							<IconUserLevel class="text-base" />
+						</div>
+						<span class="mb-0 text-base font-medium">
+							{{ $t('userLevel') }}
+						</span>
+					</div>
+				</ULink>
+			</li>
+
 			<!-- manageAPI -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
-					to="/referral"
-					class="flex justify-between items-center w-full py-3.5"
+					to="/account/manage-api"
+					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
+					active-class="text-white dark:text-white"
 				>
 					<div class="flex justify-start items-center">
 						<div class="ml-2">
-							<IconInviteFriends class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
+							<IconManageAPI class="text-base" />
 						</div>
-						<p class="mb-0 text-base font-medium text-subtle-text-light dark:text-subtle-text-50">
-							{{ $t('inviteFriends') }}
-						</p>
+						<span class="mb-0 text-base font-medium">
+							{{ $t('manageAPI') }}
+						</span>
 					</div>
 				</ULink>
 			</li>
+
 			<!-- inviteFriends -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
-					to=""
-					class="flex justify-between items-center w-full py-3.5"
+					to="/account/referral"
+					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
+					active-class="text-white dark:text-white"
 				>
 					<div class="flex justify-start items-center">
 						<div class="ml-2">
-							<IconAwards class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
+							<IconInviteFriends class="text-base" />
 						</div>
-						<p class="mb-0 text-base font-medium text-subtle-text-light dark:text-subtle-text-50">
-							{{ $t('awards') }}
-						</p>
+						<span class="mb-0 text-base font-medium">
+							{{ $t('inviteFriends') }}
+						</span>
 					</div>
 				</ULink>
 			</li>
+
 			<!-- awards -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
-					to=""
-					class="flex justify-between items-center w-full py-3.5"
+					to="/account/awards"
+					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
+					active-class="text-white dark:text-white"
 				>
 					<div class="flex justify-start items-center">
 						<div class="ml-2">
-							<IconTopUsers class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
+							<IconAwards class="text-base" />
 						</div>
-						<p class="mb-0 text-base font-medium text-subtle-text-light dark:text-subtle-text-50">
-							{{ $t('topUsers') }}
-						</p>
+						<span class="mb-0 text-base font-medium">
+							{{ $t('awards') }}
+						</span>
 					</div>
 				</ULink>
 			</li>
+
 			<!-- topUsers -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
-					to=""
-					class="flex justify-between items-center w-full py-3.5"
+					to="/account/top-users"
+					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
+					active-class="text-white dark:text-white"
 				>
 					<div class="flex justify-start items-center">
 						<div class="ml-2">
-							<IconSetting class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
+							<IconTopUsers class="text-base" />
 						</div>
-						<p class="mb-0 text-base font-medium text-subtle-text-light dark:text-subtle-text-50">
-							{{ $t('setting') }}
-						</p>
+						<span class="mb-0 text-base font-medium">
+							{{ $t('topUsers') }}
+						</span>
 					</div>
 				</ULink>
 			</li>
-			<!-- setting -->
-			<li>
+
+			<!-- settings -->
+			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
-					to=""
-					class="flex justify-between items-center w-full py-3.5"
+					to="/account/settings"
+					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
+					active-class="text-white dark:text-white"
 				>
 					<div class="flex justify-start items-center">
 						<div class="ml-2">
-							<IconWhiteList class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
+							<IconSetting class="text-base" />
 						</div>
-						<p class="mb-0 text-base font-medium text-subtle-text-light dark:text-subtle-text-50">
+						<span class="mb-0 text-base font-medium">
+							{{ $t('setting') }}
+						</span>
+					</div>
+				</ULink>
+			</li>
+
+			<!-- whiteList -->
+			<li>
+				<ULink
+					to="/account/white-list"
+					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
+					active-class="text-white dark:text-white"
+				>
+					<div class="flex justify-start items-center">
+						<div class="ml-2">
+							<IconWhiteList class="text-base" />
+						</div>
+						<span class="mb-0 text-base font-medium">
 							{{ $t('whiteList') }}
-						</p>
+						</span>
 					</div>
 				</ULink>
 			</li>
