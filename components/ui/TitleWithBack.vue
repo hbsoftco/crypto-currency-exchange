@@ -10,9 +10,9 @@
 			/>
 		</div>
 
-		<h6 class="font-bold text-xl">
+		<h3 class="font-bold text-xl">
 			{{ title }}
-		</h6>
+		</h3>
 	</div>
 </template>
 

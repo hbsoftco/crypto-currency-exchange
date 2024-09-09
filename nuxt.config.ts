@@ -42,8 +42,9 @@ export default defineNuxtConfig({
 	echarts: {
 		ssr: false,
 		renderer: ['canvas', 'svg'],
-		charts: ['BarChart', 'LineChart', 'PieChart', 'FunnelChart'],
+		charts: ['BarChart', 'LineChart', 'PieChart', 'FunnelChart', 'GaugeChart'],
 		components: [
+			'LegendComponent',
 			'TitleComponent',
 			'DatasetComponent',
 			'GridComponent',

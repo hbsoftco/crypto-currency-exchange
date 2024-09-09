@@ -259,6 +259,7 @@ const persian = {
 	marketStatistics: 'اطلاعات آماری بازارها',
 	numberOfDecliningMarkets: 'تعداد بازارهای ریزشی',
 	numberOfRisingMarkets: 'تعداد بازارهای افزایشی',
+	currencyCategories: 'دسته‌بندی ارزها',
 
 };
 

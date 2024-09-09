@@ -35,10 +35,26 @@
 				</ClientOnly>
 			</div>
 		</div>
+
+		<div class="mb-10">
+			<h3 class="text-base font-bold">
+				{{ $t('currencyCategories') }}
+			</h3>
+		</div>
+		<div class="mb-28">
+			<CurrencyCategorySlider />
+		</div>
+
+		<div class="flex justify-between">
+			<MarketState />
+			<MarketState />
+		</div>
 	</UContainer>
 </template>
 
 <script setup lang="ts">
+import CurrencyCategorySlider from '~/components/pages/Site/Market/Statistics/CurrencyCategorySlider.vue';
+import MarketState from '~/components/pages/Site/Market/Statistics/MarketState.vue';
 import { useNumber } from '~/composables/useNumber';
 
 const redBarOptions = ref({
