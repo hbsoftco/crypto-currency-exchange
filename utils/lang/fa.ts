@@ -272,7 +272,7 @@ const persian = {
 	numberOfDecliningMarkets: 'تعداد بازارهای ریزشی',
 	numberOfRisingMarkets: 'تعداد بازارهای افزایشی',
 	currencyCategories: 'دسته‌بندی ارزها',
-
+	yourFeeLevel: 'سطح کارمزد شما',
 };
 
 export default persian;

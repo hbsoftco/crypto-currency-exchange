@@ -20,7 +20,7 @@
 							حجم معاملات ۱۸۰ روزه شما
 						</p>
 						<div class="absolute top-0 left-0 w-2/4 h-full border-r-2 border-r-accent-green bg-hover-light dark:bg-hover-dark rounded-r-full">
-							<MyEChart />
+							<Chart />
 						</div>
 					</div>
 				</div>
@@ -28,7 +28,7 @@
 
 			<div class="ml-0 md:ml-40">
 				<NuxtImg
-					src="/images/delete/fish.png"
+					src="/images/profile/fish.png"
 					alt="icon user level"
 					class="w-[19.313rem] h-[21.063rem] mb-2 "
 				/>
@@ -165,7 +165,7 @@
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
 import TableRow from '~/components/pages/Site/Account/UserLevel/TableRow.vue';
-import MyEChart from '~/components/pages/Site/Account/UserLevel/Chart.vue';
+import Chart from '~/components/pages/Site/Account/UserLevel/Chart.vue';
 
 const selectedButton = ref('ninety');
 definePageMeta({
