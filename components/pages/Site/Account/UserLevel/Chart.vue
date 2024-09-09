@@ -1,28 +1,23 @@
 <template>
-	<div class="relative w-72 h-72  rounded-full">
+	<div class="relative w-full h-48">
 		<ClientOnly>
 			<VChart
 				:option="halfPieOptions"
-				class="w-full h-96"
+				class="w-56 h-48 text-center"
 			/>
 		</ClientOnly>
-		<!-- <ClientOnly>
-			<VChart
-				:option="chartOptions"
-				style="height: 100%; width: 100%;"
-			/>
-			<div class="absolute inset-0 flex flex-col items-center justify-center">
-				<span class="text-yellow-400 text-lg"> {{ useNumber('876,321') }}{{ $t('dollar') }}</span>
-				<div class="flex items-center justify-center mt-2 bg-gray-800 rounded-full px-3 py-1">
-					<span class="text-white text-lg">سطح ماهی</span>
-					<NuxtImg
-						src="/images/delete/fish.png"
-						alt="Fish Icon"
-						class="w-6 h-6 ml-2"
-					/>
-				</div>
+		<div class="absolute top-24 left-14">
+			<div
+				class="flex items-center justify-center bg-gray-800 opacity-70 rounded-full px-1 py-1"
+			>
+				<span class="text-white text-base ml-1">سطح ماهی</span>
+				<NuxtImg
+					src="/images/delete/fish.png"
+					alt="Fish Icon"
+					class="w-6 h-6"
+				/>
 			</div>
-		</ClientOnly> -->
+		</div>
 	</div>
 </template>
 
@@ -35,8 +30,8 @@ const halfPieOptions = ref({
 		left: 'center',
 		top: '40%',
 		textStyle: {
-			color: '#FFD700', // رنگ زرد برای متن
-			fontSize: 18,
+			color: '#FFC107', // رنگ زرد برای متن
+			fontSize: 12,
 			fontWeight: 'bold',
 			fontFamily: 'dana',
 		},
@@ -74,7 +69,11 @@ const halfPieOptions = ref({
 				{
 					value: 25,
 					name: '100 دلار',
-					itemStyle: { color: '#FFD700', borderColor: '#FFD700', borderWidth: 2 },
+					itemStyle: {
+						color: '#FFD700',
+						borderColor: '#FFD700',
+						borderWidth: 2,
+					},
 					emphasis: {
 						scale: true,
 						scaleSize: 10,
@@ -85,7 +84,6 @@ const halfPieOptions = ref({
 						},
 					},
 				},
-
 			],
 		},
 	],

@@ -14,7 +14,7 @@
 					سطح کارمزد معاملات بر اساس حجم معامله‌های ۹۰ روز گذشته شما در هر پایه بازار محاسبه می‌شود.
 				</p>
 				<div class="flex mt-10">
-					<div class="w-96 relative bg-primary-gray-light dark:bg-primary-gray-dark py-12 px-3">
+					<div class="w-[28.375rem] relative bg-primary-gray-light dark:bg-primary-gray-dark py-12 px-3">
 						<p class="mb-4 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
 							حجم معاملات ۳۰ روزه شما
 						</p>
@@ -24,7 +24,7 @@
 						<p class="text-sm font-bold text-subtle-text-light dark:text-subtle-text-dark">
 							حجم معاملات ۱۸۰ روزه شما
 						</p>
-						<div class="absolute top-0 -left-3 w-1/2 py-12 px-3 h-full border-r-2 border-r-accent-green bg-hover-light dark:bg-hover-dark rounded-r-full">
+						<div class="absolute top-0 -left-3 w-1/2 h-full border-r-2 border-r-accent-green bg-hover-light dark:bg-hover-dark rounded-r-full">
 							<MyEChart />
 						</div>
 					</div>
