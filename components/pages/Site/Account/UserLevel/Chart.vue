@@ -1,9 +1,9 @@
 <template>
-	<div class="relative w-full h-48">
+	<div class="relative w-full h-48 mx-8">
 		<ClientOnly>
 			<VChart
 				:option="halfPieOptions"
-				class="w-56 h-48 text-center"
+				class="w-full h-48"
 			/>
 		</ClientOnly>
 		<div class="absolute top-24 left-14">
@@ -16,6 +16,22 @@
 					alt="Fish Icon"
 					class="w-6 h-6"
 				/>
+			</div>
+		</div>
+		<div class="absolute top-28 left-4">
+			<div>
+				<span class="text-xs font-bold">{{ useNumber('100') }}</span>
+			</div>
+			<div>
+				<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('dollar') }}</span>
+			</div>
+		</div>
+		<div class="absolute top-28 right-2">
+			<div>
+				<span class="text-xs font-bold">{{ useNumber('1000') }}</span>
+			</div>
+			<div>
+				<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('dollar') }}</span>
 			</div>
 		</div>
 	</div>
