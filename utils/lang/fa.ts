@@ -245,6 +245,18 @@ const persian = {
 	bitlandSupport: 'بیت‌لند سعی می‌کند از بیشتر رمزارزهای معروف و مطرح پشتیبانی کند و همچنین امکان معامله با جفت ارزهای مختلف را به کاربران خود بدهد.',
 	successfulInvestment: 'بدون شک سرمایه‌گذاری موفق و به دست آوردن موفقیت‌های مالی پیش‌نیازهای زیادی دارد. علاوه بر داشتن آگاهی و تخصص در این حوزه، انتخاب یک پلتفرم حرفه‌ای با رابط کاربری آسان یک ضرورت مهم در حوزه ارزهای دیجیتال می‌باشد. بیت‌لند با تهیه یک محیط حرفه‌ای به شما تجربه‌ای بسیار نزدیک به پلتفرم‌های بزرگ جهانی هدیه می‌دهد.',
 	stayUpdated: 'همیشه از آخرین اخبار و رویدادهای ارز دیجیتال زودتر از همه باخبر باشید.',
+	yourCurrentLevel: 'سطح فعلی شما',
+	yourtotalStatisticsTransactions: 'آمار کل معاملات شما',
+	currencyName: 'نام ارز',
+	totalNumberTransactions: 'تعداد کل معاملات',
+	totalVolumeTransactions: 'حجم کل معاملات',
+	dollarValueTransactions: 'ارزش دلاری معاملات',
+	thirtyDaysHavePassed: '۳۰ روزه گذشته',
+	nintyDaysHavePassed: '۹۰ روزه گذشته',
+	oneHundredEightyDaysHavePassed: '۱۸۰ روزه گذشته',
+	userLevelRatingTable: 'جدول رتبه بندی  سطح کاربری',
+	conditions: 'شرایط',
+	dollar: 'دلار',
 	account: 'حساب کاربری',
 	UID: 'UID',
 	registrationTime: 'زمان ثبت نام',
@@ -259,7 +271,6 @@ const persian = {
 	marketStatistics: 'اطلاعات آماری بازارها',
 	numberOfDecliningMarkets: 'تعداد بازارهای ریزشی',
 	numberOfRisingMarkets: 'تعداد بازارهای افزایشی',
-
 };
 
 export default persian;
