@@ -257,6 +257,20 @@ const persian = {
 	userLevelRatingTable: 'جدول رتبه بندی  سطح کاربری',
 	conditions: 'شرایط',
 	dollar: 'دلار',
+	account: 'حساب کاربری',
+	UID: 'UID',
+	registrationTime: 'زمان ثبت نام',
+	lastLogin: 'آخرین ورود',
+	upgradeToLevelTwo: 'ارتقا به سطح دو',
+	assetDetails: 'جزئیات دارایی',
+	totalValue: 'ارزش کل',
+	buyCrypto: 'خرید رمز ارز',
+	education: 'آموزش',
+	learnAboutCrypto: 'همه چیز درباره کریپتو بیاموزید. همه سوالات، پاسخ داده شده است.',
+	inviteFriendsToEarn: 'دوستان را برای کسب درآمد به بیت‌لند دعوت کنید.',
+	marketStatistics: 'اطلاعات آماری بازارها',
+	numberOfDecliningMarkets: 'تعداد بازارهای ریزشی',
+	numberOfRisingMarkets: 'تعداد بازارهای افزایشی',
 };
 
 export default persian;
