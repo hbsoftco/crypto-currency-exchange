@@ -65,13 +65,13 @@
 						v-else-if="item.key === 'depositFee'"
 						class="space-y-3"
 					>
-						<p>eee</p>
+						<DepositFee />
 					</div>
 					<div
 						v-else-if="item.key === 'withdrawalFee'"
 						class="space-y-3"
 					>
-						<p>tttt</p>
+						<WithdrawalFee />
 					</div>
 				</template>
 			</UTabs>
@@ -82,6 +82,8 @@
 <script setup lang="ts">
 import Chart from '~/components/pages/Site/Account/Fees/Chart.vue';
 import TransactionFees from '~/components/pages/Site/Account/Fees/TransactionFees.vue';
+import DepositFee from '~/components/pages/Site/Account/Fees/DepositFee.vue';
+import WithdrawalFee from '~/components/pages/Site/Account/Fees/WithdrawalFee.vue';
 
 definePageMeta({
 	layout: 'account',
