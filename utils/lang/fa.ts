@@ -273,6 +273,13 @@ const persian = {
 	numberOfRisingMarkets: 'تعداد بازارهای افزایشی',
 	currencyCategories: 'دسته‌بندی ارزها',
 	yourFeeLevel: 'سطح کارمزد شما',
+	transactionFees: 'کارمزد معاملات',
+	depositFee: 'کارمزد واریز',
+	withdrawalFee: 'کارمزد برداشت',
+	bitcoin: 'بیتکوین',
+	tradingVolumeLast90Days: 'حجم معاملات( 90 روز اخیر )',
+	makerTaker: 'میکر/تیکر',
+	maximumWithdrawal: 'حداکثر برداشت',
 };
 
 export default persian;
