@@ -9,10 +9,10 @@
 					<div class="flex ml-10">
 						<NuxtImg
 							src="/images/svg/market/new.png"
-							alt="new"
+							alt="new-currencies"
 							class="w-9 h-6"
 						/>
-						<ULink to="">
+						<ULink to="/markets/new-currencies">
 							<div>
 								<span class="text-sm font-normal mr-2">{{
 									$t("currenciesWayBitland")
@@ -23,10 +23,10 @@
 					<div class="flex">
 						<NuxtImg
 							src="/images/svg/market/chart.png"
-							alt="chart"
+							alt="chart-statistics"
 							class="w-5 h-5"
 						/>
-						<ULink to="">
+						<ULink to="/markets/market-statistics">
 							<div>
 								<span class="text-sm font-normal mr-2">{{
 									$t("marketStatisticalInformation")
@@ -37,9 +37,18 @@
 				</div>
 			</div>
 			<div class="hidden md:flex justify-between">
-				<MarketState />
-				<MarketState />
-				<MarketState />
+				<!-- <MarketState
+					:title="$t('hotTopics')"
+					:items="hottestMarkets ?? []"
+				/>
+				<MarketState
+					:title="$t('mostProfitableAssets')"
+					:items="mostProfitableMarkets ?? []"
+				/>
+				<MarketState
+					:title="$t('newest')"
+					:items="latestMarkets ?? []"
+				/> -->
 			</div>
 			<div class="relative mt-14 md:mt-8">
 				<UTabs :items="items">
@@ -88,9 +97,16 @@
 </template>
 
 <script setup lang="ts">
-import MarketState from '~/components/pages/Site/Market/MarketState.vue';
+// import MarketState from '~/components/pages/Site/Market/MarketState.vue';
 import IconSearch from '~/assets/svg-icons/menu/search.svg';
 import MarketTable from '~/components/pages/Site/Market/MarketTable.vue';
+import { useMarketState } from '~/composables/market/useMarketState';
+
+const { hottestMarkets } = await useMarketState();
+
+onMounted(() => {
+	console.log(hottestMarkets.value);
+});
 
 const items = [
 	{
@@ -105,5 +121,3 @@ const items = [
 	},
 ];
 </script>
-
-<style scoped></style>

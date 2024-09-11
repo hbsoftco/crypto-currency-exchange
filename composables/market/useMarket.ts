@@ -8,10 +8,10 @@ export const useMarketStatus = () => {
 
 	const loading = ref(false);
 
-	const getMarketStatus = async (params: GetMarketStatusParams) => {
+	const getMostProfitableMarkets = async (params: GetMarketStatusParams) => {
 		loading.value = true;
 		try {
-			const response = await market.getMarketStatus(params);
+			const response = await market.getMostProfitableMarkets(params);
 			return response;
 		}
 		catch (error: unknown) {
@@ -27,7 +27,7 @@ export const useMarketStatus = () => {
 	};
 
 	return {
-		getMarketStatus,
+		getMostProfitableMarkets,
 		loading,
 	};
 };

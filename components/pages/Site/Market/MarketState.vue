@@ -2,7 +2,7 @@
 	<div class="w-96 bg-hover-light dark:bg-hover-dark rounded-lg shadow-sm px-2 py-1">
 		<div class="flex justify-between px-2 mb-1 py-4">
 			<div>
-				<span class="text-sm font-bold">{{ $t('hotTopics') }}</span>
+				<span class="text-sm font-bold">{{ title }}</span>
 			</div>
 			<ULink to="">
 				<span class="text-sm font-medium text-primary-yellow-light dark:text-primary-yellow-dark">{{ $t('more') }}</span>
@@ -81,8 +81,12 @@
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
+import type { MarketState } from '~/types/response/market.types';
+
+interface Props {
+	title: string;
+	items: MarketState[];
+}
+
+defineProps<Props>();
 </script>
-
-<style scoped>
-
-</style>

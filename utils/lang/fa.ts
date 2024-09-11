@@ -117,16 +117,16 @@ const persian = {
 	deposit: 'واریز',
 	pickedUp: 'برداشت',
 	overView: 'نمای کلی',
-	assets: 'دارایی ها',
+	assets: 'دارایی‌ها',
 	history: 'تاریخچه',
 	aboutUs: 'درباره ما',
-	services: 'سرویس ها',
+	services: 'سرویس‌ها',
 	guidCenter: 'مرکز راهنمایی',
 	followUs: 'مارا در شبکه های اجتماعی دنبال کنید',
 	loading: 'صبر کنید',
 	search: 'جستجو',
-	hotTopics: 'داغترین ها',
-	newArrivals: 'جدیدترین ها',
+	hotTopics: 'داغترین‌ها',
+	newArrivals: 'جدیدترین‌ها',
 	latestNews: 'آخرین اخبار',
 	currencyInformation: 'اطلاعات ارز',
 	whyBitland: 'چرا بیت‌لند',
@@ -164,7 +164,7 @@ const persian = {
 	getYourReward: 'جایزتو بگیر',
 	compeleteAccount: 'تکمیل حساب کاربری',
 	cryptocurrencyDeposit: 'واریز رمز ارز',
-	currenciesWayBitland: 'ارز های در راه بیت‌لند',
+	currenciesWayBitland: 'ارزهای در راه بیت‌لند',
 	marketStatisticalInformation: 'اطلاعات آماری بازار',
 	marketSpot: 'بازارهای اسپات',
 	marketFutures: 'بازارهای فیوچرز',
@@ -273,6 +273,8 @@ const persian = {
 	numberOfRisingMarkets: 'تعداد بازارهای افزایشی',
 	currencyCategories: 'دسته‌بندی ارزها',
 	yourFeeLevel: 'سطح کارمزد شما',
+	mostProfitableAssets: 'سود‌ده‌ترین‌ها',
+
 };
 
 export default persian;
