@@ -45,15 +45,67 @@
 				</div>
 			</div>
 		</section>
+
+		<section class="py-4 px-8 border border-primary-gray-light dark:border-primary-gray-dark">
+			<UTabs :items="items">
+				<template #default="{ item, selected }">
+					<span
+						class="truncate"
+						:class="[selected && 'text-black dark:text-white']"
+					>{{ $t(item.label) }}</span>
+				</template>
+				<template #item="{ item }">
+					<div
+						v-if="item.key === 'transactionFees'"
+						class="space-y-3"
+					>
+						<TransactionFees />
+					</div>
+					<div
+						v-else-if="item.key === 'depositFee'"
+						class="space-y-3"
+					>
+						<DepositFee />
+					</div>
+					<div
+						v-else-if="item.key === 'withdrawalFee'"
+						class="space-y-3"
+					>
+						<WithdrawalFee />
+					</div>
+				</template>
+			</UTabs>
+		</section>
 	</div>
 </template>
 
 <script setup lang="ts">
 import Chart from '~/components/pages/Site/Account/Fees/Chart.vue';
+import TransactionFees from '~/components/pages/Site/Account/Fees/TransactionFees.vue';
+import DepositFee from '~/components/pages/Site/Account/Fees/DepositFee.vue';
+import WithdrawalFee from '~/components/pages/Site/Account/Fees/WithdrawalFee.vue';
 
 definePageMeta({
 	layout: 'account',
 });
+
+const items = [
+	{
+		key: 'transactionFees',
+		label: 'transactionFees',
+		content: 'This is the content shown for Tab1',
+	},
+	{
+		key: 'depositFee',
+		label: 'depositFee',
+		content: 'And, this is the content for Tab2',
+	},
+	{
+		key: 'withdrawalFee',
+		label: 'withdrawalFee',
+		content: 'And, this is the content for Tab2',
+	},
+];
 </script>
 
 <style scoped></style>

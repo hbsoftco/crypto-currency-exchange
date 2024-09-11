@@ -3,7 +3,10 @@
 		:class="[py]"
 		class="flex justify-start items-center"
 	>
-		<div class="bg-primary-gray-light dark:bg-primary-gray-dark rounded-full w-7 h-7 ml-2 p-1 cursor-pointer">
+		<div
+			v-if="backBtn"
+			class="bg-primary-gray-light dark:bg-primary-gray-dark rounded-full w-7 h-7 ml-2 p-1 cursor-pointer"
+		>
 			<UIcon
 				name="i-heroicons-arrow-right-20-solid"
 				class="w-5 h-5"
@@ -20,10 +23,12 @@
 interface PropsDefinition {
 	title: string;
 	py?: string;
+	backBtn?: boolean;
 }
 
 withDefaults(defineProps<PropsDefinition>(), {
 	align: 'text-center',
 	py: 'py-0',
+	backBtn: true,
 });
 </script>
