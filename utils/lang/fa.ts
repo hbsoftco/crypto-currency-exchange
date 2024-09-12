@@ -321,6 +321,17 @@ const persian = {
 	start: 'شروع',
 	end: 'پایان',
 	verificationDocumentsBitland: 'تایید مدارک توسط بیت لند',
+	traders: 'معامله کننده گان',
+	inviters: 'دعوت کننده گان',
+	currentMonth: 'ماه جاری',
+	previousMonth: 'ماه قبل',
+	rank: 'رتبه',
+	tradingVolume: 'حجم معاملات',
+	numberTransactions: 'تعداد معاملات',
+	feeReceived: 'کارمزد دریافتی',
+	directInvitation: 'دعوت مستقیم',
+	indirectInvitation: 'دعوت غیر مستقیم',
+
 };
 
 export default persian;
