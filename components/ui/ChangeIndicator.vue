@@ -1,11 +1,12 @@
 <template>
 	<div
-		:class="containerClass"
-		class="flex justify-start items-center pl-4 md:pl-8"
+		:class="[containerClass, pl]"
+		class="flex justify-start items-center"
 		dir="ltr"
 	>
 		<component
 			:is="iconComponent"
+			v-if="icon"
 			:class="iconClass"
 			class="w-4 h-4 mr-2 hidden md:block"
 		/>
@@ -21,11 +22,16 @@ import IconArrowDown from '~/assets/svg-icons/arrow-down-red.svg';
 import IconArrowUp from '~/assets/svg-icons/arrow-up-green.svg';
 import { useNumber } from '~/composables/useNumber';
 
-interface Props {
+interface PropsDefinition {
 	change: number;
+	icon?: boolean;
+	pl?: string;
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<PropsDefinition>(), {
+	icon: true,
+	pl: 'pl-4 md:pl-8',
+});
 
 const iconComponent = computed(() => {
 	return props.change > 0 ? IconArrowUp : IconArrowDown;

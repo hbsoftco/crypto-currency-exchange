@@ -9,70 +9,34 @@
 			</ULink>
 		</div>
 		<ul class="px-2">
-			<li class="flex justify-between my-4">
-				<div class="flex justify-between text-left">
+			<li
+				v-for="market in items"
+				:key="`${title}-${market.id}`"
+				class="flex justify-between my-4"
+			>
+				<div class="flex justify-start w-28 text-left">
 					<NuxtImg
-						src="/images/delete/bitcoin.png"
-						alt="icon state"
-						class="w-5 h-5"
+						:src="`https://api-bitland.site/media/currency/${market.marketBriefItem.currencyBriefItem?.cSymbol}.png`"
+						:alt="market.marketBriefItem.currencyBriefItem?.cName"
+						class="w-5 h-5 rounded-full"
+						format="webp"
+						densities="x1"
 					/>
 					<div class="text-sm font-normal mr-1">
-						<span>PEPE</span>/
-						<span>USDT</span>
+						<span>{{ market.marketBriefItem.currencyBriefItem?.cSymbol }}</span>
+						<span class="mx-0.5">/</span>
+						<span>{{ market.marketBriefItem?.quoteItem?.cSymbol }}</span>
 					</div>
 				</div>
-				<div>
-					<span class="text-sm font-normal">{{ useNumber('2.8389') }}</span>
+				<div class="w-20 text-left">
+					<span class="text-sm font-normal">{{ useNumber(market.indexPrice) }}</span>
 				</div>
-				<div>
-					<span
-						class="text-sm font-normal text-accent-green"
-						dir="ltr"
-					>{{ useNumber('+1.69%') }}</span>
-				</div>
-			</li>
-			<li class="flex justify-between my-4">
-				<div class="flex justify-between text-left">
-					<NuxtImg
-						src="/images/delete/bitcoin.png"
-						alt="icon state"
-						class="w-5 h-5"
+				<div class="w-20">
+					<UiChangeIndicator
+						pl="pl-0"
+						:change="parseFloat(market.priceChangePercIn24H)"
+						:icon="false"
 					/>
-					<div class="text-sm font-normal mr-1">
-						<span>PEPE</span>/
-						<span>USDT</span>
-					</div>
-				</div>
-				<div>
-					<span class="text-sm font-normal">{{ useNumber('2.8389') }}</span>
-				</div>
-				<div>
-					<span
-						class="text-sm font-normal text-accent-green"
-						dir="ltr"
-					>{{ useNumber('+1.69%') }}</span>
-				</div>
-			</li>
-			<li class="flex justify-between my-4">
-				<div class="flex justify-between text-left">
-					<NuxtImg
-						src="/images/delete/bitcoin.png"
-						alt="icon state"
-						class="w-5 h-5"
-					/>
-					<div class="text-sm font-normal mr-1">
-						<span>PEPE</span>/
-						<span>USDT</span>
-					</div>
-				</div>
-				<div>
-					<span class="text-sm font-normal">{{ useNumber('2.8389') }}</span>
-				</div>
-				<div>
-					<span
-						class="text-sm font-normal text-accent-green"
-						dir="ltr"
-					>{{ useNumber('+1.69%') }}</span>
 				</div>
 			</li>
 		</ul>

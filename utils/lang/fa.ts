@@ -321,6 +321,7 @@ const persian = {
 	start: 'شروع',
 	end: 'پایان',
 	verificationDocumentsBitland: 'تایید مدارک توسط بیت لند',
+	isLoading: 'در حال بارگذاری',
 };
 
 export default persian;

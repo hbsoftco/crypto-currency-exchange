@@ -6,7 +6,7 @@
 			<div class="flex items-center">
 				<div class="block md:flex items-center text-center">
 					<IconStar
-						v-if="!isFavorited"
+						v-if="!isFavorite"
 						class="text-2xl cursor-pointer pl-1 md:pl-0"
 						@click="toggleFavorite"
 					/>
@@ -23,14 +23,14 @@
 				</div>
 				<div class="text-right">
 					<div
-						class="border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"
+						class="border-b border-b-primary-gray-light pb-0.5 dark:border-b-primary-gray-dark"
 					>
 						<span class="text-sm font-normal">بیت کوین</span>/
 						<span
 							class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark"
 						>تومان</span>
 					</div>
-					<div class="block group-hover:hidden">
+					<div class="block group-hover:hidden py-0.5">
 						<span class="text-sm font-normal">BTC</span>/
 						<span
 							class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark"
@@ -39,7 +39,7 @@
 					<div class="hidden group-hover:block">
 						<div class="flex justify-center items-center">
 							<UButton
-								class="text-xs font-normal text-black ml-1 py-1"
+								class="text-xs font-normal text-black ml-1 py-1 rounded-l-none rounded-r-sm"
 							>
 								{{ $t("trade") }}
 							</UButton>
@@ -94,9 +94,9 @@ import IconStar from '~/assets/svg-icons/market/star.svg';
 import IconFillStar from '~/assets/svg-icons/market/fill-star.svg';
 import IconArrowDownRed from '~/assets/svg-icons/arrow-down-red.svg';
 
-const isFavorited = ref(false);
+const isFavorite = ref(false);
 
 function toggleFavorite() {
-	isFavorited.value = !isFavorited.value;
+	isFavorite.value = !isFavorite.value;
 }
 </script>

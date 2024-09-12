@@ -36,19 +36,32 @@
 					</div>
 				</div>
 			</div>
-			<div class="hidden md:flex justify-between">
-				<!-- <MarketState
-					:title="$t('hotTopics')"
-					:items="hottestMarkets ?? []"
-				/>
-				<MarketState
-					:title="$t('mostProfitableAssets')"
-					:items="mostProfitableMarkets ?? []"
-				/>
-				<MarketState
-					:title="$t('newest')"
-					:items="latestMarkets ?? []"
-				/> -->
+			<div>
+				<div
+					v-if="mostProfitableMarketsPending || latestMarketsPending || hottestMarketsPending"
+					class="flex justify-center items-center h-64"
+				>
+					<p>{{ $t('isLoading') }} ...</p>
+				</div>
+				<div
+					v-else
+					class="hidden md:flex justify-between"
+				>
+					<MarketState
+						:title="$t('mostProfitableAssets')"
+						:items="mostProfitableMarkets ?? []"
+					/>
+
+					<MarketState
+						:title="$t('hotTopics')"
+						:items="hottestMarkets ?? []"
+					/>
+
+					<MarketState
+						:title="$t('newest')"
+						:items="latestMarkets ?? []"
+					/>
+				</div>
 			</div>
 			<div class="relative mt-14 md:mt-8">
 				<UTabs :items="items">
@@ -73,13 +86,15 @@
 						</div>
 					</template>
 				</UTabs>
-				<div class="w-72 h-12 hidden md:block absolute left-0 top-0  py-3 px-3 border border-primary-gray-light dark:border-primary-gray-dark rounded-lg">
-					<input
-						type="text"
-						class="outline-none"
-						:placeholder="$t('searchMarket')"
-					>
-					<IconSearch class="absolute left-3 top-4 text-subtle-text-light dark:text-subtle-text-dark" />
+				<div class="w-72 h-10 hidden md:block absolute left-0 top-0 py-2 px-3 border border-primary-gray-light dark:border-primary-gray-dark rounded-lg">
+					<div class="w-full h-full relative">
+						<input
+							type="text"
+							class="outline-none h-full w-full text-sm"
+							:placeholder="$t('searchMarket')"
+						>
+						<IconSearch class="absolute left-1 top-1 text-subtle-text-light dark:text-subtle-text-dark cursor-pointer" />
+					</div>
 				</div>
 				<ULink
 					to=""
@@ -97,17 +112,67 @@
 </template>
 
 <script setup lang="ts">
-// import MarketState from '~/components/pages/Site/Market/MarketState.vue';
+import MarketState from '~/components/pages/Site/Market/MarketState.vue';
 import IconSearch from '~/assets/svg-icons/menu/search.svg';
 import MarketTable from '~/components/pages/Site/Market/MarketTable.vue';
-import { useMarketState } from '~/composables/market/useMarketState';
+import { marketRepository } from '~/repositories/market.repository';
+import { Language } from '~/utils/enums/language.enum';
 
-const { hottestMarkets } = await useMarketState();
+const { $api } = useNuxtApp();
+const marketRepo = marketRepository($api);
 
-onMounted(() => {
-	console.log(hottestMarkets.value);
-});
+const { useCachedCurrencyBriefList, useCachedMarketBriefList } = useCachedData();
 
+const { data: cachedCurrencyBriefList } = await useCachedCurrencyBriefList({ languageId: Language.PERSIAN });
+const { data: cachedMarketBriefList } = await useCachedMarketBriefList();
+
+const currencyBriefList = cachedCurrencyBriefList.value ?? [];
+const marketBriefList = cachedMarketBriefList.value ?? [];
+
+const processMarketData = (rows) => {
+	return rows.map((item) => {
+		const matchedBriefItem = marketBriefList.find((briefItem) => briefItem.id === item.id);
+
+		if (matchedBriefItem) {
+			matchedBriefItem.currencyBriefItem = currencyBriefList.find(
+				(currencyItem) => currencyItem.id === matchedBriefItem.cbId,
+			) || null;
+
+			matchedBriefItem.quoteItem = currencyBriefList.find(
+				(currencyItem) => currencyItem.id === matchedBriefItem.cqId,
+			) || null;
+		}
+
+		return {
+			...item,
+			marketBriefItem: matchedBriefItem || null,
+		};
+	});
+};
+
+const { data: mostProfitableMarkets, pending: mostProfitableMarketsPending } = useAsyncData(
+	'mostProfitableMarkets',
+	async () => {
+		const response = await marketRepo.getMostProfitableMarkets({ rowCount: 3 });
+		return processMarketData(response.result.rows);
+	},
+);
+
+const { data: hottestMarkets, pending: hottestMarketsPending } = useAsyncData(
+	'hottestMarkets',
+	async () => {
+		const response = await marketRepo.getHottestMarkets({ rowCount: 3 });
+		return processMarketData(response.result.rows);
+	},
+);
+
+const { data: latestMarkets, pending: latestMarketsPending } = useAsyncData(
+	'latestMarkets',
+	async () => {
+		const response = await marketRepo.getLatestMarkets({ rowCount: 3 });
+		return processMarketData(response.result.rows);
+	},
+);
 const items = [
 	{
 		key: 'marketSpot',
