@@ -312,6 +312,15 @@ const persian = {
 	edit: 'ویرایش',
 	delete: 'حذف',
 	moreDetail: 'جزییات بیشتر',
+	congratulations: 'تبریک !',
+	awardText: 'تعداد ۲ عدد جایزه هرکدام 4xrp به شما تخصیص داده شد.',
+	yourAward: 'جایزه شما',
+	numberAwardsReceived: 'تعداد دریافت جایزه',
+	time: 'بار',
+	awardAuthenticationText: 'شما میتوانید با تکمیل فرایند احراز هویت علاوه بر بهرمندی از خدمات مجموعه بیت لند ، 500 میلیون واحد بیبی دوج دریافت کنید(مهلت استفاده یک ماه از تاریخ فعال شدن میباشد)',
+	start: 'شروع',
+	end: 'پایان',
+	verificationDocumentsBitland: 'تایید مدارک توسط بیت لند',
 };
 
 export default persian;
