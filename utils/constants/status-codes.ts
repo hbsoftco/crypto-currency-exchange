@@ -22,6 +22,10 @@ export const StatusCodes = {
 		fa: 419,
 		en: 419,
 	},
+	USER_LOGGED_OUT: {
+		fa: 401,
+		en: 401,
+	},
 };
 
 export const statusMessages: StatusMessage = {
@@ -40,5 +44,9 @@ export const statusMessages: StatusMessage = {
 	OTC_EXPIRED: {
 		fa: 'OTC Fail : OTC is expired, Get new OTC',
 		en: 'OTC Fail : OTC is expired, Get new OTC',
+	},
+	USER_LOGGED_OUT: {
+		fa: 'Inactive Account : User account is logged out',
+		en: 'Inactive Account : User account is logged out',
 	},
 };
