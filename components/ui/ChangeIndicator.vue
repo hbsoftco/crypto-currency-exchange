@@ -8,11 +8,11 @@
 			:is="iconComponent"
 			v-if="icon"
 			:class="iconClass"
-			class="w-4 h-4 mr-2 hidden md:block"
+			class="w-4 h-4 hidden md:block"
 		/>
 		<span
 			:class="textClass"
-			class="text-sm md:text-base font-medium py-1"
+			class="text-sm md:text-base font-medium py-1 ml-2"
 		>{{ useNumber(formattedChange) }}</span>
 	</div>
 </template>

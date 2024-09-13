@@ -26,10 +26,29 @@ type MarketStateResponse = {
 
 type MarketState = {
 	id: number;
-	indexPrice: number;
-	priceChange24h: number;
+	indexPrice: string;
+	priceChangePercIn24H: string;
 	marketTypeName: string;
-	marketBriefItem: MarketBriefItem;
+	marketBriefItem: MarketBriefItem | null;
+};
+
+type MarketsResponse = {
+	statusCode: number;
+	result: {
+		totalCount: number;
+		rows: Market[];
+	};
+};
+
+type Market = {
+	id: number;
+	indexPrice: string;
+	hPriceIn24H: string;
+	lPriceIn24H: string;
+	priceChangePercIn24H: string;
+	valueOfTradesIn24H: string;
+	volumeOfTradesIn24H: string;
+	marketBriefItem: MarketBriefItem | null;
 };
 
 export type {
@@ -37,4 +56,6 @@ export type {
 	MarketListWithSparkLineChartItem,
 	MarketStateResponse,
 	MarketState,
+	Market,
+	MarketsResponse,
 };

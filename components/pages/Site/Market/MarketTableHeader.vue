@@ -60,8 +60,8 @@ import { Language } from '~/utils/enums/language.enum';
 import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
 
 interface EmitDefinition {
-	(event: 'filter-change' | 'tag-change', value: number): void;
-	(event: 'currency-change', selectedId: string): void;
+	(event: 'filter-change', value: number): void;
+	(event: 'currency-change' | 'tag-change', selectedId: string): void;
 }
 
 const emit = defineEmits<EmitDefinition>();
@@ -73,7 +73,7 @@ await baseDataStore.fetchTagItems();
 await baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
 await baseDataStore.fetchQuoteItems(MarketType.SPOT);
 
-const updateTagFilter = async (value: number) => {
+const updateTagFilter = async (value: string) => {
 	emit('tag-change', value);
 };
 

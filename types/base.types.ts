@@ -14,6 +14,16 @@ type GetMarketListWithSparkLineChartParams = {
 	tagTypeId?: string;
 };
 
+type GetMarketsParams = {
+	sortMode?: string;
+	currencyQuoteId?: string;
+	marketTypeId: string;
+	tagTypeId?: string;
+	searchStatement?: string;
+	pageNumber?: string;
+	pageSize?: string;
+};
+
 type GetMarketStatusParams = {
 	rowCount: number;
 };
@@ -21,6 +31,7 @@ type GetMarketStatusParams = {
 export type {
 	GetPinParams,
 	GetLanguageParams,
+	GetMarketsParams,
 	GetMarketListWithSparkLineChartParams,
 	GetMarketStatusParams,
 };

@@ -1,14 +1,15 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { GetMarketListWithSparkLineChartParams, GetMarketStatusParams } from '~/types/base.types';
+import type { GetMarketListWithSparkLineChartParams, GetMarketsParams, GetMarketStatusParams } from '~/types/base.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
-import type { MarketListWithSparkLineChartResponse, MarketStateResponse } from '~/types/response/market.types';
+import type { MarketListWithSparkLineChartResponse, MarketsResponse, MarketStateResponse } from '~/types/response/market.types';
 
 type MarketRepository = {
 	getMarketListWithSparkLineChart: (params: GetMarketListWithSparkLineChartParams) => Promise<MarketListWithSparkLineChartResponse>;
 	getMostProfitableMarkets: (params: GetMarketStatusParams) => Promise<MarketStateResponse>;
 	getHottestMarkets: (params: GetMarketStatusParams) => Promise<MarketStateResponse>;
 	getLatestMarkets: (params: GetMarketStatusParams) => Promise<MarketStateResponse>;
+	getMarkets: (params: GetMarketsParams) => Promise<MarketsResponse>;
 };
 
 export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): MarketRepository => ({
@@ -48,13 +49,31 @@ export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Mar
 
 		return response;
 	},
-	// async getHottestMarkets({ rowCount }: GetMarketStatusParams): Promise<MarketStateResponse> {
-	// 	const query = new URLSearchParams({ rowCount: rowCount.toString() });
-	// 	const url = '/v1/market/routine/l43_f';
-	// 	const response = await fetch<MarketStateResponse>(`${url}?${query.toString()}`, {
-	// 		noAuth: true,
-	// 	} as CustomNitroFetchOptions);
+	async getMarkets(
+		{
+			sortMode = '',
+			currencyQuoteId = '',
+			marketTypeId,
+			tagTypeId = '',
+			searchStatement = '',
+			pageNumber = '',
+			pageSize = '',
 
-	// 	return response;
-	// },
+		}: GetMarketsParams): Promise<MarketsResponse> {
+		const query = new URLSearchParams({
+			sortMode,
+			currencyQuoteId,
+			marketTypeId,
+			tagTypeId,
+			searchStatement,
+			pageNumber,
+			pageSize,
+		});
+		const url = '/v1/market/routine/l31_f';
+		const response = await fetch<MarketsResponse>(`${url}?${query.toString()}`, {
+			noAuth: true,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
 });

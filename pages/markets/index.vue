@@ -76,7 +76,7 @@
 							v-if="item.key === 'marketSpot'"
 							class="space-y-3"
 						>
-							<MarketTable />
+							<MarketTable :search-query="searchQuery" />
 						</div>
 						<div
 							v-else-if="item.key === 'marketFutures'"
@@ -89,6 +89,7 @@
 				<div class="w-72 h-10 hidden md:block absolute left-0 top-0 py-2 px-3 border border-primary-gray-light dark:border-primary-gray-dark rounded-lg">
 					<div class="w-full h-full relative">
 						<input
+							v-model="searchQuery"
 							type="text"
 							class="outline-none h-full w-full text-sm"
 							:placeholder="$t('searchMarket')"
@@ -121,6 +122,8 @@ import { Language } from '~/utils/enums/language.enum';
 const { $api } = useNuxtApp();
 const marketRepo = marketRepository($api);
 
+const searchQuery = ref('');
+
 const { useCachedCurrencyBriefList, useCachedMarketBriefList } = useCachedData();
 
 const { data: cachedCurrencyBriefList } = await useCachedCurrencyBriefList({ languageId: Language.PERSIAN });
@@ -129,32 +132,11 @@ const { data: cachedMarketBriefList } = await useCachedMarketBriefList();
 const currencyBriefList = cachedCurrencyBriefList.value ?? [];
 const marketBriefList = cachedMarketBriefList.value ?? [];
 
-const processMarketData = (rows) => {
-	return rows.map((item) => {
-		const matchedBriefItem = marketBriefList.find((briefItem) => briefItem.id === item.id);
-
-		if (matchedBriefItem) {
-			matchedBriefItem.currencyBriefItem = currencyBriefList.find(
-				(currencyItem) => currencyItem.id === matchedBriefItem.cbId,
-			) || null;
-
-			matchedBriefItem.quoteItem = currencyBriefList.find(
-				(currencyItem) => currencyItem.id === matchedBriefItem.cqId,
-			) || null;
-		}
-
-		return {
-			...item,
-			marketBriefItem: matchedBriefItem || null,
-		};
-	});
-};
-
 const { data: mostProfitableMarkets, pending: mostProfitableMarketsPending } = useAsyncData(
 	'mostProfitableMarkets',
 	async () => {
 		const response = await marketRepo.getMostProfitableMarkets({ rowCount: 3 });
-		return processMarketData(response.result.rows);
+		return useProcessMarketData(response.result.rows, marketBriefList, currencyBriefList);
 	},
 );
 
@@ -162,7 +144,7 @@ const { data: hottestMarkets, pending: hottestMarketsPending } = useAsyncData(
 	'hottestMarkets',
 	async () => {
 		const response = await marketRepo.getHottestMarkets({ rowCount: 3 });
-		return processMarketData(response.result.rows);
+		return useProcessMarketData(response.result.rows, marketBriefList, currencyBriefList);
 	},
 );
 
@@ -170,9 +152,10 @@ const { data: latestMarkets, pending: latestMarketsPending } = useAsyncData(
 	'latestMarkets',
 	async () => {
 		const response = await marketRepo.getLatestMarkets({ rowCount: 3 });
-		return processMarketData(response.result.rows);
+		return useProcessMarketData(response.result.rows, marketBriefList, currencyBriefList);
 	},
 );
+
 const items = [
 	{
 		key: 'marketSpot',

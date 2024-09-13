@@ -36,21 +36,22 @@
 				</thead>
 
 				<tbody>
-					<MarketTableRow />
-					<MarketTableRow />
-					<MarketTableRow />
-					<MarketTableRow />
-					<MarketTableRow />
+					<MarketTableRow
+						v-for="(item, index) in markets"
+						:key="index"
+						:market="item"
+					/>
 				</tbody>
 			</table>
 			<div class="flex justify-center py-4">
 				<UPagination
-					:model-value="currentPage"
-					:page-count="10"
-					:total="100"
-					:max="4"
+					:model-value="Number(params.pageNumber)"
+					:page-count="20"
+					:total="totalCount"
+					:max="6"
+					size="xl"
 					ul-class="flex space-x-2 bg-blue-500 border-none"
-					li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500"
+					li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500 px-3"
 					button-class-base="flex items-center justify-center w-full h-full transition-colors duration-200"
 					button-class-inactive="bg-green-700 hover:bg-gray-600"
 					button-class-active="bg-blue-500"
@@ -66,36 +67,63 @@
 import MarketTableRow from '~/components/pages/Site/Market/MarketTableRow.vue';
 import MarketTableHeader from '~/components/pages/Site/Market/MarketTableHeader.vue';
 import { MarketType, SortMode } from '~/utils/enums/market.enum';
+import { marketRepository } from '~/repositories/market.repository';
+import { Language } from '~/utils/enums/language.enum';
 
-const currentPage = ref(1);
+const { $api } = useNuxtApp();
+const marketRepo = marketRepository($api);
 
-const onPageChange = (newPage: number) => {
-	currentPage.value = newPage;
-};
+interface PropsDefinition {
+	searchQuery: string;
+}
+
+const props = defineProps<PropsDefinition>();
+
+const { useCachedCurrencyBriefList, useCachedMarketBriefList } = useCachedData();
+
+const { data: cachedCurrencyBriefList } = await useCachedCurrencyBriefList({ languageId: Language.PERSIAN });
+const { data: cachedMarketBriefList } = await useCachedMarketBriefList();
+
+const marketBriefList = cachedMarketBriefList.value ?? [];
+const currencyBriefList = cachedCurrencyBriefList.value ?? [];
+
+const totalCount = ref(0);
 
 const params = ref({
 	sortMode: String(SortMode.BY_MARKET_CAPS),
 	currencyQuoteId: '1',
 	marketTypeId: String(MarketType.SPOT),
-	tagTypeId: '1',
+	tagTypeId: '',
+	searchStatement: '',
+	pageNumber: '1',
+	pageSize: '20',
 });
+
+const { data: markets, status } = useAsyncData('markets', async () => {
+	const response = await marketRepo.getMarkets(params.value);
+	totalCount.value = response.result.totalCount;
+	return useProcessMarketData(response.result.rows, marketBriefList, currencyBriefList);
+}, { watch: [params.value], deep: true });
+
+console.log(status.value);
+
+watch(() => props.searchQuery, (newQuery) => {
+	params.value.searchStatement = newQuery;
+});
+
+const onPageChange = async (newPage: number) => {
+	params.value.pageNumber = String(newPage);
+};
 
 const updateFilter = async (selectedValue: SortMode) => {
 	params.value.sortMode = String(selectedValue);
-	// await fetchMarketData();
-
-	console.log(params.value);
 };
 
-const updateTag = async (selectedValue: SortMode) => {
-	params.value.tagTypeId = String(selectedValue);
-	// await fetchMarketData();
+const updateTag = async (selectedValue: string) => {
+	params.value.tagTypeId = selectedValue;
 };
 
 const updateCurrency = async (selectedId: string) => {
 	params.value.currencyQuoteId = selectedId;
-	// await fetchMarketData();
 };
 </script>
-
-<style scoped></style>
