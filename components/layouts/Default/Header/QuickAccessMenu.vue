@@ -2,25 +2,18 @@
 	<div class="mx-3">
 		<div
 			class="flex group relative items-center space-x-2 cursor-pointer"
-			@mouseover="showMenu"
-			@mouseleave="hideMenu"
 		>
 			<IconMenu
 				class="text-2xl text-subtle-text-light dark:text-subtle-text-dark group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark duration-200 transition-all ml-2"
 			/>
 			<IconArrowDown
-				v-if="!hover && showArrowDown"
-				class="text-base text-subtle-text-light dark:text-subtle-text-dark group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark duration-200 transition-all"
+				class="text-base block group-hover:hidden text-subtle-text-light dark:text-subtle-text-dark group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark duration-200 transition-all"
 			/>
 			<IconArrowUp
-				v-if="hover"
-				class="text-base group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark hover:fill-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all"
+				class="text-base hidden group-hover:block group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark hover:fill-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all"
 			/>
 			<div
-				v-if="hover"
-				class="absolute -right-32 mt-1 top-4 py-6 opacity-0 group-hover:opacity-100 z-10"
-				@mouseover="showMenu"
-				@mouseleave="hideMenu"
+				class="absolute -right-32 mt-1 top-4 hidden group-hover:block py-6 opacity-0 group-hover:opacity-100 z-10"
 			>
 				<div
 					class="w-[75rem] bg-hover-light dark:bg-hover-dark shadow-lg rounded transition-all duration-200"
@@ -82,21 +75,6 @@ import IconWithdrawToman from '~/assets/svg-icons/menu/quick-menu/withdraw-toman
 import IconQuickTrade from '~/assets/svg-icons/menu/quick-menu/quick-trade.svg';
 import IconFees from '~/assets/svg-icons/menu/quick-menu/fees.svg';
 import IconUserLevel from '~/assets/svg-icons/menu/quick-menu/user-level.svg';
-
-const hover = ref(false);
-const showArrowDown = ref(true);
-
-const showMenu = () => {
-	hover.value = true;
-};
-
-const hideMenu = () => {
-	hover.value = false;
-};
-
-watch(hover, (newHover) => {
-	showArrowDown.value = !newHover;
-});
 
 const menuItems = [
 	{

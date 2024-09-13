@@ -1,18 +1,13 @@
 <template>
 	<div>
 		<div
-			class="group relative hover:cursor-pointer hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark items-center space-x-2"
-			@mouseover="showMenu"
-			@mouseleave="hideMenu"
+			class="group relative hover:cursor-pointer  block group-hover:hidden hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark items-center space-x-2"
 		>
 			<span
 				class="ml-2 cursor-pointer text-base font-bold duration-200 transition-all"
 			>{{ $t("wallet") }}</span>
 			<div
-				v-if="hover"
-				class="absolute -left-5 top-5 py-6 opacity-100 transition-opacity duration-200 z-10"
-				@mouseover="showMenu"
-				@mouseleave="hideMenu"
+				class="absolute -left-5 top-5  hidden group-hover:block py-6 opacity-100 transition-opacity duration-200 z-10"
 			>
 				<div
 					class="w-80 left-20 bg-hover-light dark:bg-hover-dark shadow-lg rounded p-4"
@@ -64,8 +59,6 @@
 								v-for="(item, index) in menuItems"
 								:key="index"
 								class="relative flex justify-between hover:bg-hover2-light dark:hover:bg-hover2-dark border-transparent"
-								@mouseover="showSubmenu(index)"
-								@mouseleave="hideSubmenu(index)"
 							>
 								<div
 									class="flex justify-between items-center w-full mx-3 p-2 border-b-primary-gray-light dark:border-b-primary-gray-dark border-b"
@@ -102,16 +95,6 @@ import IconOverView from '~/assets/svg-icons/menu/overview.svg';
 import IconAssets from '~/assets/svg-icons/menu/quick-menu/quick-trade.svg';
 import IconHistory from '~/assets/svg-icons/menu/quick-menu/transaction-history.svg';
 import IconPortfolio from '~/assets/svg-icons/menu/quick-menu/portfolio.svg';
-
-const hover = ref(false);
-
-const showMenu = () => {
-	hover.value = true;
-};
-
-const hideMenu = () => {
-	hover.value = false;
-};
 
 const menuItems = [
 	{

@@ -2,17 +2,13 @@
 	<div>
 		<div
 			class="relative group items-center space-x-2"
-			@mouseover="showMenu"
-			@mouseleave="hideMenu"
 		>
 			<div class="relative cursor-pointer">
 				<IconNotification
-					v-if="!hover"
-					class="text-2xl group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark"
+					class="text-2xl  block group-hover:hidden group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark"
 				/>
 				<IconNotificationFill
-					v-else
-					class="text-2xl text-primary-yellow-light dark:text-primary-yellow-dark group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark"
+					class="text-2xl hidden group-hover:block text-primary-yellow-light dark:text-primary-yellow-dark group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark"
 				/>
 				<span
 					v-if="messageItems.length > 0"
@@ -22,10 +18,7 @@
 				</span>
 			</div>
 			<div
-				v-if="hover"
-				class="absolute left-0  md:-left-20 top-5 py-6 opacity-100 transition-opacity duration-200 z-10"
-				@mouseover="showMenu"
-				@mouseleave="hideMenu"
+				class="absolute left-0  md:-left-20 top-5 hidden group-hover:block py-6 opacity-100 transition-opacity duration-200 z-10"
 			>
 				<div class="w-72 md:w-96 bg-hover-light dark:bg-hover-dark shadow-lg rounded p-4">
 					<div>
@@ -107,16 +100,6 @@ import IconNotificationFill from '~/assets/svg-icons/menu/notification-fill.svg'
 import IconArrowLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';
 import IconMessage from '~/assets/svg-icons/menu/message.svg';
 import { useNumber } from '~/composables/useNumber';
-
-const hover = ref(false);
-
-const showMenu = () => {
-	hover.value = true;
-};
-
-const hideMenu = () => {
-	hover.value = false;
-};
 
 const messageItems = [
 	{
