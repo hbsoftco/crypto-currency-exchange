@@ -20,8 +20,8 @@
 						<li>
 							<ULink
 								to="/markets"
+								active-class="text-primary-yellow-light dark:text-primary-yellow-dark"
 								:class="{
-									'text-primary-yellow-light dark:text-primary-yellow-dark': route.path === '/market',
 									'text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all': true,
 								}"
 							>
@@ -38,9 +38,9 @@
 						</li>
 						<li class="flex items-center">
 							<ULink
-								to="#"
+								to="/app"
+								active-class="text-primary-yellow-light dark:text-primary-yellow-dark"
 								:class="{
-									'text-primary-yellow-light dark:text-primary-yellow-dark': route.path === '',
 									'text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all': true,
 								}"
 							>
@@ -52,8 +52,8 @@
 						<li class="flex items-center">
 							<ULink
 								to="/referral"
+								active-class="text-primary-yellow-light dark:text-primary-yellow-dark"
 								:class="{
-									'text-primary-yellow-light dark:text-primary-yellow-dark': route.path === '/referral',
 									'text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all': true,
 								}"
 							>
@@ -64,9 +64,9 @@
 						</li>
 						<li class="flex items-center">
 							<ULink
-								to="#"
+								to="/risk-agreement"
+								active-class="text-primary-yellow-light dark:text-primary-yellow-dark"
 								:class="{
-									'text-primary-yellow-light dark:text-primary-yellow-dark': route.path === '',
 									'text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all': true,
 								}"
 							>
@@ -77,9 +77,9 @@
 						</li>
 						<li class="flex items-center">
 							<ULink
-								to="#"
+								to="/privacy-policy"
+								active-class="text-primary-yellow-light dark:text-primary-yellow-dark"
 								:class="{
-									'text-primary-yellow-light dark:text-primary-yellow-dark': route.path === '',
 									'text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all': true,
 								}"
 							>
@@ -113,8 +113,6 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
-
 import Search from './Header/Search/index.vue';
 import Download from './Header/Download.vue';
 import Futures from './Header/Futures.vue';
@@ -124,8 +122,6 @@ import Transaction from './Header/Transaction.vue';
 import UserLogin from './Header/UserLogin/index.vue';
 
 import Notif from '~/components/layouts/Default/Notif.vue';
-
-const route = useRoute();
 </script>
 
 <style lang="scss" scoped></style>

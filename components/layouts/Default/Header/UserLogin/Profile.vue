@@ -2,24 +2,17 @@
 	<div class="px-3">
 		<div
 			class="relative group items-center space-x-2"
-			@mouseover="showMenu"
-			@mouseleave="hideMenu"
 		>
 			<div class="cursor-pointer">
 				<IconUser
-					v-if="!hover"
-					class="text-[1.7rem] group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark"
+					class="text-[1.7rem]  block group-hover:hidden group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark"
 				/>
 				<IconUserFill
-					v-else
-					class="text-[1.7rem] dark:text-primary-yellow-dark group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark"
+					class="text-[1.7rem] hidden group-hover:block dark:text-primary-yellow-dark group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark"
 				/>
 			</div>
 			<div
-				v-if="hover"
-				class="absolute -right-40 top-5 py-6 opacity-100 z-10"
-				@mouseover="showMenu"
-				@mouseleave="hideMenu"
+				class="absolute -right-40 top-5 hidden group-hover:block py-6 opacity-100 z-10"
 			>
 				<div class="w-60 bg-hover-light dark:bg-hover-dark shadow-lg rounded p-4">
 					<div>
@@ -283,16 +276,6 @@ import { getValueByKey } from '~/utils/find-value-by-key';
 import { useNumber } from '~/composables/useNumber';
 
 const textRef = ref<HTMLElement | null>(null);
-
-const hover = ref(false);
-
-const showMenu = () => {
-	hover.value = true;
-};
-
-const hideMenu = () => {
-	hover.value = false;
-};
 
 const logout = () => {
 	const authStore = useAuthStore();
