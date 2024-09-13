@@ -332,6 +332,22 @@ const persian = {
 	feeReceived: 'کارمزد دریافتی',
 	directInvitation: 'دعوت مستقیم',
 	indirectInvitation: 'دعوت غیر مستقیم',
+	whiteListManagement: 'مدیریت لیست سفید',
+	addressManagement: 'مدیریت آدرس',
+	contactManagement: 'مدیریت مخاطبین',
+	addWhiteAddress: 'اضافه کردن آدرس لیست سفید ',
+	network: 'شبکه',
+	description: 'توضیحات',
+	address: 'آدرس',
+	memoTag: 'Memo/Tag',
+	accountName: 'نام حساب / UID',
+	addContact: 'اضافه کردن مخاطب',
+	moreInfoAboutWhiteList: 'اطلاعات بیشتر راجع به لیست سفید',
+	importantPoints: 'نکات مهم',
+	pointOne: 'لطفاً در صورت استفاده از فیلترشکن، آن را خاموش کنید.به دستور پلیس فتا، برای واریز ریالی IP شما باید کشور ایران باشد.',
+	pointTwo: 'امکان پرداخت تومان برای سطح کاربری شما مسدود می‌باشد. لطفا جهت تکمیل احراز هویت خود اقدام فرمایید.',
+	pointThree: 'با توجه به دلیل محدودیت‌های بانکی، واریز بیش از ۲۵,۰۰۰,۰۰۰ تومان از طریق درگاه‌های پرداخت ممکن نیست و برای انجام این کار باید از خدمات پرداخت با شناسه (ساتنا، پایا و ...) استفاده کنید.',
+	depositFAQs: 'سوالات متداول واریز',
 };
 
 export default persian;

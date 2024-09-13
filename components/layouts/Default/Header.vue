@@ -122,8 +122,6 @@ import Transaction from './Header/Transaction.vue';
 import UserLogin from './Header/UserLogin/index.vue';
 
 // import Notif from '~/components/layouts/Default/Notif.vue';
-
-const route = useRoute();
 </script>
 
 <style lang="scss" scoped></style>
