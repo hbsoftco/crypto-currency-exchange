@@ -1,29 +1,35 @@
 <template>
-	<div>
-		<div class="p-0 md:p-4 pt-2 md:pt-0 mt-8">
+	<div class="mt-8">
+		<MarketTableHeader
+			@filter-change="updateFilter"
+			@currency-change="updateCurrency"
+			@tag-change="updateTag"
+		/>
+
+		<div class="p-0 pt-2 md:pt-0 mt-4">
 			<table
 				class="min-w-full bg-background-light dark:bg-background-dark text-text-dark dark:text-text-light"
 			>
 				<thead>
-					<tr class="text-center font-normal md:font-medium text-sm md:text-base py-3">
-						<th class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-0 md:px-10">
+					<tr class="text-center font-normal md:font-medium text-sm md:text-base border-b border-primary-gray-light dark:border-primary-gray-dark">
+						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-0 md:px-10">
 							<span class="hidden md:block">{{ $t("tradingPair") }}</span>
 							<span class="block md:hidden">{{ $t("market") }}</span>
 						</th>
-						<th class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-0 md:px-10">
+						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-0 md:px-10">
 							<span class="hidden md:block">{{ $t("currentPrice") }}</span>
 							<span class="block md:hidden">{{ $t("lastPrice") }}</span>
 						</th>
-						<th class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-0 md:px-10">
+						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-0 md:px-10">
 							{{ $t("change24h") }}
 						</th>
-						<th class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-10 md:table-cell hidden">
+						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-10 md:table-cell hidden">
 							{{ $t("roof24h") }}
 						</th>
-						<th class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-10 md:table-cell hidden">
+						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-10 md:table-cell hidden">
 							{{ $t("floor24h") }}
 						</th>
-						<th class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-10 md:table-cell hidden">
+						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-10 md:table-cell hidden">
 							{{ $t("volume24h") }}
 						</th>
 					</tr>
@@ -58,12 +64,38 @@
 
 <script setup lang="ts">
 import MarketTableRow from '~/components/pages/Site/Market/MarketTableRow.vue';
+import MarketTableHeader from '~/components/pages/Site/Market/MarketTableHeader.vue';
+import { MarketType, SortMode } from '~/utils/enums/market.enum';
 
 const currentPage = ref(1);
 
-function onPageChange(newPage: number) {
+const onPageChange = (newPage: number) => {
 	currentPage.value = newPage;
-}
+};
+
+const params = ref({
+	sortMode: String(SortMode.BY_MARKET_CAPS),
+	currencyQuoteId: '1',
+	marketTypeId: String(MarketType.SPOT),
+	tagTypeId: '1',
+});
+
+const updateFilter = async (selectedValue: SortMode) => {
+	params.value.sortMode = String(selectedValue);
+	// await fetchMarketData();
+
+	console.log(params.value);
+};
+
+const updateTag = async (selectedValue: SortMode) => {
+	params.value.tagTypeId = String(selectedValue);
+	// await fetchMarketData();
+};
+
+const updateCurrency = async (selectedId: string) => {
+	params.value.currencyQuoteId = selectedId;
+	// await fetchMarketData();
+};
 </script>
 
 <style scoped></style>

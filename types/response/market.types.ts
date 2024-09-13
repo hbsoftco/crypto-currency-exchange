@@ -29,6 +29,7 @@ type MarketState = {
 	indexPrice: number;
 	priceChange24h: number;
 	marketTypeName: string;
+	marketBriefItem: MarketBriefItem;
 };
 
 export type {

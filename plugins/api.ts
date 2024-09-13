@@ -25,6 +25,10 @@ export default defineNuxtPlugin(() => {
 				await refreshOTC();
 				await doRequest('GET', `${baseURL}${options.apiName}`, options);
 			}
+			else if (response && response?._data && response?._data?.statusCode === StatusCodes.USER_LOGGED_OUT.fa) {
+				const authStore = useAuthStore();
+				await authStore.clearAuthData();
+			}
 			throw response;
 		},
 	});
