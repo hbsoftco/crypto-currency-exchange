@@ -2,25 +2,18 @@
 	<div>
 		<div
 			class="flex group relative items-center space-x-2 mr-6"
-			@mouseover="showMenu"
-			@mouseleave="hideMenu"
 		>
 			<div class="cursor-pointer">
 				<IconSetting
-					v-if="!hover"
-					class="text-2xl group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark"
+					class="text-2xl block group-hover:hidden group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark"
 				/>
 				<IconSettingFill
-					v-else
-					class="text-2xl text-primary-yellow-light dark:text-primary-yellow-dark group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark"
+					class="text-2xl hidden group-hover:block text-primary-yellow-light dark:text-primary-yellow-dark group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark"
 				/>
 			</div>
 
 			<div
-				v-if="hover"
-				class="absolute -left-10 top-5 py-6 opacity-100 transition-opacity duration-200 z-10"
-				@mouseover="showMenu"
-				@mouseleave="hideMenu"
+				class="absolute -left-10 top-5 hidden group-hover:block py-6 opacity-100 transition-opacity duration-200 z-10"
 			>
 				<div class="w-56 bg-hover-light dark:bg-hover-dark shadow-lg rounded p-4">
 					<ul class="flex flex-col space-y-2">
@@ -86,16 +79,6 @@ import IconSetting from '~/assets/svg-icons/menu/setting.svg';
 import IconSettingFill from '~/assets/svg-icons/menu/setting-fill.svg';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
 import ToggleButton from '~/components/ui/ToggleButton.vue';
-
-const hover = ref(false);
-
-const showMenu = () => {
-	hover.value = true;
-};
-
-const hideMenu = () => {
-	hover.value = false;
-};
 
 const selectedLanguage = ref('English');
 const showLanguageOptions = ref(false);

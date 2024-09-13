@@ -60,7 +60,6 @@
 <script setup lang="ts">
 import TableFeesRow from '~/components/pages/Site/Account/Fees/TableFeesRow.vue';
 
-// داده‌ها که از سمت سرور می‌آیند
 const tableData = ref([
 	{
 		cryptocurrency: 'بیت کوین',

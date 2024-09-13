@@ -2,25 +2,18 @@
 	<div>
 		<div
 			class="relative group items-center space-x-2"
-			@mouseover="showMenu"
-			@mouseleave="hideMenu"
 		>
 			<div class="cursor-pointer">
 				<IconDownload
-					v-if="!hover"
-					class="text-2xl group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark"
+					class="text-2xl block group-hover:hidden  group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark"
 				/>
 				<IconDownloadFill
-					v-else
-					class="text-2xl dark:text-primary-yellow-dark group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark"
+					class="text-2xl hidden group-hover:block  dark:text-primary-yellow-dark group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark"
 				/>
 			</div>
 
 			<div
-				v-if="hover"
-				class="absolute -left-10 top-5 py-6 opacity-100 transition-opacity duration-200 z-10"
-				@mouseover="showMenu"
-				@mouseleave="hideMenu"
+				class="absolute hidden group-hover:block -left-10 top-5 py-6 opacity-100 transition-opacity duration-200 z-10"
 			>
 				<div
 					class="w-[30rem] bg-hover-light dark:bg-hover-dark shadow-lg rounded p-4"
@@ -69,14 +62,4 @@
 import IconDownload from '~/assets/svg-icons/menu/could-download.svg';
 import IconDownloadFill from '~/assets/svg-icons/menu/could-download-fill.svg';
 import IconPhone from '~/assets/svg-icons/menu/phone.svg';
-
-const hover = ref(false);
-
-const showMenu = () => {
-	hover.value = true;
-};
-
-const hideMenu = () => {
-	hover.value = false;
-};
 </script>
