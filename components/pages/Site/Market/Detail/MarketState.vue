@@ -1,79 +1,32 @@
 <template>
 	<div class="w-96">
 		<ul>
-			<li class="flex justify-between items-center my-3 mx-2">
+			<li
+				v-for="market in items"
+				:key="`market-state-${market.id}`"
+				class="flex justify-between items-center my-3 mx-2"
+			>
 				<div class="flex justify-between">
 					<NuxtImg
-						src="/images/delete/bitcoin.png"
-						alt="bitcoin Logo"
-						class="w-8 h-8"
+						:src="`https://api-bitland.site/media/currency/${market?.marketBriefItem?.currencyBriefItem?.cSymbol}.png`"
+						:alt="market?.marketBriefItem?.currencyBriefItem?.cName"
+						class="w-8 h-8 rounded-full"
+						format="webp"
+						densities="x1"
 					/>
 					<div class="flex flex-col mr-2">
-						<span class="text-sm font-normal">Ripple</span>
-						<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">XRP</span>
+						<span class="text-sm font-normal">{{ market?.marketBriefItem?.mSymbol }}</span>
+						<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
+							{{ market?.marketBriefItem?.currencyBriefItem?.cSymbol }}
+						</span>
 					</div>
 				</div>
 				<div>
 					<div>
-						<span class="text-sm font-normal mr-1">{{ useNumber("2.83") }}</span>
-						<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">USDT</span>
-					</div>
-				</div>
-			</li>
-			<li class="flex justify-between items-center my-3 mx-2">
-				<div class="flex justify-between">
-					<NuxtImg
-						src="/images/delete/bitcoin.png"
-						alt="bitcoin Logo"
-						class="w-8 h-8"
-					/>
-					<div class="flex flex-col mr-2">
-						<span class="text-sm font-normal">Ripple</span>
-						<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">XRP</span>
-					</div>
-				</div>
-				<div>
-					<div>
-						<span class="text-sm font-normal mr-1">{{ useNumber("2.83") }}</span>
-						<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">USDT</span>
-					</div>
-				</div>
-			</li>
-			<li class="flex justify-between items-center my-3 mx-2">
-				<div class="flex justify-between">
-					<NuxtImg
-						src="/images/delete/bitcoin.png"
-						alt="bitcoin Logo"
-						class="w-8 h-8"
-					/>
-					<div class="flex flex-col mr-2">
-						<span class="text-sm font-normal">Ripple</span>
-						<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">XRP</span>
-					</div>
-				</div>
-				<div>
-					<div>
-						<span class="text-sm font-normal mr-1">{{ useNumber("2.83") }}</span>
-						<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">USDT</span>
-					</div>
-				</div>
-			</li>
-			<li class="flex justify-between items-center my-3 mx-2">
-				<div class="flex justify-between">
-					<NuxtImg
-						src="/images/delete/bitcoin.png"
-						alt="bitcoin Logo"
-						class="w-8 h-8"
-					/>
-					<div class="flex flex-col mr-2">
-						<span class="text-sm font-normal">Ripple</span>
-						<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">XRP</span>
-					</div>
-				</div>
-				<div>
-					<div>
-						<span class="text-sm font-normal mr-1">{{ useNumber("2.83") }}</span>
-						<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">USDT</span>
+						<span class="text-sm font-normal mr-1">{{ useNumber(market?.indexPrice) }}</span>
+						<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
+							{{ market?.marketBriefItem?.quoteItem?.cSymbol }}
+						</span>
 					</div>
 				</div>
 			</li>
@@ -83,6 +36,11 @@
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
-</script>
+import type { MarketState } from '~/types/response/market.types';
 
-<style scoped></style>
+interface Props {
+	items: MarketState[];
+}
+
+defineProps<Props>();
+</script>

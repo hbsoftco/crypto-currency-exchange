@@ -1,13 +1,24 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { Tag } from '~/types/response/tag.types';
+import type { GetCurrencyParams } from '~/types/base.types';
+import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
+import type { CurrencyResponse } from '~/types/response/currency.types';
 
 type CurrencyRepository = {
-	getTagList: () => Promise<Tag[]>;
+	getCurrencyDetail: (params: GetCurrencyParams) => Promise<CurrencyResponse>;
 };
 
 export const currencyRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): CurrencyRepository => ({
-	async getTagList(): Promise<Tag[]> {
-		return fetch<Tag[]>('/v1/currency/routine/tag_list');
+	async getCurrencyDetail(params: GetCurrencyParams): Promise<CurrencyResponse> {
+		const query = new URLSearchParams({
+			id: params.id,
+			languageId: params.languageId,
+		});
+		const url = '/v1/currency/routine/info';
+		const response = await fetch<CurrencyResponse>(`${url}?${query.toString()}`, {
+			noAuth: true,
+		} as CustomNitroFetchOptions);
+
+		return response;
 	},
 });

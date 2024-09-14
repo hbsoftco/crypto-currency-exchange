@@ -106,6 +106,7 @@ const { data: markets, status } = useAsyncData('markets', async () => {
 }, { watch: [params.value], deep: true });
 
 console.log(status.value);
+console.log('markets', markets.value);
 
 watch(() => props.searchQuery, (newQuery) => {
 	params.value.searchStatement = newQuery;

@@ -1,34 +1,36 @@
 <template>
 	<div class="mt-24">
-		<UContainer>
+		<UContainer v-if="status === 'success'">
 			<div class="flex items-center">
 				<NuxtImg
-					src="/images/delete/bitcoin.png"
-					alt="bitcoin"
-					class="w-10 h-10"
+					:src="`https://api-bitland.site/media/currency/${currency?.symbol}.png`"
+					:alt="currency?.marketBriefItem?.currencyBriefItem?.cName"
+					class="w-10 h-10 rounded-full"
+					format="webp"
 				/>
 				<h1 class="text-base md:text-xl font-bold mr-4">
-					بیت کوین (BTC)
+					{{ currency?.marketBriefItem?.currencyBriefItem?.cName }} ({{ currency?.symbol }})
 				</h1>
 			</div>
 			<div class=" block md:flex justify-between mb-24">
 				<div class="ml-0 md:ml-6">
 					<MarketChart class="hidden md:block" />
 
-					<section class="my-8 md:my-10">
+					<section class="my-8 md:pt-12 md:pb-2">
 						<h1 class="text-xl font-bold">
 							{{ $t("liveInstantPriceInformation") }}
 						</h1>
-						<p class="text-base font-medium mt-4">
-							قیمت زنده و لحظه ای فعلی بازار در $ 2.83 هرUSD امروز با ارزش بازار
-							فعلی USD--. در USD قیمت ارز در زمان واقعی به روز می شود.- حجم
-							معاملات 24 ساعته $ 3.00M USD- Token در +2.73% 24 ساعت گذشته- یک
-							عرضه در گردش دارد-- USD
+						<p
+							class="text-base font-medium mt-4 text-subtle-text-light dark:text-subtle-text-50"
+							dir="ltr"
+						>
+							{{ currency?.headline }}
 						</p>
 					</section>
+					<!-- Chart and title -->
 
 					<section
-						class="border border-primary-gray-light dark:border-primary-gray-dark py-4 px-8"
+						class="border border-primary-gray-light dark:border-primary-gray-dark py-4 px-8 rounded-md"
 					>
 						<h1 class="text-xl font-bold mb-2">
 							{{ $t("pricePerformanceAgainstDollar") }}
@@ -38,14 +40,14 @@
 								class="py-4 border-b-primary-gray-light dark:border-b-primary-gray-dark border-b"
 							>
 								<tr class="text-right">
-									<th class="text-sm font-bold">
+									<th class="text-sm font-bold py-2">
 										{{ $t("course") }}
 									</th>
-									<th class="text-sm font-bold">
+									<th class="text-sm font-bold py-2">
 										{{ $t("changeUSD") }}
 									</th>
-									<th class="text-sm font-bold">
-										{{ $t("changePersent") }}
+									<th class="text-sm font-bold py-2">
+										{{ $t("changePercent") }}
 									</th>
 								</tr>
 							</thead>
@@ -53,174 +55,186 @@
 								<tr
 									class="py-8 text-right border-b-primary-gray-light dark:border-b-primary-gray-dark border-b hover:bg-hover-light dark:hover:bg-hover-dark"
 								>
-									<td class="text-sm font-normal">
+									<td class="text-sm font-normal py-1.5">
 										{{ $t("today") }}
 									</td>
-									<td
-										class="text-sm font-normal text-accent-green"
-										dir="ltr"
-									>
-										{{ useNumber("$ +0.0755") }}
+									<td class=" py-1.5">
+										<UiChangePrice
+											classes="text-sm font-normal"
+											:show-percent="false"
+											pre-text="$"
+											pl="pl-0"
+											:change="parseFloat(String(currency?.priceChangePerc24h))"
+											:icon="false"
+										/>
 									</td>
-									<td
-										class="text-sm font-normal text-accent-green"
-										dir="ltr"
-									>
-										{{ useNumber("+2.73%") }}
+									<td class=" py-1.5">
+										<UiChangePrice
+											v-if="currency?.price"
+											classes="text-sm font-normal"
+											:show-percent="false"
+											pl="pl-0"
+											:change="changePrice(currency?.price, currency?.priceChangePerc24h)"
+											:icon="false"
+										/>
 									</td>
 								</tr>
+								<!-- priceChangePerc24h -->
 								<tr
 									class="py-8 text-right border-b-primary-gray-light dark:border-b-primary-gray-dark border-b hover:bg-hover-light dark:hover:bg-hover-dark"
 								>
-									<td>
+									<td class="text-sm font-normal py-1.5">
 										{{ $t("from30DaysAgo") }}
 									</td>
-									<td
-										class="text-sm font-normal text-accent-green"
-										dir="ltr"
-									>
-										{{ useNumber("$ +0.0755") }}
+									<td class=" py-1.5">
+										<UiChangePrice
+											classes="text-sm font-normal"
+											:show-percent="false"
+											pre-text="$"
+											pl="pl-0"
+											:change="parseFloat(String(currency?.priceChangePerc30d))"
+											:icon="false"
+										/>
 									</td>
-									<td
-										class="text-sm font-normal text-accent-green"
-										dir="ltr"
-									>
-										{{ useNumber("+2.73%") }}
+									<td class=" py-1.5">
+										<UiChangePrice
+											v-if="currency?.price"
+											classes="text-sm font-normal"
+											:show-percent="false"
+											pl="pl-0"
+											:change="changePrice(currency?.price, currency?.priceChangePerc30d)"
+											:icon="false"
+										/>
 									</td>
 								</tr>
+								<!-- priceChangePerc30d -->
 								<tr
 									class="py-8 text-right border-b-primary-gray-light dark:border-b-primary-gray-dark border-b hover:bg-hover-light dark:hover:bg-hover-dark"
 								>
-									<td>
+									<td class="text-sm font-normal py-1.5">
 										{{ $t("from60DaysAgo") }}
 									</td>
-									<td
-										class="text-sm font-normal text-accent-red"
-										dir="ltr"
-									>
-										{{ useNumber("$ +0.0755") }}
+									<td class=" py-1.5">
+										<UiChangePrice
+											classes="text-sm font-normal"
+											:show-percent="false"
+											pre-text="$"
+											pl="pl-0"
+											:change="parseFloat(String(currency?.priceChangePerc60d))"
+											:icon="false"
+										/>
 									</td>
-									<td
-										class="text-sm font-normal text-accent-green"
-										dir="ltr"
-									>
-										{{ useNumber("+2.73%") }}
+									<td class=" py-1.5">
+										<UiChangePrice
+											v-if="currency?.price"
+											classes="text-sm font-normal"
+											:show-percent="false"
+											pl="pl-0"
+											:change="changePrice(currency?.price, currency?.priceChangePerc60d)"
+											:icon="false"
+										/>
 									</td>
 								</tr>
+								<!-- priceChangePerc60d -->
 								<tr class="py-8 text-right hover:bg-hover-light dark:hover:bg-hover-dark">
-									<td>
+									<td class="text-sm font-normal py-1.5">
 										{{ $t("from90DaysAgo") }}
 									</td>
-									<td
-										class="text-sm font-normal text-accent-green"
-										dir="ltr"
-									>
-										{{ useNumber("$ +0.0755") }}
+									<td class=" py-1.5">
+										<UiChangePrice
+											classes="text-sm font-normal"
+											:show-percent="false"
+											pre-text="$"
+											pl="pl-0"
+											:change="parseFloat(String(currency?.priceChangePerc90d))"
+											:icon="false"
+										/>
 									</td>
-									<td
-										class="text-sm font-normal text-accent-green"
-										dir="ltr"
-									>
-										{{ useNumber("+2.73%") }}
+									<td class=" py-1.5">
+										<UiChangePrice
+											v-if="currency?.price"
+											classes="text-sm font-normal"
+											:show-percent="false"
+											pl="pl-0"
+											:change="changePrice(currency?.price, currency?.priceChangePerc90d)"
+											:icon="false"
+										/>
 									</td>
 								</tr>
+								<!-- priceChangePerc90d -->
 							</tbody>
 						</table>
+						<!-- end of table -->
 					</section>
+					<!-- table -->
 
 					<section class="my-10">
 						<h1 class="text-xl font-bold mb-2 mt-4">
 							{{ $t("priceInformation") }}
 						</h1>
-						<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+						<div class="grid grid-cols-2 md:grid-cols-2 gap-4">
 							<div>
 								<div
-									class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b"
+									class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
 								>
 									<span
 										class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
 									>{{ $t("hours24Lowest") }}</span>
 								</div>
-								<div class="text-sm font-normal text-black dark:text-white">
-									<span>{{ useNumber("۱.۲۹۹.۰۰۰") }} </span>
-									<span>{{ $t("toman") }}</span>
+								<div class="text-sm font-normal text-black dark:text-white pt-1">
+									<span class="mr-1">{{ useNumber(String(currency?.priceLowIn24h)) }} </span>
+									<span>USDT</span>
 								</div>
 							</div>
+							<!-- priceLowIn24h -->
+
 							<div>
 								<div
-									class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b"
+									class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
 								>
 									<span
 										class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
 									>{{ $t("hours24Highest") }}</span>
 								</div>
-								<div
-									class="text-sm font-normal text-accent-green dark:text-accent-green"
-								>
-									<span>{{ useNumber("۱.۲۹۹.۰۰۰+") }} </span>
-									<span>{{ $t("toman") }}</span>
+								<div class="text-sm font-normal text-black dark:text-white pt-1">
+									<span class="mr-1">{{ useNumber(String(currency?.priceHighIn24h)) }} </span>
+									<span>USDT</span>
 								</div>
 							</div>
+							<!-- priceHighIn24h -->
+
 							<div>
 								<div
-									class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b"
+									class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
 								>
 									<span
 										class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
 									>{{ $t("generalHighest") }}</span>
 								</div>
-								<div
-									class="text-sm font-normal text-accent-green dark:text-accent-green"
-								>
-									<span>{{ useNumber("۱.۲۹۹.۰۰۰+") }} </span>
-									<span>{{ $t("toman") }}</span>
+								<div class="text-sm font-normal text-black dark:text-white pt-1">
+									<span class="mr-1">{{ useNumber(String(currency?.ath)) }} </span>
+									<span>USDT</span>
 								</div>
 							</div>
+							<!-- ath -->
+
 							<div>
 								<div
-									class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b"
+									class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b  pb-0.5"
 								>
 									<span
 										class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
-									>{{ $t("priceChangeOneHour") }}</span>
+									>{{ $t("generalLowest") }}</span>
 								</div>
-								<div class="text-sm font-normal text-black dark:text-white">
-									<span>{{ useNumber("۱.۲۹۹.۰۰۰") }} </span>
-									<span>{{ $t("toman") }}</span>
-								</div>
-							</div>
-							<div>
-								<div
-									class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b"
-								>
-									<span
-										class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
-									>{{ $t("priceChange24Hour") }}</span>
-								</div>
-								<div
-									class="text-sm font-normal text-accent-red dark:text-accent-red"
-								>
-									<span>{{ useNumber("۱.۲۹۹.۰۰۰-") }} </span>
-									<span>{{ $t("toman") }}</span>
+								<div class="text-sm font-normal text-black dark:text-white pt-1">
+									<span class="mr-1">{{ useNumber(String(currency?.atl)) }} </span>
+									<span>USDT</span>
 								</div>
 							</div>
-							<div>
-								<div
-									class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b"
-								>
-									<span
-										class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
-									>{{ $t("priceChange7day") }}</span>
-								</div>
-								<div
-									class="text-sm font-normal text-accent-green dark:text-accent-green"
-								>
-									<span>{{ useNumber("۱.۲۹۹.۰۰۰") }} </span>
-									<span>{{ $t("toman") }}</span>
-								</div>
-							</div>
+							<!-- atl -->
 						</div>
 					</section>
+					<!-- priceInformation -->
 
 					<section class="my-10">
 						<h1 class="text-xl font-bold mb-2 mt-4">
@@ -229,129 +243,142 @@
 						<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
 							<div>
 								<div
-									class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b"
+									class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
 								>
 									<span
 										class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
 									>{{ $t("totalMarketValue") }}</span>
 								</div>
-								<div class="text-sm font-normal text-black dark:text-white">
-									<span>{{ useNumber("۱.۲۹۹.۰۰۰") }} </span>
-									<span>{{ $t("toman") }}</span>
+								<div
+									class="text-sm font-normal text-black dark:text-white pt-1"
+								>
+									<span dir="ltr">
+										<span
+											v-if="currency?.marketCap"
+											class="mr-1"
+										>{{ useNumber(formatBigNumber(currency?.marketCap, 3)) }}</span>
+										<span>USDT</span>
+									</span>
 								</div>
 							</div>
+							<!-- marketCap -->
+
 							<div>
 								<div
-									class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b"
+									class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
 								>
 									<span
 										class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
 									>{{ $t("tradingVolume24Hours") }}</span>
 								</div>
 								<div
-									class="text-sm font-normal text-accent-green dark:text-accent-green"
+									class="text-sm font-normal text-black dark:text-white pt-1"
 								>
-									<span>{{ useNumber("۱.۲۹۹.۰۰۰+") }} </span>
-									<span>{{ $t("toman") }}</span>
+									<span dir="ltr">
+										<span
+											v-if="currency?.volume24h"
+											class="mr-1"
+										>{{ useNumber(formatBigNumber(currency?.volume24h, 3)) }}</span>
+										<span>USDT</span>
+									</span>
 								</div>
 							</div>
+							<!-- volume24h -->
+
 							<div>
 								<div
-									class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b"
+									class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
 								>
 									<span
 										class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
 									>{{ $t("currencyCirculation") }}</span>
 								</div>
 								<div
-									class="text-sm font-normal text-accent-green dark:text-accent-green"
+									class="text-sm font-normal text-black dark:text-white pt-1"
 								>
-									<span>{{ useNumber("۱.۲۹۹.۰۰۰+") }} </span>
-									<span>{{ $t("toman") }}</span>
+									<span dir="ltr">
+										<span
+											v-if="currency?.volume24h"
+											class="mr-1"
+										>{{ useNumber(formatBigNumber(currency?.circulatingSupply, 3)) }}</span>
+										<span>{{ currency?.symbol }}</span>
+									</span>
 								</div>
 							</div>
+							<!-- circulatingSupply -->
+
 							<div>
 								<div
-									class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b"
+									class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
 								>
 									<span
 										class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
 									>{{ $t("marketDominance") }}</span>
 								</div>
-								<div class="text-sm font-normal text-black dark:text-white">
-									<span>{{ useNumber("۱.۲۹۹.۰۰۰") }} </span>
-									<span>{{ $t("toman") }}</span>
+								<div class="text-sm font-normal text-black dark:text-white pt-1">
+									<span>{{ useNumber(Number(currency?.dominance)) }} </span>
 								</div>
 							</div>
+							<!-- dominance -->
+
 							<div>
 								<div
-									class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b"
+									class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
 								>
 									<span
 										class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
 									>{{ $t("marketRank") }}</span>
 								</div>
-								<div
-									class="text-sm font-normal text-accent-green dark:text-accent-green"
-								>
-									<span>{{ useNumber("۱.۲۹۹.۰۰۰-") }} </span>
-									<span>{{ $t("toman") }}</span>
+								<div class="text-sm font-normal pt-1">
+									<span>{{ useNumber(Number(currency?.rank)) }} </span>
 								</div>
 							</div>
+							<!-- rank -->
+
 							<div>
 								<div
-									class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b"
+									class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
 								>
 									<span
 										class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
-									>{{ $t("dateCreation") }}</span>
+									>{{ $t("maxSupply") }}</span>
 								</div>
 								<div
-									class="text-sm font-normal text-accent-green dark:text-accent-green"
+									class="text-sm font-normal text-black dark:text-white pt-1"
 								>
-									<span>{{ useNumber("۱.۲۹۹.۰۰۰") }} </span>
-									<span>{{ $t("toman") }}</span>
+									<span dir="ltr">
+										<span
+											v-if="currency?.volume24h"
+											class="mr-1"
+										>{{ useNumber(formatBigNumber(currency?.maxSupply, 3)) }}</span>
+										<span>{{ currency?.symbol }}</span>
+									</span>
 								</div>
 							</div>
+							<!-- maxSupply -->
 						</div>
 					</section>
+					<!-- globalMarketInformation -->
 
-					<section>
-						<div class="my-10">
-							<h1 class="text-base font-bold">
-								{{ $t("whatBitlandToken") }}
-							</h1>
-							<p
-								class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark py-4"
+					<section v-if="currency && currency?.descriptionList.length">
+						<div
+							v-for="(item, index) in currency?.descriptionList"
+							:key="`description-wrap-${item.key ? item.key : 'first'}`"
+							:index="index"
+							class="my-10"
+						>
+							<h3
+								:key="`description-title-${item.key ? item.key : 'first'}`"
+								class="text-base font-bold"
 							>
-								توکن بیت‌لند یک دارایی دیجیتال غیرمتمرکز است که توسط پلتفرم بیت
-								لند بر اساس بلاک چین اتریوم توسعه یافته است. به عنوان نشانه اصلی
-								بیت‌لند، اکوسیستم این توکن هر روز به تدریج بهبود می یابد تا
-								کاربران و سازندگان را توانمند کند. تمرکز اصلی توکن بیت‌لند ارائه
-								تجربه ای امن و پایدار برای کاربران و تبدیل شدن به یک رهبر صنعت
-								است. این توکن همچنین اثبات حقوق جامعه بیت‌لند است. دارندگان حق
-								رای دادن در مورد تصمیمات تجاری، انتخابات تیمی و کسب اولویت
-								مشارکت در فعالیت ها و غیره را دارند. بیت‌لند همچنین به طور کامل
-								پیشنهادهای رای گیری جامعه را پذیرفته و مکانیسم تخصیص حقوق و
-								منافع را بر اساس نتایج رای گیری بازسازی می کند. از ژانویه 2022،
-								40 درصد از کل سود پلتفرم به بازخرید و سوزاندن این توکن از بازار
-								ثانویه به صورت سه ماهه اختصاص خواهد یافت. مجموع عرضه اولیه این
-								توکن 1 میلیارد توکن است. در حال حاضر 550 میلیون توکن از بین رفته
-								اند و هدف 100 میلیون توکن در گردش بدون تغییر باقی مانده است.
-								دارندگان این توکن از مزایای متعددی در بیت‌لند برخوردارند، مانند
-								جوایزی برای برگزاری این توکن، رای دادن و دریافت اشتراک‌های
-								تخفیف‌خورده، و دریافت airdrops رایگان برای رای دادن در لیست‌های
-								جدید. علاوه بر این، این توکن دارای کاربردهای عملی است، مانند کسر
-								20٪ کارمزد تراکنش در پلت فرم معاملاتی bitland.ir.
-							</p>
+								{{ item.key }}
+							</h3>
 							<p
+								v-if="item.value"
+								:key="`description-body-${item.key ? item.key : 'first'}`"
 								class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
 							>
-								توکن بیت‌لند در بیت‌لند فهرست شده است، به این معنی که شما می
-								توانید به راحتی این سکه ها را اکنون در سیستم عامل ما خریداری،
-								نگه دارید، انتقال و به اشتراک بگذارید! اگر می خواهید اطلاعات
-								بیشتری در مورد این سکه بدانید، لطفاً به صفحه معرفی دارایی
-								دیجیتال ما مراجعه کنید.
+								{{ item.value }}
 							</p>
 						</div>
 						<div
@@ -361,86 +388,72 @@
 							<span>{{ showMore ? $t('showLess') : $t('showMore') }}</span>
 							<IconArrowDown />
 						</div>
-						<div
-							v-if="showMore"
-							class="md:hidden my-10"
-						>
-							<h1 class="text-base font-bold">
-								{{ $t("howBuyBitlandTokens") }}
-							</h1>
-							<p
-								class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark py-4"
-							>
-								به دنبال نحوه خرید توکن هستید؟ این روند هرگز آسان تر نبوده است!
-								فقط با دنبال کردن دستورالعمل های ساده ما از طریق این لینک، می
-								توانید به راحتی توکن های بیت‌لند را در bitland.ir خریداری کنید.
-							</p>
-						</div>
-						<div
-							v-if="showMore"
-							class="md:hidden my-10"
-						>
-							<h1 class="text-base font-bold">
-								{{ $t("whatBitlandTokenFuturesTrading") }}
-							</h1>
-							<p
-								class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark py-4"
-							>
-								قراردادهای فیوچرز توکن بیت‌لند قراردادهای قانونی برای خرید یا
-								فروش توکن بیت‌لند در تاریخ آینده هستند. قراردادهای فیوچرز توکن
-								بیت‌لند نمایندگی قراردادی از سکه‌های توکن بیت‌لند است و تسویه
-								واقعی توکن بیت‌لند (یا پول نقد) در آینده - زمانی که قرارداد اجرا
-								می‌شود - انجام می‌شود.
-							</p>
-							<p
-								class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
-							>
-								مطمئن نیستید چگونه تجارت مشتقه را شروع کنید؟ اطلاعات بیشتر در
-								مورد معاملات فیوچرز را در آکادمی بیت‌لند پیدا کنید. در راهنمای
-								گام به گام نحوه اجرای موفقیت آمیز معاملات فیوچرز را خواهید یافت.
-							</p>
-						</div>
 					</section>
+					<!-- Description -->
 
 					<section>
 						<div>
 							<h1 class="text-xl font-bold mt-8 md:my-4 ">
 								{{ $t("FAQ") }}
 							</h1>
-							<FAQItems />
+							<FAQItems
+								v-if="currency?.faqList.length"
+								:items="currency?.faqList"
+							/>
 						</div>
 					</section>
+					<!-- FAQ -->
 				</div>
 				<div class="hidden md:block">
 					<section>
 						<Calculator />
 					</section>
-					<section class="mt-16 mb-6">
-						<h1 class="text-xl font-bold mb-6">
+					<section
+						v-if="hottestMarketsStatus === 'success'"
+						class="mt-16 mb-6"
+					>
+						<h4 class="text-xl font-bold mb-6">
 							{{ $t("hotTopics") }}
-						</h1>
-						<MarketState />
+						</h4>
+						<MarketState
+							:items="hottestMarkets ?? []"
+						/>
 					</section>
 
-					<section class="mt-16">
-						<h1 class="text-xl font-bold mb-6">
+					<section
+						v-if="mostProfitableMarketsStatus === 'success'"
+						class="mt-16"
+					>
+						<h4 class="text-xl font-bold mb-6">
 							{{ $t("mostProfitable") }}
-						</h1>
-						<MarketState />
+						</h4>
+						<MarketState
+							:items="mostProfitableMarkets ?? []"
+						/>
 					</section>
 
-					<section class="mt-16 mb-6">
-						<h1 class="text-xl font-bold mb-6">
+					<section
+						v-if="mostVoluminousMarketsStatus === 'success'"
+						class="mt-16 mb-6"
+					>
+						<h4 class="text-xl font-bold mb-6">
 							{{ $t("mostVoluminous") }}
-						</h1>
-						<MarketState />
+						</h4>
+						<MarketState
+							:items="mostVoluminousMarkets ?? []"
+						/>
 					</section>
 
-					<section class="mt-16 mb-6">
-						<h1 class="text-xl font-bold mb-6">
+					<section
+						v-if="latestMarketsStatus === 'success'"
+						class="mt-16 mb-6"
+					>
+						<h4 class="text-xl font-bold mb-6">
 							{{ $t("newArrivals") }}
-						</h1>
-						<MarketState />
+						</h4>
+						<MarketState
+							:items="latestMarkets ?? []"
+						/>
 					</section>
 				</div>
 			</div>
@@ -455,6 +468,70 @@ import MarketState from '~/components/pages/Site/Market/Detail/MarketState.vue';
 import FAQItems from '~/components/ui/FAQItems.vue';
 import Calculator from '~/components/ui/Calculator.vue';
 import IconArrowDown from '~/assets/svg-icons/menu/arrow-down.svg';
+import { currencyRepository } from '~/repositories/currency.repository';
+import { marketRepository } from '~/repositories/market.repository';
+import { Language } from '~/utils/enums/language.enum';
+import type { GetCurrencyParams } from '~/types/base.types';
+import { formatBigNumber } from '~/utils/format-big-number';
+
+const { $api } = useNuxtApp();
+const currencyRepo = currencyRepository($api);
+const marketRepo = marketRepository($api);
+
+const route = useRoute();
+const params = ref<GetCurrencyParams>({
+	id: String(route.params.id),
+	languageId: String(Language.ENGLISH),
+});
+
+const { data: currency, status } = useAsyncData('currencyDetail', async () => {
+	const response = await currencyRepo.getCurrencyDetail(params.value);
+	return response.result;
+}, { watch: [params.value], deep: true });
+
+const { useCachedCurrencyBriefList, useCachedMarketBriefList } = useCachedData();
+
+const { data: cachedCurrencyBriefList } = await useCachedCurrencyBriefList({ languageId: Language.PERSIAN });
+const { data: cachedMarketBriefList } = await useCachedMarketBriefList();
+
+const currencyBriefList = cachedCurrencyBriefList.value ?? [];
+const marketBriefList = cachedMarketBriefList.value ?? [];
+
+const { data: mostProfitableMarkets, status: mostProfitableMarketsStatus } = useAsyncData(
+	'mostProfitableMarkets',
+	async () => {
+		const response = await marketRepo.getMostProfitableMarkets({ rowCount: 4 });
+		return useProcessMarketData(response.result.rows, marketBriefList, currencyBriefList);
+	},
+);
+
+const { data: mostVoluminousMarkets, status: mostVoluminousMarketsStatus } = useAsyncData(
+	'mostVoluminousMarkets',
+	async () => {
+		const response = await marketRepo.getMostVoluminous({ rowCount: 4 });
+		return useProcessMarketData(response.result.rows, marketBriefList, currencyBriefList);
+	},
+);
+
+const { data: hottestMarkets, status: hottestMarketsStatus } = useAsyncData(
+	'hottestMarkets',
+	async () => {
+		const response = await marketRepo.getHottestMarkets({ rowCount: 4 });
+		return useProcessMarketData(response.result.rows, marketBriefList, currencyBriefList);
+	},
+);
+
+const { data: latestMarkets, status: latestMarketsStatus } = useAsyncData(
+	'latestMarkets',
+	async () => {
+		const response = await marketRepo.getLatestMarkets({ rowCount: 4 });
+		return useProcessMarketData(response.result.rows, marketBriefList, currencyBriefList);
+	},
+);
+
+const changePrice = (price: string | number, priceChangePercent: string | number) => {
+	return (parseFloat(String(price)) * parseFloat(String(priceChangePercent)));
+};
 
 const showMore = ref(false);
 const toggleShowMore = () => {

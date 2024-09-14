@@ -1,32 +1,32 @@
 <template>
 	<div class="w-full h-80">
-		<div class="flex justify-between mt-4 mb-7">
-			<div dir="ltr">
+		<div class="flex justify-between mt-2 mb-7">
+			<div dir="ltr" class="mr-14">
 				<span
 					class="text-base font-bold text-subtle-text-light dark:text-subtle-text-dark"
 				>{{ useNumber("$2.83") }}</span>
 				<span class="text-sm font-normal text-accent-green mx-1">{{
-					useNumber("$2.83")
+					useNumber("+2.83%")
 				}}</span>
 				<span
 					class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark"
-				>(id)</span>
+				>(1D)</span>
 			</div>
 			<ul class="flex">
-				<li class="mx-1 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark cursor-pointer group">
-					<span class="group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark group-hover:font-bold">{{ $t('oneDay') }}</span>
+				<li class="mx-2 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark cursor-pointer group">
+					<span class="group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark font-normal">{{ $t('oneDay') }}</span>
 				</li>
-				<li class="mx-1 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark cursor-pointer group">
-					<span class="group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark group-hover:font-bold">{{ $t('sevenDays') }}</span>
+				<li class="mx-2 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark cursor-pointer group">
+					<span class="group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark font-normal">{{ $t('sevenDays') }}</span>
 				</li>
-				<li class="mx-1 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark cursor-pointer group">
-					<span class="group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark group-hover:font-bold">{{ $t('oneMonth') }}</span>
+				<li class="mx-2 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark cursor-pointer group">
+					<span class="group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark font-normal">{{ $t('oneMonth') }}</span>
 				</li>
-				<li class="mx-1 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark cursor-pointer group">
-					<span class="group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark group-hover:font-bold">{{ $t('oneYear') }}</span>
+				<li class="mx-2 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark cursor-pointer group">
+					<span class="group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark font-normal">{{ $t('oneYear') }}</span>
 				</li>
-				<li class="mx-1 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark cursor-pointer group">
-					<span class="group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark group-hover:font-bold">{{ $t('YTD') }}</span>
+				<li class="mx-2 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark cursor-pointer group">
+					<span class="group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark font-normal">{{ $t('YTD') }}</span>
 				</li>
 			</ul>
 		</div>

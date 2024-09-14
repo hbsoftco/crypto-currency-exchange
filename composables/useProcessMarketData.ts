@@ -1,7 +1,8 @@
 import type { CurrencyBriefItem, MarketBriefItem } from '~/types/response/brief-list.types';
-import type { Market, MarketState as MarketStateType } from '~/types/response/market.types';
+import type { Currency } from '~/types/response/currency.types';
+import type { Market, MarketState } from '~/types/response/market.types';
 
-export const useProcessMarketData = <T extends Market | MarketStateType>(
+export const useProcessMarketData = <T extends Market | MarketState | Currency>(
 	rows: T[],
 	marketBriefList: MarketBriefItem[],
 	currencyBriefList: CurrencyBriefItem[],

@@ -49,6 +49,7 @@
 			</div>
 
 			<label
+				v-if="label"
 				:for="id"
 				class="absolute text-sm font-medium text-text-dark dark:text-text-light duration-300 transform -translate-y-5 scale-78 top-3 z-10 origin-[0] bg-background-light cursor-text dark:bg-background-dark px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-78 peer-focus:-translate-y-5 right-2 rounded-lg"
 			>{{ $t(label) }}</label>
@@ -122,7 +123,7 @@ const showList = ref(false);
 
 const items = ref([
 	{ label: 'Bitcoin', icon: '/images/delete/bitcoin.png' },
-	{ label: 'Ethereum', icon: '/images/delete/ethereum.png' },
+	{ label: 'Ethereum', icon: '/images/delete/bitcoin.png' },
 ]);
 
 const selectedItem = ref(items.value[0]);

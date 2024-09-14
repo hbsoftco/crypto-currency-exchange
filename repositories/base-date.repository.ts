@@ -6,7 +6,7 @@ import type { IconResponse } from '~/types/response/icon.types';
 import type { PinListResponse } from '~/types/response/pin-list.types';
 import type { GetQuoteParams, QuoteListResponse } from '~/types/response/quote-list.types';
 import type { TagResponse } from '~/types/response/tag.types';
-import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types'; // نوع سفارشی برای noAuth
+import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 
 type BaseDateRepository = {
 	getTagList: (params: GetLanguageParams) => Promise<TagResponse>;

@@ -5,12 +5,14 @@ export const useNumber = (num: number | string): string => {
 };
 
 const toPersianNumber = (num: number | string) => {
+	if (!num) num = 0;
 	return num
 		.toString()
 		.replace(/\d/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[parseInt(d, 10)]);
 };
 
 const toEnglishNumber = (num: number | string) => {
+	if (!num) num = 0;
 	return num
 		.toString()
 		.replace(/[۰-۹]/g, (d) => '0123456789'['۰۱۲۳۴۵۶۷۸۹'.indexOf(d)]);

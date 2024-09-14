@@ -24,14 +24,26 @@ type GetMarketsParams = {
 	pageSize?: string;
 };
 
+type GetCurrencyParams = {
+	id: string;
+	languageId: string;
+};
+
 type GetMarketStatusParams = {
 	rowCount: number;
+};
+
+type KeyValue = {
+	key: string;
+	value: string;
 };
 
 export type {
 	GetPinParams,
 	GetLanguageParams,
+	GetCurrencyParams,
 	GetMarketsParams,
 	GetMarketListWithSparkLineChartParams,
 	GetMarketStatusParams,
+	KeyValue,
 };
