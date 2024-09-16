@@ -14,7 +14,9 @@
 					</ULink>
 				</div>
 				<div class="flex justify-between my-14 py-10 px-16 bg-primary-gray-light dark:bg-primary-gray-dark rounded-md shadow-md">
-					<div class="w-32">progress</div>
+					<div class="w-32">
+						<UiProgressStepper :steps="steps" />
+					</div>
 					<div class="mx-16 w-80">
 						form
 					</div>
@@ -69,4 +71,11 @@
 definePageMeta({
 	layout: 'account-single',
 });
+
+const steps = [
+	{ label: 'مشخصات آدرس', completed: true, current: false },
+	{ label: 'تایید امنیتی', completed: true, current: false },
+	{ label: 'تکمیل سفارش', completed: false, current: true },
+	{ label: 'تایید نهایی', completed: false, current: false },
+];
 </script>
