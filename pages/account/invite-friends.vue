@@ -1,10 +1,20 @@
 <template>
 	<div>
+		<ModalInviteFriends
+			v-if="showModalInviteFriends"
+			@close="closeModalInviteFriends"
+		/>
 		<UContainer>
 			<section>
-				<div class="my-2 flex justify-between items-center">
+				<div class="my-6 block md:hidden">
+					<UiTitleWithBack
+						:title="$t('inviteFriends')"
+						:back-btn="true"
+					/>
+				</div>
+				<div class="my-2 flex flex-col-reverse md:flex md:flex-row justify-between items-center">
 					<div>
-						<h1 class="text-4xl font-extrabold leading-loose">
+						<h1 class="text-2xl md:text-4xl font-extrabold leading-loose">
 							<span class="text-primary-yellow-light dark:text-primary-yellow-dark">بیت لند</span> ، تنها صرافی در ایران با کسب درآمد تا پنج سطح
 						</h1>
 						<h3 class="text-base font-bold mt-8">
@@ -21,7 +31,7 @@
 
 			<section>
 				<div class=" my-16 border border-primary-gray-light dark:border-primary-gray-dark rounded-md ">
-					<div class="flex items-center justify-between px-14 py-4 border-b border-primary-gray-light dark:border-primary-gray-dark ">
+					<div class="block md:flex items-center justify-between px-14 py-4 border-b border-primary-gray-light dark:border-primary-gray-dark ">
 						<div>
 							<div class="flex">
 								<div class="w-1 h-4 ml-1 bg-primary-yellow-light dark:bg-primary-yellow-dark" />
@@ -56,14 +66,17 @@
 								<IconCopy class="cursor-pointer text-xl text-subtle-text-light dark:text-subtle-text-50" />
 							</div>
 						</div>
-						<UButton
-							class="text-base font-medium px-6 py-1 h-12"
-							to=""
-						>
-							{{ $t("inviteFriends") }}
-						</UButton>
-						<div class="w-12 h-12 bg-primary-gray-light dark:bg-primary-gray-dark flex justify-center items-center cursor-pointer">
-							<IconQrCode class="text-3xl" />
+						<div class="flex">
+							<UButton
+								class="text-base font-medium px-6 py-1 h-12"
+								to=""
+								@click.prevent="openModalInviteFriends"
+							>
+								{{ $t("inviteFriends") }}
+							</UButton>
+							<div class="w-12 h-12 mr-3 bg-primary-gray-light dark:bg-primary-gray-dark flex justify-center items-center cursor-pointer">
+								<IconQrCode class="text-3xl" />
+							</div>
 						</div>
 					</div>
 					<div class="p-4">
@@ -106,7 +119,7 @@
 			</section>
 
 			<section class="my-6">
-				<div class="flex justify-between items-center">
+				<div class="flex flex-col-reverse md:flex md:flex-row justify-between items-center">
 					<div>
 						<h6 class="text-base font-bold">
 							{{ $t('upgrade') }}
@@ -186,7 +199,7 @@
 			</section>
 
 			<section>
-				<div class="flex items-center justify-between my-12 py-4 px-8 border border-primary-gray-light dark:border-primary-gray-dark">
+				<div class="block md:flex items-center justify-between my-12 py-4 px-8 border border-primary-gray-light dark:border-primary-gray-dark">
 					<div class="flex">
 						<span class="text-2xl font-bold ml-4">{{ $t('dashboard') }}</span>
 						<div>
@@ -197,7 +210,7 @@
 							/>
 						</div>
 					</div>
-					<div class="flex">
+					<div class="block md:flex">
 						<div class="w-72 ml-8 px-4 py-2 bg-hover-light dark:bg-hover-dark rounded-md shadow-md">
 							<div class="flex border-b border-primary-gray-light dark:border-primary-gray-dark pb-4">
 								<NuxtImg
@@ -247,25 +260,25 @@
 
 			<section class="mb-12">
 				<div class="border border-primary-gray-light dark:border-primary-gray-dark ">
-					<div class="py-8 px-6 flex justify-between border-b border-primary-gray-light dark:border-primary-gray-dark ">
+					<div class="py-8 px-6 block md:flex justify-between border-b border-primary-gray-light dark:border-primary-gray-dark ">
 						<div class="flex">
 							<span class="text-base font-bold ml-2">
 								{{ $t('invitationHistory') }}
 							</span>
 							<IconQuestion class="text-2xl" />
 						</div>
-						<div class="flex justify-between">
+						<div class="w-full md:w-auto flex justify-between">
 							<div>
 								<USelect
 									icon="heroicons:calendar-date-range-16-solid"
-									class="w-44 bg-transparency-light dark:bg-transparency-dark text-black dark:text-white"
+									class="w-36 md:w-44 bg-transparency-light dark:bg-transparency-dark text-black dark:text-white"
 									:options="['همه', 'Canada', 'Mexico']"
 								/>
 							</div>
-							<div class="mx-3">
+							<div class="mx-1 md:mx-3">
 								<USelect
 									icon="heroicons:calendar-date-range-16-solid"
-									class="w-44 bg-transparency-light dark:bg-transparency-dark text-black dark:text-white"
+									class="w-36 md:w-44 bg-transparency-light dark:bg-transparency-dark text-black dark:text-white"
 									:options="['همه', 'Canada', 'Mexico']"
 								/>
 							</div>
@@ -334,7 +347,7 @@
 
 			<section class="mb-12">
 				<div class="border border-primary-gray-light dark:border-primary-gray-dark ">
-					<div class="py-8 px-6 flex justify-between border-b border-primary-gray-light dark:border-primary-gray-dark ">
+					<div class="py-8 px-6 block md:flex justify-between border-b border-primary-gray-light dark:border-primary-gray-dark ">
 						<div class="flex">
 							<span class="text-base font-bold ml-2">
 								{{ $t('historyInvitationCommission') }}
@@ -439,6 +452,7 @@ import IconUserInvite from '~/assets/svg-icons/menu/user-fill.svg';
 import IconNote from '~/assets/svg-icons/profile/note.svg';
 import IconQuestion from '~/assets/svg-icons/profile/question.svg';
 import { useNumber } from '~/composables/useNumber';
+import ModalInviteFriends from '~/components/pages/Site/Account/InviteFriends/ModalInviteFriends.vue';
 
 definePageMeta({
 	layout: 'account-single',
@@ -461,6 +475,16 @@ const items = ref([
 	{ id: 3, subSet: 'حساب دوستان', userCode: 'UID ', tradingTime: 'زمان دعوت', feeTime: 'تومان', feePercentage: 'تومان', feeAmount: 'تومان' },
 	{ id: 4, subSet: 'حساب دوستان', userCode: 'UID ', tradingTime: 'زمان دعوت', feeTime: 'تومان', feePercentage: 'تومان', feeAmount: 'تومان' },
 ]);
+
+const showModalInviteFriends = ref(false);
+
+const openModalInviteFriends = () => {
+	showModalInviteFriends.value = true;
+};
+
+const closeModalInviteFriends = () => {
+	showModalInviteFriends.value = false;
+};
 </script>
 
 <style scoped></style>
