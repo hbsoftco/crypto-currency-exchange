@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<LayoutsDefaultHeader class="hidden md:block" />
-		<LayoutsDefaultMobileHeader class="block md:hidden" />
+		<!-- <LayoutsDefaultMobileHeader class="block md:hidden" /> -->
 		<div>
 			<slot />
 		</div>
