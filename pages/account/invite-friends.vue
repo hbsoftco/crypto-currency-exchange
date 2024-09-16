@@ -160,8 +160,8 @@
 						</div>
 					</div>
 				</div>
-				<div class="my-4 bg-accent-blue">
-					progress
+				<div class="my-4">
+					<UiProgressBar />
 				</div>
 				<div class="flex justify-between pb-4 px-4">
 					<div class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
