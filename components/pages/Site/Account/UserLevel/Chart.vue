@@ -6,19 +6,19 @@
 				class="w-full h-48"
 			/>
 		</ClientOnly>
-		<div class="absolute top-24 left-14">
+		<div class="absolute top-24 left-16">
 			<div
-				class="flex items-center justify-center bg-gray-800 opacity-70 rounded-full px-1 py-1"
+				class="flex items-center justify-center bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-full px-3 py-1"
 			>
-				<span class="text-white text-base ml-1">سطح ماهی</span>
 				<NuxtImg
 					src="/images/delete/fish.png"
 					alt="Fish Icon"
-					class="w-6 h-6"
+					class="w-5 h-5"
 				/>
+				<span class="text-white text-sm mr-2">سطح ماهی</span>
 			</div>
 		</div>
-		<div class="absolute top-28 left-4">
+		<div class="absolute top-32 left-7">
 			<div>
 				<span class="text-xs font-bold">{{ useNumber('100') }}</span>
 			</div>
@@ -26,7 +26,7 @@
 				<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('dollar') }}</span>
 			</div>
 		</div>
-		<div class="absolute top-28 right-2">
+		<div class="absolute top-32 right-7">
 			<div>
 				<span class="text-xs font-bold">{{ useNumber('1000') }}</span>
 			</div>
