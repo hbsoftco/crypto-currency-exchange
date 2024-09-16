@@ -28,10 +28,10 @@
 					<template #item="{ item }">
 						<div class="border-t border-t-primary-gray-light dark:border-t-primary-gray-dark px-2">
 							<div v-if="item.key === 'addressManagement'">
-								<AddressManagment />
+								<AddressManagement />
 							</div>
 							<div v-else-if="item.key === 'contactManagement'">
-								<ContactManagment />
+								<ContactManagement />
 							</div>
 						</div>
 					</template>
@@ -42,8 +42,8 @@
 </template>
 
 <script setup lang="ts">
-import AddressManagment from '~/components/pages/Site/Account/WhiteList/AddressManagment.vue';
-import ContactManagment from '~/components/pages/Site/Account/WhiteList/ContactManagment.vue';
+import AddressManagement from '~/components/pages/Site/Account/WhiteList/AddressManagement.vue';
+import ContactManagement from '~/components/pages/Site/Account/WhiteList/ContactManagement.vue';
 
 definePageMeta({
 	layout: 'account',

@@ -5,6 +5,8 @@ export default defineAppConfig({
 		button: {
 			base: 'dark:disabled:bg-primary-gray-dark dark:disabled:text-white',
 			rounded: 'rounded-md',
+			block: 'w-full flex justify-center items-center',
+			inline: 'inline-flex items-center',
 			padding: {
 				md: 'p-0',
 			},

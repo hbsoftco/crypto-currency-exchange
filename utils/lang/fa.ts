@@ -409,6 +409,9 @@ const persian = {
 	classic: 'کلاسیک',
 	vertical: 'عمودی',
 	standard: 'استاندارد',
+	newCurrencies: 'ارز های جدید',
+	startTradingAt: 'شروع معامله در',
+
 };
 
 export default persian;
