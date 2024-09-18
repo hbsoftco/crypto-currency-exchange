@@ -2,7 +2,11 @@ import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
 import type { GetMarketListWithSparkLineChartParams, GetMarketsParams, GetMarketStatusParams } from '~/types/base.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
-import type { MarketListWithSparkLineChartResponse, MarketsResponse, MarketStateResponse } from '~/types/response/market.types';
+import type {
+	MarketListWithSparkLineChartResponse,
+	MarketsResponse,
+	MarketStateResponse,
+	MarketStatisticsChartsResponse } from '~/types/response/market.types';
 
 type MarketRepository = {
 	getMarketListWithSparkLineChart: (params: GetMarketListWithSparkLineChartParams) => Promise<MarketListWithSparkLineChartResponse>;
@@ -11,6 +15,7 @@ type MarketRepository = {
 	getLatestMarkets: (params: GetMarketStatusParams) => Promise<MarketStateResponse>;
 	getMostVoluminous: (params: GetMarketStatusParams) => Promise<MarketStateResponse>;
 	getMarkets: (params: GetMarketsParams) => Promise<MarketsResponse>;
+	getMarketStatisticsCharts: () => Promise<MarketStatisticsChartsResponse>;
 };
 
 export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): MarketRepository => ({
@@ -81,6 +86,14 @@ export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Mar
 		});
 		const url = '/v1/market/routine/l31_f';
 		const response = await fetch<MarketsResponse>(`${url}?${query.toString()}`, {
+			noAuth: true,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getMarketStatisticsCharts(): Promise<MarketStatisticsChartsResponse> {
+		const url = '/v1/market/routine/price_changed_in_24h_list';
+		const response = await fetch<MarketStatisticsChartsResponse>(`${url}`, {
 			noAuth: true,
 		} as CustomNitroFetchOptions);
 

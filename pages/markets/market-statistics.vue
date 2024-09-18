@@ -1,44 +1,54 @@
 <template>
 	<UContainer>
-		<div class="mb-4 mt-8">
-			<UiTitleWithBack :title="$t('marketStatistics')" />
-		</div>
-		<div class="flex justify-between w-full h-full relative mb-16">
-			<div class="w-[50%]">
-				<ClientOnly>
-					<VChart
-						:option="greenBarOptions"
-						class="w-full h-96"
-					/>
-				</ClientOnly>
-				<div class="text-center text-base font-bold">
-					{{ $t('numberOfRisingMarkets') }}
-				</div>
+		<div v-if="chartsDataLoading === 'success'">
+			<div class="mb-4 mt-8">
+				<UiTitleWithBack :title="$t('marketStatistics')" />
 			</div>
-			<div class="w-[50%]">
-				<ClientOnly>
-					<VChart
-						:option="redBarOptions"
-						class="w-full h-96"
-					/>
-				</ClientOnly>
-				<div class="text-center text-base font-bold">
-					{{ $t('numberOfDecliningMarkets') }}
+			<div
+				class="flex justify-between w-full h-full relative mb-16"
+			>
+				<div
+					v-if="negativeMarketsItems.length > 0"
+					class="w-[50%]"
+				>
+					<ClientOnly>
+						<VChart
+							:option="positiveMarketBarOptions"
+							class="w-full h-96"
+						/>
+					</ClientOnly>
+					<div class="text-center text-base font-bold">
+						{{ $t("numberOfRisingMarkets") }}
+					</div>
 				</div>
-			</div>
-			<div class="w-80 h-80 absolute left-0 right-0 m-auto -top-2">
-				<ClientOnly>
-					<VChart
-						:option="pieOptions"
-						class="w-full h-80"
-					/>
-				</ClientOnly>
+				<div
+					v-if="positiveMarketsItems.length > 0"
+					class="w-[50%]"
+				>
+					<ClientOnly>
+						<VChart
+							:option="negativeMarketBarOptions"
+							class="w-full h-96"
+						/>
+					</ClientOnly>
+					<div class="text-center text-base font-bold">
+						{{ $t("numberOfDecliningMarkets") }}
+					</div>
+				</div>
+				<div class="w-80 h-80 absolute left-0 right-0 m-auto -top-2">
+					<ClientOnly>
+						<VChart
+							:option="neutralPieOptions"
+							class="w-full h-80"
+						/>
+					</ClientOnly>
+				</div>
 			</div>
 		</div>
 
 		<div class="mb-10">
 			<h3 class="text-base font-bold">
-				{{ $t('currencyCategories') }}
+				{{ $t("currencyCategories") }}
 			</h3>
 		</div>
 		<div class="mb-28">
@@ -56,8 +66,118 @@
 import CurrencyCategorySlider from '~/components/pages/Site/Market/Statistics/CurrencyCategorySlider.vue';
 import MarketState from '~/components/pages/Site/Market/Statistics/MarketState.vue';
 import { useNumber } from '~/composables/useNumber';
+import { marketRepository } from '~/repositories/market.repository';
+import type { NeutralMarketItem, PriceChangeState } from '~/types/response/market.types';
 
-const redBarOptions = ref({
+const { $api } = useNuxtApp();
+const marketRepo = marketRepository($api);
+
+const { data: chartsData, status: chartsDataLoading } = useAsyncData(
+	'mostProfitableMarkets',
+	async () => {
+		const response = await marketRepo.getMarketStatisticsCharts();
+		return response;
+	},
+);
+
+const positiveRanges: [string, string][] = [
+	['> 10%', '> +10.0%'],
+	['8% to 10%', '> +08.0%'],
+	['6% to 8%', '> +06.0%'],
+	['4% to 6%', '> +04.0%'],
+	['2% to 4%', '> +02.0%'],
+	['< 2%', '>  00.0%'],
+];
+
+const negativeRanges: [string, string][] = [
+	['-10% >', '< -10.0%'],
+	['-8% to -10%', '< -08.0%'],
+	['-6% to -8%', '< -06.0%'],
+	['-4% to -6%', '< -04.0%'],
+	['-2% to -4%', '< -02.0%'],
+	['-2% <', '<  00.0%'],
+];
+
+const calculatePositiveMarkets = (priceChangeStats: PriceChangeState[], positiveRanges: [string, string][]) => {
+	let positive = 0;
+	positiveRanges.forEach(([_, originalRange]) => {
+		if (originalRange !== '>  00.0%') {
+			positive += priceChangeStats
+				.filter((d) => d.priceChangeRange === originalRange)
+				.reduce((sum, d) => sum + d.countOfMarkets, 0);
+		}
+	});
+	return positive;
+};
+
+const calculateNegativeMarkets = (priceChangeStats: PriceChangeState[], negativeRanges: [string, string][]) => {
+	let negative = 0;
+	negativeRanges.forEach(([_, originalRange]) => {
+		if (originalRange !== '<  00.0%') {
+			negative += priceChangeStats
+				.filter((d) => d.priceChangeRange === originalRange)
+				.reduce((sum, d) => sum + d.countOfMarkets, 0);
+		}
+	});
+	return negative;
+};
+
+const getPercent = (priceChangeRange: string): number | null => {
+	const percent = parseFloat(priceChangeRange.replace(/[^\d.-]/g, ''));
+	return isNaN(percent) ? null : percent;
+};
+
+const calculateNeutralMarkets = (priceChangeStats: PriceChangeState[]) => {
+	let neutral = 0;
+	priceChangeStats.forEach((d) => {
+		const percent = getPercent(d.priceChangeRange);
+		if (percent !== null && percent > -2 && percent < 2) {
+			neutral += d.countOfMarkets;
+		}
+	});
+	return neutral;
+};
+
+const positiveMarkets = ref(0);
+const negativeMarkets = ref(0);
+const neutralMarkets = ref(0);
+
+const positiveMarketsItems = ref<number[]>([]);
+const negativeMarketsItems = ref<number[]>([]);
+const neutralMarketsItems = ref<NeutralMarketItem[]>([]);
+
+watch(chartsData, (newData) => {
+	if (!newData || !newData.result || !newData.result.priceChangeStats) return;
+
+	const priceChangeStats = newData.result.priceChangeStats;
+
+	positiveMarkets.value = calculatePositiveMarkets(priceChangeStats, positiveRanges);
+	negativeMarkets.value = calculateNegativeMarkets(priceChangeStats, negativeRanges);
+	neutralMarkets.value = calculateNeutralMarkets(priceChangeStats);
+
+	positiveMarketsItems.value = positiveRanges.map(([_, originalRange]) => {
+		return priceChangeStats
+			.filter((d) => d.priceChangeRange === originalRange)
+			.reduce((sum, d) => sum + d.countOfMarkets, 0);
+	});
+
+	negativeMarketsItems.value = negativeRanges.map(([_, originalRange]) => {
+		return priceChangeStats
+			.filter((d) => d.priceChangeRange === originalRange)
+			.reduce((sum, d) => sum + d.countOfMarkets, 0);
+	});
+
+	console.log(negativeMarketsItems.value);
+
+	// Update pie chart data
+	neutralMarketsItems.value = [
+		{ value: positiveMarkets.value, name: useT('growth'), itemStyle: { color: '#28A745' } },
+		{ value: negativeMarkets.value, name: useT('decline'), itemStyle: { color: '#FF4D4F' } },
+		{ value: neutralMarkets.value, name: useT('neutral'), itemStyle: { color: '#666666' } },
+	];
+});
+
+const negativeMarketBarOptions = computed(() => ({
 	grid: {
 		left: '3%',
 		right: '4%',
@@ -72,7 +192,14 @@ const redBarOptions = ref({
 	},
 	yAxis: {
 		type: 'category',
-		data: ['10٪<', '8٪ تا 10٪', '6٪ تا 8٪', '4٪ تا 6٪', '2٪ تا 4٪', '2٪>'],
+		data: [
+			useNumber(useT('lessThanMinus10Percent')),
+			useNumber(useT('minus8ToMinus10Percent')),
+			useNumber(useT('minus6ToMinus8Percent')),
+			useNumber(useT('minus4ToMinus6Percent')),
+			useNumber(useT('minus2ToMinus4Percent')),
+			useNumber(useT('greaterThanMinus2Percent')),
+		],
 		inverse: true,
 		axisLine: {
 			show: false,
@@ -91,9 +218,9 @@ const redBarOptions = ref({
 	},
 	series: [
 		{
-			name: 'بازارهای ریزشی',
+			name: useT('fallingMarkets'),
 			type: 'bar',
-			data: [63.50, 83.64, 103.76, 123.89, 143.92, 163.94],
+			data: negativeMarketsItems.value,
 			itemStyle: {
 				color: '#FF4D4F',
 				borderRadius: [4, 4, 4, 4],
@@ -106,9 +233,9 @@ const redBarOptions = ref({
 			},
 		},
 	],
-});
+}));
 
-const greenBarOptions = ref({
+const positiveMarketBarOptions = computed(() => ({
 	grid: {
 		left: '3%',
 		right: '4%',
@@ -124,7 +251,14 @@ const greenBarOptions = ref({
 	yAxis: {
 		position: 'right',
 		type: 'category',
-		data: ['10٪<', '8٪ تا 10٪', '6٪ تا 8٪', '4٪ تا 6٪', '2٪ تا 4٪', '2٪>'],
+		data: [
+			useNumber(useT('greaterThanPlus10Percent')),
+			useNumber(useT('plus8ToPlus10Percent')),
+			useNumber(useT('plus6ToPlus8Percent')),
+			useNumber(useT('plus4ToPlus6Percent')),
+			useNumber(useT('plus2ToPlus4Percent')),
+			useNumber(useT('lessThanPlus2Percent')),
+		],
 		inverse: true,
 		axisLine: {
 			show: false,
@@ -144,9 +278,9 @@ const greenBarOptions = ref({
 	},
 	series: [
 		{
-			name: 'بازارهای افزایشی',
+			name: useT('risingMarkets'),
 			type: 'bar',
-			data: [63.50, 83.64, 103.76, 123.89, 143.92, 163.94],
+			data: positiveMarketsItems.value,
 			itemStyle: {
 				color: '#28A745',
 				borderRadius: [4, 4, 4, 4],
@@ -160,11 +294,11 @@ const greenBarOptions = ref({
 			},
 		},
 	],
-});
+}));
 
-const pieOptions = ref({
+const neutralPieOptions = computed(() => ({
 	title: {
-		text: 'رشد و کاهش بازارها',
+		text: useT('marketGrowthAndDecline'),
 		left: 'center',
 		top: '47%',
 		textStyle: {
@@ -193,7 +327,7 @@ const pieOptions = ref({
 	},
 	series: [
 		{
-			name: 'رشد و کاهش بازارها',
+			name: useT('marketGrowthAndDecline'),
 			type: 'pie',
 			radius: ['40%', '65%'],
 			avoidLabelOverlap: false,
@@ -209,12 +343,8 @@ const pieOptions = ref({
 			labelLine: {
 				show: false,
 			},
-			data: [
-				{ value: 6666, name: 'رشد', itemStyle: { color: '#28A745' } },
-				{ value: 5555, name: 'کاهش', itemStyle: { color: '#FF4D4F' } },
-				{ value: 1306, name: 'دیگر', itemStyle: { color: '#666666' } },
-			],
+			data: neutralMarketsItems.value,
 		},
 	],
-});
+}));
 </script>

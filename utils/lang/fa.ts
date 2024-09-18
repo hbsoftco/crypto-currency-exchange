@@ -414,6 +414,25 @@ const persian = {
 	minimumWithdrawalAmount: 'حداقل میزان برداشت',
 	apiText: 'به منظور حفظ امنیت بیشتر برای دسترسی به این بخش لطفا از طریق مرورگر دسکتاپ اقدام فرمایید. ',
 	goBackHomePage: 'بازگشت به صفحه اصلی',
+	fallingMarkets: 'بازارهای ریزشی',
+	risingMarkets: 'بازارهای افزایشی',
+	marketGrowthAndDecline: 'رشد و کاهش بازارها',
+	growth: 'رشد',
+	decline: 'کاهش',
+	neutral: 'خنثی',
+	greaterThanMinus2Percent: 'بیشتر از %۲-',
+	minus2ToMinus4Percent: '۴%- تا %۲-',
+	minus4ToMinus6Percent: '۶%- تا %۴-',
+	minus6ToMinus8Percent: '۸%- تا %۶-',
+	minus8ToMinus10Percent: '۱۰%- تا %۸-',
+	lessThanMinus10Percent: 'کمتر از %۱۰-',
+	greaterThanPlus10Percent: 'بیشتر از %۱۰',
+	lessThanPlus2Percent: 'کمتر از %۲',
+	plus2ToPlus4Percent: '۲% تا %۴',
+	plus4ToPlus6Percent: '۴% تا %۶',
+	plus6ToPlus8Percent: '۶% تا %۸',
+	plus8ToPlus10Percent: '۸% تا %۱۰',
+
 };
 
 export default persian;

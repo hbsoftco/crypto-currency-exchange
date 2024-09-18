@@ -51,6 +51,26 @@ type Market = {
 	marketBriefItem: MarketBriefItem | null;
 };
 
+type MarketStatisticsChartsResponse = {
+	statusCode: number;
+	result: {
+		priceChangeStats: PriceChangeState[];
+	};
+};
+
+type PriceChangeState = {
+	countOfMarkets: number;
+	priceChangeRange: string;
+};
+
+type NeutralMarketItem = {
+	value: number;
+	name: string;
+	itemStyle: {
+		color: string;
+	};
+};
+
 export type {
 	MarketListWithSparkLineChartResponse,
 	MarketListWithSparkLineChartItem,
@@ -58,4 +78,7 @@ export type {
 	MarketState,
 	Market,
 	MarketsResponse,
+	MarketStatisticsChartsResponse,
+	PriceChangeState,
+	NeutralMarketItem,
 };
