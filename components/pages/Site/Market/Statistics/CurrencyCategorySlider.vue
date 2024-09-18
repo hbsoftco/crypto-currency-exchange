@@ -5,7 +5,7 @@
 	>
 		<UCarousel
 			v-slot="{ item }"
-			:items="slides"
+			:items="items"
 			:ui="{
 				item: 'basis-full md:basis-1/3 lg:basis-1/4 snap-center md:snap-start',
 				indicators: {
@@ -15,11 +15,24 @@
 					inactive: 'bg-secondary-gray-light dark:bg-secondary-gray-dark',
 				},
 			}"
-			indicators
+			:prev-button="{
+				color: 'gray',
+				icon: 'i-heroicons-arrow-right-20-solid',
+				class: 'left-0.5',
+			}"
+			:next-button="{
+				color: 'gray',
+				icon: 'i-heroicons-arrow-left-20-solid',
+				class: 'right-0.5',
+			}"
+			arrows
 			class="rounded-lg overflow-hidden pb-10"
 		>
 			<div class="px-0 md:px-4 mb-2 w-full md:w-auto">
-				<CurrencyCategory :name="item" />
+				<CurrencyCategory
+					:key="item.id"
+					:item="item"
+				/>
 			</div>
 		</UCarousel>
 	</div>
@@ -28,6 +41,11 @@
 <script setup lang="ts">
 import CurrencyCategory from './CurrencyCategory.vue';
 
-// import { useNumber } from '~/composables/useNumber';
-const slides: any = [1, 3, 4, 5, 6, 6];
+import type { MarketCurrencyCategoryItem } from '~/types/response/market.types';
+
+interface PropsDefinition {
+	items: MarketCurrencyCategoryItem[];
+}
+
+defineProps<PropsDefinition>();
 </script>

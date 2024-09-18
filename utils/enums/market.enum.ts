@@ -13,7 +13,15 @@ enum MarketType {
 	FUTURES = 311,
 }
 
+enum MarketCategory {
+	HOTTEST = 'Hottest',
+	MOST_PROFITABLE = 'MostProfitable',
+	NEWEST = 'Newest',
+	CMC_RANK = 'CmcRank',
+}
+
 export {
+	MarketCategory,
 	MarketType,
 	SortMode,
 };

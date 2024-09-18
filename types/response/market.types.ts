@@ -1,4 +1,4 @@
-import type { MarketBriefItem } from './brief-list.types';
+import type { CurrencyBriefItem, MarketBriefItem } from './brief-list.types';
 
 type MarketListWithSparkLineChartResponse = {
 	statusCode: number;
@@ -63,12 +63,56 @@ type PriceChangeState = {
 	priceChangeRange: string;
 };
 
+type MarketCurrencyCategoriesResponse = {
+	statusCode: number;
+	result: {
+		totalCount: number;
+		rows: MarketCurrencyCategoryItem[];
+	};
+};
+
+type MarketCurrencyCategoryItem = {
+	id: number;
+	tag: string;
+	markets: MarketItem[];
+};
+
+type MarketItem = {
+	id: number;
+	cid: number;
+	indexPrice: string;
+	priceChangePercIn24H: string;
+	currencyDetails: CurrencyBriefItem | null;
+};
+
 type NeutralMarketItem = {
 	value: number;
 	name: string;
 	itemStyle: {
 		color: string;
 	};
+};
+
+type MarketListByCategoryResponse = {
+	statusCode: number;
+	result: {
+		totalCount: number;
+		rows: MarketCategoryInfo[];
+	};
+};
+
+type MarketCategoryInfo = {
+	category: string;
+	info: MarketInfoItem[];
+};
+
+type MarketInfoItem = {
+	id: number;
+	cid: number;
+	indexPrice: string;
+	priceChangePercIn24H: string;
+	valueOfTradesIn24H: string;
+	currencyDetails: CurrencyBriefItem | null;
 };
 
 export type {
@@ -81,4 +125,9 @@ export type {
 	MarketStatisticsChartsResponse,
 	PriceChangeState,
 	NeutralMarketItem,
+	MarketCurrencyCategoriesResponse,
+	MarketCurrencyCategoryItem,
+	MarketListByCategoryResponse,
+	MarketInfoItem,
+	MarketCategoryInfo,
 };

@@ -398,7 +398,7 @@ const persian = {
 	cumulativeNumberValue: 'تعداد/مقدار تجمیعی',
 	numberValue: 'تعداد/مقدار',
 	quantityCumulativeAmount: 'تعداد / مقدار / مقدار تجمیعی',
-	basisDisplayMarkets: 'اساس نمایش بازار  ها',
+	basisDisplayMarkets: 'اساس نمایش بازارها',
 	priceChangePriority: 'اولویت تغییر قیمت',
 	volume: 'حجم',
 	selectedNotificationText: 'اعلان‌هایی که میخواهید به شما نمایش داده شود را مشخصی کنید.',

@@ -35,7 +35,10 @@
 						{{ $t("numberOfDecliningMarkets") }}
 					</div>
 				</div>
-				<div class="w-80 h-80 absolute left-0 right-0 m-auto -top-2">
+				<div
+					v-if="neutralMarketsItems.length > 0"
+					class="w-80 h-80 absolute left-0 right-0 m-auto -top-2"
+				>
 					<ClientOnly>
 						<VChart
 							:option="neutralPieOptions"
@@ -51,13 +54,19 @@
 				{{ $t("currencyCategories") }}
 			</h3>
 		</div>
-		<div class="mb-28">
-			<CurrencyCategorySlider />
+		<div
+			v-if="marketCurrencyCategoriesLoading === 'success'"
+			class="mb-18"
+		>
+			<CurrencyCategorySlider :items="marketCurrencyCategories ?? []" />
 		</div>
 
-		<div class="flex justify-between">
-			<MarketState />
-			<MarketState />
+		<div class="flex flex-wrap justify-around">
+			<MarketState
+				v-for="(item, index) in marketListByCategory"
+				:key="index"
+				:item="item"
+			/>
 		</div>
 	</UContainer>
 </template>
@@ -67,18 +76,81 @@ import CurrencyCategorySlider from '~/components/pages/Site/Market/Statistics/Cu
 import MarketState from '~/components/pages/Site/Market/Statistics/MarketState.vue';
 import { useNumber } from '~/composables/useNumber';
 import { marketRepository } from '~/repositories/market.repository';
-import type { NeutralMarketItem, PriceChangeState } from '~/types/response/market.types';
+import type { MarketCurrencyCategoriesResponse, MarketListByCategoryResponse, NeutralMarketItem, PriceChangeState } from '~/types/response/market.types';
+import { Language } from '~/utils/enums/language.enum';
+import { MarketType } from '~/utils/enums/market.enum';
 
 const { $api } = useNuxtApp();
 const marketRepo = marketRepository($api);
 
 const { data: chartsData, status: chartsDataLoading } = useAsyncData(
-	'mostProfitableMarkets',
+	'marketStatisticsChartsData',
 	async () => {
 		const response = await marketRepo.getMarketStatisticsCharts();
 		return response;
 	},
 );
+
+const { useCachedCurrencyBriefList } = useCachedData();
+
+const { data: cachedCurrencyBriefList } = await useCachedCurrencyBriefList({ languageId: Language.PERSIAN });
+
+const currencyBriefList = cachedCurrencyBriefList.value ?? [];
+
+const { data: marketCurrencyCategories, status: marketCurrencyCategoriesLoading } = useAsyncData(
+	'marketCurrencyCategories',
+	async () => {
+		const response: MarketCurrencyCategoriesResponse = await marketRepo.getMarketCurrencyCategories();
+
+		const processedMarketCategories = response.result.rows.map((category) => {
+			const updatedMarkets = category.markets.map((market) => {
+				const currencyItem = currencyBriefList.find((item) => item.id === market.cid) || null;
+
+				return {
+					...market,
+					currencyDetails: currencyItem,
+				};
+			});
+
+			return {
+				...category,
+				markets: updatedMarkets,
+			};
+		});
+
+		return processedMarketCategories;
+	},
+);
+
+const { data: marketListByCategory, status: marketListByCategoryLoading } = useAsyncData(
+	'marketListByCategory',
+	async () => {
+		const response: MarketListByCategoryResponse = await marketRepo.getMarketListByCategory({
+			marketTypeId: String(MarketType.SPOT),
+			rowCount: '10',
+		});
+
+		const processedMarketList = response.result.rows.map((category) => {
+			const updatedMarkets = category.info.map((market) => {
+				const currencyItem = currencyBriefList.find((item) => item.id === market.cid) || null;
+
+				return {
+					...market,
+					currencyDetails: currencyItem,
+				};
+			});
+
+			return {
+				...category,
+				info: updatedMarkets,
+			};
+		});
+		return processedMarketList;
+	},
+);
+
+console.log('marketListByCategory', marketListByCategory.value);
+console.log(marketListByCategoryLoading.value);
 
 const positiveRanges: [string, string][] = [
 	['> 10%', '> +10.0%'],
@@ -166,8 +238,6 @@ watch(chartsData, (newData) => {
 			.filter((d) => d.priceChangeRange === originalRange)
 			.reduce((sum, d) => sum + d.countOfMarkets, 0);
 	});
-
-	console.log(negativeMarketsItems.value);
 
 	// Update pie chart data
 	neutralMarketsItems.value = [
