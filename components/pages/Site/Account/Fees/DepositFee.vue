@@ -15,16 +15,15 @@
 					{{ $t('cryptoCurrencyDepositFeeSubtext') }}
 				</p>
 			</div>
-			<div class="w-96">
+			<div class="w-full md:w-96">
 				<SearchCrypto
 					id="phoneOrEmail"
 					v-model="phoneOrEmail"
 					type="text"
-					input-class="text-left"
+					input-class="text-right"
 					label="search"
 					placeholder=""
 					icon="heroicons:magnifying-glass"
-					dir="ltr"
 				/>
 			</div>
 		</div>

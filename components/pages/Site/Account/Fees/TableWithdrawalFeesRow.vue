@@ -37,7 +37,16 @@
 
 		<td class="py-2">
 			<div
-				v-for="(amount, index) in props.minimumDepositAmounts"
+				v-for="(withdrawalFee, index) in props.withdrawalFees"
+				:key="index"
+			>
+				{{ withdrawalFee }}
+			</div>
+		</td>
+
+		<td class="py-2">
+			<div
+				v-for="(amount, index) in props.minimumWithdrawalAmounts"
 				:key="index"
 			>
 				{{ amount }}
@@ -77,7 +86,11 @@ const props = defineProps({
 		type: Array,
 		required: true,
 	},
-	minimumDepositAmounts: {
+	withdrawalFees: {
+		type: Array,
+		required: true,
+	},
+	minimumWithdrawalAmounts: {
 		type: Array,
 		required: true,
 	},

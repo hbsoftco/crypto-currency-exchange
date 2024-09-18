@@ -27,7 +27,7 @@
 				:class="[
 					'w-28 text-sm font-normal p-2 border rounded-md',
 					selectedButton === 'bitcoin'
-						? 'text-primary-yellow-light font-bold border-primary-yellow-light'
+						? 'text-primary-yellow-light dark:text-primary-yellow-dark font-bold border-primary-yellow-light dark:border-primary-yellow-dark'
 						: 'border-none bg-hover-light dark:bg-hover-dark',
 				]"
 				@click="selectedButton = 'bitcoin'"

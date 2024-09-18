@@ -1,30 +1,30 @@
 <template>
 	<div>
-		<section class="block md:flex justify-between my-6">
+		<section class="block md:flex justify-between my-1 md:my-6">
 			<div>
-				<div class="my-4">
+				<div class="my-1 md:my-4">
 					<UiTitleWithBack :title="$t('yourFeeLevel')" />
 				</div>
 				<p class=" w-auto md:w-96 text-base font-medium mt-6">
 					سطح کارمزد معاملات بر اساس حجم معامله‌های ۹۰ روز گذشته شما در هر پایه بازار محاسبه می‌شود.
 				</p>
-				<div class="flex mt-10">
-					<div class=" flex items-center w-[28.375rem] h-48 relative bg-primary-gray-light dark:bg-primary-gray-dark py-12 px-3">
-						<p class="mb-4 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
-							حجم معاملات  ۹۰ روزه شما
+				<div class="flex items-center mt-10">
+					<div class="w-[28.375rem] relative bg-primary-gray-light dark:bg-primary-gray-dark py-20 px-4 rounded-r-md overflow-hidden">
+						<p class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
+							حجم معاملات ۹۰ روزه شما
 						</p>
-						<div class="absolute top-0 left-0 w-2/4 h-full border-r-2 border-r-accent-green bg-hover-light dark:bg-hover-dark rounded-r-full">
+						<div class="absolute -top-16 -left-10 w-80 h-80 flex justify-center items-center border-4 border-accent-green bg-hover-light dark:bg-hover-dark rounded-full">
 							<Chart />
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<div class="ml-0 md:ml-40">
+			<div class="ml-0 md:ml-40  hidden md:block">
 				<NuxtImg
 					src="/images/profile/fees.png"
 					alt="icon fees"
-					class="w-[19.313rem] h-[21.063rem] mb-2 "
+					class="w-[19.313rem] h-[21.063rem] mb-2"
 				/>
 				<div class="flex justify-between bg-hover-light dark:bg-hover-dark rounded-lg p-2">
 					<div>
@@ -46,12 +46,24 @@
 			</div>
 		</section>
 
-		<section class="py-4 px-8 border border-primary-gray-light dark:border-primary-gray-dark">
-			<UTabs :items="items">
+		<section class="py-4 px-0 md:px-8 rounded-md border-none md:border border-primary-gray-light dark:border-primary-gray-dark">
+			<UTabs
+				:items="items"
+				:ui="
+					{
+						list: {
+							background: 'bg-primary-gray-light dark:bg-primary-gray-dark md:bg-background-light md:dark:bg-background-dark',
+							tab: {
+								active: 'text-gray-900 dark:text-white bg-secondary-gray-light dark:bg-secondary-gray-dark',
+								inactive: 'text-gray-500 dark:text-gray-400',
+							},
+						},
+					}"
+			>
 				<template #default="{ item, selected }">
 					<span
-						class="truncate"
-						:class="[selected && 'text-black dark:text-white']"
+						class="truncate text-xs font-extralight md:font-bold md:text-base"
+						:class="[selected && 'text-primary-yellow-light dark:text-primary-yellow-dark border-none border-b-primary-gray', !selected && 'text-black dark:text-white']"
 					>{{ $t(item.label) }}</span>
 				</template>
 				<template #item="{ item }">
@@ -80,7 +92,7 @@
 </template>
 
 <script setup lang="ts">
-import Chart from '~/components/pages/Site/Account/Fees/Chart.vue';
+import Chart from '~/components/pages/Site/Account/Chart.vue';
 import TransactionFees from '~/components/pages/Site/Account/Fees/TransactionFees.vue';
 import DepositFee from '~/components/pages/Site/Account/Fees/DepositFee.vue';
 import WithdrawalFee from '~/components/pages/Site/Account/Fees/WithdrawalFee.vue';
@@ -108,4 +120,5 @@ const items = [
 ];
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

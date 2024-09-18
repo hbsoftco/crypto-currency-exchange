@@ -20,23 +20,23 @@
 					id="phoneOrEmail"
 					v-model="phoneOrEmail"
 					type="text"
-					input-class="text-left"
+					input-class="text-right"
 					label="search"
 					placeholder=""
 					icon="heroicons:magnifying-glass"
-					dir="ltr"
 				/>
 			</div>
 		</div>
 		<div>
-			<TableFees />
+			<TableWithdrawalFees />
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
+import TableWithdrawalFees from './TableWithdrawalFees.vue';
+
 import SearchCrypto from '~/components/forms/SearchCrypto.vue';
-import TableFees from '~/components/pages/Site/Account/Fees/TableFees.vue';
 
 const phoneOrEmail = ref('');
 </script>

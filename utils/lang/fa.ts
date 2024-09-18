@@ -411,7 +411,9 @@ const persian = {
 	standard: 'استاندارد',
 	newCurrencies: 'ارز های جدید',
 	startTradingAt: 'شروع معامله در',
-
+	minimumWithdrawalAmount: 'حداقل میزان برداشت',
+	apiText: 'به منظور حفظ امنیت بیشتر برای دسترسی به این بخش لطفا از طریق مرورگر دسکتاپ اقدام فرمایید. ',
+	goBackHomePage: 'بازگشت به صفحه اصلی',
 };
 
 export default persian;

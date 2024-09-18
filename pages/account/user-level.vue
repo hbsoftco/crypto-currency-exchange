@@ -165,7 +165,7 @@
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
 import TableRow from '~/components/pages/Site/Account/UserLevel/TableRow.vue';
-import Chart from '~/components/pages/Site/Account/UserLevel/Chart.vue';
+import Chart from '~/components/pages/Site/Account/Chart.vue';
 
 const selectedButton = ref('ninety');
 definePageMeta({
