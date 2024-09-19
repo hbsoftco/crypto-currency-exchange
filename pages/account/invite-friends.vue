@@ -86,7 +86,7 @@
 							>
 								{{ $t("inviteFriends") }}
 							</UButton>
-							<div class="w-12 h-12 bg-primary-gray-light dark:bg-primary-gray-dark flex justify-center items-center cursor-pointer">
+							<div class="w-12 h-12 bg-primary-gray-light dark:bg-primary-gray-dark flex justify-center items-center cursor-pointer rounded-md">
 								<IconQrCode class="text-3xl" />
 							</div>
 						</div>
