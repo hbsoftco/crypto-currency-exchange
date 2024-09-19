@@ -15,7 +15,7 @@
 			dir="ltr"
 		/>
 		<div class="flex justify-center">
-			<IconChange class="text-2xl text-subtle-text-light dark:text-subtle-text-dark" />
+			<IconChange class="text-2xl text-subtle-text-light dark:text-subtle-text-dark cursor-pointer" />
 		</div>
 		<TradeFieldInput
 			id="phoneOrEmail"

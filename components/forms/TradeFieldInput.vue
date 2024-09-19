@@ -5,46 +5,41 @@
 				errorMessage ? 'border-accent-red focus:border-accent-red' : 'border-gray-600  focus:border-primary-yellow-light dark:focus:border-primary-yellow-dark',
 			]"
 		>
-			<div
-				class="flex items-center absolute left-2 cursor-pointer"
-				@click="toggleList"
-			>
-				<UIcon
-					name="heroicons:chevron-down-16-solid"
-					class="w-5 h-5"
-				/>
-				<span class="text-lg font-normal mx-1">{{ selectedItem.label }}</span>
-				<NuxtImg
-					src="/images/delete/bitcoin.png"
-					alt="logo"
-					class="w-8 h-8 rounded-full"
-				/>
-			</div>
+			<div class="absolute left-2 cursor-pointer">
+				<USelectMenu
+					v-model="selected"
+					:ui="{
+						background: 'bg-white dark:bg-red-400',
+						option: {
 
-			<div
-				v-show="showList"
-				class="absolute left-2 top-12 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg"
-			>
-				<div
-					v-for="(item, index) in items"
-					:key="index"
-					class="flex items-center p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
-					@click="selectItem(item)"
+						},
+					}"
+					searchable
+					searchable-placeholder=""
+					class="w-full h-full lg:w-36"
+					placeholder=""
+					:options="people"
 				>
-					<NuxtImg
-						:src="item.icon"
-						alt="icon"
-						class="w-8 h-8 rounded-full mr-2"
-					/>
-					<span class="text-lg font-normal">{{ item.label }}</span>
-				</div>
+					<template #leading>
+						<UIcon
+							v-if="selected.icon"
+							:name="(selected.icon as string)"
+							class="w-5 h-5"
+						/>
+						<UAvatar
+							v-else-if="selected.avatar"
+							v-bind="(selected.avatar as Avatar)"
+							size="2xs"
+						/>
+					</template>
+				</USelectMenu>
 			</div>
 
 			<div class="absolute right-2 top-4">
 				<input
 					placeholder="0.00"
 					type="text"
-					class="outline-none text-right"
+					class="outline-none text-right p-1 bg-transparent z-10"
 				>
 			</div>
 
@@ -66,7 +61,34 @@
 </template>
 
 <script setup lang="ts">
+import type { Avatar } from '#ui/types';
+
 const countdown = ref(60);
+const people = [{
+	id: 'BTC',
+	label: 'BTC',
+	href: 'https://github.com/benjamincanac',
+	target: '_blank',
+	avatar: { src: 'https://avatars.githubusercontent.com/u/739984?v=4' },
+}, {
+	id: 'ETH',
+	label: 'ETH',
+	href: 'https://github.com/Atinux',
+	target: '_blank',
+	avatar: { src: 'https://avatars.githubusercontent.com/u/904724?v=4' },
+}, {
+	id: 'USDT',
+	label: 'USDT',
+	href: 'https://github.com/smarroufin',
+	target: '_blank',
+	avatar: { src: 'https://avatars.githubusercontent.com/u/7547335?v=4' },
+}, {
+	id: 'nobody',
+	label: 'Nobody',
+	icon: 'i-heroicons-user-circle',
+}];
+
+const selected = ref(people[0]);
 let interval: NodeJS.Timeout | undefined;
 
 const startCountdown = () => {
@@ -119,21 +141,19 @@ watch(internalValue, (newValue) => {
 	emit('update:modelValue', newValue);
 });
 
-const showList = ref(false);
+// const showList = ref(false);
 
-const items = ref([
-	{ label: 'Bitcoin', icon: '/images/delete/bitcoin.png' },
-	{ label: 'Ethereum', icon: '/images/delete/bitcoin.png' },
-]);
+// const items = ref([
+// 	{ label: 'Bitcoin', icon: '/images/delete/bitcoin.png' },
+// 	{ label: 'Ethereum', icon: '/images/delete/bitcoin.png' },
+// ]);
 
-const selectedItem = ref(items.value[0]);
+// const toggleList = () => {
+// 	showList.value = !showList.value;
+// };
 
-const toggleList = () => {
-	showList.value = !showList.value;
-};
-
-const selectItem = (item: { label: string; icon: string }) => {
-	selectedItem.value = item;
-	showList.value = false;
-};
+// const selectItem = (item: { label: string; icon: string }) => {
+// 	selectedItem.value = item;
+// 	showList.value = false;
+// };
 </script>
