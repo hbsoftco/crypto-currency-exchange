@@ -444,6 +444,25 @@ const persian = {
 	changeSinceListing: 'تغییر از زمان لیست',
 	sinceListing: 'زمان لیست',
 	showDescription: 'نمایش توضیحات',
+	conversion: 'تبدیل',
+	fee: 'کارمزد',
+	receivable: 'قابل دریافت',
+	from: 'از',
+	to: 'به',
+	turnedInto: 'تبدیل شده به',
+	amount: 'مقدار',
+	conversionRate: 'نرخ تبدیل',
+	date: 'زمان',
+	status: 'وضعیت',
+	orderConfirmation: 'تایید سفارش',
+	marketPrice: 'قیمت بازار',
+	currency: 'ارز پزداختی',
+	receivedCurrency: 'ارز دریافتی',
+	direction: 'جهت',
+	finalReceipt: 'دریافت نهایی',
+	doNotdisplayAnymore: 'دیگر نمایش داده نشود',
+	buy: 'خرید',
+
 };
 
 export default persian;
