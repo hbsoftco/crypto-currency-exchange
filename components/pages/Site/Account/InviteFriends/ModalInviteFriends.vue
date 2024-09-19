@@ -7,22 +7,29 @@
 			<div
 				class="h-full flex flex-col items-center justify-center py-10 bg-secondary-gray-light dark:bg-secondary-gray-dark"
 			>
-				<div class=" text-center bg-background-light dark:bg-background-dark rounded-md py-8 px-20 w-[43.875rem] h-[44.25rem] mb-6">
+				<div class="text-center bg-background-light dark:bg-background-dark rounded-md py-8 px-20 w-[43.875rem] h-96 mb-6">
 					<span class="text-xl font-bold">{{ $t('shareWithFriends') }}</span>
 					<UCarousel
 						v-slot="{ item, index }"
 						:items="items"
-						:ui="{ item: 'basis-full md:basis-1/2 lg:basis-1/3',
-						}"
+						:ui="{ item: 'basis-full md:basis-1/2 lg:basis-1/3' }"
 						indicators
 						class="rounded-lg overflow-hidden"
 					>
-						<img
-							:src="item"
-							class="w-full"
-							draggable="false"
-						>
-						<!-- Section to display the card icons -->
+						<!-- هر اسلاید دو تصویر دارد -->
+						<div class="flex flex-col space-y-4">
+							<img
+								:src="item.image1"
+								class="w-full"
+								draggable="false"
+							>
+							<img
+								:src="item.image2"
+								class="w-full"
+								draggable="false"
+							>
+						</div>
+
 						<div class="flex justify-center mt-4">
 							<img
 								:src="IconCardBlue"
@@ -57,8 +64,8 @@
 					</UButton>
 				</div>
 				<IconClose
-					class="text-4xl hidden md:block"
-					@click="isOpen = false"
+					class="text-6xl hidden md:block"
+					@click="closeModal(false)"
 				/>
 			</div>
 		</UModal>
@@ -73,13 +80,33 @@ import IconCardYellow from '~/assets/svg-icons/profile/card/card-yellow.svg';
 import IconCardBlack from '~/assets/svg-icons/profile/card/card-black.svg';
 
 const isOpen = ref(true);
+interface EmitDefinition {
+	(event: 'close', value: boolean): void;
+}
 
+const emit = defineEmits<EmitDefinition>();
+
+const closeModal = async (value: boolean) => {
+	emit('close', value);
+};
+
+// تغییر ساختار آیتم‌های اسلایدر برای نمایش دو عکس
 const items = [
-	'/images/profile/invite/slide1.png',
-	'/images/profile/invite/slide2.png',
-	'/images/profile/invite/slide3.png',
-	'/images/profile/invite/slide1.png',
-	'/images/profile/invite/slide2.png',
-	'/images/profile/invite/slide3.png',
+	{
+		image1: '/images/profile/invite/slide1.png',
+		image2: '/images/profile/invite/slide2.png',
+	},
+	{
+		image1: '/images/profile/invite/slide3.png',
+		image2: '/images/profile/invite/slide1.png',
+	},
+	{
+		image1: '/images/profile/invite/slide2.png',
+		image2: '/images/profile/invite/slide3.png',
+	},
+	{
+		image1: '/images/profile/invite/slide1.png',
+		image2: '/images/profile/invite/slide2.png',
+	},
 ];
 </script>

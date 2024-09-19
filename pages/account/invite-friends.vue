@@ -4,6 +4,10 @@
 			v-if="showModalInviteFriends"
 			@close="closeModalInviteFriends"
 		/>
+		<EditCodeInviteFriends
+			v-if="showEditCodeInviteFriends"
+			@close="closeEditCodeInviteFriends"
+		/>
 		<UContainer>
 			<section>
 				<div class="my-6 block md:hidden">
@@ -47,7 +51,10 @@
 									1cUFo
 								</p>
 								<div class="flex justify-between">
-									<IconEdit class="cursor-pointer text-xl text-subtle-text-light dark:text-subtle-text-50" />
+									<IconEdit
+										class="cursor-pointer text-xl text-subtle-text-light dark:text-subtle-text-50"
+										@click.prevent="openEditCodeInviteFriends"
+									/>
 									<IconCopy class="cursor-pointer text-xl text-subtle-text-light dark:text-subtle-text-50" />
 								</div>
 							</div>
@@ -87,10 +94,10 @@
 					<div class="px-1 md:p-4 pt-4">
 						<div class="flex justify-between">
 							<h5>{{ $t('howDoesWork') }}</h5>
-							<div class="flex items-center">
+							<ULink class="flex items-center">
 								<span class="text-sm font-medium text-primary-yellow-light dark:text-primary-yellow-dark">{{ $t('bonusRules') }}</span>
 								<IconArrowLeft class="text-base mr-2 text-primary-yellow-light dark:text-primary-yellow-dark" />
-							</div>
+							</ULink>
 						</div>
 						<div class="py-4 flex justify-center items-center">
 							<IconSend class="text-3xl text-primary-yellow-light dark:text-primary-yellow-dark" />
@@ -284,8 +291,8 @@
 			</section>
 
 			<section class="mb-12">
-				<div class="border-none md:border border-primary-gray-light dark:border-primary-gray-dark ">
-					<div class="py-8 px-0 md:px-6 block md:flex justify-between border-none md:border-b border-primary-gray-light dark:border-primary-gray-dark ">
+				<div class="md:border border-primary-gray-light dark:border-primary-gray-dark rounded-md ">
+					<div class="py-8 px-1 md:px-6 block md:flex justify-between md:border-b border-primary-gray-light dark:border-primary-gray-dark ">
 						<div class="flex">
 							<span class="text-base font-bold ml-2 mb-2 md:mb-0">
 								{{ $t('invitationHistory') }}
@@ -303,7 +310,7 @@
 											},
 										},
 									}"
-									class="w-44"
+									class="w-auto md:w-44"
 									:options="['همه', 'Canada', 'Mexico']"
 								/>
 							</div>
@@ -425,8 +432,8 @@
 			</section>
 
 			<section class="mb-12">
-				<div class="border-none md:border border-primary-gray-light dark:border-primary-gray-dark ">
-					<div class="py-8 px-1 md:px-6 block md:flex justify-between border-none md:border-b border-primary-gray-light dark:border-primary-gray-dark ">
+				<div class="md:border border-primary-gray-light dark:border-primary-gray-dark rounded-md ">
+					<div class="py-8 px-1 md:px-6 block md:flex justify-between md:border-b border-primary-gray-light dark:border-primary-gray-dark ">
 						<div class="flex">
 							<span class="text-base font-bold ml-2 mb-2 md:mb-0">
 								{{ $t('historyInvitationCommission') }}
@@ -596,6 +603,7 @@ import IconNote from '~/assets/svg-icons/profile/note.svg';
 import IconQuestion from '~/assets/svg-icons/profile/question.svg';
 import { useNumber } from '~/composables/useNumber';
 import ModalInviteFriends from '~/components/pages/Site/Account/InviteFriends/ModalInviteFriends.vue';
+import EditCodeInviteFriends from '~/components/pages/Site/Account/InviteFriends/EditCodeInviteFriends.vue';
 import IconEdit from '~/assets/svg-icons/profile/edit.svg';
 
 definePageMeta({
@@ -621,6 +629,7 @@ const items = ref([
 ]);
 
 const showModalInviteFriends = ref(false);
+const showEditCodeInviteFriends = ref(false);
 
 const openModalInviteFriends = () => {
 	showModalInviteFriends.value = true;
@@ -629,7 +638,12 @@ const openModalInviteFriends = () => {
 const closeModalInviteFriends = () => {
 	showModalInviteFriends.value = false;
 };
-
+const openEditCodeInviteFriends = () => {
+	showEditCodeInviteFriends.value = true;
+};
+const closeEditCodeInviteFriends = () => {
+	showEditCodeInviteFriends.value = false;
+};
 const showDescription = ref(true);
 
 const toggleDescription = () => {
