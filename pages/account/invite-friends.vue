@@ -24,16 +24,16 @@
 					<NuxtImg
 						src="images/svg/platform.svg"
 						alt="platform"
-						class="w-[36.174rem] h-[30.099rem]"
+						class="w-[36.174rem] md:h-[30.099rem]"
 					/>
 				</div>
 			</section>
 
 			<section>
-				<div class=" my-16 border border-primary-gray-light dark:border-primary-gray-dark rounded-md ">
-					<div class="block md:flex items-center justify-between px-14 py-4 border-b border-primary-gray-light dark:border-primary-gray-dark ">
+				<div class=" my-16 border-none md:border border-primary-gray-light dark:border-primary-gray-dark rounded-md ">
+					<div class="block md:flex items-center justify-between px-1 md:px-14 py-4 border-b border-primary-gray-light dark:border-primary-gray-dark ">
 						<div>
-							<div class="flex">
+							<div class="flex pb-2 md:pb-0">
 								<div class="w-1 h-4 ml-1 bg-primary-yellow-light dark:bg-primary-yellow-dark" />
 								<h4 class="text-base font-bold text-subtle-text-light dark:text-subtle-text-dark">
 									{{ $t('invitationCode') }}
@@ -46,11 +46,14 @@
 								<p class="truncate text-ellipsis overflow-hidden pr-6">
 									1cUFo
 								</p>
-								<IconCopy class="cursor-pointer text-xl text-subtle-text-light dark:text-subtle-text-50" />
+								<div class="flex justify-between">
+									<IconEdit class="cursor-pointer text-xl text-subtle-text-light dark:text-subtle-text-50" />
+									<IconCopy class="cursor-pointer text-xl text-subtle-text-light dark:text-subtle-text-50" />
+								</div>
 							</div>
 						</div>
 						<div>
-							<div class="flex">
+							<div class="flex py-2 md:pb-0">
 								<div class="w-1 h-4 ml-1 bg-primary-yellow-light dark:bg-primary-yellow-dark" />
 								<h4 class="text-base font-bold text-subtle-text-light dark:text-subtle-text-dark">
 									{{ $t('invitationLink') }}
@@ -60,26 +63,28 @@
 								class="bg-hover-light dark:bg-hover-dark px-2 py-1 flex justify-between items-center rounded-md"
 								dir="ltr"
 							>
-								<p class="truncate text-ellipsis overflow-hidden pr-6">
+								<p class="truncate text-ellipsis overflow-hidden pr-1 md:pr-6">
 									https://www.bitland.com/register?inviteCode=1cUFo
 								</p>
-								<IconCopy class="cursor-pointer text-xl text-subtle-text-light dark:text-subtle-text-50" />
+								<div>
+									<IconCopy class="cursor-pointer text-xl text-subtle-text-light dark:text-subtle-text-50" />
+								</div>
 							</div>
 						</div>
-						<div class="flex">
+						<div class="flex justify-between py-2 md:pb-0">
 							<UButton
-								class="text-base font-medium px-6 py-1 h-12"
+								class="text-base font-medium px-12 py-1 h-12 mx-3 text-center"
 								to=""
 								@click.prevent="openModalInviteFriends"
 							>
 								{{ $t("inviteFriends") }}
 							</UButton>
-							<div class="w-12 h-12 mr-3 bg-primary-gray-light dark:bg-primary-gray-dark flex justify-center items-center cursor-pointer">
+							<div class="w-12 h-12 bg-primary-gray-light dark:bg-primary-gray-dark flex justify-center items-center cursor-pointer">
 								<IconQrCode class="text-3xl" />
 							</div>
 						</div>
 					</div>
-					<div class="p-4">
+					<div class="px-1 md:p-4 pt-4">
 						<div class="flex justify-between">
 							<h5>{{ $t('howDoesWork') }}</h5>
 							<div class="flex items-center">
@@ -89,12 +94,15 @@
 						</div>
 						<div class="py-4 flex justify-center items-center">
 							<IconSend class="text-3xl text-primary-yellow-light dark:text-primary-yellow-dark" />
-							<div class="w-56 h-[0.125rem] mx-16 bg-primary-yellow-light dark:bg-primary-yellow-dark" />
+							<div class="w-28 md:w-56 h-[0.125rem] mx-4 md:mx-16 bg-primary-yellow-light dark:bg-primary-yellow-dark" />
 							<IconUser class="text-3xl text-primary-yellow-light dark:text-primary-yellow-dark" />
-							<div class="w-56 h-[0.125rem] mx-16 bg-primary-yellow-light dark:bg-primary-yellow-dark" />
+							<div class="w-28 md:w-56 h-[0.125rem] mx-4 md:mx-16 bg-primary-yellow-light dark:bg-primary-yellow-dark" />
 							<IconGift class="text-3xl text-primary-yellow-light dark:text-primary-yellow-dark" />
 						</div>
-						<div class="flex py-4">
+						<div
+							v-if="showDescription"
+							class="flex py-4"
+						>
 							<p class="text-sm font-medium text-center">
 								{{ $t('howDoesWorkOne') }}
 							</p>
@@ -108,10 +116,20 @@
 						<div class="flex justify-center py-2">
 							<ULink
 								to=""
-								class="flex"
+								class="flex group-hover:hidden"
+								@click.prevent="toggleDescription"
 							>
-								<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('hiddenDescription') }}</span>
-								<IconArrowUp class="text-2xl text-subtle-text-light dark:text-subtle-text-dark" />
+								<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
+									{{ showDescription ? $t('hiddenDescription') : $t('showDescription') }}
+								</span>
+								<IconArrowUp
+									v-if="showDescription"
+									class="text-2xl text-subtle-text-light dark:text-subtle-text-dark"
+								/>
+								<IconArrowDown
+									v-else
+									class="text-2xl text-subtle-text-light dark:text-subtle-text-dark"
+								/>
 							</ULink>
 						</div>
 					</div>
@@ -134,14 +152,14 @@
 					</div>
 				</div>
 				<div class="flex my-6">
-					<div class="flex ml-10 items-center">
-						<div class="w-1 h-4 ml-2 bg-primary-yellow-light dark:bg-primary-yellow-dark" />
-						<span class="text-sm font-medium text-subtle-text-light dark:text-subtle-text-dark">{{ $t('directCommissionPercentage') }}: </span>
-						<span class="text-base font-bold mr-1">{{ useNumber('۳۰') }}%</span>
+					<div class="flex ml-1 md:ml-10 items-center">
+						<div class="w-1 h-4 ml-1 md:ml-2 bg-primary-yellow-light dark:bg-primary-yellow-dark" />
+						<span class="text-xs md:text-sm font-medium text-subtle-text-light dark:text-subtle-text-dark">{{ $t('directCommissionPercentage') }}: </span>
+						<span class="text-xs md:text-base font-bold mr-0 md:mr-1">{{ useNumber('۳۰') }}%</span>
 					</div>
 					<div>
-						<span class="text-sm font-medium text-subtle-text-light dark:text-subtle-text-dark">{{ $t('percentageTreeCommission') }}: </span>
-						<span class="text-base font-bold mr-1">{{ useNumber('۵۰') }}%</span>
+						<span class="text-xs md:text-sm font-medium text-subtle-text-light dark:text-subtle-text-dark">{{ $t('percentageTreeCommission') }}: </span>
+						<span class="text-xs md:text-base font-bold mr-0 md:mr-1">{{ useNumber('۵۰') }}%</span>
 					</div>
 				</div>
 				<div class="flex justify-between">
@@ -178,7 +196,7 @@
 
 			<section>
 				<div class="flex justify-center items-center">
-					<div class="py-6 px-12 ml-28">
+					<div class="py-6 px-1 md:px-12 ml-1 md:ml-28">
 						<div class="flex flex-col border-b border-primary-gray-light dark:border-primary-gray-dark pb-4">
 							<span class="text-xl font-bold mb-6 text-subtle-text-light dark:text-subtle-text-dark">{{ $t('allInvitees') }}</span>
 							<span class="text-4xl font-extrabold text-primary-yellow-light dark:text-primary-yellow-dark">{{ useNumber('8,000+') }}</span>
@@ -192,7 +210,7 @@
 						<NuxtImg
 							src="/images/profile/gift-invite.png"
 							alt="gift-invite"
-							class="w-[27.607rem] h-[22.5rem]"
+							class="w-44 md:w-[27.607rem] h-36 md:h-[22.5rem]"
 						/>
 					</div>
 				</div>
@@ -218,7 +236,7 @@
 						</div>
 					</div>
 					<div class="block md:flex">
-						<div class="w-72 ml-8 px-4 py-2 bg-hover-light dark:bg-hover-dark rounded-md shadow-md">
+						<div class="w-72 ml-8 my-8 md:my-0 px-4 py-2 bg-hover-light dark:bg-hover-dark rounded-md shadow-md">
 							<div class="flex border-b border-primary-gray-light dark:border-primary-gray-dark pb-4">
 								<NuxtImg
 									src="/images/profile/money.png"
@@ -267,7 +285,7 @@
 
 			<section class="mb-12">
 				<div class="border-none md:border border-primary-gray-light dark:border-primary-gray-dark ">
-					<div class="py-8 px-0 md:px-6 block md:flex justify-between border-b border-primary-gray-light dark:border-primary-gray-dark ">
+					<div class="py-8 px-0 md:px-6 block md:flex justify-between border-none md:border-b border-primary-gray-light dark:border-primary-gray-dark ">
 						<div class="flex">
 							<span class="text-base font-bold ml-2 mb-2 md:mb-0">
 								{{ $t('invitationHistory') }}
@@ -408,7 +426,7 @@
 
 			<section class="mb-12">
 				<div class="border-none md:border border-primary-gray-light dark:border-primary-gray-dark ">
-					<div class="py-8 px-1 md:px-6 block md:flex justify-between border-b border-primary-gray-light dark:border-primary-gray-dark ">
+					<div class="py-8 px-1 md:px-6 block md:flex justify-between border-none md:border-b border-primary-gray-light dark:border-primary-gray-dark ">
 						<div class="flex">
 							<span class="text-base font-bold ml-2 mb-2 md:mb-0">
 								{{ $t('historyInvitationCommission') }}
@@ -572,11 +590,13 @@ import IconSend from '~/assets/svg-icons/profile/send.svg';
 import IconUser from '~/assets/svg-icons/profile/user.svg';
 import IconGift from '~/assets/svg-icons/gift.svg';
 import IconArrowUp from '~/assets/svg-icons/menu/arrow-up.svg';
+import IconArrowDown from '~/assets/svg-icons/menu/arrow-down.svg';
 import IconUserInvite from '~/assets/svg-icons/menu/user-fill.svg';
 import IconNote from '~/assets/svg-icons/profile/note.svg';
 import IconQuestion from '~/assets/svg-icons/profile/question.svg';
 import { useNumber } from '~/composables/useNumber';
 import ModalInviteFriends from '~/components/pages/Site/Account/InviteFriends/ModalInviteFriends.vue';
+import IconEdit from '~/assets/svg-icons/profile/edit.svg';
 
 definePageMeta({
 	layout: 'account-single',
@@ -608,6 +628,12 @@ const openModalInviteFriends = () => {
 
 const closeModalInviteFriends = () => {
 	showModalInviteFriends.value = false;
+};
+
+const showDescription = ref(true);
+
+const toggleDescription = () => {
+	showDescription.value = !showDescription.value;
 };
 </script>
 
