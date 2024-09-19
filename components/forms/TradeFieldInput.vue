@@ -8,15 +8,16 @@
 			<div class="absolute left-2 cursor-pointer">
 				<USelectMenu
 					v-model="selected"
+					variant="none"
 					:ui="{
-						background: 'bg-white dark:bg-red-400',
+						select: 'cursor-pointer',
 						option: {
 
 						},
 					}"
 					searchable
 					searchable-placeholder=""
-					class="w-full h-full lg:w-36"
+					class="w-auto h-full lg:w-36 cursor-pointer"
 					placeholder=""
 					:options="people"
 				>
