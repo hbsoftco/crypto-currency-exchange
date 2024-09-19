@@ -439,7 +439,8 @@ const persian = {
 	plus4ToPlus6Percent: '۴% تا %۶',
 	plus6ToPlus8Percent: '۶% تا %۸',
 	plus8ToPlus10Percent: '۸% تا %۱۰',
-
+	price: 'قیمت',
+	change: 'تغییر',
 };
 
 export default persian;
