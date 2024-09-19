@@ -1,8 +1,14 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { GetMarketListWithSparkLineChartParams, GetMarketsParams, GetMarketStatusParams } from '~/types/base.types';
+import type { GetMarketListByCategoryParams, GetMarketListWithSparkLineChartParams, GetMarketsParams, GetMarketStatusParams } from '~/types/base.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
-import type { MarketListWithSparkLineChartResponse, MarketsResponse, MarketStateResponse } from '~/types/response/market.types';
+import type {
+	MarketCurrencyCategoriesResponse,
+	MarketListByCategoryResponse,
+	MarketListWithSparkLineChartResponse,
+	MarketsResponse,
+	MarketStateResponse,
+	MarketStatisticsChartsResponse } from '~/types/response/market.types';
 
 type MarketRepository = {
 	getMarketListWithSparkLineChart: (params: GetMarketListWithSparkLineChartParams) => Promise<MarketListWithSparkLineChartResponse>;
@@ -11,6 +17,9 @@ type MarketRepository = {
 	getLatestMarkets: (params: GetMarketStatusParams) => Promise<MarketStateResponse>;
 	getMostVoluminous: (params: GetMarketStatusParams) => Promise<MarketStateResponse>;
 	getMarkets: (params: GetMarketsParams) => Promise<MarketsResponse>;
+	getMarketStatisticsCharts: () => Promise<MarketStatisticsChartsResponse>;
+	getMarketCurrencyCategories: () => Promise<MarketCurrencyCategoriesResponse>;
+	getMarketListByCategory: (params: GetMarketListByCategoryParams) => Promise<MarketListByCategoryResponse>;
 };
 
 export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): MarketRepository => ({
@@ -81,6 +90,31 @@ export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Mar
 		});
 		const url = '/v1/market/routine/l31_f';
 		const response = await fetch<MarketsResponse>(`${url}?${query.toString()}`, {
+			noAuth: true,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getMarketStatisticsCharts(): Promise<MarketStatisticsChartsResponse> {
+		const url = '/v1/market/routine/price_changed_in_24h_list';
+		const response = await fetch<MarketStatisticsChartsResponse>(`${url}`, {
+			noAuth: true,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getMarketCurrencyCategories(): Promise<MarketCurrencyCategoriesResponse> {
+		const url = '/v1/market/routine/l51_f';
+		const response = await fetch<MarketCurrencyCategoriesResponse>(`${url}`, {
+			noAuth: true,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getMarketListByCategory({ rowCount, marketTypeId }: GetMarketListByCategoryParams): Promise<MarketListByCategoryResponse> {
+		const query = new URLSearchParams({ rowCount, marketTypeId });
+		const url = '/v1/market/routine/l47_f';
+		const response = await fetch<MarketListByCategoryResponse>(`${url}?${query.toString()}`, {
 			noAuth: true,
 		} as CustomNitroFetchOptions);
 

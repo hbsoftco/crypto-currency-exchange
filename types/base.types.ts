@@ -33,6 +33,11 @@ type GetMarketStatusParams = {
 	rowCount: number;
 };
 
+type GetMarketListByCategoryParams = {
+	rowCount: string;
+	marketTypeId: string;
+};
+
 type KeyValue = {
 	key: string;
 	value: string;
@@ -45,5 +50,6 @@ export type {
 	GetMarketsParams,
 	GetMarketListWithSparkLineChartParams,
 	GetMarketStatusParams,
+	GetMarketListByCategoryParams,
 	KeyValue,
 };

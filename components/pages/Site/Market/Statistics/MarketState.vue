@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-hover-light dark:bg-hover-dark rounded-lg shadow-lg p-4 mb-4 w-[34.75rem]">
+	<div class="bg-hover-light dark:bg-hover-dark rounded-lg shadow-lg p-4 mb-10 w-[34.75rem]">
 		<div class="mb-2">
 			<ClientOnly>
 				<VChart
@@ -9,16 +9,29 @@
 			</ClientOnly>
 		</div>
 		<!-- List of Items -->
-		<ul class="overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900 h-44">
-			<li class="flex justify-between items-center py-1">
-				<span class="text-green-500 text-sm font-normal">+1.24%</span>
+		<ul dir="rtl">
+			<li
+				v-for="(currency, index) in item.info"
+				:key="index"
+				class="flex justify-between items-center pb-1"
+			>
+				<UiChangePrice
+					classes="text-sm font-normal"
+					:show-percent="true"
+					pl="pl-2"
+					:change="parseFloat(String(currency.priceChangePercIn24H))"
+					:icon="false"
+				/>
+				<span>{{ currency.indexPrice }}</span>
 				<div class="flex justify-start">
-					<span class="text-sm font-normal mx-2">BTC USDT</span>
-					<img
-						src="https://cryptologos.cc/logos/bitcoin-btc-logo.png"
-						alt="BTC"
-						class="w-5 h-5"
-					>
+					<span class="text-sm font-normal mx-2">{{ currency.currencyDetails?.cSymbol }} USDT</span>
+					<NuxtImg
+						:src="`https://api-bitland.site/media/currency/${currency.currencyDetails?.cSymbol}.png`"
+						:alt="currency.currencyDetails?.cName"
+						class="w-5 h-5 rounded-full"
+						format="webp"
+						densities="x1"
+					/>
 				</div>
 			</li>
 		</ul>
@@ -26,10 +39,29 @@
 </template>
 
 <script setup lang="ts">
-// import { useNumber } from '~/composables/useNumber';
+import type { MarketCategoryInfo } from '~/types/response/market.types';
+
+interface PropsDefinition {
+	item: MarketCategoryInfo;
+}
+
+const props = defineProps<PropsDefinition>();
+// const colors = ['#78D7F6', '#6AC7EA', '#5EBAE0', '#51ABD5', '#459FCC', '#3992C2', '#2B83B7', '#2076AD', '#1267A2', '#005393'];
+const colors = ['#F7931A', '#627EEA', '#F0B90B', '#3EC1D3', '#2775CA', '#23292F', '#C2A633', '#2C97DE', '#FF0600', '#0033AD'];
+
+const pieChartData = computed(() => {
+	return props.item.info.map((currency, index) => ({
+		value: parseFloat(currency.valueOfTradesIn24H),
+		name: currency?.currencyDetails?.cSymbol ?? '',
+		itemStyle: {
+			color: colors[index % colors.length],
+		},
+	}));
+});
+
 const doughnutOptions = ref({
 	title: {
-		text: 'داغ‌ترین ها',
+		text: props.item.category,
 		left: 'center',
 		top: '43%',
 		textStyle: {
@@ -62,18 +94,7 @@ const doughnutOptions = ref({
 				borderColor: '#000',
 				borderRadius: 5,
 			},
-			data: [
-				{ value: 6.34, name: 'ETH', itemStyle: { color: '#78D7F6' } },
-				{ value: 6.34, name: 'BTC', itemStyle: { color: '#6AC7EA' } },
-				{ value: 6.34, name: 'ETH', itemStyle: { color: '#5EBAE0' } },
-				{ value: 6.34, name: 'BTC', itemStyle: { color: '#51ABD5' } },
-				{ value: 6.34, name: 'ETH', itemStyle: { color: '#459FCC' } },
-				{ value: 6.34, name: 'BTC', itemStyle: { color: '#3992C2' } },
-				{ value: 6.34, name: 'ETH', itemStyle: { color: '#2B83B7' } },
-				{ value: 6.34, name: 'BTC', itemStyle: { color: '#2076AD' } },
-				{ value: 6.34, name: 'BTC', itemStyle: { color: '#1267A2' } },
-				{ value: 6.34, name: 'BTC', itemStyle: { color: '#005393' } },
-			],
+			data: pieChartData.value,
 		},
 	],
 });

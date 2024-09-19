@@ -35,7 +35,7 @@
 					</tr>
 				</thead>
 
-				<tbody>
+				<tbody v-if="status==='success'">
 					<MarketTableRow
 						v-for="(item, index) in markets"
 						:key="index"
@@ -104,9 +104,6 @@ const { data: markets, status } = useAsyncData('markets', async () => {
 	totalCount.value = response.result.totalCount;
 	return useProcessMarketData(response.result.rows, marketBriefList, currencyBriefList);
 }, { watch: [params.value], deep: true });
-
-console.log(status.value);
-console.log('markets', markets.value);
 
 watch(() => props.searchQuery, (newQuery) => {
 	params.value.searchStatement = newQuery;
