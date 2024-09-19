@@ -1,7 +1,10 @@
 <template>
 	<div class="w-full h-80">
 		<div class="flex justify-between mt-2 mb-7">
-			<div dir="ltr" class="mr-14">
+			<div
+				dir="ltr"
+				class="mr-14"
+			>
 				<span
 					class="text-base font-bold text-subtle-text-light dark:text-subtle-text-dark"
 				>{{ useNumber("$2.83") }}</span>

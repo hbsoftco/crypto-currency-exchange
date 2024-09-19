@@ -3,7 +3,7 @@ import withNuxt from './.nuxt/eslint.config.mjs';
 export default withNuxt({
 	files: ['**/*.ts', '**/*.tsx', '**/*.vue'],
 	rules: {
-		'no-console': 'warn',
+		'no-console': 'off',
 		'semi': ['error', 'always'],
 		'import/no-unresolved': 'off',
 		'import/named': 'error',

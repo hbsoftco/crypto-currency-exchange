@@ -73,12 +73,12 @@
 							<div>
 								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark mb-1">{{ $t('networkType') }}</span>
 								<div
-									v-for="(networkType, index) in row.networkTypes"
-									:key="index"
+									v-for="(networkType, index3) in row.networkTypes"
+									:key="index3"
 									class="text-base font-medium flex"
 								>
 									<div
-										v-if="row.networkStatuses[index] === 'active'"
+										v-if="row.networkStatuses[index3] === 'active'"
 										class="bg-accent-green w-4 h-4 rounded-full ml-1"
 									>
 										<UIcon
@@ -104,8 +104,8 @@
 							<div>
 								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark mb-1">{{ $t('minimumDepositAmount') }}</span>
 								<div
-									v-for="(amount, index) in row.minimumDepositAmounts"
-									:key="index"
+									v-for="(amount, index2) in row.minimumDepositAmounts"
+									:key="index2"
 									class="text-base font-medium"
 								>
 									{{ amount }}

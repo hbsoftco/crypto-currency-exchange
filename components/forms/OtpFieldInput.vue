@@ -64,12 +64,10 @@ const countdown = ref(60);
 let interval: NodeJS.Timeout | undefined;
 
 const handleOnComplete = (value: string) => {
-	// eslint-disable-next-line no-console
 	console.log('OTP completed: ', value);
 };
 
 const handleOnChange = (value: string) => {
-	// eslint-disable-next-line no-console
 	console.log('OTP changed: ', value);
 };
 
