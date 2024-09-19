@@ -414,6 +414,13 @@ const persian = {
 	minimumWithdrawalAmount: 'حداقل میزان برداشت',
 	apiText: 'به منظور حفظ امنیت بیشتر برای دسترسی به این بخش لطفا از طریق مرورگر دسکتاپ اقدام فرمایید. ',
 	goBackHomePage: 'بازگشت به صفحه اصلی',
+	marketsAvailableApiKey: 'بازار های در دسترس کلید API',
+	ifSelectedMarketsAvailable: 'چنانچه هیچ بازاری انتخاب نشود همه بازار ها در دسترس خواهند بود.',
+	marketSearch: 'جستجو بازار',
+	addMarkets: 'بازار های افزوده شده',
+	availableMarkets: 'بازار های در دسترس',
+	type: 'نوع',
+	hasAccess: 'دسترسی دارد',
 };
 
 export default persian;

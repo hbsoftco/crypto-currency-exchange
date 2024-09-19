@@ -14,6 +14,7 @@
 				<UButton
 					size="lg"
 					class="text-base font-extrabold py-3 px-12 text-center"
+					to="/account/manage-api/new-api"
 				>
 					{{ $t('createNewApi') }}
 				</UButton>
