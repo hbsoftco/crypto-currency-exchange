@@ -17,7 +17,7 @@
 							</h3>
 							<IconClose
 								class="text-3xl"
-								@click="isOpen = false"
+								@click="closeModal(false)"
 							/>
 						</div>
 					</div>
@@ -37,7 +37,7 @@
 				</div>
 				<IconClose
 					class="text-4xl hidden md:block"
-					@click="isOpen = false"
+					@click="closeModal(false)"
 				/>
 			</div>
 		</UModal>
@@ -48,4 +48,13 @@
 import IconClose from '~/assets/svg-icons/close.svg';
 
 const isOpen = ref(true);
+interface EmitDefinition {
+	(event: 'close', value: boolean): void;
+}
+
+const emit = defineEmits<EmitDefinition>();
+
+const closeModal = async (value: boolean) => {
+	emit('close', value);
+};
 </script>
