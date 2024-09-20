@@ -13,7 +13,7 @@
 				</h1>
 			</div>
 			<div class=" block md:flex justify-between mb-24">
-				<div class="ml-0 md:ml-6">
+				<div class="px-3">
 					<MarketChart class="hidden md:block" />
 
 					<section class="my-8 md:pt-12 md:pb-2">
@@ -404,7 +404,7 @@
 					</section>
 					<!-- FAQ -->
 				</div>
-				<div class="hidden md:block">
+				<div class="hidden md:block px-3">
 					<section>
 						<Calculator />
 					</section>

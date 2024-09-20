@@ -47,8 +47,8 @@
 						</div>
 						<div class="pb-3 w-full flex justify-between">
 							<span class="text-sm font-normal">{{ $t('direction') }}:</span>
-							<div class="text-sm font-bold">
-								<span>{{ $t('buy') }}</span>
+							<div class="text-sm font-bold ">
+								<span class="text-accent-green">{{ $t('buy') }}</span>
 							</div>
 						</div>
 						<div class="pb-3 w-full flex justify-between">
