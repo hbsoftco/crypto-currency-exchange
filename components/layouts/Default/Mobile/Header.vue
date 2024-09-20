@@ -18,12 +18,12 @@
 				</div>
 			</UContainer>
 		</header>
-		<Notif class="mt-14" />
+		<!-- <Notif class="mt-14" /> -->
 	</div>
 </template>
 
 <script setup lang="ts">
-import Notif from '../Notif.vue';
+// import Notif from '../Notif.vue';
 </script>
 
 <style scoped>
