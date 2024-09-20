@@ -462,7 +462,9 @@ const persian = {
 	finalReceipt: 'دریافت نهایی',
 	doNotdisplayAnymore: 'دیگر نمایش داده نشود',
 	buy: 'خرید',
-
+	firstTransaction: 'معامله اول',
+	secondTransaction: 'معامله دوم',
+	inventory: 'موجودی',
 };
 
 export default persian;
