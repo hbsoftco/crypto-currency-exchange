@@ -12,7 +12,7 @@
 							alt="new-currencies"
 							class="w-9 h-6"
 						/>
-						<ULink to="/markets/new-currencies">
+						<ULink to="/markets/upcoming">
 							<div>
 								<span class="text-sm font-normal mr-2">{{
 									$t("currenciesWayBitland")
@@ -26,7 +26,7 @@
 							alt="chart-statistics"
 							class="w-5 h-5"
 						/>
-						<ULink to="/markets/market-statistics">
+						<ULink to="/markets/statistics">
 							<div>
 								<span class="text-sm font-normal mr-2">{{
 									$t("marketStatisticalInformation")
