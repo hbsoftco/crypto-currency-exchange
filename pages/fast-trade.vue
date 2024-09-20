@@ -17,7 +17,7 @@
 								<div class="flex items-center">
 									<div><span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('inventory') }}:</span><span class="mr-1 text-xs font-normal text-left">{{ useNumber('0 BTC') }}</span></div>
 									<UButton
-										class="mr-2 text-primary-yellow-light dark:text-primary-yellow-dark bg-hover-light dark:bg-hover-dark text-xs font-bold"
+										class="mr-2 text-primary-yellow-light hover:bg-hover-light dark:hover:bg-hover-dark dark:text-primary-yellow-dark bg-hover-light dark:bg-hover-dark text-xs font-bold"
 										to="#"
 									>
 										{{ $t('all') }}
