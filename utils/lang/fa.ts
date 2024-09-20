@@ -455,7 +455,6 @@ const persian = {
 	date: 'زمان',
 	status: 'وضعیت',
 	orderConfirmation: 'تایید سفارش',
-	marketPrice: 'قیمت بازار',
 	currency: 'ارز پزداختی',
 	receivedCurrency: 'ارز دریافتی',
 	direction: 'جهت',
@@ -465,6 +464,16 @@ const persian = {
 	firstTransaction: 'معامله اول',
 	secondTransaction: 'معامله دوم',
 	inventory: 'موجودی',
+	sell: 'فروش',
+	marketPrice: 'قیمت بازار',
+	limitPrice: 'قیمت ثابت',
+	stopPrice: 'ایست قیمت',
+	stopMarket: 'ایست بازار',
+	stable: 'پایدار',
+	onlineSupport: 'پشتیبانی آنلاین',
+	API: 'API',
+	guidance: 'راهنمایی',
+
 };
 
 export default persian;

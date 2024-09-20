@@ -5,6 +5,7 @@
 		<div>
 			<slot />
 		</div>
+		<LayoutsTradeFooter />
 		<UiToast />
 	</div>
 </template>
