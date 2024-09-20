@@ -10,13 +10,67 @@
 					<h1 class="text-2xl font-bold">
 						{{ $t('conversion') }}
 					</h1>
-					<div class="my-4">
-						converter
+					<div class="my-4 relative">
+						<div>
+							<div class="w-full flex justify-between">
+								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('from') }}</span>
+								<div class="flex items-center">
+									<div><span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('inventory') }}:</span><span class="mr-1 text-xs font-normal text-left">{{ useNumber('0 BTC') }}</span></div>
+									<UButton
+										class="mr-2 text-primary-yellow-light dark:text-primary-yellow-dark bg-hover-light dark:bg-hover-dark text-xs font-bold"
+										to="#"
+									>
+										{{ $t('all') }}
+									</UButton>
+								</div>
+							</div>
+							<TradeChangeFieldInput
+								id="inputTrade1"
+								v-model="inputTrade1"
+								type="text"
+								input-class="text-left"
+								:label="``"
+								placeholder=""
+								icon=""
+								dir="rtl"
+							/>
+						</div>
+						<div class="absolute top-[6.5rem] z-10 mx-auto flex justify-center w-full">
+							<ULink class="flex justify-center items-center rounded-full w-16 h-16 bg-primary-yellow-light dark:bg-primary-yellow-dark border-4 border-background-light dark:border-background-dark">
+								<IconChange class="text-black text-4xl" />
+							</ULink>
+						</div>
+						<div>
+							<div class="w-full flex justify-between">
+								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('to') }}</span>
+							</div>
+							<TradeChangeFieldInput
+								id="inputTrade2"
+								v-model="inputTrade2"
+								type="text"
+								input-class="text-left"
+								:label="``"
+								placeholder=""
+								icon=""
+								dir="rtl"
+							/>
+						</div>
 					</div>
 					<div class="flex justify-between items-center my-4">
 						<div class="bg-secondary-gray-light dark:bg-secondary-gray-dark w-full h-[0.063rem]" />
-						<div class="flex text-xs font-normal">
-							<span>1BTC</span>≈--<span>USDT</span>
+						<div class="flex justify-between items-center text-xs font-normal">
+							<div class="mx-1">
+								1BTC
+							</div>
+							<div
+								class="mx-1"
+								dir="ltr"
+							>
+								≈-
+							</div>
+							<div class="mx-1">
+								USDT
+							</div>
 						</div>
 						<div class="bg-secondary-gray-light dark:bg-secondary-gray-dark w-full h-[0.063rem]" />
 					</div>
@@ -170,6 +224,11 @@ import IconInfo from '~/assets/svg-icons/info-fill.svg';
 import { useNumber } from '~/composables/useNumber';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
 import ConfirmOne from '~/components/pages/Site/Trade/ConfirmOne.vue';
+import TradeChangeFieldInput from '~/components/forms/TradeChangeFieldInput.vue';
+import IconChange from '~/assets/svg-icons/trade/change.svg';
+
+const inputTrade1 = ref('');
+const inputTrade2 = ref('');
 
 const rows = ref([
 	{ id: 1, from: 'BTC', count: '۲۳۵۵۵۲', to: 'USDT', turnedInto: 'USDT', amount: '۷۳۴۵۷۵۴۷۴', conversionRate: '۲۳۵۲۴۳۵۲', date: '۱۴۰۲/۰۲/۲۸', status: 'مانده' },

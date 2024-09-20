@@ -1,5 +1,5 @@
 <template>
-	<div class="w-96 bg-hover-light dark:bg-hover-dark rounded-lg shadow-sm px-2 py-1">
+	<div class="bg-hover-light dark:bg-hover-dark rounded-lg shadow-sm px-2 py-1">
 		<div class="flex justify-between px-2 mb-1 py-4">
 			<div>
 				<span class="text-sm font-bold">{{ title }}</span>
