@@ -90,7 +90,7 @@
 			</table>
 		</section>
 		<section class="block md:hidden text-center">
-			<div class="my-4">
+			<div class="my-1">
 				<UiTitleWithBack :title="$t('manageAPI')" />
 			</div>
 			<NuxtImg

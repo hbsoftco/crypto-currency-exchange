@@ -20,7 +20,7 @@
 					>
 						{{ $t("authentication") }}
 					</h4>
-					<div class="block md:flex justify-between w-full my-8">
+					<div class="flex justify-between items-center w-full my-8">
 						<div class="flex items-center">
 							<NuxtImg
 								src="/images/delete/bitcoin.png"
@@ -36,10 +36,15 @@
 								</h5>
 							</div>
 						</div>
-						<div>Timer</div>
+						<div class="hidden md:block">
+							<div class="flex items-center ">
+								<UiTimer />
+								<span class="mr-2 text-red-700 text-base font-medium">{{ $t('endTime') }}</span>
+							</div>
+						</div>
 						<div class="text-xs font-normal">
 							<h4>{{ $t('numberAwardsReceived') }}:</h4>
-							<div class="flex">
+							<div class="flex justify-end">
 								<h4 class="text-base font-bold text-primary-yellow-light dark:text-primary-yellow-dark ml-1">
 									{{ useNumber('2') }}
 								</h4>
@@ -49,12 +54,18 @@
 							</div>
 						</div>
 					</div>
+					<div class="block md:hidden ">
+						<div class="flex justify-center items-center ">
+							<UiTimer />
+							<span class="mr-2 text-red-700 text-base font-medium">{{ $t('endTime') }}</span>
+						</div>
+					</div>
 					<div class="flex justify-between text-sm font-bold w-full">
 						<div>{{ $t('verificationDocumentsBitland') }}</div>
 						<div>{{ $t('signup') }}</div>
 					</div>
-					<div class="my-4">
-						progress
+					<div class="w-full my-4">
+						<UiProgressBar />
 					</div>
 					<div class="flex flex-row-reverse justify-between text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark w-full">
 						<div>{{ $t('start') }}</div>
