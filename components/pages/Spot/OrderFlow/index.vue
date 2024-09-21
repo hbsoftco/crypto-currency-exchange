@@ -54,13 +54,13 @@
 						v-if="item.key === 'globalChart'"
 						class="space-y-3"
 					>
-						<h2>globalChart</h2>
+						<GlobalChart />
 					</div>
 					<div
 						v-else-if="item.key === 'bitlandChart'"
 						class="space-y-3"
 					>
-						<h2>bitlandChart</h2>
+						<BitlandChart />
 					</div>
 				</template>
 			</UTabs>
@@ -80,7 +80,9 @@
 </template>
 
 <script setup lang="ts">
+import BitlandChart from './BitlandChart.vue';
 import DepthChart from './DepthChart.vue';
+import GlobalChart from './GlobalChart.vue';
 import Info from './Info.vue';
 
 const items = [

@@ -19,16 +19,16 @@
 			</template>
 			<template #item="{ item }">
 				<div
-					v-if="item.key === 'phoneNumber'"
+					v-if="item.key === 'orderList'"
 					class="space-y-3"
 				>
-					<!-- <WithMobile /> -->
+					<OrderList />
 				</div>
 				<div
-					v-else-if="item.key === 'email'"
+					v-else-if="item.key === 'latestTrades'"
 					class="space-y-3"
 				>
-					<!-- <WithEmail /> -->
+					<LatestTrades />
 				</div>
 			</template>
 		</UTabs>
@@ -36,6 +36,9 @@
 </template>
 
 <script setup lang="ts">
+import LatestTrades from './LatestTrades.vue';
+import OrderList from './OrderList.vue';
+
 const items = [
 	{
 		key: 'orderList',

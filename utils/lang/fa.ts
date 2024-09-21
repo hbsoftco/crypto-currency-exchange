@@ -521,6 +521,14 @@ const persian = {
 	info: 'Info',
 	tradingView: 'TradingView',
 	depth: 'عمق',
+	value: 'ارزش',
+	filled: 'پرشده',
+	remaining: 'مانده',
+	average: 'میانگین',
+	amountFilled: 'مقدار پر شده',
+	filledValue: 'ارزش پر شده',
+	orderNumber: 'شماره سفارش',
+	transactionNumber: 'شماره معامله',
 };
 
 export default persian;

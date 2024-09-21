@@ -3,7 +3,7 @@
 		<ClientOnly>
 			<VChart
 				:option="chartOptions"
-				class="w-full h-96"
+				class="w-full h-[25rem]"
 			/>
 		</ClientOnly>
 	</div>
@@ -26,7 +26,7 @@ const data = {
 		[3600.5, 11.14],
 	],
 	bids: [
-		[3580.19, 11.91],
+		[3580.19, 11],
 		[3579.0, 56.2],
 		[3577.21, 114.9],
 		[3575.42, 115.95],
@@ -39,7 +39,7 @@ const data = {
 	],
 };
 
-const obj2arr = (arr, key) => arr.map((item) => item[key]);
+const obj2arr = (arr: number[][], key: number) => arr.map((item) => item[key]);
 const centerPrice = parseFloat(((data.asks[0][0] + data.bids[0][0]) / 2).toFixed(2));
 
 data.bids.sort((a, b) => a[0] - b[0]);
@@ -58,12 +58,19 @@ const chartOptions = ref({
 	tooltip: {
 		trigger: 'axis',
 		formatter: function (params: any) {
-			return `
-          قیمت: ${params[0].axisValue}<br/>
-          <span style="color: green">خرید: ${params[0].data}</span><br/>
-          <span style="color: red">فروش: ${params[1].data}</span>
-        `;
+			if (params && params.length >= 2) {
+				const buyData = params[0].data !== undefined ? params[0].data : 'ناموجود';
+				const sellData = params[1].data !== undefined ? params[1].data : 'ناموجود';
+
+				return `
+      قیمت: ${params[0].axisValue}<br/>
+      <span style="color: green">خرید: ${buyData}</span><br/>
+      <span style="color: red">فروش: ${sellData}</span>
+    `;
+			}
+			return 'اطلاعات موجود نیست';
 		},
+
 	},
 	grid: {
 		left: '10%',
@@ -74,20 +81,20 @@ const chartOptions = ref({
 	xAxis: {
 		type: 'category',
 		boundaryGap: false,
-		data: category, // قیمت‌ها
+		data: category,
 	},
 	yAxis: {
 		type: 'value',
-		name: 'مقدار',
+		name: '',
 		splitLine: {
 			show: false,
 		},
 	},
 	series: [
 		{
-			name: 'خرید',
+			name: 'BUY',
 			type: 'line',
-			step: 'end', // نمودار پله‌ای
+			step: 'end',
 			data: bids,
 			areaStyle: {
 				color: {
@@ -98,28 +105,28 @@ const chartOptions = ref({
 					y2: 1,
 					colorStops: [
 						{
-							offset: 0,
-							color: 'rgba(0, 255, 0, 0.6)', // رنگ سبز با شفافیت
+							offset: 1,
+							color: 'rgba(18, 41, 34, 1)',
 						},
 						{
 							offset: 1,
-							color: 'rgba(0, 255, 0, 0)', // شفافیت کامل در پایین
+							color: 'rgba(18, 41, 34, 1)',
 						},
 					],
 				},
 			},
 			smooth: true,
-			symbol: 'circle',
-			symbolSize: 8,
+			symbol: false,
+			symbolSize: 1,
 			itemStyle: {
-				color: '#00ff00',
+				color: '#459F4B',
 			},
-			lineStyle: { color: '#00ff00' }, // خط سبز برای خرید
+			lineStyle: { color: '#459F4B' },
 		},
 		{
-			name: 'فروش',
+			name: 'SELL',
 			type: 'line',
-			step: 'start', // نمودار پله‌ای
+			step: 'start',
 			data: asks,
 			areaStyle: {
 				color: {
@@ -130,23 +137,23 @@ const chartOptions = ref({
 					y2: 1,
 					colorStops: [
 						{
-							offset: 0,
-							color: 'rgba(255, 0, 0, 0.6)', // رنگ قرمز با شفافیت
+							offset: 1,
+							color: 'rgba(51, 24, 29, 1)',
 						},
 						{
 							offset: 1,
-							color: 'rgba(255, 0, 0, 0)', // شفافیت کامل در پایین
+							color: 'rgba(51, 24, 29, 1)',
 						},
 					],
 				},
 			},
 			smooth: true,
-			symbol: 'circle',
-			symbolSize: 8,
+			symbol: false,
+			symbolSize: 1,
 			itemStyle: {
-				color: '#ff0000',
+				color: '#F14235',
 			},
-			lineStyle: { color: '#ff0000' }, // خط قرمز برای فروش
+			lineStyle: { color: '#F14235' },
 		},
 	],
 });
