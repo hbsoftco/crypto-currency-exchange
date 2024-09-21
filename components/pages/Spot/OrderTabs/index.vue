@@ -1,5 +1,5 @@
 <template>
-	<div class="w-full bg-hover-light dark:bg-hover-dark rounded-sm px-2">
+	<div class="w-full bg-hover-light dark:bg-hover-dark rounded-sm px-2 ">
 		<UTabs
 			:items="items"
 			:ui="{
@@ -22,19 +22,19 @@
 					v-if="item.key === 'openOrders'"
 					class="space-y-3"
 				>
-					<h2>openOrders</h2>
+					<OpenOrder />
 				</div>
 				<div
 					v-else-if="item.key === 'orderHistory'"
 					class="space-y-3"
 				>
-					<h2>orderHistory</h2>
+					<OrderHistory />
 				</div>
 				<div
 					v-else-if="item.key === 'tradeHistory'"
 					class="space-y-3"
 				>
-					<h2>tradeHistory</h2>
+					<TradeHistory />
 				</div>
 			</template>
 		</UTabs>
@@ -42,6 +42,10 @@
 </template>
 
 <script setup lang="ts">
+import OpenOrder from '~/components/pages/Spot/OrderTabs/OpenOrders.vue';
+import OrderHistory from '~/components/pages/Spot/OrderTabs/OrderHistory.vue';
+import TradeHistory from '~/components/pages/Spot/OrderTabs/TradeHistory.vue';
+
 const items = [
 	{
 		key: 'openOrders',

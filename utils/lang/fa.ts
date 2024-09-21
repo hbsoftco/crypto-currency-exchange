@@ -516,7 +516,14 @@ const persian = {
 	openOrders: 'سفارشات باز',
 	orderHistory: 'تاریخچه سفارشات',
 	tradeHistory: 'تاریخچه معاملات',
-
+	value: 'ارزش',
+	filled: 'پرشده',
+	remaining: 'مانده',
+	average: 'میانگین',
+	amountFilled: 'مقدار پر شده',
+	filledValue: 'ارزش پر شده',
+	orderNumber: 'شماره سفارش',
+	transactionNumber: 'شماره معامله',
 };
 
 export default persian;
