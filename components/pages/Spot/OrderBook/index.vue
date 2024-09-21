@@ -22,13 +22,13 @@
 					v-if="item.key === 'phoneNumber'"
 					class="space-y-3"
 				>
-					<WithMobile />
+					<!-- <WithMobile /> -->
 				</div>
 				<div
 					v-else-if="item.key === 'email'"
 					class="space-y-3"
 				>
-					<WithEmail />
+					<!-- <WithEmail /> -->
 				</div>
 			</template>
 		</UTabs>

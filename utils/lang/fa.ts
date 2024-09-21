@@ -516,7 +516,11 @@ const persian = {
 	openOrders: 'سفارشات باز',
 	orderHistory: 'تاریخچه سفارشات',
 	tradeHistory: 'تاریخچه معاملات',
-
+	globalChart: 'نمودار جهانی',
+	bitlandChart: 'نمودار بیتلند',
+	info: 'Info',
+	tradingView: 'TradingView',
+	depth: 'عمق',
 };
 
 export default persian;

@@ -1,9 +1,104 @@
 <template>
-	<div class="w-full bg-hover-light dark:bg-hover-dark rounded-sm px-2 mb-2">
-		Order flow
-		<div class="pb-8">hossein</div>
+	<div class="w-full bg-hover-light dark:bg-hover-dark rounded-sm px-2 mb-2 relative">
+		<div class="flex justify-end items-center absolute top-5 left-6 z-10">
+			<div class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-50">
+				<button
+					:class="{
+						'text-primary-yellow-light dark:text-primary-yellow-dark': activeTab === 'depth',
+					}"
+					@click="setActiveTab('depth')"
+				>
+					{{ $t('depth') }}
+				</button>
+				<button
+					class="mx-4"
+					:class="{
+						'text-primary-yellow-light dark:text-primary-yellow-dark': activeTab === 'tradingView',
+					}"
+					@click="setActiveTab('tradingView')"
+				>
+					{{ $t('tradingView') }}
+				</button>
+				<button
+					:class="{
+						'text-primary-yellow-light dark:text-primary-yellow-dark': activeTab === 'info',
+					}"
+					@click="setActiveTab('info')"
+				>
+					{{ $t('info') }}
+				</button>
+			</div>
+		</div>
+		<!-- Left Tabs -->
+
+		<div v-if="activeTab==='tradingView'">
+			<UTabs
+				:items="items"
+				:ui="{
+					list: {
+						tab: {
+							font: 'font-normal',
+							size: 'text-sm',
+						},
+					},
+				}"
+			>
+				<template #default="{ item, selected }">
+					<span
+						class="truncate"
+						:class="[selected && 'text-primary-500 dark:text-primary-400']"
+					>{{ $t(item.label) }}</span>
+				</template>
+				<template #item="{ item }">
+					<div
+						v-if="item.key === 'globalChart'"
+						class="space-y-3"
+					>
+						<h2>globalChart</h2>
+					</div>
+					<div
+						v-else-if="item.key === 'bitlandChart'"
+						class="space-y-3"
+					>
+						<h2>bitlandChart</h2>
+					</div>
+				</template>
+			</UTabs>
+		</div>
+		<!-- TradingView -->
+
+		<div v-if="activeTab==='depth'">
+			<DepthChart />
+		</div>
+		<!-- Depth -->
+
+		<div v-if="activeTab==='info'">
+			<Info />
+		</div>
+		<!-- Info -->
 	</div>
 </template>
 
 <script setup lang="ts">
+import DepthChart from './DepthChart.vue';
+import Info from './Info.vue';
+
+const items = [
+	{
+		key: 'globalChart',
+		label: 'globalChart',
+		content: '',
+	},
+	{
+		key: 'bitlandChart',
+		label: 'bitlandChart',
+		content: '',
+	},
+];
+
+const activeTab = ref('depth');
+
+const setActiveTab = (tabKey: string) => {
+	activeTab.value = tabKey;
+};
 </script>
