@@ -455,7 +455,6 @@ const persian = {
 	date: 'زمان',
 	status: 'وضعیت',
 	orderConfirmation: 'تایید سفارش',
-	marketPrice: 'قیمت بازار',
 	currency: 'ارز پزداختی',
 	receivedCurrency: 'ارز دریافتی',
 	direction: 'جهت',
@@ -498,6 +497,15 @@ const persian = {
 	pointLevelItem2: 'لطفا نام و نام خانوادگی خود را دقیقا مطابق با اطلاعات ثبت شده در کارت ملیتان وارد کنید (به تمام موارد همزه، تشدید، آ، ا، فاصله بین نام و نام خانوادگی های دو قسمتی، پسوند و پیشوند های نام و نام خانوادگی و غیره دقت کنید).',
 	pointLevelItem3: 'کد ملی بدون خط تیره وارد شود.',
 	pointLevelItem4: 'حتما این اطلاعات را خودتان وارد کنید و مراقب شیوه‌ های کلاهبرداری و فیشینگ باشید.',
+	sell: 'فروش',
+	marketPrice: 'قیمت بازار',
+	limitPrice: 'قیمت ثابت',
+	stopPrice: 'ایست قیمت',
+	stopMarket: 'ایست بازار',
+	stable: 'پایدار',
+	onlineSupport: 'پشتیبانی آنلاین',
+	API: 'API',
+	guidance: 'راهنمایی',
 };
 
 export default persian;
