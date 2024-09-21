@@ -1,11 +1,11 @@
 <template>
 	<div>
-		<section class="block md:flex justify-between my-6">
+		<section class="block md:flex justify-between my-0 md:my-6">
 			<div>
-				<div class="my-4">
+				<div class=" my-0 md:my-4">
 					<UiTitleWithBack :title="$t('userLevel')" />
 				</div>
-				<p class=" w-auto md:w-96 text-base font-medium mt-6">
+				<p class=" w-auto md:w-96 text-justify text-base font-medium mt-4 md:mt-6">
 					سطح کارمزد معاملات بر اساس حجم معامله‌های ۹۰ روز گذشته شما در هر پایه بازار محاسبه می‌شود.
 				</p>
 				<div class="flex mt-10">
@@ -26,11 +26,11 @@
 				</div>
 			</div>
 
-			<div class="ml-0 md:ml-40">
+			<div class="ml-0 md:ml-40 mt-10">
 				<NuxtImg
 					src="/images/profile/fish.png"
 					alt="icon user level"
-					class="w-[19.313rem] h-[21.063rem] mb-2 "
+					class="w-full md:w-[19.313rem] h-[21.063rem] mb-2 "
 				/>
 				<div class="flex justify-between bg-hover-light dark:bg-hover-dark rounded-lg p-2">
 					<div>
@@ -55,7 +55,7 @@
 			<h2 class="text-xl font-bold px-4 mb-4">
 				{{ $t('yourTotalStatisticsTransactions') }}
 			</h2>
-			<div class="flex mb-12">
+			<div class="flex justify-center md:justify-start mb-12">
 				<button
 					:class="[
 						'text-sm font-normal p-2 border rounded-md',
@@ -129,35 +129,104 @@
 			<h3 class="text-xl font-bold px-4 mb-4">
 				{{ $t('userLevelRatingTable') }}
 			</h3>
-			<table class="min-w-full mt-6">
-				<thead>
-					<tr class="hidden md:block py-3 text-right border-b border-b-primary-gray-light dark:border-b-primary-gray-dark">
-						<th class="text-sm font-bold py-3">
-							سطح
-						</th>
-						<th class="text-sm font-bold py-3">
-							شرایط
-						</th>
-						<th class="text-sm font-bold py-3">
-							جوایز
-						</th>
-						<th class="text-sm font-bold py-3" />
-					</tr>
-				</thead>
-				<tbody>
-					<TableRow
-						v-for="(item, index) in items"
-						:key="index"
-						:level="item.level"
-						:condition="item.condition"
-						:award="item.award"
-						:icon-src="item.iconSrc"
-						:image-src="item.imageSrc"
-						:is-even="index % 2 === 0"
-						:is-active="item.isActive"
-					/>
-				</tbody>
-			</table>
+			<div class="hidden md:block">
+				<table class="min-w-full mt-6">
+					<thead>
+						<tr class="hidden md:block py-3 text-right border-b border-b-primary-gray-light dark:border-b-primary-gray-dark">
+							<th class="text-sm font-bold py-3">
+								سطح
+							</th>
+							<th class="text-sm font-bold py-3">
+								شرایط
+							</th>
+							<th class="text-sm font-bold py-3">
+								جوایز
+							</th>
+							<th class="text-sm font-bold py-3" />
+						</tr>
+					</thead>
+					<tbody>
+						<TableRow
+							v-for="(item, index) in items"
+							:key="index"
+							:level="item.level"
+							:condition="item.condition"
+							:award="item.award"
+							:icon-src="item.iconSrc"
+							:image-src="item.imageSrc"
+							:is-even="index % 2 === 0"
+							:is-active="item.isActive"
+						/>
+					</tbody>
+				</table>
+			</div>
+			<div
+				v-for="(item, index) in items"
+				:key="index"
+				class="block md:hidden"
+			>
+				<div
+					class="bg-hover-light dark:bg-hover-dark rounded-md my-4 py-4 px-3"
+				>
+					<div>
+						<div class="flex justify-between items-center">
+							<div class="flex items-center">
+								<div
+									v-if="item.isActive"
+								>
+									<IconArrowLeftActive class="text-primary-yellow-light dark:text-primary-yellow-dark text-base" />
+								</div>
+								<span :class="[item.isActive ? 'mr-1 text-primary-yellow-light dark:text-primary-yellow-dark text-xs font-normal' : 'text-subtle-text-light dark:text-subtle-text-dark text-xs font-normal']">
+									{{ item.level }}
+								</span>
+							</div>
+							<div
+								v-if="item.isActive"
+							>
+								<NuxtImg
+									src="/images/Confirmation.png"
+									alt="Confirmation"
+									class="w-4 h-4"
+								/>
+							</div>
+						</div>
+						<div class="flex justify-center px-16 py-8">
+							<NuxtImg
+								:src="item.iconSrc"
+								alt="icon"
+							/>
+						</div>
+						<div class="flex justify-start">
+							<span
+								class="text-base font-medium py-2"
+								:class="[item.isActive ? 'text-primary-yellow-light dark:text-primary-yellow-dark' : 'text-black dark:text-white']"
+							>
+								{{ item.condition }}
+							</span>
+						</div>
+						<div class="flex justify-between items-center">
+							<span
+								class="text-base font-medium"
+								:class="[item.isActive ? 'text-primary-yellow-light dark:text-primary-yellow-dark' : 'text-black dark:text-white']"
+							>
+								{{ item.award }}
+							</span>
+							<div>
+								<template v-if="item.isActive">
+									<IconClose class="text-4xl" />
+								</template>
+								<template v-else>
+									<NuxtImg
+										:src="item.imageSrc"
+										alt="icon"
+										class="w-12 h-12"
+									/>
+								</template>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</section>
 	</div>
 </template>
@@ -166,6 +235,8 @@
 import { useNumber } from '~/composables/useNumber';
 import TableRow from '~/components/pages/Site/Account/UserLevel/TableRow.vue';
 import Chart from '~/components/pages/Site/Account/Chart.vue';
+import IconArrowLeftActive from '~/assets/svg-icons/profile/arrow-left-active.svg';
+import IconClose from '~/assets/svg-icons/close.svg';
 
 const selectedButton = ref('ninety');
 definePageMeta({

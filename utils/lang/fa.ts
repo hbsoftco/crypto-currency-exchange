@@ -465,6 +465,7 @@ const persian = {
 	firstTransaction: 'معامله اول',
 	secondTransaction: 'معامله دوم',
 	inventory: 'موجودی',
+	endTime: 'زمان تا پایان',
 };
 
 export default persian;
