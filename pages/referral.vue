@@ -45,7 +45,7 @@
 					</p>
 					<ul class="list-disc text-base custom-list px-4 pb-4">
 						<li class="pb-3">
-							<b>{{ $t("registerBitland") }}</b><br>
+							<b>{{ $t("registerBitland") }}!</b><br>
 							<p>
 								{{ $t("textRegisterBitland") }}
 							</p>
