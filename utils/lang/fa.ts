@@ -529,6 +529,18 @@ const persian = {
 	filledValue: 'ارزش پر شده',
 	orderNumber: 'شماره سفارش',
 	transactionNumber: 'شماره معامله',
+	baseCurrencySymbol: 'نماد ارز مبنا',
+	currencyCountingUnit: 'واحد شمارش ارز',
+	marketValue: 'ارزش بازار',
+	marketUnitPrice: 'قیمت واحد بازار',
+	currencyRating: 'رتبه ارز',
+	circulatingSupply: 'عرضه در گردش',
+	contractPlatform: 'کانترکت روی پلتفرم',
+	contractId: 'کانترکت آیدی',
+	referenceLinks: 'لینک های مرجع',
+	allOrders: 'همه سفارشات',
+	showOtherMarkets: 'نمایش سایر بازار ها',
+	total: 'کل',
 };
 
 export default persian;
