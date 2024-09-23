@@ -559,6 +559,8 @@ const persian = {
 	selectAndUploadOneOfTheFollowingIdentityDocuments: 'یکی از مدارک هویتی زیر را انتخاب و بارگذاری کنید',
 	selectDoc: 'انتخاب مدرک',
 	selectFile: 'انتخاب فایل',
+	tradingInterface: 'رابط گرافیکی معاملاتی',
+
 };
 
 export default persian;

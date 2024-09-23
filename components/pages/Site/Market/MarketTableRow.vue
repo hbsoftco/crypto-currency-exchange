@@ -39,6 +39,7 @@
 					<div class="hidden group-hover:block">
 						<div class="flex justify-center items-center">
 							<UButton
+								:to="`/spot/${market?.marketBriefItem?.mSymbol}`"
 								class="text-xs font-normal text-black ml-1 py-1 rounded-l-none rounded-r-sm"
 							>
 								{{ $t("trade") }}
