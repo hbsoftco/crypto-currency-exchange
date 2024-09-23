@@ -1,5 +1,5 @@
 <template>
-	<div class="w-full bg-hover-light dark:bg-hover-dark rounded-sm px-2 ">
+	<div class="w-full relative bg-hover-light dark:bg-hover-dark rounded-sm px-2 ">
 		<UTabs
 			:items="items"
 			:ui="{
@@ -38,6 +38,20 @@
 				</div>
 			</template>
 		</UTabs>
+		<div class="absolute left-4 top-3">
+			<div class="flex items-center">
+				<UCheckbox
+					v-model="selectCheckBox"
+					:label="translatedLabel"
+				/>
+				<UButton
+					class="mr-2 text-primary-yellow-light hover:bg-hover-light dark:hover:bg-hover-dark dark:text-primary-yellow-dark bg-hover-light dark:bg-hover-dark text-xs font-bold"
+					to="#"
+				>
+					{{ $t('allOrders') }}
+				</UButton>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -63,4 +77,6 @@ const items = [
 		content: '',
 	},
 ];
+const selectCheckBox = ref(true);
+const translatedLabel = useT('showOtherMarkets');
 </script>

@@ -6,6 +6,7 @@
 		<div class="flex justify-start">
 			<div class="w-80 max-w-80 ml-2">
 				<BuySellForm />
+				<SearchMarket />
 			</div>
 			<div class="flex-1">
 				<div class="mb-2">
@@ -25,7 +26,9 @@
 				<!-- OrderBook and OrderFlow -->
 
 				<div>
+					<Setting />
 					<OrderTabs />
+					<BuySellFormTraid />
 				</div>
 			</div>
 		</div>
@@ -39,6 +42,9 @@ import OrderFlow from '~/components/pages/Spot/OrderFlow/index.vue';
 import OrderTabs from '~/components/pages/Spot/OrderTabs/index.vue';
 import MarketOverview from '~/components/pages/Spot/MarketOverview.vue';
 import TradingPairDetails from '~/components/pages/Spot/TradingPairDetails.vue';
+import SearchMarket from '~/components/pages/Spot/SearchMarket.vue';
+import BuySellFormTraid from '~/components/pages/Spot/BuySellFormTraid/index.vue';
+import Setting from '~/components/pages/Spot/Setting.vue';
 
 definePageMeta({
 	layout: 'trade',
