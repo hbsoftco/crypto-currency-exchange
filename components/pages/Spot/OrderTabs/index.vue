@@ -41,7 +41,7 @@
 		<div class="absolute left-4 top-3">
 			<div class="flex items-center">
 				<UCheckbox
-					v-model="selected"
+					v-model="selectCheckBox"
 					:label="translatedLabel"
 				/>
 				<UButton
@@ -77,6 +77,6 @@ const items = [
 		content: '',
 	},
 ];
-const selected = ref(true);
+const selectCheckBox = ref(true);
 const translatedLabel = useT('showOtherMarkets');
 </script>

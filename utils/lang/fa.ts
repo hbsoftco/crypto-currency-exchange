@@ -541,6 +541,7 @@ const persian = {
 	allOrders: 'همه سفارشات',
 	showOtherMarkets: 'نمایش سایر بازار ها',
 	total: 'کل',
+	currencyPairs: 'جفت ارز ها',
 };
 
 export default persian;
