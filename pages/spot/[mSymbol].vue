@@ -27,6 +27,7 @@
 
 				<div>
 					<OrderTabs />
+					<BuySellFormTraid />
 				</div>
 			</div>
 		</div>
@@ -41,6 +42,7 @@ import OrderTabs from '~/components/pages/Spot/OrderTabs/index.vue';
 import MarketOverview from '~/components/pages/Spot/MarketOverview.vue';
 import TradingPairDetails from '~/components/pages/Spot/TradingPairDetails.vue';
 import SearchMarket from '~/components/pages/Spot/SearchMarket.vue';
+import BuySellFormTraid from '~/components/pages/Spot/BuySellFormTraid/index.vue';
 
 definePageMeta({
 	layout: 'trade',

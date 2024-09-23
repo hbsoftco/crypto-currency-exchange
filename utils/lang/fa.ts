@@ -542,6 +542,8 @@ const persian = {
 	showOtherMarkets: 'نمایش سایر بازار ها',
 	total: 'کل',
 	currencyPairs: 'جفت ارز ها',
+	limit: 'لیمیت',
+	marketForm: 'مارکت',
 };
 
 export default persian;
