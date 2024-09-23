@@ -550,6 +550,10 @@ const persian = {
 	cumulativePriceAmount: 'قیمت/مقدار تجمعی',
 	priceChange: 'تغییر قیمت',
 	orderNotifications: 'اعلانات سفارش',
+	orderDetails: 'جزییات سفارش',
+	unitPrice: 'قیمت واحد',
+	totalAmount: 'مبلغ کل',
+	transactionDetails: 'جزییات معامله ها',
 };
 
 export default persian;
