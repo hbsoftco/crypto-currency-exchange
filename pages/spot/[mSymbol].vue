@@ -26,6 +26,7 @@
 				<!-- OrderBook and OrderFlow -->
 
 				<div>
+					<Setting />
 					<OrderTabs />
 					<BuySellFormTraid />
 				</div>
@@ -43,6 +44,7 @@ import MarketOverview from '~/components/pages/Spot/MarketOverview.vue';
 import TradingPairDetails from '~/components/pages/Spot/TradingPairDetails.vue';
 import SearchMarket from '~/components/pages/Spot/SearchMarket.vue';
 import BuySellFormTraid from '~/components/pages/Spot/BuySellFormTraid/index.vue';
+import Setting from '~/components/pages/Spot/Setting.vue';
 
 definePageMeta({
 	layout: 'trade',

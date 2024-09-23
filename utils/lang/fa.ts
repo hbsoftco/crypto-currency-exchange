@@ -544,6 +544,12 @@ const persian = {
 	currencyPairs: 'جفت ارز ها',
 	limit: 'لیمیت',
 	marketForm: 'مارکت',
+	displayListOrders: 'نمایش لیست سفارشات',
+	displayOrderCryptocurrencyMarketList: 'ترتیب نمایش لیست بازار رمز ارز',
+	priceQuantity: 'قیمت/مقدار',
+	cumulativePriceAmount: 'قیمت/مقدار تجمعی',
+	priceChange: 'تغییر قیمت',
+	orderNotifications: 'اعلانات سفارش',
 };
 
 export default persian;

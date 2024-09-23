@@ -170,11 +170,11 @@
 import IconPencil from '~/assets/svg-icons/profile/brush.svg';
 import IconNumber from '~/assets/svg-icons/profile/number.svg';
 import IconChange from '~/assets/svg-icons/profile/change.svg';
-import IconChangeGreenRed from '~/assets/svg-icons/profile/change-green-red.svg';
+import IconChangeGreenRed from '~/public/images/svg/profile/change-green-red.svg';
 import IconScreen from '~/assets/svg-icons/profile/screen.svg';
-import IconClassic from '~/assets/svg-icons/profile/chart-classic.svg';
-import IconVertical from '~/assets/svg-icons/profile/chart-vertical.svg';
-import IconStandard from '~/assets/svg-icons/profile/chart-standard.svg';
+import IconClassic from '~/public/images/svg/profile/chart-classic.svg';
+import IconVertical from '~/public/images/svg/profile/chart-vertical.svg';
+import IconStandard from '~/public/images/svg/profile/chart-standard.svg';
 import IconNotification from '~/assets/svg-icons/menu/notification.svg';
 
 definePageMeta({
