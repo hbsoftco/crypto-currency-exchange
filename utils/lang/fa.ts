@@ -550,6 +550,15 @@ const persian = {
 	cumulativePriceAmount: 'قیمت/مقدار تجمعی',
 	priceChange: 'تغییر قیمت',
 	orderNotifications: 'اعلانات سفارش',
+	exactlyAsInIDCard: 'دقیقا مطابق کارت ملی',
+	name: 'نام',
+	family: 'نام خانوادگی',
+	nationalID: 'کد ملی',
+	birthDate: 'تاریخ تولد',
+	confirmAndContinue: 'تایید و ادامه',
+	selectAndUploadOneOfTheFollowingIdentityDocuments: 'یکی از مدارک هویتی زیر را انتخاب و بارگذاری کنید',
+	selectDoc: 'انتخاب مدرک',
+	selectFile: 'انتخاب فایل',
 };
 
 export default persian;
