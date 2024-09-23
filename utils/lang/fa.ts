@@ -554,6 +554,15 @@ const persian = {
 	unitPrice: 'قیمت واحد',
 	totalAmount: 'مبلغ کل',
 	transactionDetails: 'جزییات معامله ها',
+	exactlyAsInIDCard: 'دقیقا مطابق کارت ملی',
+	name: 'نام',
+	family: 'نام خانوادگی',
+	nationalID: 'کد ملی',
+	birthDate: 'تاریخ تولد',
+	confirmAndContinue: 'تایید و ادامه',
+	selectAndUploadOneOfTheFollowingIdentityDocuments: 'یکی از مدارک هویتی زیر را انتخاب و بارگذاری کنید',
+	selectDoc: 'انتخاب مدرک',
+	selectFile: 'انتخاب فایل',
 };
 
 export default persian;
