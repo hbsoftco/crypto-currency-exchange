@@ -23,7 +23,7 @@
 			</ClientOnly>
 
 			<div
-				v-if="countdown>0"
+				v-if="countdown>0 && countDownState"
 				class="absolute right-5 top-4"
 			>
 				<strong>{{ useNumber(countdown) }}</strong>
@@ -31,7 +31,7 @@
 			</div>
 
 			<div
-				v-else
+				v-else-if="countDownState"
 				class="flex justify-center flex-row-reverse cursor-pointer items-center absolute right-5 top-3.5"
 			>
 				<span class="ml-1 text-sm text-accent-green">{{ $t('resend') }}</span>
@@ -103,7 +103,7 @@ onUnmounted(() => {
 // 	otpInput.value?.fillInput(value);
 // };
 
-interface Props {
+interface PropsDefinition {
 	id: string;
 	modelValue: string | null;
 	type?: string;
@@ -115,10 +115,12 @@ interface Props {
 	labelClass?: string;
 	icon?: string;
 	errorMessage?: string;
+	countDownState?: boolean;
 }
 
-const props = defineProps<Props>();
-
+const props = withDefaults(defineProps<PropsDefinition>(), {
+	countDownState: true,
+});
 interface EmitDefinition {
 	(event: 'update:modelValue', value: unknown): void;
 }
