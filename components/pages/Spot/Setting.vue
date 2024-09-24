@@ -8,7 +8,7 @@
 			</div>
 			<div class="py-4">
 				<URadioGroup
-					v-model="selectedChanging"
+					v-model="settingsStore.selectedChanging"
 					:options="changes"
 					:ui="{
 						fieldset: 'w-full flex justify-between flex-wrap items-center',
@@ -37,7 +37,7 @@
 			</div>
 			<div class="py-4">
 				<URadioGroup
-					v-model="selectedTrading"
+					v-model="settingsStore.selectedTrading"
 					:options="trading"
 					:ui="{
 						fieldset: 'w-full flex justify-between items-center',
@@ -60,7 +60,7 @@
 			<div class="flex justify-between mb-3">
 				<span class="text-base font-medium">{{ $t('orderConfirmation') }}</span>
 				<UToggle
-					v-model="orderConfirmation"
+					v-model="settingsStore.orderConfirmation"
 					size="xl"
 				/>
 			</div>
@@ -167,12 +167,12 @@
 </template>
 
 <script setup lang="ts">
-const selectedChanging = ref('greenUp');
-const selectedTrading = ref('classic');
 const selectedDisplayListOrders = ref('priceQuantity');
 const selectedDisplayOrderCryptocurrencyMarketList = ref('priceChange');
 const orderNotifications = ref(false);
 const orderConfirmation = ref(false);
+
+const settingsStore = useSpotSettingsStore();
 
 const changes = [
 	{ value: 'greenUp', label: useT('greenUp'), icon: '/images/svg/profile/change-green-red.svg' },
