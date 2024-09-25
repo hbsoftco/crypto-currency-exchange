@@ -12,34 +12,24 @@
 				>
 					<div class="block md:hidden w-full">
 						<UiTitleWithBack
-							:title="$t('addBankInformation')"
+							:title="$t('deposit')"
 						/>
 					</div>
-					<h4
-						class="hidden md:block text-center text-2xl font-bold"
-					>
-						{{ $t("addBankInformation") }}
-					</h4>
-					<p class="text-base font-medium mt-4">
-						{{ $t('addBankInformationTitr') }}
-					</p>
-					<div class=" w-full">
-						<OtpFieldInput
-							id="phoneOrEmail"
-							v-model="phoneOrEmail"
-							type="text"
-							input-class="text-left"
-							label="cardNumber‌Bank"
-							placeholder=""
-							icon=""
-							dir="ltr"
-							:count-down-state="false"
-							class="w-full"
+					<div>
+						<NuxtImg
+							src="/images/wallet/deposit.webp"
+							alt="deposit"
 						/>
 					</div>
-					<UButton class="my-1 w-full bg-secondary-gray-light dark:bg-secondary-gray-dark text-primary-gray-light dark:text-primary-gray-dark flex justify-center items-center py-3">
-						{{ $t('confirm') }}
-					</UButton>
+					<div>
+						<p class="text-base font-medium mt-4">
+							{{ $t('addBankInformationTitr') }}
+						</p>
+
+						<UButton class="my-1 w-full bg-secondary-gray-light dark:bg-secondary-gray-dark text-primary-gray-light dark:text-primary-gray-dark flex justify-center items-center py-3">
+							{{ $t('confirm') }}
+						</UButton>
+					</div>
 				</div>
 				<IconClose
 					class="text-4xl hidden md:block"
@@ -53,9 +43,6 @@
 <script setup lang="ts">
 // import { useNumber } from '~/composables/useNumber';
 import IconClose from '~/assets/svg-icons/close.svg';
-import OtpFieldInput from '~/components/forms/OtpFieldInput.vue';
-
-const phoneOrEmail = ref<string>('');
 
 const isOpen = ref(true);
 interface EmitDefinition {

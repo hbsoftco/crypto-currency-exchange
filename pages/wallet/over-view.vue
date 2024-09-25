@@ -1,5 +1,9 @@
 <template>
 	<div>
+		<ModalDeposit
+			v-if="showDeposit"
+			@close="closeDepositDetail"
+		/>
 		<section class="mx-4 my-5 ">
 			<div class="grid grid-cols-1 md:grid-cols-2">
 				<div class="flex items-center">
@@ -10,10 +14,13 @@
 				</div>
 
 				<div class="flex justify-center md:justify-end mt-4 md:mt-0">
-					<div class="flex items-center  py-1 px-3 bg-hover-light dark:bg-hover-dark cursor-pointer">
+					<UButton
+						class="flex items-center  py-1 px-3 bg-hover-light dark:bg-hover-dark cursor-pointer"
+						@click="openDepositDetail"
+					>
 						<span class="text-sm font-medium ml-1">{{ $t('deposit') }}</span>
 						<IconArrowUpGreen class="text-accent-green" />
-					</div>
+					</UButton>
 					<div class="flex items-center  py-1 px-3 bg-hover-light dark:bg-hover-dark mx-2 cursor-pointer">
 						<span class="text-sm font-medium ml-1">{{ $t('pickedUp') }}</span>
 						<IconArrowDownRed class="text-accent-red" />
@@ -237,6 +244,7 @@ import { useNumber } from '~/composables/useNumber';
 import IconArrowDownRed from '~/assets/svg-icons/arrow-down-red.svg';
 import IconArrowUpGreen from '~/assets/svg-icons/arrow-up-green.svg';
 import IconMoney from '~/assets/svg-icons/wallet/money.svg';
+import ModalDeposit from '~/components/pages/Site/Wallet/ModalDeposit.vue';
 
 definePageMeta({
 	layout: 'wallet',
@@ -252,7 +260,7 @@ const rows = ref([
 
 const rowsTable = ref([
 	{ id: 1, title: useT('removable'), dollarValue: '۲۵.۰۰۰.۰۰۰', tomanValue: '۲۵.۰۰۰.۰۰۰', persent: '20%' },
-	{ id: 2, title: useT('LockedSpot'), dollarValue: '۲۵.۰۰۰.۰۰۰', tomanValue: '۲۵.۰۰۰.۰۰۰', persent: '20%' },
+	{ id: 2, title: useT('lockedSpot'), dollarValue: '۲۵.۰۰۰.۰۰۰', tomanValue: '۲۵.۰۰۰.۰۰۰', persent: '20%' },
 	{ id: 3, title: useT('lockedVitDra'), dollarValue: '۲۵.۰۰۰.۰۰۰', tomanValue: '۲۵.۰۰۰.۰۰۰', persent: '20%' },
 
 ]);
@@ -266,4 +274,13 @@ const items = [{
 	defaultOpen: false,
 	slot: 'getting-started',
 }];
+const showDeposit = ref(false);
+
+const openDepositDetail = () => {
+	showDeposit.value = true;
+};
+
+const closeDepositDetail = () => {
+	showDeposit.value = false;
+};
 </script>

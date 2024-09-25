@@ -36,7 +36,7 @@
 				</ULink>
 			</li>
 			<!-- showFutures -->
-			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
+			<!-- <li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
 					to="/wallet/futures"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
@@ -51,7 +51,7 @@
 						</span>
 					</div>
 				</ULink>
-			</li>
+			</li> -->
 			<!-- showHistory -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink

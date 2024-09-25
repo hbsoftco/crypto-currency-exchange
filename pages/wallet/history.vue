@@ -6,70 +6,79 @@
 					{{ $t('history') }}
 				</h1>
 			</div>
-			<UTabs
-				:items="items"
-				:ui="{
-					list: {
-						tab: {
-							font: 'font-normal',
-							size: 'text-sm',
-							border: 'border-none',
+			<div class="relative">
+				<UTabs
+					:items="items"
+					:ui="{
+						list: {
+							tab: {
+								font: 'font-normal',
+								size: 'text-sm',
+							},
 						},
-					},
-				}"
-			>
-				<template #default="{ item, selected }">
-					<span
-						class="truncate px-4 border-none py-2"
-						:class="[selected && ' bg-primary-yellow-light dark:bg-primary-yellow-dark border-b-none']"
-					>{{ $t(item.label) }}</span>
-				</template>
-				<template #item="{ item }">
-					<div
-						v-if="item.key === 'deposit'"
-						class="space-y-3"
-					>
-						ffff
-					</div>
-					<div
-						v-else-if="item.key === 'pickedUp'"
-						class="space-y-3"
-					>
-						ooo
-					</div>
-					<div
-						v-else-if="item.key === 'transfer'"
-						class="space-y-3"
-					>
-						ooo
-					</div>
-					<div
-						v-else-if="item.key === 'subsetIncome'"
-						class="space-y-3"
-					>
-						ooo
-					</div>
-					<div
-						v-else-if="item.key === 'awards'"
-						class="space-y-3"
-					>
-						<Award />
-					</div>
-					<div
-						v-else-if="item.key === 'other'"
-						class="space-y-3"
-					>
-						<Order />
-					</div>
-				</template>
-			</UTabs>
+					}"
+				>
+					<template #default="{ item, selected }">
+						<span
+							class="truncate"
+							:class="[selected && 'text-primary-500 dark:text-primary-400']"
+						>{{ $t(item.label) }}</span>
+					</template>
+					<template #item="{ item }">
+						<div
+							v-if="item.key === 'deposit'"
+							class="space-y-3"
+						>
+							<Deposit />
+						</div>
+						<div
+							v-else-if="item.key === 'pickedUp'"
+							class="space-y-3"
+						>
+							<span>{{ $t('empty') }}</span>
+						</div>
+						<div
+							v-else-if="item.key === 'transfer'"
+							class="space-y-3"
+						>
+							<Transfer />
+						</div>
+						<div
+							v-else-if="item.key === 'subsetIncome'"
+							class="space-y-3"
+						>
+							<SubsetIncome />
+						</div>
+						<div
+							v-else-if="item.key === 'awards'"
+							class="space-y-3"
+						>
+							<Award />
+						</div>
+						<div
+							v-else-if="item.key === 'other'"
+							class="space-y-3"
+						>
+							<Order />
+						</div>
+					</template>
+				</UTabs>
+
+				<div class="absolute left-4 top-3">
+					<IconPdf class="text-2xl text-subtle-text-light dark:text-subtle-text-dark cursor-pointer " />
+				</div>
+			</div>
 		</section>
 	</div>
 </template>
 
 <script setup lang="ts">
+import SubsetIncome from '~/components/pages/Site/Wallet/History/SubsetIncome/SubsetIncome.vue';
 import Award from '~/components/pages/Site/Wallet/History/Award/Award.vue';
 import Order from '~/components/pages/Site/Wallet/History/Order/Order.vue';
+import Transfer from '~/components/pages/Site/Wallet/History/Transfer/Transfer.vue';
+import Deposit from '~/components/pages/Site/Wallet/History/Deposit/Deposit.vue';
+import IconPdf from '~/assets/svg-icons/wallet/pdf.svg';
 
 definePageMeta({
 	layout: 'wallet',
