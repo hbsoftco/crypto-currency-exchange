@@ -69,14 +69,16 @@
 					<UCheckbox
 						color="primary"
 						:label=" $t('limitPrice')"
-						:model-value="false"
+						:model-value="settingsStore.limitPrice"
+						@update:model-value="settingsStore.setLimitPrice"
 					/>
 				</div>
 				<div class="w-1/2">
 					<UCheckbox
 						color="primary"
 						:label="$t('market')"
-						:model-value="false"
+						:model-value="settingsStore.market"
+						@update:model-value="settingsStore.setMarket"
 					/>
 				</div>
 			</div>
@@ -85,14 +87,16 @@
 					<UCheckbox
 						color="primary"
 						:label=" $t('stopPrice')"
-						:model-value="false"
+						:model-value="settingsStore.stopPrice"
+						@update:model-value="settingsStore.setStopPrice"
 					/>
 				</div>
 				<div class="w-1/2">
 					<UCheckbox
 						color="primary"
 						:label="$t('stopMarket')"
-						:model-value="false"
+						:model-value="settingsStore.stopMarket"
+						@update:model-value="settingsStore.setStopMarket"
 					/>
 				</div>
 			</div>
@@ -104,7 +108,7 @@
 				<span class="text-base font-medium">
 					{{ $t('orderNotifications') }}</span>
 				<UToggle
-					v-model="orderNotifications"
+					v-model="settingsStore.orderNotifications"
 					size="xl"
 				/>
 			</div>
@@ -119,14 +123,14 @@
 			</div>
 			<div class="py-4">
 				<URadioGroup
-					v-model="selectedDisplayListOrders"
+					v-model="settingsStore.selectedDisplayListOrders"
 					:options="displayListOrders"
 					:ui="{
 						fieldset: 'w-full ml-20 flex justify-between items-center',
 					}"
 				>
 					<template #label="{ option }">
-						<p class="flex flex-col justify-center ">
+						<p class="flex flex-col justify-center items-center cursor-pointer">
 							<NuxtImg
 								:src="option.icon"
 							/>
@@ -146,14 +150,14 @@
 			</div>
 			<div class="py-4">
 				<URadioGroup
-					v-model="selectedDisplayOrderCryptocurrencyMarketList"
+					v-model="settingsStore.selectedDisplayOrderCryptocurrencyMarketList"
 					:options="displayOrderCryptocurrencyMarketList"
 					:ui="{
 						fieldset: 'w-full ml-20 flex justify-between items-center',
 					}"
 				>
 					<template #label="{ option }">
-						<p class="flex flex-col justify-center ">
+						<p class="flex flex-col justify-center items-center cursor-pointer">
 							<NuxtImg
 								:src="option.icon"
 							/>
@@ -167,11 +171,6 @@
 </template>
 
 <script setup lang="ts">
-const selectedDisplayListOrders = ref('priceQuantity');
-const selectedDisplayOrderCryptocurrencyMarketList = ref('priceChange');
-const orderNotifications = ref(false);
-const orderConfirmation = ref(false);
-
 const settingsStore = useSpotSettingsStore();
 
 const changes = [

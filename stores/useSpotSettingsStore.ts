@@ -8,6 +8,12 @@ export const useSpotSettingsStore = defineStore('spotSettings', () => {
 	const orderNotifications = ref(false);
 	const orderConfirmation = ref(true);
 
+	// Checkbox
+	const limitPrice = ref(false);
+	const market = ref(false);
+	const stopPrice = ref(false);
+	const stopMarket = ref(false);
+
 	// Actions
 	const setSelectedChanging = (value: string) => {
 		selectedChanging.value = value;
@@ -33,6 +39,22 @@ export const useSpotSettingsStore = defineStore('spotSettings', () => {
 		orderConfirmation.value = value;
 	};
 
+	const setLimitPrice = (value: boolean) => {
+		limitPrice.value = value;
+	};
+
+	const setMarket = (value: boolean) => {
+		market.value = value;
+	};
+
+	const setStopPrice = (value: boolean) => {
+		stopPrice.value = value;
+	};
+
+	const setStopMarket = (value: boolean) => {
+		stopMarket.value = value;
+	};
+
 	return {
 		// States
 		selectedChanging,
@@ -42,6 +64,11 @@ export const useSpotSettingsStore = defineStore('spotSettings', () => {
 		orderNotifications,
 		orderConfirmation,
 
+		limitPrice,
+		market,
+		stopPrice,
+		stopMarket,
+
 		// Actions
 		setSelectedChanging,
 		setSelectedTrading,
@@ -49,5 +76,10 @@ export const useSpotSettingsStore = defineStore('spotSettings', () => {
 		setSelectedDisplayOrderCryptocurrencyMarketList,
 		setOrderNotifications,
 		setOrderConfirmation,
+
+		setLimitPrice,
+		setMarket,
+		setStopPrice,
+		setStopMarket,
 	};
 });

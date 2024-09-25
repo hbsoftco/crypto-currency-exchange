@@ -2,7 +2,7 @@
 	<div>
 		<LayoutsDefaultHeader class="hidden md:block" />
 		<LayoutsDefaultMobileHeader class="block md:hidden" />
-		<div>
+		<div class="pb-10">
 			<slot />
 		</div>
 		<LayoutsTradeFooter />

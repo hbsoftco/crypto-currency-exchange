@@ -24,6 +24,31 @@ type GetMarketsParams = {
 	pageSize?: string;
 };
 
+type getTradesListParams = {
+	marketId?: string;
+	symbol?: string;
+	orderSide: string;
+	orderType?: string;
+	assetType?: string;
+	uniqueTag?: string;
+	from?: string;
+	to?: string;
+	pageNumber?: string;
+	pageSize?: string;
+};
+
+type GetAssetListResponse = {
+	statement?: string;
+	assessmentCurrencyId?: string;
+	assetType: string;
+	boxMode?: string;
+	boxSortMode?: string;
+	miniAssetMode?: string;
+	currencyIDs?: string;
+	pageNumber?: string;
+	pageSize?: string;
+};
+
 type GetCurrencyParams = {
 	id: string;
 	languageId: string;
@@ -50,6 +75,8 @@ export type {
 	GetMarketsParams,
 	GetMarketListWithSparkLineChartParams,
 	GetMarketStatusParams,
+	getTradesListParams,
 	GetMarketListByCategoryParams,
+	GetAssetListResponse,
 	KeyValue,
 };

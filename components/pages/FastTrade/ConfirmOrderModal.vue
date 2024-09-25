@@ -5,10 +5,10 @@
 			fullscreen
 		>
 			<div
-				class="h-full flex flex-col items-center justify-center bg-secondary-gray-light dark:bg-secondary-gray-dark"
+				class="h-full flex flex-col items-center justify-center"
 			>
 				<div
-					class="w-full md:w-[39.5rem] flex flex-col justify-center items-center bg-background-light dark:bg-background-dark px-2 md:px-20 py-10 md:py-8 mb-0 md:mb-6 my-48 md:my-0"
+					class="w-full md:w-[39.5rem] flex flex-col justify-center items-center rounded-md bg-background-light dark:bg-background-dark px-2 md:px-20 py-10 md:py-8 mb-0 md:mb-6 my-48 md:my-0"
 				>
 					<div class="block md:hidden w-full">
 						<div class="flex justify-between items-center py-4 border-b border-primary-gray-light dark:border-primary-gray-dark">
@@ -80,7 +80,7 @@
 					</UButton>
 				</div>
 				<IconClose
-					class="text-4xl hidden md:block"
+					class="text-4xl hidden md:block cursor-pointer"
 					@click="closeModal(false)"
 				/>
 			</div>
@@ -93,7 +93,7 @@ import IconClose from '~/assets/svg-icons/close.svg';
 import { useNumber } from '~/composables/useNumber';
 
 const selected = ref(true);
-const translatedLabel = useT('doNotdisplayAnymore');
+const translatedLabel = useT('doNotDisplayAnymore');
 
 const isOpen = ref(true);
 interface EmitDefinition {

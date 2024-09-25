@@ -74,6 +74,9 @@ export default <Partial<Config>>{
 					green: '#4CAF50',
 					red: '#F44336',
 				},
+				'backdrop': {
+					light: '#585858',
+				},
 			},
 			fontFamily: {
 				dana: ['dana'],
