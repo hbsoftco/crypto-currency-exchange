@@ -6,24 +6,23 @@
 		<div
 			v-for="(coin, index) in coins"
 			:key="index"
-			class="mx-1 cursor-pointer border-b last:border-none border-b-primary-gray-light dark:border-b-primary-gray-dark py-2 pb-3"
+			class="mx-1 cursor-pointer border-b last:border-none border-b-primary-gray-light dark:border-b-primary-gray-dark"
 		>
-			<div class="flex justify-start items-center">
-				<NuxtImg
-					src="/images/delete/bitcoin.png"
-					alt="bitcoin"
-					class="w-4 h-4 ml-2"
-				/>
-				<div>
-					<span class="text-base font-medium">BTC</span>
-					<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-50 mx-1">/</span>
-					<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-50">USDT</span>
+			<div class="flex justify-between">
+				<div class="flex items-center">
+					<NuxtImg
+						src="/images/delete/bitcoin.png"
+						alt="Brand Logo"
+						class="w-4 h-4 mr-1"
+					/>
+					<div class="flex mr-1 items-center">
+						<span class="text-xs font-normal">USDT</span>/
+						<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">BTC</span>
+					</div>
 				</div>
-			</div>
-			<div class="flex justify-start items-center text-sm font-normal text-subtle-text-light dark:text-subtle-text-50">
-				<span>ببیتکوین</span>
-				<span class="mx-1">/</span>
-				<span>تتر</span>
+				<div class=" text-xs font-normal text-left text-accent-red">
+					<span>{{ useNumber('27022.70') }}</span>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -31,6 +30,8 @@
 
 <script setup lang="ts">
 import MenuTradeFilters from './MenuTradeFilters.vue';
+
+import { useNumber } from '~/composables/useNumber';
 
 const coins = [1, 2, 3, 4, 5, 6, 6, 3];
 </script>

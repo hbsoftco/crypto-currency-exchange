@@ -225,7 +225,7 @@ import IconAnchor from '~/assets/svg-icons/spot/anchor.svg';
 import IconAnalytics from '~/assets/svg-icons/spot/analytics.svg';
 import IconCoin from '~/assets/svg-icons/spot/coin.svg';
 import IconSalary from '~/assets/svg-icons/spot/salary.svg';
-import IconDate from '~/assets/svg-icons/menu/date.svg';
+import IconDate from '~/assets/svg-icons/menu/quick-menu/transaction-history.svg';
 import { useNumber } from '~/composables/useNumber';
 
 const isOpen = ref(true);
