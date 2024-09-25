@@ -33,6 +33,7 @@
 								type="text"
 								input-class="text-left"
 								:label="``"
+								:currencies="currencies"
 								placeholder=""
 								icon=""
 								dir="rtl"
@@ -53,6 +54,7 @@
 								type="text"
 								input-class="text-left"
 								:label="``"
+								:currencies="currencies"
 								placeholder=""
 								icon=""
 								dir="rtl"
@@ -115,10 +117,17 @@ import TradeChangeFieldInput from '~/components/forms/TradeChangeFieldInput.vue'
 import IconChange from '~/assets/svg-icons/trade/change.svg';
 import RecentTrades from '~/components/pages/FastTrade/RecentTrades.vue';
 import { useFastTrade } from '~/composables/trade/useFastTrade';
+import { Language } from '~/utils/enums/language.enum';
 
 definePageMeta({
 	layout: 'trade',
 });
+
+const baseDataStore = useBaseDataStore();
+
+await baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
+const currencies = baseDataStore.currencyBriefItems;
+// const currencies: CurrencyBriefItem[] = [];
 
 const { getTradesList } = useFastTrade();
 

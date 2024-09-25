@@ -29,7 +29,7 @@
 							v-model="phoneOrEmail"
 							type="text"
 							input-class="text-left"
-							label="cardNumber‌Bank"
+							label="cardNumberBank"
 							placeholder=""
 							icon=""
 							dir="ltr"

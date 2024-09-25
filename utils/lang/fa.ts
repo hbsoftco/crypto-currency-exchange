@@ -620,6 +620,8 @@ const persian = {
 	totalInventory: 'کل موجودی',
 	locked: 'قفل شده',
 	convertingBalancesTomans: 'تبدیل ته مانده ها به تومان',
+	notFound: 'پیدا نشد',
+	searching: 'در حال جستجو',
 };
 
 export default persian;
