@@ -1,8 +1,16 @@
 <template>
 	<div>
-		<ModalDeposit
+		<WithdrawalModal
+			v-if="showWithdrawal"
+			@close="closeWithdrawalDetail"
+		/>
+		<DepositModal
 			v-if="showDeposit"
 			@close="closeDepositDetail"
+		/>
+		<TransferModal
+			v-if="showTransfer"
+			@close="closeTransferDetail"
 		/>
 		<section class="mx-4 my-5 ">
 			<div class="grid grid-cols-1 md:grid-cols-2">
@@ -18,17 +26,23 @@
 						class="flex items-center  py-1 px-3 bg-hover-light dark:bg-hover-dark cursor-pointer"
 						@click="openDepositDetail"
 					>
-						<span class="text-sm font-medium ml-1">{{ $t('deposit') }}</span>
+						<span class="text-sm font-medium ml-1 text-black dark:text-white">{{ $t('deposit') }}</span>
 						<IconArrowUpGreen class="text-accent-green" />
 					</UButton>
-					<div class="flex items-center  py-1 px-3 bg-hover-light dark:bg-hover-dark mx-2 cursor-pointer">
-						<span class="text-sm font-medium ml-1">{{ $t('pickedUp') }}</span>
+					<UButton
+						class="flex items-center  py-1 px-3 bg-hover-light dark:bg-hover-dark mx-2 cursor-pointer"
+						@click="openWithdrawalDetail"
+					>
+						<span class="text-sm font-medium ml-1 text-black dark:text-white">{{ $t('pickedUp') }}</span>
 						<IconArrowDownRed class="text-accent-red" />
-					</div>
-					<div class="flex items-center py-1 px-3 bg-hover-light dark:bg-hover-dark cursor-pointer">
-						<span class="text-sm font-medium ml-1">{{ $t('transfer') }}</span>
+					</UButton>
+					<UButton
+						class="flex items-center py-1 px-3 bg-hover-light dark:bg-hover-dark cursor-pointer"
+						@click="openTransferDetail"
+					>
+						<span class="text-sm font-medium ml-1 text-black dark:text-white">{{ $t('transfer') }}</span>
 						<IconMoney class="text-accent-blue" />
-					</div>
+					</UButton>
 				</div>
 			</div>
 			<div class="grid grid-cols-1  md:flex justify-between py-4 border-none md:border-b border-primary-gray-light dark:border-primary-gray-dark">
@@ -244,7 +258,9 @@ import { useNumber } from '~/composables/useNumber';
 import IconArrowDownRed from '~/assets/svg-icons/arrow-down-red.svg';
 import IconArrowUpGreen from '~/assets/svg-icons/arrow-up-green.svg';
 import IconMoney from '~/assets/svg-icons/wallet/money.svg';
-import ModalDeposit from '~/components/pages/Site/Wallet/ModalDeposit.vue';
+import WithdrawalModal from '~/components/pages/Site/Wallet/WithdrawalModal.vue';
+import DepositModal from '~/components/pages/Site/Wallet/DepositModal.vue';
+import TransferModal from '~/components/pages/Site/Wallet/TransferModal.vue';
 
 definePageMeta({
 	layout: 'wallet',
@@ -275,6 +291,16 @@ const items = [{
 	slot: 'getting-started',
 }];
 const showDeposit = ref(false);
+const showWithdrawal = ref(false);
+const showTransfer = ref(false);
+
+const openWithdrawalDetail = () => {
+	showWithdrawal.value = true;
+};
+
+const closeWithdrawalDetail = () => {
+	showWithdrawal.value = false;
+};
 
 const openDepositDetail = () => {
 	showDeposit.value = true;
@@ -282,5 +308,13 @@ const openDepositDetail = () => {
 
 const closeDepositDetail = () => {
 	showDeposit.value = false;
+};
+
+const openTransferDetail = () => {
+	showTransfer.value = true;
+};
+
+const closeTransferDetail = () => {
+	showTransfer.value = false;
 };
 </script>

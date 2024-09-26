@@ -1,5 +1,17 @@
 <template>
 	<div>
+		<WithdrawalModal
+			v-if="showWithdrawal"
+			@close="closeWithdrawalDetail"
+		/>
+		<DepositModal
+			v-if="showDeposit"
+			@close="closeDepositDetail"
+		/>
+		<TransferModal
+			v-if="showTransfer"
+			@close="closeTransferDetail"
+		/>
 		<section class="mx-4 my-5 ">
 			<div class="grid grid-cols-1 md:grid-cols-2">
 				<div class="flex items-center">
@@ -10,18 +22,27 @@
 				</div>
 
 				<div class="flex justify-center md:justify-end mt-4 md:mt-0">
-					<div class="flex items-center  py-1 px-3 bg-hover-light dark:bg-hover-dark cursor-pointer">
-						<span class="text-sm font-medium ml-1">{{ $t('deposit') }}</span>
+					<UButton
+						class="flex items-center  py-1 px-3 bg-hover-light dark:bg-hover-dark cursor-pointer"
+						@click="openDepositDetail"
+					>
+						<span class="text-sm font-medium ml-1 text-black dark:text-white">{{ $t('deposit') }}</span>
 						<IconArrowUpGreen class="text-accent-green" />
-					</div>
-					<div class="flex items-center  py-1 px-3 bg-hover-light dark:bg-hover-dark mx-2 cursor-pointer">
-						<span class="text-sm font-medium ml-1">{{ $t('pickedUp') }}</span>
+					</UButton>
+					<UButton
+						class="flex items-center  py-1 px-3 bg-hover-light dark:bg-hover-dark mx-2 cursor-pointer"
+						@click="openWithdrawalDetail"
+					>
+						<span class="text-sm font-medium ml-1 text-black dark:text-white">{{ $t('pickedUp') }}</span>
 						<IconArrowDownRed class="text-accent-red" />
-					</div>
-					<div class="flex items-center py-1 px-3 bg-hover-light dark:bg-hover-dark cursor-pointer">
-						<span class="text-sm font-medium ml-1">{{ $t('transfer') }}</span>
+					</UButton>
+					<UButton
+						class="flex items-center py-1 px-3 bg-hover-light dark:bg-hover-dark cursor-pointer"
+						@click="openTransferDetail"
+					>
+						<span class="text-sm font-medium ml-1 text-black dark:text-white">{{ $t('transfer') }}</span>
 						<IconMoney class="text-accent-blue" />
-					</div>
+					</UButton>
 				</div>
 			</div>
 		</section>
@@ -255,6 +276,9 @@ import IconMoney from '~/assets/svg-icons/wallet/money.svg';
 import { useNumber } from '~/composables/useNumber';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
 import SearchCrypto from '~/components/forms/SearchCrypto.vue';
+import WithdrawalModal from '~/components/pages/Site/Wallet/WithdrawalModal.vue';
+import DepositModal from '~/components/pages/Site/Wallet/DepositModal.vue';
+import TransferModal from '~/components/pages/Site/Wallet/TransferModal.vue';
 
 definePageMeta({
 	layout: 'wallet',
@@ -280,4 +304,31 @@ const currentPage = ref(1);
 function onPageChange(newPage: number) {
 	currentPage.value = newPage;
 }
+const showDeposit = ref(false);
+const showWithdrawal = ref(false);
+const showTransfer = ref(false);
+
+const openWithdrawalDetail = () => {
+	showWithdrawal.value = true;
+};
+
+const closeWithdrawalDetail = () => {
+	showWithdrawal.value = false;
+};
+
+const openDepositDetail = () => {
+	showDeposit.value = true;
+};
+
+const closeDepositDetail = () => {
+	showDeposit.value = false;
+};
+
+const openTransferDetail = () => {
+	showTransfer.value = true;
+};
+
+const closeTransferDetail = () => {
+	showTransfer.value = false;
+};
 </script>
