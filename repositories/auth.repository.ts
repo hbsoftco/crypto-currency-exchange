@@ -8,7 +8,7 @@ import type { SignupByEmailDto, SignupByMobileDto } from '~/types/dto/signup.dto
 import type { ValidateCaptchaDto } from '~/types/dto/validate-captcha.dto';
 import type { CheckCodeDto } from '~/types/dto/verification.dto';
 import type { ResposneType } from '~/types/response.types';
-import type { CheckOTCResponse } from '~/types/response/check-otc.types';
+import type { CheckOTCResponse, GetSocketListenKeyResponse } from '~/types/response/check-otc.types';
 import type { LoginByEmailResponse } from '~/types/response/login.types';
 import type { SignUpResponse } from '~/types/response/sign-up.types';
 import type { VerificationCheckCodeResponse } from '~/types/response/verification.types';
@@ -27,6 +27,8 @@ type AuthRepository = {
 	checkCodeVerification: (data: CheckCodeDto) => Promise<VerificationCheckCodeResponse>;
 	// OTC
 	generateNewOTC: () => Promise<CheckOTCResponse>;
+	// listenKey Socket
+	getSocketListenKey: () => Promise<GetSocketListenKeyResponse>;
 };
 
 export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthRepository => ({
@@ -91,6 +93,15 @@ export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthR
 	async generateNewOTC(): Promise<CheckOTCResponse> {
 		const response = await fetch<CheckOTCResponse>(`/v1/otc/check`, {
 			noAuth: false,
+		} as CustomNitroFetchOptions);
+		return response;
+	},
+	// listenKey Socket
+	async getSocketListenKey(): Promise<GetSocketListenKeyResponse> {
+		const url = '/v1/user/trader/commission_list';
+		const response = await fetch<GetSocketListenKeyResponse>(`${url}`, {
+			noAuth: false,
+			apiName: url,
 		} as CustomNitroFetchOptions);
 		return response;
 	},

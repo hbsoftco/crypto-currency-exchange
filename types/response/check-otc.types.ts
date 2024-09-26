@@ -3,6 +3,12 @@ type CheckOTCResponse = {
 	statusCode: number;
 };
 
+type GetSocketListenKeyResponse = {
+	result: string;
+	statusCode: number;
+};
+
 export type {
+	GetSocketListenKeyResponse,
 	CheckOTCResponse,
 };

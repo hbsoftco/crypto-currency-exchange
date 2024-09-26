@@ -5,6 +5,7 @@ export const useAuth = () => {
 	const auth = authRepository($api);
 
 	const loading = ref(false);
+	const socketListenKeyLoading = ref(false);
 
 	const refreshOTC = async () => {
 		loading.value = true;
@@ -26,7 +27,28 @@ export const useAuth = () => {
 		}
 	};
 
+	const getSocketListenKey = async () => {
+		socketListenKeyLoading.value = true;
+		try {
+			const response = await auth.getSocketListenKey();
+
+			const authStore = useAuthStore();
+			if (response.result) {
+				authStore.saveSocketListenKey(response.result);
+			}
+
+			return response;
+		}
+		catch (error) {
+			return error;
+		}
+		finally {
+			socketListenKeyLoading.value = false;
+		}
+	};
+
 	return {
+		getSocketListenKey,
 		refreshOTC,
 	};
 };

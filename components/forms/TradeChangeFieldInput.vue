@@ -57,6 +57,7 @@
 				<input
 					placeholder="0.00"
 					type="text"
+					:readonly="readonly"
 					dir="ltr"
 					class="outline-none text-left p-1 bg-transparent z-10"
 				>
@@ -92,6 +93,7 @@ interface Props {
 	label: string;
 	placeholder?: string;
 	required?: boolean;
+	readonly?: boolean;
 	disabled?: boolean;
 	inputClass?: string;
 	labelClass?: string;
@@ -123,14 +125,14 @@ onMounted(async () => {
 		currencyMap.set(currency.id, currency);
 	});
 
-	filteredCurrencies.value = baseDataStore.currencyBriefItems.slice(0, 300);
+	filteredCurrencies.value = baseDataStore.currencyBriefItems.slice(0, 200);
 });
 
 const search = (q: string) => {
 	loading.value = true;
 
 	if (!q) {
-		filteredCurrencies.value = Array.from(currencyMap.values()).slice(0, 300);
+		filteredCurrencies.value = Array.from(currencyMap.values()).slice(0, 200);
 	}
 	else {
 		const results = Array.from(currencyMap.values()).filter((currency) =>

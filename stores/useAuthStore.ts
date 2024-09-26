@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 
+import { authRepository } from '~/repositories/auth.repository';
 import type { ErrorResponse } from '~/types/response/error.type';
 
 interface AuthData {
@@ -9,11 +10,15 @@ interface AuthData {
 }
 
 export const useAuthStore = defineStore('auth', () => {
+	const { $api } = useNuxtApp();
+
 	const otc = ref<string | null>(null);
 	const userId = ref<number | null>(null);
 	const userSecretKey = ref<number | null>(null);
 
 	const isLoggedIn = computed(() => !!otc.value);
+
+	const listenKeyCookie = useCookie('otc', { path: '/', maxAge: 60 * 60 * 24 * 365 });
 
 	const otcCookie = useCookie('otc', { path: '/', maxAge: 60 * 60 * 24 * 365 });
 	const userIdCookie = useCookie('userId', { path: '/', maxAge: 60 * 60 * 24 * 365 });
@@ -91,6 +96,38 @@ export const useAuthStore = defineStore('auth', () => {
 		}
 	};
 
+	// Socket
+	const listenKey = ref<string | null>(null);
+	const isSocketListenKeyLoading = ref(false);
+
+	const getSocketListenKey = async () => {
+		const authRepo = authRepository($api);
+		isSocketListenKeyLoading.value = true;
+
+		try {
+			const response = await authRepo.getSocketListenKey();
+			if (response.result) {
+				saveSocketListenKey(response.result);
+				isSocketListenKeyLoading.value = true;
+			}
+		}
+		catch (error) {
+			throw Error(String(error));
+		}
+		finally {
+			isSocketListenKeyLoading.value = false;
+		}
+	};
+
+	const saveSocketListenKey = (newListenKey: string) => {
+		if (newListenKey) {
+			listenKey.value = newListenKey;
+			listenKeyCookie.value = newListenKey;
+		}
+	};
+
+	const socketListenKey = computed(() => listenKeyCookie.value);
+
 	return {
 		otc,
 		userId,
@@ -102,5 +139,9 @@ export const useAuthStore = defineStore('auth', () => {
 		savePassword,
 		getAuthHeaders,
 		saveNewOTC,
+		// Socket
+		getSocketListenKey,
+		saveSocketListenKey,
+		socketListenKey,
 	};
 });

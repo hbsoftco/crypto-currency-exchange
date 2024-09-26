@@ -10,22 +10,15 @@ type TradeRepository = {
 
 export const tradeRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): TradeRepository => ({
 	async getTradesList(params: getTradesListParams): Promise<GetTradesResponse> {
-		const query = new URLSearchParams({
-			marketId: params.marketId || '',
-			symbol: params.symbol || '',
-			orderSide: params.orderSide,
-			orderType: params.orderType || '',
-			assetType: params.assetType || '',
-			uniqueTag: params.uniqueTag || '',
-			from: params.from || '',
-			to: params.to || '',
-			pageNumber: params.pageNumber || '',
-			pageSize: params.pageSize || '',
-		});
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
 
 		const url = '/v1/spot/trade/list';
 		const response = await fetch<GetTradesResponse>(`${url}?${query.toString()}`, {
 			noAuth: false,
+			apiName: url,
 		} as CustomNitroFetchOptions);
 
 		return response;

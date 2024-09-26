@@ -37,7 +37,7 @@ type getTradesListParams = {
 	pageSize?: string;
 };
 
-type GetAssetListResponse = {
+type GetAssetListParams = {
 	statement?: string;
 	assessmentCurrencyId?: string;
 	assetType: string;
@@ -58,6 +58,10 @@ type GetMarketStatusParams = {
 	rowCount: number;
 };
 
+type GetUserTraderCommissionListParams = {
+	marketType: string;
+};
+
 type GetMarketListByCategoryParams = {
 	rowCount: string;
 	marketTypeId: string;
@@ -73,10 +77,11 @@ export type {
 	GetLanguageParams,
 	GetCurrencyParams,
 	GetMarketsParams,
+	GetUserTraderCommissionListParams,
 	GetMarketListWithSparkLineChartParams,
 	GetMarketStatusParams,
 	getTradesListParams,
 	GetMarketListByCategoryParams,
-	GetAssetListResponse,
+	GetAssetListParams,
 	KeyValue,
 };

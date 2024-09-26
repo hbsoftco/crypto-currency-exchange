@@ -52,6 +52,7 @@
 								id="inputTrade2"
 								v-model="inputTrade2"
 								type="text"
+								:readonly="true"
 								input-class="text-left"
 								:label="``"
 								:currencies="currencies"
@@ -118,6 +119,8 @@ import IconChange from '~/assets/svg-icons/trade/change.svg';
 import RecentTrades from '~/components/pages/FastTrade/RecentTrades.vue';
 import { useFastTrade } from '~/composables/trade/useFastTrade';
 import { Language } from '~/utils/enums/language.enum';
+import { MarketType } from '~/utils/enums/market.enum';
+import { BoxMode, MiniAssetMode } from '~/utils/enums/asset.enum';
 
 definePageMeta({
 	layout: 'trade',
@@ -129,7 +132,7 @@ await baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
 const currencies = baseDataStore.currencyBriefItems;
 // const currencies: CurrencyBriefItem[] = [];
 
-const { getTradesList } = useFastTrade();
+const { getTradesList, getAssetList, getUserTraderCommissionList } = useFastTrade();
 
 const params = ref({
 	marketId: '',
@@ -157,8 +160,39 @@ const fetchTrades = async () => {
 	}
 };
 
+const fetchAssetList = async () => {
+	try {
+		const result = await getAssetList({
+			pageSize: '1000',
+			assetType: useEnv('assetType'),
+			boxMode: String(BoxMode.Spot),
+			miniAssetMode: String(MiniAssetMode.NoMiniAsset),
+		});
+		// tradesList.value = result;
+		console.log(result);
+	}
+	catch (error) {
+		console.error('Error fetching trades:', error);
+	}
+};
+
+const fetchUserTraderCommissionList = async () => {
+	try {
+		const result = await getUserTraderCommissionList({
+			marketType: String(MarketType.SPOT),
+		});
+		// tradesList.value = result;
+		console.log(result);
+	}
+	catch (error) {
+		console.error('Error fetching trades:', error);
+	}
+};
+
 onMounted(async () => {
+	await fetchAssetList();
 	await fetchTrades();
+	await fetchUserTraderCommissionList();
 });
 
 const inputTrade1 = ref('');

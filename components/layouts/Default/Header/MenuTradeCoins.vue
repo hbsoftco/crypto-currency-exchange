@@ -8,7 +8,10 @@
 			:key="index"
 			class="mx-1 cursor-pointer border-b last:border-none border-b-primary-gray-light dark:border-b-primary-gray-dark"
 		>
-			<div class="flex justify-between">
+			<ULink
+				to="/fast-trade"
+				class="flex justify-between"
+			>
 				<div class="flex items-center">
 					<NuxtImg
 						src="/images/delete/bitcoin.png"
@@ -23,7 +26,7 @@
 				<div class=" text-xs font-normal text-left text-accent-red">
 					<span>{{ useNumber('27022.70') }}</span>
 				</div>
-			</div>
+			</ULink>
 		</div>
 	</div>
 </template>
