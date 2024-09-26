@@ -114,28 +114,35 @@ const filteredCurrencies = ref<CurrencyBriefItem[]>(props.currencies);
 
 const baseDataStore = useBaseDataStore();
 
+const currencyMap = new Map<number, CurrencyBriefItem>();
+
 onMounted(async () => {
 	await baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
-	filteredCurrencies.value = baseDataStore.currencyBriefItems;
+
+	baseDataStore.currencyBriefItems.forEach((currency) => {
+		currencyMap.set(currency.id, currency);
+	});
+
+	filteredCurrencies.value = baseDataStore.currencyBriefItems.slice(0, 300);
 });
 
-function search(q: string) {
+const search = (q: string) => {
 	loading.value = true;
+
 	if (!q) {
-		filteredCurrencies.value = props.currencies.slice(0, 200);
-		loading.value = false;
-		return filteredCurrencies.value;
+		filteredCurrencies.value = Array.from(currencyMap.values()).slice(0, 300);
 	}
+	else {
+		const results = Array.from(currencyMap.values()).filter((currency) =>
+			currency.cName.toLowerCase().includes(q.toLowerCase())
+			|| currency.cSymbol.toLowerCase().includes(q.toLowerCase()),
+		);
 
-	const results = props.currencies.filter((currency) =>
-		currency.cName.toLowerCase().includes(q.toLowerCase())
-		|| currency.cSymbol.toLowerCase().includes(q.toLowerCase()),
-	);
-
-	filteredCurrencies.value = results;
+		filteredCurrencies.value = results;
+	}
 	loading.value = false;
 	return filteredCurrencies.value;
-}
+};
 
 watch(internalValue, (newValue) => {
 	emit('update:modelValue', newValue);
