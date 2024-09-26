@@ -45,7 +45,7 @@ export default defineAppConfig({
 			// position: 'top-0 right-0',
 		},
 		modal: {
-			background: 'bg-backdrop-light dark:bg-backdrop-light bg-opacity-40 backdrop-blur-sm dark:bg-opacity-40 dark:backdrop-blur-sm',
+			background: 'bg-background-light dark:bg-background-dark bg-opacity-40 backdrop-blur-sm dark:bg-opacity-40 dark:backdrop-blur-sm',
 		},
 	},
 	colorMode: {
