@@ -24,14 +24,14 @@
 </template>
 
 <script setup lang="ts">
-import Card from '~/components/pages/Site/Wallet/ProfitLoss/Spot/Card.vue';
-import ChartBuy from '~/components/pages/Site/Wallet/ProfitLoss/Spot/ChartBuy.vue';
-import TablePortfolio from '~/components/pages/Site/Wallet/ProfitLoss/Spot/Portfolio/index.vue';
+import Card from '~/components/pages/Site/Wallet/Menu/ProfitLoss/Spot/Card.vue';
+import ChartBuy from '~/components/pages/Site/Wallet/Menu/ProfitLoss/Spot/ChartBuy.vue';
+import TablePortfolio from '~/components/pages/Site/Wallet/Menu/ProfitLoss/Spot/Portfolio/index.vue';
 import IconBank from '~/assets/svg-icons/wallet/bank.svg';
 import IconCurrencyDeposit from '~/assets/svg-icons/menu/quick-menu/currency-deposit.svg';
 import IconWithdrawToman from '~/assets/svg-icons/menu/quick-menu/withdraw-toman.svg';
 import IconProfitLoss from '~/assets/svg-icons/wallet/wallet-upload.svg';
-import MapAssets from '~/components/pages/Site/Wallet/ProfitLoss/Spot/MapAssets.vue';
+import MapAssets from '~/components/pages/Site/Wallet/Menu/ProfitLoss/Spot/MapAssets.vue';
 
 const card = ref([
 	{ title: 'valueAssets', bgColor: 'bg-primary-yellow-light', toman: '۵۳', dollar: '1000', icon: IconBank },

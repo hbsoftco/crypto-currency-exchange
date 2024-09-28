@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import Spot from '~/components/pages/Site/Wallet/ProfitLoss/Spot/index.vue';
+import Spot from '~/components/pages/Site/Wallet/Menu/ProfitLoss/Spot/index.vue';
 
 definePageMeta({
 	layout: 'wallet',

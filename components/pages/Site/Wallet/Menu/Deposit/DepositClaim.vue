@@ -83,9 +83,6 @@ import FormsFieldInput from '~/components/forms/FieldInput.vue';
 
 const phoneOrEmail = ref<string>('');
 
-const transactionCode = useT('transactionCode');
-const cardNumber‌BankPlaceHolder = useT('0x39b4fc87f9b101e28c24d3e7001b4374a6c66e6270e3fac08592846fd092aa82');
-
 const isOpen = ref(true);
 interface EmitDefinition {
 	(event: 'close', value: boolean): void;

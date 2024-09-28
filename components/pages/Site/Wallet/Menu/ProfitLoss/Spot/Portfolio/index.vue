@@ -14,5 +14,5 @@
 </template>
 
 <script setup lang="ts">
-import Table from '~/components/pages/Site/Wallet/ProfitLoss/Spot/Portfolio/Table.vue';
+import Table from '~/components/pages/Site/Wallet/Menu/ProfitLoss/Spot/Portfolio/Table.vue';
 </script>

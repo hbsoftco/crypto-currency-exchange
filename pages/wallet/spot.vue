@@ -276,9 +276,9 @@ import IconMoney from '~/assets/svg-icons/wallet/money.svg';
 import { useNumber } from '~/composables/useNumber';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
 import SearchCrypto from '~/components/forms/SearchCrypto.vue';
-import WithdrawalModal from '~/components/pages/Site/Wallet/WithdrawalModal.vue';
-import DepositModal from '~/components/pages/Site/Wallet/DepositModal.vue';
-import TransferModal from '~/components/pages/Site/Wallet/TransferModal.vue';
+import WithdrawalModal from '~/components/pages/Site/Wallet/Menu/WithdrawalModal.vue';
+import DepositModal from '~/components/pages/Site/Wallet/Menu/DepositModal.vue';
+import TransferModal from '~/components/pages/Site/Wallet/Menu/TransferModal.vue';
 
 definePageMeta({
 	layout: 'wallet',
