@@ -6,16 +6,22 @@
 				<thead>
 					<tr class="pb-2 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark">
 						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark py-5">
-							{{ $t('date') }}
+							{{ $t('subSet') }}
 						</th>
 						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5">
-							{{ $t('currency2') }}
+							{{ $t('userCode') }}
 						</th>
 						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5">
-							{{ $t('amount') }}
+							{{ $t('tradingTime') }}
 						</th>
 						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5">
-							{{ $t('reason') }}
+							{{ $t('feeTime') }}
+						</th>
+						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5">
+							{{ $t('feePercentage') }}
+						</th>
+						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5">
+							{{ $t('feeAmount') }}
 						</th>
 					</tr>
 				</thead>
@@ -26,23 +32,22 @@
 						class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"
 					>
 						<td class="text-nowrap text-xs font-normal py-2">
-							{{ useNumber('row.date') }}
+							{{ $t('row.subSet') }}
 						</td>
 						<td class="text-nowrap text-xs font-normal py-2">
-							<div class="flex">
-								<NuxtImg
-									src="/images/delete/bitcoin.png"
-									alt="bitcoin"
-									class="w-4 h-4"
-								/>
-								<span class="text-xs font-normal mr-1">بیتکوین</span>
-							</div>
+							{{ $t('row.userCode') }}
 						</td>
 						<td class="text-nowrap text-xs font-normal py-2">
-							{{ useNumber(row.amount) }}
+							{{ useNumber(row.tradingTime) }}
 						</td>
 						<td class="text-nowrap text-xs font-normal py-2">
-							{{ useNumber(row.reason) }}
+							{{ useNumber(row.feeTime) }}
+						</td>
+						<td class="text-nowrap text-xs font-normal py-2">
+							{{ useNumber(row.feePercentage) }}
+						</td>
+						<td class="text-nowrap text-xs font-normal py-2">
+							{{ useNumber(row.feeAmount) }}
 						</td>
 					</tr>
 				</tbody>
@@ -68,12 +73,12 @@
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
-import FilterSearch from '~/components/pages/Site/Wallet/History/Award/FilterSearch.vue';
+import FilterSearch from '~/components/pages/Site/Wallet/Menu/History/SubsetIncome/FilterSearch.vue';
 
 const rows = ref([
-	{ id: 1, date: '۱۴۰۲/۰۲/۲۴ - ۲۱:۳۵', currency2: 'بیتکوین', amount: '115000', reason: 'محمدی' },
-	{ id: 1, date: '۱۴۰۲/۰۲/۲۴ - ۲۱:۳۵', currency2: 'بیتکوین', amount: '115000', reason: 'محمدی' },
-	{ id: 1, date: '۱۴۰۲/۰۲/۲۴ - ۲۱:۳۵', currency2: 'بیتکوین', amount: '115000', reason: 'محمدی' },
+	{ id: 1, subSet: 'حساب دوستان', userCode: 'UID ', tradingTime: 'زمان دعوت', feeTime: 'تومان', feePercentage: 'تومان', feeAmount: 'تومان' },
+	{ id: 1, subSet: 'حساب دوستان', userCode: 'UID ', tradingTime: 'زمان دعوت', feeTime: 'تومان', feePercentage: 'تومان', feeAmount: 'تومان' },
+	{ id: 1, subSet: 'حساب دوستان', userCode: 'UID ', tradingTime: 'زمان دعوت', feeTime: 'تومان', feePercentage: 'تومان', feeAmount: 'تومان' },
 
 ]);
 const currentPage = ref(1);

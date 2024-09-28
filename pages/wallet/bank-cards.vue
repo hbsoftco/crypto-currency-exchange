@@ -67,7 +67,7 @@
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
-import AddNewCard from '~/components/pages/Site/Wallet/Bank/AddNewCard.vue';
+import AddNewCard from '~/components/pages/Site/Wallet/Menu/Bank/AddNewCard.vue';
 
 definePageMeta({
 	layout: 'wallet',

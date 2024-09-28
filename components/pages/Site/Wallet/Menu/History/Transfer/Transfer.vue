@@ -9,13 +9,19 @@
 							{{ $t('date') }}
 						</th>
 						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5">
+							{{ $t('from') }}
+						</th>
+						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5">
+							{{ $t('to') }}
+						</th>
+						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5">
 							{{ $t('currency2') }}
 						</th>
 						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5">
 							{{ $t('amount') }}
 						</th>
 						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5">
-							{{ $t('reason') }}
+							{{ $t('tracontionNumber') }}
 						</th>
 					</tr>
 				</thead>
@@ -26,23 +32,32 @@
 						class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"
 					>
 						<td class="text-nowrap text-xs font-normal py-2">
-							{{ useNumber('row.date') }}
+							{{ useNumber(row.date) }}
+						</td>
+						<td class="text-nowrap text-xs font-normal py-2">
+							{{ useNumber(row.from) }}
+						</td>
+						<td class="text-nowrap text-xs font-normal py-2">
+							{{ useNumber(row.to) }}
 						</td>
 						<td class="text-nowrap text-xs font-normal py-2">
 							<div class="flex">
 								<NuxtImg
 									src="/images/delete/bitcoin.png"
-									alt="bitcoin"
+									alt="Brand Logo"
 									class="w-4 h-4"
 								/>
-								<span class="text-xs font-normal mr-1">بیتکوین</span>
+								<span class="mr-1">
+									{{ useNumber(row.currency2) }}
+
+								</span>
 							</div>
 						</td>
 						<td class="text-nowrap text-xs font-normal py-2">
 							{{ useNumber(row.amount) }}
 						</td>
 						<td class="text-nowrap text-xs font-normal py-2">
-							{{ useNumber(row.reason) }}
+							{{ useNumber(row.tracontionNumber) }}
 						</td>
 					</tr>
 				</tbody>
@@ -68,12 +83,12 @@
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
-import FilterSearch from '~/components/pages/Site/Wallet/History/Award/FilterSearch.vue';
+import FilterSearch from '~/components/pages/Site/Wallet/Menu/History/Transfer/FilterSearch.vue';
 
 const rows = ref([
-	{ id: 1, date: '۱۴۰۲/۰۲/۲۴ - ۲۱:۳۵', currency2: 'بیتکوین', amount: '115000', reason: 'محمدی' },
-	{ id: 1, date: '۱۴۰۲/۰۲/۲۴ - ۲۱:۳۵', currency2: 'بیتکوین', amount: '115000', reason: 'محمدی' },
-	{ id: 1, date: '۱۴۰۲/۰۲/۲۴ - ۲۱:۳۵', currency2: 'بیتکوین', amount: '115000', reason: 'محمدی' },
+	{ id: 1, date: '۱۴۰۲/۰۲/۲۴ - ۲۱:۳۵', from: 'قیمت معین ', to: 'قیمت معین ', currency2: 'بیت کوین', amount: '115000', tracontionNumber: '00000000000000000000' },
+	{ id: 1, date: '۱۴۰۲/۰۲/۲۴ - ۲۱:۳۵', from: 'قیمت معین ', to: 'قیمت معین ', currency2: 'بیت کوین', amount: '115000', tracontionNumber: '00000000000000000000' },
+	{ id: 1, date: '۱۴۰۲/۰۲/۲۴ - ۲۱:۳۵', from: 'قیمت معین ', to: 'قیمت معین ', currency2: 'بیت کوین', amount: '115000', tracontionNumber: '00000000000000000000' },
 
 ]);
 const currentPage = ref(1);

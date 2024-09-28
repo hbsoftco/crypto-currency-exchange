@@ -88,10 +88,10 @@
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
-import FilterSearch from '~/components/pages/Site/Wallet/Deposit/FilterSearch.vue';
+import FilterSearch from '~/components/pages/Site/Wallet/Menu/Deposit/FilterSearch.vue';
 import IconQrCode from '~/assets/svg-icons/profile/qrCode.svg';
-import DepositClaim from '~/components/pages/Site/Wallet/Deposit/DepositClaim.vue';
-import Invalidate from '~/components/pages/Site/Wallet/Deposit/Invalidate.vue';
+import DepositClaim from '~/components/pages/Site/Wallet/Menu/Deposit/DepositClaim.vue';
+import Invalidate from '~/components/pages/Site/Wallet/Menu/Deposit/Invalidate.vue';
 
 definePageMeta({
 	layout: 'wallet',
