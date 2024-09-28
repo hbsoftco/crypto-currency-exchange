@@ -1,12 +1,33 @@
 import type { Socket } from 'socket.io-client';
 import { io } from 'socket.io-client';
 
-export default defineNuxtPlugin((nuxtApp) => {
-	const socketBaseURL = useEnv('socketBaseUrl');
+import { useAuth } from '~/composables/auth/useAuth';
 
-	const socket: Socket = io(socketBaseURL, {
-		transports: ['websocket'],
-	});
+export default defineNuxtPlugin(async (nuxtApp) => {
+	try {
+		const socketBaseURL = useEnv('socketBaseUrl');
 
-	nuxtApp.provide('socket', socket);
+		const publicSocket: Socket = io(`${socketBaseURL}/v1/wss/public`, {
+			transports: ['websocket'],
+		});
+
+		console.log('publicSocket==================>', publicSocket);
+
+		const { getSocketListenKey } = useAuth();
+		const listenKey = await getSocketListenKey();
+		console.log(listenKey);
+
+		const privateSocket: Socket = io(`${socketBaseURL}/v1/wss/private`, {
+			transports: ['websocket'],
+			query: {
+				listenkey: listenKey,
+			},
+		});
+
+		nuxtApp.provide('publicSocket', publicSocket);
+		nuxtApp.provide('privateSocket', privateSocket);
+	}
+	catch (error) {
+		console.log(error);
+	}
 });

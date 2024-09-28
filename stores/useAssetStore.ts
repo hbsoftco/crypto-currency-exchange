@@ -1,58 +1,73 @@
-import { useProfile } from '~/composables/profile/useProfile';
-import type { ProfilePair } from '~/types/response/profile.types';
+import type { Socket } from 'socket.io-client';
+
+import { useFastTrade } from '~/composables/trade/useFastTrade';
+import type { AssetItem } from '~/types/response/asset.types';
+import { BoxMode, MiniAssetMode } from '~/utils/enums/asset.enum';
 
 export const useAssetStore = defineStore('asset', () => {
-	const profile = ref<ProfilePair[]>([]);
-	const isProfileDataFetched = ref(false);
 	const loading = ref(false);
 	const error = ref<string | null>(null);
+	const assets = ref<AssetItem[]>([]);
 
-	const authStore = useAuthStore();
+	const { getAssetList } = useFastTrade();
+	const { $privateSocket } = useNuxtApp();
+	const socket = $privateSocket as Socket;
 
-	const fetchProfile = async () => {
-		if (isProfileDataFetched.value || loading.value) return;
-
-		loading.value = true;
-		error.value = null;
-
+	const fetchAssetList = async () => {
 		try {
-			const { getCurrentUser } = useProfile();
-			const response = await getCurrentUser();
-			profile.value = response.result;
-			isProfileDataFetched.value = true;
+			const result = await getAssetList({
+				pageSize: '1000',
+				assetType: useEnv('assetType'),
+				boxMode: String(BoxMode.Spot),
+				miniAssetMode: String(MiniAssetMode.NoMiniAsset),
+			});
+			assets.value = result.result;
+			console.log('hiiii', result);
 		}
-		catch (err) {
-			error.value = 'Failed to fetch profile data';
-			console.error('Error fetching profile:', err);
-		}
-		finally {
-			loading.value = false;
+		catch (error) {
+			console.error('Error fetching trades:', error);
 		}
 	};
 
-	const clearProfile = () => {
-		profile.value = [];
-		isProfileDataFetched.value = false;
-	};
+	const subscribeToAssetUpdates = () => {
+		socket.on('connect', () => {
+			console.log('Connected to WebSocket');
 
-	const userProfile = computed(async () => {
-		if (authStore.isLoggedIn) {
-			if (!profile.value.length) {
-				await fetchProfile();
+			socket.emit('message', {
+				id: '123',
+				method: 'SUBSCRIBE',
+				topic: 'account@private.asset.list.v1',
+				params: {
+					boxMode: String(MiniAssetMode.NoMiniAsset),
+					assetTypeId: useEnv('assetType'),
+				},
+			});
+		});
+
+		socket.on('message', (data) => {
+			if (data.topic === 'account@private.asset.list.v1') {
+				console.log('WebSocket Asset Data:', data.data);
+				assets.value = data.data;
 			}
-			return profile.value;
-		}
-		else {
-			return [];
-		}
-	});
+		});
+
+		socket.on('disconnect', () => {
+			console.log('Disconnected from WebSocket');
+		});
+	};
+
+	const clearAssets = () => {
+		assets.value = [];
+	};
+
+	const assetList = computed(() => assets.value);
 
 	return {
-		profile,
 		loading,
 		error,
-		fetchProfile,
-		clearProfile,
-		userProfile,
+		fetchAssetList,
+		clearAssets,
+		subscribeToAssetUpdates,
+		assetList,
 	};
 });

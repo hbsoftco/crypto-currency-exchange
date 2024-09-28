@@ -1,12 +1,17 @@
-type Asset = {
-	name: string;
+type AssetItem = {
+	currencyId: number;
+	qAvailable: string;
+	qLocked: string;
+	aAvailable: string;
+	aLocked: string;
 };
 
 type GetAssetListResponse = {
 	statusCode: number;
-	result: Asset;
+	result: AssetItem[];
 };
 
 export type {
 	GetAssetListResponse,
+	AssetItem,
 };
