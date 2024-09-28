@@ -63,7 +63,7 @@
 						<!-- showAccount -->
 						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark mt-0">
 							<ULink
-								to=""
+								to="/account/authentication"
 								class="flex justify-between items-center w-full py-1.5"
 							>
 								<div class="flex justify-start items-center">
@@ -84,7 +84,7 @@
 						<!-- authentication -->
 						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 							<ULink
-								to=""
+								to="/account/security"
 								class="flex justify-between items-center w-full py-2.5"
 							>
 								<div class="flex justify-start items-center">
@@ -100,7 +100,7 @@
 						<!-- security -->
 						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 							<ULink
-								to=""
+								to="/account/fees"
 								class="flex justify-between items-center w-full py-2.5"
 							>
 								<div class="flex justify-start items-center">
@@ -116,7 +116,7 @@
 						<!-- fees -->
 						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark mt-0">
 							<ULink
-								to=""
+								to="/account/user-level"
 								class="flex justify-between items-center w-full py-1.5"
 							>
 								<div class="flex justify-start items-center">
@@ -135,7 +135,7 @@
 						<!-- userLevel -->
 						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 							<ULink
-								to=""
+								to="/account/manage-api"
 								class="flex justify-between items-center w-full py-2.5"
 							>
 								<div class="flex justify-start items-center">
@@ -151,7 +151,7 @@
 						<!-- manageAPI -->
 						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 							<ULink
-								to="/referral"
+								to="/account/invite-friends"
 								class="flex justify-between items-center w-full py-2.5"
 							>
 								<div class="flex justify-start items-center">
@@ -167,7 +167,7 @@
 						<!-- inviteFriends -->
 						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 							<ULink
-								to=""
+								to="/account/rewards"
 								class="flex justify-between items-center w-full py-2.5"
 							>
 								<div class="flex justify-start items-center">
@@ -183,7 +183,7 @@
 						<!-- awards -->
 						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 							<ULink
-								to=""
+								to="/account/top-users"
 								class="flex justify-between items-center w-full py-2.5"
 							>
 								<div class="flex justify-start items-center">
@@ -199,7 +199,7 @@
 						<!-- topUsers -->
 						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 							<ULink
-								to=""
+								to="/account/setting"
 								class="flex justify-between items-center w-full py-2.5"
 							>
 								<div class="flex justify-start items-center">
@@ -215,7 +215,7 @@
 						<!-- setting -->
 						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 							<ULink
-								to=""
+								to="/account/white-list"
 								class="flex justify-between items-center w-full py-2.5"
 							>
 								<div class="flex justify-start items-center">

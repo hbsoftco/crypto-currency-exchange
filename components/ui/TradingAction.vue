@@ -24,19 +24,21 @@
 				<span class="text-sm md:text-base text-subtle-text-light dark:text-subtle-text-50">{{ coin.quoteItem?.cSymbol }}</span>
 			</div>
 			<div class="hidden md:block">
-				<UButton
-					size="2xs"
-					class="px-6 font-medium text-sm rounded-md rounded-l-none"
-				>
-					{{ $t('trade') }}
-				</UButton>
-				<UButton
-					size="2xs"
-					variant="link"
-					class="px-6 font-medium text-sm border rounded-md rounded-r-none border-none outline-none"
-				>
-					{{ $t('detail') }}
-				</UButton>
+				<div class="flex justify-center items-center">
+					<UButton
+						:to="`/spot/${coin?.mSymbol}`"
+						class="text-xs font-normal text-black ml-1 py-1 rounded-l-none rounded-r-sm"
+					>
+						{{ $t("trade") }}
+					</UButton>
+					<div>
+						<ULink :to="`/markets/market-detail/${coin?.currencyBriefItem?.id}`">
+							<span
+								class="text-xs font-normal text-primary-yellow-light dark:text-primary-yellow-dark"
+							>{{ $t("detail") }}</span>
+						</ULink>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -41,6 +41,7 @@
 								color="white"
 								variant="ghost"
 								class="px-11 ml-1 font-medium text-sm border-primary-gray-light dark:border-primary-gray-dark border"
+								to="/wallet/deposit"
 							>
 								{{ $t("deposit") }}
 								<IconArrowUpGreen class="text-accent-green" />
@@ -49,6 +50,7 @@
 								color="white"
 								variant="ghost"
 								class="px-9 font-medium text-sm border-primary-gray-light dark:border-primary-gray-dark border"
+								to="/wallet/withdraw"
 							>
 								{{ $t("pickedUp") }}
 								<IconArrowDownRed class="text-accent-red" />
@@ -64,7 +66,7 @@
 									class="flex justify-between items-center w-full mx-3 p-2 border-b-primary-gray-light dark:border-b-primary-gray-dark border-b"
 								>
 									<ULink
-										to="#"
+										:to="item.url"
 										class="flex items-center w-full"
 									>
 										<component
@@ -100,18 +102,22 @@ const menuItems = [
 	{
 		name: 'overView',
 		icon: IconOverView,
+		url: '/wallet/over-view',
 	},
 	{
 		name: 'assets',
 		icon: IconAssets,
+		url: '/wallet/deposit-addresses',
 	},
 	{
 		name: 'history',
 		icon: IconHistory,
+		url: '/wallet/history',
 	},
 	{
 		name: 'portfolio',
 		icon: IconPortfolio,
+		url: '/wallet/profit-loss',
 	},
 ];
 </script>

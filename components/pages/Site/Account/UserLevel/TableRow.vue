@@ -54,8 +54,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
-
 import IconClose from '~/assets/svg-icons/close.svg';
 import IconArrowLeftActive from '~/assets/svg-icons/profile/arrow-left-active.svg';
 
