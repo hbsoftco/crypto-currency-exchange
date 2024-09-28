@@ -73,11 +73,11 @@
 </template>
 
 <script setup lang="ts">
-import SubsetIncome from '~/components/pages/Site/Wallet/History/SubsetIncome/SubsetIncome.vue';
-import Award from '~/components/pages/Site/Wallet/History/Award/Award.vue';
-import Order from '~/components/pages/Site/Wallet/History/Order/Order.vue';
-import Transfer from '~/components/pages/Site/Wallet/History/Transfer/Transfer.vue';
-import Deposit from '~/components/pages/Site/Wallet/History/Deposit/Deposit.vue';
+import SubsetIncome from '~/components/pages/Site/Wallet/Menu/History/SubsetIncome/SubsetIncome.vue';
+import Award from '~/components/pages/Site/Wallet/Menu/History/Award/Award.vue';
+import Order from '~/components/pages/Site/Wallet/Menu/History/Order/Order.vue';
+import Transfer from '~/components/pages/Site/Wallet/Menu/History/Transfer/Transfer.vue';
+import Deposit from '~/components/pages/Site/Wallet/Menu/History/Deposit/Deposit.vue';
 import IconPdf from '~/assets/svg-icons/wallet/pdf.svg';
 
 definePageMeta({

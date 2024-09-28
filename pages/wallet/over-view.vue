@@ -258,9 +258,9 @@ import { useNumber } from '~/composables/useNumber';
 import IconArrowDownRed from '~/assets/svg-icons/arrow-down-red.svg';
 import IconArrowUpGreen from '~/assets/svg-icons/arrow-up-green.svg';
 import IconMoney from '~/assets/svg-icons/wallet/money.svg';
-import WithdrawalModal from '~/components/pages/Site/Wallet/WithdrawalModal.vue';
-import DepositModal from '~/components/pages/Site/Wallet/DepositModal.vue';
-import TransferModal from '~/components/pages/Site/Wallet/TransferModal.vue';
+import WithdrawalModal from '~/components/pages/Site/Wallet/Menu/WithdrawalModal.vue';
+import DepositModal from '~/components/pages/Site/Wallet/Menu/DepositModal.vue';
+import TransferModal from '~/components/pages/Site/Wallet/Menu/TransferModal.vue';
 
 definePageMeta({
 	layout: 'wallet',
