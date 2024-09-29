@@ -17,12 +17,18 @@
 				>
 					<span
 						class="text-base font-bold text-subtle-text-light dark:text-subtle-text-dark"
-					>{{ useNumber("$2.83") }}</span>
-					<span class="text-sm font-normal text-accent-green mx-1">{{
-						useNumber("+2.83%")
-					}}</span>
+					>${{ useNumber(price) }}</span>
+					<span class="text-sm font-normal text-accent-green mx-1">
+						<UiChangePrice
+							classes="text-sm font-normal"
+							:show-percent="true"
+							pl="pl-0.5"
+							:change="parseFloat(String(priceChangePerc7d))"
+							:icon="false"
+						/>
+					</span>
 					<span
-						class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark"
+						class="text-sm ml-1 font-normal text-subtle-text-light dark:text-subtle-text-dark"
 					>(1D)</span>
 				</div>
 				<ul class="flex">
@@ -57,6 +63,12 @@ import { MarketType } from '~/utils/enums/market.enum';
 interface PropsDefinition {
 	symbol: string;
 	quote: string;
+	price: string;
+	priceChangePerc7d: string;
+	priceChangePerc24h: string;
+	priceChangePerc30d: string;
+	priceChangePerc60d: string;
+	priceChangePerc90d: string;
 }
 
 const baseDataStore = useBaseDataStore();

@@ -17,6 +17,13 @@
 					<div class="block mb-24">
 						<div>
 							<MarketChart
+								v-if="currency"
+								:price="currency.price"
+								:price-change-perc7d="currency.priceChangePerc7d"
+								:price-change-perc24h="currency.priceChangePerc24h"
+								:price-change-perc30d="currency.priceChangePerc30d"
+								:price-change-perc60d="currency.priceChangePerc60d"
+								:price-change-perc90d="currency.priceChangePerc90d"
 								:symbol="symbol"
 								:quote="quote"
 								class="hidden md:block"

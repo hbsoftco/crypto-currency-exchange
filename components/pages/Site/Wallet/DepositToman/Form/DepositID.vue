@@ -4,7 +4,9 @@
 			<IconPostal class="text-8xl" />
 		</div>
 		<div class="my-8 text-right">
-			<p class="text-base font-bold">{{ $t('createIdText') }}</p>
+			<p class="text-base font-bold">
+				{{ $t('createIdText') }}
+			</p>
 		</div>
 		<div class="w-full">
 			<UButton
