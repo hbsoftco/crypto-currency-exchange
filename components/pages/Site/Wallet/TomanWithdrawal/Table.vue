@@ -7,12 +7,12 @@
 		<div class="py-2 flex justify-between border-b border-primary-gray-light dark:border-primary-gray-dark">
 			<div>
 				<h3 class="text-base font-bold">
-					{{ $t('recentHarvest') }}
+					{{ $t('recentDeposits') }}
 				</h3>
 			</div>
 			<div>
 				<span class="text-sm font-normal cursor-pointer">
-					{{ $t('historyWithdrawals') }}
+					{{ $t('historyDeposits') }}
 				</span>
 			</div>
 		</div>
@@ -26,9 +26,6 @@
 							</th>
 							<th class="py-4 text-xs font-normal">
 								{{ $t('invoiceNumber') }}
-							</th>
-							<th class="py-4 text-xs font-normal">
-								{{ $t('currencyType') }}
 							</th>
 							<th class="py-4 text-xs font-normal">
 								{{ $t('amount') }}
@@ -51,16 +48,6 @@
 							</td>
 							<td class="text-xs font-normal text-nowrap py-2">
 								{{ useNumber(row.invoiceNumber) }}
-							</td>
-							<td class="text-xs font-normal text-nowrap py-2">
-								<div class=" flex justify-center items-center">
-									<NuxtImg
-										src="/images/delete/bitcoin.png"
-										alt="Brand Logo"
-										class="w-4 h-4 ml-1"
-									/>
-									{{ row.currencyType }}
-								</div>
 							</td>
 							<td class="text-xs font-normal text-nowrap py-2">
 								{{ row.amount }}
@@ -88,12 +75,12 @@
 
 <script setup>
 import { useNumber } from '~/composables/useNumber';
-import VerificationModal from '~/components/pages/Site/Wallet/Withdraw/VerificationModal.vue';
+import VerificationModal from '~/components/pages/Site/Wallet/TomanWithdrawal/VerificationModal.vue';
 
 const rows = ref([
-	{ id: 1, date: '۱۴۰۲/۰۲/۲۴ - ۲۱:۳۵', invoiceNumber: '22222222222222222222', currencyType: 'بیتکوین', amount: '115000', status: 'درحال انجام' },
-	{ id: 2, date: '۱۴۰۲/۰۲/۲۴ - ۲۱:۳۵', invoiceNumber: '22222222222222222222', currencyType: 'بیتکوین', amount: '115000', status: 'درحال انجام' },
-	{ id: 3, date: '۱۴۰۲/۰۲/۲۴ - ۲۱:۳۵', invoiceNumber: '22222222222222222222', currencyType: 'بیتکوین', amount: '115000', status: 'درحال انجام' },
+	{ id: 1, date: '۱۴۰۲/۰۲/۲۴ - ۲۱:۳۵', invoiceNumber: '22222222222222222222', amount: '115000', status: 'درحال انجام' },
+	{ id: 2, date: '۱۴۰۲/۰۲/۲۴ - ۲۱:۳۵', invoiceNumber: '22222222222222222222', amount: '115000', status: 'درحال انجام' },
+	{ id: 3, date: '۱۴۰۲/۰۲/۲۴ - ۲۱:۳۵', invoiceNumber: '22222222222222222222', amount: '115000', status: 'درحال انجام' },
 ]);
 
 const showDetail = ref(false);

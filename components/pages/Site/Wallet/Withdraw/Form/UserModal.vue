@@ -8,29 +8,57 @@
 				class="h-full flex flex-col items-center justify-center"
 			>
 				<div
-					class="w-full md:w-96 flex flex-col justify-center items-center text-center rounded-md bg-background-light dark:bg-background-dark px-2 md:px-14 py-6 md:py-8 mb-0 md:mb-6 my-32 md:my-0 mx-1 md:mx-32"
+					class="flex flex-col justify-center items-center text-center rounded-md bg-background-light dark:bg-background-dark px-2 md:px-14 py-6 md:py-8 mb-0 md:mb-6 my-32 md:my-0 mx-1 md:mx-32"
 				>
 					<div class="block md:hidden w-full">
 						<UiTitleWithBack
-							:title="$t('importantPoints')"
+							:title="$t('userSelect')"
 						/>
 					</div>
 					<div>
 						<h3 class="text-xl font-bold">
-							{{ $t('importantPoints') }}
+							{{ $t('userSelect') }}
 						</h3>
-						<div class="my-6">
-							<p class="text-xs font-normal text-justify">
-								{{ $t('pointTitle') }}
-							</p>
+						<div class="w-full md:w-96">
+							<SearchCrypto
+								id="phoneOrEmail"
+								v-model="phoneOrEmail"
+								type="text"
+								input-class="text-right"
+								label="search"
+								placeholder=""
+								icon="heroicons:magnifying-glass"
+							/>
 						</div>
-						<UButton
-							size="lg"
-							class="text-base font-medium px-6 py-2"
-							to="/"
-						>
-							{{ $t("confirm") }}
-						</UButton>
+						<div class="text-center">
+							<div
+								v-for="row in rows"
+								:key="row.id"
+								class="flex justify-between border-b border-b-primary-gray-light dark:border-b-primary-gray-dark last:border-none"
+							>
+								<span class="text-sm font-normal py-2 text-subtle-text-light dark:text-subtle-text-dark">
+									{{ row.name }}
+								</span>
+								<span class="text-sm font-normal py-2">
+									{{ row.user }}
+								</span>
+							</div>
+							<div class="flex justify-center">
+								<UPagination
+									:model-value="currentPage"
+									:page-count="10"
+									:total="100"
+									:max="4"
+									ul-class="flex space-x-2 bg-blue-500 border-none"
+									li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500"
+									button-class-base="flex items-center justify-center w-full h-full transition-colors duration-200"
+									button-class-inactive="bg-green-700 hover:bg-gray-600"
+									button-class-active="bg-blue-500"
+									class="my-4"
+									@update:model-value="onPageChange"
+								/>
+							</div>
+						</div>
 					</div>
 				</div>
 				<IconClose
@@ -45,7 +73,15 @@
 <script setup lang="ts">
 // import { useNumber } from '~/composables/useNumber';
 import IconClose from '~/assets/svg-icons/close.svg';
+import SearchCrypto from '~/components/forms/SearchCrypto.vue';
 
+const phoneOrEmail = ref('');
+const rows = ref([
+	{ id: 1, name: 'بیست کاراکتر توضیحات .', user: 'ashoja89@yahoo.com' },
+	{ id: 2, name: 'بیست کاراکتر توضیحات .', user: 'ashoja89@yahoo.com' },
+	{ id: 3, name: 'بیست کاراکتر توضیحات .', user: 'ashoja89@yahoo.com' },
+	{ id: 4, name: 'بیست کاراکتر توضیحات .', user: 'ashoja89@yahoo.com' },
+]);
 const isOpen = ref(true);
 interface EmitDefinition {
 	(event: 'close', value: boolean): void;
@@ -56,4 +92,9 @@ const emit = defineEmits<EmitDefinition>();
 const closeModal = async (value: boolean) => {
 	emit('close', value);
 };
+const currentPage = ref(1);
+
+function onPageChange(newPage: number) {
+	currentPage.value = newPage;
+}
 </script>
