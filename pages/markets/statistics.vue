@@ -72,8 +72,8 @@
 </template>
 
 <script setup lang="ts">
-import CurrencyCategorySlider from '~/components/pages/Site/Market/Statistics/CurrencyCategorySlider.vue';
-import MarketState from '~/components/pages/Site/Market/Statistics/MarketState.vue';
+import CurrencyCategorySlider from '~/components/pages/Market/Statistics/CurrencyCategorySlider.vue';
+import MarketState from '~/components/pages/Market/Statistics/MarketState.vue';
 import { useNumber } from '~/composables/useNumber';
 import { marketRepository } from '~/repositories/market.repository';
 import type { MarketCurrencyCategoriesResponse, MarketListByCategoryResponse, NeutralMarketItem, PriceChangeState } from '~/types/response/market.types';

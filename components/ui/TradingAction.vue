@@ -32,7 +32,7 @@
 					{{ $t('trade') }}
 				</UButton>
 				<UButton
-					:to="`/markets/market-detail/${coin?.currencyBriefItem?.id}`"
+					:to="`/coins/${coin?.currencyBriefItem?.cSymbol}`"
 					size="2xs"
 					variant="link"
 					class="px-6 font-medium text-sm border rounded-sm rounded-r-none border-none outline-none"

@@ -37,6 +37,15 @@ type getTradesListParams = {
 	pageSize?: string;
 };
 
+type getKlineParams = {
+	timeFrom?: string;
+	timeTo?: string;
+	candleCount?: string;
+	timeFrameType?: string;
+	symbol?: string;
+	marketId?: string;
+};
+
 type GetAssetListParams = {
 	statement?: string;
 	assessmentCurrencyId?: string;
@@ -73,6 +82,7 @@ type KeyValue = {
 };
 
 export type {
+	getKlineParams,
 	GetPinParams,
 	GetLanguageParams,
 	GetCurrencyParams,

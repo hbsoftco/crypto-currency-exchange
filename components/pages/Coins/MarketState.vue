@@ -1,12 +1,15 @@
 <template>
-	<div class="w-96">
+	<div class="w-full">
 		<ul>
 			<li
 				v-for="market in items"
 				:key="`market-state-${market.id}`"
 				class="flex justify-between items-center my-3 mx-2"
 			>
-				<div class="flex justify-between">
+				<ULink
+					class="flex justify-between"
+					:to="`/spot/${market?.marketBriefItem?.currencyBriefItem?.cSymbol}`"
+				>
 					<NuxtImg
 						:src="`https://api-bitland.site/media/currency/${market?.marketBriefItem?.currencyBriefItem?.cSymbol}.png`"
 						:alt="market?.marketBriefItem?.currencyBriefItem?.cName"
@@ -20,7 +23,7 @@
 							{{ market?.marketBriefItem?.currencyBriefItem?.cSymbol }}
 						</span>
 					</div>
-				</div>
+				</ULink>
 				<div>
 					<div>
 						<span class="text-sm font-normal mr-1">{{ useNumber(market?.indexPrice) }}</span>

@@ -41,12 +41,6 @@
 				text="showAllMarkets"
 			/>
 		</div>
-		<div
-			dir="ltr"
-			class="text-left"
-		>
-			<pre>{{ parsedMessages }}</pre>
-		</div>
 	</div>
 </template>
 
@@ -120,7 +114,7 @@ const getSocketDataForRow = (id: number) => {
 	return parsedMessages.value.find((msg) => msg.data.mi === id) || null;
 };
 
-const marketIdParams = ref<string>('3,4,6');
+const marketIdParams = ref<string>('');
 
 onMounted(async () => {
 	await fetchMarketData();

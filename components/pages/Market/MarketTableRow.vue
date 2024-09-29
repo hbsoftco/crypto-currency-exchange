@@ -37,14 +37,15 @@
 						<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ market.marketBriefItem?.quoteItem?.cSymbol }}</span>
 					</div>
 					<div class="hidden group-hover:block">
-						<div class="flex justify-center items-center">
+						<div class="flex justify-start items-center">
 							<UButton
+								:to="`/spot/${market?.marketBriefItem?.mSymbol}`"
 								class="text-xs font-normal text-black ml-1 py-1 rounded-l-none rounded-r-sm"
 							>
 								{{ $t("trade") }}
 							</UButton>
 							<div>
-								<ULink :to="`/markets/market-detail/${market?.marketBriefItem?.currencyBriefItem?.id}`">
+								<ULink :to="`/coins/${market?.marketBriefItem?.currencyBriefItem?.cSymbol}_${market?.marketBriefItem?.quoteItem?.cSymbol}`">
 									<span
 										class="text-xs font-normal text-primary-yellow-light dark:text-primary-yellow-dark"
 									>{{ $t("detail") }}</span>
@@ -72,13 +73,20 @@
 			{{ useNumber(market?.hPriceIn24H) }}
 		</td>
 		<td class="text-sm font-normal px-10 md:table-cell hidden text-left">
-			{{ useNumber(market?.hPriceIn24H) }}
+			{{ useNumber(market?.lPriceIn24H) }}
+		</td>
+		<td
+			class="text-sm font-normal px-10 md:table-cell hidden text-left"
+			dir="ltr"
+		>
+			{{ useNumber(formatBigNumber(market?.volumeOfTradesIn24H, 2)) }}
 		</td>
 	</tr>
 </template>
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
+import { formatBigNumber } from '~/utils/format-big-number';
 import IconStar from '~/assets/svg-icons/market/star.svg';
 import IconFillStar from '~/assets/svg-icons/market/fill-star.svg';
 import type { Market } from '~/types/response/market.types';

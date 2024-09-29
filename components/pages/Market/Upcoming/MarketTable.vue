@@ -1,11 +1,5 @@
 <template>
 	<div class="mt-8">
-		<MarketTableHeader
-			@filter-change="updateFilter"
-			@currency-change="updateCurrency"
-			@tag-change="updateTag"
-		/>
-
 		<div class="p-0 pt-2 md:pt-0 mt-4">
 			<table
 				class="min-w-full bg-background-light dark:bg-background-dark text-text-dark dark:text-text-light"
@@ -13,24 +7,19 @@
 				<thead>
 					<tr class="text-center font-normal md:font-medium text-sm md:text-base border-b border-primary-gray-light dark:border-primary-gray-dark">
 						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-0 md:px-10">
-							<span class="hidden md:block">{{ $t("tradingPair") }}</span>
-							<span class="block md:hidden">{{ $t("market") }}</span>
+							{{ $t("currencyName") }}
 						</th>
 						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-0 md:px-10">
-							<span class="hidden md:block">{{ $t("currentPrice") }}</span>
-							<span class="block md:hidden">{{ $t("lastPrice") }}</span>
+							{{ $t("currentPrice") }}
 						</th>
 						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-0 md:px-10">
 							{{ $t("change24h") }}
 						</th>
 						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-10 md:table-cell hidden">
-							{{ $t("roof24h") }}
+							{{ $t("changeSinceListing") }}
 						</th>
 						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-10 md:table-cell hidden">
-							{{ $t("floor24h") }}
-						</th>
-						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-10 md:table-cell hidden">
-							{{ $t("volume24h") }}
+							{{ $t("sinceListing") }}
 						</th>
 					</tr>
 				</thead>
@@ -64,8 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import MarketTableRow from '~/components/pages/Site/Market/MarketTableRow.vue';
-import MarketTableHeader from '~/components/pages/Site/Market/MarketTableHeader.vue';
+import MarketTableRow from '~/components/pages/Market/Upcoming/MarketTableRow.vue';
 import { MarketType, SortMode } from '~/utils/enums/market.enum';
 import { marketRepository } from '~/repositories/market.repository';
 import { Language } from '~/utils/enums/language.enum';
@@ -111,17 +99,5 @@ watch(() => props.searchQuery, (newQuery) => {
 
 const onPageChange = async (newPage: number) => {
 	params.value.pageNumber = String(newPage);
-};
-
-const updateFilter = async (selectedValue: SortMode) => {
-	params.value.sortMode = String(selectedValue);
-};
-
-const updateTag = async (selectedValue: string) => {
-	params.value.tagTypeId = selectedValue;
-};
-
-const updateCurrency = async (selectedId: string) => {
-	params.value.currencyQuoteId = selectedId;
 };
 </script>

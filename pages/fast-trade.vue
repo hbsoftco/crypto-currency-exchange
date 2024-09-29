@@ -39,7 +39,7 @@
 								dir="rtl"
 							/>
 						</div>
-						<div class="absolute top-[6.5rem] z-10 mx-auto flex justify-center w-full">
+						<div class="absolute top-[6.5rem] z-[1] mx-auto flex justify-center w-full">
 							<ULink class="flex justify-center items-center rounded-full w-16 h-16 bg-primary-yellow-light dark:bg-primary-yellow-dark border-4 border-background-light dark:border-background-dark">
 								<IconChange class="text-black text-4xl" />
 							</ULink>

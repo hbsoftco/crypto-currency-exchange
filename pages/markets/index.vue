@@ -36,6 +36,7 @@
 					</div>
 				</div>
 			</div>
+
 			<div>
 				<div
 					class="hidden md:flex justify-between"
@@ -68,12 +69,14 @@
 					/>
 				</div>
 			</div>
+			<!-- Market box -->
+
 			<div class="relative mt-14 md:mt-8">
 				<UTabs :items="items">
 					<template #default="{ item, selected }">
 						<span
 							class="truncate"
-							:class="[selected && 'text-black dark:text-white']"
+							:class="[selected && 'text-primary-yellow-light dark:text-primary-yellow-dark']"
 						>{{ $t(item.label) }}</span>
 					</template>
 					<template #item="{ item }">
@@ -118,9 +121,9 @@
 </template>
 
 <script setup lang="ts">
-import MarketState from '~/components/pages/Site/Market/MarketState.vue';
+import MarketState from '~/components/pages/Market/MarketState.vue';
 import IconSearch from '~/assets/svg-icons/menu/search.svg';
-import MarketTable from '~/components/pages/Site/Market/MarketTable.vue';
+import MarketTable from '~/components/pages/Market/MarketTable.vue';
 import { marketRepository } from '~/repositories/market.repository';
 import { Language } from '~/utils/enums/language.enum';
 

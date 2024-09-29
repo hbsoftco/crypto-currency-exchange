@@ -13,7 +13,7 @@
 				class="text-base hidden group-hover:block group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark hover:fill-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all"
 			/>
 			<div
-				class="absolute -right-32 mt-1 top-4 hidden group-hover:block py-6 opacity-0 group-hover:opacity-100 z-10"
+				class="absolute z-20 -right-32 mt-1 top-4 hidden group-hover:block py-6 opacity-0 group-hover:opacity-100"
 			>
 				<div
 					class="w-[75rem] bg-hover-light dark:bg-hover-dark shadow-lg rounded transition-all duration-200"

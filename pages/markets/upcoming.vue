@@ -14,6 +14,6 @@
 </template>
 
 <script setup lang="ts">
-import CurrencySlider from '~/components/pages/Site/Market/NewCurrency/CurrencySlider.vue';
-import MarketTable from '~/components/pages/Site/Market/NewCurrency/MarketTable.vue';
+import CurrencySlider from '~/components/pages/Market/Upcoming/CurrencySlider.vue';
+import MarketTable from '~/components/pages/Market/Upcoming/MarketTable.vue';
 </script>
