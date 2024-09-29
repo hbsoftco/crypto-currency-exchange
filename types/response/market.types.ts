@@ -9,6 +9,7 @@ type MarketListWithSparkLineChartResponse = {
 };
 
 type MarketListWithSparkLineChartItem = {
+	cid: number;
 	id: number;
 	indexPrice: string;
 	priceChangePercIn24H: string;

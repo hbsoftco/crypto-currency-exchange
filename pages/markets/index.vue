@@ -38,26 +38,31 @@
 			</div>
 			<div>
 				<div
-					v-if="mostProfitableMarketsPending || latestMarketsPending || hottestMarketsPending"
-					class="flex justify-center items-center h-64"
-				>
-					<p>{{ $t('isLoading') }} ...</p>
-				</div>
-				<div
-					v-else
 					class="hidden md:flex justify-between"
 				>
+					<div v-if="mostProfitableMarketsPending === 'pending'">
+						<p>{{ $t('isLoading') }} ...</p>
+					</div>
 					<MarketState
+						v-else
 						:title="$t('mostProfitableAssets')"
 						:items="mostProfitableMarkets ?? []"
 					/>
 
+					<div v-if="hottestMarketsPending === 'pending'">
+						<p>{{ $t('isLoading') }} ...</p>
+					</div>
 					<MarketState
+						v-else
 						:title="$t('hotTopics')"
 						:items="hottestMarkets ?? []"
 					/>
 
+					<div v-if="latestMarketsPending === 'pending'">
+						<p>{{ $t('isLoading') }} ...</p>
+					</div>
 					<MarketState
+						v-else
 						:title="$t('newest')"
 						:items="latestMarkets ?? []"
 					/>
@@ -82,7 +87,7 @@
 							v-else-if="item.key === 'marketFutures'"
 							class="space-y-3"
 						>
-							<p>eee</p>
+							<p>Futures</p>
 						</div>
 					</template>
 				</UTabs>
@@ -132,7 +137,7 @@ const { data: cachedMarketBriefList } = await useCachedMarketBriefList();
 const currencyBriefList = cachedCurrencyBriefList.value ?? [];
 const marketBriefList = cachedMarketBriefList.value ?? [];
 
-const { data: mostProfitableMarkets, pending: mostProfitableMarketsPending } = useAsyncData(
+const { data: mostProfitableMarkets, status: mostProfitableMarketsPending } = useAsyncData(
 	'mostProfitableMarkets',
 	async () => {
 		const response = await marketRepo.getMostProfitableMarkets({ rowCount: 3 });
@@ -140,7 +145,7 @@ const { data: mostProfitableMarkets, pending: mostProfitableMarketsPending } = u
 	},
 );
 
-const { data: hottestMarkets, pending: hottestMarketsPending } = useAsyncData(
+const { data: hottestMarkets, status: hottestMarketsPending } = useAsyncData(
 	'hottestMarkets',
 	async () => {
 		const response = await marketRepo.getHottestMarkets({ rowCount: 3 });
@@ -148,7 +153,7 @@ const { data: hottestMarkets, pending: hottestMarketsPending } = useAsyncData(
 	},
 );
 
-const { data: latestMarkets, pending: latestMarketsPending } = useAsyncData(
+const { data: latestMarkets, status: latestMarketsPending } = useAsyncData(
 	'latestMarkets',
 	async () => {
 		const response = await marketRepo.getLatestMarkets({ rowCount: 3 });

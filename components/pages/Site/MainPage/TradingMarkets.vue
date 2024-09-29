@@ -31,14 +31,21 @@
 						v-for="(row, index) in marketData || []"
 						:key="row.id || index"
 						:row="row"
+						:socket-data="getSocketDataForRow(row.id)"
 					/>
 				</tbody>
 			</table>
 
 			<UiSeeMore
-				link="/"
+				link="/markets"
 				text="showAllMarkets"
 			/>
+		</div>
+		<div
+			dir="ltr"
+			class="text-left"
+		>
+			<pre>{{ parsedMessages }}</pre>
 		</div>
 	</div>
 </template>
@@ -50,6 +57,7 @@ import TradingMarketRow from './TradingMarketRow.vue';
 import type { ErrorResponse } from '~/types/response/error.type';
 import type { MarketListWithSparkLineChartItem } from '~/types/response/market.types';
 import { MarketType, SortMode } from '~/utils/enums/market.enum';
+import { PublicTopic, SocketId } from '~/utils/enums/socket.enum';
 
 const marketStore = useMarketStore();
 
@@ -80,7 +88,10 @@ const updateCurrency = async (selectedId: string) => {
 const fetchMarketData = async () => {
 	try {
 		const response = await marketStore.fetchMarketListWithSparkLineChart(params.value);
-		marketData.value = response;
+		marketData.value = response || [];
+		console.log(marketData.value);
+
+		marketIdParams.value = marketData.value.map((item) => item.id).join(',');
 	}
 	catch (error: unknown) {
 		const err = error as ErrorResponse;
@@ -91,8 +102,47 @@ const fetchMarketData = async () => {
 	}
 };
 
+const { messages, connect, socket, createSubscriptionData, sendMessage } = useWebSocket();
+
+const parsedMessages = computed(() => {
+	return messages.value.map((msg) => {
+		try {
+			return msg;
+		}
+		catch (error) {
+			console.error('Error parsing message:', error);
+			return null;
+		}
+	}).filter((item) => item !== null);
+});
+
+const getSocketDataForRow = (id: number) => {
+	return parsedMessages.value.find((msg) => msg.data.mi === id) || null;
+};
+
+const marketIdParams = ref<string>('3,4,6');
+
 onMounted(async () => {
 	await fetchMarketData();
+
+	await connect();
+	sendMessage(createSubscriptionData(
+		SocketId.SPOT_TICKER,
+		'SUBSCRIBE',
+		PublicTopic.SPOT_TICKER,
+		marketIdParams.value,
+	));
+});
+
+onBeforeUnmount(() => {
+	if (socket.value) {
+		sendMessage(createSubscriptionData(
+			SocketId.SPOT_TICKER,
+			'UNSUBSCRIBE',
+			PublicTopic.SPOT_TICKER,
+			marketIdParams.value,
+		));
+	}
 });
 
 // const { data: marketData } = await useAsyncData('fetchMarketList', () =>

@@ -22,7 +22,6 @@
     "nuxt": "^3.12.4",
     "nuxt-svgo": "^4.0.3",
     "pinia": "^2.2.1",
-    "socket.io-client": "^4.8.0",
     "vue": "latest",
     "vue3-otp-input": "^0.5.21"
   },
