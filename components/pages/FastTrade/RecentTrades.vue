@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<section class="hidden md:block h-auto max-h-60 overflow-y-auto rounded-t-md">
-			<table class="min-w-full p-6 text-right ">
+			<table class="min-w-full p-6 text-right">
 				<thead>
 					<tr class="text-center pb-2 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark bg-secondary-gray-light dark:bg-secondary-gray-dark text-subtle-text-light dark:text-subtle-text-dark">
 						<th class="pb-2 text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
@@ -31,8 +31,17 @@
 					</tr>
 				</thead>
 				<tbody>
+					<tr v-if="rows.length === 0">
+						<td
+							colspan="8"
+							class="text-center py-4 text-sm text-gray-500"
+						>
+							{{ $t('noDataAvailable') }}
+						</td>
+					</tr>
 					<tr
 						v-for="row in rows"
+						v-else
 						:key="row.id"
 						:class="[row.id % 2 === 0 ? 'bg-background-light dark:bg-background-dark' : 'bg-hover2-light dark:bg-hover2-dark']"
 						class="text-center text-subtle-text-light dark:text-subtle-text-dark py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark last:border-none"
@@ -84,8 +93,17 @@
 					</tr>
 				</thead>
 				<tbody>
+					<tr v-if="rows.length === 0">
+						<td
+							colspan="2"
+							class="text-center py-4 text-sm text-gray-500"
+						>
+							{{ $t('noDataAvailable') }}
+						</td>
+					</tr>
 					<tr
 						v-for="row in rows"
+						v-else
 						:key="row.id"
 						class="py-2"
 					>
@@ -96,7 +114,7 @@
 									alt="bitcoin"
 									class="w-4 h-4 ml-2"
 								/>
-								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">babydoge</span>
+								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ row.from }}</span>
 								{{ useNumber(row.count) }}
 							</div>
 						</td>
@@ -107,7 +125,7 @@
 									alt="bitcoin"
 									class="w-4 h-4 ml-2"
 								/>
-								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">USDT</span>
+								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ row.to }}</span>
 								{{ useNumber(row.count) }}
 							</div>
 						</td>
@@ -122,15 +140,5 @@
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
 import { useNumber } from '~/composables/useNumber';
 
-const rows = ref([
-	{ id: 1, from: 'BTC', count: '۲۳۵۵۵۲', to: 'USDT', turnedInto: 'USDT', amount: '۷۳۴۵۷۵۴۷۴', conversionRate: '۲۳۵۲۴۳۵۲', date: '۱۴۰۲/۰۲/۲۸', status: 'مانده' },
-	{ id: 2, from: 'BTC', count: '۲۳۵۵۵۲', to: 'USDT', turnedInto: 'USDT', amount: '۷۳۴۵۷۵۴۷۴', conversionRate: '۲۳۵۲۴۳۵۲', date: '۱۴۰۲/۰۲/۲۸', status: 'مانده' },
-	{ id: 3, from: 'BTC', count: '۲۳۵۵۵۲', to: 'USDT', turnedInto: 'USDT', amount: '۷۳۴۵۷۵۴۷۴', conversionRate: '۲۳۵۲۴۳۵۲', date: '۱۴۰۲/۰۲/۲۸', status: 'مانده' },
-	{ id: 4, from: 'BTC', count: '۲۳۵۵۵۲', to: 'USDT', turnedInto: 'USDT', amount: '۷۳۴۵۷۵۴۷۴', conversionRate: '۲۳۵۲۴۳۵۲', date: '۱۴۰۲/۰۲/۲۸', status: 'مانده' },
-	{ id: 5, from: 'BTC', count: '۲۳۵۵۵۲', to: 'USDT', turnedInto: 'USDT', amount: '۷۳۴۵۷۵۴۷۴', conversionRate: '۲۳۵۲۴۳۵۲', date: '۱۴۰۲/۰۲/۲۸', status: 'مانده' },
-	{ id: 6, from: 'BTC', count: '۲۳۵۵۵۲', to: 'USDT', turnedInto: 'USDT', amount: '۷۳۴۵۷۵۴۷۴', conversionRate: '۲۳۵۲۴۳۵۲', date: '۱۴۰۲/۰۲/۲۸', status: 'مانده' },
-	{ id: 7, from: 'BTC', count: '۲۳۵۵۵۲', to: 'USDT', turnedInto: 'USDT', amount: '۷۳۴۵۷۵۴۷۴', conversionRate: '۲۳۵۲۴۳۵۲', date: '۱۴۰۲/۰۲/۲۸', status: 'مانده' },
-	{ id: 8, from: 'BTC', count: '۲۳۵۵۵۲', to: 'USDT', turnedInto: 'USDT', amount: '۷۳۴۵۷۵۴۷۴', conversionRate: '۲۳۵۲۴۳۵۲', date: '۱۴۰۲/۰۲/۲۸', status: 'مانده' },
-
-]);
+const rows = ref<any>([]);
 </script>

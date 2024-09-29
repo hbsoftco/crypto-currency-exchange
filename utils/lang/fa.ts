@@ -720,6 +720,7 @@ const persian = {
 	UsingAPIKey: 'استفاده از کلید API',
 	nameApiKey: 'نام کلید API',
 	activeUntil: 'فعال تا ',
+	noDataAvailable: 'دیتایی برای نمایش وجود ندارد.',
 };
 
 export default persian;

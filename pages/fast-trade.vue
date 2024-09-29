@@ -120,6 +120,7 @@ import RecentTrades from '~/components/pages/FastTrade/RecentTrades.vue';
 import { useFastTrade } from '~/composables/trade/useFastTrade';
 import { Language } from '~/utils/enums/language.enum';
 import { MarketType } from '~/utils/enums/market.enum';
+import type { Trade } from '~/types/response/trade.types';
 
 definePageMeta({
 	layout: 'trade',
@@ -147,13 +148,13 @@ const params = ref({
 	pageSize: '5',
 });
 
-// const tradesList = ref([]);
+const recentTradesList = ref<Trade[]>([]);
 
 const fetchTrades = async () => {
 	try {
 		const result = await getTradesList(params.value);
-		// tradesList.value = result;
-		console.log(result);
+		recentTradesList.value = result.result.rows;
+		console.log('fetchTrades', recentTradesList.value);
 	}
 	catch (error) {
 		console.error('Error fetching trades:', error);
@@ -175,7 +176,6 @@ const fetchUserTraderCommissionList = async () => {
 
 onMounted(async () => {
 	assetStore.fetchAssetList();
-	assetStore.subscribeToAssetUpdates();
 
 	await fetchTrades();
 	await fetchUserTraderCommissionList();

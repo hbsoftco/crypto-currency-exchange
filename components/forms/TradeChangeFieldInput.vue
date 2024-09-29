@@ -29,7 +29,7 @@
 								<NuxtImg
 									:src="`https://api-bitland.site/media/currency/${selected.cSymbol}.png`"
 									:alt="selected.cSymbol"
-									class="w-4 h-4 rounded-full"
+									class="w-5 h-5 rounded-full"
 								/>
 							</div>
 							<div class="flex flex-col items-start min-w-20">
