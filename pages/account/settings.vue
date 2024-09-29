@@ -16,14 +16,12 @@
 						v-model="selectedThemes"
 						:options="themes"
 						:ui="{
-							fieldset: 'w-96 flex justify-between',
+							fieldset: 'w-96 block md:flex justify-between',
 						}"
 					/>
 				</div>
 			</div>
 			<div class="my-4">
-				<span>{{ openSection === 'general' ? '-' : '+' }}</span>
-
 				<div class="flex mb-3">
 					<IconNumber class="text-base text-primary-yellow-light dark:text-primary-yellow-dark" />
 					<span class="text-sm font-bold mr-2">{{ $t('displayNumbers') }}</span>
@@ -52,15 +50,15 @@
 						v-model="selectedChanging"
 						:options="changes"
 						:ui="{
-							fieldset: 'w-full ml-20 flex justify-between',
+							fieldset: 'w-full ml-20 block md:flex justify-between',
 						}"
 					>
 						<template #label="{ option }">
 							<p class="flex">
 								{{ option.label }}
-								<component
-									:is="option.icon"
-									class="text-4xl dark:text-subtle-text-50"
+								<NuxtImg
+									:src="option.icon"
+									class="mr-2 w-6 h-6"
 								/>
 							</p>
 						</template>
@@ -80,16 +78,18 @@
 						v-model="selectedTrading"
 						:options="trading"
 						:ui="{
-							fieldset: 'w-full ml-20 flex justify-between',
+							fieldset: 'w-full ml-20 block md:flex justify-between items-center',
 						}"
 					>
-						<template #label="{ option }">
-							<p class="flex">
+						<template
+							#label="{ option }"
+						>
+							<NuxtImg
+								:src="option.icon"
+								class="ml-1"
+							/>
+							<p class="">
 								{{ option.label }}
-								<component
-									:is="option.icon"
-									class="text-4xl dark:text-subtle-text-50"
-								/>
 							</p>
 						</template>
 					</URadioGroup>
@@ -104,7 +104,7 @@
 						v-model="selectedShowOrderBook"
 						:options="showOrderBook"
 						:ui="{
-							fieldset: 'w-full ml-20 flex justify-between',
+							fieldset: 'w-full ml-0 md:ml-20 block md:flex justify-between',
 						}"
 					/>
 				</div>
@@ -128,23 +128,17 @@
 		<section class="my-4 py-4 px-8 border border-primary-gray-light dark:border-primary-gray-dark">
 			<div
 				class="cursor-pointer flex justify-between items-center"
-				@click="toggleSection('notification')"
 			>
 				<div class="flex">
 					<IconNotification
 						class="block md:hidden ml-1 text-2xl text-primary-yellow-light dark:text-primary-yellow-dark"
 					/>
-					<h2 @click="toggleSection('notification')">
+					<h2>
 						{{ $t('notification') }}
 					</h2>
-					<div class="py-2 bg-[#122922] text-sm font-normal rounded-md">
-						<span>{{ $t('selectedNotification') }}</span>
-					</div>
 				</div>
-				<span>{{ openSection === 'notification' ? '-' : '+' }}</span>
 			</div>
 			<div
-				v-show="openSection === 'notification'"
 				class="transition-all duration-300 ease-in-out"
 			>
 				<div class="my-4 ">
@@ -156,7 +150,7 @@
 							v-model="selectedNotification"
 							:options="notification"
 							:ui="{
-								fieldset: 'w-96 flex justify-between',
+								fieldset: 'w-96 block md:flex justify-between',
 							}"
 						/>
 					</div>
@@ -170,11 +164,7 @@
 import IconPencil from '~/assets/svg-icons/profile/brush.svg';
 import IconNumber from '~/assets/svg-icons/profile/number.svg';
 import IconChange from '~/assets/svg-icons/profile/change.svg';
-import IconChangeGreenRed from '~/public/images/svg/profile/change-green-red.svg';
 import IconScreen from '~/assets/svg-icons/profile/screen.svg';
-import IconClassic from '~/public/images/svg/profile/chart-classic.svg';
-import IconVertical from '~/public/images/svg/profile/chart-vertical.svg';
-import IconStandard from '~/public/images/svg/profile/chart-standard.svg';
 import IconNotification from '~/assets/svg-icons/menu/notification.svg';
 
 definePageMeta({
@@ -207,9 +197,9 @@ const lang = [
 ];
 
 const changes = [
-	{ value: 'greenUp', label: useT('greenUp'), icon: IconChangeGreenRed },
-	{ value: 'redUp', label: useT('redUp'), icon: IconChangeGreenRed },
-	{ value: 'blueDown', label: useT('blueDown'), icon: IconChangeGreenRed },
+	{ value: 'greenUp', label: useT('greenUp'), icon: '/images/svg/profile/change-green-red.svg' },
+	{ value: 'redUp', label: useT('redUp'), icon: '/images/svg/profile/change-green-red.svg' },
+	{ value: 'blueDown', label: useT('blueDown'), icon: '/images/svg/profile/change-blue-red.svg' },
 ];
 
 const showOrderBook = [
@@ -257,17 +247,17 @@ const trading = [
 	{
 		value: 'classic',
 		label: useT('classic'),
-		icon: IconClassic,
+		icon: '/images/svg/profile/chart-classic.svg',
 	},
 	{
 		value: 'vertical',
 		label: useT('vertical'),
-		icon: IconVertical,
+		icon: '/images/svg/profile/chart-vertical.svg',
 	},
 	{
 		value: 'standard',
 		label: useT('standard'),
-		icon: IconStandard,
+		icon: '/images/svg/profile/chart-standard.svg',
 	},
 ];
 const selectedThemes = ref('light');
@@ -277,12 +267,6 @@ const selectedShowOrderBook = ref('cumulativeNumberValue');
 const selectedBasisDisplayMarkets = ref('priceChangePriority');
 const selectedNotification = ref('all');
 const selectedTrading = ref('classic');
-
-const openSection = ref<string | null>(null);
-
-const toggleSection = (section: string) => {
-	openSection.value = openSection.value === section ? null : section;
-};
 </script>
 
 <style scoped></style>
