@@ -6,9 +6,9 @@
 			</div>
 		</section>
 		<section class="hidden md:block border border-primary-gray-light dark:border-primary-gray-dark rounded-md">
-			<div class="flex">
+			<div class="grid grid-cols-2">
 				<div class="py-4 px-20 ml-4">
-					dddd
+					<UseApiForm />
 				</div>
 				<div class="py-4 px-20 mr-4 border-r border-primary-gray-light dark:border-primary-gray-dark">
 					<h4 class="text-base font-semibold">
@@ -147,6 +147,8 @@
 </template>
 
 <script setup lang="ts">
+import UseApiForm from '~/components/pages/Site/Account/ManageApi/UseApiForm.vue';
+
 definePageMeta({
 	layout: 'account',
 });

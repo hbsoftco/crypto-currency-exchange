@@ -19,7 +19,7 @@
 					</div>
 					<div class="mt-10 w-full md:w-80">
 						<div>
-							<FormAaddress />
+							<FormUser />
 						</div>
 					</div>
 					<div class="my-8">
@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import FormAaddress from '~/components/pages/Site/Account/WhiteList/FormAddress.vue';
+import FormUser from '~/components/pages/Site/Account/WhiteList/FormUser.vue';
 import ImportantPoint from '~/components/pages/Site/Account/WhiteList/ImportantPoint.vue';
 
 definePageMeta({

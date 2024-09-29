@@ -199,7 +199,7 @@
 						<!-- topUsers -->
 						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 							<ULink
-								to="/account/setting"
+								to="/account/settings"
 								class="flex justify-between items-center w-full py-2.5"
 							>
 								<div class="flex justify-start items-center">

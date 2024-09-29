@@ -38,7 +38,7 @@
 						</li>
 						<li class="flex items-center">
 							<ULink
-								to="/app"
+								to="/account/rewards"
 								active-class="text-primary-yellow-light dark:text-primary-yellow-dark"
 								:class="{
 									'text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all': true,
