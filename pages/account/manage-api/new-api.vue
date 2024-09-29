@@ -1,5 +1,9 @@
 <template>
 	<div>
+		<ImportantPoint
+			v-if="showDetail"
+			@close="closeDetail"
+		/>
 		<section class="hidden md:block">
 			<div class="my-4">
 				<UiTitleWithBack :title="$t('manageAPI')" />
@@ -120,6 +124,7 @@
 			<UButton
 				size="lg"
 				class="text-base font-extrabold py-3 my-6 px-32 text-center"
+				@click="openDetail"
 			>
 				{{ $t('confirm') }}
 			</UButton>
@@ -148,6 +153,8 @@
 
 <script setup lang="ts">
 import UseApiForm from '~/components/pages/Site/Account/ManageApi/UseApiForm.vue';
+import ImportantPoint from '~/components/pages/Site/Account/ManageApi/DetailModal.vue';
+import SearchCrypto from '~/components/forms/SearchCrypto.vue';
 
 definePageMeta({
 	layout: 'account',
@@ -172,5 +179,14 @@ const toggleAll = () => {
 	rows.value.forEach((row) => {
 		row.hasAccess = selectAll.value;
 	});
+};
+const showDetail = ref(false);
+
+const openDetail = () => {
+	showDetail.value = true;
+};
+
+const closeDetail = () => {
+	showDetail.value = false;
 };
 </script>

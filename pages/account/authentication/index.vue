@@ -155,7 +155,7 @@
 									'bg-primary-yellow-light dark:bg-primary-yellow-dark': isConfirmed,
 									'bg-secondary-gray-light dark:bg-secondary-gray-dark ': !isConfirmed,
 								}"
-								to=""
+								to="/account/authentication/level-two"
 							>
 								{{ $t("upgradeLevel1User") }}
 							</UButton>
