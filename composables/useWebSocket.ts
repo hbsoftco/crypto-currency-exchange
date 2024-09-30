@@ -44,7 +44,7 @@ export const useWebSocket = (pathType = 'public', listenKey = '') => {
 				const messageData: SocketSpotTickerMessage = JSON.parse(event.data);
 				console.log('Message from server:', messageData);
 
-				if (messageData.id !== SocketId.PING) {
+				if (messageData.id === SocketId.SPOT_TICKER) {
 					const mi = messageData.data.mi;
 
 					const existingIndex = messages.value.findIndex((msg) => msg.data.mi === mi);
@@ -72,7 +72,7 @@ export const useWebSocket = (pathType = 'public', listenKey = '') => {
 		id: SocketId,
 		method: 'SUBSCRIBE' | 'UNSUBSCRIBE',
 		topic: PublicTopic | PrivateTopic,
-		params: string,
+		params: string | Record<string, string>,
 	) => {
 		return JSON.stringify({
 			id,

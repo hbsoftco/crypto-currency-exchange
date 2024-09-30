@@ -1,6 +1,7 @@
 import { useFastTrade } from '~/composables/trade/useFastTrade';
 import type { AssetItem } from '~/types/response/asset.types';
 import { BoxMode, MiniAssetMode } from '~/utils/enums/asset.enum';
+import { PrivateTopic, SocketId } from '~/utils/enums/socket.enum';
 
 export const useAssetStore = defineStore('asset', () => {
 	const loading = ref(false);
@@ -8,6 +9,41 @@ export const useAssetStore = defineStore('asset', () => {
 	const assets = ref<AssetItem[]>([]);
 
 	const { getAssetList } = useFastTrade();
+	const authStore = useAuthStore();
+
+	const connectToSocket = async () => {
+		try {
+			let socketListenKey = authStore.socketListenKey;
+
+			if (!socketListenKey) {
+				await authStore.getSocketListenKey();
+				socketListenKey = authStore.socketListenKey;
+
+				if (!socketListenKey) {
+					throw new Error('Failed to retrieve socket listen key');
+				}
+			}
+
+			// const { socket, messages, connect, createSubscriptionData, sendMessage } = useWebSocket('private', socketListenKey);
+			const { connect, createSubscriptionData, sendMessage } = useWebSocket('private', socketListenKey);
+
+			await connect();
+			console.log('Socket connected with listen key:', socketListenKey);
+
+			sendMessage(createSubscriptionData(
+				SocketId.ASSET_LIST,
+				'SUBSCRIBE',
+				PrivateTopic.ASSET_LIST,
+				{
+					boxMode: String(MiniAssetMode.NoMiniAsset),
+					assetTypeId: useEnv('assetType'),
+				},
+			));
+		}
+		catch (error) {
+			console.error('Error connecting to socket:', error);
+		}
+	};
 
 	const fetchAssetList = async () => {
 		try {
@@ -36,6 +72,7 @@ export const useAssetStore = defineStore('asset', () => {
 		fetchAssetList,
 		clearAssets,
 		// subscribeToAssetUpdates,
+		connectToSocket,
 		assetList,
 	};
 });

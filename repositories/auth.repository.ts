@@ -98,11 +98,12 @@ export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthR
 	},
 	// listenKey Socket
 	async getSocketListenKey(): Promise<GetSocketListenKeyResponse> {
-		const url = '/v1/user/trader/commission_list';
+		const url = '/v1/wss/key';
 		const response = await fetch<GetSocketListenKeyResponse>(`${url}`, {
 			noAuth: false,
 			apiName: url,
 		} as CustomNitroFetchOptions);
+
 		return response;
 	},
 });

@@ -10,15 +10,13 @@ interface AuthData {
 }
 
 export const useAuthStore = defineStore('auth', () => {
-	const { $api } = useNuxtApp();
-
 	const otc = ref<string | null>(null);
 	const userId = ref<number | null>(null);
 	const userSecretKey = ref<number | null>(null);
 
 	const isLoggedIn = computed(() => !!otc.value);
 
-	const listenKeyCookie = useCookie('otc', { path: '/', maxAge: 60 * 60 * 24 * 365 });
+	const listenKeyCookie = useCookie('listenKey', { path: '/', maxAge: 60 * 60 * 24 * 365 });
 
 	const otcCookie = useCookie('otc', { path: '/', maxAge: 60 * 60 * 24 * 365 });
 	const userIdCookie = useCookie('userId', { path: '/', maxAge: 60 * 60 * 24 * 365 });
@@ -101,6 +99,7 @@ export const useAuthStore = defineStore('auth', () => {
 	const isSocketListenKeyLoading = ref(false);
 
 	const getSocketListenKey = async () => {
+		const { $api } = useNuxtApp();
 		const authRepo = authRepository($api);
 		isSocketListenKeyLoading.value = true;
 

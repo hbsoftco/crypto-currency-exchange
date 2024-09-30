@@ -174,8 +174,15 @@ const fetchUserTraderCommissionList = async () => {
 	}
 };
 
+// const authStore = useAuthStore();
+
 onMounted(async () => {
 	assetStore.fetchAssetList();
+	await assetStore.connectToSocket();
+
+	// const listen = await authStore.getSocketListenKey();
+
+	// console.log('listen', listen);
 
 	await fetchTrades();
 	await fetchUserTraderCommissionList();
