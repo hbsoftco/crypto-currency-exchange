@@ -30,7 +30,7 @@
 							class="flex justify-between rounded-md overflow-hidden transition-all duration-200 p-4 hover:bg-hover2-light dark:hover:bg-[#1f1f1f] border-transparent border-r-[3px] hover:border-r-[3px] hover:border-primary-yellow-light hover:dark:border-r-[3px] dark:hover:border-primary-yellow-dark"
 						>
 							<ULink
-								to="#"
+								:to="item.url"
 								class="flex justify-between"
 							>
 								<component
@@ -81,81 +81,112 @@ const menuItems = [
 		name: 'currencyDeposit',
 		description: 'توضیحات توضیحات توضیحات توضیحات',
 		icon: IconCurrencyDeposit,
+		url: '/wallet/deposit',
 	},
 	{
 		name: 'transactionHistory',
 		description: 'توضیحات توضیحات توضیحات توضیحات',
 		icon: IconTransactionHistory,
+		url: '/spot/list',
+
 	},
 	{
 		name: 'bankAccounts',
 		description: 'توضیحات توضیحات توضیحات توضیحات',
 		icon: IconBankAccounts,
+		url: '/wallet/bank-cards',
+
 	},
 	{
 		name: 'tutorial',
 		description: 'توضیحات توضیحات توضیحات توضیحات',
 		icon: IconTutorial,
+		url: '/risk-agreement',
+
 	},
 	{
 		name: 'withdrawCurrency',
 		description: 'توضیحات توضیحات توضیحات توضیحات',
 		icon: IconWithdrawCurrency,
+		url: '/wallet/withdraw',
+
 	},
 	{
 		name: 'depositWithdrawalHistory',
 		description: 'توضیحات توضیحات توضیحات توضیحات',
 		icon: IconDepositWithdrawalHistory,
+		url: '/wallet/history',
+
 	},
 	{
 		name: 'createAPI',
 		description: 'توضیحات توضیحات توضیحات توضیحات',
 		icon: IconCreateAPI,
+		url: '/account/manage-api/new-api',
+
 	},
 	{
 		name: 'blog',
 		description: 'توضیحات توضیحات توضیحات توضیحات',
 		icon: IconBlog,
+		url: '/risk-agreement',
+
 	},
 	{
 		name: 'depositToman',
 		description: 'توضیحات توضیحات توضیحات توضیحات',
 		icon: IconDepositToman,
+		url: '/wallet/deposit-toman',
+
 	},
 	{
 		name: 'portfolio',
 		description: 'توضیحات توضیحات توضیحات توضیحات',
 		icon: IconPortfolio,
+		url: '/wallet/profit-loss',
+
 	},
 	{
 		name: 'topUsers',
 		description: 'توضیحات توضیحات توضیحات توضیحات',
 		icon: IconTopUsers,
+		url: '/account/top-users',
+
 	},
 	{
 		name: 'awards',
 		description: 'توضیحات توضیحات توضیحات توضیحات',
 		icon: IconAwards,
+		url: '/account/rewards',
+
 	},
 	{
 		name: 'withdrawToman',
 		description: 'توضیحات توضیحات توضیحات توضیحات',
 		icon: IconWithdrawToman,
+		url: '/wallet/toman-withdrawal',
+
 	},
 	{
 		name: 'quickTrade',
 		description: 'توضیحات توضیحات توضیحات توضیحات',
 		icon: IconQuickTrade,
+		url: '/fast-trade',
+
 	},
 	{
 		name: 'fees',
 		description: 'توضیحات توضیحات توضیحات توضیحات',
 		icon: IconFees,
+		url: '/account/fees',
+
 	},
 	{
 		name: 'userLevel',
 		description: 'توضیحات توضیحات توضیحات توضیحات',
 		icon: IconUserLevel,
+		url: '/account/user-level',
+
 	},
 ];
 </script>
