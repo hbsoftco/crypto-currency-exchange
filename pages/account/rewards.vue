@@ -29,23 +29,35 @@
 
 		<section>
 			<div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
-				<AwardBox />
-				<AwardBox />
-				<AwardBox />
-				<AwardBox />
-				<AwardBox />
-				<AwardBox />
+				<AwardBox
+					v-for="(item, index) in rewardList"
+					:key="index"
+					:reward="item"
+				/>
 			</div>
 		</section>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'; // Import for reactivity
-
 import AwardBox from '~/components/pages/Site/Account/Award/AwardBox.vue';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
 import IconArrowRight from '~/assets/svg-icons/menu/arrow-right.svg';
+import { rewardRepository } from '~/repositories/reward.repository';
+import type { GetExposedListParams } from '~/types/base.types';
+import type { Reward } from '~/types/response/reward.types';
+
+const { $api } = useNuxtApp();
+const rewardRepo = rewardRepository($api);
+
+const params = ref<GetExposedListParams>({
+	tagId: '',
+});
+
+const response = await rewardRepo.getExposedList(params.value);
+
+const rewardList = ref<Reward[]>(response.result.rows);
+console.log(rewardList);
 
 // Define reactive state
 const activeIndex = ref<number | null>(null);

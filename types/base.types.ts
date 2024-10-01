@@ -58,6 +58,10 @@ type GetAssetListParams = {
 	pageSize?: string;
 };
 
+type GetExposedListParams = {
+	tagId?: string;
+};
+
 type GetCurrencyParams = {
 	id: string;
 	languageId: string;
@@ -93,5 +97,6 @@ export type {
 	getTradesListParams,
 	GetMarketListByCategoryParams,
 	GetAssetListParams,
+	GetExposedListParams,
 	KeyValue,
 };

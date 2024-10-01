@@ -25,13 +25,13 @@
 
 			<div class="flex item-center py-4">
 				<NuxtImg
-					src="/images/delete/award.png"
+					:src="reward.logoUrl"
 					alt="award"
 					class="w-12 h-12 rounded-full ml-2"
 				/>
 				<div class="">
 					<h4 class="text-base font-bold">
-						{{ $t('authentication') }}
+						{{ reward.header }}
 					</h4>
 					<div class="flex">
 						<span class="text-sm font-normal ml-1">01:23:14:56</span>
@@ -73,18 +73,25 @@
 					</div>
 				</ULink>
 			</div>
+
+			{{ reward }}
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-
 import { useNumber } from '~/composables/useNumber';
 import IconAwards from '~/assets/svg-icons/menu/quick-menu/awards.svg';
 import IconClock from '~/assets/svg-icons/profile/clock.svg';
 import AwardShow from '~/components/pages/Site/Account/Award/AwardShow.vue';
 import AwardDetail from '~/components/pages/Site/Account/Award/AwardDetail.vue';
+import type { Reward } from '~/types/response/reward.types';
+
+interface PropsDefinition {
+	reward: Reward;
+}
+
+defineProps<PropsDefinition>();
 
 const showDetail = ref(false);
 const showAward = ref(false);
