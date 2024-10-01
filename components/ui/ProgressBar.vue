@@ -27,12 +27,11 @@
 	</div>
 </template>
 
-<script setup>
-defineProps({
-	progress: {
-		type: Number,
-		required: true,
-		default: 70,
-	},
+<script setup lang="ts">
+interface PropsDefinition {
+	progress: number;
+}
+withDefaults(defineProps<PropsDefinition>(), {
+	progress: 0,
 });
 </script>

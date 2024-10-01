@@ -1,12 +1,13 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { GetLanguageParams, GetPinParams } from '~/types/base.types';
+import type { GetLanguageParams, GetPinParams, GetTagListParams } from '~/types/base.types';
 import type { MarketBriefListResponse, CurrencyBriefListResponse } from '~/types/response/brief-list.types';
 import type { IconResponse } from '~/types/response/icon.types';
 import type { PinListResponse } from '~/types/response/pin-list.types';
 import type { GetQuoteParams, QuoteListResponse } from '~/types/response/quote-list.types';
 import type { TagResponse } from '~/types/response/tag.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
+import type { TagMenuResponse } from '~/types/response/tag-menu.types';
 
 type BaseDateRepository = {
 	getTagList: (params: GetLanguageParams) => Promise<TagResponse>;
@@ -16,6 +17,8 @@ type BaseDateRepository = {
 	getCurrencyBriefList: (params: GetLanguageParams) => Promise<CurrencyBriefListResponse>;
 	getBigIconsList: () => Promise<IconResponse>;
 	getIconsList: () => Promise<IconResponse>;
+	getTagMenuList: (params: GetTagListParams) => Promise<TagMenuResponse>;
+
 };
 
 export const baseDateRepository = (
@@ -66,5 +69,18 @@ export const baseDateRepository = (
       `/v1/currency/routine/icons_cmc`,
       { noAuth: true } as CustomNitroFetchOptions,
 		);
+	},
+	async getTagMenuList(params: GetTagListParams): Promise<TagMenuResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/routine/common/tag_list';
+		const response = await fetch<TagMenuResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			apiName: url,
+		} as CustomNitroFetchOptions);
+		return response;
 	},
 });

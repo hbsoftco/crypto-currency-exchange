@@ -314,7 +314,7 @@ const persian = {
 	delete: 'حذف',
 	moreDetail: 'جزییات بیشتر',
 	congratulations: 'تبریک !',
-	awardText: 'تعداد ۲ عدد جایزه هرکدام 4xrp به شما تخصیص داده شد.',
+	awardText: 'به شما تخصیص داده شد',
 	yourAward: 'جایزه شما',
 	numberAwardsReceived: 'تعداد دریافت جایزه',
 	time: 'بار',
@@ -795,6 +795,7 @@ const persian = {
 	stepThreeForm: 'لطفاً از کلید خود در یک مکان امن نسخه پشتیبان تهیه کنید',
 	stepThreeFormInfo: 'این کلید برای بازیابی Google Authenticator در مکانی که تلفن همراه جایگزین یا گم می‌شود، قابل استفاده است. قبل از اتصال، حتما از کلید زیر نسخه پشتیبان تهیه کرده و آن را ذخیره کنید',
 	copySecurityKey: 'یا کلید امنیتی را کپی کنید',
+	expired: 'منقضی شد',
 };
 
 export default persian;

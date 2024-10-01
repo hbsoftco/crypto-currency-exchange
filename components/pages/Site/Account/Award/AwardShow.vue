@@ -5,48 +5,61 @@
 			fullscreen
 		>
 			<div
-				class="h-full flex flex-col items-center justify-center bg-secondary-gray-light dark:bg-secondary-gray-dark"
+				class="h-full flex flex-col items-center justify-center overflow-y-scroll"
 			>
 				<div
-					class="flex flex-col justify-center items-center bg-background-light dark:bg-background-dark px-2 md:px-20 py-6 md:py-8 mb-0 md:mb-6 my-32 md:my-0 mx-1 md:mx-32"
+					class=" w-full md:w-[45rem] flex flex-col justify-center items-center text-center rounded-md bg-background-light dark:bg-background-dark px-2 md:px-14 py-6 md:py-8 mt-20"
 				>
 					<div class="block md:hidden w-full">
 						<UiTitleWithBack
-							:title="$t('authentication')"
+							:title="props.reward.header"
 						/>
 					</div>
 					<h4
-						class="text-center text-2xl font-bold"
+						class="hidden md:block text-center text-2xl font-bold"
 					>
-						{{ $t("authentication") }}
+						{{ props.reward.header }}
 					</h4>
 					<div class="flex justify-between items-center w-full my-8">
 						<div class="flex items-center">
 							<NuxtImg
-								src="/images/delete/bitcoin.png"
+								:src="String(reward.currencyId)"
 								alt="logo"
 								class="w-20 h-20 rounded-full ml-2"
 							/>
 							<div>
 								<h5 class="text-sm font-bold text-primary-yellow-light dark:text-primary-yellow-dark">
-									{{ useNumber('۵۰۰,۰۰۰,۰۰۰') }}
+									{{ useNumber(reward.amount) }}
 								</h5>
 								<h5 class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
-									BabyDoge
+									{{ reward.prizeTitle }}
 								</h5>
 							</div>
 						</div>
 						<div class="hidden md:block">
-							<div class="flex items-center ">
-								<UiTimer />
-								<span class="mr-2 text-red-700 text-base font-medium">{{ $t('endTime') }}</span>
+							<div
+								v-if="reward.expireAfter"
+								class="flex justify-center items-center "
+							>
+								<span class="text-sm font-normal ml-1">
+									<div
+										v-if="!isExpired"
+										class="flex justify-center"
+									>
+										<UiTimer :expire-after="props.reward.expireAfter" />
+										<span class="mr-2 text-red-700 text-base font-medium">{{ $t('endTime') }}</span>
+									</div>
+									<div v-else>
+										<span class="text-red-600">{{ $t("expired") }}</span>
+									</div>
+								</span>
 							</div>
 						</div>
 						<div class="text-xs font-normal">
 							<h4>{{ $t('numberAwardsReceived') }}:</h4>
 							<div class="flex justify-end">
 								<h4 class="text-base font-bold text-primary-yellow-light dark:text-primary-yellow-dark ml-1">
-									{{ useNumber('2') }}
+									{{ useNumber(reward.coAllocated) }}
 								</h4>
 								<h4 class="text-base font-medium">
 									{{ $t('time') }}
@@ -55,30 +68,56 @@
 						</div>
 					</div>
 					<div class="block md:hidden ">
-						<div class="flex justify-center items-center ">
-							<UiTimer />
-							<span class="mr-2 text-red-700 text-base font-medium">{{ $t('endTime') }}</span>
+						<div
+							v-if="reward.expireAfter"
+							class="flex justify-center items-center "
+						>
+							<span class="text-sm font-normal ml-1">
+								<div
+									v-if="!isExpired"
+									class="flex justify-center"
+								>
+									<UiTimer :expire-after="props.reward.expireAfter" />
+									<span class="mr-2 text-red-700 text-base font-medium">{{ $t('endTime') }}</span>
+								</div>
+								<div v-else>
+									<span class="text-red-600">{{ $t("expired") }}</span>
+								</div>
+							</span>
 						</div>
 					</div>
-					<div class="flex justify-between text-sm font-bold w-full">
-						<div>{{ $t('verificationDocumentsBitland') }}</div>
+					<div
+						v-if="reward.progressPerc"
+						class="flex justify-between text-sm font-bold w-full"
+					>
+						<div>
+							{{ props.reward.reason }}
+						</div>
 						<div>{{ $t('signup') }}</div>
 					</div>
-					<div class="w-full my-4">
-						<UiProgressBar />
+					<div
+						v-if="reward.progressPerc"
+						class="w-full my-4"
+					>
+						<UiProgressBar :progress="props.reward.progressPerc" />
 					</div>
-					<div class="flex flex-row-reverse justify-between text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark w-full">
+					<div
+						v-if="reward.progressPerc"
+						class="flex flex-row-reverse justify-between text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark w-full"
+					>
 						<div>{{ $t('start') }}</div>
 						<div>{{ $t('end') }}</div>
 					</div>
 					<p class="text-base font-medium my-4">
-						{{ $t('awardAuthenticationText') }}
+						{{ props.reward.fullDesc }}
 					</p>
 				</div>
-				<IconClose
-					class="text-4xl hidden md:block"
-					@click="closeModal(false)"
-				/>
+				<div class="mt-2">
+					<IconClose
+						class="text-4xl hidden md:block cursor-pointer"
+						@click="closeModal(false)"
+					/>
+				</div>
 			</div>
 		</UModal>
 	</div>
@@ -86,16 +125,23 @@
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
+import type { Reward } from '~/types/response/reward.types';
 import IconClose from '~/assets/svg-icons/close.svg';
 
 const isOpen = ref(true);
-interface EmitDefinition {
+const emit = defineEmits<{
 	(event: 'close', value: boolean): void;
-}
+}>();
 
-const emit = defineEmits<EmitDefinition>();
+const props = defineProps<{ reward: Reward }>();
 
 const closeModal = async (value: boolean) => {
 	emit('close', value);
 };
+
+const now = new Date();
+
+const isExpired = computed(() => {
+	return props.reward.expireAfter && new Date(props.reward.expireAfter) < now;
+});
 </script>

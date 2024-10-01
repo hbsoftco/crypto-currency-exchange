@@ -51,7 +51,13 @@
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
 
-const targetDate = new Date('2025-06-12T22:30:00');
+interface PropsDefinition {
+	expireAfter: string;
+}
+const props = withDefaults(defineProps<PropsDefinition>(), {
+	expireAfter: '',
+});
+const targetDate = new Date(props.expireAfter);
 
 const countdown = ref({
 	days: 0,
