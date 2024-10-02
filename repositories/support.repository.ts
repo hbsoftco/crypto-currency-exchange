@@ -9,7 +9,7 @@ type SupportRepository = {
 
 export const supportRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SupportRepository => ({
 	async getSocialNetList(): Promise<SocialNetListResponse> {
-		const url = ' /v1/routine/support/social_net_list';
+		const url = '/v1/routine/support/social_net_list';
 		const response = await fetch<SocialNetListResponse>(`${url}`, {
 			noAuth: false,
 			apiName: url,

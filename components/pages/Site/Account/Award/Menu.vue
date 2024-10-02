@@ -37,7 +37,8 @@
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
-import type { TagMenuResponse } from '~/types/response/tag-menu.types.js';
+// import type { TagMenuResponse } from '~/types/response/tag-menu.types.js';
+import type { Tag } from '~/types/response/tag.types';
 
 const emit = defineEmits(['tag-selected']);
 

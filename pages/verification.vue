@@ -55,6 +55,6 @@ const socialNetList = ref<KeyValue[]>();
 
 const response = await supportRepo.getSocialNetList();
 socialNetList.value = response.result;
-console.log(socialNetList);
 console.log(response);
+console.log(socialNetList.value);
 </script>
