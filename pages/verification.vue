@@ -46,4 +46,15 @@
 
 <script setup lang="ts">
 import Form from '~/components/pages/Site/Support/Form.vue';
+import { supportRepository } from '~/repositories/support.repository';
+import type { KeyValue } from '~/types/base.types';
+
+const { $api } = useNuxtApp();
+const supportRepo = supportRepository($api);
+const socialNetList = ref<KeyValue[]>();
+
+const response = await supportRepo.getSocialNetList();
+socialNetList.value = response.result;
+console.log(socialNetList);
+console.log(response);
 </script>

@@ -61,9 +61,11 @@ type GetAssetListParams = {
 type GetExposedListParams = {
 	tagId?: string;
 };
+
 type GetTagListParams = {
 	tagType?: string;
 };
+
 type GetCurrencyParams = {
 	id: string;
 	languageId: string;
