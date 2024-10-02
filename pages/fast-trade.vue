@@ -17,7 +17,10 @@
 								<div class="flex items-center">
 									<div>
 										<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('inventory') }}:</span>
-										<span class="mr-1 text-xs font-normal text-left">{{ useNumber('0 BTC') }}</span>
+										<span
+											class="mr-1 text-xs font-normal text-left"
+											dir="ltr"
+										>{{ useNumber(`${0} ${coinTradeOne?.cSymbol}`) }}</span>
 									</div>
 									<UButton
 										class="mr-2 text-primary-yellow-light hover:bg-hover-light dark:hover:bg-hover-dark dark:text-primary-yellow-dark bg-hover-light dark:bg-hover-dark text-xs font-bold"
@@ -28,8 +31,8 @@
 								</div>
 							</div>
 							<TradeChangeFieldInput
-								id="inputTrade1"
-								v-model="inputTrade1"
+								id="tradeOne"
+								v-model="tradeOne"
 								type="text"
 								input-class="text-left"
 								:label="``"
@@ -37,6 +40,8 @@
 								placeholder=""
 								icon=""
 								dir="rtl"
+								:default-selected="currencies[2]"
+								@item-selected="onTradeOneChange"
 							/>
 						</div>
 						<div class="absolute top-[6.5rem] z-[1] mx-auto flex justify-center w-full">
@@ -49,8 +54,8 @@
 								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('to') }}</span>
 							</div>
 							<TradeChangeFieldInput
-								id="inputTrade2"
-								v-model="inputTrade2"
+								id="tradeTwo"
+								v-model="tradeTwo"
 								type="text"
 								:readonly="true"
 								input-class="text-left"
@@ -59,6 +64,8 @@
 								placeholder=""
 								icon=""
 								dir="rtl"
+								:default-selected="currencies[1]"
+								@item-selected="onTradeTwoChange"
 							/>
 						</div>
 					</div>
@@ -105,6 +112,9 @@
 				</div>
 			</section>
 
+			{{ tradeOne }}
+			{{ tradeTwo }}
+
 			<RecentTrades />
 		</UContainer>
 	</div>
@@ -121,6 +131,7 @@ import { useFastTrade } from '~/composables/trade/useFastTrade';
 import { Language } from '~/utils/enums/language.enum';
 import { MarketType } from '~/utils/enums/market.enum';
 import type { Trade } from '~/types/response/trade.types';
+import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
 
 definePageMeta({
 	layout: 'trade',
@@ -179,17 +190,74 @@ const fetchUserTraderCommissionList = async () => {
 onMounted(async () => {
 	assetStore.fetchAssetList();
 	await assetStore.connectToSocket();
+	await assetStore.fetchAssetList();
 
 	// const listen = await authStore.getSocketListenKey();
 
-	// console.log('listen', listen);
+	console.log('listen', assetStore.assetList);
 
 	await fetchTrades();
 	await fetchUserTraderCommissionList();
 });
 
-const inputTrade1 = ref('');
-const inputTrade2 = ref('');
+const tradeOne = ref('');
+const tradeTwo = ref('');
+const errorOne = ref('');
+const errorTwo = ref('');
+
+const coinTradeOne = ref<CurrencyBriefItem>();
+const coinTradeTwo = ref<CurrencyBriefItem>();
+
+const onTradeOneChange = (newValue: CurrencyBriefItem) => {
+	coinTradeOne.value = newValue;
+};
+
+const onTradeTwoChange = (newValue: CurrencyBriefItem) => {
+	coinTradeTwo.value = newValue;
+	console.log('coinTradeTwo', coinTradeTwo.value);
+};
+
+const checkTradeOneValue = () => {
+	if (coinTradeOne.value && tradeOne.value !== '') {
+		const tradeValue = parseFloat(tradeOne.value);
+		const unit = parseFloat(coinTradeOne.value?.unit || '0');
+
+		if (tradeOne.value.length >= (coinTradeOne.value?.unit.length || 0)) {
+			if (tradeValue < unit) {
+				errorOne.value = `مقدار وارد شده نمی‌تواند کمتر از ${unit} باشد.`;
+
+				tradeOne.value = coinTradeOne.value?.unit || '';
+
+				nextTick(() => {
+					tradeOne.value = coinTradeOne.value?.unit || '';
+				});
+			}
+			else {
+				errorOne.value = '';
+			}
+		}
+		else {
+			errorOne.value = '';
+		}
+	}
+};
+
+const checkTradeTwoValue = () => {
+	if (coinTradeTwo.value && tradeTwo.value !== '') {
+		const tradeValue = parseFloat(tradeTwo.value);
+		const unit = parseFloat(coinTradeTwo.value.unit);
+
+		if (tradeValue > unit) {
+			errorTwo.value = `مقدار وارد شده نمی‌تواند کمتر از ${unit} باشد.`;
+		}
+		else {
+			errorTwo.value = '';
+		}
+	}
+};
+
+watch(tradeOne, checkTradeOneValue);
+watch(tradeTwo, checkTradeTwoValue);
 
 const confirmOne = ref(false);
 

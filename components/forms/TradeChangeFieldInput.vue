@@ -55,11 +55,13 @@
 
 			<div class="absolute left-2 cursor-pointer">
 				<input
+					v-model="internalValue"
 					placeholder="0.00"
 					type="text"
 					:readonly="readonly"
 					dir="ltr"
 					class="outline-none text-left p-1 bg-transparent z-10"
+					@input="onInput"
 				>
 			</div>
 
@@ -100,10 +102,12 @@ interface Props {
 	icon?: string;
 	errorMessage?: string;
 	currencies: CurrencyBriefItem[];
+	defaultSelected?: CurrencyBriefItem;
 }
 
 interface EmitDefinition {
 	(event: 'update:modelValue', value: unknown): void;
+	(event: 'item-selected', value: CurrencyBriefItem): void;
 }
 
 const props = defineProps<Props>();
@@ -126,6 +130,10 @@ onMounted(async () => {
 	});
 
 	filteredCurrencies.value = baseDataStore.currencyBriefItems.slice(0, 200);
+
+	if (props.defaultSelected) {
+		selected.value = props.defaultSelected;
+	}
 });
 
 const search = (q: string) => {
@@ -146,7 +154,19 @@ const search = (q: string) => {
 	return filteredCurrencies.value;
 };
 
+watch(() => props.modelValue, (newValue) => {
+	internalValue.value = newValue || '';
+});
+
 watch(internalValue, (newValue) => {
 	emit('update:modelValue', newValue);
 });
+
+watch(selected, (newValue) => {
+	emit('item-selected', newValue);
+});
+
+const onInput = (event: Event) => {
+	internalValue.value = (event.target as HTMLInputElement).value;
+};
 </script>

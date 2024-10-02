@@ -25,7 +25,7 @@ type CurrencyBriefItem = {
 	rank: number;
 	stateId: number;
 	typeId: number;
-	unit: number;
+	unit: string;
 };
 
 type CurrencyBriefListResponse = {

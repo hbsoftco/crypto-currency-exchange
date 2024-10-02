@@ -25,7 +25,7 @@ export const useAssetStore = defineStore('asset', () => {
 			}
 
 			// const { socket, messages, connect, createSubscriptionData, sendMessage } = useWebSocket('private', socketListenKey);
-			const { connect, createSubscriptionData, sendMessage } = useWebSocket('private', socketListenKey);
+			const { connect, messages, createSubscriptionData, sendMessage } = useWebSocket('private', socketListenKey);
 
 			await connect();
 			console.log('Socket connected with listen key:', socketListenKey);
@@ -39,6 +39,8 @@ export const useAssetStore = defineStore('asset', () => {
 					assetTypeId: useEnv('assetType'),
 				},
 			));
+
+			console.log('messages.value', messages.value);
 		}
 		catch (error) {
 			console.error('Error connecting to socket:', error);
