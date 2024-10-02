@@ -7,24 +7,9 @@
 					:back-btn="false"
 				/>
 			</div>
-			<div class="flex items-center my-6">
-				<IconArrowRight
-					class="cursor-pointer text-base text-primary-yellow-light dark:text-primary-yellow-dark"
-				/>
-				<ul class="flex w-full md:w-auto text-sm font-bold">
-					<li
-						v-for="(item, index) in items"
-						:key="index"
-						:class="['mx-auto md:mx-4 cursor-pointer', activeIndex === index ? 'bg-primary-yellow-light dark:bg-primary-yellow-dark  p-2 text-black text-xs font-bold' : 'text-xs font-normal p-2']"
-						@click="setActive(index)"
-					>
-						{{ item }}
-					</li>
-				</ul>
-				<IconArrowLeft
-					class="cursor-pointer text-base text-primary-yellow-light dark:text-primary-yellow-dark"
-				/>
-			</div>
+			<!-- <div class="flex items-center my-6">
+				<Menu @tag-selected="updateTagFilter" />
+			</div> -->
 		</section>
 
 		<section>
@@ -41,32 +26,34 @@
 
 <script setup lang="ts">
 import AwardBox from '~/components/pages/Site/Account/Award/AwardBox.vue';
-import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
-import IconArrowRight from '~/assets/svg-icons/menu/arrow-right.svg';
 import { rewardRepository } from '~/repositories/reward.repository';
 import type { GetExposedListParams } from '~/types/base.types';
 import type { Reward } from '~/types/response/reward.types';
+// import Menu from '~/components/pages/Site/Account/Award/Menu.vue';
+// import { baseDateRepository } from '~/repositories/base-date.repository';
+// import type { TagMenuResponse } from '~/types/response/tag-menu.types';
+// import type { GetTagListParams } from '~/types/base.types';
 
 const { $api } = useNuxtApp();
 const rewardRepo = rewardRepository($api);
+// const tagRepo = baseDateRepository($api);
 
 const params = ref<GetExposedListParams>({
 	tagId: '',
 });
+// const paramsTag = ref<GetTagListParams>({
+// 	tagType: '',
+// });
 
 const response = await rewardRepo.getExposedList(params.value);
 
 const rewardList = ref<Reward[]>(response.result.rows);
 console.log(rewardList);
 
-// Define reactive state
-const activeIndex = ref<number | null>(null);
-const items = ['deFi', 'deFi', 'deFi', 'deFi', 'همه'];
+// const responseTag = await tagRepo.getTagMenuList(paramsTag.value);
 
-// Function to set the active item
-const setActive = (index: number) => {
-	activeIndex.value = index;
-};
+// const tagList = ref<TagMenuResponse[]>(responseTag);
+// console.log(tagList);
 
 definePageMeta({
 	layout: 'account',

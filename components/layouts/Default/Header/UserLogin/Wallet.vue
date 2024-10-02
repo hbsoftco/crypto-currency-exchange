@@ -73,7 +73,7 @@
 											:is="item.icon"
 											class="text-xl dark:text-subtle-text-50 ml-2"
 										/>
-										<div class="ml-2">
+										<div class="mr-2">
 											<span class="text-xs font-bold">{{
 												$t(item.name)
 											}}</span>

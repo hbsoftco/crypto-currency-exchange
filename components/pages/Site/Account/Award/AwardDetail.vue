@@ -5,10 +5,10 @@
 			fullscreen
 		>
 			<div
-				class="h-full flex flex-col items-center justify-center bg-secondary-gray-light dark:bg-secondary-gray-dark"
+				class="h-full flex flex-col items-center justify-center overflow-y-scroll"
 			>
 				<div
-					class="flex flex-col justify-center items-center bg-background-light dark:bg-background-dark px-1 md:px-20 py-6 md:py-8 mb-0 md:mb-6 my-32 md:my-0"
+					class=" w-full md:w-[45rem] flex flex-col justify-center items-center text-center rounded-md bg-background-light dark:bg-background-dark px-2 md:px-14 py-6 md:py-8 mt-20"
 				>
 					<div class="block md:hidden w-full">
 						<div class="flex justify-between items-center">
@@ -22,7 +22,7 @@
 						</div>
 					</div>
 					<h4
-						class="text-center text-4xl font-black text-primary-yellow-light dark:text-primary-yellow-dark"
+						class="hidden md:block text-center text-4xl font-black text-primary-yellow-light dark:text-primary-yellow-dark"
 					>
 						{{ $t("congratulations") }}
 					</h4>
@@ -31,14 +31,21 @@
 						alt="award"
 						class="w-full md:w-80 h-80 text-center"
 					/>
-					<p class="text-base font-bold text-white text-center">
-						{{ $t("awardText") }}
-					</p>
+					<div class="flex">
+						<p class="text-base font-bold text-white text-center">
+							{{ props.reward.prizeTitle }}
+						</p>
+						<p class="text-base font-bold text-white text-center">
+							{{ $t('awardText') }}
+						</p>
+					</div>
 				</div>
-				<IconClose
-					class="text-4xl hidden md:block"
-					@click="closeModal(false)"
-				/>
+				<div class="mt-6">
+					<IconClose
+						class="text-4xl hidden md:block cursor-pointer"
+						@click="closeModal(false)"
+					/>
+				</div>
 			</div>
 		</UModal>
 	</div>
@@ -46,13 +53,14 @@
 
 <script setup lang="ts">
 import IconClose from '~/assets/svg-icons/close.svg';
+import type { Reward } from '~/types/response/reward.types';
 
 const isOpen = ref(true);
-interface EmitDefinition {
+const emit = defineEmits<{
 	(event: 'close', value: boolean): void;
-}
+}>();
 
-const emit = defineEmits<EmitDefinition>();
+const props = defineProps<{ reward: Reward }>();
 
 const closeModal = async (value: boolean) => {
 	emit('close', value);
