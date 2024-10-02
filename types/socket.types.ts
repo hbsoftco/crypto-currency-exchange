@@ -1,6 +1,7 @@
 export type SocketSpotTickerMessage = {
 	id: string;
 	topic: string;
+	statusCode?: number;
 	data: {
 		h: string;
 		i: string;

@@ -13,5 +13,6 @@ export enum PrivateTopic {
 export enum SocketId {
 	PING = '12',
 	SPOT_TICKER = '25',
+	SPOT_TICKER_EXCHANGE = '26',
 	ASSET_LIST = '35',
 }

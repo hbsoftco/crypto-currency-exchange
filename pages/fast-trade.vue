@@ -24,7 +24,7 @@
 									</div>
 									<UButton
 										class="mr-2 text-primary-yellow-light hover:bg-hover-light dark:hover:bg-hover-dark dark:text-primary-yellow-dark bg-hover-light dark:bg-hover-dark text-xs font-bold"
-										to="#"
+										to=""
 									>
 										{{ $t('all') }}
 									</UButton>
@@ -69,20 +69,44 @@
 							/>
 						</div>
 					</div>
-					<div class="flex justify-between items-center my-4">
+					<div
+						class="flex justify-between items-center my-4"
+						dir="ltr"
+					>
 						<div class="bg-secondary-gray-light dark:bg-secondary-gray-dark w-full h-[0.063rem]" />
 						<div class="flex justify-between items-center text-xs font-normal">
-							<div class="mx-1">
-								1BTC
+							<div class="ml-1 flex text-nowrap">
+								{{ `1 ${coinTradeOne?.cSymbol}` }}
 							</div>
 							<div
 								class="mx-1"
 								dir="ltr"
 							>
-								≈-
+								≈
 							</div>
-							<div class="mx-1">
-								USDT
+							<div class="mr-1 flex text-nowrap">
+								{{ `${getCoinPrice} ${feeCurrencySymbol}` }}
+							</div>
+						</div>
+						<span
+							v-if="shouldShowNewSection"
+							class="mx-1"
+						>|</span>
+						<div
+							v-if="shouldShowNewSection"
+							class="flex justify-between items-center text-xs font-normal"
+						>
+							<div class="ml-1 flex text-nowrap">
+								{{ `0 ${coinTradeTwo?.cSymbol}` }}
+							</div>
+							<div
+								class="mx-1"
+								dir="ltr"
+							>
+								≈
+							</div>
+							<div class="mr-1 flex text-nowrap">
+								{{ `0 ${feeCurrencySymbol}` }}
 							</div>
 						</div>
 						<div class="bg-secondary-gray-light dark:bg-secondary-gray-dark w-full h-[0.063rem]" />
@@ -90,17 +114,23 @@
 					<div class="flex justify-between py-2">
 						<span>{{ $t('fee') }}</span>
 						<div class="flex">
-							<IconInfo
-								class="text-base cursor-pointer text-subtle-text-light dark:text-subtle-text-dark"
-								@click="openConfirmOne"
-							/>
-							<span class="text-sm font-normal mr-2">1BTC</span>
+							<span
+								class="text-sm font-normal mr-2"
+								dir="ltr"
+							>
+								{{ useNumber(`0 ${feeCurrencySymbol}`) }}
+							</span>
 						</div>
 					</div>
 					<div class="flex justify-between my-4 py-2">
 						<span>{{ $t('receivable') }}</span>
 						<div class="flex">
-							<span class="text-sm font-normal mr-2">1BTC</span>
+							<span
+								class="text-sm font-normal mr-2"
+								dir="ltr"
+							>
+								{{ useNumber(`0 ${coinTradeTwo?.cSymbol}`) }}
+							</span>
 						</div>
 					</div>
 					<UButton
@@ -114,6 +144,9 @@
 
 			{{ tradeOne }}
 			{{ tradeTwo }}
+			<pre dir="ltr">
+				{{ parsedMessages }}
+			</pre>
 
 			<RecentTrades />
 		</UContainer>
@@ -121,7 +154,6 @@
 </template>
 
 <script setup lang="ts">
-import IconInfo from '~/assets/svg-icons/info-fill.svg';
 import { useNumber } from '~/composables/useNumber';
 import ConfirmOrderModal from '~/components/pages/FastTrade/ConfirmOrderModal.vue';
 import TradeChangeFieldInput from '~/components/forms/TradeChangeFieldInput.vue';
@@ -132,17 +164,25 @@ import { Language } from '~/utils/enums/language.enum';
 import { MarketType } from '~/utils/enums/market.enum';
 import type { Trade } from '~/types/response/trade.types';
 import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
+import { PublicTopic, SocketId } from '~/utils/enums/socket.enum';
 
 definePageMeta({
 	layout: 'trade',
 });
+
+const tradeOne = ref('');
+const tradeTwo = ref('');
+const errorOne = ref('');
+const errorTwo = ref('');
+
+const coinTradeOne = ref<CurrencyBriefItem>();
+const coinTradeTwo = ref<CurrencyBriefItem>();
 
 const baseDataStore = useBaseDataStore();
 const assetStore = useAssetStore();
 
 await baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
 const currencies = baseDataStore.currencyBriefItems;
-// const currencies: CurrencyBriefItem[] = [];
 
 const { getTradesList, getUserTraderCommissionList } = useFastTrade();
 
@@ -185,28 +225,109 @@ const fetchUserTraderCommissionList = async () => {
 	}
 };
 
-// const authStore = useAuthStore();
+const { exchangeMessages, connect, socket, createSubscriptionData, sendMessage } = useWebSocket();
+
+const parsedMessages = computed(() => {
+	return exchangeMessages.value.map((msg) => {
+		try {
+			return msg;
+		}
+		catch (error) {
+			console.error('Error parsing message:', error);
+			return null;
+		}
+	}).filter((item) => item !== null);
+});
+
+const feeCurrencySymbol = computed(() => {
+	if (coinTradeTwo.value?.cSymbol === 'USDT' || coinTradeTwo.value?.cSymbol === 'TMN') {
+		return coinTradeTwo.value?.cSymbol;
+	}
+	return 'USDT';
+});
+
+const marketParams = computed(() => {
+	if (coinTradeOne.value?.cSymbol && coinTradeTwo.value?.cSymbol) {
+		return getFormattedPairs(coinTradeOne.value.cSymbol, coinTradeTwo.value.cSymbol);
+	}
+	return null;
+});
+
+watch(marketParams, async (newMarketParams, oldMarketParams) => {
+	if (newMarketParams !== oldMarketParams && newMarketParams && oldMarketParams) {
+		await unSubSocket(oldMarketParams);
+		await subSocket(newMarketParams);
+	}
+});
+
+const shouldShowNewSection = computed(() => {
+	const currencyOne = coinTradeOne.value?.cSymbol;
+	const currencyTwo = coinTradeTwo.value?.cSymbol;
+
+	if (currencyOne !== 'TMN' && currencyOne !== 'USDT' && currencyTwo !== 'TMN' && currencyTwo !== 'USDT') {
+		return true;
+	}
+	return false;
+});
+
+const getCoinPrice = computed(() => {
+	const message = exchangeMessages.value.find((msg) => {
+		console.log('getCoinPrice =============================', msg);
+
+		// return msg.symbol === coinTradeOne.value?.cSymbol && msg.pairSymbol === coinTradeTwo.value?.cSymbol;
+	});
+
+	if (message) {
+		// return message.price; // قیمت دریافت شده از سوکت
+	}
+
+	return '0.00';
+});
 
 onMounted(async () => {
 	assetStore.fetchAssetList();
 	await assetStore.connectToSocket();
 	await assetStore.fetchAssetList();
 
-	// const listen = await authStore.getSocketListenKey();
-
-	console.log('listen', assetStore.assetList);
-
 	await fetchTrades();
 	await fetchUserTraderCommissionList();
+
+	await connect();
+	console.log('marketParams.value ====>', marketParams.value);
+	await subSocket(marketParams.value, false);
 });
 
-const tradeOne = ref('');
-const tradeTwo = ref('');
-const errorOne = ref('');
-const errorTwo = ref('');
+onBeforeUnmount(async () => {
+	await unSubSocket(marketParams.value);
+});
 
-const coinTradeOne = ref<CurrencyBriefItem>();
-const coinTradeTwo = ref<CurrencyBriefItem>();
+const subSocket = async (marketParams: string | null, firstLoad: boolean = true) => {
+	if (marketParams) {
+		console.log('subSocket', marketParams);
+
+		if (firstLoad) {
+			console.log('firstLoad');
+			await unSubSocket(marketParams);
+		}
+		sendMessage(createSubscriptionData(
+			SocketId.SPOT_TICKER_EXCHANGE,
+			'SUBSCRIBE',
+			PublicTopic.SPOT_TICKER,
+			marketParams,
+		));
+	}
+};
+
+const unSubSocket = (marketParams: string | null) => {
+	if (socket.value && marketParams) {
+		sendMessage(createSubscriptionData(
+			SocketId.SPOT_TICKER_EXCHANGE,
+			'UNSUBSCRIBE',
+			PublicTopic.SPOT_TICKER,
+			marketParams,
+		));
+	}
+};
 
 const onTradeOneChange = (newValue: CurrencyBriefItem) => {
 	coinTradeOne.value = newValue;

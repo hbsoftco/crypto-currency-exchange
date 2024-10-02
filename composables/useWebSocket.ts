@@ -4,6 +4,7 @@ import { SocketId, type PrivateTopic, type PublicTopic } from '~/utils/enums/soc
 export const useWebSocket = (pathType = 'public', listenKey = '') => {
 	const socket = ref<WebSocket | null>(null);
 	const messages = ref<SocketSpotTickerMessage[]>([]);
+	const exchangeMessages = ref<SocketSpotTickerMessage[]>([]);
 	let pingInterval: ReturnType<typeof setInterval> | null = null;
 
 	const connect = () => {
@@ -26,13 +27,15 @@ export const useWebSocket = (pathType = 'public', listenKey = '') => {
 				console.log('WebSocket connection opened');
 				resolve();
 
-				pingInterval = setInterval(() => {
-					const pingData = JSON.stringify({
-						id: '12',
-						method: 'Ping',
-					});
-					sendMessage(pingData);
-				}, 15000);
+				if (!pingInterval) {
+					pingInterval = setInterval(() => {
+						const pingData = JSON.stringify({
+							id: '12',
+							method: 'Ping',
+						});
+						sendMessage(pingData);
+					}, 15000);
+				}
 			};
 
 			socket.value.onerror = (error) => {
@@ -44,18 +47,33 @@ export const useWebSocket = (pathType = 'public', listenKey = '') => {
 				const messageData: SocketSpotTickerMessage = JSON.parse(event.data);
 				console.log('Message from server:', messageData);
 
-				if (messageData.id === SocketId.SPOT_TICKER) {
-					const mi = messageData.data.mi;
+				if (messageData.statusCode !== 400) {
+					if (messageData.id === SocketId.SPOT_TICKER) {
+						const mi = messageData.data.mi;
 
-					const existingIndex = messages.value.findIndex((msg) => msg.data.mi === mi);
-					if (existingIndex !== -1) {
-						messages.value[existingIndex] = messageData;
-					}
-					else {
-						messages.value.push(messageData);
-					}
+						const existingIndex = messages.value.findIndex((msg) => msg.data.mi === mi);
+						if (existingIndex !== -1) {
+							messages.value[existingIndex] = messageData;
+						}
+						else {
+							messages.value.push(messageData);
+						}
 
-					console.log('Updated messages:', messages.value);
+						console.log('Updated messages:', messages.value);
+					}
+					else if (messageData.id === SocketId.SPOT_TICKER_EXCHANGE) {
+						const mi = messageData.data.mi;
+
+						const existingIndex = exchangeMessages.value.findIndex((msg) => msg.data.mi === mi);
+						if (existingIndex !== -1) {
+							exchangeMessages.value[existingIndex] = messageData;
+						}
+						else {
+							exchangeMessages.value.push(messageData);
+						}
+
+						console.log('Updated messages:', exchangeMessages.value);
+					}
 				}
 			};
 
@@ -94,6 +112,7 @@ export const useWebSocket = (pathType = 'public', listenKey = '') => {
 	return {
 		socket,
 		messages,
+		exchangeMessages,
 		connect,
 		createSubscriptionData,
 		sendMessage,
