@@ -3,6 +3,11 @@ type GetPinParams = {
 	group?: string;
 };
 
+type GetRootListParams = {
+	languageId: string;
+	group: string;
+};
+
 type GetLanguageParams = {
 	languageId: number;
 };
@@ -98,6 +103,7 @@ type KeyValue = {
 export type {
 	getKlineParams,
 	GetPinParams,
+	GetRootListParams,
 	GetLanguageParams,
 	GetCurrencyParams,
 	GetMarketsParams,

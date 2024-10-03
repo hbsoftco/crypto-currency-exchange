@@ -1,5 +1,5 @@
 <template>
-	<div class="grid grid-cols-1 md:grid-cols-12 gap-4 ">
+	<div class="grid grid-cols-1 md:grid-cols-12 gap-4 z-50">
 		<!-- <UnverifiedModal
 			v-if="showDetail"
 			@close="closeDetail"
@@ -17,6 +17,7 @@
 				:options="socialNetList"
 				:placeholder="$t('networkSelected')"
 				value-attribute="id"
+				input-class="text-right bg-background-light dark:bg-background-dark"
 				option-attribute="value"
 				class="my-8  bg-background-light dark:bg-background-dark"
 				size="lg"
