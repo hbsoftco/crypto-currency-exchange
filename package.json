@@ -23,7 +23,8 @@
     "nuxt-svgo": "^4.0.3",
     "pinia": "^2.2.1",
     "vue": "latest",
-    "vue3-otp-input": "^0.5.21"
+    "vue3-otp-input": "^0.5.21",
+    "vue3-persian-datetime-picker": "^1.2.2"
   },
   "devDependencies": {
     "@formkit/auto-animate": "^0.8.2",

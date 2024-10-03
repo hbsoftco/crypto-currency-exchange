@@ -81,10 +81,14 @@
 			/>
 		</div>
 		<div class="ml-6 my-1 w-44">
-			<USelectMenu
-				v-model="selectedMarket4"
-				:options="market4"
-				:placeholder="$t('fromHistory')"
+			<UInput
+				id="fromDate"
+				v-model="fromDate"
+				color="white"
+				variant="outline"
+				:placeholder="$t('fromDate')"
+				readonly
+				class="cursor-pointer"
 				:ui="{
 					background: '',
 					color: {
@@ -94,13 +98,24 @@
 					},
 				}"
 			/>
+
+			<DatePicker
+				v-model="fromDate"
+				color="text-primary-yellow-light dark:text-primary-yellow-dark"
+				simple
+				format="jYYYY/jMM/jDD"
+				element="fromDate"
+			/>
 		</div>
 		<div class="ml-6 my-1 w-44">
-			<USelectMenu
-				v-model="selectedMarket5"
-				:options="market5"
+			<UInput
+				id="toDate"
+				v-model="toDate"
+				color="white"
+				variant="outline"
 				:placeholder="$t('toDate')"
-				class="bg-hover-light dark:bg-hover-dark "
+				readonly
+				class="cursor-pointer"
 				:ui="{
 					background: '',
 					color: {
@@ -109,6 +124,14 @@
 						},
 					},
 				}"
+			/>
+
+			<DatePicker
+				v-model="toDate"
+				color="#ff9800"
+				simple
+				format="jYYYY/jMM/jDD"
+				element="toDate"
 			/>
 		</div>
 		<UButton
@@ -125,6 +148,8 @@ import type { MarketBriefItem } from '~/types/response/brief-list.types';
 import { OrderType } from '~/utils/enums/order.enum';
 
 const filteredMarkets = ref<MarketBriefItem[]>();
+const toDate = ref();
+const fromDate = ref();
 const selected = ref<MarketBriefItem>();
 
 const loading = ref(false);
@@ -187,20 +212,4 @@ const orderTypeItems = ref<KeyValue[]>([
 	},
 ]);
 const orderTypeFilter = ref<string>();
-
-// fake data
-// const market = ['Arlene Mccoy', 'Devon Webb', 'Tom Cook', 'Tanya Fox', 'Hellen Schmidt', 'Caroline Schultz', 'Mason Heaney', 'Claudie Smitham', 'Emil Schaefer'];
-// const selectedMarket = ref();
-
-// const market2 = ['gggg', 'Devon Webb', 'Tom Cook', 'Tanya Fox', 'Hellen Schmidt', 'Caroline Schultz', 'Mason Heaney', 'Claudie Smitham', 'Emil Schaefer'];
-// const selectedMarket2 = ref();
-
-const market3 = ['ffff', 'Devon Webb', 'Tom Cook', 'Tanya Fox', 'Hellen Schmidt', 'Caroline Schultz', 'Mason Heaney', 'Claudie Smitham', 'Emil Schaefer'];
-const selectedMarket3 = ref();
-
-const market4 = ['mmmmmmmm', 'Devon Webb', 'Tom Cook', 'Tanya Fox', 'Hellen Schmidt', 'Caroline Schultz', 'Mason Heaney', 'Claudie Smitham', 'Emil Schaefer'];
-const selectedMarket4 = ref();
-
-const market5 = ['ddd'];
-const selectedMarket5 = ref();
 </script>
