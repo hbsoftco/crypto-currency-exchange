@@ -67,9 +67,10 @@
 
 		<div class="ml-6 my-1 w-44">
 			<USelectMenu
-				v-model="selectedMarket3"
-				:options="market3"
+				v-model="orderSideFilter"
+				:options="OrderSideItem"
 				:placeholder="$t('direction')"
+				option-attribute="value"
 				:ui="{
 					background: '',
 					color: {
@@ -122,7 +123,7 @@
 <script setup lang="ts">
 import type { KeyValue } from '~/types/base.types';
 import type { MarketBriefItem } from '~/types/response/brief-list.types';
-import { OrderType } from '~/utils/enums/order.enum';
+import { OrderType, OrderSide } from '~/utils/enums/order.enum';
 
 const filteredMarkets = ref<MarketBriefItem[]>();
 const selected = ref<MarketBriefItem>();
@@ -186,17 +187,22 @@ const orderTypeItems = ref<KeyValue[]>([
 		value: useT(OrderType.STOP_LIMIT),
 	},
 ]);
+
+const OrderSideItem = ref<KeyValue[]>([
+	{
+		key: OrderSide.BUY,
+		value: useT(OrderSide.BUY),
+	},
+	{
+		key: OrderSide.SELL,
+		value: useT(OrderSide.SELL),
+	},
+]);
 const orderTypeFilter = ref<string>();
+const orderSideFilter = ref<string>();
 
 // fake data
-// const market = ['Arlene Mccoy', 'Devon Webb', 'Tom Cook', 'Tanya Fox', 'Hellen Schmidt', 'Caroline Schultz', 'Mason Heaney', 'Claudie Smitham', 'Emil Schaefer'];
-// const selectedMarket = ref();
-
-// const market2 = ['gggg', 'Devon Webb', 'Tom Cook', 'Tanya Fox', 'Hellen Schmidt', 'Caroline Schultz', 'Mason Heaney', 'Claudie Smitham', 'Emil Schaefer'];
-// const selectedMarket2 = ref();
-
-const market3 = ['ffff', 'Devon Webb', 'Tom Cook', 'Tanya Fox', 'Hellen Schmidt', 'Caroline Schultz', 'Mason Heaney', 'Claudie Smitham', 'Emil Schaefer'];
-const selectedMarket3 = ref();
+// const selectedMarket3 = ref();
 
 const market4 = ['mmmmmmmm', 'Devon Webb', 'Tom Cook', 'Tanya Fox', 'Hellen Schmidt', 'Caroline Schultz', 'Mason Heaney', 'Claudie Smitham', 'Emil Schaefer'];
 const selectedMarket4 = ref();
