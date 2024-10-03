@@ -21,3 +21,13 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+
+/* Date picker */
+.vpd-main {
+    @apply bg-gray-900;
+}
+
+.vpd-main .vpd-body {
+    @apply bg-background-light dark:bg-background-dark;
+}

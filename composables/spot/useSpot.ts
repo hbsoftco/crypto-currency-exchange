@@ -68,11 +68,11 @@ export const useSpot = () => {
 			const response = await spotRepo.getOrderList(params);
 			return response;
 		}
-		catch (error: unknown) {
-			const err = error as ErrorResponse;
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		catch (error: any) {
 			throw createError({
 				statusCode: 500,
-				statusMessage: `${err.response?._data?.message || 'Unknown error'}`,
+				statusMessage: `${error.response?._data?.message || 'Unknown error'}`,
 			});
 		}
 		finally {

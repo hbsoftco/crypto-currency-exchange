@@ -102,9 +102,10 @@
 
 			<DatePicker
 				v-model="fromDate"
-				color="text-primary-yellow-light dark:text-primary-yellow-dark"
+				color="#FFC107"
 				simple
-				format="jYYYY/jMM/jDD"
+				display-format="jYYYY/jMM/jDD"
+				format="YYYY/MM/DD"
 				element="fromDate"
 			/>
 		</div>
@@ -129,14 +130,16 @@
 
 			<DatePicker
 				v-model="toDate"
-				color="#ff9800"
+				display-format="jYYYY/jMM/jDD"
+				color="#FFC107"
 				simple
-				format="jYYYY/jMM/jDD"
+				format="YYYY/MM/DD"
 				element="toDate"
 			/>
 		</div>
 		<UButton
 			class="flex justify-center px-8 text-sm font-normal text-black dark:text-white hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-gray-light dark:border-primary-gray-dark"
+			@click="applyFilters"
 		>
 			{{ $t("search") }}
 		</UButton>
@@ -146,7 +149,14 @@
 <script setup lang="ts">
 import type { KeyValue } from '~/types/base.types';
 import type { MarketBriefItem } from '~/types/response/brief-list.types';
+import type { OrderFiltersType } from '~/types/response/spot.types';
 import { OrderType, OrderSide } from '~/utils/enums/order.enum';
+
+interface EmitDefinition {
+	(event: 'filters', filters: OrderFiltersType): void;
+}
+
+const emit = defineEmits<EmitDefinition>();
 
 const filteredMarkets = ref<MarketBriefItem[]>();
 const toDate = ref();
@@ -223,9 +233,16 @@ const OrderSideItem = ref<KeyValue[]>([
 		value: useT(OrderSide.SELL),
 	},
 ]);
-const orderTypeFilter = ref<string>();
-const orderSideFilter = ref<string>();
+const orderTypeFilter = ref<KeyValue>();
+const orderSideFilter = ref<KeyValue>();
 
-// fake data
-// const selectedMarket3 = ref();
+const applyFilters = () => {
+	emit('filters', {
+		from: toDate.value,
+		to: toDate.value,
+		orderSide: orderSideFilter.value ? orderSideFilter.value.key : '',
+		orderType: orderTypeFilter.value ? orderTypeFilter.value.key : '',
+		symbol: 'BTCUSDT',
+	});
+};
 </script>

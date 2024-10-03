@@ -48,7 +48,7 @@ export const spotRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SpotR
 
 		const url = 'v1/spot/trade/list';
 		const response = await fetch<GetTradeListResponse>(`${url}?${query.toString()}`, {
-			noAuth: true,
+			noAuth: false,
 			apiName: url,
 		} as CustomNitroFetchOptions);
 
@@ -61,9 +61,10 @@ export const spotRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SpotR
 		);
 
 		const url = 'v1/spot/order/list';
-		const response = await fetch<GetOrderListResponse>(`${url}?${query.toString()}`, {
-			noAuth: true,
-			apiName: url,
+		const urlWithQuery = `${url}?${query.toString()}`;
+		const response = await fetch<GetOrderListResponse>(urlWithQuery, {
+			noAuth: false,
+			apiName: urlWithQuery,
 		} as CustomNitroFetchOptions);
 
 		return response;
