@@ -1,5 +1,8 @@
 <template>
-	<div>
+	<div v-if="!currentSpotData">
+		<span>{{ $t('isLoading') }} ...</span>
+	</div>
+	<div v-else>
 		<div class="mb-3">
 			<TradingPairDetails />
 		</div>
@@ -11,15 +14,13 @@
 			<div class="flex-1">
 				<div class="mb-2">
 					<MarketOverview />
-					<UButton
-						label="Open"
-						@click="isOpen = true"
-					/>
 				</div>
 				<!-- MarketOverview -->
 
 				<div class="flex justify-start">
-					<div class="w-64 max-w-64 ml-2">
+					<div
+						class="w-64 max-w-64 ml-2"
+					>
 						<OrderBook />
 					</div>
 
@@ -37,7 +38,7 @@
 		</div>
 		<div>
 			<USlideover
-				v-model="isOpen"
+				v-model="settingsStore.isOpenSidebarSettingsSpot"
 				side="left"
 			>
 				<UCard
@@ -54,7 +55,7 @@
 								variant="ghost"
 								icon="i-heroicons-x-mark-20-solid"
 								class="-my-1"
-								@click="isOpen = false"
+								@click="settingsStore.toggleSidebarSettingsSpot(false)"
 							/>
 						</div>
 					</template>
@@ -83,5 +84,19 @@ definePageMeta({
 	layout: 'trade',
 });
 
-const isOpen = ref(false);
+const settingsStore = useSettingsStore();
+const {	setRequiredData, spotData } = useSpotStore();
+
+const route = useRoute();
+const mSymbol = String(route.params.mSymbol);
+const [getSymbol, getQuote] = mSymbol.split('_');
+
+setRequiredData(mSymbol, `${getSymbol}${getQuote}`, getQuote, getSymbol);
+
+const currentSpotData = computed(() => {
+	return spotData || {};
+});
+
+onMounted(async () => {
+});
 </script>

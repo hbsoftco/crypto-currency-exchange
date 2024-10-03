@@ -102,7 +102,8 @@
 							<Download />
 						</div>
 						<div>
-							<Setting />
+							<Setting v-if="!spotPageState" />
+							<SidebarSettingAction v-else />
 						</div>
 					</div>
 				</div>
@@ -113,6 +114,8 @@
 </template>
 
 <script setup lang="ts">
+import SidebarSettingAction from '../Trade/SidebarSettingAction.vue';
+
 import Search from './Header/Search/index.vue';
 import Download from './Header/Download.vue';
 import Futures from './Header/Futures.vue';
@@ -120,6 +123,20 @@ import QuickAccessMenu from './Header/QuickAccessMenu.vue';
 import Setting from './Header/Setting.vue';
 import Transaction from './Header/Transaction.vue';
 import UserLogin from './Header/UserLogin/index.vue';
+
+const spotPageState = ref<boolean>(false);
+const route = useRoute();
+
+onMounted(() => {
+	if (route.name === 'spot-mSymbol') {
+		spotPageState.value = true;
+	}
+	else {
+		spotPageState.value = false;
+	}
+});
+
+console.log(route);
 
 // import Notif from '~/components/layouts/Default/Notif.vue';
 </script>

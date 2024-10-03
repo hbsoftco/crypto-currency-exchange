@@ -25,7 +25,7 @@
 			</div>
 			<div class="hidden md:block">
 				<UButton
-					:to="`/spot/${coin?.mSymbol}`"
+					:to="`/spot/${splitMarket(coin?.mSymbol)}`"
 					size="2xs"
 					class="px-6 font-medium text-sm rounded rounded-l-none"
 				>
@@ -45,6 +45,7 @@
 </template>
 
 <script setup lang="ts">
+import { splitMarket } from '~/utils/splitMarket';
 import type { MarketBriefItem } from '~/types/response/brief-list.types';
 
 interface Props {

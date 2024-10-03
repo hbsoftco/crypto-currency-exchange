@@ -498,7 +498,6 @@ const marketRepo = marketRepository($api);
 const route = useRoute();
 const cSymbol = String(route.params.cSymbol);
 const [symbol, quote] = cSymbol.split('_');
-console.log(quote);
 
 const baseDataStore = useBaseDataStore();
 await baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);

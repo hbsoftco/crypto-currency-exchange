@@ -37,13 +37,21 @@ type getTradesListParams = {
 	pageSize?: string;
 };
 
-type getKlineParams = {
+type GetKlineParams = {
 	timeFrom?: string;
 	timeTo?: string;
 	candleCount?: string;
 	timeFrameType?: string;
 	symbol?: string;
 	marketId?: string;
+};
+
+type SpotDataParams = {
+	symbol?: string;
+	marketId?: string;
+	timeFrame?: '1min' | '3min' | '5min' | '15min' | '30min' | '1hour' | '4hour' | '1day' | '1week' | '1month';
+	rows?: string;
+	level?: string;
 };
 
 type GetAssetListParams = {
@@ -90,7 +98,8 @@ type KeyValue = {
 };
 
 export type {
-	getKlineParams,
+	GetKlineParams,
+	SpotDataParams,
 	GetPinParams,
 	GetLanguageParams,
 	GetCurrencyParams,
