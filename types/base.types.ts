@@ -108,6 +108,33 @@ type KeyValue = {
 	value: string;
 };
 
+type GetTradeListParams = {
+	marketId: string;
+	symbol: string;
+	orderSide: string;
+	orderType: string;
+	assetType: string;
+	uniqueTag: string;
+	from: string;
+	to: string;
+	pageNumber: string;
+	pageSize: string;
+};
+
+type GetOrderListParams = {
+	marketId: string;
+	symbol: string;
+	orderSide: string;
+	orderType: string;
+	assetType?: string;
+	searchMode: string;
+	uniqueTag: string;
+	from: string;
+	to: string;
+	pageNumber: string;
+	pageSize?: string;
+};
+
 export type {
 	GetKlineParams,
 	SpotDataParams,
@@ -126,4 +153,6 @@ export type {
 	KeyValue,
 	GetTagListParams,
 	GetStaffParams,
+	GetTradeListParams,
+	GetOrderListParams,
 };

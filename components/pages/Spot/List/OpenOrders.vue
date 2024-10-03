@@ -117,6 +117,42 @@ import FilterSearch from '~/components/pages/Spot/List/FilterSearch.vue';
 import IconInfo from '~/assets/svg-icons/info.svg';
 import { useNumber } from '~/composables/useNumber';
 import ModalOrder from '~/components/pages/Spot/List/ModalDetailOrder.vue';
+import { useSpot } from '~/composables/spot/useSpot';
+
+const { loading, getTradeList } = useSpot();
+
+const params = ref({
+	// symbol: props.symbol,
+	// timeFrom: String(getEpochTime('1WEEK_AGO')),
+	// timeTo: String(getEpochTime('TOMORROW')),
+	// marketId: String(getMarketId(props.quote)),
+
+	marketId: '',
+	symbol: '',
+	orderSide: '',
+	orderType: '',
+	assetType: '',
+	searchMode: '',
+	uniqueTag: '',
+	from: '',
+	to: '',
+	pageNumber: '',
+	pageSize: '',
+});
+
+const fetchTradeList = async () => {
+	try {
+		const { result } = await getTradeList(params.value);
+		console.log(result);
+	}
+	catch (error) {
+		console.error('Error fetching trades:', error);
+	}
+};
+
+onMounted(async () => {
+	await fetchTradeList();
+});
 
 const items = [
 	{

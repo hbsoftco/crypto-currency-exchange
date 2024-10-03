@@ -805,6 +805,9 @@ const persian = {
 	popularArticles: 'مقالات محبوب',
 	doYouStillHaveQuestions: 'آیا هنوز سوال دارید ؟',
 	doYouStillHaveQuestionsText: 'اگر همچنان مشکل یا سوالی دارید، لطفا با ما تماس بگیرید یا از طریق شبکه های اجتماعی زیر با ما در ارتباط باشید.',
+	orderType: 'نوع سفارش',
+	fromHistory: 'از تاریخ',
+	toDate: 'تا تاریخ',
 };
 
 export default persian;
