@@ -5,6 +5,12 @@ type SocialNetListResponse = {
 	result: KeyValue[];
 };
 
+type StaffCheckResponse = {
+	statusCode: number;
+	result: string;
+};
+
 export type {
 	SocialNetListResponse,
+	StaffCheckResponse,
 };
