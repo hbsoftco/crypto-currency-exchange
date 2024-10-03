@@ -119,7 +119,7 @@ import { useNumber } from '~/composables/useNumber';
 import ModalOrder from '~/components/pages/Spot/List/ModalDetailOrder.vue';
 import { useSpot } from '~/composables/spot/useSpot';
 
-const { loading, getTradeList } = useSpot();
+const { loading, getOrderList } = useSpot();
 console.log(loading);
 
 const params = ref({
@@ -136,9 +136,9 @@ const params = ref({
 	pageSize: '',
 });
 
-const fetchTradeList = async () => {
+const fetchOrderList = async () => {
 	try {
-		const { result } = await getTradeList(params.value);
+		const { result } = await getOrderList(params.value);
 		console.log(result);
 	}
 	catch (error) {
@@ -147,7 +147,7 @@ const fetchTradeList = async () => {
 };
 
 onMounted(async () => {
-	await fetchTradeList();
+	await fetchOrderList();
 });
 
 const items = [
