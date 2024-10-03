@@ -796,6 +796,7 @@ const persian = {
 	stepThreeFormInfo: 'این کلید برای بازیابی Google Authenticator در مکانی که تلفن همراه جایگزین یا گم می‌شود، قابل استفاده است. قبل از اتصال، حتما از کلید زیر نسخه پشتیبان تهیه کرده و آن را ذخیره کنید',
 	copySecurityKey: 'یا کلید امنیتی را کپی کنید',
 	expired: 'منقضی شد',
+	placeholderInfo: 'لطفا اطلاعات یا لینک را برای بررسی وارد کنید.',
 };
 
 export default persian;

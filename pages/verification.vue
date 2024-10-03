@@ -11,24 +11,24 @@
 								{{ $t("bitlandApproval") }}
 							</h1>
 							<div
-								class="p-3 bg-primary-gray-light dark:bg-primary-gray-dark shadow-md text-white w-full md:w-[40rem] h-auto opacity-75 my-6"
+								class="p-3 bg-primary-gray-light dark:bg-primary-gray-dark rounded-md shadow-md text-white w-full md:w-[40rem] h-auto opacity-75 my-6"
 							>
 								<p
 									class="text-text-dark dark:text-text-light mt-1 md:mt-4 text-sm md:text-base"
 								>
 									{{ $t('bitlandApprovalText') }}
 								</p>
-								<div>
+								<div class="z-10">
 									<Form />
 								</div>
 							</div>
 							<div
-								class="p-3 bg-primary-gray-light dark:bg-primary-gray-dark shadow-md text-white w-full md:w-[30rem] h-auto opacity-75"
+								class="p-3 bg-primary-gray-light dark:bg-primary-gray-dark rounded-md shadow-md text-white w-full md:w-[30rem] h-auto opacity-75"
 							>
 								<h3
 									class="text-text-dark dark:text-text-light mt-1 md:mt-4 text-sm md:text-base"
 								>
-									یک نکته ضروری برای همه کاربران بیت لند: برای کسب اطاعات بیشتر در مورد پیشگیری از تقلب و مراقب از کلاهبرداری های سازمان یافته  به <span class="text-primary-yellow-light dark:text-primary-yellow-dark">مرکز راهنمای بیت لند </span>مراجعه کنید.
+									یک نکته ضروری برای همه کاربران بیت لند: برای کسب اطلاعات بیشتر در مورد پیشگیری از تقلب و مراقبت از کلاهبرداری های سازمان‌یافته به <span class="text-primary-yellow-light dark:text-primary-yellow-dark">مرکز راهنمای بیت لند </span>مراجعه کنید.
 								</h3>
 							</div>
 						</div>
@@ -46,15 +46,4 @@
 
 <script setup lang="ts">
 import Form from '~/components/pages/Site/Support/Form.vue';
-import { supportRepository } from '~/repositories/support.repository';
-import type { KeyValue } from '~/types/base.types';
-
-const { $api } = useNuxtApp();
-const supportRepo = supportRepository($api);
-const socialNetList = ref<KeyValue[]>();
-
-const response = await supportRepo.getSocialNetList();
-socialNetList.value = response.result;
-console.log(response);
-console.log(socialNetList.value);
 </script>

@@ -7,6 +7,12 @@ type GetLanguageParams = {
 	languageId: number;
 };
 
+type GetStaffParams = {
+	languageId?: string;
+	staffId: string;
+	profileTypeId: string;
+};
+
 type GetMarketListWithSparkLineChartParams = {
 	sortMode?: string;
 	currencyQuoteId?: string;
@@ -104,4 +110,5 @@ export type {
 	GetExposedListParams,
 	KeyValue,
 	GetTagListParams,
+	GetStaffParams,
 };

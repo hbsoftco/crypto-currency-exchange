@@ -34,7 +34,7 @@
 						</div>
 						<div class=" text-base font-medium text-right border-t border-primary-gray-light dark:border-primary-gray-dark">
 							<span>{{ $t('verificationModalTextOne') }}</span><br>
-							<span>{{ $t('verificationModalTextOne') }}</span>
+							<span>{{ $t('verificationModalTextTwo') }}</span>
 						</div>
 					</div>
 				</div>
