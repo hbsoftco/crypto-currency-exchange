@@ -46,7 +46,7 @@
 				/>
 				<UButton
 					class="mr-2 text-primary-yellow-light hover:bg-hover-light dark:hover:bg-hover-dark dark:text-primary-yellow-dark bg-hover-light dark:bg-hover-dark text-xs font-bold"
-					to="#"
+					to="/spot/list"
 				>
 					{{ $t('allOrders') }}
 				</UButton>

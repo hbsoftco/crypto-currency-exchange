@@ -808,6 +808,12 @@ const persian = {
 	orderType: 'نوع سفارش',
 	fromHistory: 'از تاریخ',
 	toDate: 'تا تاریخ',
+	Market: 'بازار',
+	Instant: 'مبنا',
+	StopMarket: 'ایست بازار',
+	StopInstant: 'ایست مبنا',
+	Limit: 'قیمت ثابت',
+	StopLimit: 'ایست قیمت ثابت',
 };
 
 export default persian;

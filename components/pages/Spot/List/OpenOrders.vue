@@ -120,13 +120,9 @@ import ModalOrder from '~/components/pages/Spot/List/ModalDetailOrder.vue';
 import { useSpot } from '~/composables/spot/useSpot';
 
 const { loading, getTradeList } = useSpot();
+console.log(loading);
 
 const params = ref({
-	// symbol: props.symbol,
-	// timeFrom: String(getEpochTime('1WEEK_AGO')),
-	// timeTo: String(getEpochTime('TOMORROW')),
-	// marketId: String(getMarketId(props.quote)),
-
 	marketId: '',
 	symbol: '',
 	orderSide: '',

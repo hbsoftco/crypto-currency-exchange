@@ -7,23 +7,23 @@
 			<div class="flex justify-start flex-row-reverse items-center">
 				<div>
 					<NuxtImg
-						src="https://api-bitland.site/media/currency/BTC.png"
+						:src="`https://api-bitland.site/media/currency/${currency}.png`"
 						alt="Brand Logo"
-						class="w-6 h-6"
+						class="w-7 h-7 rounded-full"
 					/>
 				</div>
 
 				<div class="ml-2 text-left">
 					<h4 class="font-bold text-base -mb-1">
-						BTC/USDT
+						{{ `${currency}/${quote}` }}
 					</h4>
 					<div>
-						<span class="font-normal text-xs text-subtle-text-light dark:to-subtle-text-50">بیت کوین</span>
+						<span class="font-normal text-xs text-subtle-text-light dark:to-subtle-text-50">{{ currencyNameData }}</span>
 					</div>
 				</div>
 
 				<div class="ml-14">
-					<strong class="text-accent-green text-base font-bold">27,021.59</strong>
+					<strong class="text-accent-green text-base font-bold">{{ tickerData?.i }}</strong>
 				</div>
 
 				<div class="ml-5 text-left">
@@ -34,7 +34,7 @@
 						classes="text-xs font-normal ml-0"
 						:show-percent="true"
 						pl="pl-0"
-						:change="parseFloat(String(+0.50))"
+						:change="parseFloat(String(tickerData?.p))"
 						:icon="false"
 					/>
 				</div>
@@ -44,7 +44,7 @@
 						<span class="font-normal text-xs text-subtle-text-light dark:to-subtle-text-50">24H High</span>
 					</div>
 					<div>
-						<strong class="text-xs font-bold">27,148.72</strong>
+						<strong class="text-xs font-bold">{{ useNumber(String(tickerData?.h)) }}</strong>
 					</div>
 				</div>
 
@@ -53,7 +53,7 @@
 						<span class="font-normal text-xs text-subtle-text-light dark:to-subtle-text-50">24H Low</span>
 					</div>
 					<div>
-						<strong class="text-xs font-bold">26,830.45</strong>
+						<strong class="text-xs font-bold">{{ useNumber(String(tickerData?.l)) }}</strong>
 					</div>
 				</div>
 
@@ -62,7 +62,7 @@
 						<span class="font-normal text-xs text-subtle-text-light dark:to-subtle-text-50">24H Volume (BTC)</span>
 					</div>
 					<div>
-						<strong class="text-xs font-bold">26,830.45</strong>
+						<strong class="text-xs font-bold">{{ useNumber(String(tickerData?.q)) }}</strong>
 					</div>
 				</div>
 			</div>
@@ -71,5 +71,8 @@
 </template>
 
 <script setup lang="ts">
+import { useNumber } from '~/composables/useNumber';
 import IconList from '~/assets/svg-icons/spot/list.svg';
+
+const { quote, currency, currencyNameData, tickerData } = useSpotStore();
 </script>

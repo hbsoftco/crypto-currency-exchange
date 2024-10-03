@@ -43,7 +43,7 @@
 						<span>{{ useNumber(item.v) }}</span>
 					</td>
 					<td class="text-xs font-normal py-1 text-left">
-						<span>{{ useNumber(item.t) }}</span>
+						<span>{{ useNumber(timeFormatter(item.t)) }}</span>
 					</td>
 				</tr>
 			</tbody>
@@ -53,6 +53,7 @@
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
+import { timeFormatter } from '~/utils/timeFormatter';
 
 const { latestTradesData, quote, currency } = useSpotStore();
 </script>

@@ -10,49 +10,34 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+const { depthData } = useSpotStore();
+
+console.log(depthData.value?.depthOfAsk);
 
 const data = {
-	asks: [
-		[3580.38, 200.0],
-		[3586.17, 178],
-		[3587.96, 176.2],
-		[3589.75, 165.6],
-		[3591.54, 152.62],
-		[3593.33, 150.83],
-		[3595.12, 140.61],
-		[3596.92, 131.58],
-		[3598.71, 121.66],
-		[3600.5, 11.14],
-	],
-	bids: [
-		[3580.19, 11],
-		[3579.0, 56.2],
-		[3577.21, 114.9],
-		[3575.42, 115.95],
-		[3573.63, 116.4],
-		[3571.84, 117.95],
-		[3570.05, 118.89],
-		[3568.25, 119.58],
-		[3566.46, 120.18],
-		[3564.67, 124.22],
-	],
+	asks: depthData.value?.depthOfAsk,
+	bids: depthData.value?.depthOfBid,
 };
 
-const obj2arr = (arr: number[][], key: number) => arr.map((item) => item[key]);
-const centerPrice = parseFloat(((data.asks[0][0] + data.bids[0][0]) / 2).toFixed(2));
+const category = [];
 
-data.bids.sort((a, b) => a[0] - b[0]);
-const categoryBids = obj2arr(data.bids, 0);
-const categoryAsks = obj2arr(data.asks, 0);
-const category = [...categoryBids, centerPrice, ...categoryAsks];
+// const obj2arr = (arr: number[][], key: number) => arr.map((item) => item[key]);
+// const centerPrice = parseFloat(((data.asks[0][0] + data.bids[0][0]) / 2).toFixed(2));
 
-const bids = obj2arr(data.bids, 1);
-bids.push(0);
-data.asks.reverse();
-const ask = Array(bids.length - 1).fill('');
-ask.push(0);
-const asks = [...ask, ...obj2arr(data.asks, 1)];
+// data.bids.sort((a, b) => a[0] - b[0]);
+// const categoryBids = obj2arr(data.bids, 0);
+// const categoryAsks = obj2arr(data.asks, 0);
+// const category = [...categoryBids, centerPrice, ...categoryAsks];
+
+// const bids = obj2arr(data.bids, 1);
+// bids.push(0);
+// data.asks.reverse();
+// const ask = Array(bids.length - 1).fill('');
+// ask.push(0);
+// const asks = [...ask, ...obj2arr(data.asks, 1)];
+
+const bids = data.bids;
+const asks = data.asks;
 
 const chartOptions = ref({
 	tooltip: {
