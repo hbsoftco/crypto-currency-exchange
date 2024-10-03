@@ -46,19 +46,19 @@
 				</thead>
 				<tbody>
 					<tr
-						v-for="(item, index) in items"
+						v-for="(item, index) in ordersList"
 						:key="index"
 						:class="[index % 2 === 0 ? 'bg-background-light dark:bg-background-dark' : 'bg-hover2-light dark:bg-hover2-dark']"
 						class="pb-1"
 					>
 						<td class="text-xs font-normal py-1">
-							<span>{{ item.market }}</span>
+							<span>{{ item.mSymbol }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ item.type }}</span>
+							<span>{{ $t(item.orderTypeName) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ item.direction }}</span>
+							<span>{{ $t(item.sideName) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
 							<span>{{ useNumber(item.value) }}</span>
