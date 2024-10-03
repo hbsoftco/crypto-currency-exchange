@@ -61,27 +61,27 @@
 							<span>{{ $t(item.sideName) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.value) }}</span>
+							<span>{{ useNumber(item.reqQot) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.price) }}</span>
+							<span>{{ useNumber(item.dealPrice) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.amountFilled) }}</span>
+							<span>{{ useNumber(item.filledQnt) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.date) }}</span>
+							<span>{{ useNumber(item.regTime) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.transactionNumber) }}</span>
+							<span>{{ useNumber(item.tid) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.orderNumber) }}</span>
+							<span>{{ useNumber(item.oid) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
 							<div class="flex">
-								<span class="ml-1 text-[0.7rem] text-secondary-gray-light dark:text-secondary-gray-dark line-through">{{ useNumber(item.fee) }}</span>
-								<span>{{ useNumber(item.fee) }}</span>
+								<span class="ml-1 text-[0.7rem] text-secondary-gray-light dark:text-secondary-gray-dark line-through">{{ useNumber(item.feeRawQot) }}</span>
+								<span>{{ useNumber(item.feeAppliedQot) }}</span>
 							</div>
 						</td>
 						<td class="flex text-xs font-normal py-1">
@@ -167,75 +167,6 @@ const applyFilter = async (event: OrderFiltersType) => {
 onMounted(async () => {
 	await fetchOrderList();
 });
-
-const items = [
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		value: '27,000 USDT',
-		price: '27,000 USDT',
-		amountFilled: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		transactionNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-		fee: '0.98 USDT',
-
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		value: '27,000 USDT',
-		price: '27,000 USDT',
-		amountFilled: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		transactionNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-		fee: '0.98 USDT',
-
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		value: '27,000 USDT',
-		price: '27,000 USDT',
-		amountFilled: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		transactionNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-		fee: '0.98 USDT',
-
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		value: '27,000 USDT',
-		price: '27,000 USDT',
-		amountFilled: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		transactionNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-		fee: '0.98 USDT',
-
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		value: '27,000 USDT',
-		price: '27,000 USDT',
-		amountFilled: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		transactionNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-		fee: '0.98 USDT',
-
-	},
-
-];
 
 const showModalOrder = ref(false);
 

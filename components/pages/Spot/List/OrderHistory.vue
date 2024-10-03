@@ -4,7 +4,7 @@
 			v-if="showModalOrder"
 			@close="closeModalOrder"
 		/>
-		<FilterSearch />
+		<FilterSearch @filters="applyFilter" />
 		<div class="h-auto overflow-y-scroll">
 			<table class="min-w-full p-6 text-right">
 				<thead>
@@ -52,19 +52,19 @@
 				</thead>
 				<tbody>
 					<tr
-						v-for="(item, index) in items"
+						v-for="(item, index) in ordersList"
 						:key="index"
 						:class="[index % 2 === 0 ? 'bg-background-light dark:bg-background-dark' : 'bg-hover2-light dark:bg-hover2-dark']"
 						class="pb-1"
 					>
 						<td class="text-xs font-normal py-1">
-							<span>{{ item.market }}</span>
+							<span>{{ item.mSymbol }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ item.type }}</span>
+							<span>{{ item.orderTypeName }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ item.direction }}</span>
+							<span>{{ item.sideName }}</span>
 						</td>
 						<td
 							class="text-xs font-normal py-1"
@@ -73,28 +73,28 @@
 							<span>{{ item.status }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.value) }}</span>
+							<span>{{ useNumber(item.reqQot) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
 							<span>{{ useNumber(item.average) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.amountFilled) }}</span>
+							<span>{{ useNumber(item.filledQnt) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.filledValue) }}</span>
+							<span>{{ useNumber(item.filledQot) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.amount) }}</span>
+							<span>{{ useNumber(item.reqQnt) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.price) }}</span>
+							<span>{{ useNumber(item.dealPrice) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.date) }}</span>
+							<span>{{ useNumber(item.regTime) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.orderNumber) }}</span>
+							<span>{{ useNumber(item.oid) }}</span>
 						</td>
 						<td class="flex text-xs font-normal py-1">
 							<IconInfo
@@ -129,136 +129,55 @@ import FilterSearch from '~/components/pages/Spot/List/FilterSearch.vue';
 import IconInfo from '~/assets/svg-icons/info.svg';
 import { useNumber } from '~/composables/useNumber';
 import ModalOrder from '~/components/pages/Spot/List/ModalDetailOrder.vue';
+import { useSpot } from '~/composables/spot/useSpot';
+import { SearchMode } from '~/utils/enums/order.enum';
+import type { Order, OrderFiltersType } from '~/types/response/spot.types';
 
-const items = [
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		average: '27,000 USDT',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
+const { loading, getOrderList } = useSpot();
+console.log(loading);
 
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		average: '27,000 USDT',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
+const totalCount = ref(0);
 
-	},
+const params = ref({
+	marketId: '',
+	symbol: 'FETUSDT',
+	orderSide: '',
+	orderType: '',
+	assetType: useEnv('assetType'),
+	searchMode: SearchMode.ANY,
+	uniqueTag: '',
+	from: '',
+	to: '',
+	pageNumber: '1',
+	pageSize: '20',
+});
 
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		average: '27,000 USDT',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
+const ordersList = ref<Order[]>();
 
-	},
+const fetchOrderList = async () => {
+	try {
+		const { result } = await getOrderList(params.value);
+		totalCount.value = result.totalCount;
+		ordersList.value = result.rows;
+	}
+	catch (error) {
+		console.error('Error fetching trades:', error);
+	}
+};
 
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		average: '27,000 USDT',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
+const applyFilter = async (event: OrderFiltersType) => {
+	params.value.from = event.from;
+	params.value.to = event.to;
+	params.value.orderType = event.orderType;
+	params.value.orderSide = event.orderSide;
+	params.value.symbol = event.symbol;
 
-	},
+	await fetchOrderList();
+};
 
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		average: '27,000 USDT',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-
-	},
-
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		average: '27,000 USDT',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-
-	},
-
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		average: '27,000 USDT',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-
-	},
-
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		average: '27,000 USDT',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-
-	},
-
-];
+onMounted(async () => {
+	await fetchOrderList();
+});
 
 const showModalOrder = ref(false);
 
@@ -271,7 +190,7 @@ const closeModalOrder = () => {
 };
 const currentPage = ref(1);
 
-function onPageChange(newPage: number) {
-	currentPage.value = newPage;
-}
+const onPageChange = async (newPage: number) => {
+	params.value.pageNumber = String(newPage);
+};
 </script>
