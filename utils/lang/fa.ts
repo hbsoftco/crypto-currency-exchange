@@ -814,6 +814,8 @@ const persian = {
 	StopInstant: 'ایست مبنا',
 	Limit: 'قیمت ثابت',
 	StopLimit: 'ایست قیمت ثابت',
+	Buy: 'خرید',
+	Sell: 'فروش',
 };
 
 export default persian;

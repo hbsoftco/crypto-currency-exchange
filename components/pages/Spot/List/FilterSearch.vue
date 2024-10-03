@@ -67,9 +67,10 @@
 
 		<div class="ml-6 my-1 w-44">
 			<USelectMenu
-				v-model="selectedMarket3"
-				:options="market3"
+				v-model="orderSideFilter"
+				:options="OrderSideItem"
 				:placeholder="$t('direction')"
+				option-attribute="value"
 				:ui="{
 					background: '',
 					color: {
@@ -145,7 +146,7 @@
 <script setup lang="ts">
 import type { KeyValue } from '~/types/base.types';
 import type { MarketBriefItem } from '~/types/response/brief-list.types';
-import { OrderType } from '~/utils/enums/order.enum';
+import { OrderType, OrderSide } from '~/utils/enums/order.enum';
 
 const filteredMarkets = ref<MarketBriefItem[]>();
 const toDate = ref();
@@ -211,5 +212,20 @@ const orderTypeItems = ref<KeyValue[]>([
 		value: useT(OrderType.STOP_LIMIT),
 	},
 ]);
+
+const OrderSideItem = ref<KeyValue[]>([
+	{
+		key: OrderSide.BUY,
+		value: useT(OrderSide.BUY),
+	},
+	{
+		key: OrderSide.SELL,
+		value: useT(OrderSide.SELL),
+	},
+]);
 const orderTypeFilter = ref<string>();
+const orderSideFilter = ref<string>();
+
+// fake data
+// const selectedMarket3 = ref();
 </script>

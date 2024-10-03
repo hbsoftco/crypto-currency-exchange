@@ -1,6 +1,6 @@
 import type { ErrorResponse } from '~/types/response/error.type';
 import { spotRepository } from '~/repositories/spot.repository';
-import type { GetKlineParams, GetTradeListParams, SpotDataParams } from '~/types/base.types';
+import type { GetKlineParams, GetTradeListParams, GetOrderListParams, SpotDataParams } from '~/types/base.types';
 
 export const useSpot = () => {
 	const { $api } = useNuxtApp();
@@ -62,10 +62,29 @@ export const useSpot = () => {
 		}
 	};
 
+	const getOrderList = async (params: GetOrderListParams) => {
+		loading.value = true;
+		try {
+			const response = await spotRepo.getOrderList(params);
+			return response;
+		}
+		catch (error: unknown) {
+			const err = error as ErrorResponse;
+			throw createError({
+				statusCode: 500,
+				statusMessage: `${err.response?._data?.message || 'Unknown error'}`,
+			});
+		}
+		finally {
+			loading.value = false;
+		}
+	};
+
 	return {
 		getChartKline,
 		getSpotData,
 		getTradeList,
 		loading,
+		getOrderList,
 	};
 };
