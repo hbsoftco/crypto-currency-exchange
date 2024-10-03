@@ -5,9 +5,11 @@
 			fullscreen
 		>
 			<div
-				class="h-full flex flex-col items-center justify-center py-0 md:py-6 bg-secondary-gray-light dark:bg-secondary-gray-dark"
+				class="h-full flex flex-col items-center justify-center overflow-y-scroll"
 			>
-				<div class="overflow-y-scroll text-center bg-background-light dark:bg-background-dark rounded-md py-4 md:py-8 px-2 w-full md:w-[45rem] h-full md:h-[50rem] mb-0 md:mb-4 mt-0">
+				<div
+					class=" w-full md:w-[45rem] flex flex-col justify-center items-center text-center rounded-md bg-background-light dark:bg-background-dark px-2 md:px-14 py-6 md:py-8 mt-20"
+				>
 					<div class="flex md:hidden justify-between py-3 items-center ">
 						<UiTitleWithBack
 							:title="$t('orderDetails')"
@@ -207,10 +209,12 @@
 						</div>
 					</section>
 				</div>
-				<IconClose
-					class="text-4xl hidden md:block"
-					@click="closeModal(false)"
-				/>
+				<div class="mt-6">
+					<IconClose
+						class="text-4xl hidden md:block cursor-pointer"
+						@click="closeModal(false)"
+					/>
+				</div>
 			</div>
 		</UModal>
 	</div>

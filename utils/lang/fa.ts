@@ -816,6 +816,9 @@ const persian = {
 	StopLimit: 'ایست قیمت ثابت',
 	Buy: 'خرید',
 	Sell: 'فروش',
+	ReadyToFill: 'درحال پرشدن',
+	CancelledByUserBeforeFill: 'کنسل شده',
+	Completed: 'تکمیل',
 };
 
 export default persian;
