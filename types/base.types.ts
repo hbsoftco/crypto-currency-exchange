@@ -3,8 +3,19 @@ type GetPinParams = {
 	group?: string;
 };
 
+type GetRootListParams = {
+	languageId: string;
+	group: string;
+};
+
 type GetLanguageParams = {
 	languageId: number;
+};
+
+type GetStaffParams = {
+	languageId?: string;
+	staffId: string;
+	profileTypeId: string;
 };
 
 type GetMarketListWithSparkLineChartParams = {
@@ -101,6 +112,7 @@ export type {
 	GetKlineParams,
 	SpotDataParams,
 	GetPinParams,
+	GetRootListParams,
 	GetLanguageParams,
 	GetCurrencyParams,
 	GetMarketsParams,
@@ -113,4 +125,5 @@ export type {
 	GetExposedListParams,
 	KeyValue,
 	GetTagListParams,
+	GetStaffParams,
 };
