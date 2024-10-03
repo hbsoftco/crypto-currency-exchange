@@ -96,7 +96,7 @@ const fetchMarketData = async () => {
 	}
 };
 
-const { messages, connect, socket, createSubscriptionData, sendMessage } = useWebSocket();
+const { messages, connect, socket, sendMessage } = usePublicWebSocket();
 
 const parsedMessages = computed(() => {
 	return messages.value.map((msg) => {

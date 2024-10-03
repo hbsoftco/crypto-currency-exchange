@@ -16,3 +16,14 @@ export type SocketSpotTickerMessage = {
 		v: string;
 	};
 };
+
+export type AssetListItemMessage = {
+	id: string;
+	topic: string;
+	statusCode?: number;
+	data: {
+		currencyId: number;
+		available: string;
+		locked: string;
+	};
+};

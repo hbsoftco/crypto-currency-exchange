@@ -26,6 +26,10 @@ export const StatusCodes = {
 		fa: 401,
 		en: 401,
 	},
+	SOCKET_LISTEN_KEY_EXPIRED: {
+		fa: 1008,
+		en: 1008,
+	},
 };
 
 export const statusMessages: StatusMessage = {
@@ -48,5 +52,9 @@ export const statusMessages: StatusMessage = {
 	USER_LOGGED_OUT: {
 		fa: 'Inactive Account : User account is logged out',
 		en: 'Inactive Account : User account is logged out',
+	},
+	SOCKET_LISTEN_KEY_EXPIRED: {
+		fa: 'LISTEN_KEY is expired',
+		en: 'LISTEN_KEY is expired',
 	},
 };

@@ -25,7 +25,7 @@ export const useAssetStore = defineStore('asset', () => {
 			}
 
 			// const { socket, messages, connect, createSubscriptionData, sendMessage } = useWebSocket('private', socketListenKey);
-			const { connect, messages, createSubscriptionData, sendMessage } = useWebSocket('private', socketListenKey);
+			const { connect, sendMessage, expireListenKey } = usePrivateWebSocket(socketListenKey);
 
 			await connect();
 			console.log('Socket connected with listen key:', socketListenKey);
@@ -40,7 +40,33 @@ export const useAssetStore = defineStore('asset', () => {
 				},
 			));
 
-			console.log('messages.value', messages.value);
+			watch(expireListenKey, async (newValue) => {
+				if (newValue) {
+					console.log('Listen key expired, renewing...');
+					await authStore.getSocketListenKey();
+					socketListenKey = authStore.socketListenKey;
+
+					if (socketListenKey) {
+						console.log('Reconnecting with new listen key:', socketListenKey);
+						await connect();
+
+						sendMessage(createSubscriptionData(
+							SocketId.ASSET_LIST,
+							'SUBSCRIBE',
+							PrivateTopic.ASSET_LIST,
+							{
+								boxMode: String(MiniAssetMode.NoMiniAsset),
+								assetTypeId: useEnv('assetType'),
+							},
+						));
+					}
+					else {
+						throw new Error('Failed to renew socket listen key');
+					}
+				}
+			});
+
+			// console.log('messages.value', messages.value);
 		}
 		catch (error) {
 			console.error('Error connecting to socket:', error);

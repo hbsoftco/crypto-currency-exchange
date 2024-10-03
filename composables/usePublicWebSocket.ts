@@ -1,7 +1,7 @@
 import type { SocketSpotTickerMessage } from '~/types/socket.types';
-import { SocketId, type PrivateTopic, type PublicTopic } from '~/utils/enums/socket.enum';
+import { SocketId } from '~/utils/enums/socket.enum';
 
-export const useWebSocket = (pathType = 'public', listenKey = '') => {
+export const usePublicWebSocket = () => {
 	const socket = ref<WebSocket | null>(null);
 	const messages = ref<SocketSpotTickerMessage[]>([]);
 	const exchangeMessages = ref<SocketSpotTickerMessage[]>([]);
@@ -10,21 +10,17 @@ export const useWebSocket = (pathType = 'public', listenKey = '') => {
 	const connect = () => {
 		return new Promise<void>((resolve, reject) => {
 			if (socket.value && socket.value.readyState === WebSocket.OPEN) {
-				console.log('WebSocket is already open');
 				resolve();
 				return;
 			}
 
 			const socketBaseURL = useEnv('socketBaseUrl');
-			let socketURL = `${socketBaseURL}/v1/wss/${pathType}`;
-			if (pathType === 'private' && listenKey) {
-				socketURL += `?listenkey=${listenKey}`;
-			}
+			const socketURL = `${socketBaseURL}/v1/wss/public`;
 
 			socket.value = new WebSocket(socketURL);
 
 			socket.value.onopen = () => {
-				console.log('WebSocket connection opened');
+				console.log('Public WebSocket connection opened');
 				resolve();
 
 				if (!pingInterval) {
@@ -45,7 +41,7 @@ export const useWebSocket = (pathType = 'public', listenKey = '') => {
 
 			socket.value.onmessage = (event) => {
 				const messageData: SocketSpotTickerMessage = JSON.parse(event.data);
-				console.log('Message from server:', messageData);
+				console.log('Public Message from server:', messageData);
 
 				if (messageData.statusCode !== 400) {
 					if (messageData.id === SocketId.SPOT_TICKER) {
@@ -58,8 +54,6 @@ export const useWebSocket = (pathType = 'public', listenKey = '') => {
 						else {
 							messages.value.push(messageData);
 						}
-
-						console.log('Updated messages:', messages.value);
 					}
 					else if (messageData.id === SocketId.SPOT_TICKER_EXCHANGE) {
 						const mi = messageData.data.mi;
@@ -71,32 +65,16 @@ export const useWebSocket = (pathType = 'public', listenKey = '') => {
 						else {
 							exchangeMessages.value.push(messageData);
 						}
-
-						console.log('Updated messages:', exchangeMessages.value);
 					}
 				}
 			};
 
 			socket.value.onclose = () => {
-				console.log('WebSocket connection closed');
+				console.log('Public WebSocket is not open', socket.value);
 				if (pingInterval) {
 					clearInterval(pingInterval);
 				}
 			};
-		});
-	};
-
-	const createSubscriptionData = (
-		id: SocketId,
-		method: 'SUBSCRIBE' | 'UNSUBSCRIBE',
-		topic: PublicTopic | PrivateTopic,
-		params: string | Record<string, string>,
-	) => {
-		return JSON.stringify({
-			id,
-			method,
-			topic,
-			params,
 		});
 	};
 
@@ -114,7 +92,6 @@ export const useWebSocket = (pathType = 'public', listenKey = '') => {
 		messages,
 		exchangeMessages,
 		connect,
-		createSubscriptionData,
 		sendMessage,
 	};
 };

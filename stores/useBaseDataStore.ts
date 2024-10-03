@@ -9,6 +9,9 @@ import type { Tag } from '~/types/response/tag.types';
 import type { QuoteItem } from '~/types/response/quote-list.types';
 import type { CurrencyBriefItem, MarketBriefItem } from '~/types/response/brief-list.types';
 import type { IconItem } from '~/types/response/icon.types';
+import { useFastTrade } from '~/composables/trade/useFastTrade';
+import { MarketType } from '~/utils/enums/market.enum';
+import type { Commission } from '~/types/response/trader.types';
 
 export const useBaseDataStore = defineStore('baseData', () => {
 	const { $api } = useNuxtApp();
@@ -222,6 +225,33 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		}
 	};
 
+	const { getUserTraderCommissionList } = useFastTrade();
+	const userTraderCommissionList = ref<Commission[]>([]);
+	const isUserTraderCommissionFetched = ref(false);
+	const isUserTraderCommissionLoading = ref(false);
+
+	const fetchUserTraderCommissionList = async () => {
+		if (isUserTraderCommissionFetched.value || isUserTraderCommissionLoading.value) return;
+
+		isUserTraderCommissionLoading.value = true;
+
+		try {
+			const response = await getUserTraderCommissionList({
+				marketType: String(MarketType.SPOT),
+			});
+			if (response) {
+				userTraderCommissionList.value = response.result.rows;
+				isUserTraderCommissionFetched.value = true;
+			}
+		}
+		catch (error) {
+			console.error('Error fetching trades:', error);
+		}
+		finally {
+			isUserTraderCommissionLoading.value = false;
+		}
+	};
+
 	return {
 		slides, fetchSlides, isSliderLoading,
 		pinItems, fetchPinItems, isPinLoading,
@@ -229,6 +259,7 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		quoteItems, fetchQuoteItems, isQuoteLoading,
 		marketBriefItems, fetchMarketBriefItems, isMarketBriefLoading,
 		currencyBriefItems, fetchCurrencyBriefItems, isCurrencyBriefLoading,
+		userTraderCommissionList, fetchUserTraderCommissionList, isUserTraderCommissionLoading,
 		bigIcons, fetchBigIcons, isBigIconsLoading,
 		icons, fetchIcons, isIconsLoading,
 		getMatchedCurrencyItems,
