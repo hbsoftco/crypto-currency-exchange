@@ -19,26 +19,26 @@
 							{{ $t('direction') }}
 						</th>
 						<th class="p-1 text-xs font-normal">
+							{{ $t('status') }}
+						</th>
+						<th class="p-1 text-xs font-normal">
 							{{ $t('value') }}
 						</th>
 						<th class="p-1 text-xs font-normal">
 							{{ $t('price') }}
 						</th>
 						<th class="p-1 text-xs font-normal">
-							{{ $t('amountFilled') }}
+							{{ $t('amount') }}
+						</th>
+						<th class="p-1 text-xs font-normal">
+							{{ $t('filled') }}
+						</th>
+						<th class="p-1 text-xs font-normal">
+							{{ $t('remaining') }}
 						</th>
 						<th class="p-1 text-xs font-normal">
 							{{ $t('date') }}
 						</th>
-						<!-- <th class="p-1 text-xs font-normal">
-							{{ $t('transactionNumber') }}
-						</th> -->
-						<th class="p-1 text-xs font-normal">
-							{{ $t('orderNumber') }}
-						</th>
-						<!-- <th class="p-1 text-xs font-normal">
-							{{ $t('fee') }}
-						</th> -->
 						<th class="p-1 text-xs font-normal">
 							{{ $t('action') }}
 						</th>
@@ -60,6 +60,15 @@
 						<td class="text-xs font-normal py-1">
 							<span>{{ $t(item.sideName) }}</span>
 						</td>
+						<td
+							class="text-xs font-normal py-1"
+							:class="{ 'text-primary-yellow-light dark:text-primary-yellow-dark': item.orderStateName === 'ReadyToFill' }"
+						>
+							<span>{{ $t(item.orderStateName) }}</span>
+						</td>
+						<td class="text-xs font-normal py-1">
+							<span>{{ useNumber(item.reqQot) }}</span>
+						</td>
 						<td class="text-xs font-normal py-1">
 							<span>{{ useNumber(item.filledQot) }}</span>
 						</td>
@@ -70,23 +79,17 @@
 							<span>{{ useNumber(item.filledQnt) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
+							<span>{{ useNumber(remainingQuantity(item.reqQnt, item.filledQnt)) }}</span>
+						</td>
+						<td class="text-xs font-normal py-1">
 							<span>{{ useNumber(formatDateToIranTime(item.regTime)) }}</span>
 						</td>
 						<!-- <td class="text-xs font-normal py-1">
 							<span>{{ useNumber(item.tid) }}</span>
 						</td> -->
-						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.oid) }}</span>
-						</td>
-						<!-- <td class="text-xs font-normal py-1">
-							<div class="flex">
-								<span class="ml-1 text-[0.7rem] text-secondary-gray-light dark:text-secondary-gray-dark line-through">{{ useNumber(item.feeRawQot) }}</span>
-								<span>{{ useNumber(item.feeAppliedQot) }}</span>
-							</div>
-						</td> -->
 						<td class="flex text-xs font-normal py-1">
 							<IconInfo
-								class="text-base cursor-pointer"
+								class="text-base"
 								@click.prevent="openModalOrder"
 							/>
 						</td>
@@ -126,6 +129,9 @@ import type { Order, OrderFiltersType } from '~/types/response/spot.types';
 const { loading, getOrderList } = useSpot();
 console.log(loading);
 
+const remainingQuantity = (reqQnt: string, filledQnt: string): number => {
+	return parseFloat(reqQnt) - parseFloat(filledQnt);
+};
 const totalCount = ref(0);
 
 const params = ref({
