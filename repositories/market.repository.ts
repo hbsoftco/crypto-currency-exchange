@@ -5,6 +5,7 @@ import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options
 import type {
 	MarketCurrencyCategoriesResponse,
 	MarketListByCategoryResponse,
+	MarketListResponse,
 	MarketListWithSparkLineChartResponse,
 	MarketsResponse,
 	MarketStateResponse,
@@ -20,6 +21,7 @@ type MarketRepository = {
 	getMarketStatisticsCharts: () => Promise<MarketStatisticsChartsResponse>;
 	getMarketCurrencyCategories: () => Promise<MarketCurrencyCategoriesResponse>;
 	getMarketListByCategory: (params: GetMarketListByCategoryParams) => Promise<MarketListByCategoryResponse>;
+	getMarketListBy: (params: GetMarketListByCategoryParams) => Promise<MarketListResponse>;
 };
 
 export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): MarketRepository => ({
@@ -115,6 +117,15 @@ export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Mar
 		const query = new URLSearchParams({ rowCount, marketTypeId });
 		const url = '/v1/market/routine/l47_f';
 		const response = await fetch<MarketListByCategoryResponse>(`${url}?${query.toString()}`, {
+			noAuth: true,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getMarketListBy({ rowCount, marketTypeId }: GetMarketListByCategoryParams): Promise<MarketListResponse> {
+		const query = new URLSearchParams({ rowCount, marketTypeId });
+		const url = '/v1/market/routine/l46_f';
+		const response = await fetch<MarketListResponse>(`${url}?${query.toString()}`, {
 			noAuth: true,
 		} as CustomNitroFetchOptions);
 

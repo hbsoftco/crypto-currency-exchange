@@ -91,7 +91,7 @@
 							<span>{{ useNumber(item.dealPrice) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ new Date(item.regTime).toLocaleDateString('fa-IR', { year: 'numeric', month: '2-digit', day: '2-digit' }) }}</span>
+							<span>{{ useNumber(formatDateToIranTime(item.regTime)) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
 							<span>{{ useNumber(item.oid) }}</span>
@@ -126,6 +126,7 @@
 </template>
 
 <script setup lang="ts">
+import { formatDateToIranTime } from '~/utils/persian-date';
 import FilterSearch from '~/components/pages/Spot/List/FilterSearch.vue';
 import IconInfo from '~/assets/svg-icons/info.svg';
 import { useNumber } from '~/composables/useNumber';
@@ -175,7 +176,6 @@ const applyFilter = async (event: OrderFiltersType) => {
 
 	await fetchOrderList();
 };
-console.log('ordersList-------------------------------------------', ordersList);
 onMounted(async () => {
 	await fetchOrderList();
 });
@@ -192,5 +192,6 @@ const closeModalOrder = () => {
 
 const onPageChange = async (newPage: number) => {
 	params.value.pageNumber = String(newPage);
+	await fetchOrderList();
 };
 </script>

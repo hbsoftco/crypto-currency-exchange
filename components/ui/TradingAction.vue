@@ -16,14 +16,18 @@
 				<span class="text-sm md:text-base text-subtle-text-light dark:text-subtle-text-50">{{ coin.quoteItem?.cName }}</span>
 			</div>
 			<div
-				class="block md:hidden text-right"
+				v-if="!isHovered"
+				class="text-right block pt-1"
 				dir="ltr"
 			>
 				<strong class="text-sm md:text-base text-text-dark dark:text-text-light">{{ coin.currencyBriefItem?.cSymbol }}</strong>
 				<span class="text-sm md:text-base text-subtle-text-light dark:text-subtle-text-50 px-1">/</span>
 				<span class="text-sm md:text-base text-subtle-text-light dark:text-subtle-text-50">{{ coin.quoteItem?.cSymbol }}</span>
 			</div>
-			<div class="hidden md:block">
+			<div
+				v-if="isHovered"
+				class="block"
+			>
 				<UButton
 					:to="`/spot/${splitMarket(coin?.mSymbol)}`"
 					size="2xs"
@@ -50,6 +54,7 @@ import type { MarketBriefItem } from '~/types/response/brief-list.types';
 
 interface Props {
 	coin: MarketBriefItem;
+	isHovered: boolean;
 }
 
 defineProps<Props>();

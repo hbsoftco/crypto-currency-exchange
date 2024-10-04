@@ -70,7 +70,7 @@
 							<span>{{ useNumber(item.filledQnt) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ new Date(item.regTime).toLocaleDateString('fa-IR', { year: 'numeric', month: '2-digit', day: '2-digit' }) }}</span>
+							<span>{{ useNumber(formatDateToIranTime(item.regTime)) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
 							<span>{{ useNumber(item.tid) }}</span>
@@ -114,6 +114,7 @@
 </template>
 
 <script setup lang="ts">
+import { formatDateToIranTime } from '~/utils/persian-date';
 import FilterSearch from '~/components/pages/Spot/List/FilterSearch.vue';
 import IconInfo from '~/assets/svg-icons/info.svg';
 import { useNumber } from '~/composables/useNumber';
@@ -178,5 +179,6 @@ const closeModalTransaction = () => {
 
 const onPageChange = async (newPage: number) => {
 	params.value.pageNumber = String(newPage);
+	await fetchTradeList();
 };
 </script>
