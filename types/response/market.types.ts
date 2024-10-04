@@ -116,20 +116,20 @@ type MarketInfoItem = {
 	currencyDetails: CurrencyBriefItem | null;
 };
 
-type ListRow = {
+type MarketDetailItem = {
 	id: number;
+	cid: number;
 	indexPrice: string;
 	priceChangePercIn24H: string;
-};
-
-type ListResult = {
-	totalCount: number;
-	rows: ListRow[];
+	marketBriefItem: MarketBriefItem | null;
 };
 
 type MarketListResponse = {
 	statusCode: number;
-	result: ListResult;
+	result: {
+		totalCount: number;
+		rows: MarketDetailItem[];
+	};
 };
 
 export type {
@@ -138,6 +138,8 @@ export type {
 	MarketStateResponse,
 	MarketState,
 	Market,
+	MarketItem,
+	MarketDetailItem,
 	MarketsResponse,
 	MarketStatisticsChartsResponse,
 	PriceChangeState,

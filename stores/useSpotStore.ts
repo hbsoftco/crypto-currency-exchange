@@ -2,7 +2,9 @@ import { defineStore } from 'pinia';
 import { ref, computed, watch } from 'vue'; // Import necessary functions
 
 import { useSpot } from '~/composables/spot/useSpot';
-import type { SpotDataParams } from '~/types/base.types';
+import { marketRepository } from '~/repositories/market.repository';
+import type { GetMarketListByCategoryParams, SpotDataParams } from '~/types/base.types';
+import type { MarketDetailItem } from '~/types/response/market.types';
 import type { BidAsk, Depth, LatestTrade, Spot, Ticker } from '~/types/response/spot.types';
 import { Language } from '~/utils/enums/language.enum';
 import { MarketType } from '~/utils/enums/market.enum';
@@ -21,6 +23,8 @@ export const useSpotStore = defineStore('settings', () => {
 	const bids = ref<BidAsk[]>();
 	const asks = ref<BidAsk[]>();
 	const latestTrades = ref<LatestTrade[]>();
+
+	const marketPairSlider = ref<MarketDetailItem[]>();
 
 	const { getSpotData } = useSpot();
 
@@ -78,7 +82,32 @@ export const useSpotStore = defineStore('settings', () => {
 		}
 	};
 
-	const initialize = () => {
+	const fetchMarketList = async () => {
+		const params = ref<GetMarketListByCategoryParams>({
+			marketTypeId: String(MarketType.SPOT),
+			rowCount: '20',
+		});
+		const { $api } = useNuxtApp();
+		const marketRepo = marketRepository($api);
+
+		await baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
+		await baseDataStore.fetchMarketBriefItems();
+		const marketBriefList = baseDataStore.marketBriefItems;
+		const currencyBriefList = baseDataStore.currencyBriefItems;
+
+		try {
+			const { result } = await marketRepo.getMarketList(params.value);
+			marketPairSlider.value = useProcessMarketData(result.rows, marketBriefList, currencyBriefList);
+		}
+		catch (error) {
+			console.log(error);
+		}
+		finally {
+			// loading.value = false;
+		}
+	};
+
+	const initialize = async () => {
 		if (!symbol.value || !quote.value || !marketId.value) {
 			const params: SpotDataParams = {
 				symbol: symbol.value,
@@ -92,6 +121,8 @@ export const useSpotStore = defineStore('settings', () => {
 				findCurrencyName(currency.value);
 			}
 		}
+
+		await fetchMarketList();
 	};
 
 	// Watch for changes in the parameters and call initialize
@@ -104,6 +135,9 @@ export const useSpotStore = defineStore('settings', () => {
 	const asksData = computed(() => asks);
 	const latestTradesData = computed(() => latestTrades);
 	const currencyNameData = computed(() => currencyName);
+	const marketPairSliderData = computed(() => {
+		return marketPairSlider ?? [];
+	});
 
 	return {
 		// States
@@ -120,10 +154,12 @@ export const useSpotStore = defineStore('settings', () => {
 		asksData,
 		latestTradesData,
 		currencyNameData,
+		marketPairSliderData,
 
 		// Actions
 		setRequiredData,
 		fetchSpotData,
+		fetchMarketList,
 		initialize,
 	};
 });

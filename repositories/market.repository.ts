@@ -21,7 +21,7 @@ type MarketRepository = {
 	getMarketStatisticsCharts: () => Promise<MarketStatisticsChartsResponse>;
 	getMarketCurrencyCategories: () => Promise<MarketCurrencyCategoriesResponse>;
 	getMarketListByCategory: (params: GetMarketListByCategoryParams) => Promise<MarketListByCategoryResponse>;
-	getMarketListBy: (params: GetMarketListByCategoryParams) => Promise<MarketListResponse>;
+	getMarketList: (params: GetMarketListByCategoryParams) => Promise<MarketListResponse>;
 };
 
 export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): MarketRepository => ({
@@ -122,7 +122,7 @@ export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Mar
 
 		return response;
 	},
-	async getMarketListBy({ rowCount, marketTypeId }: GetMarketListByCategoryParams): Promise<MarketListResponse> {
+	async getMarketList({ rowCount, marketTypeId }: GetMarketListByCategoryParams): Promise<MarketListResponse> {
 		const query = new URLSearchParams({ rowCount, marketTypeId });
 		const url = '/v1/market/routine/l46_f';
 		const response = await fetch<MarketListResponse>(`${url}?${query.toString()}`, {
