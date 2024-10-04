@@ -30,7 +30,7 @@
 						>
 							<div class="flex justify-between items-center w-full mx-3 p-2">
 								<ULink
-									to="#"
+									:to="item.link"
 									class="flex justify-between items-start w-full"
 								>
 									<div class="text-base ml-2">
@@ -89,11 +89,13 @@ const menuItems = ref([
 		name: 'listOrdersTransactions',
 		description: 'buyingSellingSpot',
 		hover: false,
+		link: '/spot/list',
 	},
 	{
 		name: 'trialTransaction',
 		description: 'buyingSellingSpot',
 		hover: false,
+		link: '/spot/list',
 	},
 ]);
 
