@@ -207,10 +207,4 @@ import IconCopy from '~/assets/svg-icons/menu/copy.svg';
 definePageMeta({
 	layout: 'account',
 });
-
-const notificationStore = useNotificationStore();
-const data = await notificationStore.getNotifications({});
-const data1 = await notificationStore.notificationList;
-
-console.log(data, data1);
 </script>

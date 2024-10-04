@@ -17,17 +17,18 @@
 					</div>
 					<div class="flex overflow-x-scroll no-scrollbar md:inline-flex md:flex-wrap">
 						<div
-							v-for="(item, index) in items"
+							v-for="(item, index) in notifList"
 							:key="index"
-							@click="toggleTag(item.tag)"
+							@click="selectTag(item.key)"
 						>
 							<h3
+								class="px-1 mx-1 text-nowrap"
 								:class="['inline-block p-0 md:p-1 m-0 md:m-1 text-sm font-normal rounded-md cursor-pointer',
-									isSelected(item.tag)
+									isSelected(item.value)
 										? 'bg-primary-yellow-light dark:bg-primary-yellow-dark text-black dark:text-black'
 										: 'text-subtle-text-light dark:text-subtle-text-dark bg-primary-gray-light dark:bg-primary-gray-dark']"
 							>
-								{{ item.tag }}
+								{{ item.value }}
 							</h3>
 						</div>
 					</div>
@@ -52,7 +53,7 @@
 					</div>
 					<div>
 						<div
-							v-for="(notif, index) in notifs"
+							v-for="(notif, index) in data"
 							:key="index"
 						>
 							<div class="py-4 border-t border-primary-gray-light dark:border-primary-gray-dark">
@@ -60,15 +61,15 @@
 									<div class="flex">
 										<IconMessage class="text-2xl text-subtle-text-light dark:text-subtle-text-dark" />
 										<h5 class="mr-2 text-base font-bold">
-											{{ notif.title }}
+											{{ notif.noticeHeader }}
 										</h5>
 									</div>
 									<div class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
-										{{ notif.date }}
+										<span>{{ useNumber(formatDateToIranTime(notif.regTime)) }}</span>
 									</div>
 								</div>
 								<div class="py-2 text-sm font-normal">
-									<p>{{ notif.message }}</p>
+									<p v-html="notif.noticeBody" />
 								</div>
 								<div>
 									<h3 class="inline-block  p-1 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark bg-primary-gray-light dark:bg-primary-gray-dark rounded-md">
@@ -79,12 +80,13 @@
 						</div>
 						<div class="flex justify-center py-4">
 							<UPagination
-								:model-value="currentPage"
-								:page-count="10"
-								:total="100"
-								:max="4"
+								:model-value="Number(params.pageNumber)"
+								:page-count="20"
+								:total="totalCount"
+								:max="6"
+								size="xl"
 								ul-class="flex space-x-2 bg-blue-500 border-none"
-								li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500"
+								li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500 px-3"
 								button-class-base="flex items-center justify-center w-full h-full transition-colors duration-200"
 								button-class-inactive="bg-green-700 hover:bg-gray-600"
 								button-class-active="bg-blue-500"
@@ -100,44 +102,50 @@
 </template>
 
 <script setup lang="ts">
+import { formatDateToIranTime } from '~/utils/date-time.js';
 import IconMessage from '~/assets/svg-icons/menu/message.svg';
 import IconCheckSquareOffset from '~/assets/svg-icons/profile/CheckSquareOffset.svg';
 import IconDelete from '~/assets/svg-icons/profile/Delete.svg';
+import { useNumber } from '~/composables/useNumber';
+import { notificationRepository } from '~/repositories/notification.repository';
+import type { KeyValue } from '~/types/base.types';
+import type { NotificationRequestDto } from '~/types/dto/notification.dto';
+
+const { $api } = useNuxtApp();
+const notifRepo = notificationRepository($api);
+const notifList = ref<KeyValue[]>();
+const response = await notifRepo.getNotificationsTag();
+notifList.value = response.result;
+console.log('response---------------------------------------------------', response);
+console.log('---------------------------------------------------', notifList);
 
 definePageMeta({
 	layout: 'account-single',
 });
+const notificationStore = useNotificationStore();
+const data = await notificationStore.getNotifications({});
+const data1 = await notificationStore.notificationList;
 
-const items = [
-	{ tag: 'تگ اول' },
-	{ tag: 'تگ دوم' },
-	{ tag: 'تگ سوم' },
-	{ tag: 'تگ چهارم' },
-	{ tag: 'تگ پنجم' },
-	{ tag: 'تگ یازدهم' },
-];
-
-const notifs = [
-	{ title: 'اعلان ورود', date: '۱۴۰۲/۰۲/۲۹-۰۱:۵۴', message: 'ما متوجه ورود به حساب شما در شنبه 20 مه 17:23:46 CST 2023 شدیم. اگر شما نبودید، لطفاً رمز عبور خود را تغییر دهید و فوراً با بخش خدمات مشتری تماس بگیرید.', tag: 'تگ یازدهم' },
-	{ title: 'اعلان ورود', date: '۱۴۰۲/۰۲/۲۹-۰۱:۵۴', message: 'ما متوجه ورود به حساب شما در شنبه 20 مه 17:23:46 CST 2023 شدیم. اگر شما نبودید، لطفاً رمز عبور خود را تغییر دهید و فوراً با بخش خدمات مشتری تماس بگیرید.', tag: 'تگ یازدهم' },
-	{ title: 'اعلان ورود', date: '۱۴۰۲/۰۲/۲۹-۰۱:۵۴', message: 'ما متوجه ورود به حساب شما در شنبه 20 مه 17:23:46 CST 2023 شدیم. اگر شما نبودید، لطفاً رمز عبور خود را تغییر دهید و فوراً با بخش خدمات مشتری تماس بگیرید.', tag: 'تگ یازدهم' },
-];
-const selectedTags = ref<string[]>([]);
-
-const toggleTag = (tag: string) => {
-	if (selectedTags.value.includes(tag)) {
-		selectedTags.value = selectedTags.value.filter((t) => t !== tag);
-	}
-	else {
-		selectedTags.value.push(tag);
-	}
+console.log(data, data1);
+const params = ref({
+	from: '',
+	to: '',
+	typeId: '',
+	pageNumber: '',
+	pageSize: '',
+});
+const selectTag = async (event: NotificationRequestDto) => {
+	params.value.typeId = event.typeId || '';
+	await data;
 };
+const totalCount = ref(0);
+
+const selectedTags = ref<string[]>([]);
 
 const isSelected = (tag: string) => selectedTags.value.includes(tag);
 
-const currentPage = ref(1);
-
-function onPageChange(newPage: number) {
-	currentPage.value = newPage;
-}
+const onPageChange = async (newPage: number) => {
+	params.value.pageNumber = String(newPage);
+	await data;
+};
 </script>

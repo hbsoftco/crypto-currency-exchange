@@ -2,10 +2,11 @@ import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import type { NotificationRequestDto } from '~/types/dto/notification.dto';
-import type { NotificationResponse } from '~/types/response/notification.types';
+import type { NotificationResponse, NotificationTag } from '~/types/response/notification.types';
 
 type NotificationRepository = {
 	getNotifications: (params: NotificationRequestDto) => Promise<NotificationResponse>;
+	getNotificationsTag: () => Promise<NotificationTag>;
 };
 
 export const notificationRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): NotificationRepository => ({
@@ -19,6 +20,14 @@ export const notificationRepository = (fetch: $Fetch<unknown, NitroFetchRequest>
 				pageNumber: params.pageNumber,
 				pageSize: params.pageSize,
 			},
+			noAuth: false,
+			apiName: url,
+		} as CustomNitroFetchOptions);
+		return result;
+	},
+	async getNotificationsTag(): Promise<NotificationTag> {
+		const url = `/v1/user/logs/notice_type_list`;
+		const result = await fetch<NotificationTag>(url, {
 			noAuth: false,
 			apiName: url,
 		} as CustomNitroFetchOptions);

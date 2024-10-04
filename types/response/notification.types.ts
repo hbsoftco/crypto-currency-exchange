@@ -1,3 +1,5 @@
+import type { KeyValue } from '../base.types';
+
 type NotificationResponse = {
 	statusCode: number;
 	result: {
@@ -16,7 +18,13 @@ type NotificationItem = {
 	uid: number;
 };
 
+type NotificationTag = {
+	statusCode: string;
+	result: KeyValue[];
+};
+
 export type {
 	NotificationResponse,
 	NotificationItem,
+	NotificationTag,
 };
