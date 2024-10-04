@@ -70,7 +70,7 @@
 							<span>{{ useNumber(item.filledQnt) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ new Date(item.regTime).toLocaleDateString('fa-IR', { year: 'numeric', month: '2-digit', day: '2-digit' }) }}</span>
+							<span>{{ useNumber(formatDateToIranTime(item.regTime)) }}</span>
 						</td>
 						<!-- <td class="text-xs font-normal py-1">
 							<span>{{ useNumber(item.tid) }}</span>
@@ -78,12 +78,12 @@
 						<td class="text-xs font-normal py-1">
 							<span>{{ useNumber(item.oid) }}</span>
 						</td>
-						<td class="text-xs font-normal py-1">
-							<!-- <div class="flex">
+						<!-- <td class="text-xs font-normal py-1">
+							<div class="flex">
 								<span class="ml-1 text-[0.7rem] text-secondary-gray-light dark:text-secondary-gray-dark line-through">{{ useNumber(item.feeRawQot) }}</span>
 								<span>{{ useNumber(item.feeAppliedQot) }}</span>
-							</div> -->
-						</td>
+							</div>
+						</td> -->
 						<td class="flex text-xs font-normal py-1">
 							<IconInfo
 								class="text-base cursor-pointer"
@@ -114,6 +114,7 @@
 </template>
 
 <script setup lang="ts">
+import { formatDateToIranTime } from '~/utils/persian-date';
 import FilterSearch from '~/components/pages/Spot/List/FilterSearch.vue';
 import IconInfo from '~/assets/svg-icons/info.svg';
 import { useNumber } from '~/composables/useNumber';
@@ -180,5 +181,6 @@ const closeModalOrder = () => {
 
 const onPageChange = async (newPage: number) => {
 	params.value.pageNumber = String(newPage);
+	await fetchOrderList();
 };
 </script>

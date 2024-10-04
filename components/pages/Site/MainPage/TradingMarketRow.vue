@@ -2,11 +2,14 @@
 	<tr
 		:class="rowClass"
 		class="hover:bg-hover-light hover:rounded-lg dark:hover:bg-hover-dark"
+		@mouseenter="isHovered=true"
+		@mouseleave="isHovered = false"
 	>
 		<td class="py-2 px-0 md:px-2 flex justify-start items-center space-x-2 max-w-36 w-36 md:max-w-80 md:w-80">
 			<TradingAction
 				v-if="localRow.marketBriefItem"
 				:coin="localRow.marketBriefItem"
+				:is-hovered="isHovered"
 			/>
 		</td>
 		<td class="py-2">
@@ -40,6 +43,7 @@ import { useNumber } from '~/composables/useNumber';
 import type { MarketListWithSparkLineChartItem } from '~/types/response/market.types';
 import type { SocketSpotTickerMessage } from '~/types/socket.types';
 
+const isHovered = ref(false);
 interface Props {
 	row: MarketListWithSparkLineChartItem;
 	socketData: SocketSpotTickerMessage | null;

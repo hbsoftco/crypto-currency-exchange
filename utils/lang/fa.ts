@@ -819,6 +819,10 @@ const persian = {
 	ReadyToFill: 'درحال پرشدن',
 	CancelledByUserBeforeFill: 'کنسل شده',
 	Completed: 'تکمیل',
+	Hottest: 'داغترین ها',
+	CmcRank: 'پرسود ترین ها',
+	MostProfitable: 'پرحجم ترین ها',
+	Newest: 'جدید ترین ها',
 };
 
 export default persian;

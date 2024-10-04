@@ -116,6 +116,22 @@ type MarketInfoItem = {
 	currencyDetails: CurrencyBriefItem | null;
 };
 
+type ListRow = {
+	id: number;
+	indexPrice: string;
+	priceChangePercIn24H: string;
+};
+
+type ListResult = {
+	totalCount: number;
+	rows: ListRow[];
+};
+
+type MarketListResponse = {
+	statusCode: number;
+	result: ListResult;
+};
+
 export type {
 	MarketListWithSparkLineChartResponse,
 	MarketListWithSparkLineChartItem,
@@ -131,4 +147,5 @@ export type {
 	MarketListByCategoryResponse,
 	MarketInfoItem,
 	MarketCategoryInfo,
+	MarketListResponse,
 };

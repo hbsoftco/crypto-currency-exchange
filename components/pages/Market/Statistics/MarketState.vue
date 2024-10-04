@@ -85,9 +85,10 @@ const pieChartData = computed(() => {
 	}));
 });
 
+const category = useT(props.item.category);
 const doughnutOptions = ref({
 	title: {
-		text: props.item.category,
+		text: category,
 		left: 'center',
 		top: '43%',
 		textStyle: {
