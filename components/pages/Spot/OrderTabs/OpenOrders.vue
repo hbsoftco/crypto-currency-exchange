@@ -1,5 +1,9 @@
 <template>
 	<div class="h-72 overflow-y-scroll">
+		<ModalOrder
+			v-if="showModalOrder"
+			@close="closeModalOrder"
+		/>
 		<table class="min-w-full p-6 text-right">
 			<thead>
 				<tr class="py-4 text-subtle-text-light dark:text-subtle-text-dark bg-primary-gray-light dark:bg-primary-gray-dark">
@@ -40,47 +44,51 @@
 			</thead>
 			<tbody>
 				<tr
-					v-for="(item, index) in items"
+					v-for="(item, index) in ordersList"
 					:key="index"
 					:class="[index % 2 === 0 ? 'bg-background-light dark:bg-background-dark' : 'bg-hover2-light dark:bg-hover2-dark']"
 					class="pb-1"
 				>
 					<td class="text-xs font-normal py-1">
-						<span>{{ item.market }}</span>
+						<span>{{ item.mSymbol }}</span>
 					</td>
 					<td class="text-xs font-normal py-1">
-						<span>{{ item.type }}</span>
+						<span>{{ $t(item.orderTypeName) }}</span>
 					</td>
 					<td class="text-xs font-normal py-1">
-						<span>{{ item.direction }}</span>
+						<span>{{ $t(item.sideName) }}</span>
 					</td>
 					<td
 						class="text-xs font-normal py-1"
-						:class="{ 'text-accent-blue': item.status === 'درحال پرشدن' }"
+						:class="{ 'text-primary-yellow-light dark:text-primary-yellow-dark': item.orderStateName === 'ReadyToFill' }"
 					>
-						<span>{{ item.status }}</span>
+						<span>{{ $t(item.orderStateName) }}</span>
 					</td>
 					<td class="text-xs font-normal py-1">
-						<span>{{ useNumber(item.value) }}</span>
+						<span>{{ useNumber(item.reqQot) }}</span>
 					</td>
 					<td class="text-xs font-normal py-1">
-						<span>{{ useNumber(item.price) }}</span>
+						<span>{{ useNumber(item.filledQot) }}</span>
 					</td>
 					<td class="text-xs font-normal py-1">
-						<span>{{ useNumber(item.amount) }}</span>
+						<span>{{ useNumber(item.dealPrice) }}</span>
 					</td>
 					<td class="text-xs font-normal py-1">
-						<span>{{ useNumber(item.filled) }}</span>
+						<span>{{ useNumber(item.filledQnt) }}</span>
 					</td>
 					<td class="text-xs font-normal py-1">
-						<span>{{ useNumber(item.remaining) }}</span>
+						<span>{{ useNumber(remainingQuantity(item.reqQnt, item.filledQnt)) }}</span>
 					</td>
 					<td class="text-xs font-normal py-1">
-						<span>{{ useNumber(item.date) }}</span>
+						<span>{{ useNumber(formatDateToIranTime(item.regTime)) }}</span>
 					</td>
+					<!-- <td class="text-xs font-normal py-1">
+							<span>{{ useNumber(item.tid) }}</span>
+						</td> -->
 					<td class="flex text-xs font-normal py-1">
 						<IconInfo
 							class="text-base"
+							@click.prevent="openModalOrder"
 						/>
 						<IconDelete class="text-base text-accent-red" />
 					</td>
@@ -91,206 +99,61 @@
 </template>
 
 <script setup lang="ts">
+import { formatDateToIranTime } from '~/utils/persian-date';
 import IconInfo from '~/assets/svg-icons/info.svg';
 import IconDelete from '~/assets/svg-icons/profile/Delete.svg';
 import { useNumber } from '~/composables/useNumber';
+import ModalOrder from '~/components/pages/Spot/List/ModalDetailOrder.vue';
+import { useSpot } from '~/composables/spot/useSpot';
+import { SearchMode } from '~/utils/enums/order.enum';
+import type { Order } from '~/types/response/spot.types';
 
-const items = [
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		price: '27,000 USDT',
-		amount: '27,000 USDT',
-		filled: '۲۰٪',
-		remaining: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
+const { loading, getOrderList } = useSpot();
+console.log(loading);
 
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'در انتظار',
-		value: '27,000 USDT',
-		price: '27,000 USDT',
-		amount: '27,000 USDT',
-		filled: '۲۰٪',
-		remaining: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
+const remainingQuantity = (reqQnt: string, filledQnt: string): number => {
+	return parseFloat(reqQnt) - parseFloat(filledQnt);
+};
+const totalCount = ref(0);
 
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		price: '27,000 USDT',
-		amount: '27,000 USDT',
-		filled: '۲۰٪',
-		remaining: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
+const params = ref({
+	marketId: '',
+	symbol: 'FETUSDT',
+	orderSide: '',
+	orderType: '',
+	assetType: useEnv('assetType'),
+	searchMode: SearchMode.OPEN,
+	uniqueTag: '',
+	from: '',
+	to: '',
+	pageNumber: '1',
+	pageSize: '20',
+});
 
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'در انتظار',
-		value: '27,000 USDT',
-		price: '27,000 USDT',
-		amount: '27,000 USDT',
-		filled: '۲۰٪',
-		remaining: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
+const ordersList = ref<Order[]>();
 
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		price: '27,000 USDT',
-		amount: '27,000 USDT',
-		filled: '۲۰٪',
-		remaining: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
+const fetchOrderList = async () => {
+	try {
+		const { result } = await getOrderList(params.value);
+		totalCount.value = result.totalCount;
+		ordersList.value = result.rows;
+	}
+	catch (error) {
+		console.error('Error fetching trades:', error);
+	}
+};
 
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'در انتظار',
-		value: '27,000 USDT',
-		price: '27,000 USDT',
-		amount: '27,000 USDT',
-		filled: '۲۰٪',
-		remaining: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
+onMounted(async () => {
+	await fetchOrderList();
+});
 
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		price: '27,000 USDT',
-		amount: '27,000 USDT',
-		filled: '۲۰٪',
-		remaining: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
+const showModalOrder = ref(false);
 
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		price: '27,000 USDT',
-		amount: '27,000 USDT',
-		filled: '۲۰٪',
-		remaining: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
+const openModalOrder = () => {
+	showModalOrder.value = true;
+};
 
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		price: '27,000 USDT',
-		amount: '27,000 USDT',
-		filled: '۲۰٪',
-		remaining: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		price: '27,000 USDT',
-		amount: '27,000 USDT',
-		filled: '۲۰٪',
-		remaining: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'در انتظار',
-		value: '27,000 USDT',
-		price: '27,000 USDT',
-		amount: '27,000 USDT',
-		filled: '۲۰٪',
-		remaining: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'در انتظار',
-		value: '27,000 USDT',
-		price: '27,000 USDT',
-		amount: '27,000 USDT',
-		filled: '۲۰٪',
-		remaining: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'در انتظار',
-		value: '27,000 USDT',
-		price: '27,000 USDT',
-		amount: '27,000 USDT',
-		filled: '۲۰٪',
-		remaining: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'در انتظار',
-		value: '27,000 USDT',
-		price: '27,000 USDT',
-		amount: '27,000 USDT',
-		filled: '۲۰٪',
-		remaining: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'در انتظار',
-		value: '27,000 USDT',
-		price: '27,000 USDT',
-		amount: '27,000 USDT',
-		filled: '۲۰٪',
-		remaining: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-
-	},
-
-];
+const closeModalOrder = () => {
+	showModalOrder.value = false;
+};
 </script>

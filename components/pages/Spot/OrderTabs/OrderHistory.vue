@@ -1,5 +1,9 @@
 <template>
 	<div class="h-72 overflow-y-scroll">
+		<ModalOrder
+			v-if="showModalOrder"
+			@close="closeModalOrder"
+		/>
 		<table class="min-w-full p-6 text-right">
 			<thead>
 				<tr class="py-4 text-subtle-text-light dark:text-subtle-text-dark bg-primary-gray-light dark:bg-primary-gray-dark">
@@ -18,9 +22,9 @@
 					<th class="p-1 text-xs font-normal">
 						{{ $t('value') }}
 					</th>
-					<th class="p-1 text-xs font-normal">
+					<!-- <th class="p-1 text-xs font-normal">
 						{{ $t('average') }}
-					</th>
+					</th> -->
 					<th class="p-1 text-xs font-normal">
 						{{ $t('amountFilled') }}
 					</th>
@@ -49,56 +53,57 @@
 			</thead>
 			<tbody>
 				<tr
-					v-for="(item, index) in items"
+					v-for="(item, index) in ordersList"
 					:key="index"
 					:class="[index % 2 === 0 ? 'bg-background-light dark:bg-background-dark' : 'bg-hover2-light dark:bg-hover2-dark']"
 					class="pb-1"
 				>
 					<td class="text-xs font-normal py-1">
-						<span>{{ item.market }}</span>
+						<span>{{ item.mSymbol }}</span>
 					</td>
 					<td class="text-xs font-normal py-1">
-						<span>{{ item.type }}</span>
+						<span>{{ $t(item.orderTypeName) }}</span>
 					</td>
 					<td class="text-xs font-normal py-1">
-						<span>{{ item.direction }}</span>
+						<span>{{ $t(item.sideName) }}</span>
 					</td>
 					<td
 						class="text-xs font-normal py-1"
-						:class="{ 'text-accent-blue': item.status === 'درحال پرشدن' }"
+						:class="{ 'text-primary-yellow-light dark:text-primary-yellow-dark': item.orderStateName === 'ReadyToFill' }"
 					>
-						<span>{{ item.status }}</span>
+						<span>{{ $t(item.orderStateName) }}</span>
 					</td>
 					<td class="text-xs font-normal py-1">
-						<span>{{ useNumber(item.value) }}</span>
+						<span>{{ useNumber(item.reqQot) }}</span>
+					</td>
+					<!-- <td class="text-xs font-normal py-1">
+							<span>{{ useNumber(item.average) }}</span>
+						</td> -->
+					<td class="text-xs font-normal py-1">
+						<span>{{ useNumber(item.filledQnt) }}</span>
 					</td>
 					<td class="text-xs font-normal py-1">
-						<span>{{ useNumber(item.average) }}</span>
+						<span>{{ useNumber(item.filledQot) }}</span>
 					</td>
 					<td class="text-xs font-normal py-1">
-						<span>{{ useNumber(item.amountFilled) }}</span>
+						<span>{{ useNumber(item.reqQnt) }}</span>
 					</td>
 					<td class="text-xs font-normal py-1">
-						<span>{{ useNumber(item.filledValue) }}</span>
+						<span>{{ useNumber(remainingQuantity(item.reqQnt, item.filledQnt)) }}</span>
 					</td>
 					<td class="text-xs font-normal py-1">
-						<span>{{ useNumber(item.amount) }}</span>
+						<span>{{ useNumber(item.dealPrice) }}</span>
 					</td>
 					<td class="text-xs font-normal py-1">
-						<span>{{ useNumber(item.remaining) }}</span>
+						<span>{{ useNumber(formatDateToIranTime(item.regTime)) }}</span>
 					</td>
 					<td class="text-xs font-normal py-1">
-						<span>{{ useNumber(item.price) }}</span>
-					</td>
-					<td class="text-xs font-normal py-1">
-						<span>{{ useNumber(item.date) }}</span>
-					</td>
-					<td class="text-xs font-normal py-1">
-						<span>{{ useNumber(item.orderNumber) }}</span>
+						<span>{{ useNumber(item.oid) }}</span>
 					</td>
 					<td class="flex text-xs font-normal py-1">
 						<IconInfo
-							class="text-base"
+							class="text-base cursor-pointer"
+							@click.prevent="openModalOrder"
 						/>
 					</td>
 				</tr>
@@ -108,369 +113,61 @@
 </template>
 
 <script setup lang="ts">
+import { formatDateToIranTime } from '~/utils/persian-date';
 import IconInfo from '~/assets/svg-icons/info.svg';
 import { useNumber } from '~/composables/useNumber';
+import ModalOrder from '~/components/pages/Spot/List/ModalDetailOrder.vue';
+import { useSpot } from '~/composables/spot/useSpot';
+import { SearchMode } from '~/utils/enums/order.enum';
+import type { Order } from '~/types/response/spot.types';
 
-const items = [
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		average: '۲۳۵۲۴۳۵۲',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		remaining: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		average: '۲۳۵۲۴۳۵۲',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		remaining: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'در انتظار',
-		value: '27,000 USDT',
-		average: '۲۳۵۲۴۳۵۲',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		remaining: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		average: '۲۳۵۲۴۳۵۲',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		remaining: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'در انتظار',
-		value: '27,000 USDT',
-		average: '۲۳۵۲۴۳۵۲',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		remaining: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		average: '۲۳۵۲۴۳۵۲',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		remaining: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		average: '۲۳۵۲۴۳۵۲',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		remaining: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'در انتظار',
-		value: '27,000 USDT',
-		average: '۲۳۵۲۴۳۵۲',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		remaining: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		average: '۲۳۵۲۴۳۵۲',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		remaining: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'در انتظار',
-		value: '27,000 USDT',
-		average: '۲۳۵۲۴۳۵۲',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		remaining: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		average: '۲۳۵۲۴۳۵۲',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		remaining: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'در انتظار',
-		value: '27,000 USDT',
-		average: '۲۳۵۲۴۳۵۲',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		remaining: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		average: '۲۳۵۲۴۳۵۲',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		remaining: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'در انتظار',
-		value: '27,000 USDT',
-		average: '۲۳۵۲۴۳۵۲',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		remaining: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		average: '۲۳۵۲۴۳۵۲',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		remaining: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'در انتظار',
-		value: '27,000 USDT',
-		average: '۲۳۵۲۴۳۵۲',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		remaining: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		average: '۲۳۵۲۴۳۵۲',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		remaining: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'در انتظار',
-		value: '27,000 USDT',
-		average: '۲۳۵۲۴۳۵۲',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		remaining: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		average: '۲۳۵۲۴۳۵۲',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		remaining: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'در انتظار',
-		value: '27,000 USDT',
-		average: '۲۳۵۲۴۳۵۲',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		remaining: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		average: '۲۳۵۲۴۳۵۲',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		remaining: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'در انتظار',
-		value: '27,000 USDT',
-		average: '۲۳۵۲۴۳۵۲',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		remaining: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'درحال پرشدن',
-		value: '27,000 USDT',
-		average: '۲۳۵۲۴۳۵۲',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		remaining: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-	},
-	{
-		market: 'BTC/USDT',
-		type: 'ایست قیمت',
-		direction: 'فروش',
-		status: 'در انتظار',
-		value: '27,000 USDT',
-		average: '۲۳۵۲۴۳۵۲',
-		amountFilled: '27,000 USDT',
-		filledValue: '27,000 USDT',
-		amount: '27,000 USDT',
-		remaining: '27,000 USDT',
-		price: '27,000 USDT',
-		date: '۰۳/۱۵-۲۳:۵۹',
-		orderNumber: '۳۲۵۴۸۳۲۷۴۵۳۲',
-	},
-];
+const remainingQuantity = (reqQnt: string, filledQnt: string): number => {
+	return parseFloat(reqQnt) - parseFloat(filledQnt);
+};
+const { loading, getOrderList } = useSpot();
+console.log(loading);
+
+const totalCount = ref(0);
+
+const params = ref({
+	marketId: '',
+	symbol: 'FETUSDT',
+	orderSide: '',
+	orderType: '',
+	assetType: useEnv('assetType'),
+	searchMode: SearchMode.ANY,
+	uniqueTag: '',
+	from: '',
+	to: '',
+	pageNumber: '1',
+	pageSize: '20',
+});
+
+const ordersList = ref<Order[]>();
+
+const fetchOrderList = async () => {
+	try {
+		const { result } = await getOrderList(params.value);
+		totalCount.value = result.totalCount;
+		ordersList.value = result.rows;
+	}
+	catch (error) {
+		console.error('Error fetching trades:', error);
+	}
+};
+console.log('----------------------------------------------------', ordersList);
+
+onMounted(async () => {
+	await fetchOrderList();
+});
+
+const showModalOrder = ref(false);
+
+const openModalOrder = () => {
+	showModalOrder.value = true;
+};
+
+const closeModalOrder = () => {
+	showModalOrder.value = false;
+};
 </script>

@@ -24,9 +24,9 @@
 						<th class="p-1 text-xs font-normal">
 							{{ $t('value') }}
 						</th>
-						<th class="p-1 text-xs font-normal">
+						<!-- <th class="p-1 text-xs font-normal">
 							{{ $t('average') }}
-						</th>
+						</th> -->
 						<th class="p-1 text-xs font-normal">
 							{{ $t('amountFilled') }}
 						</th>
@@ -75,9 +75,9 @@
 						<td class="text-xs font-normal py-1">
 							<span>{{ useNumber(item.reqQot) }}</span>
 						</td>
-						<td class="text-xs font-normal py-1">
-							<!-- <span>{{ useNumber(item.average) }}</span> -->
-						</td>
+						<!-- <td class="text-xs font-normal py-1">
+							<span>{{ useNumber(item.average) }}</span>
+						</td> -->
 						<td class="text-xs font-normal py-1">
 							<span>{{ useNumber(item.filledQnt) }}</span>
 						</td>
