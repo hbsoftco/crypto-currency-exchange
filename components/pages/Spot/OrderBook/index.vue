@@ -39,16 +39,6 @@
 import LatestTrades from './LatestTrades.vue';
 import OrderList from './OrderList.vue';
 
-// import type { BidAsk, LatestTrade, Ticker } from '~/types/response/spot.types';
-
-// interface PropsDefinition {
-// 	ticker: Ticker;
-// 	bids: BidAsk[];
-// 	asks: BidAsk[];
-// 	latestTrades: LatestTrade[];
-// }
-// defineProps<PropsDefinition>();
-
 const items = [
 	{
 		key: 'orderList',

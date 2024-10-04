@@ -5,6 +5,7 @@
 	>
 		<div
 			v-if="backBtn"
+			@click="goBack"
 			class="md:bg-primary-gray-light bg-none md:dark:bg-primary-gray-dark rounded-full w-7 h-7 ml-2 p-1 cursor-pointer"
 		>
 			<UIcon
@@ -35,4 +36,14 @@ withDefaults(defineProps<PropsDefinition>(), {
 	py: 'py-0',
 	backBtn: true,
 });
+
+// const router = useRouter();
+
+const goBack = () => {
+	window.history.back();
+};
+
+// if (props.backBtn) {
+// 	router.push({ path: props.backBtn	});
+// }
 </script>

@@ -1,70 +1,72 @@
 <template>
-	<div class="h-[24rem] overflow-y-scroll px-1">
+	<div class="h-[24rem] overflow-hidden px-1">
 		<section>
 			<div class="flex justify-between py-2">
-				<div class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
-					<span>{{ $t('total') }}</span>(BTC)
+				<div class="text-xs text-center font-normal text-subtle-text-light dark:text-subtle-text-dark">
+					<span>{{ $t('total') }}</span>({{ currency }})
 				</div>
-				<div class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
-					<span>{{ $t('amount') }}</span>(BTC)
+				<div class="text-xs text-center font-normal text-subtle-text-light dark:text-subtle-text-dark">
+					<span>{{ $t('amount') }}</span>({{ currency }})
 				</div>
-				<div class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
-					<span>{{ $t('price') }}</span>(BTC)
+				<div class="text-xs text-center font-normal text-subtle-text-light dark:text-subtle-text-dark">
+					<span>{{ $t('price') }}</span>({{ currency }})
 				</div>
 			</div>
 
+			<!-- Ask Data -->
 			<div
-				v-for="(item, index) in higherItems"
+				v-for="(item, index) in asksData?.slice(0, 8)"
 				:key="index"
 				class="relative my-1"
 			>
 				<div
-					class="absolute inset-0 h-full py-2 bg-[#F14235]"
-					:style="{ width: item.background }"
+					class="absolute inset-0 h-full py-2 bg-[#f142352e]"
+					:style="{ width: calculateWidth(item.c, 'asks') + '%' }"
 				/>
 
 				<div class="relative flex justify-between">
-					<div class="text-xs font-normal ">
-						<span>{{ useNumber(item.total) }}</span>
+					<div class="text-xs text-left font-normal ">
+						<span>{{ useNumber(item.c) }}</span>
 					</div>
-					<div class="text-xs font-normal">
-						<span>{{ useNumber(item.amount) }}</span>
+					<div class="text-xs text-left font-normal">
+						<span>{{ useNumber(item.v) }}</span>
 					</div>
 					<div class="flex items-center text-xs font-normal text-accent-red dark:text-accent-red">
-						<span>{{ useNumber(item.price) }}</span>
+						<span>{{ useNumber(item.p) }}</span>
 						<div class="mr-2 bg-primary-yellow dark:bg-primary-yellow-dark w-2 h-2 rounded-full" />
 					</div>
 				</div>
 			</div>
 
+			<!-- Ticker Data -->
 			<div
 				dir="ltr"
-				class="bg-hover2-light dark:bg-hover2-dark py-2 flex items-center"
+				class="bg-hover2-light dark:bg-hover2-dark py-0.5 flex items-center"
 			>
-				<IconArrowUp
-					class="text-xs text-accent-green"
-				/>
-				<span class="mx-1 text-accent-green text-base font-semibold">{{ useNumber('27,021.59') }}</span>
+				<IconArrowUp class="text-xs text-accent-green" />
+				<span class="mx-1 text-accent-green text-base font-semibold">{{ useNumber(String(tickerData?.i)) }}</span>
 			</div>
+
+			<!-- Bid Data -->
 			<div
-				v-for="(item, index) in lowerItems"
+				v-for="(item, index) in bidsData?.slice(0, 8)"
 				:key="index"
 				class="relative my-1"
 			>
 				<div
-					class="absolute inset-0 h-full py-2 bg-[#459F4B]"
-					:style="{ width: item.background }"
+					class="absolute inset-0 h-full py-2 bg-[#459f4b4c]"
+					:style="{ width: calculateWidth(item.c, 'bids') + '%' }"
 				/>
 
 				<div class="relative flex justify-between">
-					<div class="text-xs font-normal ">
-						<span>{{ useNumber(item.total) }}</span>
+					<div class="text-xs text-left font-normal ">
+						<span>{{ useNumber(item.c) }}</span>
 					</div>
-					<div class="text-xs font-normal">
-						<span>{{ useNumber(item.amount) }}</span>
+					<div class="text-xs text-left font-normal">
+						<span>{{ useNumber(item.v) }}</span>
 					</div>
 					<div class="flex items-center text-xs font-normal text-accent-green dark:text-accent-green">
-						<span>{{ useNumber(item.price) }}</span>
+						<span>{{ useNumber(item.p) }}</span>
 						<div class="mr-2 bg-primary-yellow dark:bg-primary-yellow-dark w-2 h-2 rounded-full" />
 					</div>
 				</div>
@@ -74,235 +76,23 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-
 import { useNumber } from '~/composables/useNumber';
 import IconArrowUp from '~/assets/svg-icons/spot/arrow-up.svg';
 
-const items = [
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '30%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27019.50',
-		background: '50%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27022.70',
-		background: '70%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '26024.63',
-		background: '70%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '30%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27019.50',
-		background: '50%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27022.70',
-		background: '70%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '26024.63',
-		background: '70%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '30%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27019.50',
-		background: '50%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27022.70',
-		background: '70%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '26024.63',
-		background: '70%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '30%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27019.50',
-		background: '50%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27022.70',
-		background: '70%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '26024.63',
-		background: '70%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '30%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27019.50',
-		background: '50%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27022.70',
-		background: '70%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '26024.63',
-		background: '70%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '30%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27019.50',
-		background: '50%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27022.70',
-		background: '70%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '26024.63',
-		background: '70%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '30%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27019.50',
-		background: '50%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27022.70',
-		background: '70%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '26024.63',
-		background: '70%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '30%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27019.50',
-		background: '50%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27022.70',
-		background: '70%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '26024.63',
-		background: '70%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '30%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27019.50',
-		background: '50%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27022.70',
-		background: '70%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '26024.63',
-		background: '70%',
-	},
-];
+const { bidsData, asksData, tickerData, currency } = useSpotStore();
+const recordCount = ref<number>(8);
 
-const higherItems = computed(() =>
-	items.filter((item) => parseFloat(item.price) > 27021.59),
-);
+const maxAsks = computed(() => {
+	return Math.max(...(asksData.value?.slice(0, recordCount.value).map((item) => parseFloat(item.c) || 0) || []));
+});
 
-const lowerItems = computed(() =>
-	items.filter((item) => parseFloat(item.price) <= 27021.59),
-);
+const maxBids = computed(() => {
+	return Math.max(...(bidsData.value?.slice(0, recordCount.value).map((item) => parseFloat(item.c) || 0) || []));
+});
+
+const calculateWidth = (c: string, type: 'asks' | 'bids') => {
+	const cValue = parseFloat(c) || 0;
+	const max = type === 'asks' ? maxAsks.value : maxBids.value;
+	return (cValue * 100) / max;
+};
 </script>

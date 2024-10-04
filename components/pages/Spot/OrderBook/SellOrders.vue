@@ -1,37 +1,37 @@
 <template>
-	<div class="h-[24rem] overflow-y-scroll px-1">
+	<div class="h-[24rem] overflow-hidden px-1">
 		<section>
 			<div class="flex justify-between py-2">
 				<div class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
-					<span>{{ $t('total') }}</span>(BTC)
+					<span>{{ $t('total') }}</span>({{ currency }})
 				</div>
 				<div class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
-					<span>{{ $t('amount') }}</span>(BTC)
+					<span>{{ $t('amount') }}</span>({{ currency }})
 				</div>
 				<div class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
-					<span>{{ $t('price') }}</span>(BTC)
+					<span>{{ $t('price') }}</span>({{ currency }})
 				</div>
 			</div>
 
 			<div
-				v-for="(item, index) in items"
+				v-for="(item, index) in asksData?.slice(0, recordCount)"
 				:key="index"
 				class="relative my-1"
 			>
 				<div
-					class="absolute inset-0 h-full py-2 bg-[#F14235]"
-					:style="{ width: item.background }"
+					class="absolute inset-0 h-full py-2 bg-[#f142352e]"
+					:style="{ width: calculateWidth(item.c) + '%' }"
 				/>
 
 				<div class="relative flex justify-between">
 					<div class="text-xs font-normal ">
-						<span>{{ useNumber(item.total) }}</span>
+						<span>{{ useNumber(item.c) }}</span>
 					</div>
 					<div class="text-xs font-normal">
-						<span>{{ useNumber(item.amount) }}</span>
+						<span>{{ useNumber(item.v) }}</span>
 					</div>
 					<div class="flex items-center text-xs font-normal text-accent-red dark:text-accent-red">
-						<span>{{ useNumber(item.price) }}</span>
+						<span>{{ useNumber(item.p) }}</span>
 						<div class="mr-2 bg-primary-yellow dark:bg-primary-yellow-dark w-2 h-2 rounded-full" />
 					</div>
 				</div>
@@ -43,179 +43,15 @@
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
 
-const items = [
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '30%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '30%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '30%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '30%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '90%',
-	},
+const { asksData, currency } = useSpotStore();
+const recordCount = ref<number>(17);
 
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '60%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '20%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '40%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '30%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '30%',
-	},
-
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '30%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '30%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '90%',
-	},
-
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '60%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '20%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '40%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '20%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '40%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '30%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '30%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '90%',
-	},
-
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '60%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '20%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '40%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '90%',
-	},
-
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '60%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '20%',
-	},
-	{
-		total: '2.157055',
-		amount: '0.034680',
-		price: '27024.63',
-		background: '40%',
-	},
-];
+const maxAsks = computed(() => {
+	return Math.max(...(asksData.value?.slice(0, recordCount.value).map((item) => parseFloat(item.c) || 0) || []));
+});
+const calculateWidth = (c: string) => {
+	const cValue = parseFloat(c) || 0;
+	const max = maxAsks.value;
+	return (cValue * 100) / max;
+};
 </script>

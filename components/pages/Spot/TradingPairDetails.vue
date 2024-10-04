@@ -4,6 +4,7 @@
 		dir="ltr"
 	>
 		<UCarousel
+			ref="carouselRef"
 			v-slot="{ item }"
 			:items="markets"
 			:ui="{
@@ -56,4 +57,18 @@
 
 <script setup lang="ts">
 const markets = [-32321, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4];
+
+const carouselRef = ref();
+
+onMounted(() => {
+	setInterval(() => {
+		if (!carouselRef.value) return;
+
+		if (carouselRef.value.page === carouselRef.value.pages) {
+			return carouselRef.value.select(0);
+		}
+
+		carouselRef.value.next();
+	}, 3000);
+});
 </script>

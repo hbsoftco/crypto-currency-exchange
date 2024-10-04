@@ -66,7 +66,7 @@ export const useSpotStore = defineStore('settings', () => {
 			spot.value = result;
 			ticker.value = result.ticker;
 			bids.value = result.bids;
-			asks.value = result.asks;
+			asks.value = result.asks.reverse();
 			depth.value = result.depth;
 			latestTrades.value = result.latestTrades;
 		}
@@ -82,7 +82,6 @@ export const useSpotStore = defineStore('settings', () => {
 		if (!symbol.value || !quote.value || !marketId.value) {
 			const params: SpotDataParams = {
 				symbol: symbol.value,
-				timeFrame: '1hour',
 				level: '',
 				rows: '20',
 				marketId: marketId.value,

@@ -20,7 +20,7 @@
 					@click="setActiveButton('all')"
 				>
 					<NuxtImg
-						src="/images/svg/order-list/icon-handicap-all-dark.svg"
+						:src="getIconSrc('all')"
 						alt="handicap"
 						class="w-6 h-6"
 					/>
@@ -31,7 +31,7 @@
 					@click="setActiveButton('buy')"
 				>
 					<NuxtImg
-						src="/images/svg/order-list/icon-handicap-buy-dark.svg"
+						:src="getIconSrc('buy')"
 						alt="handicap"
 						class="w-6 h-6"
 					/>
@@ -42,7 +42,7 @@
 					@click="setActiveButton('sell')"
 				>
 					<NuxtImg
-						src="/images/svg/order-list/icon-handicap-sell-dark.svg"
+						:src="getIconSrc('sell')"
 						alt="handicap"
 						class="w-6 h-6"
 					/>
@@ -70,6 +70,20 @@ import BuyOrders from './BuyOrders.vue';
 import BuySellOrders from './BuySellOrders.vue';
 import SellOrders from './SellOrders.vue';
 
+const colorMode = useColorMode();
+const isDark = computed(() => colorMode.value === 'dark');
+
+const iconNames: { [key: string]: string } = {
+	all: 'icon-handicap-all',
+	buy: 'icon-handicap-buy',
+	sell: 'icon-handicap-sell',
+};
+
+const getIconSrc = (button: 'all' | 'buy' | 'sell') => {
+	const iconPrefix = '/images/svg/order-list/';
+	const iconSuffix = isDark.value ? 'dark.svg' : 'light.svg';
+	return `${iconPrefix}${iconNames[button]}-${iconSuffix}`;
+};
 const items = [{
 	id: 1,
 	value: '1000',
