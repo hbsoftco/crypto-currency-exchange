@@ -83,7 +83,6 @@ const fetchMarketData = async () => {
 	try {
 		const response = await marketStore.fetchMarketListWithSparkLineChart(params.value);
 		marketData.value = response || [];
-		console.log(marketData.value);
 
 		marketIdParams.value = marketData.value.map((item) => item.id).join(',');
 	}

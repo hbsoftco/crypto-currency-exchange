@@ -37,8 +37,6 @@ export const useSpotStore = defineStore('settings', () => {
 		quote.value = quoteData;
 		currency.value = currencyData;
 
-		console.log('setRequiredData');
-
 		await getMarketId(quote.value);
 	};
 

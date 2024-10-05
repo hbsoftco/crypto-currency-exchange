@@ -1,31 +1,46 @@
-import { useNotification } from '~/composables/notification/useNotification';
+import { notificationRepository } from '~/repositories/notification.repository';
+import type { KeyValue } from '~/types/base.types';
 import type { NotificationRequestDto } from '~/types/dto/notification.dto';
 import type { NotificationItem } from '~/types/response/notification.types';
 
 export const useNotificationStore = defineStore('notification', () => {
 	const notifications = ref<NotificationItem[]>([]);
-	const isNotificationDataFetched = ref(false);
+	const totalCount = ref<number>(0);
+	const notificationTags = ref<KeyValue[]>([]);
 	const loading = ref(false);
-	const error = ref<string | null>(null);
+
+	const { $api } = useNuxtApp();
+	const notificationRepo = notificationRepository($api);
 
 	const getNotifications = async (params: NotificationRequestDto) => {
 		loading.value = true;
-		error.value = null;
-
 		try {
-			const { getNotifications } = useNotification();
-			const response = await getNotifications(params);
-			console.log('I come from store', response.result);
-			if (response?.result?.rows.length) {
-				notifications.value = response.result.rows;
-				isNotificationDataFetched.value = true;
-			}
-
-			return notifications.value;
+			const { result } = await notificationRepo.getNotifications(params);
+			notifications.value = result.rows;
+			totalCount.value = result.totalCount;
 		}
-		catch (err) {
-			error.value = 'Failed to fetch profile data';
-			console.error('Error fetching profile:', err);
+		catch (error: unknown) {
+			throw createError({
+				statusCode: 500,
+				statusMessage: `${error}`,
+			});
+		}
+		finally {
+			loading.value = false;
+		}
+	};
+
+	const getNotificationsTag = async () => {
+		loading.value = true;
+		try {
+			const { result } = await notificationRepo.getNotificationsTag();
+			notificationTags.value = result;
+		}
+		catch (error: unknown) {
+			throw createError({
+				statusCode: 500,
+				statusMessage: `${error}`,
+			});
 		}
 		finally {
 			loading.value = false;
@@ -36,8 +51,20 @@ export const useNotificationStore = defineStore('notification', () => {
 		return notifications.value;
 	});
 
+	const totalNotifications = computed<number>(() => {
+		return totalCount.value;
+	});
+
+	const notificationTagsList = computed<KeyValue[]>(() => {
+		return notificationTags.value;
+	});
+
 	return {
 		getNotifications,
+		getNotificationsTag,
+
 		notificationList,
+		notificationTagsList,
+		totalNotifications,
 	};
 });

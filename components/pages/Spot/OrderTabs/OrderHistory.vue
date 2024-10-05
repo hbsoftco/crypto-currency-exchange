@@ -124,8 +124,7 @@ import type { Order } from '~/types/response/spot.types';
 const remainingQuantity = (reqQnt: string, filledQnt: string): number => {
 	return parseFloat(reqQnt) - parseFloat(filledQnt);
 };
-const { loading, getOrderList } = useSpot();
-console.log(loading);
+const { getOrderList } = useSpot();
 
 const totalCount = ref(0);
 
@@ -155,7 +154,6 @@ const fetchOrderList = async () => {
 		console.error('Error fetching trades:', error);
 	}
 };
-console.log('----------------------------------------------------', ordersList);
 
 onMounted(async () => {
 	await fetchOrderList();

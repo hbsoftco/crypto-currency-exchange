@@ -124,13 +124,13 @@ type GetTradeListParams = {
 type GetOrderListParams = {
 	marketId: string;
 	symbol: string;
-	orderSide: string;
-	orderType: string;
-	assetType?: string;
-	searchMode: string;
-	uniqueTag: string;
-	from: string;
-	to: string;
+	orderSide?: string;
+	orderType?: string;
+	assetType: string;
+	searchMode?: string;
+	uniqueTag?: string;
+	from?: string;
+	to?: string;
 	pageNumber: string;
 	pageSize?: string;
 };

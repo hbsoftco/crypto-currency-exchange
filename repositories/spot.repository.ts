@@ -22,49 +22,61 @@ export const spotRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SpotR
 		const response = await fetch<GetKlineResponse>(`${url}?${query.toString()}`, {
 			noAuth: true,
 			apiName: url,
+			query: params,
 		} as CustomNitroFetchOptions);
 
 		return response;
 	},
 	async getSpotData(params: SpotDataParams): Promise<GetSpotDataResponse> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
+		const query = new URLSearchParams();
+		Object.entries(params).forEach(([key, value]) => {
+			if (value !== undefined && value !== null && value.toString().trim() !== '') {
+				query.append(key, value);
+			}
+		});
 
 		const url = '/v1/spot/routine/snapshot';
 		const response = await fetch<GetSpotDataResponse>(`${url}?${query.toString()}`, {
 			noAuth: true,
 			apiName: url,
+			query: params,
+			method: 'GET',
 		} as CustomNitroFetchOptions);
 
 		return response;
 	},
 	async getTradeList(params: GetTradeListParams): Promise<GetTradeListResponse> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
+		const query = new URLSearchParams();
+		Object.entries(params).forEach(([key, value]) => {
+			if (value !== undefined && value !== null && value.toString().trim() !== '') {
+				query.append(key, value);
+			}
+		});
 
 		const url = 'v1/spot/trade/list';
 		const response = await fetch<GetTradeListResponse>(`${url}?${query.toString()}`, {
 			noAuth: false,
 			apiName: url,
+			query: params,
+			method: 'GET',
 		} as CustomNitroFetchOptions);
 
 		return response;
 	},
 	async getOrderList(params: GetOrderListParams): Promise<GetOrderListResponse> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
+		const query = new URLSearchParams();
+		Object.entries(params).forEach(([key, value]) => {
+			if (value !== undefined && value !== null && value.toString().trim() !== '') {
+				query.append(key, value);
+			}
+		});
 
 		const url = 'v1/spot/order/list';
-		const urlWithQuery = `${url}?${query.toString()}`;
-		const response = await fetch<GetOrderListResponse>(urlWithQuery, {
+		const response = await fetch<GetOrderListResponse>(`${url}?${query.toString()}`, {
 			noAuth: false,
-			apiName: urlWithQuery,
+			apiName: url,
+			query: params,
+			method: 'GET',
 		} as CustomNitroFetchOptions);
 
 		return response;

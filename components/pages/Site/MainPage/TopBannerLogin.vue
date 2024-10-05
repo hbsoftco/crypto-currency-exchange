@@ -1,5 +1,5 @@
 <template>
-	<div class="mt-40 2xl:mt-80">
+	<div class="mt-40 2xl:mt-72">
 		<h1 class="text-4xl font-bold">
 			با
 			<span class="text-primary-yellow-light dark:text-primary-yellow-dark">بیت‌لند</span>

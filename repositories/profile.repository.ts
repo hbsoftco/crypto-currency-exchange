@@ -15,6 +15,7 @@ export const profileRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Pr
 		const response = await fetch<ProfileResponse>(url, {
 			noAuth: false,
 			apiName: url,
+			query: {},
 		} as CustomNitroFetchOptions);
 
 		return response;

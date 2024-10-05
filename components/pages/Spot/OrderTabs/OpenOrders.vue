@@ -108,8 +108,7 @@ import { useSpot } from '~/composables/spot/useSpot';
 import { SearchMode } from '~/utils/enums/order.enum';
 import type { Order } from '~/types/response/spot.types';
 
-const { loading, getOrderList } = useSpot();
-console.log(loading);
+const { getOrderList } = useSpot();
 
 const remainingQuantity = (reqQnt: string, filledQnt: string): number => {
 	return parseFloat(reqQnt) - parseFloat(filledQnt);

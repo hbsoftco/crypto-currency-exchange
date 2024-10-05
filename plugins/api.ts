@@ -10,12 +10,15 @@ export default defineNuxtPlugin(() => {
 	const authStore = useAuthStore();
 	const baseURL = useEnv('apiBaseUrl');
 	const apiName = ref<string>('');
+	const query = ref();
 
 	const api = $fetch.create({
 		baseURL,
 		async onRequest({ options }: CustomFetchContext<unknown>) {
 			if (options.noAuth !== false) return;
 			apiName.value = options.apiName;
+			query.value = options.query;
+
 			options.headers = { ...options.headers, ...(await authStore.getAuthHeaders()) };
 		},
 		async onResponseError({ response, options }: CustomFetchContext<unknown> & { response: FetchResponse<any>; options: CustomNitroFetchOptions }): Promise<void> {
@@ -23,7 +26,17 @@ export default defineNuxtPlugin(() => {
 			if (response && response?._data && response?._data?.statusCode === StatusCodes.OTC_EXPIRED.fa) {
 				const { refreshOTC } = useAuth();
 				await refreshOTC();
-				await doRequest('GET', `${baseURL}${options.apiName}`, options);
+
+				const query = new URLSearchParams();
+				Object.entries(options.query || {}).forEach(([key, value]) => {
+					if (value !== undefined && value !== null && value.toString().trim() !== '') {
+						query.append(key, value);
+					}
+				});
+
+				const queryString = query.toString() ? `?${query.toString()}` : '';
+
+				await doRequest('GET', `${baseURL}${options.apiName}${queryString}`, options);
 			}
 			else if (response && response?._data && response?._data?.statusCode === StatusCodes.USER_LOGGED_OUT.fa) {
 				const authStore = useAuthStore();
@@ -40,11 +53,12 @@ const useAPIClient = () => {
 	// const { refreshSession, invalidateSession } = useAuthProxyClient();
 
 	const doRequest = async (method: string, endpoint: string, config: any) => {
+		console.log('endpoint doRequest ======>', endpoint);
 		try {
 			return await $fetch(endpoint, { method, ...config });
 		}
 		catch (error: any) {
-			console.log(error);
+			console.log('error.response 8888888888888888', error.response);
 			// if (error.response?.status === 401) {
 			// await refreshSession();
 			// return await doRequest(method, endpoint, config);

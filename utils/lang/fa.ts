@@ -1,5 +1,3 @@
-import Calculator from "~/pages/calculator.vue";
-
 const persian = {
 	welcome: 'خوش آمدید',
 	login: 'ورود',

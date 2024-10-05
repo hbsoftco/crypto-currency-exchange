@@ -96,8 +96,7 @@ import ModalTransaction from '~/components/pages/Spot/List/ModalTransaction.vue'
 import { useSpot } from '~/composables/spot/useSpot';
 import type { Trade } from '~/types/response/spot.types';
 
-const { loading, getTradeList } = useSpot();
-console.log(loading);
+const { getTradeList } = useSpot();
 
 const totalCount = ref(0);
 
@@ -141,8 +140,8 @@ const closeModalTransaction = () => {
 	showModalTransaction.value = false;
 };
 
-const onPageChange = async (newPage: number) => {
-	params.value.pageNumber = String(newPage);
-	await fetchTradeList();
-};
+// const onPageChange = async (newPage: number) => {
+// 	params.value.pageNumber = String(newPage);
+// 	await fetchTradeList();
+// };
 </script>

@@ -1,5 +1,14 @@
 <template>
-	<div class="w-full pt-16">
+	<div
+		v-if="!depthData"
+		class="w-full pt-16"
+	>
+		... isLoading
+	</div>
+	<div
+		v-else
+		class="w-full pt-16"
+	>
 		<ClientOnly>
 			<VChart
 				:option="chartOptions"

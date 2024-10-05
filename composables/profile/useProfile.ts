@@ -1,8 +1,4 @@
-// import { useAuth } from '../auth/useAuth';
-
 import { profileRepository } from '~/repositories/profile.repository';
-import type { ErrorResponse } from '~/types/response/error.type';
-import { StatusCodes } from '~/utils/constants/status-codes';
 
 export const useProfile = () => {
 	const { $api } = useNuxtApp();
@@ -18,19 +14,9 @@ export const useProfile = () => {
 			return profileResponse;
 		}
 		catch (error: unknown) {
-			const err = error as ErrorResponse;
-
-			if (err && err.response._data.statusCode === StatusCodes.OTC_EXPIRED.fa) {
-				// const { refreshOTC } = useAuth();
-
-				// await refreshOTC();
-
-				// await getCurrentUser();
-			}
-
 			throw createError({
 				statusCode: 500,
-				statusMessage: `${err.response._data.message}`,
+				statusMessage: `${error}`,
 			});
 		}
 		finally {

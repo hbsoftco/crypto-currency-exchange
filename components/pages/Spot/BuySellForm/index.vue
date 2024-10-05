@@ -72,7 +72,7 @@
 								}"
 							>
 								<span class="ml-1 text-sm font-medium">
-									{{ $t(selectedPriceOption.label) }}
+									{{ selectedPriceOption.label }}
 								</span>
 								<IconArrowDown class="text-base" />
 							</span>

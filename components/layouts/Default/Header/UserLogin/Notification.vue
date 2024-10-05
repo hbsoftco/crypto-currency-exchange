@@ -1,70 +1,12 @@
-<script setup lang="ts">
-import IconNotification from '~/assets/svg-icons/menu/notification.svg';
-import IconNotificationFill from '~/assets/svg-icons/menu/notification-fill.svg';
-import IconArrowLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';
-import IconMessage from '~/assets/svg-icons/menu/message.svg';
-import { useNumber } from '~/composables/useNumber';
-import { formatDateToIranTime } from '~/utils/persian-date';
-// استفاده از notificationStore برای دریافت نوتیفیکیشن‌ها
-const notificationStore = useNotificationStore();
-
-// متغیرهای کامپوننت
-const isLoading = ref(false);
-const error = ref(null);
-
-// فراخوانی نوتیفیکیشن‌ها هنگام لود شدن کامپوننت
-const fetchNotifications = async () => {
-	try {
-		isLoading.value = true;
-		await notificationStore.getNotifications({}); // فراخوانی API از طریق store
-	}
-	catch (error) {
-		console.error('Error fetching trades:', error);
-	}
-	finally {
-		isLoading.value = false;
-	}
-};
-
-// فراخوانی هنگام لود شدن کامپوننت
-onMounted(fetchNotifications);
-
-// دسترسی به لیست نوتیفیکیشن‌ها از store
-const messageItems = computed(() => notificationStore.notificationList);
-
-// فیلتر کردن پیام‌های خوانده نشده
-const unreadMessages = computed(() =>
-	messageItems.value.filter((item) => !item.readTime),
-);
-
-// متد برای خوانده‌شدن همه پیام‌ها
-const markAllAsRead = async () => {
-	try {
-		// اینجا می‌توانید API‌ای که پیام‌ها را به عنوان خوانده شده علامت می‌زند فراخوانی کنید
-		await notificationStore.markAllAsRead(); // فرض کنید متد markAllAsRead در notificationStore وجود دارد
-
-		// به‌روزرسانی دستی پیام‌ها در front-end
-		notificationStore.notificationList.forEach((item) => {
-			item.readTime = new Date(); // تنظیم زمان خوانده شده برای تمام پیام‌ها
-		});
-	}
-	catch (error) {
-		console.error('Error marking notifications as read:', error);
-	}
-};
-</script>
-
 <template>
 	<div>
-		<!-- نمایش وضعیت لودینگ -->
 		<div
 			v-if="isLoading"
 			class="text-center"
 		>
-			در حال بارگذاری...
+			...
 		</div>
 
-		<!-- نمایش خطا -->
 		<div
 			v-if="error"
 			class="text-center text-red-500"
@@ -72,7 +14,6 @@ const markAllAsRead = async () => {
 			{{ error }}
 		</div>
 
-		<!-- محتوای نوتیفیکیشن‌ها -->
 		<div
 			v-if="!isLoading && !error"
 			class="relative group items-center space-x-2"
@@ -84,7 +25,6 @@ const markAllAsRead = async () => {
 				<IconNotificationFill
 					class="text-2xl hidden group-hover:block text-primary-yellow-light dark:text-primary-yellow-dark group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark"
 				/>
-				<!-- نمایش تعداد پیام‌های خوانده نشده -->
 				<span
 					v-if="unreadMessages.length > 0"
 					class="absolute -top-1 -right-1 flex items-center justify-center h-4 w-4 text-xs font-bold text-white bg-accent-red rounded-full"
@@ -106,11 +46,9 @@ const markAllAsRead = async () => {
 									<span class="mr-1">{{ $t("newMessage") }}</span>
 								</ULink>
 
-								<!-- نمایش "خواندن همه" در صورتی که پیام خوانده نشده وجود داشته باشد -->
 								<ULink
 									v-if="unreadMessages.length > 0"
 									to=""
-									@click.prevent="markAllAsRead"
 								>
 									<span
 										class="mr-1 text-xs font-bold text-primary-yellow-light dark:text-primary-yellow-dark"
@@ -172,3 +110,38 @@ const markAllAsRead = async () => {
 		</div>
 	</div>
 </template>
+
+<script setup lang="ts">
+import IconNotification from '~/assets/svg-icons/menu/notification.svg';
+import IconNotificationFill from '~/assets/svg-icons/menu/notification-fill.svg';
+import IconArrowLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';
+import IconMessage from '~/assets/svg-icons/menu/message.svg';
+import { useNumber } from '~/composables/useNumber';
+import { formatDateToIranTime } from '~/utils/persian-date';
+
+const notificationStore = useNotificationStore();
+
+const isLoading = ref(false);
+const error = ref(null);
+
+const fetchNotifications = async () => {
+	try {
+		isLoading.value = true;
+		await notificationStore.getNotifications({});
+	}
+	catch (error) {
+		console.error('Error fetching trades:', error);
+	}
+	finally {
+		isLoading.value = false;
+	}
+};
+
+onMounted(fetchNotifications);
+
+const messageItems = computed(() => notificationStore.notificationList);
+
+const unreadMessages = computed(() =>
+	messageItems.value.filter((item) => !item.readTime),
+);
+</script>

@@ -135,8 +135,7 @@ import { useSpot } from '~/composables/spot/useSpot';
 import { SearchMode } from '~/utils/enums/order.enum';
 import type { Order, OrderFiltersType } from '~/types/response/spot.types';
 
-const { loading, getOrderList } = useSpot();
-console.log(loading);
+const { getOrderList } = useSpot();
 
 const totalCount = ref(0);
 

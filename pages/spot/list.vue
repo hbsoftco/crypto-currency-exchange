@@ -34,13 +34,13 @@
 					<template #item="{ item }">
 						<div class=" px-2">
 							<div v-if="item.key === 'openOrders'">
-								<OpenOrders />
+								<OpenOrders v-if="item.key === 'openOrders'" />
 							</div>
 							<div v-if="item.key === 'orderHistory'">
-								<OrderHistory />
+								<OrderHistory v-if="item.key === 'orderHistory'" />
 							</div>
-							<div v-else-if="item.key === 'transactionHistory'">
-								<TransactionHistory />
+							<div v-if="item.key === 'transactionHistory'">
+								<TransactionHistory v-if="item.key === 'transactionHistory'" />
 							</div>
 						</div>
 					</template>
@@ -51,9 +51,15 @@
 </template>
 
 <script setup lang="ts">
-import OpenOrders from '~/components/pages/Spot/List/OpenOrders.vue';
-import OrderHistory from '~/components/pages/Spot/List/OrderHistory.vue';
-import TransactionHistory from '~/components/pages/Spot/List/TransactionHistory.vue';
+const OpenOrders = defineAsyncComponent(() =>
+	import('~/components/pages/Spot/List/OpenOrders.vue'),
+);
+const OrderHistory = defineAsyncComponent(() =>
+	import('~/components/pages/Spot/List/OrderHistory.vue'),
+);
+const TransactionHistory = defineAsyncComponent(() =>
+	import('~/components/pages/Spot/List/TransactionHistory.vue'),
+);
 
 const items = [
 	{

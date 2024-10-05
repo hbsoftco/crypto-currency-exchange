@@ -122,8 +122,7 @@ import ModalTransaction from '~/components/pages/Spot/List/ModalTransaction.vue'
 import { useSpot } from '~/composables/spot/useSpot';
 import type { Trade, OrderFiltersType } from '~/types/response/spot.types';
 
-const { loading, getTradeList } = useSpot();
-console.log(loading);
+const { getTradeList } = useSpot();
 
 const totalCount = ref(0);
 

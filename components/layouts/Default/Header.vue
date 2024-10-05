@@ -136,8 +136,6 @@ onMounted(() => {
 	}
 });
 
-console.log(route);
-
 // import Notif from '~/components/layouts/Default/Notif.vue';
 </script>
 
