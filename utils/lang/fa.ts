@@ -1,3 +1,5 @@
+import Calculator from "~/pages/calculator.vue";
+
 const persian = {
 	welcome: 'خوش آمدید',
 	login: 'ورود',
@@ -823,6 +825,9 @@ const persian = {
 	CmcRank: 'پرسود ترین ها',
 	MostProfitable: 'پرحجم ترین ها',
 	Newest: 'جدید ترین ها',
+	calculatorTitle: 'برترین تبدیل ارزهای دیجیتال',
+	calculatorText: 'نرخ تبدیل سایر ارزهای دیجیتال را پیدا کنید.',
+	ticketList: 'لیست تیکت ها',
 };
 
 export default persian;
