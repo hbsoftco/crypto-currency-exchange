@@ -1,7 +1,7 @@
 <template>
 	<div dir="rtl">
 		<div class="mb-2">
-			<MenuTradeFilters />
+			<MenuTradeFilters :tags="tags" />
 		</div>
 		<div
 			v-for="(coin, index) in coins"
@@ -34,7 +34,15 @@
 <script setup lang="ts">
 import MenuTradeFilters from './MenuTradeFilters.vue';
 
+import type { Tag } from '~/types/response/tag.types';
 import { useNumber } from '~/composables/useNumber';
+
+interface Props {
+	tags: Tag[];
+}
+
+const props = defineProps<Props>();
+console.log(props);
 
 const coins = [1, 2, 3, 4, 5, 6, 6, 3];
 </script>

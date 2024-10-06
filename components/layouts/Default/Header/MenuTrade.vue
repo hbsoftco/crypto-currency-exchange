@@ -1,7 +1,7 @@
 <template>
 	<div class="bg-primary-gray-light dark:bg-hover2-50">
 		<UTabs
-			:items="items"
+			:items="quoteItems"
 			dir="ltr"
 			class="text-left"
 			:ui="{
@@ -24,13 +24,10 @@
 			<template #item="{ item }">
 				<div class="border-t border-t-primary-gray-light dark:border-t-primary-gray-dark p-2">
 					<div v-if="item.key === 'USDT'">
-						<MenuTradeCoins />
+						<MenuTradeCoins :tags="tagItems" />
 					</div>
-					<div v-else-if="item.key === 'BTC'">
-						<MenuTradeCoins />
-					</div>
-					<div v-else-if="item.key === 'toman'">
-						<MenuTradeCoins />
+					<div v-else-if="item.key === 'TMN'">
+						<MenuTradeCoins :tags="tagItems" />
 					</div>
 				</div>
 			</template>
@@ -41,23 +38,39 @@
 <script setup lang="ts">
 import MenuTradeCoins from './MenuTradeCoins.vue';
 
-const items = [
-	{
-		key: 'USDT',
-		label: 'USDT',
-		content: 'This is the content shown for Tab1',
-	},
-	{
-		key: 'BTC',
-		label: 'BTC',
-		content: 'And, this is the content for Tab2',
-	},
-	{
-		key: 'toman',
-		label: 'toman',
-		content: 'And, this is the content for Tab2',
-	},
-];
-</script>
+const baseDataStore = useBaseDataStore();
+const quoteItems = ref<QuoteTab[]>([]);
 
-<style></style>
+type QuoteTab = {
+	label: string;
+	key: string;
+};
+
+const loadCurrencyOptions = async () => {
+	const currencyItems = await baseDataStore.getMatchedCurrencyItems();
+	quoteItems.value = currencyItems.map((item) => ({
+		label: item.cSymbol,
+		key: item.cSymbol,
+	}));
+};
+await loadCurrencyOptions();
+
+const isLoading = ref<boolean>(false);
+
+const tagItems = computed(() => baseDataStore.tagItems);
+
+const initData = async () => {
+	try {
+		isLoading.value = true;
+		await baseDataStore.fetchTagItems();
+	}
+	catch (error) {
+		console.error('Error fetching trades:', error);
+	}
+	finally {
+		isLoading.value = false;
+	}
+};
+
+onMounted(initData);
+</script>

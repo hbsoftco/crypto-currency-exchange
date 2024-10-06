@@ -1,96 +1,107 @@
 <template>
 	<div dir="ltr">
-		<div class="flex justify-start items-center px-2 text-subtle-text-light dark:text-subtle-text-50">
-			<button
-				:class="['py-1 px-2 text-xs font-bold rounded', activeButton === 'all' ? 'bg-primary-yellow-light dark:bg-primary-yellow-dark text-black' : '']"
-				@click="handleButtonClick('all')"
+		<div
+			class="w-full px-12 pb-2 mb-2 border-b border-primary-gray-light dark:border-primary-gray-dark"
+			dir="ltr"
+		>
+			<UCarousel
+				ref="carouselRef"
+				v-slot="{ item }"
+				:items="tags"
+				:ui="{
+					item: 'basis-full md:basis-1/3 lg:basis-1/4 xl:basis-1/6 snap-center md:snap-start',
+					default: {
+						prevButton: {
+							color: 'black',
+						},
+						nextButton: {
+							color: 'black',
+						},
+					},
+				}"
+				:prev-button="{
+					variant: 'link',
+					icon: 'i-heroicons-chevron-right',
+					class: '-left-12 rounded-md',
+				}"
+				:next-button="{
+					variant: 'link',
+					icon: 'i-heroicons-chevron-left',
+					class: '-right-12 rounded-md',
+				}"
+				arrows
+				class="w-full mx-auto"
 			>
-				{{ $t('allItems') }}
-			</button>
-			<button
-				:class="['py-1 px-2 mx-1 text-xs font-bold rounded', activeButton === 'freeFees' ? 'bg-primary-yellow-light dark:bg-primary-yellow-dark text-black' : '']"
-				@click="handleButtonClick('freeFees')"
-			>
-				{{ $t('freeFees') }}
-			</button>
-			<button
-				:class="['py-1 px-2 text-xs font-bold rounded', activeButton === 'dropdown' ? 'bg-primary-yellow-light dark:bg-primary-yellow-dark text-black' : '']"
-				@click="handleButtonClick('dropdown')"
-			>
-				<div
-					class="flex justify-center items-center"
-					dir="rtl"
+				<span
+					class="mx-0 h-7 text-xs cursor-pointer px-1.5 py-1 pt-1.5 font-medium rounded transition-colors select-none"
+					:class="
+						selectedTagItem === item
+							? 'bg-primary text-text-light dark:text-text-dark '
+							: ''
+					"
+					@click="selectTagItem(item)"
 				>
-					<UDropdown
-						:items="marketFilters"
-						:popper="{ arrow: true }"
-						:ui="{
-							width: 'w-auto',
-							item: {
-								padding: 'px-5',
-							},
-						}"
-					>
-						<span
-							class="flex justify-center items-center cursor-pointer"
-							:class="activeButton === 'dropdown' ? 'text-black' : 'text-subtle-text-light dark:text-subtle-text-50'"
-						>
-							<UIcon
-								name="i-heroicons-chevron-down"
-								class="w-5 h-5 ml-2"
-							/>
-							<span
-								:class="activeButton === 'dropdown' ? 'text-black' : 'text-subtle-text-light dark:text-subtle-text-50'"
-							>
-								{{ selectedMarketFilter.label }}
-							</span>
-						</span>
-					</UDropdown>
-				</div>
-			</button>
+					{{ useNumber(item.tag) }}
+				</span>
+			</UCarousel>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { useNumber } from '~/composables/useNumber';
+import type { Tag } from '~/types/response/tag.types';
 
-const activeButton = ref('all');
-const selectedMarketFilter = ref({ label: 'متاورس' });
+interface Props {
+	tags: Tag[];
+}
 
-const marketFilters = [
-	[
-		{
-			label: 'متاورس',
-			click: () => handleSelectMarketFilter('hottest'),
-		},
-		{
-			label: useT('mostProfitable'),
-			click: () => handleSelectMarketFilter('mostProfitable'),
-		},
-		{
-			label: useT('newest'),
-			click: () => handleSelectMarketFilter('newest'),
-		},
-		{
-			label: useT('mostVoluminous'),
-			click: () => handleSelectMarketFilter('mostVoluminous'),
-		},
-		{
-			label: useT('myFavorites'),
-			click: () => handleSelectMarketFilter('myFavorites'),
-		},
-	],
-];
+defineProps<Props>();
 
-const handleButtonClick = (button: string) => {
-	activeButton.value = button;
-	if (button === 'all') { /* empty */ }
-	else if (button === 'freeFees') { /* empty */ }
-	else if (button === 'dropdown') { /* empty */ }
+const selectedTagItem = ref();
+
+const selectTagItem = async (item: Tag) => {
+	selectedTagItem.value = item;
+	// params.value.tagTypeId = String(item.id);
+	// marketItems.value = await getMarkets();
 };
 
-const handleSelectMarketFilter = (selectedLabel: string) => {
-	selectedMarketFilter.value = { label: useT(selectedLabel) };
-};
+// const activeButton = ref('all');
+// const selectedMarketFilter = ref({ label: 'متاورس' });
+
+// const marketFilters = [
+// 	[
+// 		{
+// 			label: 'متاورس',
+// 			click: () => handleSelectMarketFilter('hottest'),
+// 		},
+// 		{
+// 			label: useT('mostProfitable'),
+// 			click: () => handleSelectMarketFilter('mostProfitable'),
+// 		},
+// 		{
+// 			label: useT('newest'),
+// 			click: () => handleSelectMarketFilter('newest'),
+// 		},
+// 		{
+// 			label: useT('mostVoluminous'),
+// 			click: () => handleSelectMarketFilter('mostVoluminous'),
+// 		},
+// 		{
+// 			label: useT('myFavorites'),
+// 			click: () => handleSelectMarketFilter('myFavorites'),
+// 		},
+// 	],
+// ];
+
+// const handleButtonClick = (button: string) => {
+// 	activeButton.value = button;
+// 	if (button === 'all') { /* empty */ }
+// 	else if (button === 'freeFees') { /* empty */ }
+// 	else if (button === 'dropdown') { /* empty */ }
+// };
+
+// const handleSelectMarketFilter = (selectedLabel: string) => {
+// 	selectedMarketFilter.value = { label: useT(selectedLabel) };
+// };
 </script>
