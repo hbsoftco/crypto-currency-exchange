@@ -826,6 +826,17 @@ const persian = {
 	calculatorTitle: 'برترین تبدیل ارزهای دیجیتال',
 	calculatorText: 'نرخ تبدیل سایر ارزهای دیجیتال را پیدا کنید.',
 	ticketList: 'لیست تیکت ها',
+	ticketTitle: 'فیلد های زیر را برای درخواست خود پر کنید تا کارشناسان بیت لند در اولین فرصت به شما پاسخ دهند.',
+	addNewTicket: 'ثبت تیکت جدید',
+	notFoundMessage: 'موردی یافت نشد',
+	code: 'کد',
+	title: 'عنوان',
+	sendTicket: 'ارسال تیکت',
+	writeSubjectProblem: 'موضوع مشکلتان را بنویسید...',
+	speedProcess: 'برای تسریع در فرآیند، نوع درخواست خود را به دقت انتخاب کنید',
+	detailTextTicketForm: 'لطفا جزئیات درخواست خود را وارد کنید، کارکنان پشتیبانی ما در اسرع وقت پاسخ خواهند داد.',
+	registerTime: 'زمان ثبت',
+	closeTicket: 'بستن تیکت',
 };
 
 export default persian;

@@ -12,7 +12,7 @@
 			v-if="showTransfer"
 			@close="closeTransferDetail"
 		/>
-		<section class="mx-4 my-5 ">
+		<section class="my-5 ">
 			<div class="grid grid-cols-1 md:grid-cols-2">
 				<div class="flex items-center">
 					<h1 class="text-xl font-bold ml-2">
@@ -45,8 +45,8 @@
 					</UButton>
 				</div>
 			</div>
-			<div class="grid grid-cols-1  md:flex justify-between py-4 border-none md:border-b border-primary-gray-light dark:border-primary-gray-dark">
-				<div class="w-full md:w-[30rem] pl-0 md:pl-40 ml-0 md:ml-10 border-l border-primary-gray-light dark:border-primary-gray-dark">
+			<div class="grid grid-cols-1 md:grid-cols-12 gap-4  py-4 border-none md:border-b border-primary-gray-light dark:border-primary-gray-dark">
+				<div class="col-span-5 pl-0 md:pl-40 ml-0 md:ml-10 border-l border-primary-gray-light dark:border-primary-gray-dark">
 					<div class="mt-6">
 						<div class="flex">
 							<IconWallet class="text-base text-subtle-text-light dark:text-subtle-text-dark" />
@@ -66,7 +66,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="w-full md:w-[40rem]">
+				<div class="col-span-7">
 					<div class="flex items-center justify-between w-full">
 						<div class="text-sm font-medium text-subtle-text-light dark:text-subtle-text-dark">
 							<span>{{ $t('listRecentTransactions') }}</span>
@@ -142,7 +142,7 @@
 			</div>
 		</section>
 
-		<section class="my-10 mx-4">
+		<section class="my-10">
 			<UAccordion
 				:items="items"
 				:ui="{

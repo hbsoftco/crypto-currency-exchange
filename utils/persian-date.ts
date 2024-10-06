@@ -1,4 +1,4 @@
-export function formatDateToIranTime(date: string | number | Date): string {
+export function formatDateToIran(date: string | number | Date): string {
 	const localDate = new Date(date);
 
 	const utcOffset = localDate.getTimezoneOffset() * 60000;

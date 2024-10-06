@@ -80,7 +80,7 @@
 						<span>{{ useNumber(remainingQuantity(item.reqQnt, item.filledQnt)) }}</span>
 					</td>
 					<td class="text-xs font-normal py-1">
-						<span>{{ useNumber(formatDateToIranTime(item.regTime)) }}</span>
+						<span>{{ useNumber(formatDateToIran(item.regTime)) }}</span>
 					</td>
 					<!-- <td class="text-xs font-normal py-1">
 							<span>{{ useNumber(item.tid) }}</span>
@@ -99,7 +99,7 @@
 </template>
 
 <script setup lang="ts">
-import { formatDateToIranTime } from '~/utils/persian-date';
+import { formatDateToIran } from '~/utils/persian-date';
 import IconInfo from '~/assets/svg-icons/info.svg';
 import IconDelete from '~/assets/svg-icons/profile/Delete.svg';
 import { useNumber } from '~/composables/useNumber';

@@ -1,8 +1,8 @@
 <template>
-	<div class="flex justify-start">
-		<aside class="hidden md:block w-[16.25rem] p-2 border-l border-primary-gray-light dark:border-primary-gray-dark">
+	<div class="block md:flex justify-start">
+		<aside class="w-full md:w-[16.25rem] p-2 border-none md:border-l border-primary-gray-light dark:border-primary-gray-dark">
 			<div class="px-0 md:px-2 py-4 md:py-28 w-auto">
-				<div class="text-sm font-normal mb-4 hidden md:block">
+				<div class="text-sm font-normal mb-4 ">
 					<span>{{ $t('tagMessage') }}</span>
 				</div>
 				<div class="flex flex-wrap">
