@@ -18,7 +18,7 @@
 						>
 							<div class="flex justify-start items-center">
 								<IconWallet class="text-2xl text-subtle-text-50 dark:text-subtle-text-50 mb-0 w-6 h-6 ml-2" />
-								<span class="text-subtle-text-light dark:text-subtle-text-dark text-sm">{{
+								<span class="text-subtle-text-light dark:text-subtle-text-dark text-sm mr-1">{{
 									$t("walletOverview")
 								}}</span>
 							</div>
@@ -60,10 +60,10 @@
 							<li
 								v-for="(item, index) in menuItems"
 								:key="index"
-								class="relative flex justify-between hover:bg-hover2-light dark:hover:bg-hover2-dark border-transparent"
+								class="relative flex justify-between hover:bg-hover2-light dark:hover:bg-hover2-dark border-transparent border-b border-b-primary-gray-light dark:border-b-primary-gray-dark last:border-none "
 							>
 								<div
-									class="flex justify-between items-center w-full mx-3 p-2 border-b-primary-gray-light dark:border-b-primary-gray-dark border-b"
+									class="flex justify-between items-center w-full mx-3 p-2 "
 								>
 									<ULink
 										:to="item.url"

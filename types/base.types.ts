@@ -135,6 +135,16 @@ type GetOrderListParams = {
 	pageSize?: string;
 };
 
+type GetDepositParams = {
+	type?: string;
+	currencyId: string;
+	statement: string;
+	from: string;
+	to: string;
+	pageNumber: string;
+	pageSize: string;
+};
+
 export type {
 	GetKlineParams,
 	SpotDataParams,
@@ -155,4 +165,5 @@ export type {
 	GetStaffParams,
 	GetTradeListParams,
 	GetOrderListParams,
+	GetDepositParams,
 };
