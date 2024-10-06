@@ -92,12 +92,13 @@ import DepositDetailToman from '~/components/pages/Site/Wallet/Menu/History/Depo
 import { depositRepository } from '~/repositories/deposit.repository';
 import type { GetDepositParams } from '~/types/base.types';
 import type { Deposit } from '~/types/response/deposit.types';
+import { DepositType } from '~/utils/enums/deposit.enum';
 
 const { $api } = useNuxtApp();
 const depositRepo = depositRepository($api);
 
 const params = ref<GetDepositParams>({
-	type: '',
+	type: DepositType.ANY,
 	currencyId: '',
 	statement: '',
 	from: '',
