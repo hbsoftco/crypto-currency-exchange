@@ -84,16 +84,27 @@ const updateTagFilter = async (value: number) => {
 	emit('tag-change', value);
 };
 
-const currencyOptions = computed(() => {
-	return [
-		getMatchedCurrencyItems.map((item) => ({
+interface DropdownItem {
+	id: number;
+	label: string;
+	click: () => void;
+}
+
+const currencyOptions = ref<DropdownItem[][]>([]);
+
+const loadCurrencyOptions = async () => {
+	const items = await getMatchedCurrencyItems();
+
+	currencyOptions.value = [
+		items.map((item) => ({
 			id: item.id,
 			label: item.cName,
 			click: () => handleSelectCurrency(item),
 		})),
 	];
-});
+};
 
+await loadCurrencyOptions();
 const marketFilters = [
 	[
 		{

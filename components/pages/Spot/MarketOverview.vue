@@ -26,7 +26,7 @@
 				</div>
 
 				<div class="ml-14">
-					<strong class="text-base font-bold">{{ tickerData?.i }}</strong>
+					<strong class="text-base font-bold">{{ useNumber(String(tickerData?.i)) }}</strong>
 				</div>
 
 				<div class="ml-5 text-left">

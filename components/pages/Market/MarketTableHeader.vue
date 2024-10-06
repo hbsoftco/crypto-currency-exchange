@@ -26,7 +26,7 @@
 				</UDropdown>
 			</div>
 			<div class="col-span-6">
-				<LazyPagesSiteMainPageTradingMarketsHeaderItems @tag-selected="updateTagFilter" />
+				<TradingMarketsHeaderItems @tag-selected="updateTagFilter" />
 			</div>
 			<div class="col-span-2 pr-8 text-center flex justify-center items-center">
 				<UDropdown
@@ -55,6 +55,7 @@
 </template>
 
 <script setup lang="ts">
+import TradingMarketsHeaderItems from '~/components/pages/Site/MainPage/TradingMarketsHeaderItems.vue';
 import { MarketType, SortMode } from '~/utils/enums/market.enum';
 import { Language } from '~/utils/enums/language.enum';
 import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
@@ -77,15 +78,27 @@ const updateTagFilter = async (value: string) => {
 	emit('tag-change', value);
 };
 
-const currencyOptions = computed(() => {
-	return [
-		getMatchedCurrencyItems.map((item) => ({
+interface DropdownItem {
+	id: number;
+	label: string;
+	click: () => void;
+}
+
+const currencyOptions = ref<DropdownItem[][]>([]);
+
+const loadCurrencyOptions = async () => {
+	const items = await getMatchedCurrencyItems();
+
+	currencyOptions.value = [
+		items.map((item) => ({
 			id: item.id,
 			label: item.cName,
 			click: () => handleSelectCurrency(item),
 		})),
 	];
-});
+};
+
+await loadCurrencyOptions();
 
 const marketFilters = [
 	[

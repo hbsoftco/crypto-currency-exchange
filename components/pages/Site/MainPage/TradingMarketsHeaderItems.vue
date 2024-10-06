@@ -10,12 +10,12 @@
 			:prev-button="{
 				variant: 'link',
 				icon: 'i-heroicons-chevron-right',
-				class: '-left-10',
+				class: '-left-10 rounded-md',
 			}"
 			:next-button="{
 				variant: 'link',
 				icon: 'i-heroicons-chevron-left',
-				class: '-right-10',
+				class: '-right-10 rounded-md',
 			}"
 			arrows
 			class="w-full mx-auto"

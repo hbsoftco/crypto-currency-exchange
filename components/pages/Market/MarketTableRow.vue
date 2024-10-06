@@ -39,7 +39,7 @@
 					<div class="hidden group-hover:block">
 						<div class="flex justify-start items-center">
 							<UButton
-								:to="`/spot/${market?.marketBriefItem?.mSymbol}`"
+								:to="`/spot/${splitMarket(market?.marketBriefItem?.mSymbol)}`"
 								class="text-xs font-normal text-black ml-1 py-1 rounded-l-none rounded-r-sm"
 							>
 								{{ $t("trade") }}
@@ -85,6 +85,7 @@
 </template>
 
 <script setup lang="ts">
+import { splitMarket } from '~/utils/splitMarket';
 import { useNumber } from '~/composables/useNumber';
 import { formatBigNumber } from '~/utils/format-big-number';
 import IconStar from '~/assets/svg-icons/market/star.svg';

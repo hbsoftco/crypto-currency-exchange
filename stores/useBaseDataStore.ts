@@ -169,11 +169,19 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		}
 	};
 
-	const getMatchedCurrencyItems = computed((): CurrencyBriefItem[] => {
+	const getMatchedCurrencyItems = async (): Promise<CurrencyBriefItem[]> => {
+		if (!isQuoteDataFetched.value && !isQuoteLoading.value) {
+			await fetchQuoteItems(MarketType.SPOT);
+		}
+
+		if (!isCurrencyBriefDataFetched.value && !isCurrencyBriefLoading.value) {
+			await fetchCurrencyBriefItems(Language.PERSIAN);
+		}
+
 		return quoteItems.value
 			.map((quote) => currencyBriefItems.value.find((currency) => currency.id === quote.id))
 			.filter((item) => item !== undefined) as CurrencyBriefItem[];
-	});
+	};
 
 	const bigIcons = ref<IconItem[]>([]);
 	const isBigIconsFetched = ref(false);
