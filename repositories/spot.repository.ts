@@ -22,7 +22,7 @@ export const spotRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SpotR
 		const response = await fetch<GetKlineResponse>(`${url}?${query.toString()}`, {
 			noAuth: true,
 			apiName: url,
-			query: params,
+			queryParams: params,
 		} as CustomNitroFetchOptions);
 
 		return response;
@@ -39,7 +39,7 @@ export const spotRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SpotR
 		const response = await fetch<GetSpotDataResponse>(`${url}?${query.toString()}`, {
 			noAuth: true,
 			apiName: url,
-			query: params,
+			queryParams: params,
 			method: 'GET',
 		} as CustomNitroFetchOptions);
 
@@ -57,7 +57,7 @@ export const spotRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SpotR
 		const response = await fetch<GetTradeListResponse>(`${url}?${query.toString()}`, {
 			noAuth: false,
 			apiName: url,
-			query: params,
+			queryParams: params,
 			method: 'GET',
 		} as CustomNitroFetchOptions);
 
@@ -75,7 +75,7 @@ export const spotRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SpotR
 		const response = await fetch<GetOrderListResponse>(`${url}?${query.toString()}`, {
 			noAuth: false,
 			apiName: url,
-			query: params,
+			queryParams: params,
 			method: 'GET',
 		} as CustomNitroFetchOptions);
 

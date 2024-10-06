@@ -97,7 +97,7 @@ const { $api } = useNuxtApp();
 const depositRepo = depositRepository($api);
 
 const params = ref<GetDepositParams>({
-	type: '',
+	type: '0',
 	currencyId: '',
 	statement: '',
 	from: '',

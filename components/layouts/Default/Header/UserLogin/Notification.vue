@@ -38,7 +38,7 @@
 				<div class="w-72 md:w-96 bg-hover-light dark:bg-hover-dark shadow-lg rounded p-4">
 					<div>
 						<div
-							class="flex justify-between items-center p-2 bg-background-light dark:bg-background-dark"
+							class="flex justify-between rounded-md items-center p-2 bg-background-light dark:bg-background-dark"
 						>
 							<div class="text-sm font-bold">
 								<ULink to="#">

@@ -1,5 +1,8 @@
 <template>
-	<div v-if="isLoading">
+	<div
+		v-if="isLoading"
+		class="p-4"
+	>
 		<span>{{ $t('isLoading') }} ...</span>
 	</div>
 	<div v-else>

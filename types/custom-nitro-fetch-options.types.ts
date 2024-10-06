@@ -4,5 +4,5 @@ export interface CustomNitroFetchOptions<R extends NitroFetchRequest = NitroFetc
 	extends NitroFetchOptions<R> {
 	noAuth?: boolean;
 	apiName?: string;
-	query?: object;
+	queryParams?: object;
 }

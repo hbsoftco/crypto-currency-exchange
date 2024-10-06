@@ -28,7 +28,7 @@ export default defineNuxtPlugin(() => {
 				await refreshOTC();
 
 				const query = new URLSearchParams();
-				Object.entries(options.query || {}).forEach(([key, value]) => {
+				Object.entries(options.queryParams || {}).forEach(([key, value]) => {
 					if (value !== undefined && value !== null && value.toString().trim() !== '') {
 						query.append(key, value);
 					}

@@ -15,10 +15,12 @@ export const depositRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): De
 				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
 		);
 
-		const url = 'v1/deposit/common/tx_list';
+		const url = '/v1/deposit/common/tx_list';
 		const response = await fetch<DepositResult>(`${url}?${query.toString()}`, {
 			noAuth: false,
 			apiName: url,
+			method: 'GET',
+			queryParams: params,
 		} as CustomNitroFetchOptions);
 
 		return response;
