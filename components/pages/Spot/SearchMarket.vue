@@ -1,14 +1,13 @@
 <template>
 	<div class="p-2">
-		<div class="w-full">
-			<SearchCrypto
-				id="search"
-				v-model="search"
-				type="text"
-				input-class="text-right"
-				label="search"
-				placeholder=""
-				icon="heroicons:magnifying-glass"
+		<div class="w-full px-3">
+			<UInput
+				v-model:model-value="search"
+				icon="i-heroicons-magnifying-glass-20-solid"
+				size="sm"
+				color="white"
+				:trailing="false"
+				:placeholder="$t('search')"
 			/>
 		</div>
 		<div class="w-full my-2 px-4 py-1 border-b border-primary-gray-light dark:border-primary-gray-dark">
@@ -18,7 +17,7 @@
 				/>
 				<ul class="flex text-sm font-bold">
 					<li
-						v-for="(item, index) in itemsMenuOne"
+						v-for="(item, index) in quoteItems"
 						:key="index"
 						:class="['cursor-pointer', activeIndex === index ? 'text-primary-yellow-light dark:text-primary-yellow-dark  border-b border-primary-yellow-light dark:border-primary-yellow-dark text-xs font-bold px-2' : 'text-subtle-text-light dark:text-subtle-text-dark text-xs font-normal px-2']"
 						@click="setActive(index)"
@@ -31,25 +30,46 @@
 				/>
 			</div>
 		</div>
-		<div class="w-full px-4 py-1">
-			<div class="flex justify-between w-full items-center my-1">
-				<IconArrowRight
-					class="bg-primary-gray-light dark:bg-primary-gray-dark cursor-pointer text-base text-subtle-text-light dark:text-subtle-text-dark"
-				/>
-				<ul class="flex text-sm font-bold">
-					<li
-						v-for="(item, index) in itemsMenuTwo"
-						:key="index"
-						:class="['cursor-pointer', activeIndexMenu === index ? 'bg-primary-yellow-light dark:bg-primary-yellow-dark  text-black text-xs font-bold p-1' : 'text-subtle-text-light dark:text-subtle-text-dark text-xs font-normal px-2 py-1']"
-						@click="setActiveMenu(index)"
-					>
-						{{ item }}
-					</li>
-				</ul>
-				<IconArrowLeft
-					class="bg-primary-gray-light dark:bg-primary-gray-dark cursor-pointer text-base text-subtle-text-light dark:text-subtle-text-dark"
-				/>
-			</div>
+		<div
+			class="w-full px-12 py-1 mb-2"
+			dir="ltr"
+		>
+			<UCarousel
+				ref="carouselRef"
+				v-slot="{ item }"
+				:items="tagItems"
+				:ui="{
+					item: 'basis-full md:basis-1/3 lg:basis-1/4 xl:basis-1/6 snap-center md:snap-start',
+					default: {
+						prevButton: {
+							color: 'black',
+						},
+						nextButton: {
+							color: 'black',
+						},
+					},
+				}"
+				:prev-button="{
+					variant: 'link',
+					icon: 'i-heroicons-chevron-right',
+					class: '-left-12 rounded-md',
+				}"
+				:next-button="{
+					variant: 'link',
+					icon: 'i-heroicons-chevron-left',
+					class: '-right-12 rounded-md',
+				}"
+				arrows
+				class="w-full mx-auto"
+			>
+				<div class="px-0 md:px-4 w-full md:w-auto py-1 select-none">
+					<div class="flex justify-center items-center">
+						<div class="text-nowrap text-xs">
+							{{ item.tag }}
+						</div>
+					</div>
+				</div>
+			</UCarousel>
 		</div>
 
 		<div class="w-full bg-hover-light dark:bg-hover-dark rounded-sm px-2 h-[26rem] overflow-y-scroll">
@@ -118,12 +138,35 @@
 </template>
 
 <script setup lang="ts">
-import SearchCrypto from '~/components/forms/SearchCrypto.vue';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
 import IconArrowRight from '~/assets/svg-icons/menu/arrow-right.svg';
 import { useNumber } from '~/composables/useNumber';
 import IconStar from '~/assets/svg-icons/market/star.svg';
 import IconFillStar from '~/assets/svg-icons/market/fill-star.svg';
+import { Language } from '~/utils/enums/language.enum';
+
+const baseDataStore = useBaseDataStore();
+
+const isLoading = ref(false);
+
+const initData = async () => {
+	try {
+		isLoading.value = true;
+		await baseDataStore.fetchQuoteItems(Language.PERSIAN);
+		await baseDataStore.fetchTagItems();
+	}
+	catch (error) {
+		console.error('Error fetching trades:', error);
+	}
+	finally {
+		isLoading.value = false;
+	}
+};
+
+const quoteItems = computed(() => baseDataStore.quoteItems);
+const tagItems = computed(() => baseDataStore.tagItems);
+
+onMounted(initData);
 
 const items = [
 	{
@@ -155,18 +198,10 @@ const items = [
 const search = ref('');
 // Define reactive state
 const activeIndex = ref<number | null>(null);
-const activeIndexMenu = ref<number | null>(null);
-
-const itemsMenuOne = ['deFi', 'deFi', 'deFi', 'deFi', 'همه'];
-const itemsMenuTwo = ['deFi', 'deFi', 'deFi', 'deFi', 'همه'];
 
 // Function to set the active item
 const setActive = (index: number) => {
 	activeIndex.value = index;
-};
-
-const setActiveMenu = (index: number) => {
-	activeIndexMenu.value = index;
 };
 
 const isFavorite = ref(false);

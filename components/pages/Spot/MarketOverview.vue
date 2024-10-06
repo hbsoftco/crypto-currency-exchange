@@ -1,7 +1,10 @@
 <template>
-	<div class="w-full bg-hover-light dark:bg-hover-dark rounded-sm p-2">
+	<div class="w-full relative bg-hover-light dark:bg-hover-dark rounded-sm p-2">
 		<div class="flex justify-start flex-row-reverse items-center">
-			<div class="cursor-pointer px-2">
+			<div
+				class="cursor-pointer px-2"
+				@click="openSearchBox"
+			>
 				<IconList class="text-lg" />
 			</div>
 			<div class="flex justify-start flex-row-reverse items-center">
@@ -67,12 +70,24 @@
 				</div>
 			</div>
 		</div>
+		<div
+			v-if="searchBox"
+			class="max-w-[406px] w-[406px] absolute left-0 top-[4.25rem] z-10 bg-hover-light dark:bg-hover-dark shadow-md rounded-md overflow-hidden"
+		>
+			<SearchMarket />
+		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
 import IconList from '~/assets/svg-icons/spot/list.svg';
+import SearchMarket from '~/components/pages/Spot/SearchMarket.vue';
 
 const { quote, currency, currencyNameData, tickerData } = useSpotStore();
+const searchBox = ref<boolean>(false);
+
+const openSearchBox = () => {
+	searchBox.value = !searchBox.value;
+};
 </script>

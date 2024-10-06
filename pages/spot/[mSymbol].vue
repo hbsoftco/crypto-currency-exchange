@@ -1,5 +1,5 @@
 <template>
-	<div v-if="!currentSpotData">
+	<div v-if="isLoading">
 		<span>{{ $t('isLoading') }} ...</span>
 	</div>
 	<div v-else>
@@ -9,7 +9,6 @@
 		<div class="flex justify-start">
 			<div class="w-80 max-w-80 ml-2">
 				<BuySellForm />
-				<!-- <SearchMarket /> -->
 			</div>
 			<div class="flex-1">
 				<div class="mb-2">
@@ -76,7 +75,6 @@ import OrderFlow from '~/components/pages/Spot/OrderFlow/index.vue';
 import OrderTabs from '~/components/pages/Spot/OrderTabs/index.vue';
 import MarketOverview from '~/components/pages/Spot/MarketOverview.vue';
 import TradingPairDetails from '~/components/pages/Spot/TradingPairDetails.vue';
-// import SearchMarket from '~/components/pages/Spot/SearchMarket.vue';
 // import BuySellFormTrade from '~/components/pages/Spot/BuySellFormTrade/index.vue';
 import Setting from '~/components/pages/Spot/Setting.vue';
 
@@ -85,18 +83,27 @@ definePageMeta({
 });
 
 const settingsStore = useSettingsStore();
-const {	setRequiredData, spotData } = useSpotStore();
+const spotStore = useSpotStore();
 
 const route = useRoute();
 const mSymbol = String(route.params.mSymbol);
 const [getSymbol, getQuote] = mSymbol.split('_');
 
-setRequiredData(mSymbol, `${getSymbol}${getQuote}`, getQuote, getSymbol);
+const isLoading = ref(false);
+spotStore.setRequiredData(mSymbol, `${getSymbol}${getQuote}`, getQuote, getSymbol);
 
-const currentSpotData = computed(() => {
-	return spotData || {};
-});
+const initData = async () => {
+	try {
+		isLoading.value = true;
+		await spotStore.initialize();
+	}
+	catch (error) {
+		console.error('Error fetching trades:', error);
+	}
+	finally {
+		isLoading.value = false;
+	}
+};
 
-onMounted(async () => {
-});
+onMounted(initData);
 </script>

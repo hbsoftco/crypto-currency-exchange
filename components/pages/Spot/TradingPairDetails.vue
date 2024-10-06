@@ -23,18 +23,25 @@
 			:prev-button="{
 				variant: 'link',
 				icon: 'i-heroicons-chevron-right',
-				class: '-left-10',
+				class: '-left-10 rounded-md',
 			}"
 			:next-button="{
 				variant: 'link',
 				icon: 'i-heroicons-chevron-left',
-				class: '-right-10',
+				class: '-right-10 rounded-md',
 			}"
 			arrows
 			class="w-full mx-auto"
 		>
 			<div class="px-0 md:px-4 w-full md:w-auto py-1 pt-2 select-none">
 				<div class="flex justify-center items-center">
+					<NuxtImg
+						:src="`https://api-bitland.site/media/currency/${item?.marketBriefItem?.currencyBriefItem?.cSymbol}.png`"
+						:alt="item?.marketBriefItem?.currencyBriefItem?.cName"
+						class="w-4 h-4 mr-2 rounded-full"
+						format="webp"
+						densities="x1"
+					/>
 					<div class="font-normal text-[11px]">
 						<span>{{ item?.marketBriefItem?.currencyBriefItem?.cSymbol }}</span>
 						<span class="mx-0.5 text-secondary-gray-light dark:text-secondary-gray-50">/</span>

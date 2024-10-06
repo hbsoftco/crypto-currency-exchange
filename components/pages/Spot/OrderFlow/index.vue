@@ -1,6 +1,6 @@
 <template>
 	<div class="w-full bg-hover-light dark:bg-hover-dark rounded-sm px-2 mb-2 relative">
-		<div class="flex justify-end items-center absolute top-5 left-6 z-10">
+		<div class="flex justify-end items-center absolute top-5 left-6 z-[1]">
 			<div class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-50">
 				<button
 					:class="{
