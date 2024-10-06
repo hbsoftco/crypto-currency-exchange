@@ -19,6 +19,8 @@ export const assetRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Asse
 		const response = await fetch<GetAssetListResponse>(`${url}?${query.toString()}`, {
 			noAuth: false,
 			apiName: url,
+			queryParams: params,
+			method: 'GET',
 		} as CustomNitroFetchOptions);
 
 		return response;
