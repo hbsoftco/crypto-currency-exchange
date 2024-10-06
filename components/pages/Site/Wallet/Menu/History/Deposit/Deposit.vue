@@ -33,16 +33,12 @@
 				</thead>
 				<tbody>
 					<tr
-						v-for="row in rows"
-						:key="row.id"
+						v-for="(item, index) in depositList"
+						:key="index"
 						class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"
 					>
-						<td class="text-nowrap text-xs font-normal py-2">
-							{{ useNumber(row.date) }}
-						</td>
-						<td class="text-nowrap text-xs font-normal py-2">
-							{{ useNumber(row.invoiceNumber) }}
-						</td>
+						<td class="text-nowrap text-xs font-normal py-2" />
+						<td class="text-nowrap text-xs font-normal py-2" />
 						<td class="text-nowrap text-xs font-normal py-2">
 							<div class="flex">
 								<NuxtImg
@@ -50,19 +46,12 @@
 									alt="Brand Logo"
 									class="w-4 h-4"
 								/>
-								<span class="mr-1">
-									{{ useNumber(row.currencyType) }}
-
-								</span>
+								<span class="mr-1" />
 							</div>
 						</td>
 
-						<td class="text-nowrap text-xs font-normal py-2">
-							{{ useNumber(row.amount) }}
-						</td>
-						<td class="text-nowrap text-xs font-normal py-2">
-							{{ $t(row.status) }}
-						</td>
+						<td class="text-nowrap text-xs font-normal py-2" />
+						<td class="text-nowrap text-xs font-normal py-2" />
 						<td class="text-nowrap text-xs font-normal py-2">
 							<UButton
 								size="lg"
@@ -96,17 +85,31 @@
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
+// import { useNumber } from '~/composables/useNumber';
 import FilterSearch from '~/components/pages/Site/Wallet/Menu/History/Deposit/FilterSearch.vue';
 // import DepositDetails from '~/components/pages/Site/Wallet/Menu/History/Deposit/DepositDetails.vue';
 import DepositDetailToman from '~/components/pages/Site/Wallet/Menu/History/Deposit/DepositDetailToman.vue';
+import { depositRepository } from '~/repositories/deposit.repository';
+import type { GetDepositParams } from '~/types/base.types';
+import type { Deposit } from '~/types/response/deposit.types';
 
-const rows = ref([
-	{ id: 1, date: '۱۴۰۲/۰۲/۲۴ - ۲۱:۳۵', invoiceNumber: '22222222222222222222', currencyType: ' بیتکوین ', amount: '115000', status: 'درحال انجام' },
-	{ id: 1, date: '۱۴۰۲/۰۲/۲۴ - ۲۱:۳۵', invoiceNumber: '22222222222222222222', currencyType: ' بیتکوین ', amount: '115000', status: 'درحال انجام' },
-	{ id: 1, date: '۱۴۰۲/۰۲/۲۴ - ۲۱:۳۵', invoiceNumber: '22222222222222222222', currencyType: ' بیتکوین ', amount: '115000', status: 'درحال انجام' },
+const { $api } = useNuxtApp();
+const depositRepo = depositRepository($api);
 
-]);
+const params = ref<GetDepositParams>({
+	type: '',
+	currencyId: '',
+	statement: '',
+	from: '',
+	to: '',
+	pageNumber: '',
+	pageSize: '',
+});
+const response = await depositRepo.getDeposit(params.value);
+
+const depositList = ref<Deposit[]>(response.result.rows);
+console.log('--------------------------->', depositList);
+
 const showDetail = ref(false);
 const openDetail = () => {
 	showDetail.value = true;

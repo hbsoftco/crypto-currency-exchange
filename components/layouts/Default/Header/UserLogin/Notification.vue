@@ -72,7 +72,10 @@
 						</div>
 						<div>
 							<ul>
-								<ULink to="#">
+								<ULink
+									v-if="unreadMessages.length > 0"
+									to="#"
+								>
 									<li
 										v-for="(item, index) in unreadMessages"
 										:key="index"
@@ -98,8 +101,19 @@
 											</div>
 											<span
 												class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-light"
-											>{{ useNumber(formatDateToIranTime(item.regTime)) }}</span>
+											>{{ useNumber(formatDateToIran(item.regTime)) }}</span>
 										</div>
+									</li>
+								</ULink>
+								<ULink
+									v-else
+									class="w-full text-center py-3"
+								>
+									<li>
+										<div class="w-full flex justify-center">
+											<IconNotification class="text-7xl text-primary-yellow-light dark:text-primary-yellow-dark" />
+										</div>
+										<span>{{ $t('notFoundMessage') }}</span>
 									</li>
 								</ULink>
 							</ul>
@@ -117,7 +131,7 @@ import IconNotificationFill from '~/assets/svg-icons/menu/notification-fill.svg'
 import IconArrowLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';
 import IconMessage from '~/assets/svg-icons/menu/message.svg';
 import { useNumber } from '~/composables/useNumber';
-import { formatDateToIranTime } from '~/utils/persian-date';
+import { formatDateToIran } from '~/utils/persian-date';
 
 const notificationStore = useNotificationStore();
 
