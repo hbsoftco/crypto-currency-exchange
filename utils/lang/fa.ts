@@ -838,7 +838,11 @@ const persian = {
 	registerTime: 'زمان ثبت',
 	closeTicket: 'بستن تیکت',
 	Succeeded: 'موفق',
-	allBlockchains: 'همه بلاکچین ها',
+	allBlockchains: 'همه بلاکچین‌ها',
+	typeCrypto: 'نوع (کریپتو)',
+	crypto: 'کریپتو',
+	fiat: 'فیات',
+	internal: 'انتقال داخلی',
 };
 
 export default persian;

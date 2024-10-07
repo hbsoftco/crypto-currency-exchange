@@ -183,6 +183,32 @@ export const useBaseDataStore = defineStore('baseData', () => {
 			.filter((item) => item !== undefined) as CurrencyBriefItem[];
 	};
 
+	const findCurrencyById = async (id: number, languageId: number = Language.PERSIAN): Promise<CurrencyBriefItem | null> => {
+		if (currencyBriefItems.value.length === 0) {
+			await fetchCurrencyBriefItems(languageId);
+		}
+
+		let start = 0;
+		let end = currencyBriefItems.value.length - 1;
+
+		while (start <= end) {
+			const mid = Math.floor((start + end) / 2);
+			const currentItem = currencyBriefItems.value[mid];
+
+			if (currentItem.id === id) {
+				return currentItem;
+			}
+			else if (currentItem.id < id) {
+				start = mid + 1;
+			}
+			else {
+				end = mid - 1;
+			}
+		}
+
+		return null;
+	};
+
 	const bigIcons = ref<IconItem[]>([]);
 	const isBigIconsFetched = ref(false);
 	const isBigIconsLoading = ref(false);
@@ -271,5 +297,6 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		bigIcons, fetchBigIcons, isBigIconsLoading,
 		icons, fetchIcons, isIconsLoading,
 		getMatchedCurrencyItems,
+		findCurrencyById,
 	};
 });
