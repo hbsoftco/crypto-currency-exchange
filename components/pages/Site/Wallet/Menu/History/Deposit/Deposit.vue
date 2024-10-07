@@ -21,6 +21,8 @@
 					}"
 				/>
 			</div>
+			<!-- cryptoTypeFilter -->
+
 			<div class="ml-6 my-1 col-span-2">
 				<USelectMenu
 					v-model="depositTypeFilter"
@@ -37,22 +39,8 @@
 					}"
 				/>
 			</div>
-			<div class="ml-6 my-1 col-span-2">
-				<USelectMenu
-					v-model="depositTypeFilter"
-					:options="depositTypeItems"
-					:placeholder="$t('allBlockchains')"
-					option-attribute="value"
-					:ui="{
-						background: '',
-						color: {
-							white: {
-								outline: ' bg-hover-light dark:bg-hover-dark',
-							},
-						},
-					}"
-				/>
-			</div>
+			<!-- depositTypeFilter -->
+
 			<div class="ml-6 my-1 col-span-2">
 				<UInput
 					id="fromDate"
@@ -80,6 +68,8 @@
 					element="fromDate"
 				/>
 			</div>
+			<!-- fromDate -->
+
 			<div class="ml-6 my-1 col-span-2">
 				<UInput
 					id="toDate"
@@ -107,12 +97,8 @@
 					element="toDate"
 				/>
 			</div>
-			<div class="ml-6 my-1 col-span-2">
-				<UInput
-					v-model="value"
-					:placeholder="$t('invoiceNumber')"
-				/>
-			</div>
+			<!-- toDate -->
+
 			<div class="col-span-1">
 				<UButton
 					class="flex justify-center px-8 text-sm font-normal text-black dark:text-white hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-gray-light dark:border-primary-gray-dark"
@@ -210,26 +196,26 @@ import { useNumber } from '~/composables/useNumber';
 import { formatDateToIranTime } from '~/utils/date-time.js';
 import DepositDetailToman from '~/components/pages/Site/Wallet/Menu/History/Deposit/DepositDetailToman.vue';
 import { depositRepository } from '~/repositories/deposit.repository';
-import type { KeyValue } from '~/types/base.types';
+import type { GetDepositParams, KeyValue } from '~/types/base.types';
 import type { Deposit } from '~/types/response/deposit.types';
 import { DepositType } from '~/utils/enums/deposit.enum';
 
 const cryptoTypeItems = ref<KeyValue[]>([
 	{
 		key: DepositType.ANY,
-		value: useT(DepositType.ANY),
+		value: useT('all'),
 	},
 	{
 		key: DepositType.CRYPTO,
-		value: useT(DepositType.CRYPTO),
+		value: useT('crypto'),
 	},
 	{
 		key: DepositType.FIAT,
-		value: useT(DepositType.FIAT),
+		value: useT('fiat'),
 	},
 	{
 		key: DepositType.INTERNAL,
-		value: useT(DepositType.INTERNAL),
+		value: useT('internal'),
 	},
 ]);
 
@@ -240,9 +226,9 @@ const depositTypeItems = ref<KeyValue[]>([
 	},
 	// Add more items here...
 ]);
+
 const fromDate = ref();
 const toDate = ref();
-const value = ref('');
 
 const cryptoTypeFilter = ref<KeyValue>();
 const depositTypeFilter = ref<KeyValue>();
@@ -250,7 +236,7 @@ const depositTypeFilter = ref<KeyValue>();
 const { $api } = useNuxtApp();
 const depositRepo = depositRepository($api);
 
-const params = ref({
+const params = ref<GetDepositParams>({
 	type: DepositType.ANY,
 	currencyId: '',
 	statement: '',
@@ -258,9 +244,6 @@ const params = ref({
 	to: '',
 	pageNumber: '1',
 	pageSize: '20',
-	currencyType: '',
-	allBlockchains: '',
-	invoiceNumber: '',
 });
 
 const totalCount = ref(0);
@@ -279,10 +262,7 @@ const loadDeposits = async () => {
 };
 
 const applyFilters = async () => {
-	params.value.currencyType = cryptoTypeFilter.value ? cryptoTypeFilter.value.key : '';
-	params.value.type = depositTypeFilter.value ? depositTypeFilter.value.key : '';
-	params.value.allBlockchains = depositTypeFilter.value ? depositTypeFilter.value.key : '';
-	params.value.invoiceNumber = value.value;
+	params.value.type = cryptoTypeFilter.value ? cryptoTypeFilter.value.key : '';
 	params.value.from = fromDate.value;
 	params.value.to = toDate.value;
 

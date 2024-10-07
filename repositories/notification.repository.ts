@@ -18,9 +18,10 @@ export const notificationRepository = (fetch: $Fetch<unknown, NitroFetchRequest>
 
 		const url = `/v1/user/logs/notice_list`;
 		const result = await fetch<NotificationResponse>(`${url}?${query.toString()}`, {
-			noAuth: true,
+			noAuth: false,
 			apiName: url,
 			queryParams: params,
+			method: 'GET',
 		} as CustomNitroFetchOptions);
 		return result;
 	},
