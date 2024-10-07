@@ -4,6 +4,7 @@ import { ref, computed, watch } from 'vue'; // Import necessary functions
 import { useSpot } from '~/composables/spot/useSpot';
 import { marketRepository } from '~/repositories/market.repository';
 import type { GetMarketListByCategoryParams, SpotDataParams } from '~/types/base.types';
+import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
 import type { MarketDetailItem } from '~/types/response/market.types';
 import type { BidAsk, Depth, LatestTrade, Spot, Ticker } from '~/types/response/spot.types';
 import { Language } from '~/utils/enums/language.enum';
@@ -15,6 +16,8 @@ export const useSpotStore = defineStore('settings', () => {
 	const currencyName = ref<string>();
 	const symbol = ref<string>();
 	const quote = ref<string>();
+	const quoteDetail = ref<CurrencyBriefItem>();
+	const currencyDetail = ref<CurrencyBriefItem>();
 	const marketId = ref<string>();
 	const loading = ref(true);
 	const spot = ref<Spot>();
@@ -93,6 +96,9 @@ export const useSpotStore = defineStore('settings', () => {
 		const marketBriefList = baseDataStore.marketBriefItems;
 		const currencyBriefList = baseDataStore.currencyBriefItems;
 
+		currencyDetail.value = currencyBriefList.find((item) => item.cSymbol === currency.value);
+		quoteDetail.value = currencyBriefList.find((item) => item.cSymbol === quote.value);
+
 		try {
 			const { result } = await marketRepo.getMarketList(params.value);
 			marketPairSlider.value = useProcessMarketData(result.rows, marketBriefList, currencyBriefList);
@@ -143,6 +149,8 @@ export const useSpotStore = defineStore('settings', () => {
 		currency,
 		symbol,
 		quote,
+		quoteDetail,
+		currencyDetail,
 		marketId,
 		loading,
 		spotData,

@@ -94,7 +94,7 @@
 				<LimitPriceTab />
 			</div>
 			<div v-if="activeTab === 'market'">
-				<MarketPriceTab />
+				<MarketPriceTab :type="activeButton" />
 			</div>
 			<div v-if="activeTab === 'stopPrice'">
 				<StopPriceTab />
@@ -115,11 +115,28 @@ import StopMarketTab from './StopMarketTab.vue';
 import IconArrowDown from '~/assets/svg-icons/menu/arrow-down.svg';
 import IconInfo from '~/assets/svg-icons/info-fill.svg';
 
+const assetStore = useAssetStore();
+
 const activeButton = ref<'buy' | 'sell'>('buy');
 const activeTab = ref<'limitPrice' | 'market' | 'stopPrice' | 'stopMarket'>('limitPrice');
 
 const isPriceOptionSelected = ref(false);
 const selectedPriceOption = ref({ label: useT('stopPrice') });
+
+const assetIsLoading = ref<boolean>(false);
+
+const getReadyAssets = async () => {
+	assetIsLoading.value = true;
+
+	await assetStore.fetchAssetList();
+	await assetStore.connectToSocket();
+
+	assetIsLoading.value = false;
+};
+
+onMounted(async () => {
+	await getReadyAssets();
+});
 
 const setActiveButton = (button: 'buy' | 'sell') => {
 	activeButton.value = button;

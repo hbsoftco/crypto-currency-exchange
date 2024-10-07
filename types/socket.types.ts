@@ -1,4 +1,4 @@
-export type SocketSpotTickerMessage = {
+type SocketSpotTickerMessage = {
 	id: string;
 	topic: string;
 	statusCode?: number;
@@ -17,13 +17,21 @@ export type SocketSpotTickerMessage = {
 	};
 };
 
-export type AssetListItemMessage = {
+type AssetListItem = {
+	currencyId: number;
+	available: string;
+	locked: string;
+};
+
+type AssetListItemMessage = {
 	id: string;
 	topic: string;
 	statusCode?: number;
-	data: {
-		currencyId: number;
-		available: string;
-		locked: string;
-	};
+	data: AssetListItem[];
+};
+
+export type {
+	AssetListItem,
+	SocketSpotTickerMessage,
+	AssetListItemMessage,
 };

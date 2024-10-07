@@ -1,10 +1,12 @@
 <template>
 	<div class="h-auto">
 		<CoinFieldInput
+			v-if="amountOptions?.length"
 			id="amount"
 			v-model="amount"
 			:unit-text="'BTC'"
 			:label="$t('amount')"
+			:options="amountOptions"
 			placeholder="0.0"
 		/>
 
@@ -29,7 +31,8 @@
 		<CoinFieldInput
 			id="payment"
 			v-model="payment"
-			unit-text="TMN"
+			:readonly="true"
+			:unit-text="quote"
 			:label="$t('payment')"
 			placeholder="0.0"
 		/>
@@ -40,11 +43,11 @@
 				<div class="flex flex-col items-end">
 					<div>
 						<span>0</span>
-						<span class="ml-1">BTC</span>
+						<span class="ml-1">{{ currency }}</span>
 					</div>
 					<div>
 						<span>0</span>
-						<span class="ml-1">TMN</span>
+						<span class="ml-1">{{ quote }}</span>
 					</div>
 				</div>
 			</div>
@@ -86,6 +89,36 @@
 
 <script setup lang="ts">
 import CoinFieldInput from '~/components/forms/CoinFieldInput.vue';
+import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
+
+interface PropsDefinition {
+	type: string;
+}
+
+withDefaults(defineProps<PropsDefinition>(), {
+	type: 'buy',
+});
+
+const spotStore = useSpotStore();
+const amountOptions = ref<string[]>();
+const quote = ref<string>();
+const currency = ref<string>();
+const quoteDetail = ref<CurrencyBriefItem>();
+const currencyDetail = ref<CurrencyBriefItem>();
+
+const getReadyAmountOptions = async () => {
+	if (spotStore.currency && spotStore.quote) {
+		amountOptions.value = await [spotStore.currency, spotStore.quote];
+	}
+};
+
+onMounted(() => {
+	getReadyAmountOptions();
+	quote.value = spotStore.quote;
+	currency.value = spotStore.currency;
+	quoteDetail.value = spotStore.quoteDetail;
+	currencyDetail.value = spotStore.currencyDetail;
+});
 
 const amount = ref<string>('');
 const payment = ref<number>(0);

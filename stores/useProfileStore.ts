@@ -22,7 +22,7 @@ export const useProfileStore = defineStore('profile', () => {
 			isProfileDataFetched.value = true;
 		}
 		catch (err) {
-			error.value = 'Failed to fetch profile data';
+			// error.value = 'Failed to fetch profile data';
 			console.error('Error fetching profile:', err);
 		}
 		finally {

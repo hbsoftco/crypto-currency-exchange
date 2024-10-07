@@ -1,11 +1,11 @@
-import type { AssetListItemMessage } from '~/types/socket.types';
+import type { AssetListItem, AssetListItemMessage } from '~/types/socket.types';
 import { StatusCodes } from '~/utils/constants/status-codes';
 import { SocketId } from '~/utils/enums/socket.enum';
 
 export const usePrivateWebSocket = (listenKey: string) => {
 	const socket = ref<WebSocket | null>(null);
 	const expireListenKey = ref<boolean>(false);
-	const assetListMessages = ref<AssetListItemMessage>();
+	const assetListMessages = ref<AssetListItem[]>();
 	let pingPrivateInterval: ReturnType<typeof setInterval> | null = null;
 
 	const connect = () => {
@@ -45,8 +45,7 @@ export const usePrivateWebSocket = (listenKey: string) => {
 				console.log('Private Message from server:', messageData);
 
 				if (messageData.statusCode !== 400 && messageData.id === SocketId.ASSET_LIST) {
-					assetListMessages.value = (messageData);
-					console.log(assetListMessages.value);
+					assetListMessages.value = (messageData.data);
 				}
 			};
 

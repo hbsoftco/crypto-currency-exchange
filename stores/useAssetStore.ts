@@ -1,4 +1,5 @@
-import { useFastTrade } from '~/composables/trade/useFastTrade';
+import { assetRepository } from '~/repositories/asset.repository';
+import type { GetAssetListParams } from '~/types/base.types';
 import type { AssetItem } from '~/types/response/asset.types';
 import { BoxMode, MiniAssetMode } from '~/utils/enums/asset.enum';
 import { PrivateTopic, SocketId } from '~/utils/enums/socket.enum';
@@ -8,7 +9,6 @@ export const useAssetStore = defineStore('asset', () => {
 	const error = ref<string | null>(null);
 	const assets = ref<AssetItem[]>([]);
 
-	const { getAssetList } = useFastTrade();
 	const authStore = useAuthStore();
 
 	const connectToSocket = async () => {
@@ -24,9 +24,9 @@ export const useAssetStore = defineStore('asset', () => {
 				}
 			}
 
-			// const { socket, messages, connect, createSubscriptionData, sendMessage } = useWebSocket('private', socketListenKey);
-			const { connect, sendMessage, expireListenKey } = usePrivateWebSocket(socketListenKey);
+			const { connect, sendMessage, assetListMessages, expireListenKey } = usePrivateWebSocket(socketListenKey);
 
+			await fetchAssetList();
 			await connect();
 			console.log('Socket connected with listen key:', socketListenKey);
 
@@ -39,6 +39,20 @@ export const useAssetStore = defineStore('asset', () => {
 					assetTypeId: useEnv('assetType'),
 				},
 			));
+
+			watch(assetListMessages, (newMessages) => {
+				if (newMessages?.length) {
+					console.log('New asset list messages:', newMessages);
+
+					newMessages.forEach((newMessage) => {
+						const assetToUpdate = assets.value.find((asset) => asset.currencyId === newMessage.currencyId);
+						if (assetToUpdate) {
+							assetToUpdate.qAvailable = newMessage.available;
+							assetToUpdate.qLocked = newMessage.locked;
+						}
+					});
+				}
+			});
 
 			watch(expireListenKey, async (newValue) => {
 				if (newValue) {
@@ -65,8 +79,6 @@ export const useAssetStore = defineStore('asset', () => {
 					}
 				}
 			});
-
-			// console.log('messages.value', messages.value);
 		}
 		catch (error) {
 			console.error('Error connecting to socket:', error);
@@ -75,13 +87,18 @@ export const useAssetStore = defineStore('asset', () => {
 
 	const fetchAssetList = async () => {
 		try {
-			const result = await getAssetList({
+			const { $api } = useNuxtApp();
+			const assetRepo = assetRepository($api);
+
+			const params = ref<GetAssetListParams>({
 				pageSize: '1000',
 				assetType: useEnv('assetType'),
 				boxMode: String(BoxMode.Spot),
 				miniAssetMode: String(MiniAssetMode.NoMiniAsset),
 			});
-			assets.value = result.result;
+
+			const { result } = await assetRepo.getAssetList(params.value);
+			assets.value = result.rows;
 		}
 		catch (error) {
 			console.error('Error fetching trades:', error);

@@ -300,9 +300,8 @@ onMounted(async () => {
 	await connect();
 	await subSocket(marketParams.value, false);
 
-	assetStore.fetchAssetList();
-	await assetStore.connectToSocket();
 	await assetStore.fetchAssetList();
+	await assetStore.connectToSocket();
 
 	console.log(await assetStore.assetList);
 

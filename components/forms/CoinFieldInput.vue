@@ -20,7 +20,22 @@
 				>
 			</div>
 			<div>
-				<span class="text-xs font-normal">{{ unitText }}</span>
+				<div
+					v-if="options?.length"
+					class="relative -right-4"
+				>
+					<USelectMenu
+						v-model="selected"
+						variant="none"
+						:ui="{ select: 'cursor-pointer' }"
+						class="w-auto h-full lg:w-26 cursor-pointer"
+						:options="options"
+					/>
+				</div>
+				<span
+					v-else
+					class="text-sm font-normal"
+				>{{ unitText }}</span>
 			</div>
 		</div>
 	</div>
@@ -35,6 +50,7 @@ interface PropsDefinition {
 	unitText?: string;
 	readonly?: boolean;
 	errorMessage?: string;
+	options?: string[];
 }
 
 const props = withDefaults(defineProps<PropsDefinition>(), {
@@ -46,7 +62,13 @@ interface EmitDefinition {
 }
 const emit = defineEmits<EmitDefinition>();
 
+const selected = ref<string | number | undefined>();
+
 const internalValue = ref(props.modelValue);
+
+onMounted(() => {
+	selected.value = props.options?.length ? props.options[0] : undefined;
+});
 
 watch(internalValue, (newValue: string | number) => {
 	emit('update:modelValue', newValue);

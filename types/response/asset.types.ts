@@ -8,7 +8,10 @@ type AssetItem = {
 
 type GetAssetListResponse = {
 	statusCode: number;
-	result: AssetItem[];
+	result: {
+		rows: AssetItem[];
+		totalCount: number;
+	};
 };
 
 export type {
