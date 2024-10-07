@@ -1,3 +1,5 @@
+import type { CurrencyBriefItem } from './brief-list.types';
+
 type Deposit = {
 	id: number;
 	uidIssuer: number;
@@ -25,6 +27,7 @@ type Deposit = {
 	bankIban: string;
 	companyId: number;
 	companyName: string;
+	currency?: CurrencyBriefItem | null;
 };
 
 type DepositResult = {

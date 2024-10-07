@@ -837,6 +837,12 @@ const persian = {
 	detailTextTicketForm: 'لطفا جزئیات درخواست خود را وارد کنید، کارکنان پشتیبانی ما در اسرع وقت پاسخ خواهند داد.',
 	registerTime: 'زمان ثبت',
 	closeTicket: 'بستن تیکت',
+	Succeeded: 'موفق',
+	allBlockchains: 'همه بلاکچین‌ها',
+	typeCrypto: 'نوع (کریپتو)',
+	crypto: 'کریپتو',
+	fiat: 'فیات',
+	internal: 'انتقال داخلی',
 };
 
 export default persian;
