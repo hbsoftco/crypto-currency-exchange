@@ -35,7 +35,7 @@
 							v-else-if="item.key === 'pickedUp'"
 							class="space-y-3"
 						>
-							<span>{{ $t('empty') }}</span>
+							<Withdraw />
 						</div>
 						<div
 							v-else-if="item.key === 'transfer'"
@@ -59,7 +59,7 @@
 							v-else-if="item.key === 'other'"
 							class="space-y-3"
 						>
-							<Order />
+							<Other />
 						</div>
 					</template>
 				</UTabs>
@@ -73,12 +73,13 @@
 </template>
 
 <script setup lang="ts">
-import SubsetIncome from '~/components/pages/Site/Wallet/Menu/History/SubsetIncome/SubsetIncome.vue';
-import Award from '~/components/pages/Site/Wallet/Menu/History/Award/Award.vue';
-import Order from '~/components/pages/Site/Wallet/Menu/History/Order/Order.vue';
-import Transfer from '~/components/pages/Site/Wallet/Menu/History/Transfer/Transfer.vue';
-import Deposit from '~/components/pages/Site/Wallet/Menu/History/Deposit/Deposit.vue';
+import SubsetIncome from '~/components/pages/Site/Wallet/Menu/History/SubsetIncome/index.vue';
+import Award from '~/components/pages/Site/Wallet/Menu/History/Award/index.vue';
+import Other from '~/components/pages/Site/Wallet/Menu/History/Other/index.vue';
+import Transfer from '~/components/pages/Site/Wallet/Menu/History/Transfer/index.vue';
+import Deposit from '~/components/pages/Site/Wallet/Menu/History/Deposit/index.vue';
 import IconPdf from '~/assets/svg-icons/wallet/pdf.svg';
+import Withdraw from '~/components/pages/Site/Wallet/Menu/History/Withdraw/index.vue';
 
 definePageMeta({
 	layout: 'wallet',

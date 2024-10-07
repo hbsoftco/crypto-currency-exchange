@@ -1,46 +1,6 @@
 <template>
 	<div>
-		<DepositDetailToman
-			v-if="showDetail"
-			@close="closeDetail"
-		/>
 		<div class="grid grid-cols-1 md:grid-cols-12 gap-[1px] items-center my-2">
-			<div class="ml-6 my-1 col-span-2">
-				<USelectMenu
-					v-model="cryptoTypeFilter"
-					:options="cryptoTypeItems"
-					:placeholder="$t('typeCrypto')"
-					option-attribute="value"
-					:ui="{
-						background: '',
-						color: {
-							white: {
-								outline: ' bg-hover-light dark:bg-hover-dark',
-							},
-						},
-					}"
-				/>
-			</div>
-			<!-- cryptoTypeFilter -->
-
-			<div class="ml-6 my-1 col-span-2">
-				<USelectMenu
-					v-model="depositTypeFilter"
-					:options="depositTypeItems"
-					:placeholder="$t('currencyType')"
-					option-attribute="value"
-					:ui="{
-						background: '',
-						color: {
-							white: {
-								outline: ' bg-hover-light dark:bg-hover-dark',
-							},
-						},
-					}"
-				/>
-			</div>
-			<!-- depositTypeFilter -->
-
 			<div class="ml-6 my-1 col-span-2">
 				<UInput
 					id="fromDate"
@@ -113,21 +73,23 @@
 				<thead>
 					<tr class="pb-2 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark">
 						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark py-5">
-							{{ $t('date') }}
+							{{ $t('subSet') }}
 						</th>
 						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5">
-							{{ $t('invoiceNumber') }}
+							{{ $t('userCode') }}
 						</th>
 						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5">
-							{{ $t('currencyType') }}
+							{{ $t('tradingTime') }}
 						</th>
 						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5">
-							{{ $t('amount') }}
+							{{ $t('feeTime') }}
 						</th>
 						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5">
-							{{ $t('status') }}
+							{{ $t('feePercentage') }}
 						</th>
-						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5" />
+						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5">
+							{{ $t('feeAmount') }}
+						</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -138,41 +100,27 @@
 					</template>
 					<template v-else>
 						<tr
-							v-for="(item, index) in depositList"
+							v-for="(item, index) in ReceivedList"
 							:key="index"
 							class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"
 						>
 							<td class="text-nowrap text-xs font-normal py-2">
-								{{ useNumber(formatDateToIranTime(item.txTime)) }}
+								{{ useNumber(item.tUser) }}
 							</td>
 							<td class="text-nowrap text-xs font-normal py-2">
-								{{ useNumber(item.factorNo) }}
+								{{ useNumber(item.ruid) }}
 							</td>
 							<td class="text-nowrap text-xs font-normal py-2">
-								<div class="flex">
-									<NuxtImg
-										:src="`https://api-bitland.site/media/currency/${item.currency?.cSymbol}.png`"
-										:alt="item.currency?.cName"
-										class="w-4 h-4 rounded-full"
-									/>
-									<span class="mr-1">{{ item.currency?.cName }}</span>
-								</div>
+								{{ useNumber(formatDateToIranTime(item.tTime)) }}
 							</td>
 							<td class="text-nowrap text-xs font-normal py-2">
-								{{ useNumber(item.txValue) }}
+								{{ useNumber(formatDateToIranTime(item.tTime)) }}
 							</td>
 							<td class="text-nowrap text-xs font-normal py-2">
-								{{ $t(item.stateName) }}
+								{{ useNumber(item.perc) }}
 							</td>
 							<td class="text-nowrap text-xs font-normal py-2">
-								<UButton
-									size="lg"
-									class="text-base font-medium px-4 py-2 text-center bg-transparent-light dark:bg-transparency-dark text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark hover:text-text-light hover:dark:text-text-light"
-									to=""
-									@click="openDetail"
-								>
-									{{ $t("moreDetail") }}
-								</UButton>
+								{{ useNumber(item.amount) }} {{ $t(item.cSymbol) }}
 							</td>
 						</tr>
 					</template>
@@ -201,61 +149,22 @@
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
 import { formatDateToIranTime } from '~/utils/date-time.js';
-import DepositDetailToman from '~/components/pages/Site/Wallet/Menu/History/Deposit/DepositDetailToman.vue';
-import { depositRepository } from '~/repositories/deposit.repository';
-import type { GetDepositParams, KeyValue } from '~/types/base.types';
-import type { Deposit } from '~/types/response/deposit.types';
-import { DepositType } from '~/utils/enums/deposit.enum';
+import { userRepository } from '~/repositories/user.repository';
+import type { GetCommissionReceivedListParams } from '~/types/base.types';
 import { Language } from '~/utils/enums/language.enum';
 import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
+import type { Received } from '~/types/response/user.types';
 
 const baseDataStore = useBaseDataStore();
-
-const cryptoTypeItems = ref<KeyValue[]>([
-	{
-		key: DepositType.ANY,
-		value: useT('all'),
-	},
-	{
-		key: DepositType.CRYPTO,
-		value: useT('crypto'),
-	},
-	{
-		key: DepositType.FIAT,
-		value: useT('fiat'),
-	},
-	{
-		key: DepositType.INTERNAL,
-		value: useT('internal'),
-	},
-]);
-
-const depositTypeItems = ref<KeyValue[]>([
-	{
-		key: DepositType.ANY,
-		value: useT(DepositType.ANY),
-	},
-	// Add more items here...
-]);
 
 const fromDate = ref();
 const toDate = ref();
 
-// const findCurrency = async (id: number) => {
-// 	const currency = await baseDataStore.findCurrencyById(id);
-// 	return currency;
-// };
-
-const cryptoTypeFilter = ref<KeyValue>();
-const depositTypeFilter = ref<KeyValue>();
-
 const { $api } = useNuxtApp();
-const depositRepo = depositRepository($api);
+const userRepo = userRepository($api);
 
-const params = ref<GetDepositParams>({
-	type: DepositType.ANY,
-	currencyId: '',
-	statement: '',
+const params = ref<GetCommissionReceivedListParams>({
+	marketType: '',
 	from: '',
 	to: '',
 	pageNumber: '1',
@@ -265,8 +174,8 @@ const params = ref<GetDepositParams>({
 const totalCount = ref(0);
 const isLoading = ref<boolean>(false);
 
-const response = await depositRepo.getDeposit(params.value);
-const depositList = ref<Deposit[]>(response.result.rows);
+const response = await userRepo.getCommissionReceivedList(params.value);
+const ReceivedList = ref<Received[]>(response.result.rows);
 
 const findCurrencyById = (id: number): CurrencyBriefItem | null => {
 	let start = 0;
@@ -290,19 +199,19 @@ const findCurrencyById = (id: number): CurrencyBriefItem | null => {
 	return null;
 };
 
-const loadDeposits = async () => {
+const loadReceived = async () => {
 	try {
 		isLoading.value = true;
-		const response = await depositRepo.getDeposit(params.value);
+		const response = await userRepo.getCommissionReceivedList(params.value);
 		await baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
 
-		depositList.value = response.result.rows;
+		ReceivedList.value = response.result.rows;
 		totalCount.value = response.result.totalCount;
 
-		depositList.value = depositList.value.map((deposit) => {
-			const currency = findCurrencyById(deposit.currencyId);
+		ReceivedList.value = ReceivedList.value.map((received) => {
+			const currency = findCurrencyById(received.cid);
 			return {
-				...deposit,
+				...received,
 				currency: currency ? currency : null,
 			};
 		});
@@ -310,33 +219,23 @@ const loadDeposits = async () => {
 		isLoading.value = false;
 	}
 	catch (error) {
-		console.error('Error fetching deposits:', error);
+		console.error('Error fetching Prizes:', error);
 	}
 };
 
 const applyFilters = async () => {
-	params.value.type = cryptoTypeFilter.value ? cryptoTypeFilter.value.key : '';
 	params.value.from = fromDate.value;
 	params.value.to = toDate.value;
 
-	await loadDeposits();
+	await loadReceived();
 };
 
 onMounted(async () => {
-	await loadDeposits();
+	await loadReceived();
 });
-
-const showDetail = ref(false);
-const openDetail = () => {
-	showDetail.value = true;
-};
-
-const closeDetail = () => {
-	showDetail.value = false;
-};
 
 const onPageChange = async (newPage: number) => {
 	params.value.pageNumber = newPage.toString();
-	await loadDeposits();
+	await loadReceived();
 };
 </script>
