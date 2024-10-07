@@ -839,6 +839,11 @@ const persian = {
 	closeTicket: 'بستن تیکت',
 	Succeeded: 'موفق',
 	allBlockchains: 'همه بلاکچین ها',
+	typeCrypto: 'نوع (کریپتو)',
+	ANY: 'همه',
+	CRYPTO: 'همه',
+	FIAT: 'همه',
+	INTERNAL: 'همه',
 };
 
 export default persian;

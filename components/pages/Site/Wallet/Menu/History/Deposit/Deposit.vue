@@ -4,12 +4,12 @@
 			v-if="showDetail"
 			@close="closeDetail"
 		/>
-		<div class="block md:flex items-center my-2">
-			<div class="ml-6 my-1 w-44">
+		<div class="grid grid-cols-1 md:grid-cols-12 gap-[1px] items-center my-2">
+			<div class="ml-6 my-1 col-span-2">
 				<USelectMenu
 					v-model="cryptoTypeFilter"
 					:options="cryptoTypeItems"
-					:placeholder="$t('orderType')"
+					:placeholder="$t('typeCrypto')"
 					option-attribute="value"
 					:ui="{
 						background: '',
@@ -21,11 +21,11 @@
 					}"
 				/>
 			</div>
-			<div class="ml-6 my-1 w-44">
+			<div class="ml-6 my-1 col-span-2">
 				<USelectMenu
 					v-model="depositTypeFilter"
 					:options="depositTypeItems"
-					:placeholder="$t('orderType')"
+					:placeholder="$t('currencyType')"
 					option-attribute="value"
 					:ui="{
 						background: '',
@@ -37,7 +37,23 @@
 					}"
 				/>
 			</div>
-			<div class="ml-6 my-1 w-44">
+			<div class="ml-6 my-1 col-span-2">
+				<USelectMenu
+					v-model="depositTypeFilter"
+					:options="depositTypeItems"
+					:placeholder="$t('allBlockchains')"
+					option-attribute="value"
+					:ui="{
+						background: '',
+						color: {
+							white: {
+								outline: ' bg-hover-light dark:bg-hover-dark',
+							},
+						},
+					}"
+				/>
+			</div>
+			<div class="ml-6 my-1 col-span-2">
 				<UInput
 					id="fromDate"
 					v-model="fromDate"
@@ -64,7 +80,7 @@
 					element="fromDate"
 				/>
 			</div>
-			<div class="ml-6 my-1 w-44">
+			<div class="ml-6 my-1 col-span-2">
 				<UInput
 					id="toDate"
 					v-model="toDate"
@@ -91,18 +107,20 @@
 					element="toDate"
 				/>
 			</div>
-			<div class="ml-6 my-1 w-44">
+			<div class="ml-6 my-1 col-span-2">
 				<UInput
 					v-model="value"
 					:placeholder="$t('invoiceNumber')"
 				/>
 			</div>
-			<UButton
-				class="flex justify-center px-8 text-sm font-normal text-black dark:text-white hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-gray-light dark:border-primary-gray-dark"
-				@click="applyFilters"
-			>
-				{{ $t("search") }}
-			</UButton>
+			<div class="col-span-1">
+				<UButton
+					class="flex justify-center px-8 text-sm font-normal text-black dark:text-white hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-gray-light dark:border-primary-gray-dark"
+					@click="applyFilters"
+				>
+					{{ $t("search") }}
+				</UButton>
+			</div>
 		</div>
 		<div class="w-full overflow-y-scroll">
 			<table class="min-w-full py-6 text-right">
@@ -201,7 +219,18 @@ const cryptoTypeItems = ref<KeyValue[]>([
 		key: DepositType.ANY,
 		value: useT(DepositType.ANY),
 	},
-	// Add more items here...
+	{
+		key: DepositType.CRYPTO,
+		value: useT(DepositType.CRYPTO),
+	},
+	{
+		key: DepositType.FIAT,
+		value: useT(DepositType.FIAT),
+	},
+	{
+		key: DepositType.INTERNAL,
+		value: useT(DepositType.INTERNAL),
+	},
 ]);
 
 const depositTypeItems = ref<KeyValue[]>([
@@ -213,6 +242,7 @@ const depositTypeItems = ref<KeyValue[]>([
 ]);
 const fromDate = ref();
 const toDate = ref();
+const value = ref('');
 
 const cryptoTypeFilter = ref<KeyValue>();
 const depositTypeFilter = ref<KeyValue>();
@@ -251,6 +281,11 @@ const loadDeposits = async () => {
 const applyFilters = async () => {
 	params.value.currencyType = cryptoTypeFilter.value ? cryptoTypeFilter.value.key : '';
 	params.value.type = depositTypeFilter.value ? depositTypeFilter.value.key : '';
+	params.value.allBlockchains = depositTypeFilter.value ? depositTypeFilter.value.key : '';
+	params.value.invoiceNumber = value.value;
+	params.value.from = fromDate.value;
+	params.value.to = toDate.value;
+
 	await loadDeposits();
 };
 

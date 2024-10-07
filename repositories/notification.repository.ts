@@ -11,17 +11,16 @@ type NotificationRepository = {
 
 export const notificationRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): NotificationRepository => ({
 	async getNotifications(params: NotificationRequestDto): Promise<NotificationResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
 		const url = `/v1/user/logs/notice_list`;
-		const result = await fetch<NotificationResponse>(url, {
-			params: {
-				from: params.from,
-				action: params.to,
-				captchaType: params.typeId,
-				pageNumber: params.pageNumber,
-				pageSize: params.pageSize,
-			},
-			noAuth: false,
+		const result = await fetch<NotificationResponse>(`${url}?${query.toString()}`, {
+			noAuth: true,
 			apiName: url,
+			queryParams: params,
 		} as CustomNitroFetchOptions);
 		return result;
 	},
