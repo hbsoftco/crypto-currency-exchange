@@ -131,44 +131,51 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr
-						v-for="(item, index) in depositList"
-						:key="index"
-						class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"
-					>
-						<td class="text-nowrap text-xs font-normal py-2">
-							{{ useNumber(formatDateToIranTime(item.txTime)) }}
-						</td>
-						<td class="text-nowrap text-xs font-normal py-2">
-							{{ useNumber(item.factorNo) }}
-						</td>
-						<td class="text-nowrap text-xs font-normal py-2">
-							<div class="flex">
-								<NuxtImg
-									src="/images/delete/bitcoin.png"
-									alt="Brand Logo"
-									class="w-4 h-4"
-								/>
-								<span class="mr-1" />
-							</div>
-						</td>
-						<td class="text-nowrap text-xs font-normal py-2">
-							{{ useNumber(item.txValue) }}
-						</td>
-						<td class="text-nowrap text-xs font-normal py-2">
-							{{ $t(item.stateName) }}
-						</td>
-						<td class="text-nowrap text-xs font-normal py-2">
-							<UButton
-								size="lg"
-								class="text-base font-medium px-4 py-2 text-center bg-transparent-light dark:bg-transparency-dark text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark hover:text-text-light hover:dark:text-text-light"
-								to=""
-								@click="openDetail"
-							>
-								{{ $t("moreDetail") }}
-							</UButton>
-						</td>
-					</tr>
+					<template v-if="isLoading">
+						<tr>
+							{{ $t('isLoading') }} ...
+						</tr>
+					</template>
+					<template v-else>
+						<tr
+							v-for="(item, index) in depositList"
+							:key="index"
+							class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"
+						>
+							<td class="text-nowrap text-xs font-normal py-2">
+								{{ useNumber(formatDateToIranTime(item.txTime)) }}
+							</td>
+							<td class="text-nowrap text-xs font-normal py-2">
+								{{ useNumber(item.factorNo) }}
+							</td>
+							<td class="text-nowrap text-xs font-normal py-2">
+								<div class="flex">
+									<NuxtImg
+										:src="`https://api-bitland.site/media/currency/${item.currency?.cSymbol}.png`"
+										:alt="item.currency?.cName"
+										class="w-4 h-4 rounded-full"
+									/>
+									<span class="mr-1">{{ item.currency?.cName }}</span>
+								</div>
+							</td>
+							<td class="text-nowrap text-xs font-normal py-2">
+								{{ useNumber(item.txValue) }}
+							</td>
+							<td class="text-nowrap text-xs font-normal py-2">
+								{{ $t(item.stateName) }}
+							</td>
+							<td class="text-nowrap text-xs font-normal py-2">
+								<UButton
+									size="lg"
+									class="text-base font-medium px-4 py-2 text-center bg-transparent-light dark:bg-transparency-dark text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark hover:text-text-light hover:dark:text-text-light"
+									to=""
+									@click="openDetail"
+								>
+									{{ $t("moreDetail") }}
+								</UButton>
+							</td>
+						</tr>
+					</template>
 				</tbody>
 			</table>
 		</div>
@@ -199,6 +206,10 @@ import { depositRepository } from '~/repositories/deposit.repository';
 import type { GetDepositParams, KeyValue } from '~/types/base.types';
 import type { Deposit } from '~/types/response/deposit.types';
 import { DepositType } from '~/utils/enums/deposit.enum';
+import { Language } from '~/utils/enums/language.enum';
+import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
+
+const baseDataStore = useBaseDataStore();
 
 const cryptoTypeItems = ref<KeyValue[]>([
 	{
@@ -230,6 +241,11 @@ const depositTypeItems = ref<KeyValue[]>([
 const fromDate = ref();
 const toDate = ref();
 
+// const findCurrency = async (id: number) => {
+// 	const currency = await baseDataStore.findCurrencyById(id);
+// 	return currency;
+// };
+
 const cryptoTypeFilter = ref<KeyValue>();
 const depositTypeFilter = ref<KeyValue>();
 
@@ -247,17 +263,54 @@ const params = ref<GetDepositParams>({
 });
 
 const totalCount = ref(0);
+const isLoading = ref<boolean>(false);
+
 const response = await depositRepo.getDeposit(params.value);
 const depositList = ref<Deposit[]>(response.result.rows);
 
+const findCurrencyById = (id: number): CurrencyBriefItem | null => {
+	let start = 0;
+	let end = baseDataStore.currencyBriefItems.length - 1;
+
+	while (start <= end) {
+		const mid = Math.floor((start + end) / 2);
+		const currentItem = baseDataStore.currencyBriefItems[mid];
+
+		if (currentItem.id === id) {
+			return currentItem;
+		}
+		else if (currentItem.id < id) {
+			start = mid + 1;
+		}
+		else {
+			end = mid - 1;
+		}
+	}
+
+	return null;
+};
+
 const loadDeposits = async () => {
 	try {
+		isLoading.value = true;
 		const response = await depositRepo.getDeposit(params.value);
+		await baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
+
 		depositList.value = response.result.rows;
 		totalCount.value = response.result.totalCount;
+
+		depositList.value = depositList.value.map((deposit) => {
+			const currency = findCurrencyById(deposit.currencyId);
+			return {
+				...deposit,
+				currency: currency ? currency : null,
+			};
+		});
+
+		isLoading.value = false;
 	}
 	catch (error) {
-		console.error('Error fetching trades:', error);
+		console.error('Error fetching deposits:', error);
 	}
 };
 
