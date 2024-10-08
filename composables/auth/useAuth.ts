@@ -4,10 +4,12 @@ export const useAuth = () => {
 	const { $api } = useNuxtApp();
 	const auth = authRepository($api);
 
-	const loading = ref(false);
 	const socketListenKeyLoading = ref(false);
 
+	const loading = ref(false);
 	const refreshOTC = async () => {
+		if (loading.value) return;
+
 		loading.value = true;
 		try {
 			const response = await auth.generateNewOTC();

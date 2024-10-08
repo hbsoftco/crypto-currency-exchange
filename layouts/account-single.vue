@@ -11,4 +11,10 @@
 	</div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { Language } from '~/utils/enums/language.enum';
+
+const baseDataStore = useBaseDataStore();
+baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
+baseDataStore.fetchMarketBriefItems();
+</script>

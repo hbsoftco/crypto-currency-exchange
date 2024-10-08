@@ -3,19 +3,19 @@
 		<section>
 			<div class="flex justify-between py-2">
 				<div class="text-xs text-center font-normal text-subtle-text-light dark:text-subtle-text-dark">
-					<span>{{ $t('total') }}</span>({{ currency }})
+					<span>{{ $t('total') }}</span>({{ spotStore.currency }})
 				</div>
 				<div class="text-xs text-center font-normal text-subtle-text-light dark:text-subtle-text-dark">
-					<span>{{ $t('amount') }}</span>({{ currency }})
+					<span>{{ $t('amount') }}</span>({{ spotStore.currency }})
 				</div>
 				<div class="text-xs text-center font-normal text-subtle-text-light dark:text-subtle-text-dark">
-					<span>{{ $t('price') }}</span>({{ currency }})
+					<span>{{ $t('price') }}</span>({{ spotStore.currency }})
 				</div>
 			</div>
 
 			<!-- Ask Data -->
 			<div
-				v-for="(item, index) in asksData?.slice(0, 8)"
+				v-for="(item, index) in spotStore.asks?.slice(0, 8)"
 				:key="index"
 				class="relative my-1"
 			>
@@ -44,12 +44,12 @@
 				class="bg-hover2-light dark:bg-hover2-dark py-0.5 flex items-center"
 			>
 				<IconArrowUp class="text-xs text-accent-green" />
-				<span class="mx-1 text-accent-green text-base font-semibold">{{ useNumber(String(tickerData?.i)) }}</span>
+				<span class="mx-1 text-accent-green text-base font-semibold">{{ useNumber(String(spotStore.ticker?.i)) }}</span>
 			</div>
 
 			<!-- Bid Data -->
 			<div
-				v-for="(item, index) in bidsData?.slice(0, 8)"
+				v-for="(item, index) in spotStore.bids?.slice(0, 8)"
 				:key="index"
 				class="relative my-1"
 			>
@@ -79,15 +79,16 @@
 import { useNumber } from '~/composables/useNumber';
 import IconArrowUp from '~/assets/svg-icons/spot/arrow-up.svg';
 
-const { bidsData, asksData, tickerData, currency } = useSpotStore();
+const spotStore = useSpotStore();
+
 const recordCount = ref<number>(8);
 
 const maxAsks = computed(() => {
-	return Math.max(...(asksData.value?.slice(0, recordCount.value).map((item) => parseFloat(item.c) || 0) || []));
+	return Math.max(...(spotStore.asks?.slice(0, recordCount.value).map((item) => parseFloat(item.c) || 0) || []));
 });
 
 const maxBids = computed(() => {
-	return Math.max(...(bidsData.value?.slice(0, recordCount.value).map((item) => parseFloat(item.c) || 0) || []));
+	return Math.max(...(spotStore.bids?.slice(0, recordCount.value).map((item) => parseFloat(item.c) || 0) || []));
 });
 
 const calculateWidth = (c: string, type: 'asks' | 'bids') => {

@@ -139,9 +139,4 @@ const openModalTransaction = () => {
 const closeModalTransaction = () => {
 	showModalTransaction.value = false;
 };
-
-// const onPageChange = async (newPage: number) => {
-// 	params.value.pageNumber = String(newPage);
-// 	await fetchTradeList();
-// };
 </script>

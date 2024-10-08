@@ -8,10 +8,12 @@ export const useAssetStore = defineStore('asset', () => {
 	const loading = ref(false);
 	const error = ref<string | null>(null);
 	const assets = ref<AssetItem[]>([]);
+	const isAssetsFetched = ref(false);
+	const isAssetsLoading = ref(false);
 
 	const authStore = useAuthStore();
 
-	const connectToSocket = async () => {
+	const connectToSocket = async (currencies: string) => {
 		try {
 			let socketListenKey = authStore.socketListenKey;
 
@@ -26,7 +28,7 @@ export const useAssetStore = defineStore('asset', () => {
 
 			const { connect, sendMessage, assetListMessages, expireListenKey } = usePrivateWebSocket(socketListenKey);
 
-			await fetchAssetList();
+			await fetchAssetList(currencies);
 			await connect();
 			console.log('Socket connected with listen key:', socketListenKey);
 
@@ -85,7 +87,8 @@ export const useAssetStore = defineStore('asset', () => {
 		}
 	};
 
-	const fetchAssetList = async () => {
+	const fetchAssetList = async (currencies: string) => {
+		if (isAssetsFetched.value || isAssetsLoading.value) return;
 		try {
 			const { $api } = useNuxtApp();
 			const assetRepo = assetRepository($api);
@@ -95,13 +98,34 @@ export const useAssetStore = defineStore('asset', () => {
 				assetType: useEnv('assetType'),
 				boxMode: String(BoxMode.Spot),
 				miniAssetMode: String(MiniAssetMode.NoMiniAsset),
+				currencyIDs: currencies,
 			});
 
 			const { result } = await assetRepo.getAssetList(params.value);
 			assets.value = result.rows;
+			isAssetsFetched.value = true;
 		}
 		catch (error) {
 			console.error('Error fetching trades:', error);
+		}
+		finally {
+			isAssetsLoading.value = false;
+		}
+	};
+
+	const getAssetByCurrencyId = async (currencyId: number) => {
+		const data = assets.value.find((asset) => asset.currencyId === currencyId);
+		if (data) {
+			return data;
+		}
+		else {
+			return {
+				currencyId: currencyId,
+				qAvailable: '0',
+				qLocked: '0',
+				aAvailable: '0',
+				aLocked: '0',
+			};
 		}
 	};
 
@@ -115,6 +139,7 @@ export const useAssetStore = defineStore('asset', () => {
 		loading,
 		error,
 		fetchAssetList,
+		getAssetByCurrencyId,
 		clearAssets,
 		// subscribeToAssetUpdates,
 		connectToSocket,

@@ -1,5 +1,5 @@
 <template>
-	<div v-if="!marketPairSliderData">
+	<div v-if="spotStore.marketPairSliderLoading">
 		... isLoading
 	</div>
 	<div
@@ -10,7 +10,7 @@
 		<UCarousel
 			ref="carouselRef"
 			v-slot="{ item }"
-			:items="marketPairSliderData"
+			:items="spotStore.marketPairSlider"
 			:ui="{
 				item: 'basis-full md:basis-1/3 lg:basis-1/4 xl:basis-1/6 snap-center md:snap-start',
 				indicators: {
@@ -69,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-const { marketPairSliderData } = useSpotStore();
+const spotStore = useSpotStore();
 
 const carouselRef = ref();
 

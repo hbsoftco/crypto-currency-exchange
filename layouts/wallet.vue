@@ -20,4 +20,9 @@
 
 <script setup lang="ts">
 import WalletMenu from '~/components/layouts/Wallet/WalletMenu.vue';
+import { Language } from '~/utils/enums/language.enum';
+
+const baseDataStore = useBaseDataStore();
+baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
+baseDataStore.fetchMarketBriefItems();
 </script>

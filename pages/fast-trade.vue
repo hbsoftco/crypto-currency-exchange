@@ -165,6 +165,7 @@ import type { Trade } from '~/types/response/trade.types';
 import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
 import { PublicTopic, SocketId } from '~/utils/enums/socket.enum';
 import type { Commission } from '~/types/response/trader.types';
+import { MarketType } from '~/utils/enums/market.enum';
 
 definePageMeta({
 	layout: 'trade',
@@ -307,7 +308,7 @@ onMounted(async () => {
 
 	await fetchTrades();
 
-	await baseDataStore.fetchUserTraderCommissionList();
+	await baseDataStore.fetchUserTraderCommissionList({ marketType: String(MarketType.SPOT) });
 	commissions.value = await baseDataStore.userTraderCommissionList;
 
 	console.log(commissions.value);

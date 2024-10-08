@@ -8,6 +8,7 @@
 			:label="$t('amount')"
 			:options="amountOptions"
 			placeholder="0.0"
+			@item-selected="onChange"
 		/>
 
 		<div
@@ -41,12 +42,12 @@
 			<div class="flex justify-between items-start text-xs">
 				<span class="text-subtle-text-light dark:text-subtle-text-50">{{ $t('balance') }}:</span>
 				<div class="flex flex-col items-end">
-					<div>
-						<span>0</span>
+					<div v-if="type=== 'sell'">
+						<span v-if="currencyAssetDetail?.qAvailable">{{ useNumber(String(currencyAssetDetail?.qAvailable)) }}</span>
 						<span class="ml-1">{{ currency }}</span>
 					</div>
-					<div>
-						<span>0</span>
+					<div v-else>
+						<span>{{ useNumber(String(quoteAssetDetail?.qAvailable && 0)) }}</span>
 						<span class="ml-1">{{ quote }}</span>
 					</div>
 				</div>
@@ -58,9 +59,9 @@
 			<div class="flex justify-between items-start text-xs">
 				<span class="text-subtle-text-light dark:text-subtle-text-50">{{ $t('feePercentage') }} (Taker/Maker):</span>
 				<div>
-					<span>0.4%</span>
+					<span>{{ useNumber(String(commissionData?.taker)) }}%</span>
 					<span class="mx-0.5">/</span>
-					<span>0.2%</span>
+					<span>{{ useNumber(String(commissionData?.maker)) }}%</span>
 				</div>
 			</div>
 		</div>
@@ -88,8 +89,14 @@
 </template>
 
 <script setup lang="ts">
+import { useNumber } from '~/composables/useNumber';
 import CoinFieldInput from '~/components/forms/CoinFieldInput.vue';
+import type { AssetItem } from '~/types/response/asset.types';
 import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
+import type { KeyValue } from '~/types/base.types';
+import { getValueByKey } from '#imports';
+import { MarketType } from '~/utils/enums/market.enum';
+import type { Commission } from '~/types/response/trader.types';
 
 interface PropsDefinition {
 	type: string;
@@ -99,21 +106,69 @@ withDefaults(defineProps<PropsDefinition>(), {
 	type: 'buy',
 });
 
+const onChange = async (newValue: string | number) => {
+	console.log('newValue', newValue);
+};
+const assetStore = useAssetStore();
 const spotStore = useSpotStore();
+const profileStore = useProfileStore();
+const baseDataStore = useBaseDataStore();
+
 const amountOptions = ref<string[]>();
 const quote = ref<string>();
 const currency = ref<string>();
 const quoteDetail = ref<CurrencyBriefItem>();
 const currencyDetail = ref<CurrencyBriefItem>();
 
+const currencyAssetDetail = ref<AssetItem | undefined>();
+const quoteAssetDetail = ref<AssetItem | undefined>();
 const getReadyAmountOptions = async () => {
 	if (spotStore.currency && spotStore.quote) {
 		amountOptions.value = await [spotStore.currency, spotStore.quote];
 	}
 };
 
-onMounted(() => {
-	getReadyAmountOptions();
+const commissionIsLoading = ref<boolean>(false);
+const commissionData = ref<Commission | null>();
+const getReadyCommission = async (currencyQuoteId: number) => {
+	commissionIsLoading.value = true;
+	const profileData: KeyValue[] = await profileStore.userProfile;
+	const levelIndicator = await getValueByKey(profileData, 'TRD_LVL_ID');
+	const marketTypeId = MarketType.SPOT;
+
+	commissionData.value = await baseDataStore.findCommission(currencyQuoteId, marketTypeId, Number(levelIndicator));
+
+	commissionIsLoading.value = false;
+};
+
+const getAsset = async (currencyId: number) => {
+	return await assetStore.getAssetByCurrencyId(currencyId);
+};
+
+watch(
+	() => currencyDetail.value?.id,
+	async (newId) => {
+		if (newId) {
+			currencyAssetDetail.value = await getAsset(newId);
+		}
+	},
+	{ immediate: true },
+);
+
+watch(
+	() => quoteDetail.value?.id,
+	async (newId) => {
+		if (newId) {
+			quoteAssetDetail.value = await getAsset(newId);
+			console.log('quoteAssetDetail.value', quoteAssetDetail.value);
+			await getReadyCommission(Number(quoteDetail.value?.id));
+		}
+	},
+	{ immediate: true },
+);
+
+onMounted(async () => {
+	await getReadyAmountOptions();
 	quote.value = spotStore.quote;
 	currency.value = spotStore.currency;
 	quoteDetail.value = spotStore.quoteDetail;
@@ -124,6 +179,19 @@ const amount = ref<string>('');
 const payment = ref<number>(0);
 
 const range = ref(0);
+
+watch(range, (newRange) => {
+	console.log(newRange);
+	console.log(spotStore.tickerData.value?.i);
+
+	const calculatedAmount = (newRange / 100).toFixed(2);
+	amount.value = calculatedAmount;
+});
+
+watch(amount, (newAmount) => {
+	const calculatedRange = parseFloat(newAmount) * 100;
+	range.value = isNaN(calculatedRange) ? 0 : calculatedRange;
+});
 
 const cssClass = 'rounded-full border-2 w-4 h-4';
 const baseColor = 'border-[#d1d1d1] dark:border-[#4f4f4f] bg-background-light dark:bg-background-dark';

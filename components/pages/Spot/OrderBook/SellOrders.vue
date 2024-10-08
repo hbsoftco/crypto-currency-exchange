@@ -3,18 +3,18 @@
 		<section>
 			<div class="flex justify-between py-2">
 				<div class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
-					<span>{{ $t('total') }}</span>({{ currency }})
+					<span>{{ $t('total') }}</span>({{ spotStore.currency }})
 				</div>
 				<div class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
-					<span>{{ $t('amount') }}</span>({{ currency }})
+					<span>{{ $t('amount') }}</span>({{ spotStore.currency }})
 				</div>
 				<div class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
-					<span>{{ $t('price') }}</span>({{ currency }})
+					<span>{{ $t('price') }}</span>({{ spotStore.currency }})
 				</div>
 			</div>
 
 			<div
-				v-for="(item, index) in asksData?.slice(0, recordCount)"
+				v-for="(item, index) in spotStore.asks?.slice(0, recordCount)"
 				:key="index"
 				class="relative my-1"
 			>
@@ -43,11 +43,11 @@
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
 
-const { asksData, currency } = useSpotStore();
+const spotStore = useSpotStore();
 const recordCount = ref<number>(17);
 
 const maxAsks = computed(() => {
-	return Math.max(...(asksData.value?.slice(0, recordCount.value).map((item) => parseFloat(item.c) || 0) || []));
+	return Math.max(...(spotStore.asks?.slice(0, recordCount.value).map((item) => parseFloat(item.c) || 0) || []));
 });
 const calculateWidth = (c: string) => {
 	const cValue = parseFloat(c) || 0;

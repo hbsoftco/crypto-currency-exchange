@@ -1,6 +1,6 @@
 <template>
 	<div
-		v-if="!latestTradesData?.length"
+		v-if="spotStore.snapshotLoading"
 		class="flex justify-center items-center h-[26rem]"
 	>
 		<span>{{ $t('isLoading') }} ...</span>
@@ -13,10 +13,10 @@
 			<thead>
 				<tr class="py-4 text-subtle-text-light dark:text-subtle-text-dark ">
 					<th class="p-1 text-xs font-normal">
-						{{ $t('price') }}({{ quote }})
+						{{ $t('price') }}({{ spotStore.quote }})
 					</th>
 					<th class="p-1 text-xs font-normal text-left">
-						{{ $t('amount') }}({{ currency }})
+						{{ $t('amount') }}({{ spotStore.currency }})
 					</th>
 					<th class="p-1 text-xs font-normal text-left">
 						{{ $t('date') }}
@@ -25,7 +25,7 @@
 			</thead>
 			<tbody>
 				<tr
-					v-for="(item, index) in latestTradesData"
+					v-for="(item, index) in spotStore.latestTrades"
 					:key="index"
 					:class="[index % 2 === 0 ? 'bg-background-light dark:bg-background-dark' : 'bg-hover2-light dark:bg-hover2-dark']"
 					class="pb-1"
@@ -55,5 +55,5 @@
 import { useNumber } from '~/composables/useNumber';
 import { timeFormatter } from '~/utils/timeFormatter';
 
-const { latestTradesData, quote, currency } = useSpotStore();
+const spotStore = useSpotStore();
 </script>

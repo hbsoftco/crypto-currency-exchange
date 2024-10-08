@@ -9,9 +9,10 @@ import type { Tag } from '~/types/response/tag.types';
 import type { QuoteItem } from '~/types/response/quote-list.types';
 import type { CurrencyBriefItem, MarketBriefItem } from '~/types/response/brief-list.types';
 import type { IconItem } from '~/types/response/icon.types';
-import { useFastTrade } from '~/composables/trade/useFastTrade';
 import { MarketType } from '~/utils/enums/market.enum';
 import type { Commission } from '~/types/response/trader.types';
+import { userTraderRepository } from '~/repositories/trader.repository';
+import type { GetUserTraderCommissionListParams } from '~/types/base.types';
 
 export const useBaseDataStore = defineStore('baseData', () => {
 	const { $api } = useNuxtApp();
@@ -259,20 +260,19 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		}
 	};
 
-	const { getUserTraderCommissionList } = useFastTrade();
 	const userTraderCommissionList = ref<Commission[]>([]);
 	const isUserTraderCommissionFetched = ref(false);
 	const isUserTraderCommissionLoading = ref(false);
 
-	const fetchUserTraderCommissionList = async () => {
+	const fetchUserTraderCommissionList = async (params: GetUserTraderCommissionListParams) => {
 		if (isUserTraderCommissionFetched.value || isUserTraderCommissionLoading.value) return;
 
 		isUserTraderCommissionLoading.value = true;
 
 		try {
-			const response = await getUserTraderCommissionList({
-				marketType: String(MarketType.SPOT),
-			});
+			const userTraderRepo = userTraderRepository($api);
+
+			const response = await userTraderRepo.getUserTraderCommissionList(params);
 			if (response) {
 				userTraderCommissionList.value = response.result.rows;
 				isUserTraderCommissionFetched.value = true;
@@ -283,6 +283,25 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		}
 		finally {
 			isUserTraderCommissionLoading.value = false;
+		}
+	};
+
+	const findCommission = async (currencyQuoteId: number, marketTypeId: number, levelIndicator: number): Promise<Commission | null> => {
+		await fetchUserTraderCommissionList({
+			marketType: String(marketTypeId),
+		});
+
+		const commission = await userTraderCommissionList.value.find((item) =>
+			item.currencyQuoteId === currencyQuoteId
+			&& item.marketTypeId === marketTypeId
+			&& item.levelIndicator === levelIndicator,
+		);
+
+		if (commission) {
+			return commission;
+		}
+		else {
+			return null;
 		}
 	};
 
@@ -298,5 +317,6 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		icons, fetchIcons, isIconsLoading,
 		getMatchedCurrencyItems,
 		findCurrencyById,
+		findCommission,
 	};
 });

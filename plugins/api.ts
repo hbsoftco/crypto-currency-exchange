@@ -53,12 +53,12 @@ const useAPIClient = () => {
 	// const { refreshSession, invalidateSession } = useAuthProxyClient();
 
 	const doRequest = async (method: string, endpoint: string, config: any) => {
-		console.log('endpoint doRequest ======>', endpoint);
+		// console.log('endpoint doRequest ======>', endpoint);
 		try {
 			return await $fetch(endpoint, { method, ...config });
 		}
 		catch (error: any) {
-			console.log('error.response 8888888888888888', error.response);
+			// console.log('error.response 8888888888888888', error.response);
 			// if (error.response?.status === 401) {
 			// await refreshSession();
 			// return await doRequest(method, endpoint, config);

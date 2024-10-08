@@ -1,6 +1,6 @@
 <template>
 	<div
-		v-if="isLoading"
+		v-if="spotStore.snapshotLoading"
 		class="p-4"
 	>
 		<span>{{ $t('isLoading') }} ...</span>
@@ -33,7 +33,7 @@
 				<!-- OrderBook and OrderFlow -->
 
 				<div>
-					<OrderTabs />
+					<!-- <OrderTabs /> -->
 					<!-- <BuySellFormTrade /> -->
 				</div>
 			</div>
@@ -75,11 +75,12 @@
 import BuySellForm from '~/components/pages/Spot/BuySellForm/index.vue';
 import OrderBook from '~/components/pages/Spot/OrderBook/index.vue';
 import OrderFlow from '~/components/pages/Spot/OrderFlow/index.vue';
-import OrderTabs from '~/components/pages/Spot/OrderTabs/index.vue';
+// import OrderTabs from '~/components/pages/Spot/OrderTabs/index.vue';
 import MarketOverview from '~/components/pages/Spot/MarketOverview.vue';
 import TradingPairDetails from '~/components/pages/Spot/TradingPairDetails.vue';
 // import BuySellFormTrade from '~/components/pages/Spot/BuySellFormTrade/index.vue';
 import Setting from '~/components/pages/Spot/Setting.vue';
+import type { SpotDataParams } from '~/types/base.types';
 
 definePageMeta({
 	layout: 'trade',
@@ -90,23 +91,13 @@ const spotStore = useSpotStore();
 
 const route = useRoute();
 const mSymbol = String(route.params.mSymbol);
-const [getSymbol, getQuote] = mSymbol.split('_');
+const [currency, quote] = mSymbol.split('_');
 
-const isLoading = ref(false);
-spotStore.setRequiredData(mSymbol, `${getSymbol}${getQuote}`, getQuote, getSymbol);
+const params = ref<SpotDataParams>({
+	symbol: `${currency}${quote}`,
+	level: '',
+	rows: '20',
+});
 
-const initData = async () => {
-	try {
-		isLoading.value = true;
-		await spotStore.initialize();
-	}
-	catch (error) {
-		console.error('Error fetching trades:', error);
-	}
-	finally {
-		isLoading.value = false;
-	}
-};
-
-onMounted(initData);
+spotStore.getSnapshotData(mSymbol, `${currency}${quote}`, quote, currency, params.value);
 </script>

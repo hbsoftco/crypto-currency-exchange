@@ -114,29 +114,59 @@ import StopMarketTab from './StopMarketTab.vue';
 
 import IconArrowDown from '~/assets/svg-icons/menu/arrow-down.svg';
 import IconInfo from '~/assets/svg-icons/info-fill.svg';
+// import { MarketType } from '~/utils/enums/market.enum';
+import { assetRepository } from '~/repositories/asset.repository';
+import { BoxMode, MiniAssetMode } from '~/utils/enums/asset.enum';
+import type { GetAssetListParams } from '~/types/base.types';
 
-const assetStore = useAssetStore();
+const { $api } = useNuxtApp();
+const assetRepo = assetRepository($api);
+
+// const assetStore = useAssetStore();
+// const baseDataStore = useBaseDataStore();
+// const spotStore = useSpotStore();
+
+const getAssetsByCurrencies = async (currencies: string) => {
+	const params = ref<GetAssetListParams>({
+		pageSize: '1000',
+		assetType: useEnv('assetType'),
+		boxMode: String(BoxMode.Spot),
+		miniAssetMode: String(MiniAssetMode.Any),
+		currencyIDs: currencies,
+	});
+
+	const { result } = await assetRepo.getAssetList(params.value);
+	console.log('result ---------------->', result);
+};
+
+onMounted(() => {
+	getAssetsByCurrencies('3,4');
+});
 
 const activeButton = ref<'buy' | 'sell'>('buy');
-const activeTab = ref<'limitPrice' | 'market' | 'stopPrice' | 'stopMarket'>('limitPrice');
+const activeTab = ref<'limitPrice' | 'market' | 'stopPrice' | 'stopMarket'>('market');
 
 const isPriceOptionSelected = ref(false);
 const selectedPriceOption = ref({ label: useT('stopPrice') });
 
-const assetIsLoading = ref<boolean>(false);
+// const assetIsLoading = ref<boolean>(false);
+// const assetList = computed(() => assetStore.assetList);
 
-const getReadyAssets = async () => {
-	assetIsLoading.value = true;
+// const getReadyAssets = async () => {
+// 	assetIsLoading.value = true;
 
-	await assetStore.fetchAssetList();
-	await assetStore.connectToSocket();
+// 	await baseDataStore.fetchUserTraderCommissionList({ marketType: String(MarketType.SPOT) });
+// 	// await assetStore.fetchAssetList();
+// 	// await assetStore.connectToSocket();
+// 	// await assetStore.getAssetByCurrencyId(currencyId);
 
-	assetIsLoading.value = false;
-};
+// 	assetIsLoading.value = false;
+// };
 
-onMounted(async () => {
-	await getReadyAssets();
-});
+// onMounted(async () => {
+// 	await getReadyAssets();
+// 	// await getAsset(spotStore.currencyDetail?.id || 3);
+// });
 
 const setActiveButton = (button: 'buy' | 'sell') => {
 	activeButton.value = button;

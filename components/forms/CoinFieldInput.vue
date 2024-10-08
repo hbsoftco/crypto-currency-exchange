@@ -59,6 +59,7 @@ const props = withDefaults(defineProps<PropsDefinition>(), {
 
 interface EmitDefinition {
 	(event: 'update:modelValue', value: unknown): void;
+	(event: 'item-selected', value: string | number): void;
 }
 const emit = defineEmits<EmitDefinition>();
 
@@ -72,6 +73,12 @@ onMounted(() => {
 
 watch(internalValue, (newValue: string | number) => {
 	emit('update:modelValue', newValue);
+});
+
+watch(selected, (newValue) => {
+	if (newValue) {
+		emit('item-selected', newValue);
+	}
 });
 
 const onInput = (event: Event) => {

@@ -271,9 +271,9 @@ import IconTopUsers from '~/assets/svg-icons/menu/quick-menu/top-users.svg';
 import IconWhiteList from '~/assets/svg-icons/menu/white-list.svg';
 import IconSetting from '~/assets/svg-icons/menu/setting.svg';
 import IconExit from '~/assets/svg-icons/menu/exit.svg';
-import type { ProfilePair } from '~/types/response/profile.types';
 import { getValueByKey } from '~/utils/find-value-by-key';
 import { useNumber } from '~/composables/useNumber';
+import type { KeyValue } from '~/types/base.types';
 
 const textRef = ref<HTMLElement | null>(null);
 
@@ -283,7 +283,7 @@ const logout = () => {
 };
 
 const profileStore = useProfileStore();
-const profileData: ProfilePair[] = await profileStore.userProfile;
+const profileData: KeyValue[] = await profileStore.userProfile;
 
 const copyText = () => {
 	if (textRef.value) {
