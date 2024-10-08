@@ -145,6 +145,51 @@ type GetDepositParams = {
 	pageSize: string;
 };
 
+type GetInternalReceiveParams = {
+	currencyId: string;
+	source: string;
+	destination: string;
+	from: string;
+	to: string;
+	pageNumber: string;
+	pageSize: string;
+};
+
+type GetCommissionReceivedListParams = {
+	marketType: string;
+	from: string;
+	to: string;
+	pageNumber: string;
+	pageSize: string;
+};
+
+type GetMiscellaneousListParams = {
+	assetType: string;
+	currencyId: string;
+	from: string;
+	to: string;
+	pageNumber: string;
+	pageSize: string;
+};
+
+type GetRewardReceivedListParams = {
+	currencyId: string;
+	from: string;
+	to: string;
+	pageNumber: string;
+	pageSize: string;
+};
+
+type GetWithdrawParams = {
+	type?: string;
+	currencyId: string;
+	statement: string;
+	from: string;
+	to: string;
+	pageNumber: string;
+	pageSize: string;
+};
+
 export type {
 	GetKlineParams,
 	SpotDataParams,
@@ -166,4 +211,9 @@ export type {
 	GetTradeListParams,
 	GetOrderListParams,
 	GetDepositParams,
+	GetInternalReceiveParams,
+	GetCommissionReceivedListParams,
+	GetMiscellaneousListParams,
+	GetRewardReceivedListParams,
+	GetWithdrawParams,
 };
