@@ -843,6 +843,12 @@ const persian = {
 	crypto: 'کریپتو',
 	fiat: 'فیات',
 	internal: 'انتقال داخلی',
+	Fulfilled: 'انجام شد',
+	RejectedByAdmin: 'توسط ادمین رد شد',
+	RejectedBySys: 'توسط سیستم رد شد',
+	fromAll: 'از (همه)',
+	toAll: 'به (همه)',
+	reasonAward: 'علت جایزه',
 };
 
 export default persian;
