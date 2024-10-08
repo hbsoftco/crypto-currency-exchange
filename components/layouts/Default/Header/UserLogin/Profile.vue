@@ -276,7 +276,6 @@ import { useNumber } from '~/composables/useNumber';
 import type { KeyValue } from '~/types/base.types';
 
 const textRef = ref<HTMLElement | null>(null);
-console.log('hi from profile');
 
 const logout = () => {
 	const authStore = useAuthStore();
