@@ -4,16 +4,16 @@
 			<UContainer>
 				<div class="flex justify-between items-center w-full">
 					<div>
-						<LayoutsDefaultMobileHeaderUserLogin />
+						<UserLogin />
 					</div>
 					<div class="flex-1 mx-2">
-						<LayoutsDefaultHeaderSearch />
+						<Search />
 					</div>
 					<div>
-						<LayoutsDefaultMobileHeaderSupport />
+						<Support />
 					</div>
 					<div class="mr-2">
-						<LayoutsDefaultHeaderUserLoginNotification />
+						<Notification v-if="authStore.isLoggedIn" />
 					</div>
 				</div>
 			</UContainer>
@@ -23,9 +23,15 @@
 </template>
 
 <script setup lang="ts">
+import Notification from '~/components/layouts/Default/Header/UserLogin/Notification.vue';
+import UserLogin from '~/components/layouts/Default/Mobile/Header/UserLogin.vue';
+import Support from '~/components/layouts/Default/Mobile/Header/Support.vue';
+import Search from '~/components/layouts/Default/Header/Search/index.vue';
 // import Notif from '../Notif.vue';
+
+const authStore = useAuthStore();
+
+onMounted(() => {
+	authStore.loadAuthData();
+});
 </script>
-
-<style scoped>
-
-</style>

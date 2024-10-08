@@ -33,7 +33,7 @@
 				<!-- OrderBook and OrderFlow -->
 
 				<div>
-					<!-- <OrderTabs /> -->
+					<OrderTabs />
 					<!-- <BuySellFormTrade /> -->
 				</div>
 			</div>
@@ -75,7 +75,7 @@
 import BuySellForm from '~/components/pages/Spot/BuySellForm/index.vue';
 import OrderBook from '~/components/pages/Spot/OrderBook/index.vue';
 import OrderFlow from '~/components/pages/Spot/OrderFlow/index.vue';
-// import OrderTabs from '~/components/pages/Spot/OrderTabs/index.vue';
+import OrderTabs from '~/components/pages/Spot/OrderTabs/index.vue';
 import MarketOverview from '~/components/pages/Spot/MarketOverview.vue';
 import TradingPairDetails from '~/components/pages/Spot/TradingPairDetails.vue';
 // import BuySellFormTrade from '~/components/pages/Spot/BuySellFormTrade/index.vue';

@@ -60,12 +60,14 @@ const chartColor = computed(() => {
 watch(() => props.socketData, (newData) => {
 	if (newData) {
 		const newIndexPrice = newData.data.i;
+
 		if (newIndexPrice > localRow.value.indexPrice) {
-			bgClass.value = 'bg-[#13241f]';
+			bgClass.value = 'bg-[#c8ffc8] dark:bg-[#13241f]';
 		}
 		else {
-			bgClass.value = 'bg-[#2b181c]';
+			bgClass.value = 'bg-[#ffc8c8] dark:bg-[#2b181c]';
 		}
+
 		localRow.value.indexPrice = newIndexPrice;
 		localRow.value.priceChangePercIn24H = newData.data.p;
 
@@ -74,6 +76,24 @@ watch(() => props.socketData, (newData) => {
 		}, 500);
 	}
 });
+
+// watch(() => props.socketData, (newData) => {
+// 	if (newData) {
+// 		const newIndexPrice = newData.data.i;
+// 		if (newIndexPrice > localRow.value.indexPrice) {
+// 			bgClass.value = 'bg-[#13241f]';
+// 		}
+// 		else {
+// 			bgClass.value = 'bg-[#2b181c]';
+// 		}
+// 		localRow.value.indexPrice = newIndexPrice;
+// 		localRow.value.priceChangePercIn24H = newData.data.p;
+
+// 		setTimeout(() => {
+// 			bgClass.value = '';
+// 		}, 500);
+// 	}
+// });
 
 const rowClass = computed(() => `${bgClass.value} transition duration-500`);
 </script>

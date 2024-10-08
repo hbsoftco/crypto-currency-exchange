@@ -33,10 +33,13 @@
 </template>
 
 <script setup lang="ts">
-import Notification from './Notification.vue';
-import Profile from './Profile.vue';
-import Wallet from './Wallet.vue';
+import Profile from '~/components/layouts/Default/Header/UserLogin/Profile.vue';
+import Wallet from '~/components/layouts/Default/Header/UserLogin/Wallet.vue';
+import Notification from '~/components/layouts/Default/Header/UserLogin/Notification.vue';
 
 const authStore = useAuthStore();
-authStore.loadAuthData();
+
+onMounted(() => {
+	authStore.loadAuthData();
+});
 </script>

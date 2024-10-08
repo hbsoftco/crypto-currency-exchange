@@ -90,7 +90,7 @@ export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Mar
 
 		const url = '/v1/market/routine/l31_f';
 		const response = await fetch<MarketsResponse>(`${url}?${query.toString()}`, {
-			noAuth: false,
+			noAuth: true,
 			apiName: url,
 			queryParams: params,
 			method: 'GET',

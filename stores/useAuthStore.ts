@@ -66,11 +66,7 @@ export const useAuthStore = defineStore('auth', () => {
 			const password = passwordCookie.value;
 
 			if (!otc.value || !userId.value || !userSecretKey.value || !password) {
-				console.error('اطلاعات احراز هویت ناقص است:', { otc: otc.value, userId: userId.value, userSecretKey: userSecretKey.value }, password);
-				throw createError({
-					statusCode: 500,
-					statusMessage: `Missed data`,
-				});
+				return;
 			}
 
 			const systemTime = Date.now().toString();

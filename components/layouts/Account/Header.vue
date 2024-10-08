@@ -112,8 +112,6 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
-
 import UserLogin from '../Default/Header/UserLogin/index.vue';
 import Download from '../Default/Header/Download.vue';
 import Setting from '../Default/Header/Setting.vue';

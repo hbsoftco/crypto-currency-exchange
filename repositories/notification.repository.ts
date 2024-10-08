@@ -30,6 +30,7 @@ export const notificationRepository = (fetch: $Fetch<unknown, NitroFetchRequest>
 		const result = await fetch<NotificationTag>(url, {
 			noAuth: false,
 			apiName: url,
+			method: 'GET',
 		} as CustomNitroFetchOptions);
 		return result;
 	},
