@@ -196,6 +196,16 @@ type GetBankParams = {
 	pageNumber: string;
 	pageSize: string;
 };
+
+type GetDepositAddressParams = {
+	netId: string;
+	statement: string;
+	from: string;
+	to: string;
+	pageNumber: string;
+	pageSize: string;
+};
+
 export type {
 	GetKlineParams,
 	SpotDataParams,
@@ -223,4 +233,5 @@ export type {
 	GetRewardReceivedListParams,
 	GetWithdrawParams,
 	GetBankParams,
+	GetDepositAddressParams,
 };

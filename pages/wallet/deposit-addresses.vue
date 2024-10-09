@@ -14,8 +14,91 @@
 					{{ $t('depositAddresses') }}
 				</h1>
 			</div>
-			<div>
-				<FilterSearch />
+			<div class="grid grid-cols-1 md:grid-cols-12 gap-[1px] items-center my-2">
+				<div class="ml-6 my-1 col-span-2">
+					<USelectMenu
+						v-model="netTypeFilter"
+						:options="netTypeItems"
+						:placeholder="$t('networkType')"
+						option-attribute="value"
+						:ui="{
+							background: '',
+							color: {
+								white: {
+									outline: ' bg-hover-light dark:bg-hover-dark',
+								},
+							},
+						}"
+					/>
+				</div>
+				<!-- networkType -->
+
+				<div class="ml-6 my-1 col-span-2">
+					<UInput
+						id="fromDate"
+						v-model="fromDate"
+						color="white"
+						variant="outline"
+						:placeholder="$t('fromDate')"
+						readonly
+						class="cursor-pointer"
+						:ui="{
+							background: '',
+							color: {
+								white: {
+									outline: ' bg-hover-light dark:bg-hover-dark',
+								},
+							},
+						}"
+					/>
+					<DatePicker
+						v-model="fromDate"
+						color="#FFC107"
+						simple
+						display-format="jYYYY/jMM/jDD"
+						format="YYYY/MM/DD"
+						element="fromDate"
+					/>
+				</div>
+				<!-- fromDate -->
+
+				<div class="ml-6 my-1 col-span-2">
+					<UInput
+						id="toDate"
+						v-model="toDate"
+						color="white"
+						variant="outline"
+						:placeholder="$t('toDate')"
+						readonly
+						class="cursor-pointer"
+						:ui="{
+							background: '',
+							color: {
+								white: {
+									outline: ' bg-hover-light dark:bg-hover-dark',
+								},
+							},
+						}"
+					/>
+					<DatePicker
+						v-model="toDate"
+						display-format="jYYYY/jMM/jDD"
+						color="#FFC107"
+						simple
+						format="YYYY/MM/DD"
+						element="toDate"
+					/>
+				</div>
+				<!-- toDate -->
+
+				<div class="col-span-1">
+					<UButton
+						class="flex justify-center px-8 text-sm font-normal text-black dark:text-white hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-gray-light dark:border-primary-gray-dark"
+						@click="applyFilters"
+					>
+						{{ $t("search") }}
+					</UButton>
+				</div>
 			</div>
 			<div class="w-full overflow-y-scroll">
 				<table class="min-w-full py-6 text-right">
@@ -38,23 +121,23 @@
 					</thead>
 					<tbody>
 						<tr
-							v-for="row in rows"
-							:key="row.id"
+							v-for="(item, index) in depositList"
+							:key="index"
 							class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"
 						>
 							<td class="text-nowrap text-xs font-normal pt-2">
-								{{ $t(row.network) }}
+								{{ $t(item.netName) }}
 							</td>
 							<td class="text-nowrap text-xs font-normal pt-2">
-								{{ useNumber(row.validityDate) }}
+								{{ useNumber(formatDateToIranTime(item.takenTime)) }}
 							</td>
 							<td class="text-nowrap text-xs font-normal pt-2">
-								{{ useNumber(row.status) }}
+								<!-- {{ useNumber(item.status) }} -->فعال
 							</td>
 							<td class="text-nowrap text-xs font-normal pt-2">
 								<div class="flex">
 									<IconQrCode class="text-base text-subtle-text-light dark:text-subtle-text-dark" />
-									<span class="w-32 truncate">{{ useNumber(row.address) }}</span>
+									<span class="w-32 truncate">{{ useNumber(item.address) }}</span>
 								</div>
 							</td>
 							<td
@@ -82,26 +165,66 @@
 					</tbody>
 				</table>
 			</div>
+
+			<div class="flex justify-center py-4">
+				<UPagination
+					:model-value="Number(params.pageNumber)"
+					:page-count="20"
+					:total="totalCount"
+					:max="6"
+					size="xl"
+					ul-class="flex space-x-2 bg-blue-500 border-none"
+					li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500 px-3"
+					button-class-base="flex items-center justify-center w-full h-full transition-colors duration-200"
+					button-class-inactive="bg-green-700 hover:bg-gray-600"
+					button-class-active="bg-blue-500"
+					class="my-14"
+					@update:model-value="onPageChange"
+				/>
+			</div>
 		</section>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
-import FilterSearch from '~/components/pages/Site/Wallet/Menu/Deposit/FilterSearch.vue';
+import { formatDateToIranTime } from '~/utils/date-time.js';
 import IconQrCode from '~/assets/svg-icons/profile/qrCode.svg';
 import DepositClaim from '~/components/pages/Site/Wallet/Menu/Deposit/DepositClaim.vue';
 import Invalidate from '~/components/pages/Site/Wallet/Menu/Deposit/Invalidate.vue';
+import { depositRepository } from '~/repositories/deposit.repository';
+import type { GetDepositAddressParams, KeyValue } from '~/types/base.types';
+import type { Crypto } from '~/types/response/deposit.types';
+import { DepositType } from '~/utils/enums/deposit.enum';
 
 definePageMeta({
 	layout: 'wallet',
 });
-const rows = ref([
-	{ id: 1, network: 'BSC BEP20(BSC)', validityDate: '۱۴۰۱/۰۱/۲۳ - ۱۴:۳۴', status: 'فعال', address: '0x5e676140cdf57c4e25db49b640f56b6ec64eeb75' },
-	{ id: 2, network: 'BSC BEP20(BSC)', validityDate: '۱۴۰۱/۰۱/۲۳ - ۱۴:۳۴', status: 'فعال', address: '0x5e676140cdf57c4e25db49b640f56b6ec64eeb75' },
-	{ id: 3, network: 'BSC BEP20(BSC)', validityDate: '۱۴۰۱/۰۱/۲۳ - ۱۴:۳۴', status: 'فعال', address: '0x5e676140cdf57c4e25db49b640f56b6ec64eeb75' },
-
+const { $api } = useNuxtApp();
+const depositRepo = depositRepository($api);
+const totalCount = ref(0);
+const netTypeItems = ref<KeyValue[]>([
+	{
+		key: DepositType.ANY,
+		value: useT('all'),
+	},
 ]);
+const netTypeFilter = ref<KeyValue>();
+
+const fromDate = ref();
+const toDate = ref();
+const params = ref<GetDepositAddressParams>({
+	netId: '',
+	statement: '',
+	from: '',
+	to: '',
+	pageNumber: '1',
+	pageSize: '20',
+});
+const response = await depositRepo.getDepositAddress(params.value);
+
+const depositList = ref<Crypto[]>(response.result.rows);
+
 const showDetail = ref(false);
 const showDepositClaim = ref(false);
 
@@ -119,5 +242,30 @@ const openDepositClaim = () => {
 
 const closeDepositClaim = () => {
 	showDepositClaim.value = false;
+};
+const fetchDepositList = async () => {
+	try {
+		const { result } = await depositRepo.getDepositAddress(params.value);
+
+		totalCount.value = result.totalCount;
+		depositList.value = result.rows;
+	}
+	catch (error) {
+		console.error('Error fetching trades:', error);
+	}
+};
+const applyFilters = async () => {
+	params.value.netId = netTypeFilter.value ? netTypeFilter.value.key : '';
+	params.value.from = fromDate.value;
+	params.value.to = toDate.value;
+
+	await fetchDepositList();
+};
+onMounted(async () => {
+	await fetchDepositList();
+});
+const onPageChange = async (newPage: number) => {
+	params.value.pageNumber = newPage.toString();
+	await fetchDepositList();
 };
 </script>

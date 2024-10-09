@@ -87,7 +87,6 @@ const params = ref<GetBankParams>({
 const response = await bankRepo.getBankAccList(params.value);
 
 const bankList = ref<Bank[]>(response.result.rows);
-console.log(bankList);
 
 const showDetail = ref(false);
 const openDetail = () => {
