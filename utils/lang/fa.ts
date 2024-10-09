@@ -832,7 +832,7 @@ const persian = {
 	code: 'کد',
 	title: 'عنوان',
 	sendTicket: 'ارسال تیکت',
-	writeSubjectProblem: 'موضوع مشکلتان را بنویسید...',
+	writeSubjectProblem: 'موضوع مشکلتان را بنویسید',
 	speedProcess: 'برای تسریع در فرآیند، نوع درخواست خود را به دقت انتخاب کنید',
 	detailTextTicketForm: 'لطفا جزئیات درخواست خود را وارد کنید، کارکنان پشتیبانی ما در اسرع وقت پاسخ خواهند داد.',
 	registerTime: 'زمان ثبت',
@@ -851,6 +851,13 @@ const persian = {
 	reasonAward: 'علت جایزه',
 	helpBuyList: 'راهنمای خرید ارزهای دیجیتال',
 	helpBuyListTitle: 'نحوه خرید رمز ارزهای فهرست شده بر اساس ارزش بازار را بیابید. ما یک راهنمای سریع و عملی برای خرید ایمن انواع ارزهای دیجیتال ارائه می دهیم.',
+	high: 'زیاد',
+	low: 'کم',
+	medium: 'متوسط',
+	choosePriority: 'انتخاب اولویت',
+	requestType: 'نوع درخواست',
+	registerTicket: 'ثبت تیکت',
+	ticketRegisteredSuccessfully: 'تیکت شما با موفقیت ثبت شد!',
 };
 
 export default persian;

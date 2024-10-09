@@ -12,7 +12,7 @@
 							<UButton
 								size="lg"
 								class="text-base font-medium px-6 py-2"
-								to="/"
+								to="/ticketing/create"
 							>
 								{{ $t("addNewTicket") }}
 							</UButton>
@@ -82,6 +82,7 @@
 						:page-count="10"
 						:total="100"
 						:max="4"
+						size="xl"
 						ul-class="flex space-x-2 bg-blue-500 border-none"
 						li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500"
 						button-class-base="flex items-center justify-center w-full h-full transition-colors duration-200"

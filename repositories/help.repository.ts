@@ -20,6 +20,7 @@ export const helpRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): HelpR
 		const response = await fetch<GetRootListResponse>(`${url}?${query.toString()}`, {
 			noAuth: false,
 			apiName: url,
+			method: 'GET',
 		} as CustomNitroFetchOptions);
 
 		return response;
@@ -34,6 +35,7 @@ export const helpRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): HelpR
 		const response = await fetch<GetShortListResponse>(`${url}?${query.toString()}`, {
 			noAuth: false,
 			apiName: url,
+			method: 'GET',
 		} as CustomNitroFetchOptions);
 
 		return response;

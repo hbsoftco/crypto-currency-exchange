@@ -17,32 +17,4 @@
 </template>
 
 <script setup lang="ts">
-// interface Props {
-// 	modelValue: string;
-// 	options: string[];
-// 	label: string;
-// 	placeholder?: string;
-// 	required?: boolean;
-// 	disabled?: boolean;
-// 	colorType?: string;
-// 	errorMessage?: string;
-// }
-
-// const props = defineProps<Props>();
-// const emit = defineEmits(['update:modelValue']);
-
-// const selected = ref(props.modelValue);
-
-// watch(
-// 	() => props.modelValue,
-// 	(newValue) => {
-// 		selected.value = newValue;
-// 	},
-// );
-
-// // تابع updateSelected برای مدیریت تغییرات
-// const updateSelected = (value: string) => {
-// 	selected.value = value;
-// 	emit('update:modelValue', value);
-// };
 </script>

@@ -3,7 +3,7 @@ import type { NitroFetchRequest, $Fetch } from 'nitropack';
 import type { GetMarketListByCategoryParams, GetMarketListWithSparkLineChartParams, GetMarketsParams, GetMarketStatusParams } from '~/types/base.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import type { FavoriteMarketDto } from '~/types/dto/market.dto';
-import type { CommonResponse } from '~/types/response/common.types';
+import type { CommonRes } from '~/types/response/common.types';
 import type {
 	MarketCurrencyCategoriesResponse,
 	MarketListByCategoryResponse,
@@ -24,8 +24,8 @@ type MarketRepository = {
 	getMarketCurrencyCategories: () => Promise<MarketCurrencyCategoriesResponse>;
 	getMarketListByCategory: (params: GetMarketListByCategoryParams) => Promise<MarketListByCategoryResponse>;
 	getMarketList: (params: GetMarketListByCategoryParams) => Promise<MarketListResponse>;
-	likeMarket: (dto: FavoriteMarketDto) => Promise<CommonResponse>;
-	dislikeMarket: (dto: FavoriteMarketDto) => Promise<CommonResponse>;
+	likeMarket: (dto: FavoriteMarketDto) => Promise<CommonRes>;
+	dislikeMarket: (dto: FavoriteMarketDto) => Promise<CommonRes>;
 };
 
 export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): MarketRepository => ({
@@ -136,9 +136,9 @@ export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Mar
 
 		return response;
 	},
-	async likeMarket(dto: FavoriteMarketDto): Promise<CommonResponse> {
+	async likeMarket(dto: FavoriteMarketDto): Promise<CommonRes> {
 		const url = '/v1/user/market/like';
-		const response = await fetch<CommonResponse>(`${url}`, {
+		const response = await fetch<CommonRes>(`${url}`, {
 			noAuth: false,
 			method: 'POST',
 			body: dto,
@@ -146,9 +146,9 @@ export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Mar
 
 		return response;
 	},
-	async dislikeMarket(dto: FavoriteMarketDto): Promise<CommonResponse> {
+	async dislikeMarket(dto: FavoriteMarketDto): Promise<CommonRes> {
 		const url = '/v1/user/market/like';
-		const response = await fetch<CommonResponse>(`${url}`, {
+		const response = await fetch<CommonRes>(`${url}`, {
 			noAuth: false,
 			method: 'POST',
 			body: dto,

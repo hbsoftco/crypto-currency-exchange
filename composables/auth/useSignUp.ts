@@ -34,7 +34,6 @@ export const useSignUp = () => {
 		refereeCode: '',
 		password: '123@qwe!@#QWE',
 		email: 'hossein.bajan@yahoo.com',
-
 	});
 
 	const signupByEmailRules = {
