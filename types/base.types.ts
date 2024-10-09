@@ -190,6 +190,12 @@ type GetWithdrawParams = {
 	pageSize: string;
 };
 
+type GetBankParams = {
+	typeId: string;
+	statement: string;
+	pageNumber: string;
+	pageSize: string;
+};
 export type {
 	GetKlineParams,
 	SpotDataParams,
@@ -216,4 +222,5 @@ export type {
 	GetMiscellaneousListParams,
 	GetRewardReceivedListParams,
 	GetWithdrawParams,
+	GetBankParams,
 };

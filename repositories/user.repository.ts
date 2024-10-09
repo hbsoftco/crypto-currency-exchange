@@ -1,14 +1,15 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { GetCommissionReceivedList, GetRewardReceivedListResponse, UserProfileResponse } from '../types/response/user.types';
+import type { GetBankListResponse, GetCommissionReceivedList, GetRewardReceivedListResponse, UserProfileResponse } from '../types/response/user.types';
 
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
-import type { GetCommissionReceivedListParams, GetRewardReceivedListParams } from '~/types/base.types';
+import type { GetBankParams, GetCommissionReceivedListParams, GetRewardReceivedListParams } from '~/types/base.types';
 
 type UserRepository = {
 	getProfile: () => Promise<UserProfileResponse>;
 	getCommissionReceivedList: (params: GetCommissionReceivedListParams) => Promise<GetCommissionReceivedList>;
 	getRewardReceivedList: (params: GetRewardReceivedListParams) => Promise<GetRewardReceivedListResponse>;
+	getBankAccList: (params: GetBankParams) => Promise<GetBankListResponse>;
 
 };
 
@@ -40,6 +41,22 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		const url = '/v1/user/reward/received_list';
 		const response = await fetch<GetRewardReceivedListResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			apiName: url,
+			queryParams: params,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getBankAccList(params: GetBankParams): Promise<GetBankListResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/user/bank/acc_list';
+		const response = await fetch<GetBankListResponse>(`${url}?${query.toString()}`, {
 			noAuth: false,
 			apiName: url,
 			queryParams: params,

@@ -63,10 +63,34 @@ type GetRewardReceivedListResponse = {
 	};
 };
 
+type Bank = {
+	id: number;
+	uid: number;
+	user: string;
+	stateId: number;
+	stateName: string;
+	typeId: number;
+	typeName: string;
+	regTime: string;
+	bankName: string;
+	iban: string;
+	cardNo: string;
+};
+
+type GetBankListResponse = {
+	statusCode: number;
+	result: {
+		totalCount: number;
+		rows: Bank[];
+	};
+};
+
 export type {
 	UserProfileResponse,
 	GetCommissionReceivedList,
 	Received,
 	GetRewardReceivedListResponse,
 	Reward,
+	GetBankListResponse,
+	Bank,
 };

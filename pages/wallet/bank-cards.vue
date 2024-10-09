@@ -37,18 +37,18 @@
 					</thead>
 					<tbody>
 						<tr
-							v-for="row in rows"
-							:key="row.id"
+							v-for="(item, index) in bankList"
+							:key="index"
 							class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"
 						>
 							<td class="text-nowrap text-xs font-normal pt-2">
-								{{ $t(row.bank) }}
+								{{ $t(item.bankName) }}
 							</td>
 							<td class="text-nowrap text-xs font-normal pt-2">
-								{{ useNumber(row.cardNumber) }}
+								{{ useNumber(item.cardNo) }}
 							</td>
 							<td class="text-nowrap text-xs font-normal pt-2">
-								{{ useNumber(row.shabaNumber) }}
+								{{ useNumber(item.iban) }}
 							</td>
 							<td
 								class="text-xs font-normal py-2  text-accent-red"
@@ -68,16 +68,27 @@
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
 import AddNewCard from '~/components/pages/Site/Wallet/Menu/Bank/AddNewCard.vue';
+import { userRepository } from '~/repositories/user.repository';
+import type { GetBankParams } from '~/types/base.types';
+import type { Bank } from '~/types/response/user.types';
 
 definePageMeta({
 	layout: 'wallet',
 });
-const rows = ref([
-	{ id: 1, bank: 'بانک ملی', cardNumber: '7596 - 5214 - 8657 - 8586', shabaNumber: '100000987613175965214 6578586' },
-	{ id: 1, bank: 'بانک ملی', cardNumber: '7596 - 5214 - 8657 - 8586', shabaNumber: '100000987613175965214 6578586' },
-	{ id: 1, bank: 'بانک ملی', cardNumber: '7596 - 5214 - 8657 - 8586', shabaNumber: '100000987613175965214 6578586' },
+const { $api } = useNuxtApp();
+const bankRepo = userRepository($api);
 
-]);
+const params = ref<GetBankParams>({
+	typeId: '',
+	statement: '',
+	pageNumber: '1',
+	pageSize: '20',
+});
+const response = await bankRepo.getBankAccList(params.value);
+
+const bankList = ref<Bank[]>(response.result.rows);
+console.log(bankList);
+
 const showDetail = ref(false);
 const openDetail = () => {
 	showDetail.value = true;
