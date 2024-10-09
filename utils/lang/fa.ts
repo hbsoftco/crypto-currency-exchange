@@ -858,6 +858,10 @@ const persian = {
 	requestType: 'نوع درخواست',
 	registerTicket: 'ثبت تیکت',
 	ticketRegisteredSuccessfully: 'تیکت شما با موفقیت ثبت شد!',
+	Open: 'باز',
+	RespondedByIssuer: 'پاسخ داده شده توسط صادرکننده',
+	Closed: 'بسته شد',
+	RespondedByAdmin: 'پاسخ داده شده توسط ادمین',
 };
 
 export default persian;

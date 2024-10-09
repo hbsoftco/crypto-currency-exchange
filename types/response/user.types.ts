@@ -85,6 +85,27 @@ type GetBankListResponse = {
 	};
 };
 
+type Ticket = {
+	id: number;
+	typeId: number;
+	typeName: string;
+	stateId: number;
+	stateName: string;
+	priorityId: number;
+	priorityName: string;
+	creatorUid: number;
+	creatorName: string;
+	header: string;
+	regTime: string;
+};
+
+type GetTicketListResponse = {
+	statusCode: number;
+	result: {
+		totalCount: number;
+		rows: Ticket[];
+	};
+};
 export type {
 	UserProfileResponse,
 	GetCommissionReceivedList,
@@ -93,4 +114,6 @@ export type {
 	Reward,
 	GetBankListResponse,
 	Bank,
+	GetTicketListResponse,
+	Ticket,
 };

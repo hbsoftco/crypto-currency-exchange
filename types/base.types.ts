@@ -206,6 +206,16 @@ type GetDepositAddressParams = {
 	pageSize: string;
 };
 
+type GetTicketListParams = {
+	state: string;
+	typeId: string;
+	searchStatement: string;
+	from: string;
+	to: string;
+	pageNumber: string;
+	pageSize: string;
+};
+
 export type {
 	GetKlineParams,
 	SpotDataParams,
@@ -234,4 +244,5 @@ export type {
 	GetWithdrawParams,
 	GetBankParams,
 	GetDepositAddressParams,
+	GetTicketListParams,
 };

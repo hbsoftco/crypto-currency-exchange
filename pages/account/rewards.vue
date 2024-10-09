@@ -48,7 +48,7 @@ const params = ref<GetExposedListParams>({
 const response = await rewardRepo.getExposedList(params.value);
 
 const rewardList = ref<Reward[]>(response.result.rows);
-console.log(rewardList);
+// console.log(rewardList);
 
 // const responseTag = await tagRepo.getTagMenuList(paramsTag.value);
 
