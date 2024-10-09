@@ -1,8 +1,7 @@
 <template>
 	<div>
 		<ModalOrder
-			v-if="showModalOrder && orderItem"
-			:order="orderItem"
+			v-if="showModalOrder"
 			@close="closeModalOrder"
 		/>
 		<FilterSearch @filters="applyFilter" />
@@ -90,8 +89,8 @@
 						</td> -->
 						<td class="flex text-xs font-normal py-1">
 							<IconInfo
-								class="text-base cursor-pointer"
-								@click="openModalOrder(item)"
+								class="text-base"
+								@click.prevent="openModalOrder"
 							/>
 						</td>
 					</tr>
@@ -149,7 +148,6 @@ const params = ref({
 });
 
 const ordersList = ref<Order[]>();
-const orderItem = ref<Order | null>(null);
 
 const fetchOrderList = async () => {
 	try {
@@ -175,18 +173,14 @@ const applyFilter = async (event: OrderFiltersType) => {
 onMounted(async () => {
 	await fetchOrderList();
 });
-// const selectedOrder = ref<Order | null>(null);
+
 const showModalOrder = ref(false);
 
-const openModalOrder = (item: Order) => {
-	orderItem.value = item;
-	console.log(orderItem.value);
-
+const openModalOrder = () => {
 	showModalOrder.value = true;
 };
 
 const closeModalOrder = () => {
-	orderItem.value = null;
 	showModalOrder.value = false;
 };
 
