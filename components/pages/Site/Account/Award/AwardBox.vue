@@ -13,7 +13,7 @@
 		/>
 
 		<div
-			class="relative bg-hover-light dark:bg-hover-dark px-4"
+			class="relative bg-hover-light dark:bg-hover-dark px-4 rounded-md"
 		>
 			<div
 				v-if="reward.progressPerc > 0"

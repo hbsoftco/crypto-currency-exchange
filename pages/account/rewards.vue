@@ -1,7 +1,7 @@
 <template>
-	<div>
+	<div class="p-5">
 		<section>
-			<div class="my-6">
+			<div class="mb-6">
 				<UiTitleWithBack
 					:title="$t('awards')"
 					:back-btn="false"

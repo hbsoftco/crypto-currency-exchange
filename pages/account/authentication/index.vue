@@ -1,6 +1,6 @@
 <template>
-	<div>
-		<div class="my-6">
+	<div class="p-5">
+		<div class="mb-6">
 			<UiTitleWithBack
 				:title="$t('authentication')"
 				:back-btn="false"

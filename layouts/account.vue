@@ -7,7 +7,9 @@
 			<aside class="hidden md:block w-[16.25rem] p-2 border-l border-primary-gray-light dark:border-primary-gray-dark">
 				<ProfileMenu />
 			</aside>
-			<main class="w-full p-5">
+			<main
+				class="w-full"
+			>
 				<slot />
 			</main>
 		</div>
@@ -21,6 +23,14 @@
 <script setup lang="ts">
 import ProfileMenu from '~/components/layouts/Account/ProfileMenu.vue';
 import { Language } from '~/utils/enums/language.enum';
+
+interface PropsDefinition {
+	cssClass?: string;
+}
+
+withDefaults(defineProps<PropsDefinition>(), {
+	cssClass: 'p-5',
+});
 
 const baseDataStore = useBaseDataStore();
 baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
