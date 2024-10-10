@@ -8,7 +8,7 @@
 					</div>
 					<ULink
 						to=""
-						class="text-sm font-normal text-accent-blue"
+						class="text-sm font-normal text-primary-yellow-light dark:text-primary-yellow-dark"
 					>
 						{{ $t('moreInfoAboutWhiteList') }}
 					</ULink>

@@ -412,6 +412,7 @@
 									<FAQItems
 										v-if="currency?.faqList.length"
 										:items="currency?.faqList"
+										:direction="false"
 									/>
 								</div>
 							</section>

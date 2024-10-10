@@ -10,20 +10,23 @@
 				placeholder="your@email.com"
 				icon=""
 				dir="ltr"
+				color-type="transparent"
 			/>
 		</div>
-		<div class="my-8">
-			<FormsFieldInput
-				id="phoneOrEmail"
+		<div class="mb-8 text-right">
+			<TextareaFieldInput
+				id="content"
 				v-model="phoneOrEmail"
 				type="text"
-				input-class="text-left"
+				input-class="text-right"
 				label="description"
-				placeholder="20/0"
+				placeholder=""
 				icon=""
-				dir="ltr"
+				dir="rtl"
+				color-type="transparent"
 			/>
 		</div>
+		<!-- description -->
 		<div>
 			<UButton
 				color="white"
@@ -40,5 +43,7 @@
 <script setup lang="ts">
 // import IconCopy from '~/assets/svg-icons/menu/copy.svg';
 // import { useNumber } from '~/composables/useNumber';
+import TextareaFieldInput from '~/components/forms/TextareaFieldInput.vue';
+
 const phoneOrEmail = ref<string>('');
 </script>

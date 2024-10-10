@@ -862,6 +862,8 @@ const persian = {
 	RespondedByIssuer: 'پاسخ داده شده توسط صادرکننده',
 	Closed: 'بسته شد',
 	RespondedByAdmin: 'پاسخ داده شده توسط ادمین',
+	liveChat: 'گفتگوی زنده',
+	subjects: 'موضوعات',
 };
 
 export default persian;

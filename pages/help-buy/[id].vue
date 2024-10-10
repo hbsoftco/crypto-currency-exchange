@@ -113,6 +113,17 @@
 						</div>
 					</div>
 				</div>
+				<div class="flex items-center">
+					<!-- <NuxtImg
+						:src="`https://api-bitland.site/media/currency/${item.currency?.cSymbol}.png`"
+						:alt="item.currency?.cName"
+						class="w-6 h-6 rounded-full ml-2"
+					/>
+					<span class="text-sm font-bold ml-1">{{ item.info?.header }}</span> -->
+					<p class="text-base">
+						{{ buy.info?.content }}
+					</p>
+				</div>
 			</UContainer>
 		</section>
 	</div>
@@ -121,6 +132,10 @@
 <script setup lang="ts">
 import IconAnchor from '~/assets/svg-icons/spot/anchor.svg';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
+import type { BuyItem } from '~/types/response/help.types';
+
+const props = defineProps<{ buy: BuyItem }>();
+console.log('props----------------------------', props.buy);
 
 const steps = [
 	{ label: ' دانلود اپلیکیشن بیت لند ', completed: true, current: false },

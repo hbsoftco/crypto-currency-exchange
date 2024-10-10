@@ -21,7 +21,7 @@
 		</section>
 		<section>
 			<UContainer>
-				<div class="px-24 py-10 bg-primary-gray-light dark:bg-primary-gray-dark text-center rounded-md shadow-md mb-24">
+				<div class="px-2 md:px-24 py-10 bg-primary-gray-light dark:bg-primary-gray-dark text-center rounded-md shadow-md mb-24">
 					<div class="my-8">
 						<FormsFieldInput
 							id="header"

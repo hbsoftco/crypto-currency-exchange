@@ -1,16 +1,23 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { GetBankListResponse, GetCommissionReceivedList, GetRewardReceivedListResponse, UserProfileResponse } from '../types/response/user.types';
+import type { GetAddressListRes, GetBankListResponse, GetCommissionReceivedList, GetContactListResponse, GetRewardReceivedListResponse, UserProfileResponse } from '../types/response/user.types';
 
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
-import type { GetBankParams, GetCommissionReceivedListParams, GetRewardReceivedListParams } from '~/types/base.types';
+import type { DeleteAddressListParams, DeleteContactListParams, GetAddressListParams, GetBankParams, GetCommissionReceivedListParams, GetContactListParams, GetRewardReceivedListParams } from '~/types/base.types';
+import type { AddressSetDto, ContactSetDto } from '~/types/dto/user.dto';
+import type { CommonRes } from '~/types/response/common.types';
 
 type UserRepository = {
 	getProfile: () => Promise<UserProfileResponse>;
 	getCommissionReceivedList: (params: GetCommissionReceivedListParams) => Promise<GetCommissionReceivedList>;
 	getRewardReceivedList: (params: GetRewardReceivedListParams) => Promise<GetRewardReceivedListResponse>;
 	getBankAccList: (params: GetBankParams) => Promise<GetBankListResponse>;
-
+	getContactList: (params: GetContactListParams) => Promise<GetContactListResponse>;
+	storeContact: (params: ContactSetDto) => Promise<CommonRes>;
+	deleteContact: (params: DeleteContactListParams) => Promise<CommonRes>;
+	getAddressList: (params: GetAddressListParams) => Promise<GetAddressListRes>;
+	storeAddress: (params: AddressSetDto) => Promise<CommonRes>;
+	deleteAddress: (params: DeleteAddressListParams) => Promise<CommonRes>;
 };
 
 export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserRepository => ({
@@ -61,6 +68,82 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 			apiName: url,
 			queryParams: params,
 			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getContactList(params: GetContactListParams): Promise<GetContactListResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/user/wbl/contact_list';
+		const response = await fetch<GetContactListResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			apiName: url,
+			queryParams: params,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async storeContact(dto: ContactSetDto): Promise<CommonRes> {
+		const url = `/v1/user/wbl/contact_set`;
+		const response = await fetch<CommonRes>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async deleteContact(params: DeleteContactListParams): Promise<CommonRes> {
+		const url = `/v1/user/wbl/contact_delete`;
+		const response = await fetch<CommonRes>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'DELETE',
+			queryParams: params,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getAddressList(params: GetAddressListParams): Promise<GetAddressListRes> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/user/wbl/address_list';
+		const response = await fetch<GetAddressListRes>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			apiName: url,
+			queryParams: params,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async storeAddress(dto: AddressSetDto): Promise<CommonRes> {
+		const url = `/v1/user/wbl/address_set`;
+		const response = await fetch<CommonRes>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async deleteAddress(params: DeleteAddressListParams): Promise<CommonRes> {
+		const url = `/v1/user/wbl/address_delete`;
+		const response = await fetch<CommonRes>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'DELETE',
+			queryParams: params,
 		} as CustomNitroFetchOptions);
 
 		return response;

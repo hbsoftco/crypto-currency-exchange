@@ -11,7 +11,7 @@
 			<template #item="{ item }">
 				<p
 					class="text-sm font-normal px-4 py-3 bg-hover-light dark:bg-hover-dark hover:bg-hover-light hover:dark:bg-hover-dark text-black dark:text-white"
-					dir="ltr"
+					:class="{ rtl: direction, ltr: !direction }"
 				>
 					{{ item.content }}
 				</p>
@@ -30,6 +30,7 @@ interface AccordionItem {
 
 interface PropsDefinition {
 	items: KeyValue[];
+	direction?: boolean;
 }
 
 const props = defineProps<PropsDefinition>();
@@ -39,3 +40,15 @@ const items: AccordionItem[] = props.items.map((item) => ({
 	content: item.value,
 }));
 </script>
+
+<style scoped>
+.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+.ltr {
+  direction: ltr;
+  text-align: left;
+}
+</style>
