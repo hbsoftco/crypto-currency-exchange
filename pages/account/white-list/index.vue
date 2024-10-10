@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="p-5">
 		<section>
 			<div class="my-4">
 				<UiTitleWithBack :title="$t('whiteListManagement')" />
@@ -22,7 +22,7 @@
 					<template #default="{ item, selected }">
 						<span
 							class="truncate"
-							:class="[selected && 'text-black dark:text-white']"
+							:class="[selected && 'text-primary-yellow-light dark:text-primary-yellow-dark']"
 						>{{ $t(item.label) }}</span>
 					</template>
 					<template #item="{ item }">

@@ -2,10 +2,22 @@
 	<div>
 		<section class="py-6 px-8">
 			<div class="flex justify-between py-2">
-				<USelect
-					v-model="country"
-					:options="countries"
-				/>
+				<div class="ml-6 my-1 w-44">
+					<USelectMenu
+						v-model="docs"
+						:options="people"
+						:placeholder="$t('orderType')"
+						option-attribute="value"
+						:ui="{
+							background: '',
+							color: {
+								white: {
+									outline: ' bg-hover-light dark:bg-hover-dark',
+								},
+							},
+						}"
+					/>
+				</div>
 				<UButton
 					size="lg"
 					class="text-base font-medium px-6 py-2"
@@ -65,12 +77,13 @@
 				</table>
 				<div class="flex justify-center py-4">
 					<UPagination
-						:model-value="currentPage"
-						:page-count="10"
-						:total="100"
-						:max="4"
+						:model-value="20"
+						:page-count="20"
+						:total="20"
+						:max="6"
+						size="xl"
 						ul-class="flex space-x-2 bg-blue-500 border-none"
-						li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500"
+						li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500 px-3"
 						button-class-base="flex items-center justify-center w-full h-full transition-colors duration-200"
 						button-class-inactive="bg-green-700 hover:bg-gray-600"
 						button-class-active="bg-blue-500"
@@ -84,12 +97,9 @@
 </template>
 
 <script setup lang="ts">
-const countries = ['نوع شبکه (همه)', 'نوع شبکه (همه۲)', 'نوع شبکه (همه۳)'];
-
-const country = ref(countries[0]);
-
+const people = ['کارت ملی', 'پاسپورت', 'شناسنامه'];
+const docs = ref('');
 const currentPage = ref(1);
-
 function onPageChange(newPage: number) {
 	currentPage.value = newPage;
 }

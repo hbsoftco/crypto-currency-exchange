@@ -7,7 +7,7 @@
 				:options="people"
 				type="text"
 				input-class="text-right"
-				label="selectDoc"
+				label="networkType"
 				placeholder=""
 				icon=""
 				color-type="transparent"
@@ -24,6 +24,7 @@
 				placeholder=""
 				icon=""
 				dir="ltr"
+				color-type="transparent"
 			/>
 		</div>
 		<div class="my-8">
@@ -36,18 +37,21 @@
 				placeholder="عبارت ممو برای برخی شبکه ها الزامی است."
 				icon=""
 				dir="ltr"
+				color-type="transparent"
 			/>
 		</div>
-		<div class="my-8">
-			<FormsFieldInput
-				id="phoneOrEmail"
+
+		<div class="mb-8 text-right">
+			<TextareaFieldInput
+				id="content"
 				v-model="phoneOrEmail"
 				type="text"
-				input-class="text-left"
+				input-class="text-right"
 				label="description"
-				placeholder="20/0"
+				placeholder=""
 				icon=""
-				dir="ltr"
+				dir="rtl"
+				color-type="transparent"
 			/>
 		</div>
 		<div>
@@ -67,9 +71,14 @@
 import DropDown from '~/components/forms/DropDown.vue';
 // import IconCopy from '~/assets/svg-icons/menu/copy.svg';
 // import { useNumber } from '~/composables/useNumber';
+import TextareaFieldInput from '~/components/forms/TextareaFieldInput.vue';
+
 const phoneOrEmail = ref<string>('');
 
-const people = ['کارت ملی', 'پاسپورت', 'شناسنامه'];
-
+const people = [
+	{ key: 'national_id', value: 'کارت ملی' },
+	{ key: 'passport', value: 'پاسپورت' },
+	{ key: 'birth_certificate', value: 'شناسنامه' },
+];
 const docs = ref('');
 </script>

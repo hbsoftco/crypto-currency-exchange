@@ -49,12 +49,13 @@
 				</table>
 				<div class="flex justify-center py-4">
 					<UPagination
-						:model-value="currentPage"
-						:page-count="10"
-						:total="100"
-						:max="4"
+						:model-value="20"
+						:page-count="20"
+						:total="20"
+						:max="6"
+						size="xl"
 						ul-class="flex space-x-2 bg-blue-500 border-none"
-						li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500"
+						li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500 px-3"
 						button-class-base="flex items-center justify-center w-full h-full transition-colors duration-200"
 						button-class-inactive="bg-green-700 hover:bg-gray-600"
 						button-class-active="bg-blue-500"

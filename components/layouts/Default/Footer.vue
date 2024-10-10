@@ -124,7 +124,7 @@ const footerItems = [
 		subItems: [
 			{ name: useT('api'), url: '#' },
 			{ name: useT('bitlandApproval'), url: '#' },
-			{ name: useT('howBuy'), url: '#' },
+			{ name: useT('howBuy'), url: '/help-buy' },
 			{ name: useT('cryptocurrencyPrice'), url: '#' },
 		],
 	},
@@ -169,7 +169,7 @@ const footerItems = [
 		subItems: [
 			{ name: useT('api'), url: '#' },
 			{ name: useT('bitlandApproval'), url: '#' },
-			{ name: useT('howBuy'), url: '#' },
+			{ name: useT('howBuy'), url: '/help-buy' },
 			{ name: useT('cryptocurrencyPrice'), url: '#' },
 		],
 	},
@@ -178,7 +178,7 @@ const footerItems = [
 		subItems: [
 			{ name: useT('api'), url: '#' },
 			{ name: useT('bitlandApproval'), url: '#' },
-			{ name: useT('howBuy'), url: '#' },
+			{ name: useT('howBuy'), url: '/help-buy' },
 			{ name: useT('cryptocurrencyPrice'), url: '#' },
 		],
 	},

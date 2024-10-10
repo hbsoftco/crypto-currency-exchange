@@ -1,3 +1,5 @@
+import type { CurrencyBriefItem } from './brief-list.types';
+
 type Tag = {
 	key: number;
 	value: string;
@@ -45,6 +47,44 @@ type GetShortListResponse = {
 	};
 };
 
+type BuyItem = {
+	cid: number;
+	id: number;
+	typeId: number;
+	mediaId: number;
+	mediaUrl: string;
+	tags: Tag[];
+	info: Info;
+	currency?: CurrencyBriefItem | null;
+};
+
+type GetHowToBuyListResponse = {
+	statusCode: number;
+	result: {
+		totalCount: number;
+		rows: BuyItem[];
+	};
+};
+
+type FAQ = {
+	cid: number;
+	id: number;
+	typeId: number;
+	mediaId: number;
+	mediaUrl: string;
+	tags: Tag[];
+	info: Info;
+	currency?: CurrencyBriefItem | null;
+};
+
+type GetLiveChatListResponse = {
+	totalCount: number;
+	result: {
+		totalCount: number;
+		rows: FAQ[];
+	};
+};
+
 export type {
 	GetRootListResponse,
 	RootList,
@@ -52,4 +92,8 @@ export type {
 	Info,
 	GetShortListResponse,
 	ShortList,
+	GetHowToBuyListResponse,
+	BuyItem,
+	GetLiveChatListResponse,
+	FAQ,
 };

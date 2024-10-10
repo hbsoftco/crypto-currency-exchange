@@ -231,7 +231,52 @@ type GetTraderBestListParams = {
 	assetType: string;
 };
 
+type GetHowBuyListParams = {
+	languageId: string;
+	tagId: string;
+	searchStatement: string;
+	group: string;
+	pageNumber: string;
+	pageSize: string;
+};
+
+type GetFAQListParams = {
+	languageId: string;
+	tagId: string;
+	searchStatement: string;
+	group: string;
+	pageNumber: string;
+	pageSize: string;
+};
+
+type GetSubjectLiveChatParams = {
+	languageId: string;
+	group: string;
+};
+
+type GetContactListParams = {
+	statement: string;
+	pageNumber: string;
+	pageSize: string;
+};
+
+type DeleteContactListParams = {
+	contactUserId: string;
+};
+
+type GetAddressListParams = {
+	srchBlockchainId: string;
+	searchStatement?: string;
+	pageNumber?: string;
+	pageSize?: string;
+};
+
+type DeleteAddressListParams = {
+	withdrawId: string;
+};
+
 export type {
+	GetReferralBestListParams,
 	GetRewardExposedParams,
 	GetKlineParams,
 	SpotDataParams,
@@ -253,6 +298,7 @@ export type {
 	GetTradeListParams,
 	GetOrderListParams,
 	GetDepositParams,
+	GetTraderBestListParams,
 	GetInternalReceiveParams,
 	GetCommissionReceivedListParams,
 	GetMiscellaneousListParams,
@@ -261,6 +307,11 @@ export type {
 	GetBankParams,
 	GetDepositAddressParams,
 	GetTicketListParams,
-	GetReferralBestListParams,
-	GetTraderBestListParams,
+	GetHowBuyListParams,
+	GetFAQListParams,
+	GetSubjectLiveChatParams,
+	GetContactListParams,
+	DeleteContactListParams,
+	GetAddressListParams,
+	DeleteAddressListParams,
 };

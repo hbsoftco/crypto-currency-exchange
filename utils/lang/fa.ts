@@ -865,7 +865,8 @@ const persian = {
 	firstPerson: 'نفر اول',
 	secondPerson: 'نفر دوم',
 	thirdPerson: 'نفر سوم',
-
+	liveChat: 'گفتگوی زنده',
+	subjects: 'موضوعات',
 };
 
 export default persian;

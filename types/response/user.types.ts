@@ -134,6 +134,44 @@ type GetBestListResponse = {
 	};
 };
 
+type UserContact = {
+	uid: number;
+	user: string;
+	contactUID: number;
+	contactName: string;
+	allowed: boolean;
+	desc: string;
+};
+
+type GetContactListResponse = {
+	statusCode: number;
+	result: {
+		totalCount: number;
+		rows: UserContact[];
+	};
+};
+
+type AddressList = {
+	id: number;
+	uid: number;
+	user: string;
+	blockchainId: number;
+	blockchainName: string;
+	desc: string;
+	coldWallet: string;
+	address: string;
+	memo: string;
+	allowed: boolean;
+};
+
+type GetAddressListRes = {
+	statusCode: number;
+	result: {
+		totalCount: number;
+		rows: AddressList[];
+	};
+};
+
 export type {
 	BestListUser,
 	BestReferralItem,
@@ -146,5 +184,8 @@ export type {
 	Bank,
 	GetTicketListResponse,
 	Ticket,
+	GetContactListResponse,
 	GetBestListResponse,
+	GetAddressListRes,
+	AddressList,
 };
