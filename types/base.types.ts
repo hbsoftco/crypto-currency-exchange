@@ -216,7 +216,23 @@ type GetTicketListParams = {
 	pageSize: string;
 };
 
+type GetReferralBestListParams = {
+	periodCo: string;
+	assessmentCurrencyId: string;
+};
+
+type GetRewardExposedParams = {
+	tagId: string;
+};
+
+type GetTraderBestListParams = {
+	id: string;
+	periodCo: string;
+	assetType: string;
+};
+
 export type {
+	GetRewardExposedParams,
 	GetKlineParams,
 	SpotDataParams,
 	GetPinParams,
@@ -245,4 +261,6 @@ export type {
 	GetBankParams,
 	GetDepositAddressParams,
 	GetTicketListParams,
+	GetReferralBestListParams,
+	GetTraderBestListParams,
 };

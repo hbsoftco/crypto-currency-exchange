@@ -2,64 +2,96 @@
 	<tr
 		class="font-normal md:font-medium text-sm md:text-base py-3 border-b border-primary-gray-light dark:border-primary-gray-dark group relative"
 	>
-		<div
-			v-if="isActive"
-			class="absolute -right-10 transform -translate-x-full h-full flex items-center"
-		>
-			<IconArrowLeftActive class="text-primary-yellow-light dark:text-primary-yellow-dark" />
-		</div>
 		<td
-			class="flex items-center text-base font-medium py-2 text-black dark:text-white"
-			:class="[isActive ? 'text-primary-yellow-light dark:text-primary-yellow-dark' : 'text-black dark:text-white']"
+			class="text-base font-medium py-2"
 		>
-			<NuxtImg
-				:src="iconSrc"
-				alt="icon"
-				class="w-10 h-10 ml-1"
-			/>
-			<div>
-				<span>
-					{{ props.rank }}
-				</span>
+			<div class="flex justify-start items-center">
+				<NuxtImg
+					v-if="index === 0"
+					src="/images/profile/golden.png"
+					alt="golden"
+					class=""
+				/>
+				<NuxtImg
+					v-else-if="index === 1"
+					src="/images/profile/silver.png"
+					alt="silver"
+					class=""
+				/>
+				<NuxtImg
+					v-else-if="index === 2"
+					src="/images/profile/boronz.png"
+					alt="silver"
+					class=""
+				/>
+				<NuxtImg
+					v-else
+					src="/images/profile/medal.png"
+					alt="golden"
+					class=""
+				/>
+				<p class="mr-1">
+					{{ useNumber(index+1) }}
+				</p>
 			</div>
 		</td>
+
 		<td
 			class="text-base font-medium py-2"
-			:class="[isActive ? 'text-primary-yellow-light dark:text-primary-yellow-dark' : 'text-black dark:text-white']"
 		>
-			{{ props.account }}
+			<div
+				dir="ltr"
+				class="text-center"
+			>
+				{{ useNumber(user?.user) }}
+			</div>
 		</td>
+
 		<td
 			class="text-base font-medium py-2"
-			:class="[isActive ? 'text-primary-yellow-light dark:text-primary-yellow-dark' : 'text-black dark:text-white']"
 		>
-			{{ props.feeReceived }}
+			<div
+				dir="ltr"
+				class="text-center"
+			>
+				{{ useNumber(user?.taken) }}
+			</div>
 		</td>
+
 		<td
 			class="text-base font-medium py-2"
-			:class="[isActive ? 'text-primary-yellow-light dark:text-primary-yellow-dark' : 'text-black dark:text-white']"
 		>
-			{{ props.directInvitation }}
+			<div
+				dir="ltr"
+				class="text-center"
+			>
+				{{ useNumber(user?.coDirectActive) }}
+			</div>
 		</td>
+
 		<td
 			class="text-base font-medium py-2"
-			:class="[isActive ? 'text-primary-yellow-light dark:text-primary-yellow-dark' : 'text-black dark:text-white']"
 		>
-			{{ props.indirectInvitation }}
+			<div
+				dir="ltr"
+				class="text-center"
+			>
+				{{ useNumber(user?.coIndirectActive) }}
+			</div>
 		</td>
 	</tr>
 </template>
 
 <script setup lang="ts">
-import IconArrowLeftActive from '~/assets/svg-icons/profile/arrow-left-active.svg';
+import { useNumber } from '~/composables/useNumber';
+import type { BestListUser } from '~/types/response/user.types';
 
-const props = defineProps<{
-	rank: string;
-	account: string;
-	feeReceived: string;
-	directInvitation: string;
-	indirectInvitation: string;
-	iconSrc: string;
-	isActive: boolean;
-}>();
+// import IconArrowLeftActive from '~/assets/svg-icons/profile/arrow-left-active.svg';
+
+interface PropsDefinition {
+	user: BestListUser;
+	index: number;
+}
+
+defineProps<PropsDefinition>();
 </script>

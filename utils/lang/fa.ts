@@ -862,6 +862,10 @@ const persian = {
 	RespondedByIssuer: 'پاسخ داده شده توسط صادرکننده',
 	Closed: 'بسته شد',
 	RespondedByAdmin: 'پاسخ داده شده توسط ادمین',
+	firstPerson: 'نفر اول',
+	secondPerson: 'نفر دوم',
+	thirdPerson: 'نفر سوم',
+
 };
 
 export default persian;

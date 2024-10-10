@@ -13,6 +13,7 @@ export const useAuth = () => {
 		loading.value = true;
 		try {
 			const response = await auth.generateNewOTC();
+			console.log('I come from generateNewOTC', response);
 
 			const authStore = useAuthStore();
 			if (response.result) {

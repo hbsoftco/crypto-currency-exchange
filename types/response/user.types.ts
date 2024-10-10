@@ -106,7 +106,37 @@ type GetTicketListResponse = {
 		rows: Ticket[];
 	};
 };
+
+type BestListUser = {
+	uid: number;
+	user: string;
+	rank: number;
+	coDirectActive: number;
+	coDirectInactive: number;
+	coIndirectActive: number;
+	coIndirectInactive: number;
+	taken: number;
+};
+
+type BestReferralItem = {
+	pid: number;
+	pFrom: string;
+	pTo: string;
+	bestList: BestListUser[];
+	bestOfMine: BestListUser;
+};
+
+type GetBestListResponse = {
+	statusCode: number;
+	result: {
+		totalCount: number;
+		rows: BestReferralItem[];
+	};
+};
+
 export type {
+	BestListUser,
+	BestReferralItem,
 	UserProfileResponse,
 	GetCommissionReceivedList,
 	Received,
@@ -116,4 +146,5 @@ export type {
 	Bank,
 	GetTicketListResponse,
 	Ticket,
+	GetBestListResponse,
 };
