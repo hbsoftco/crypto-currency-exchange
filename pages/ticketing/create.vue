@@ -159,9 +159,10 @@ const getTicketTypes = async () => {
 		ticketTypesLoading.value = true;
 		const response = await ticketRepo.getTicketTypes();
 		ticketTypes.value = response.result;
+		console.log('ticketTypes ====>', ticketTypes.value);
 	}
 	catch (error) {
-		await getTicketTypes();
+		// await getTicketTypes();
 		console.error('Failed to fetch ticket types:', error);
 	}
 	finally {

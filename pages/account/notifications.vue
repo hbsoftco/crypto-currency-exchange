@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
 	<div class="block md:flex justify-start">
 		<aside class="w-full md:w-[16.25rem] p-2 border-none md:border-l border-primary-gray-light dark:border-primary-gray-dark">
@@ -68,7 +69,7 @@
 								</div>
 							</div>
 							<div class="py-2 text-sm font-normal">
-								<p v-html="notif.noticeBody" />
+								<p v-html="sanitizedHtml(notif.noticeBody)" />
 							</div>
 							<div>
 								<h3 class="inline-block  p-1 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark bg-primary-gray-light dark:bg-primary-gray-dark rounded-md">
@@ -100,6 +101,7 @@
 </template>
 
 <script setup lang="ts">
+import { sanitizedHtml } from '~/utils/html-sanitizer';
 import { formatDateToIranTime } from '~/utils/date-time.js';
 import IconMessage from '~/assets/svg-icons/menu/message.svg';
 import { useNumber } from '~/composables/useNumber';

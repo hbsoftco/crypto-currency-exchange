@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
 	<div>
 		<div
@@ -84,7 +85,7 @@
 										<IconMessage class="text-2xl" />
 										<div class="flex flex-col pr-4">
 											<span class="text-sm font-bold">{{ item.noticeHeader }}</span>
-											<p v-html="item.noticeBody" />
+											<p v-html="sanitizedHtml(item.noticeBody)" />
 											<div class="flex">
 												<UButton
 													color="gray"
@@ -126,6 +127,7 @@
 </template>
 
 <script setup lang="ts">
+import { sanitizedHtml } from '~/utils/html-sanitizer';
 import IconNotification from '~/assets/svg-icons/menu/notification.svg';
 import IconNotificationFill from '~/assets/svg-icons/menu/notification-fill.svg';
 import IconArrowLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';

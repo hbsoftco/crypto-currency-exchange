@@ -51,8 +51,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
-
 import IconArrowLeftActive from '~/assets/svg-icons/profile/arrow-left-active.svg';
 
 const props = defineProps<{

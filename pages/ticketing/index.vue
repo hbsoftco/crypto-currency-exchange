@@ -118,12 +118,12 @@ const params = ref<GetTicketListParams>({
 	pageSize: '20',
 });
 
-const response = await ticketRepo.getTilcketList(params.value);
+const response = await ticketRepo.getTicketList(params.value);
 const ticketList = ref<Ticket[]>(response.result.rows);
 
 const fetchTicketList = async () => {
 	try {
-		const { result } = await ticketRepo.getTilcketList(params.value);
+		const { result } = await ticketRepo.getTicketList(params.value);
 
 		totalCount.value = result.totalCount;
 		ticketList.value = result.rows;

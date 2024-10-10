@@ -36,7 +36,9 @@ export default defineNuxtPlugin(() => {
 
 				const queryString = query.toString() ? `?${query.toString()}` : '';
 
-				await doRequest('GET', `${baseURL}${options.apiName}${queryString}`, options);
+				doRequest('GET', `${baseURL}${options.apiName}${queryString}`, options)
+					.then((retryResponse) => retryResponse)
+					.catch((retryError) => { throw retryError; });
 			}
 			else if (response && response?._data && response?._data?.statusCode === StatusCodes.USER_LOGGED_OUT.fa) {
 				const authStore = useAuthStore();
@@ -50,36 +52,9 @@ export default defineNuxtPlugin(() => {
 });
 
 const useAPIClient = () => {
-	// const { refreshSession, invalidateSession } = useAuthProxyClient();
-
 	const doRequest = async (method: string, endpoint: string, config: any) => {
-		// console.log('endpoint doRequest ======>', endpoint);
-		try {
-			return await $fetch(endpoint, { method, ...config });
-		}
-		catch (error: any) {
-			// console.log('error.response 8888888888888888', error.response);
-			// if (error.response?.status === 401) {
-			// await refreshSession();
-			// return await doRequest(method, endpoint, config);
-			// // }
-			// await invalidateSession();
-			// throw error;
-		}
+		return await $fetch(endpoint, { method, ...config });
 	};
 
 	return { doRequest };
 };
-
-// const useAuthProxyClient = () => {
-// 	const refreshSession = async () => {
-// 		const { refreshOTC } = useAuth();
-// 		await refreshOTC();
-// 	};
-
-// 	const invalidateSession = async () => {
-// 		// Logic for invalidating session
-// 	};
-
-// 	return { refreshSession, invalidateSession };
-// };
