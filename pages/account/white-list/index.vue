@@ -1,7 +1,7 @@
 <template>
 	<div class="p-5">
 		<section>
-			<div class="my-4">
+			<div class="mb-4">
 				<UiTitleWithBack :title="$t('whiteListManagement')" />
 			</div>
 			<div class="border border-primary-gray-light dark:border-primary-gray-dark rounded-md">

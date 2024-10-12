@@ -285,6 +285,10 @@ const logout = () => {
 const profileStore = useProfileStore();
 const profileData: KeyValue[] = await profileStore.userProfile;
 
+onMounted(async () => {
+	await profileStore.fetchProfile();
+});
+
 const copyText = () => {
 	if (textRef.value) {
 		const toast = useToast();

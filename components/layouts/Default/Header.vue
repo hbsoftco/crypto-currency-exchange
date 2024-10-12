@@ -77,7 +77,7 @@
 						</li>
 						<li class="flex items-center">
 							<ULink
-								to="/privacy-policy"
+								to="/help-center"
 								active-class="text-primary-yellow-light dark:text-primary-yellow-dark"
 								:class="{
 									'text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all': true,

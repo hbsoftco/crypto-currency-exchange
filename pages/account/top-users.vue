@@ -17,7 +17,7 @@
 									'pb-2 px-4 cursor-pointer border-b border-transparent',
 									selectedTab === 'traders'
 										? 'text-primary-yellow-light dark:text-primary-yellow-dark border-primary-yellow-light dark:border-primary-yellow-dark'
-										: 'text-white dark:text-white',
+										: '',
 								]"
 								@click="selectedTab = 'traders'"
 							>
@@ -28,7 +28,7 @@
 									'pb-2 px-4 cursor-pointer border-b border-transparent',
 									selectedTab === 'inviters'
 										? 'text-primary-yellow-light dark:text-primary-yellow-dark border-primary-yellow-light dark:border-primary-yellow-dark'
-										: 'text-white dark:text-white',
+										: '',
 								]"
 								@click="selectedTab = 'inviters'"
 							>

@@ -132,7 +132,25 @@ type MarketListResponse = {
 	};
 };
 
+type MarketsL16Response = {
+	statusCode: number;
+	result: {
+		totalCount: number;
+		rows: MarketL16[];
+	};
+};
+
+type MarketL16 = {
+	id: number;
+	cid: number;
+	indexPrice: string;
+	priceChangePercIn24H: string;
+	marketBriefItem: MarketBriefItem | null;
+};
+
 export type {
+	MarketsL16Response,
+	MarketL16,
 	MarketListWithSparkLineChartResponse,
 	MarketListWithSparkLineChartItem,
 	MarketStateResponse,

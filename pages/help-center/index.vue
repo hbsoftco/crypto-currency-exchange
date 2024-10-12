@@ -1,7 +1,7 @@
 <template>
 	<div class="mb-[30rem] md:mb-24">
 		<section>
-			<PagesImageCover>
+			<ImageCover>
 				<UContainer class="h-full">
 					<div class="w-full h-full relative flex justify-between items-center">
 						<div class="mt-40 md:mt-16">
@@ -33,8 +33,8 @@
 							class="absolute bottom-0 left-0 hidden md:block w-[30rem] h-[36.125rem]"
 						/>
 					</div>
-				</ucontainer>
-			</pagesimagecover>
+				</UContainer>
+			</ImageCover>
 		</section>
 
 		<section>
@@ -180,6 +180,7 @@ import IconTwitter from '~/assets/svg-icons/social/twitter.svg';
 import { helpRepository } from '~/repositories/help.repository';
 import type { GetRootListParams } from '~/types/base.types';
 import type { RootList, ShortList } from '~/types/response/help.types';
+import ImageCover from '~/components/pages/ImageCover.vue';
 
 const phoneOrEmail = ref('');
 

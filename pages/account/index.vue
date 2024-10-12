@@ -16,7 +16,7 @@
 
 			<div class="">
 				<div class="flex justify-start items-center mb-4">
-					<h5>کاربر ناشناس</h5>
+					<h5>{{ getValueByKey(profileData, 'NICKNAME') }}</h5>
 					<div class="mx-2">
 						<IconPencil class="text-subtle-text-light dark:text-subtle-text-50 text-xl cursor-pointer" />
 					</div>
@@ -39,11 +39,11 @@
 						</p>
 						<p class="flex justify-start items-center">
 							<!-- 'i-heroicons-eye-slash' : 'i-heroicons-eye'" -->
-							<UIcon
+							<!-- <UIcon
 								name="i-heroicons-eye-slash"
 								class="w-4 h-4 ml-2 cursor-pointer text-subtle-text-light dark:text-subtle-text-50"
-							/>
-							<span>as***9@***.com</span>
+							/> -->
+							<span>{{ getValueByKey(profileData, 'EMAIL') }}</span>
 						</p>
 					</div>
 
@@ -52,8 +52,15 @@
 							{{ $t('UID') }}
 						</p>
 						<p class="flex justify-start items-center">
-							<IconCopy class="cursor-pointer text-xl text-subtle-text-light dark:text-subtle-text-50" />
-							<span class="mr-2">۶۵۵۵۵۹۱۰</span>
+							<IconCopy
+								class="cursor-pointer text-xl text-subtle-text-light dark:text-subtle-text-50"
+								@click="copyText"
+							/>
+							<span
+								id="copy-text"
+								ref="textRef"
+								class="mr-2"
+							>{{ useNumber(String(getValueByKey(profileData, 'UID'))) }}</span>
 						</p>
 					</div>
 
@@ -62,7 +69,7 @@
 							{{ $t('registrationTime') }}
 						</p>
 						<p class="flex justify-start items-center">
-							<span>۱۴۰۱/۰۹/۲۲ - ۱۷:۴۵</span>
+							<span>{{ getValueByKey(profileData, 'REG_TIME') }}</span>
 						</p>
 					</div>
 
@@ -71,7 +78,7 @@
 							{{ $t('lastLogin') }}
 						</p>
 						<p class="flex justify-start items-center">
-							<span>۱۴۰۱/۰۹/۲۲ - ۱۷:۴۵</span>
+							<span>{{ getValueByKey(profileData, 'LATEST_LOGIN_TIME') }}</span>
 						</p>
 					</div>
 				</div>
@@ -203,8 +210,44 @@ import IconGift from '~/assets/svg-icons/gift.svg';
 import IconEducation from '~/assets/svg-icons/education.svg';
 import IconPencil from '~/assets/svg-icons/pencil.svg';
 import IconCopy from '~/assets/svg-icons/menu/copy.svg';
+import type { KeyValue } from '~/types/base.types';
+import { getValueByKey } from '~/utils/find-value-by-key';
+import { useNumber } from '~/composables/useNumber';
 
 definePageMeta({
 	layout: 'account',
 });
+
+const profileStore = useProfileStore();
+const profileData: KeyValue[] = await profileStore.userProfile;
+
+onMounted(async () => {
+	await profileStore.fetchProfile();
+});
+
+const textRef = ref<HTMLElement | null>(null);
+
+const copyText = () => {
+	if (textRef.value) {
+		const toast = useToast();
+
+		const textToCopy = textRef.value.textContent || '';
+
+		navigator.clipboard.writeText(textToCopy)
+			.then(() => {
+				toast.add({
+					title: useT('copy'),
+					description: useT('codeCopiedSuccessfully'),
+					timeout: 5000,
+					color: 'green',
+				});
+			})
+			.catch((err: Error) => {
+				throw new Error(`${err}`);
+			});
+	}
+	else {
+		throw new Error(`Text element not found.`);
+	}
+};
 </script>

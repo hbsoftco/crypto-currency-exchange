@@ -27,15 +27,18 @@
 					</thead>
 					<tbody>
 						<tr
-							v-for="row in rows"
-							:key="row.id"
-							class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark last:border-none"
+							v-for="contact in contactList"
+							:key="contact.uid"
+							class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark last:border-none odd:bg-hover2-light dark:odd:bg-hover2-dark even:bg-background-light dark:even:bg-background-dark"
 						>
-							<td class="text-sm font-normal py-2">
-								{{ row.accountName }}
+							<td
+								class="text-sm font-normal py-2 px-2"
+								dir="ltr"
+							>
+								{{ contact.contactName }}
 							</td>
 							<td class="text-sm font-normal py-2">
-								{{ row.description }}
+								{{ contact.desc }}
 							</td>
 							<td class="text-sm font-normal py-2 text-accent-red flex items-center cursor-pointer">
 								{{ $t('delete') }}
@@ -69,15 +72,40 @@
 </template>
 
 <script setup lang="ts">
-const currentPage = ref(1);
+import { userRepository } from '~/repositories/user.repository';
+import type { GetContactListParams } from '~/types/base.types';
+import type { UserContact } from '~/types/response/user.types';
+
+const { $api } = useNuxtApp();
+const userRepo = userRepository($api);
+
+const currentPage = ref<number>(1);
+
+const contactList = ref<UserContact[]>();
+
+const params = ref<GetContactListParams>({
+	statement: '',
+	pageNumber: '',
+	pageSize: '',
+});
+
+const getContactList = async () => {
+	try {
+		const { result } = await userRepo.getContactList(params.value);
+		contactList.value = result.rows;
+		currentPage.value = result.totalCount;
+	}
+	catch (error) {
+		await getContactList();
+		console.log(error);
+	}
+};
+
+onMounted(async () => {
+	await getContactList();
+});
 
 function onPageChange(newPage: number) {
 	currentPage.value = newPage;
 }
-const rows = ref([
-	{ id: 1, accountName: 'علی شجاع', description: 'یاداشت تست تست تست تست تست' },
-	{ id: 2, accountName: 'علی شجاع', description: 'یاداشت تست تست تست تست تست' },
-	{ id: 3, accountName: 'علی شجاع', description: 'یاداشت تست تست تست تست تست' },
-	{ id: 4, accountName: 'علی شجاع', description: 'یاداشت تست تست تست تست تست' },
-]);
 </script>

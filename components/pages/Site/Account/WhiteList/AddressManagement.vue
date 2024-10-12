@@ -6,7 +6,7 @@
 					<USelectMenu
 						v-model="docs"
 						:options="people"
-						:placeholder="$t('orderType')"
+						:placeholder="$t('networkType')"
 						option-attribute="value"
 						:ui="{
 							background: '',
@@ -30,7 +30,7 @@
 				<table class="min-w-full py-6 my-2 text-right">
 					<thead>
 						<tr class="pb-2 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark">
-							<th class="py-2 text-sm font-bold">
+							<th class="py-2 px-2 text-sm font-bold">
 								{{ $t('network') }}
 							</th>
 							<th class="py-2 text-sm font-bold">
@@ -49,21 +49,21 @@
 					</thead>
 					<tbody>
 						<tr
-							v-for="row in rows"
+							v-for="row in addressList"
 							:key="row.id"
-							class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark last:border-none"
+							class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark last:border-none odd:bg-hover2-light dark:odd:bg-hover2-dark even:bg-background-light dark:even:bg-background-dark"
 						>
-							<td class="text-sm font-normal py-2">
-								{{ row.network }}
+							<td class="text-sm px-2 font-normal py-2">
+								{{ row.blockchainName }}
 							</td>
 							<td class="text-sm font-normal py-2">
-								{{ row.description }}
+								{{ row.desc }}
 							</td>
 							<td class="text-sm font-normal py-2">
 								{{ row.address }}
 							</td>
 							<td class="text-sm font-normal py-2">
-								{{ row.memoTag }}
+								{{ row.memo }}
 							</td>
 							<td class="text-sm font-normal py-2 text-accent-red flex items-center cursor-pointer">
 								{{ $t('delete') }}
@@ -97,16 +97,44 @@
 </template>
 
 <script setup lang="ts">
-const people = ['کارت ملی', 'پاسپورت', 'شناسنامه'];
-const docs = ref('');
-const currentPage = ref(1);
+import { userRepository } from '~/repositories/user.repository';
+import type { GetAddressListParams } from '~/types/base.types';
+import type { AddressList } from '~/types/response/user.types';
+
+const { $api } = useNuxtApp();
+const userRepo = userRepository($api);
+
+const currentPage = ref<number>(1);
+
+const addressList = ref<AddressList[]>();
+
+const params = ref<GetAddressListParams>({
+	srchBlockchainId: '',
+	searchStatement: '',
+	pageNumber: '',
+	pageSize: '',
+});
+
+const getAddressList = async () => {
+	try {
+		const { result } = await userRepo.getAddressList(params.value);
+		addressList.value = result.rows;
+		currentPage.value = result.totalCount;
+	}
+	catch (error) {
+		await getAddressList();
+		console.log(error);
+	}
+};
+
+onMounted(async () => {
+	await getAddressList();
+});
+
 function onPageChange(newPage: number) {
 	currentPage.value = newPage;
 }
-const rows = ref([
-	{ id: 1, network: 'شبکه', description: 'برچسب های آدرس', address: 'آدرس برداشت', memoTag: 'Memo/Tag' },
-	{ id: 2, network: 'شبکه', description: 'برچسب های آدرس', address: 'آدرس برداشت', memoTag: 'Memo/Tag' },
-	{ id: 3, network: 'شبکه', description: 'برچسب های آدرس', address: 'آدرس برداشت', memoTag: 'Memo/Tag' },
-	{ id: 4, network: 'شبکه', description: 'برچسب های آدرس', address: 'آدرس برداشت', memoTag: 'Memo/Tag' },
-]);
+
+const people = ['کارت ملی', 'پاسپورت', 'شناسنامه'];
+const docs = ref('');
 </script>

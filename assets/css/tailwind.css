@@ -28,6 +28,25 @@
     @apply bg-gray-900;
 }
 
+.vpd-main .vpd-content {
+    @apply rounded-lg;
+}
 .vpd-main .vpd-body {
-    @apply bg-background-light dark:bg-background-dark;
+    @apply bg-background-light dark:bg-primary-gray-dark rounded overflow-hidden;
+}
+
+.vpd-simple-content .vpd-addon-list-item {
+    @apply dark:border-transparent hover:dark:bg-background-50 hover:dark:rounded;
+}
+
+.vpd-simple-content .vpd-column .vpd-column-header {
+    @apply dark:text-white;
+}
+
+.vpd-addon-list-item.vpd-selected {
+    @apply rounded dark:bg-background-dark;
+}
+
+.vpd-actions button {
+    @apply hover:dark:bg-background-50 rounded;
 }

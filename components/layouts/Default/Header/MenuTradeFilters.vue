@@ -33,7 +33,7 @@
 				class="w-full mx-auto"
 			>
 				<span
-					class="mx-0 h-7 text-xs cursor-pointer px-1.5 py-1 pt-1.5 font-medium rounded transition-colors select-none"
+					class="mx-0 h-7 text-xs cursor-pointer px-1.5 py-1 pt-1.5 font-medium rounded transition-colors select-none text-nowrap"
 					:class="
 						selectedTagItem === item
 							? 'bg-primary text-text-light dark:text-text-dark '
@@ -58,50 +58,16 @@ interface Props {
 
 defineProps<Props>();
 
+interface EmitDefinition {
+	(event: 'selectedTag', value: number): void;
+}
+
+const emit = defineEmits<EmitDefinition>();
+
 const selectedTagItem = ref();
 
 const selectTagItem = async (item: Tag) => {
 	selectedTagItem.value = item;
-	// params.value.tagTypeId = String(item.id);
-	// marketItems.value = await getMarkets();
+	emit('selectedTag', item.id);
 };
-
-// const activeButton = ref('all');
-// const selectedMarketFilter = ref({ label: 'متاورس' });
-
-// const marketFilters = [
-// 	[
-// 		{
-// 			label: 'متاورس',
-// 			click: () => handleSelectMarketFilter('hottest'),
-// 		},
-// 		{
-// 			label: useT('mostProfitable'),
-// 			click: () => handleSelectMarketFilter('mostProfitable'),
-// 		},
-// 		{
-// 			label: useT('newest'),
-// 			click: () => handleSelectMarketFilter('newest'),
-// 		},
-// 		{
-// 			label: useT('mostVoluminous'),
-// 			click: () => handleSelectMarketFilter('mostVoluminous'),
-// 		},
-// 		{
-// 			label: useT('myFavorites'),
-// 			click: () => handleSelectMarketFilter('myFavorites'),
-// 		},
-// 	],
-// ];
-
-// const handleButtonClick = (button: string) => {
-// 	activeButton.value = button;
-// 	if (button === 'all') { /* empty */ }
-// 	else if (button === 'freeFees') { /* empty */ }
-// 	else if (button === 'dropdown') { /* empty */ }
-// };
-
-// const handleSelectMarketFilter = (selectedLabel: string) => {
-// 	selectedMarketFilter.value = { label: useT(selectedLabel) };
-// };
 </script>

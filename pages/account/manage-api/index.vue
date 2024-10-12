@@ -1,7 +1,7 @@
 <template>
-	<div>
+	<div class="p-5">
 		<section class="hidden md:block">
-			<div class="my-4">
+			<div class="mb-4">
 				<UiTitleWithBack :title="$t('manageAPI')" />
 			</div>
 			<div class="my-4 py-4 px-8 border  border-primary-gray-light dark:border-primary-gray-dark rounded-md">

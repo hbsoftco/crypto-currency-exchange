@@ -44,7 +44,7 @@
 				class="w-full mx-auto"
 			>
 				<span
-					class="mx-2 h-7 text-xs cursor-pointer px-2 py-2 pt-1.5 font-medium transition-colors select-none"
+					class="mx-2 h-7 text-xs cursor-pointer px-2 py-2 pt-1.5 font-medium transition-colors select-none text-nowrap"
 					:class="
 						selectedQuoteItem === item
 							? 'border-b-2 border-primary dark:border-primary text-primary'
@@ -66,7 +66,7 @@
 				v-slot="{ item }"
 				:items="tagItems"
 				:ui="{
-					item: 'basis-full md:basis-1/3 lg:basis-1/4 xl:basis-1/6 snap-center md:snap-start',
+					item: 'basis-full md:basis-1/3 lg:basis-1/4 xl:basis-1/6 snap-center md:snap-start text-nowrap',
 					default: {
 						prevButton: {
 							color: 'black',

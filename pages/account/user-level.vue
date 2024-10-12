@@ -1,6 +1,6 @@
 <template>
-	<div>
-		<section class="block md:flex justify-between my-0 md:my-6">
+	<div class="p-5">
+		<section class="block md:flex justify-between my-0 md:mb-4">
 			<div>
 				<div class=" my-0 md:my-4">
 					<UiTitleWithBack :title="$t('userLevel')" />

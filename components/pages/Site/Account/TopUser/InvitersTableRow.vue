@@ -1,6 +1,6 @@
 <template>
 	<tr
-		class="font-normal md:font-medium text-sm md:text-base py-3 border-b border-primary-gray-light dark:border-primary-gray-dark group relative"
+		class="font-normal md:font-medium text-sm md:text-base py-3 border-b border-primary-gray-light dark:border-primary-gray-dark group relative odd:bg-hover2-light dark:odd:bg-hover2-dark even:bg-background-light dark:even:bg-background-dark"
 	>
 		<td
 			class="text-base font-medium py-2"

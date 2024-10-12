@@ -188,4 +188,5 @@ export type {
 	GetBestListResponse,
 	GetAddressListRes,
 	AddressList,
+	UserContact,
 };

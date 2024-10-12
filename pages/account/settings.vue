@@ -1,6 +1,6 @@
 <template>
-	<div>
-		<div class="my-4">
+	<div class="p-5">
+		<div class="mb-4">
 			<UiTitleWithBack :title="$t('setting')" />
 		</div>
 

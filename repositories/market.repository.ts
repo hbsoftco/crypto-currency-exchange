@@ -9,6 +9,7 @@ import type {
 	MarketListByCategoryResponse,
 	MarketListResponse,
 	MarketListWithSparkLineChartResponse,
+	MarketsL16Response,
 	MarketsResponse,
 	MarketStateResponse,
 	MarketStatisticsChartsResponse } from '~/types/response/market.types';
@@ -26,6 +27,7 @@ type MarketRepository = {
 	getMarketList: (params: GetMarketListByCategoryParams) => Promise<MarketListResponse>;
 	likeMarket: (dto: FavoriteMarketDto) => Promise<CommonRes>;
 	dislikeMarket: (dto: FavoriteMarketDto) => Promise<CommonRes>;
+	getMarketListL16: (params: GetMarketsParams) => Promise<MarketsL16Response>;
 };
 
 export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): MarketRepository => ({
@@ -152,6 +154,25 @@ export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Mar
 			noAuth: false,
 			method: 'POST',
 			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getMarketListL16(
+		params: GetMarketsParams): Promise<MarketsL16Response> {
+		const query = new URLSearchParams();
+		Object.entries(params).forEach(([key, value]) => {
+			if (value !== undefined && value !== null && value.toString().trim() !== '') {
+				query.append(key, value);
+			}
+		});
+
+		const url = '/v1/market/routine/l16_f';
+		const response = await fetch<MarketsL16Response>(`${url}?${query.toString()}`, {
+			noAuth: true,
+			apiName: url,
+			queryParams: params,
+			method: 'GET',
 		} as CustomNitroFetchOptions);
 
 		return response;
