@@ -867,6 +867,9 @@ const persian = {
 	thirdPerson: 'نفر سوم',
 	liveChat: 'گفتگوی زنده',
 	subjects: 'موضوعات',
+	vipClubAction: 'اقدام برای باشگاه مشتریان ویژه',
+	anonymousUser: 'کاربر ناشناس',
+
 };
 
 export default persian;

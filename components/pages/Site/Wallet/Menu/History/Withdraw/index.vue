@@ -200,7 +200,7 @@
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
-import { formatDateToIranTime } from '~/utils/date-time.js';
+import { formatDateToIranTime } from '~/utils/date-time';
 import WithdrawDetailToman from '~/components/pages/Site/Wallet/Menu/History/Withdraw/WithdrawDetailToman.vue';
 import { withdrawRepository } from '~/repositories/withdraw.repository';
 import type { GetWithdrawParams, KeyValue } from '~/types/base.types';

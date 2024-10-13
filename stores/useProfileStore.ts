@@ -7,15 +7,15 @@ export const useProfileStore = defineStore('profile', () => {
 
 	const profile = ref<ProfilePair[]>([]);
 	const isProfileDataFetched = ref(false);
-	const loading = ref(false);
+	const profileLoading = ref<boolean>(false);
 	const error = ref<string | null>(null);
 
 	const authStore = useAuthStore();
 
 	const fetchProfile = async () => {
-		if (isProfileDataFetched.value || loading.value) return;
+		if (isProfileDataFetched.value || profileLoading.value) return;
 
-		loading.value = true;
+		profileLoading.value = true;
 		error.value = null;
 
 		try {
@@ -28,7 +28,7 @@ export const useProfileStore = defineStore('profile', () => {
 			console.error('Error fetching profile:', err);
 		}
 		finally {
-			loading.value = false;
+			profileLoading.value = false;
 		}
 	};
 
@@ -51,7 +51,7 @@ export const useProfileStore = defineStore('profile', () => {
 
 	return {
 		profile,
-		loading,
+		profileLoading,
 		error,
 		fetchProfile,
 		clearProfile,

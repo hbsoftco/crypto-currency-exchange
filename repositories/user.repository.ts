@@ -4,6 +4,7 @@ import type { GetAddressListRes, GetBankListResponse,
 	GetBestListResponse,
 	GetCommissionReceivedList, GetContactListResponse,
 	GetRewardReceivedListResponse,
+	ReferralBriefResponse,
 	UserProfileResponse } from '../types/response/user.types';
 
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
@@ -21,6 +22,7 @@ import type { CommonRes } from '~/types/response/common.types';
 type UserRepository = {
 	getProfile: () => Promise<UserProfileResponse>;
 	getCommissionReceivedList: (params: GetCommissionReceivedListParams) => Promise<GetCommissionReceivedList>;
+	getReferralBrief: (assessmentCurrencyId: string) => Promise<ReferralBriefResponse>;
 	getRewardReceivedList: (params: GetRewardReceivedListParams) => Promise<GetRewardReceivedListResponse>;
 	getBankAccList: (params: GetBankParams) => Promise<GetBankListResponse>;
 	getReferralBestList: (params: GetReferralBestListParams) => Promise<GetBestListResponse>;
@@ -48,6 +50,21 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 			noAuth: false,
 			apiName: url,
 			queryParams: params,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getReferralBrief(assessmentCurrencyId: string = '1'): Promise<ReferralBriefResponse> {
+		const query = new URLSearchParams(
+			Object.entries({ assessmentCurrencyId })
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/user/referral/brief';
+		const response = await fetch<ReferralBriefResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			apiName: url,
 			method: 'GET',
 		} as CustomNitroFetchOptions);
 

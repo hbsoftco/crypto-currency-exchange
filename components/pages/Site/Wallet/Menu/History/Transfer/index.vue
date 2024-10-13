@@ -215,7 +215,7 @@
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
-import { formatDateToIranTime } from '~/utils/date-time.js';
+import { formatDateToIranTime } from '~/utils/date-time';
 import { assetRepository } from '~/repositories/asset.repository';
 import type { GetInternalReceiveParams, KeyValue } from '~/types/base.types';
 import { DepositType } from '~/utils/enums/deposit.enum';

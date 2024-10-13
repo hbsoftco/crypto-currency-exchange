@@ -42,17 +42,17 @@
 				{{ $t("depositToman") }}
 			</UButton>
 			<ULink
-				class="flex items-center bg-transparency-light dark:bg-transparency-dark opacity-70 mx-1 px-8 py-2"
+				class="flex items-center bg-transparency-light dark:bg-transparency-dark opacity-70 mx-1 px-8 py-2 rounded"
 			>
 				<IconQR class="text-3xl mx-7 m1-2" />
 			</ULink>
 			<ULink
-				class="flex items-center bg-transparency-light dark:bg-transparency-dark opacity-70 mx-1  px-8 py-2"
+				class="flex items-center bg-transparency-light dark:bg-transparency-dark opacity-70 mx-1  px-8 py-2 rounded"
 			>
 				<IconPlayStore class="text-3xl mx-7 m1-2" />
 			</ULink>
 			<ULink
-				class="flex items-center bg-transparency-light dark:bg-transparency-dark opacity-70 mx-1 px-8 py-2"
+				class="flex items-center bg-transparency-light dark:bg-transparency-dark opacity-70 mx-1 px-8 py-2 rounded"
 			>
 				<IconApple class="text-3xl mx-7 m1-2" />
 			</ULink>

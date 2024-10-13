@@ -1,6 +1,9 @@
-import type { ProfilePair } from '~/types/response/profile.types';
+import type { KeyValue } from '~/types/base.types';
 
-export const getValueByKey = (array: ProfilePair[], key: string) => {
+export const getValueByKey = (array: KeyValue[], key: string) => {
+	if (!array.length) {
+		return null;
+	}
 	const foundItem = array.find((item) => item.key === key);
-	return foundItem ? foundItem.value || foundItem.value : null;
+	return foundItem ? (foundItem.value ? foundItem.value : null) || foundItem.value : null;
 };

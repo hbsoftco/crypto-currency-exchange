@@ -48,6 +48,7 @@ import ContactManagement from '~/components/pages/Site/Account/WhiteList/Contact
 definePageMeta({
 	layout: 'account',
 });
+
 const items = [
 	{
 		key: 'addressManagement',

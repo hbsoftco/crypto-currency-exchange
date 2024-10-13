@@ -200,7 +200,7 @@
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
-import { formatDateToIranTime } from '~/utils/date-time.js';
+import { formatDateToIranTime } from '~/utils/date-time';
 import DepositDetailToman from '~/components/pages/Site/Wallet/Menu/History/Deposit/DepositDetailToman.vue';
 import { depositRepository } from '~/repositories/deposit.repository';
 import type { GetDepositParams, KeyValue } from '~/types/base.types';

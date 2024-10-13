@@ -1,5 +1,11 @@
 <template>
-	<div class="py-4 p-5">
+	<div v-if="profileStore.profileLoading">
+		{{ $t('isLoading') }}...
+	</div>
+	<div
+		v-else
+		class="py-4 p-5"
+	>
 		<div class="flex pb-6 mb-4 border-b border-primary-gray-light dark:border-primary-gray-dark">
 			<div>
 				<div class="relative ml-4">
@@ -16,13 +22,13 @@
 
 			<div class="">
 				<div class="flex justify-start items-center mb-4">
-					<h5>{{ getValueByKey(profileData, 'NICKNAME') }}</h5>
+					<h5>{{ getValueByKey(profileData, 'NICKNAME') || $t('anonymousUser') }}</h5>
 					<div class="mx-2">
 						<IconPencil class="text-subtle-text-light dark:text-subtle-text-50 text-xl cursor-pointer" />
 					</div>
 					<div class="flex justify-start items-center bg-primary-yellow-light dark:bg-primary-yellow-dark rounded-full p-0.5 px-3">
 						<p class="dark:text-text-dark font-medium ml-2">
-							اقدام برای باشگاه مشتریان ویژه
+							{{ $t('vipClubAction') }}
 						</p>
 						<NuxtImg
 							src="/images/delete/gem.svg"
@@ -54,13 +60,9 @@
 						<p class="flex justify-start items-center">
 							<IconCopy
 								class="cursor-pointer text-xl text-subtle-text-light dark:text-subtle-text-50"
-								@click="copyText"
+								@click="copyText(useNumber(String(getValueByKey(profileData, 'UID'))))"
 							/>
-							<span
-								id="copy-text"
-								ref="textRef"
-								class="mr-2"
-							>{{ useNumber(String(getValueByKey(profileData, 'UID'))) }}</span>
+							<span class="mr-2">{{ useNumber(String(getValueByKey(profileData, 'UID'))) }}</span>
 						</p>
 					</div>
 
@@ -69,7 +71,7 @@
 							{{ $t('registrationTime') }}
 						</p>
 						<p class="flex justify-start items-center">
-							<span>{{ getValueByKey(profileData, 'REG_TIME') }}</span>
+							<span dir="ltr">{{ useNumber(formatDateToIranTime(getValueByKey(profileData, 'REG_TIME')!)) }}</span>
 						</p>
 					</div>
 
@@ -78,7 +80,7 @@
 							{{ $t('lastLogin') }}
 						</p>
 						<p class="flex justify-start items-center">
-							<span>{{ getValueByKey(profileData, 'LATEST_LOGIN_TIME') }}</span>
+							<span dir="ltr">{{ useNumber(formatDateToIranTime(getValueByKey(profileData, 'LATEST_LOGIN_TIME')!)) }}</span>
 						</p>
 					</div>
 				</div>
@@ -124,7 +126,7 @@
 
 							<ULink
 								to="/"
-								class="text-sm text-accent-blue font-medium"
+								class="text-sm text-primary-yellow-light dark:text-primary-yellow-dark font-medium"
 							>
 								{{ $t('assetDetails') }}
 							</ULink>
@@ -176,9 +178,12 @@
 						dir="ltr"
 					>
 						<p class="truncate text-ellipsis overflow-hidden pr-6">
-							https://www.mexc.com/en-US/auth/signup?inviteCode=1cUFo
+							<span>{{ referralCode ? `${referralLink}${referralCode}` : '...' }}</span>
 						</p>
-						<IconCopy class="cursor-pointer text-xl text-subtle-text-light dark:text-subtle-text-50" />
+						<IconCopy
+							class="cursor-pointer text-xl text-subtle-text-light dark:text-subtle-text-50"
+							@click="copyText(`${referralLink}${referralCode}`)"
+						/>
 					</div>
 				</div>
 
@@ -213,41 +218,45 @@ import IconCopy from '~/assets/svg-icons/menu/copy.svg';
 import type { KeyValue } from '~/types/base.types';
 import { getValueByKey } from '~/utils/find-value-by-key';
 import { useNumber } from '~/composables/useNumber';
+import { formatDateToIranTime } from '~/utils/date-time';
+import { userRepository } from '~/repositories/user.repository';
+import type { ReferralBriefItem } from '~/types/response/user.types';
 
 definePageMeta({
 	layout: 'account',
 });
 
+const { $api } = useNuxtApp();
+const userRepo = userRepository($api);
+
+const { copyText } = useClipboard();
+
 const profileStore = useProfileStore();
-const profileData: KeyValue[] = await profileStore.userProfile;
+await profileStore.fetchProfile();
+const profileData = ref<KeyValue[]>([]);
 
-onMounted(async () => {
-	await profileStore.fetchProfile();
-});
+const referralLink = useEnv('referralLink');
+const referralCode = ref<string | null>(null);
+const referralBriefLoading = ref<boolean>(false);
+const referralBrief = ref<ReferralBriefItem>();
+const getReferralBrief = async () => {
+	try {
+		referralBriefLoading.value = true;
 
-const textRef = ref<HTMLElement | null>(null);
+		const { result } = await userRepo.getReferralBrief('1');
+		referralBrief.value = result;
+		referralCode.value = result.refCode;
 
-const copyText = () => {
-	if (textRef.value) {
-		const toast = useToast();
-
-		const textToCopy = textRef.value.textContent || '';
-
-		navigator.clipboard.writeText(textToCopy)
-			.then(() => {
-				toast.add({
-					title: useT('copy'),
-					description: useT('codeCopiedSuccessfully'),
-					timeout: 5000,
-					color: 'green',
-				});
-			})
-			.catch((err: Error) => {
-				throw new Error(`${err}`);
-			});
+		referralBriefLoading.value = false;
 	}
-	else {
-		throw new Error(`Text element not found.`);
+	catch (error) {
+		referralBriefLoading.value = false;
+		console.log(error);
 	}
 };
+
+onMounted(async () => {
+	profileData.value = await profileStore.userProfile;
+	await getReferralBrief();
+});
 </script>

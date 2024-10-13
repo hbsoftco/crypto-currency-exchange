@@ -102,7 +102,7 @@
 
 <script setup lang="ts">
 import { sanitizedHtml } from '~/utils/html-sanitizer';
-import { formatDateToIranTime } from '~/utils/date-time.js';
+import { formatDateToIranTime } from '~/utils/date-time';
 import IconMessage from '~/assets/svg-icons/menu/message.svg';
 import { useNumber } from '~/composables/useNumber';
 

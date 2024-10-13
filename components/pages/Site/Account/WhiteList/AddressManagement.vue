@@ -118,11 +118,13 @@ const params = ref<GetAddressListParams>({
 const getAddressList = async () => {
 	try {
 		const { result } = await userRepo.getAddressList(params.value);
+		console.log(result.rows);
+
 		addressList.value = result.rows;
 		currentPage.value = result.totalCount;
 	}
 	catch (error) {
-		await getAddressList();
+		console.log('after error occurred');
 		console.log(error);
 	}
 };

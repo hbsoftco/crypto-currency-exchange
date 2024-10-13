@@ -148,7 +148,7 @@
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
-import { formatDateToIranTime } from '~/utils/date-time.js';
+import { formatDateToIranTime } from '~/utils/date-time';
 import { userRepository } from '~/repositories/user.repository';
 import type { GetCommissionReceivedListParams } from '~/types/base.types';
 import { Language } from '~/utils/enums/language.enum';

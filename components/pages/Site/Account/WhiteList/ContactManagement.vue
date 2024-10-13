@@ -96,7 +96,7 @@ const getContactList = async () => {
 		currentPage.value = result.totalCount;
 	}
 	catch (error) {
-		await getContactList();
+		// await getContactList();
 		console.log(error);
 	}
 };

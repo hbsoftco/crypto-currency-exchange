@@ -188,7 +188,7 @@
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
-import { formatDateToIranTime } from '~/utils/date-time.js';
+import { formatDateToIranTime } from '~/utils/date-time';
 import IconQrCode from '~/assets/svg-icons/profile/qrCode.svg';
 import DepositClaim from '~/components/pages/Site/Wallet/Menu/Deposit/DepositClaim.vue';
 import Invalidate from '~/components/pages/Site/Wallet/Menu/Deposit/Invalidate.vue';
