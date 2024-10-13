@@ -85,6 +85,40 @@ type GetLiveChatListResponse = {
 	};
 };
 
+type SubFaqItem = {
+	header: string;
+	content: string;
+	id: number;
+};
+
+type PathItem = {
+	id: number;
+	header: string;
+	level: number;
+};
+
+type SimilarItem = {
+	id: number;
+	header: string;
+};
+
+type FaqItem = {
+	id: number;
+	currencyId: number;
+	mediaId: number;
+	mediaUrl: string;
+	info: Info[];
+	subFaqs: SubFaqItem[];
+	tags: Tag[];
+	path: PathItem[];
+	similars: SimilarItem[];
+};
+
+type GetFaqRes = {
+	statusCode: number;
+	result: FaqItem;
+};
+
 export type {
 	GetRootListResponse,
 	RootList,
@@ -96,4 +130,5 @@ export type {
 	BuyItem,
 	GetLiveChatListResponse,
 	FAQ,
+	GetFaqRes,
 };

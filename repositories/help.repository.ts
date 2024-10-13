@@ -1,8 +1,8 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { GetFAQListParams, GetHowBuyListParams, GetRootListParams, GetSubjectLiveChatParams } from '~/types/base.types';
+import type { GetCurrencyParams, GetFAQListParams, GetHowBuyListParams, GetRootListParams, GetSubjectLiveChatParams } from '~/types/base.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
-import type { GetHowToBuyListResponse, GetLiveChatListResponse, GetRootListResponse, GetShortListResponse } from '~/types/response/help.types';
+import type { GetFaqRes, GetHowToBuyListResponse, GetLiveChatListResponse, GetRootListResponse, GetShortListResponse } from '~/types/response/help.types';
 
 type HelpRepository = {
 	getRootList: (params: GetRootListParams) => Promise<GetRootListResponse>;
@@ -10,6 +10,7 @@ type HelpRepository = {
 	getBuyList: (params: GetHowBuyListParams) => Promise<GetHowToBuyListResponse>;
 	getFAQList: (params: GetFAQListParams) => Promise<GetLiveChatListResponse>;
 	getSubjectList: (params: GetSubjectLiveChatParams) => Promise<GetLiveChatListResponse>;
+	getDetailList: (params: GetCurrencyParams) => Promise<GetFaqRes>;
 };
 
 export const helpRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): HelpRepository => ({
@@ -81,6 +82,21 @@ export const helpRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): HelpR
 
 		const url = '/v1/routine/help/before_live_chat_list';
 		const response = await fetch<GetLiveChatListResponse>(`${url}?${query.toString()}`, {
+			noAuth: true,
+			apiName: url,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getDetailList(params: GetCurrencyParams): Promise<GetFaqRes> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/routine/help/get';
+		const response = await fetch<GetFaqRes>(`${url}?${query.toString()}`, {
 			noAuth: true,
 			apiName: url,
 			method: 'GET',

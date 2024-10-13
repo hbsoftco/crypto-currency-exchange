@@ -17,7 +17,40 @@ type Ticket = {
 	regTime: string;
 };
 
+type FileItem = {
+	id: number;
+	fileId: number;
+	fileUrl: string;
+	writerUid: number;
+	writerUser: string;
+	regTime: string;
+	content: string;
+};
+
+type StoreAddChatRes = {
+	statusCode: number;
+	result: FileItem;
+};
+
+type ChatItem = {
+	id: number;
+	fileId: number;
+	fileUrl: string;
+	writerUid: number;
+	writerUser: string;
+	regTime: string;
+	content: string;
+};
+
+type GetChatListRes = {
+	statusCode: number;
+	result: ChatItem[];
+};
+
 export type {
 	StoreTicketRes,
 	Ticket,
+	StoreAddChatRes,
+	FileItem,
+	GetChatListRes,
 };

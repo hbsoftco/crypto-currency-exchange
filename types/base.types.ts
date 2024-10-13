@@ -275,6 +275,36 @@ type DeleteAddressListParams = {
 	withdrawId: string;
 };
 
+type GetAssetTotalParams = {
+	q1CurrencyId: string;
+	q2CurrencyId: string;
+	q3CurrencyId: string;
+	assetType: string;
+	boxMode: string;
+	miniAssetMode: string;
+};
+
+type GetPanelListParams = {
+	pnlCourseId: string;
+	currencyId?: string;
+	from?: string;
+	to?: string;
+	filterMode?: string;
+	sortMode?: string;
+	pageNumber?: string;
+	pageSize?: string;
+};
+
+type GetAssetBoxParams = {
+	q1CurrencyId: string;
+	q2CurrencyId: string;
+	q3CurrencyId: string;
+	maskedInfo: string;
+	assetType: string;
+	boxMode: string;
+	miniAssetMode: string;
+};
+
 export type {
 	GetReferralBestListParams,
 	GetRewardExposedParams,
@@ -314,4 +344,7 @@ export type {
 	DeleteContactListParams,
 	GetAddressListParams,
 	DeleteAddressListParams,
+	GetAssetTotalParams,
+	GetPanelListParams,
+	GetAssetBoxParams,
 };

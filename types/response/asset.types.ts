@@ -62,6 +62,57 @@ type GetMiscellaneousListResponse = {
 	};
 };
 
+type GetAssetTotalResponse = {
+	statusCode: number;
+	result: {
+		totalOnQ1: string;
+		totalOnQ2: string;
+		totalOnQ3: string;
+	};
+};
+
+type PortfolioItem = {
+	pid: number;
+	pcid: number;
+	pcName: string;
+	cid: number;
+	cSymbol: string;
+	boughtQnt: string;
+	boughtAvgPriceInUsd: string;
+	boughtCostUsd: number;
+	soldQnt: string;
+	soldAvgPriceInUsd: string;
+	soldIncomeUsd: number;
+	latestPnlAvgPerc: number;
+	latestPnlBasedAvgInUsd: number;
+	latestWeekAsJson: string;
+	startedTime: string;
+	finishedTime: string;
+	usdIndexPrice: string;
+};
+
+type GetPortfolioRes = {
+	statusCode: number;
+	result: {
+		totalCount: number;
+		rows: PortfolioItem[];
+	};
+};
+
+type BoxItem = {
+	boxId: number;
+	boxName: string;
+	usdValue: string;
+	q1Value: string;
+	q2Value: string;
+	q3Value: string;
+};
+
+type GetBoxRes = {
+	statusCode: number;
+	result: BoxItem;
+};
+
 export type {
 	GetAssetListResponse,
 	AssetItem,
@@ -69,4 +120,7 @@ export type {
 	GetMiscellaneousListResponse,
 	InternalReceive,
 	MiscellaneousList,
+	GetAssetTotalResponse,
+	GetPortfolioRes,
+	GetBoxRes,
 };

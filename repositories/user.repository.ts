@@ -16,7 +16,7 @@ import type { DeleteAddressListParams, DeleteContactListParams, GetAddressListPa
 	GetRewardReceivedListParams,
 	GetTraderBestListParams } from '~/types/base.types';
 import type { GetTraderBestListResponse } from '~/types/response/trader.types';
-import type { AddressSetDto, ContactSetDto } from '~/types/dto/user.dto';
+import type { AddCardBankSetDto, AddressSetDto, ContactSetDto, NickNameSetDto } from '~/types/dto/user.dto';
 import type { CommonRes } from '~/types/response/common.types';
 
 type UserRepository = {
@@ -33,6 +33,8 @@ type UserRepository = {
 	getAddressList: (params: GetAddressListParams) => Promise<GetAddressListRes>;
 	storeAddress: (params: AddressSetDto) => Promise<CommonRes>;
 	deleteAddress: (params: DeleteAddressListParams) => Promise<CommonRes>;
+	storeNickName: (params: NickNameSetDto) => Promise<CommonRes>;
+	storeBankAccAdd: (params: AddCardBankSetDto) => Promise<CommonRes>;
 };
 
 export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserRepository => ({
@@ -98,6 +100,17 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 			apiName: url,
 			queryParams: params,
 			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async storeBankAccAdd(dto: AddCardBankSetDto): Promise<CommonRes> {
+		const url = `/v1/user/bank/acc_add`;
+		const response = await fetch<CommonRes>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'POST',
+			body: dto,
 		} as CustomNitroFetchOptions);
 
 		return response;
@@ -220,6 +233,17 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 			apiName: url,
 			method: 'DELETE',
 			queryParams: params,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async storeNickName(dto: NickNameSetDto): Promise<CommonRes> {
+		const url = `/v1/user/profile/set_nickname`;
+		const response = await fetch<CommonRes>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'POST',
+			body: dto,
 		} as CustomNitroFetchOptions);
 
 		return response;

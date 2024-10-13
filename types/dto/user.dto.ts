@@ -17,7 +17,18 @@ type AddressSetDto = {
 	coldWallet: boolean;
 };
 
+type NickNameSetDto = {
+	nickName: string;
+};
+
+type AddCardBankSetDto = {
+	bankAccountTypeId: number;
+	cardNo: string;
+};
+
 export type {
 	ContactSetDto,
 	AddressSetDto,
+	NickNameSetDto,
+	AddCardBankSetDto,
 };
