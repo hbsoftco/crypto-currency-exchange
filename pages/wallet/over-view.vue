@@ -18,7 +18,11 @@
 					<h1 class="text-xl font-bold ml-2">
 						{{ $t('walletOverview') }}
 					</h1>
-					<IconEye class="text-xl cursor-pointer" />
+					<UIcon
+						:name="isAssetVisible ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
+						class="w-5 h-5 ml-2 cursor-pointer text-subtle-text-light dark:text-subtle-text-50"
+						@click="toggleAssetVisibility"
+					/>
 				</div>
 
 				<div class="flex justify-center md:justify-end mt-4 md:mt-0">
@@ -55,13 +59,15 @@
 						<div class="flex justify-between mt-4">
 							<span class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark">{{ $t('tomanValue') }}</span>
 							<div class="flex items-center">
-								<span class="text-base font-medium ml-1">{{ useNumber('۲۵.۰۰۰.۰۰۰') }}</span><span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('toman') }}</span>
+								<span class="text-base font-medium ml-1">{{ assetStore.assetTotalLoading ? '...' : (isAssetVisible ? useNumber(assetTotal?.totalOnQ1) : '***') }}</span>
+								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('toman') }}</span>
 							</div>
 						</div>
 						<div class="flex justify-between mt-4">
 							<span class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark">{{ $t('dollarValue') }}</span>
 							<div class="flex items-center">
-								<span class="text-base font-medium ml-1">{{ useNumber('۵.۰۰۰.۰۰۰') }}</span><span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('USD') }}</span>
+								<span class="text-base font-medium ml-1">{{ assetStore.assetTotalLoading ? '...' : (isAssetVisible ? useNumber(assetTotal?.totalOnQ2) : '***') }}</span>
+								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('USD') }}</span>
 							</div>
 						</div>
 					</div>
@@ -252,7 +258,6 @@
 </template>
 
 <script setup lang="ts">
-import IconEye from '~/assets/svg-icons/wallet/eye.svg';
 import IconWallet from '~/assets/svg-icons/menu/wallet.svg';
 import { useNumber } from '~/composables/useNumber';
 import IconArrowDownRed from '~/assets/svg-icons/arrow-down-red.svg';
@@ -265,6 +270,19 @@ import TransferModal from '~/components/pages/Site/Wallet/Menu/TransferModal.vue
 definePageMeta({
 	layout: 'wallet',
 });
+
+const assetStore = useAssetStore();
+const assetTotal = ref();
+
+onMounted(async () => {
+	assetTotal.value = await assetStore.getAssetTotal();
+});
+
+const isAssetVisible = ref(false);
+
+const toggleAssetVisibility = () => {
+	isAssetVisible.value = !isAssetVisible.value;
+};
 
 const rows = ref([
 	{ id: 1, date: '۱۵ فروردین ۱۴۰۲ - ۱۷:۴۵', price: '۲۵.۰۰۰.۰۰۰', fee: 'تتر', typeActivity: 'برداشت' },

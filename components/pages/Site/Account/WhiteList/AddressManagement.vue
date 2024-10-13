@@ -4,10 +4,12 @@
 			<div class="flex justify-between py-2">
 				<div class="ml-6 my-1 w-44">
 					<USelectMenu
-						v-model="docs"
-						:options="people"
+						v-model="srchBlockchain"
+						:options="netBlockchainList"
 						:placeholder="$t('networkType')"
-						option-attribute="value"
+						searchable
+						:searchable-placeholder="$t('search')"
+						option-attribute="blockchainName"
 						:ui="{
 							background: '',
 							color: {
@@ -97,12 +99,15 @@
 </template>
 
 <script setup lang="ts">
+import { currencyRepository } from '~/repositories/currency.repository';
 import { userRepository } from '~/repositories/user.repository';
 import type { GetAddressListParams } from '~/types/base.types';
+import type { NetBlockchainItem } from '~/types/response/currency.types';
 import type { AddressList } from '~/types/response/user.types';
 
 const { $api } = useNuxtApp();
 const userRepo = userRepository($api);
+const currencyRepo = currencyRepository($api);
 
 const currentPage = ref<number>(1);
 
@@ -115,28 +120,54 @@ const params = ref<GetAddressListParams>({
 	pageSize: '',
 });
 
+const srchBlockchain = ref();
+
+watch(
+	() => srchBlockchain.value,
+	async (newParams) => {
+		params.value.searchStatement = newParams.blockchainId;
+		await getAddressList();
+	},
+	{ deep: true },
+);
+
 const getAddressList = async () => {
 	try {
 		const { result } = await userRepo.getAddressList(params.value);
-		console.log(result.rows);
 
 		addressList.value = result.rows;
 		currentPage.value = result.totalCount;
 	}
 	catch (error) {
-		console.log('after error occurred');
+		console.log(error);
+	}
+};
+
+const netBlockchainListLoading = ref<boolean>(false);
+const netBlockchainList = ref<NetBlockchainItem[]>([]);
+const getNetBlockchainList = async () => {
+	try {
+		netBlockchainListLoading.value = true;
+
+		const { result } = await currencyRepo.getNetBlockchainList();
+
+		netBlockchainList.value = result;
+		netBlockchainListLoading.value = true;
+	}
+	catch (error) {
+		netBlockchainListLoading.value = true;
 		console.log(error);
 	}
 };
 
 onMounted(async () => {
-	await getAddressList();
+	await Promise.all([
+		getAddressList(),
+		getNetBlockchainList(),
+	]);
 });
 
 function onPageChange(newPage: number) {
 	currentPage.value = newPage;
 }
-
-const people = ['کارت ملی', 'پاسپورت', 'شناسنامه'];
-const docs = ref('');
 </script>

@@ -47,8 +47,20 @@ type CurrencyResponse = {
 	result: Currency;
 };
 
+type NetBlockchainItem = {
+	blockchainId: string;
+	blockchainName: string;
+};
+
+type NetBlockchainListResponse = {
+	statusCode: number;
+	result: NetBlockchainItem[];
+};
+
 export type {
 	Currency,
 	CurrencyResponse,
+	NetBlockchainListResponse,
+	NetBlockchainItem,
 	Link,
 };

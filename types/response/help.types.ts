@@ -131,4 +131,5 @@ export type {
 	GetLiveChatListResponse,
 	FAQ,
 	GetFaqRes,
+	FaqItem,
 };

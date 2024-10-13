@@ -10,7 +10,7 @@ type HelpRepository = {
 	getBuyList: (params: GetHowBuyListParams) => Promise<GetHowToBuyListResponse>;
 	getFAQList: (params: GetFAQListParams) => Promise<GetLiveChatListResponse>;
 	getSubjectList: (params: GetSubjectLiveChatParams) => Promise<GetLiveChatListResponse>;
-	getDetailList: (params: GetCurrencyParams) => Promise<GetFaqRes>;
+	getHelpData: (params: GetCurrencyParams) => Promise<GetFaqRes>;
 };
 
 export const helpRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): HelpRepository => ({
@@ -89,7 +89,7 @@ export const helpRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): HelpR
 
 		return response;
 	},
-	async getDetailList(params: GetCurrencyParams): Promise<GetFaqRes> {
+	async getHelpData(params: GetCurrencyParams): Promise<GetFaqRes> {
 		const query = new URLSearchParams(
 			Object.entries(params)
 				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),

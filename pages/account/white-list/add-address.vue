@@ -19,7 +19,7 @@
 					</div>
 					<div class="mt-10 w-full md:w-80">
 						<div>
-							<FormAaddress />
+							<AddNewAddress :net-blockchain-list="netBlockchainList" />
 						</div>
 					</div>
 					<div class="my-8">
@@ -32,15 +32,41 @@
 </template>
 
 <script setup lang="ts">
-import FormAaddress from '~/components/pages/Site/Account/WhiteList/FormAddress.vue';
+import AddNewAddress from '~/components/pages/Site/Account/WhiteList/AddNewAddress.vue';
 import ImportantPoint from '~/components/pages/Site/Account/WhiteList/ImportantPoint.vue';
+import { currencyRepository } from '~/repositories/currency.repository';
+import type { NetBlockchainItem } from '~/types/response/currency.types';
 
 definePageMeta({
 	layout: 'account-single',
 });
 
+const { $api } = useNuxtApp();
+const currencyRepo = currencyRepository($api);
+
+const netBlockchainListLoading = ref<boolean>(false);
+const netBlockchainList = ref<NetBlockchainItem[]>([]);
+const getNetBlockchainList = async () => {
+	try {
+		netBlockchainListLoading.value = true;
+
+		const { result } = await currencyRepo.getNetBlockchainList();
+
+		netBlockchainList.value = result;
+		netBlockchainListLoading.value = true;
+	}
+	catch (error) {
+		netBlockchainListLoading.value = true;
+		console.log(error);
+	}
+};
+
+onMounted(async () => {
+	await getNetBlockchainList();
+});
+
 const steps = [
-	{ label: 'مشخصات آدرس', completed: true, current: false },
-	{ label: 'تایید امنیتی', completed: true, current: false },
+	{ label: useT('addressDetails'), completed: false, current: true },
+	{ label: useT('securityConfirmation'), completed: false, current: false },
 ];
 </script>

@@ -16,23 +16,26 @@
 						<div
 							class="p-2 bg-background-light dark:bg-background-dark rounded-lg"
 						>
-							<div class="flex justify-start items-center">
+							<ULink
+								to="/wallet/over-view"
+								class="flex justify-start items-center"
+							>
 								<IconWallet class="text-2xl text-subtle-text-50 dark:text-subtle-text-50 mb-0 w-6 h-6 ml-2" />
 								<span class="text-subtle-text-light dark:text-subtle-text-dark text-sm mr-1">{{
 									$t("walletOverview")
 								}}</span>
-							</div>
+							</ULink>
 							<div class="flex items-center justify-end p-1">
 								<span
 									class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark ml-2"
 								>{{ $t("toman") }}</span>
-								<span class="text-base font-bold">۱.۲۰۰.۰۰۰</span>
+								<span class="text-base font-bold">{{ useNumber(assetTotal?.totalOnQ1) }}</span>
 							</div>
 							<div class="flex items-center justify-end p-1">
 								<span
 									class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark ml-2"
 								>USD</span>
-								<span class="text-base font-bold ml-2">۱،۲۲۰.۰۰</span>
+								<span class="text-base font-bold ml-2">{{ useNumber(assetTotal?.totalOnQ2) }}</span>
 								<span>=</span>
 							</div>
 						</div>
@@ -90,6 +93,7 @@
 </template>
 
 <script setup lang="ts">
+import { useNumber } from '~/composables/useNumber';
 import IconWallet from '~/assets/svg-icons/menu/wallet.svg';
 import IconArrowDownRed from '~/assets/svg-icons/arrow-down-red.svg';
 import IconArrowUpGreen from '~/assets/svg-icons/arrow-up-green.svg';
@@ -97,6 +101,13 @@ import IconOverView from '~/assets/svg-icons/menu/overview.svg';
 import IconAssets from '~/assets/svg-icons/menu/quick-menu/quick-trade.svg';
 import IconHistory from '~/assets/svg-icons/menu/quick-menu/transaction-history.svg';
 import IconPortfolio from '~/assets/svg-icons/menu/quick-menu/portfolio.svg';
+
+const assetStore = useAssetStore();
+const assetTotal = ref();
+
+onMounted(async () => {
+	assetTotal.value = await assetStore.getAssetTotal();
+});
 
 const menuItems = [
 	{

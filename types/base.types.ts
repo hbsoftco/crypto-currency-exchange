@@ -276,12 +276,12 @@ type DeleteAddressListParams = {
 };
 
 type GetAssetTotalParams = {
-	q1CurrencyId: string;
-	q2CurrencyId: string;
-	q3CurrencyId: string;
-	assetType: string;
-	boxMode: string;
-	miniAssetMode: string;
+	q1CurrencyId?: string;
+	q2CurrencyId?: string;
+	q3CurrencyId?: string;
+	assetType?: string;
+	boxMode?: string;
+	miniAssetMode?: string;
 };
 
 type GetPanelListParams = {

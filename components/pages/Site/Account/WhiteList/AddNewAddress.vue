@@ -2,14 +2,16 @@
 	<div>
 		<div class="mb-8">
 			<DropDown
+				v-if="netBlockchainList.length"
 				id="docs"
 				v-model="docs"
-				:options="people"
+				:options="netBlockchainList"
 				type="text"
 				input-class="text-right"
 				label="networkType"
 				placeholder=""
 				icon=""
+				:searchable="true"
 				color-type="transparent"
 			/>
 			<!-- :error-message="vbyEmail$.email.$error? $t('fieldIsRequired') : ''" -->
@@ -85,17 +87,17 @@
 
 <script setup lang="ts">
 import DropDown from '~/components/forms/DropDown.vue';
-// import IconCopy from '~/assets/svg-icons/menu/copy.svg';
 // import { useNumber } from '~/composables/useNumber';
 import TextareaFieldInput from '~/components/forms/TextareaFieldInput.vue';
 import OtpFieldInput from '~/components/forms/OtpFieldInput.vue';
+import type { NetBlockchainItem } from '~/types/response/currency.types';
+
+interface PropsDefinition {
+	netBlockchainList: NetBlockchainItem[];
+}
+
+defineProps<PropsDefinition>();
 
 const phoneOrEmail = ref<string>('');
-
-const people = [
-	{ key: 'national_id', value: 'کارت ملی' },
-	{ key: 'passport', value: 'پاسپورت' },
-	{ key: 'birth_certificate', value: 'شناسنامه' },
-];
 const docs = ref('');
 </script>

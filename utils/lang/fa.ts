@@ -878,6 +878,9 @@ const persian = {
 	settingAntiPhishing: 'تنظیم عبارت ضد فیشینگ',
 	settingAntiPhishingAlert: 'لطفاً از 1 تا 36 کاراکتر، بدون کاراکتر ویژه وارد کنید و از تنظیم رمزهایی که معمولاً استفاده می‌کنید، به عنوان کد ضد فیشینگ، خودداری کنید.',
 	sendCodePhone: 'ارسال کد به شماره موبایل',
+	addressDetails: 'مشخصات آدرس',
+	securityConfirmation: 'تایید امنیتی',
+
 };
 
 export default persian;

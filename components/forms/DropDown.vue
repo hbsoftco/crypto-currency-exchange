@@ -3,6 +3,9 @@
 		<USelectMenu
 			v-model="selected"
 			:options="options"
+			:searchable="searchable"
+			:searchable-placeholder="$t('search')"
+			:search-attributes="['value', 'blockchainName']"
 			@change="updateSelected"
 		>
 			<template #default="{ open }">
@@ -25,7 +28,9 @@
 						]"
 					>{{ $t(label) }}</span>
 					<span v-if="!selected">{{ $t(placeholder || label) }}</span>
-					<span v-else>{{ selectedOption?.value }}</span>
+					<span v-else-if="selectedOption">
+						{{ 'value' in selectedOption ? selectedOption.value : selectedOption?.blockchainName }}
+					</span>
 
 					<IconArrowDown
 						class="text-xl text-subtle-text-light dark:text-subtle-text-50 transition-all duration-200"
@@ -35,7 +40,9 @@
 			</template>
 
 			<template #option="{ option: item }">
-				<span class="truncate">{{ item.value }}</span>
+				<span class="truncate">
+					{{ 'value' in item ? item.value : item.blockchainName }}
+				</span>
 			</template>
 		</USelectMenu>
 		<div class="text-right">
@@ -50,24 +57,29 @@
 <script setup lang="ts">
 import IconArrowDown from '~/assets/svg-icons/arrow-down-red.svg';
 import type { KeyValue } from '~/types/base.types';
+import type { NetBlockchainItem } from '~/types/response/currency.types';
 
-interface Props {
+interface PropsDefinition {
 	modelValue: string | number;
-	options: KeyValue[];
+	options: KeyValue[] | NetBlockchainItem[];
 	label: string;
 	placeholder?: string;
 	required?: boolean;
 	disabled?: boolean;
 	colorType?: string;
 	errorMessage?: string;
+	searchable?: boolean;
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<PropsDefinition>(), {
+	searchable: false,
+});
+
 const emit = defineEmits(['update:modelValue']);
 
 const selected = ref(props.modelValue);
-const selectedOption = ref<KeyValue>();
-const options = ref<KeyValue[]>(props.options || []);
+const selectedOption = ref<KeyValue | NetBlockchainItem>();
+const options = ref<KeyValue[] | NetBlockchainItem[]>(props.options || []);
 
 watch(
 	() => props.modelValue,
@@ -76,9 +88,15 @@ watch(
 	},
 );
 
-const updateSelected = (value: KeyValue) => {
+const updateSelected = (value: KeyValue | NetBlockchainItem) => {
 	selectedOption.value = value;
-	selected.value = value.value;
-	emit('update:modelValue', value.key);
+	if ('key' in value) {
+		selected.value = value.value;
+		emit('update:modelValue', value.key);
+	}
+	else if ('blockchainId' in value) {
+		selected.value = value.blockchainName;
+		emit('update:modelValue', value.blockchainId);
+	}
 };
 </script>

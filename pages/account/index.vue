@@ -1,5 +1,8 @@
 <template>
-	<div v-if="profileStore.profileLoading">
+	<div
+		v-if="profileStore.profileLoading"
+		class="p-5"
+	>
 		{{ $t('isLoading') }}...
 	</div>
 	<div
@@ -117,22 +120,29 @@
 						<div class="flex justify-between items-center">
 							<h6 class="mb-4 text-base font-semibold flex justify-start items-center">
 								<span class="ml-4">{{ $t('totalValue') }}</span>
-								<!-- 'i-heroicons-eye-slash' : 'i-heroicons-eye'" -->
 								<UIcon
-									name="i-heroicons-eye-slash"
+									:name="isAssetVisible ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
 									class="w-4 h-4 ml-2 cursor-pointer text-subtle-text-light dark:text-subtle-text-50"
+									@click="toggleAssetVisibility"
 								/>
 							</h6>
 
 							<ULink
-								to="/"
+								to="/wallet/over-view"
 								class="text-sm text-primary-yellow-light dark:text-primary-yellow-dark font-medium"
 							>
 								{{ $t('assetDetails') }}
 							</ULink>
 						</div>
-						<p class="mb-4 text-sm">
-							0.00 USD ≈ 0 تومان
+						<p
+							class="mb-4 text-sm text-right"
+							dir="ltr"
+						>
+							<span>{{ assetStore.assetTotalLoading ? '...' : (isAssetVisible ? useNumber(assetTotal?.totalOnQ2) : '***') }}</span>
+							<span class="ml-1">USD</span>
+							<span class="mx-2">≈</span>
+							<span>{{ assetStore.assetTotalLoading ? '...' : (isAssetVisible ? useNumber(assetTotal?.totalOnQ1) : '***') }}</span>
+							<span class="mx-1">{{ $t('toman') }}</span>
 						</p>
 
 						<div>
@@ -229,6 +239,8 @@ definePageMeta({
 const { $api } = useNuxtApp();
 const userRepo = userRepository($api);
 
+const assetStore = useAssetStore();
+
 const { copyText } = useClipboard();
 
 const profileStore = useProfileStore();
@@ -255,8 +267,17 @@ const getReferralBrief = async () => {
 	}
 };
 
+const assetTotal = ref();
+
 onMounted(async () => {
 	profileData.value = await profileStore.userProfile;
 	await getReferralBrief();
+	assetTotal.value = await assetStore.getAssetTotal();
 });
+
+const isAssetVisible = ref(false);
+
+const toggleAssetVisibility = () => {
+	isAssetVisible.value = !isAssetVisible.value;
+};
 </script>

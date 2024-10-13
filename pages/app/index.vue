@@ -11,10 +11,10 @@
 						/>
 					</ULink>
 					<h1 class="mt-11 mb-6 text-2xl font-bold">
-						{{ $t('titleDownloadApp') }}
+						{{ helpData?.info[0].header }}
 					</h1>
 					<p class="text-xl font-bold">
-						{{ $t('textDownloadApp') }}
+						{{ helpData?.info[0].content }}
 					</p>
 					<div class="block md:flex items-center mt-11 mb-16">
 						<span class="text-xl font-bold">{{ $t('suggestDownloadApp') }}</span>
@@ -64,9 +64,32 @@
 </template>
 
 <script setup lang="ts">
+import { helpRepository } from '~/repositories/help.repository';
+import type { FaqItem } from '~/types/response/help.types';
+import { Language } from '~/utils/enums/language.enum';
 
+const { $api } = useNuxtApp();
+const helpRepo = helpRepository($api);
+
+const helpDataLoading = ref<boolean>(false);
+const helpData = ref<FaqItem>();
+
+const getHelpData = async () => {
+	try {
+		helpDataLoading.value = true;
+
+		const { result } = await helpRepo.getHelpData({ languageId: String(Language.PERSIAN), id: '6' });
+		helpData.value = result;
+
+		helpDataLoading.value = false;
+	}
+	catch (error) {
+		helpDataLoading.value = false;
+		console.log(error);
+	}
+};
+
+onMounted(async () => {
+	await getHelpData();
+});
 </script>
-
-<style scoped>
-
-</style>
