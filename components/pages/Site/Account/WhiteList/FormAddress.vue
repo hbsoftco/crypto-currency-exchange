@@ -34,7 +34,7 @@
 				type="text"
 				input-class="text-left"
 				label="memoPhrase"
-				placeholder="عبارت ممو برای برخی شبکه ها الزامی است."
+				placeholder=""
 				icon=""
 				dir="ltr"
 				color-type="transparent"
@@ -54,6 +54,22 @@
 				color-type="transparent"
 			/>
 		</div>
+		<div class="my-8">
+			<OtpFieldInput
+				id="verificationCodeText"
+				v-model="phoneOrEmail"
+				type="text"
+				input-class="text-left"
+				:label="$t('verification')"
+				placeholder=""
+				icon=""
+				dir="ltr"
+			/>
+
+			<ULink>
+				<span class="text-xs font-normal text-primary-yellow-light dark:text-primary-yellow-dark">{{ $t('sendCodePhone') }}</span>
+			</ULink>
+		</div>
 		<div>
 			<UButton
 				color="white"
@@ -72,6 +88,7 @@ import DropDown from '~/components/forms/DropDown.vue';
 // import IconCopy from '~/assets/svg-icons/menu/copy.svg';
 // import { useNumber } from '~/composables/useNumber';
 import TextareaFieldInput from '~/components/forms/TextareaFieldInput.vue';
+import OtpFieldInput from '~/components/forms/OtpFieldInput.vue';
 
 const phoneOrEmail = ref<string>('');
 

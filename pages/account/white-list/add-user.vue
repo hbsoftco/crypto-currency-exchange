@@ -4,7 +4,7 @@
 			<UContainer>
 				<div class="flex justify-between">
 					<div class="my-4">
-						<UiTitleWithBack :title="$t('addWhiteAddress')" />
+						<UiTitleWithBack :title="$t('addContact')" />
 					</div>
 					<ULink
 						to=""

@@ -869,7 +869,15 @@ const persian = {
 	subjects: 'موضوعات',
 	vipClubAction: 'اقدام برای باشگاه مشتریان ویژه',
 	anonymousUser: 'کاربر ناشناس',
-
+	numberUIDEmail: 'ایمیل / شماره تلفن / UID',
+	whatAntiPhishingCode: 'کد ضد فیشینگ چیست؟',
+	whatAntiPhishingCodeText: 'کد ضد فیشینگ رشته‌ای از کاراکترها است که می توانید تنظیم کنید تا به تمایز بین وب سایت/ایمیل بیت لند واقعی و تقلبی کمک کند.',
+	whereAntiPhishingCodeDisplayed: 'کد ضد فیشینگ در کجا نمایش داده می‌شود؟',
+	whereAntiPhishingCodeDisplayedText: 'پس از اینکه کد ضد فیشینگ با موفقیت تنظیم شد، ایمیلی از طرف بیت لند دریافت خواهید کرد که آرم کد ضد فیشینگ به آن الحاق شده است.',
+	whereAntiPhishingCodeDisplayedTextTwo: 'اگر کد موجود در ایمیل با کد واقعی شما مطابقت ندارد، ممکن است یک ایمیل فیشینگ دریافت کرده باشید.',
+	settingAntiPhishing: 'تنظیم عبارت ضد فیشینگ',
+	settingAntiPhishingAlert: 'لطفاً از 1 تا 36 کاراکتر، بدون کاراکتر ویژه وارد کنید و از تنظیم رمزهایی که معمولاً استفاده می‌کنید، به عنوان کد ضد فیشینگ، خودداری کنید.',
+	sendCodePhone: 'ارسال کد به شماره موبایل',
 };
 
 export default persian;
