@@ -90,8 +90,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-
 import IconNote from '~/assets/svg-icons/note.svg';
 import { helpRepository } from '~/repositories/help.repository';
 import type { GetFAQListParams, GetSubjectLiveChatParams } from '~/types/base.types';
