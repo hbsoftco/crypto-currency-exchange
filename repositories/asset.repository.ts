@@ -1,8 +1,8 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { GetAssetBoxParams, GetAssetListParams, GetAssetTotalParams, GetInternalReceiveParams, GetMiscellaneousListParams, GetPanelListParams } from '~/types/base.types';
+import type { GetAssetBoxParams, GetAssetListParams, GetAssetTotalParams, GetInternalReceiveParams, GetMiscellaneousListParams, GetPanelListParams, GetRecentListParams } from '~/types/base.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
-import type { GetAssetListResponse, GetAssetTotalResponse, GetBoxRes, GetInternalReceiveListResponse, GetMiscellaneousListResponse, GetPortfolioRes } from '~/types/response/asset.types';
+import type { GetAssetListResponse, GetAssetTotalResponse, GetBoxRes, GetInternalReceiveListResponse, GetMiscellaneousListResponse, GetPortfolioRes, GetRecentListRes } from '~/types/response/asset.types';
 
 type AssetRepository = {
 	getAssetList: (params: GetAssetListParams) => Promise<GetAssetListResponse>;
@@ -11,6 +11,7 @@ type AssetRepository = {
 	getAssetTotal: (params: GetAssetTotalParams) => Promise<GetAssetTotalResponse>;
 	getSpotPanelList: (params: GetPanelListParams) => Promise<GetPortfolioRes>;
 	getSpotBox: (params: GetAssetBoxParams) => Promise<GetBoxRes>;
+	getRecentList: (params: GetRecentListParams) => Promise<GetRecentListRes>;
 };
 
 export const assetRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AssetRepository => ({
@@ -105,6 +106,20 @@ export const assetRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Asse
 			noAuth: false,
 			apiName: url,
 			queryParams: params,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getRecentList(params: GetRecentListParams): Promise<GetRecentListRes> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/asset/common/tx_recent_list';
+		const response = await fetch<GetRecentListRes>(`${url}?${query.toString()}`, {
+			noAuth: false,
 			method: 'GET',
 		} as CustomNitroFetchOptions);
 

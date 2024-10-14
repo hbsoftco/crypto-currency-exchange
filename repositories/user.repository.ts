@@ -16,8 +16,8 @@ import type { DeleteAddressListParams, DeleteContactListParams, GetAddressListPa
 	GetRewardReceivedListParams,
 	GetTraderBestListParams } from '~/types/base.types';
 import type { GetTraderBestListResponse } from '~/types/response/trader.types';
-import type { AddCardBankSetDto, AddressSetDto, ContactSetDto, NickNameSetDto } from '~/types/dto/user.dto';
-import type { CommonRes } from '~/types/response/common.types';
+import type { AddCardBankSetDto, AddressSetDto, ContactSetDto, IdentificationResendDto, IdentificationSendDto, NickNameSetDto } from '~/types/dto/user.dto';
+import type { CommonRes, IdentificationRes } from '~/types/response/common.types';
 
 type UserRepository = {
 	getProfile: () => Promise<UserProfileResponse>;
@@ -35,6 +35,9 @@ type UserRepository = {
 	deleteAddress: (params: DeleteAddressListParams) => Promise<CommonRes>;
 	storeNickName: (params: NickNameSetDto) => Promise<CommonRes>;
 	storeBankAccAdd: (params: AddCardBankSetDto) => Promise<CommonRes>;
+	identificationResend: (params: IdentificationResendDto) => Promise<IdentificationRes>;
+	identificationSend: (params: IdentificationSendDto) => Promise<IdentificationRes>;
+
 };
 
 export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserRepository => ({
@@ -240,6 +243,28 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 	async storeNickName(dto: NickNameSetDto): Promise<CommonRes> {
 		const url = `/v1/user/profile/set_nickname`;
 		const response = await fetch<CommonRes>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async identificationResend(dto: IdentificationResendDto): Promise<IdentificationRes> {
+		const url = `/v1/user/identification/resend`;
+		const response = await fetch<IdentificationRes>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async identificationSend(dto: IdentificationSendDto): Promise<IdentificationRes> {
+		const url = `/v1/user/identification/send`;
+		const response = await fetch<IdentificationRes>(`${url}`, {
 			noAuth: false,
 			apiName: url,
 			method: 'POST',

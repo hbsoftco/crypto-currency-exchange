@@ -305,6 +305,12 @@ type GetAssetBoxParams = {
 	miniAssetMode: string;
 };
 
+type GetRecentListParams = {
+	type: string;
+	directionType: string;
+	rowCount: string;
+};
+
 export type {
 	GetReferralBestListParams,
 	GetRewardExposedParams,
@@ -347,4 +353,5 @@ export type {
 	GetAssetTotalParams,
 	GetPanelListParams,
 	GetAssetBoxParams,
+	GetRecentListParams,
 };

@@ -113,6 +113,24 @@ type GetBoxRes = {
 	result: BoxItem;
 };
 
+type RecentItem = {
+	id: number;
+	isOutput: boolean;
+	factorNo: string;
+	txCode: string;
+	currencyId: number;
+	value: string;
+	doneTime: string;
+};
+
+type GetRecentListRes = {
+	statusCode: number;
+	result: {
+		totalCount: number;
+		rows: RecentItem[];
+	};
+};
+
 export type {
 	GetAssetListResponse,
 	AssetItem,
@@ -123,4 +141,5 @@ export type {
 	GetAssetTotalResponse,
 	GetPortfolioRes,
 	GetBoxRes,
+	GetRecentListRes,
 };

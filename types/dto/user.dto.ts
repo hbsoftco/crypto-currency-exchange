@@ -26,9 +26,20 @@ type AddCardBankSetDto = {
 	cardNo: string;
 };
 
+type IdentificationResendDto = {
+	lastVerificationId: number;
+	resendType: string;
+};
+
+type IdentificationSendDto = {
+	sendType: string;
+};
+
 export type {
 	ContactSetDto,
 	AddressSetDto,
 	NickNameSetDto,
 	AddCardBankSetDto,
+	IdentificationResendDto,
+	IdentificationSendDto,
 };

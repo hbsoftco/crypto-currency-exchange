@@ -10,7 +10,15 @@ type KeyValueRes = {
 	result: KeyValue[];
 };
 
+type IdentificationRes = {
+	statusCode: number;
+	result: {
+		verificationId: number;
+	};
+};
+
 export type {
 	CommonRes,
 	KeyValueRes,
+	IdentificationRes,
 };
