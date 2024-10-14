@@ -1,3 +1,5 @@
+import ManageWhiteList from "~/pages/account/security/manage-white-list.vue";
+
 const persian = {
 	welcome: 'خوش آمدید',
 	login: 'ورود',
@@ -880,6 +882,28 @@ const persian = {
 	sendCodePhone: 'ارسال کد به شماره موبایل',
 	addressDetails: 'مشخصات آدرس',
 	securityConfirmation: 'تایید امنیتی',
+	settingPinCode: 'تنظیم پین کد برداشت',
+	settingPinCodeAlert: 'لطفاً ۶ کاراکتر عددی برای پین کد خود در قسمت برداشت انتخاب نمایید. این قسمت امنیت دارایی شما را افزایش می دهد.',
+	save: 'ذخیره',
+	verificationCodeSentEmailText: 'لطفا کد ارسالی به ali****@***.com وارد کنید',
+	ManageWhiteListIp: 'مدیریت لیست سفید IP',
+	listAllowedIps: 'لیست IP های مجاز',
+	howSetupIPUseSystem: 'نحوه تنظیم IP  مجاز برای استفاده از سیستم چگونه است ؟',
+	howSetupIPUseSystemText: 'شما میتوانید تا ۳۰ IP اضافه کنید، برای اضافه کردن بیش از یک IP جداگانه میتوانید IP آدرس ها را با علامت کاما جدا کنید.',
+	manageListWhiteIP: '1.1.1.1, 12.13.14.15, 31.32.33.34 ,1.1.1.1, 12.13.14.15, 31.32.33.34, 1.1.1.1, 12.13.14.15, 31.32.33.34',
+	example: 'مثال',
+	IPs: 'IPs',
+	changeEmailRegisterMobile: 'تغییر آدرس ایمیل- تغییر موبایل- ثبت ایمیل- ثبت موبایل',
+	notifChangeEmail: 'پس از تغییر آدرس ایمیل، هیچ برداشت یا معامله ای تا ۲۴ ساعت برای شما مجاز نخواهد بود !',
+	confirmCode2FA: 'کد تایید 2FA',
+	confirmCodePreviousEmail: 'کد تایید به ایمیل قبلی',
+	confirmCodeNewEmail: 'کد تایید به ایمیل جدید',
+	newEmail: 'ایمیل جدید',
+	newPhoneNumber: 'شماره موبایل جدید',
+	confirmCodeMessageNewMobile: 'کد تایید پیامکی به موبایل جدید',
+	confirmCodeMessagePreviousMobile: 'کد تایید پیامکی به موبایل قبلی',
+	changePasswordLogin: 'تغییر رمز ورود',
+	previousPassword: 'رمز عبور قبلی',
 
 };
 

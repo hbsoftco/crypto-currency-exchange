@@ -8,21 +8,18 @@
 		</div>
 		<div class="my-6">
 			<p class="text-sm font-bold text-justify">
-				{{ $t('whatAntiPhishingCode') }}
+				{{ $t('howSetupIPUseSystem') }}
 			</p>
 			<p class="mt-1 text-sm font-normal text-justify">
-				{{ $t('whatAntiPhishingCodeText') }}
+				{{ $t('howSetupIPUseSystemText') }}
 			</p>
 		</div>
 		<div class="my-6">
-			<p class="text-sm font-bold text-justify">
-				{{ $t('whereAntiPhishingCodeDisplayed') }}
+			<p class="text-sm font-normal text-justify">
+				{{ $t('example') }}
 			</p>
-			<p class="mt-1 text-sm font-normal text-justify">
-				{{ $t('whereAntiPhishingCodeDisplayedText') }}
-			</p>
-			<p class="mt-1 text-sm font-normal text-justify">
-				{{ $t('whereAntiPhishingCodeDisplayedTextTwo') }}
+			<p class="mt-1 text-sm font-normal text-left">
+				{{ $t('manageListWhiteIP') }}
 			</p>
 		</div>
 		<div class="flex justify-between mt-10 mb-6">
