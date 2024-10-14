@@ -104,8 +104,6 @@ export const assetRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Asse
 		const url = '/v1/asset/box/brief';
 		const response = await fetch<GetBoxRes>(`${url}?${query.toString()}`, {
 			noAuth: false,
-			apiName: url,
-			queryParams: params,
 			method: 'GET',
 		} as CustomNitroFetchOptions);
 
