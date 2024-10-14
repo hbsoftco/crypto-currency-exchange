@@ -134,6 +134,7 @@ type GetRecentListRes = {
 export type {
 	GetAssetListResponse,
 	AssetItem,
+	RecentItem,
 	GetInternalReceiveListResponse,
 	GetMiscellaneousListResponse,
 	InternalReceive,

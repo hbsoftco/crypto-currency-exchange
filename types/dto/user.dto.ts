@@ -9,7 +9,7 @@ type ContactSetDto = {
 type AddressSetDto = {
 	verificationId: number;
 	verificationCode: string ;
-	v2FACode: string;
+	v2FACode?: string;
 	blockchainId: number;
 	address: string;
 	description: string;

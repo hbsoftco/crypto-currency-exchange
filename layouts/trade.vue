@@ -7,6 +7,7 @@
 		</div>
 		<LayoutsTradeFooter />
 		<UiToast />
+		<UModals />
 	</div>
 </template>
 

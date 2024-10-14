@@ -67,12 +67,17 @@
 							<td class="text-sm font-normal py-2">
 								{{ row.memo }}
 							</td>
-							<td class="text-sm font-normal py-2 text-accent-red flex items-center cursor-pointer">
-								{{ $t('delete') }}
-								<UIcon
-									name="heroicons:x-mark"
-									class="w-3 h-3 mr-1"
-								/>
+							<td class="text-sm font-normal py-2 text-accent-red flex items-center">
+								<span
+									class="cursor-pointer"
+									@click="openDeleteModal(String(row.id))"
+								>
+									{{ $t('delete') }}
+									<UIcon
+										name="heroicons:x-mark"
+										class="w-3 h-3 mr-1"
+									/>
+								</span>
 							</td>
 						</tr>
 					</tbody>
@@ -99,6 +104,7 @@
 </template>
 
 <script setup lang="ts">
+import ConfirmModal from '~/components/ui/ConfirmModal.vue';
 import { currencyRepository } from '~/repositories/currency.repository';
 import { userRepository } from '~/repositories/user.repository';
 import type { GetAddressListParams } from '~/types/base.types';
@@ -108,6 +114,9 @@ import type { AddressList } from '~/types/response/user.types';
 const { $api } = useNuxtApp();
 const userRepo = userRepository($api);
 const currencyRepo = currencyRepository($api);
+
+const toast = useToast();
+const modal = useModal();
 
 const currentPage = ref<number>(1);
 
@@ -156,6 +165,55 @@ const getNetBlockchainList = async () => {
 	}
 	catch (error) {
 		netBlockchainListLoading.value = true;
+		console.log(error);
+	}
+};
+
+const deleteAddressLoading = ref<boolean>(false);
+const deleteAddress = async (id: string) => {
+	try {
+		deleteAddressLoading.value = true;
+
+		await userRepo.deleteAddress({ withdrawId: id });
+
+		toast.add({
+			title: useT('operationSuccess'),
+			id: 'modal-success',
+			timeout: 5000,
+			color: 'green',
+		});
+
+		await getAddressList();
+		modal.close();
+
+		deleteAddressLoading.value = false;
+	}
+	catch (error) {
+		deleteAddressLoading.value = false;
+		console.log(error);
+	}
+};
+
+const openDeleteModal = (id: string) => {
+	try {
+		modal.open(ConfirmModal, {
+			onSuccess() {
+				deleteAddress(id);
+			},
+
+			successBtn: useT('yesDeleteIt'),
+			closeBtn: useT('cancelAction'),
+			title: useT('deleteAddress'),
+			body: useT('areYouSure'),
+			successLoadingBtn: deleteAddressLoading.value,
+			overlay: true,
+
+			onClose() {
+				modal.close();
+			},
+		});
+	}
+	catch (error) {
 		console.log(error);
 	}
 };

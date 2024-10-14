@@ -16,7 +16,7 @@
 			<div class="w-full overflow-y-scroll">
 				<table class="min-w-full w-full py-6 text-right">
 					<thead>
-						<tr class="py-2 bg-primary-gray-light dark:bg-primary-gray-dark">
+						<tr class="bg-primary-gray-light dark:bg-primary-gray-dark">
 							<th class="text-xs font-normal py-2" />
 							<th class="text-xs font-normal py-2">
 								{{ $t('price') }}
@@ -72,8 +72,6 @@ const rowsTable = ref([
 	{ id: 3, title: useT('lockedVitDra'), dollarValue: '۲۵.۰۰۰.۰۰۰', tomanValue: '۲۵.۰۰۰.۰۰۰', persent: '20%' },
 
 ]);
-
-// const neutralMarketsItems = ref([]);
 
 const neutralPieOptions = computed(() => ({
 	title: {

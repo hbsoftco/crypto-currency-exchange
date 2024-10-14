@@ -5,13 +5,16 @@ export const useIdentification = () => {
 	const { $api } = useNuxtApp();
 	const userRepo = userRepository($api);
 
-	const identificationCodeLoading = ref(false);
+	const identificationCodeLoading = ref<boolean>(false);
+	const identificationId = ref<number>();
 	const getIdentificationCode = async (sendType: string) => {
 		identificationCodeLoading.value = true;
 		try {
 			const dto = ref<IdentificationSendDto>({ sendType });
 			const { result } = await userRepo.getIdentificationCode(dto.value);
 			identificationCodeLoading.value = false;
+			identificationId.value = result.verificationId;
+
 			return result.verificationId;
 		}
 		catch (error) {
@@ -25,5 +28,6 @@ export const useIdentification = () => {
 	return {
 		identificationCodeLoading,
 		getIdentificationCode,
+		identificationId,
 	};
 };

@@ -31,6 +31,7 @@
 			</div>
 		</div>
 		<UiToast />
+		<UModals />
 	</div>
 </template>
 

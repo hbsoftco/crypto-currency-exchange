@@ -94,6 +94,7 @@
 		<section class="my-10">
 			<UAccordion
 				:items="items"
+				:default-open="true"
 				:ui="{
 					default: {
 						class: 'text-base font-bold px-28 py-4 mt-2 bg-hover-light dark:bg-hover-dark hover:bg-hover-light hover:dark:bg-hover-dark text-black dark:text-white',

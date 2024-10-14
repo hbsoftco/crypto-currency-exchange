@@ -22,6 +22,7 @@
 			class="block md:hidden"
 		/>
 		<UiToast />
+		<UModals />
 	</div>
 </template>
 

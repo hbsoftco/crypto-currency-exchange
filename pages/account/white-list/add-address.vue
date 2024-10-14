@@ -19,7 +19,10 @@
 					</div>
 					<div class="mt-10 w-full md:w-80">
 						<div>
-							<AddNewAddress :net-blockchain-list="netBlockchainList" />
+							<AddNewAddress
+								:net-blockchain-list="netBlockchainList"
+								@state="checkState"
+							/>
 						</div>
 					</div>
 					<div class="my-8">
@@ -65,8 +68,15 @@ onMounted(async () => {
 	await getNetBlockchainList();
 });
 
-const steps = [
+const checkState = () => {
+	steps.value[0].completed = true;
+	steps.value[0].current = false;
+
+	steps.value[1].current = true;
+};
+
+const steps = ref([
 	{ label: useT('addressDetails'), completed: false, current: true },
 	{ label: useT('securityConfirmation'), completed: false, current: false },
-];
+]);
 </script>

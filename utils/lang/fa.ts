@@ -901,6 +901,13 @@ const persian = {
 	confirmCodeMessagePreviousMobile: 'کد تایید پیامکی به موبایل قبلی',
 	changePasswordLogin: 'تغییر رمز ورود',
 	previousPassword: 'رمز عبور قبلی',
+	saveAddress: 'ثبت آدرس',
+	newAddressSuccess: 'آدرس جدید با موفقیت ثبت شد',
+	areYouSure: 'آیا شما مطمئن هستید؟',
+	deleteAddress: 'حذف آدرس',
+	yesDeleteIt: 'بله، حذف کن',
+	operationSuccess: 'عملیات با موفقیت انجام شد',
+	cancelAction: 'لغو عملیات',
 
 };
 
