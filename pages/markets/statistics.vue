@@ -401,6 +401,10 @@ const neutralPieOptions = computed(() => ({
 			type: 'pie',
 			radius: ['40%', '65%'],
 			avoidLabelOverlap: false,
+			itemStyle: {
+				borderRadius: 5,
+				borderWidth: 2,
+			},
 			label: {
 				show: true,
 				position: 'inside',

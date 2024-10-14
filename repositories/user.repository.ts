@@ -36,7 +36,7 @@ type UserRepository = {
 	storeNickName: (params: NickNameSetDto) => Promise<CommonRes>;
 	storeBankAccAdd: (params: AddCardBankSetDto) => Promise<CommonRes>;
 	identificationResend: (params: IdentificationResendDto) => Promise<IdentificationRes>;
-	identificationSend: (params: IdentificationSendDto) => Promise<IdentificationRes>;
+	getIdentificationCode: (params: IdentificationSendDto) => Promise<IdentificationRes>;
 
 };
 
@@ -262,7 +262,7 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
-	async identificationSend(dto: IdentificationSendDto): Promise<IdentificationRes> {
+	async getIdentificationCode(dto: IdentificationSendDto): Promise<IdentificationRes> {
 		const url = `/v1/user/identification/send`;
 		const response = await fetch<IdentificationRes>(`${url}`, {
 			noAuth: false,

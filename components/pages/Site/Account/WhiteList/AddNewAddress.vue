@@ -3,8 +3,8 @@
 		<div class="mb-8">
 			<DropDown
 				v-if="netBlockchainList.length"
-				id="docs"
-				v-model="docs"
+				id="blockchainId"
+				v-model="dto.blockchainId"
 				:options="netBlockchainList"
 				type="text"
 				input-class="text-right"
@@ -18,8 +18,8 @@
 		</div>
 		<div class="my-8">
 			<FormsFieldInput
-				id="phoneOrEmail"
-				v-model="phoneOrEmail"
+				id="address"
+				v-model="dto.address"
 				type="text"
 				input-class="text-left"
 				label="withdrawalAddress"
@@ -31,8 +31,8 @@
 		</div>
 		<div class="my-8">
 			<FormsFieldInput
-				id="phoneOrEmail"
-				v-model="phoneOrEmail"
+				id="memo"
+				v-model="dto.memo"
 				type="text"
 				input-class="text-left"
 				label="memoPhrase"
@@ -45,8 +45,8 @@
 
 		<div class="mb-8 text-right">
 			<TextareaFieldInput
-				id="content"
-				v-model="phoneOrEmail"
+				id="description"
+				v-model="dto.description"
 				type="text"
 				input-class="text-right"
 				label="description"
@@ -60,6 +60,7 @@
 			<OtpFieldInput
 				id="verificationCodeText"
 				v-model="phoneOrEmail"
+				color-type="transparent"
 				type="text"
 				input-class="text-left"
 				:label="$t('verification')"
@@ -87,10 +88,10 @@
 
 <script setup lang="ts">
 import DropDown from '~/components/forms/DropDown.vue';
-// import { useNumber } from '~/composables/useNumber';
 import TextareaFieldInput from '~/components/forms/TextareaFieldInput.vue';
 import OtpFieldInput from '~/components/forms/OtpFieldInput.vue';
 import type { NetBlockchainItem } from '~/types/response/currency.types';
+import type { AddressSetDto } from '~/types/dto/user.dto';
 
 interface PropsDefinition {
 	netBlockchainList: NetBlockchainItem[];
@@ -98,6 +99,16 @@ interface PropsDefinition {
 
 defineProps<PropsDefinition>();
 
+const dto = ref<AddressSetDto>({
+	verificationId: 0,
+	verificationCode: '',
+	v2FACode: '',
+	blockchainId: 0,
+	address: '',
+	description: '',
+	memo: '',
+	coldWallet: false,
+});
+
 const phoneOrEmail = ref<string>('');
-const docs = ref('');
 </script>

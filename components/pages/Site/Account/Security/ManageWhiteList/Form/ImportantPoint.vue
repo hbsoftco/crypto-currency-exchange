@@ -19,7 +19,7 @@
 				{{ $t('example') }}
 			</p>
 			<p class="mt-1 text-sm font-normal text-left">
-				{{ $t('manageListWhiteIP') }}
+				1.1.1.1, 12.13.14.15, 31.32.33.34 ,1.1.1.1, 12.13.14.15, 31.32.33.34, 1.1.1.1, 12.13.14.15, 31.32.33.34
 			</p>
 		</div>
 		<div class="flex justify-between mt-10 mb-6">

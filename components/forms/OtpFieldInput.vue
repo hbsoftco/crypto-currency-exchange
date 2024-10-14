@@ -40,7 +40,8 @@
 
 			<label
 				:for="id"
-				class="absolute text-sm font-medium text-text-dark dark:text-text-light duration-300 transform -translate-y-5 scale-78 top-3 z-10 origin-[0] bg-background-light cursor-text dark:bg-background-dark px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-78 peer-focus:-translate-y-5 right-2 rounded-lg"
+				:class="[colorType ? (colorType === 'transparent' ? 'bg-primary-gray-light dark:bg-primary-gray-dark' : 'bg-background-light dark:bg-background-dark') : 'bg-background-light dark:bg-background-dark']"
+				class="absolute text-sm font-medium text-text-dark dark:text-text-light duration-300 transform -translate-y-5 scale-78 top-3 z-10 origin-[0] cursor-text px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-78 peer-focus:-translate-y-5 right-2 rounded-lg"
 			>{{ $t(label) }}</label>
 		</div>
 		<div
@@ -115,6 +116,7 @@ interface PropsDefinition {
 	labelClass?: string;
 	icon?: string;
 	errorMessage?: string;
+	colorType?: string;
 	countDownState?: boolean;
 }
 

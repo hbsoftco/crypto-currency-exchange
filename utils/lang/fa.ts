@@ -1,5 +1,3 @@
-import ManageWhiteList from "~/pages/account/security/manage-white-list.vue";
-
 const persian = {
 	welcome: 'خوش آمدید',
 	login: 'ورود',
@@ -889,8 +887,7 @@ const persian = {
 	ManageWhiteListIp: 'مدیریت لیست سفید IP',
 	listAllowedIps: 'لیست IP های مجاز',
 	howSetupIPUseSystem: 'نحوه تنظیم IP  مجاز برای استفاده از سیستم چگونه است ؟',
-	howSetupIPUseSystemText: 'شما میتوانید تا ۳۰ IP اضافه کنید، برای اضافه کردن بیش از یک IP جداگانه میتوانید IP آدرس ها را با علامت کاما جدا کنید.',
-	manageListWhiteIP: '1.1.1.1, 12.13.14.15, 31.32.33.34 ,1.1.1.1, 12.13.14.15, 31.32.33.34, 1.1.1.1, 12.13.14.15, 31.32.33.34',
+	howSetupIPUseSystemText: 'شما میتوانید تا ۳۰ IP اضافه کنید، برای اضافه کردن بیش از یک IP جداگانه میتوانید IP آدرس‌ها را با علامت کاما جدا کنید.',
 	example: 'مثال',
 	IPs: 'IPs',
 	changeEmailRegisterMobile: 'تغییر آدرس ایمیل- تغییر موبایل- ثبت ایمیل- ثبت موبایل',

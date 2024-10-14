@@ -9,7 +9,7 @@
 				<!-- Circle -->
 				<div
 					:class="[
-						'w-4 h-4 flex items-center justify-center rounded-full text-white',
+						'w-4 h-4 flex items-center justify-center rounded-full',
 						step.completed ? 'bg-yellow-500' : step.current ? 'bg-yellow-500' : 'bg-gray-500',
 					]"
 				/>
@@ -27,7 +27,7 @@
 				<span
 					:class="[
 						'text-sm font-medium',
-						step.completed ? 'text-yellow-500' : step.current ? 'text-white' : 'text-gray-500',
+						step.completed ? 'text-yellow-500' : step.current ? '' : 'text-gray-500',
 					]"
 				>
 					{{ step.label }}

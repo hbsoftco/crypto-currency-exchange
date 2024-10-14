@@ -85,64 +85,7 @@
 						</div>
 					</div>
 					<div class="mt-2">
-						<table class="min-w-full py-6 text-right">
-							<thead>
-								<tr class="pb-2 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark">
-									<th class="text-xs font-normal">
-										{{ $t('date1') }}
-									</th>
-									<th class="text-xs font-normal">
-										{{ $t('price') }}
-									</th>
-									<th class=" text-xs font-normal">
-										{{ $t('fee') }}
-									</th>
-									<th class="text-xs font-normal text-left">
-										{{ $t('typeActivity') }}
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr
-									v-for="row in rows"
-									:key="row.id"
-									class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"
-								>
-									<td class="text-sm font-normal pt-2">
-										{{ useNumber(row.date) }}
-									</td>
-									<td class="text-sm font-normal pt-2">
-										<div>
-											<span>{{ useNumber(row.price) }}</span>
-											<span class="text-subtle-text-light dark:text-subtle-text-dark mr-1">
-												{{ $t('toman') }}
-											</span>
-										</div>
-									</td>
-									<td class="text-sm font-normal pt-2">
-										{{ $t(row.fee) }}
-									</td>
-									<td
-										class="text-sm font-normal pt-2 flex justify-end"
-									>
-										<span
-											class="ml-1"
-											:class="row.typeActivity == 'برداشت' ? 'text-accent-red' : 'text-accent-green'"
-										>
-											{{ $t(row.typeActivity) }}
-										</span>
-										<IconArrowUpGreen
-											v-if="row.typeActivity=='واریز'"
-											class="text-accent-green"
-										/>
-										<IconArrowDownRed
-											v-if="row.typeActivity=='برداشت'"
-											class="text-accent-red"
-										/>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+						<RecentTransactionsList />
 					</div>
 				</div>
 			</div>
@@ -174,85 +117,13 @@
 				</template>
 
 				<template #getting-started>
-					<div class="grid grid-cols-1 md:grid-cols-2 my-4">
-						<div class="">
-							chart
-						</div>
-						<div class="w-full overflow-y-scroll">
-							<table class="min-w-full w-full py-6 text-right">
-								<thead>
-									<tr class="py-2 bg-primary-gray-light dark:bg-primary-gray-dark">
-										<th class="text-xs font-normal py-2" />
-										<th class="text-xs font-normal py-2">
-											{{ $t('price') }}
-										</th>
-										<th class="text-xs font-normal py-2">
-											{{ $t('fee') }}
-										</th>
-										<th class="text-xs font-normal text-left py-2" />
-									</tr>
-								</thead>
-								<tbody>
-									<tr
-										v-for="row in rowsTable"
-										:key="row.id"
-										class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark last:border-none"
-									>
-										<td class="text-sm font-normal py-4">
-											{{ useNumber(row.title) }}
-										</td>
-										<td class="text-sm font-normal py-4">
-											<div>
-												<span>{{ useNumber(row.dollarValue) }}</span>
-												<span class="text-subtle-text-light dark:text-subtle-text-dark mr-1">
-													{{ $t('USD') }}
-												</span>
-											</div>
-										</td>
-										<td class="text-sm font-normal py-4">
-											<div>
-												<span>{{ useNumber(row.tomanValue) }}</span>
-												<span class="text-subtle-text-light dark:text-subtle-text-dark mr-1">
-													{{ $t('toman') }}
-												</span>
-											</div>
-										</td>
-										<td class="text-sm font-normal py-4">
-											{{ $t(row.persent) }}
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
+					<SpotAccordion />
 				</template>
 			</UAccordion>
 		</section>
 
 		<section class="my-10">
-			<div class="grid grid-cols-1 md:flex">
-				<div>
-					<NuxtImg
-						src="/images/delete/slider1.webp"
-						alt="Brand Logo"
-						class="w-72 h-28"
-					/>
-				</div>
-				<div class="mr-0 md:mr-6 ml-0 md:ml-96">
-					<p class="text-base font-bold">
-						{{ $t('bitlandOffer') }}
-					</p>
-					<p class="my-6 text-sm font-medium">
-						{{ $t('bitlandOfferText') }}
-					</p>
-					<div class="flex justify-start">
-						<UiSeeMore
-							link="/market"
-							text="showMore"
-						/>
-					</div>
-				</div>
-			</div>
+			<FutureAccordion />
 		</section>
 	</div>
 </template>
@@ -266,6 +137,9 @@ import IconMoney from '~/assets/svg-icons/wallet/money.svg';
 import WithdrawalModal from '~/components/pages/Site/Wallet/Menu/WithdrawalModal.vue';
 import DepositModal from '~/components/pages/Site/Wallet/Menu/DepositModal.vue';
 import TransferModal from '~/components/pages/Site/Wallet/Menu/TransferModal.vue';
+import RecentTransactionsList from '~/components/pages/Wallet/Overview/RecentTransactionsList.vue';
+import SpotAccordion from '~/components/pages/Wallet/Overview/SpotAccordion.vue';
+import FutureAccordion from '~/components/pages/Wallet/Overview/FutureAccordion.vue';
 
 definePageMeta({
 	layout: 'wallet',
@@ -284,20 +158,6 @@ const toggleAssetVisibility = () => {
 	isAssetVisible.value = !isAssetVisible.value;
 };
 
-const rows = ref([
-	{ id: 1, date: '۱۵ فروردین ۱۴۰۲ - ۱۷:۴۵', price: '۲۵.۰۰۰.۰۰۰', fee: 'تتر', typeActivity: 'برداشت' },
-	{ id: 2, date: '۱۵ فروردین ۱۴۰۲ - ۱۷:۴۵', price: '۲۵.۰۰۰.۰۰۰', fee: 'تتر', typeActivity: 'واریز' },
-	{ id: 3, date: '۱۵ فروردین ۱۴۰۲ - ۱۷:۴۵', price: '۲۵.۰۰۰.۰۰۰', fee: 'تتر', typeActivity: 'برداشت' },
-	{ id: 4, date: '۱۵ فروردین ۱۴۰۲ - ۱۷:۴۵', price: '۲۵.۰۰۰.۰۰۰', fee: 'تتر', typeActivity: 'واریز' },
-
-]);
-
-const rowsTable = ref([
-	{ id: 1, title: useT('removable'), dollarValue: '۲۵.۰۰۰.۰۰۰', tomanValue: '۲۵.۰۰۰.۰۰۰', persent: '20%' },
-	{ id: 2, title: useT('lockedSpot'), dollarValue: '۲۵.۰۰۰.۰۰۰', tomanValue: '۲۵.۰۰۰.۰۰۰', persent: '20%' },
-	{ id: 3, title: useT('lockedVitDra'), dollarValue: '۲۵.۰۰۰.۰۰۰', tomanValue: '۲۵.۰۰۰.۰۰۰', persent: '20%' },
-
-]);
 const items = [{
 	label: useT('spot'),
 	defaultOpen: false,
