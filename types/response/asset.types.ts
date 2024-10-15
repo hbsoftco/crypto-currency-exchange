@@ -110,7 +110,7 @@ type BoxItem = {
 
 type GetBoxRes = {
 	statusCode: number;
-	result: BoxItem;
+	result: BoxItem[];
 };
 
 type RecentItem = {
@@ -139,6 +139,7 @@ export type {
 	GetMiscellaneousListResponse,
 	InternalReceive,
 	MiscellaneousList,
+	BoxItem,
 	GetAssetTotalResponse,
 	GetPortfolioRes,
 	GetBoxRes,

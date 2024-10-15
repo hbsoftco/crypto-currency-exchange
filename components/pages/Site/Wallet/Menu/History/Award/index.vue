@@ -280,7 +280,6 @@ const applyFilters = async () => {
 
 	await loadReward();
 };
-console.log('loadReward------------------------------------->', RewardList);
 
 onMounted(async () => {
 	await loadReward();

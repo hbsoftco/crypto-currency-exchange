@@ -297,9 +297,9 @@ type GetPanelListParams = {
 
 type GetAssetBoxParams = {
 	q1CurrencyId: string;
-	q2CurrencyId: string;
-	q3CurrencyId: string;
-	maskedInfo: string;
+	q2CurrencyId?: string;
+	q3CurrencyId?: string;
+	maskedInfo?: string;
 	assetType: string;
 	boxMode: string;
 	miniAssetMode: string;

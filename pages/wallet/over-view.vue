@@ -79,7 +79,7 @@
 						</div>
 						<div class="flex justify-start">
 							<UiSeeMore
-								link="/market"
+								link="/wallet/history"
 								text="showMore"
 							/>
 						</div>
@@ -92,35 +92,7 @@
 		</section>
 
 		<section class="my-10">
-			<UAccordion
-				:items="items"
-				:default-open="true"
-				:ui="{
-					default: {
-						class: 'text-base font-bold px-28 py-4 mt-2 bg-hover-light dark:bg-hover-dark hover:bg-hover-light hover:dark:bg-hover-dark text-black dark:text-white',
-					},
-				}"
-			>
-				<template #item="{ item }">
-					<div>
-						<p class="italic text-gray-900 dark:text-white text-center">
-							{{ item.label }}
-						</p>
-						<div class="text-center">
-							<span>{{ useNumber('1.000 USDT') }}</span>
-							<span>{{ useNumber('۵۲ میلیون تومان') }}</span>
-						</div>
-					</div>
-					<div
-						class=" bg-primary-yellow-light dark:bg-primary-yellow-dark h-2 rounded-bl-xl"
-						style="width: 30%;"
-					/>
-				</template>
-
-				<template #getting-started>
-					<SpotAccordion />
-				</template>
-			</UAccordion>
+			<SpotAccordion />
 		</section>
 
 		<section class="my-10">
@@ -159,16 +131,6 @@ const toggleAssetVisibility = () => {
 	isAssetVisible.value = !isAssetVisible.value;
 };
 
-const items = [{
-	label: useT('spot'),
-	defaultOpen: false,
-	slot: 'getting-started',
-},
-{
-	label: useT('futures'),
-	defaultOpen: false,
-	slot: 'getting-started',
-}];
 const showDeposit = ref(false);
 const showWithdrawal = ref(false);
 const showTransfer = ref(false);
