@@ -1,7 +1,7 @@
 type ContactSetDto = {
 	verificationId: number;
 	verificationCode: string ;
-	v2FACode: string;
+	v2FACode?: string;
 	emailAddressOrMobile: string;
 	description: string;
 };

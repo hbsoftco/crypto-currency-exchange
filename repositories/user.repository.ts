@@ -27,7 +27,8 @@ type UserRepository = {
 	getBankAccList: (params: GetBankParams) => Promise<GetBankListResponse>;
 	getReferralBestList: (params: GetReferralBestListParams) => Promise<GetBestListResponse>;
 	getRewardExposedList: (params: GetRewardExposedParams) => Promise<GetRewardReceivedListResponse>;
-	getTraderBestList: (params: GetTraderBestListParams) => Promise<GetTraderBestListResponse>;	getContactList: (params: GetContactListParams) => Promise<GetContactListResponse>;
+	getTraderBestList: (params: GetTraderBestListParams) => Promise<GetTraderBestListResponse>;
+	getContactList: (params: GetContactListParams) => Promise<GetContactListResponse>;
 	storeContact: (params: ContactSetDto) => Promise<CommonRes>;
 	deleteContact: (params: DeleteContactListParams) => Promise<CommonRes>;
 	getAddressList: (params: GetAddressListParams) => Promise<GetAddressListRes>;

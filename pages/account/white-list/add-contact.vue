@@ -19,7 +19,8 @@
 					</div>
 					<div class="mt-10 w-full md:w-80">
 						<div>
-							<FormUser />
+							<AddNewContact
+								@state="checkState" />
 						</div>
 					</div>
 					<div class="my-8">
@@ -32,15 +33,20 @@
 </template>
 
 <script setup lang="ts">
-import FormUser from '~/components/pages/Site/Account/WhiteList/FormUser.vue';
+import AddNewContact from '~/components/pages/Site/Account/WhiteList/AddNewContact.vue';
 import ImportantPoint from '~/components/pages/Site/Account/WhiteList/ImportantPoint.vue';
 
 definePageMeta({
 	layout: 'account-single',
 });
+const checkState = () => {
+	steps.value[0].completed = true;
+	steps.value[0].current = false;
 
-const steps = [
-	{ label: 'مشخصات آدرس', completed: true, current: false },
-	{ label: 'تایید امنیتی', completed: true, current: false },
-];
+	steps.value[1].current = true;
+};
+const steps = ref([
+	{ label: useT('userDetails'), completed: false, current: true },
+	{ label: useT('securityConfirmation'), completed: false, current: false },
+]);
 </script>

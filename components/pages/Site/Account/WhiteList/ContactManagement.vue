@@ -5,7 +5,7 @@
 				<UButton
 					size="lg"
 					class="text-base font-medium px-6 py-2"
-					to="/account/white-list/add-user"
+					to="/account/white-list/add-contact"
 				>
 					{{ $t("addContact") }}
 				</UButton>
@@ -27,25 +27,30 @@
 					</thead>
 					<tbody>
 						<tr
-							v-for="contact in contactList"
-							:key="contact.uid"
+							v-for="row in contactList"
+							:key="row.uid"
 							class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark last:border-none odd:bg-hover2-light dark:odd:bg-hover2-dark even:bg-background-light dark:even:bg-background-dark"
 						>
 							<td
 								class="text-sm font-normal py-2 px-2"
 								dir="ltr"
 							>
-								{{ contact.contactName }}
+								{{ row.contactName }}
 							</td>
 							<td class="text-sm font-normal py-2">
-								{{ contact.desc }}
+								{{ row.desc }}
 							</td>
 							<td class="text-sm font-normal py-2 text-accent-red flex items-center cursor-pointer">
-								{{ $t('delete') }}
-								<UIcon
-									name="heroicons:x-mark"
-									class="w-3 h-3 mr-1"
-								/>
+								<span
+									class="cursor-pointer"
+									@click="openDeleteModal(String(row.uid))"
+								>
+									{{ $t('delete') }}
+									<UIcon
+										name="heroicons:x-mark"
+										class="w-3 h-3 mr-1"
+									/>
+								</span>
 							</td>
 						</tr>
 					</tbody>
@@ -72,6 +77,7 @@
 </template>
 
 <script setup lang="ts">
+import ConfirmModal from '~/components/ui/ConfirmModal.vue';
 import { userRepository } from '~/repositories/user.repository';
 import type { GetContactListParams } from '~/types/base.types';
 import type { UserContact } from '~/types/response/user.types';
@@ -79,14 +85,17 @@ import type { UserContact } from '~/types/response/user.types';
 const { $api } = useNuxtApp();
 const userRepo = userRepository($api);
 
+const toast = useToast();
+const modal = useModal();
+
 const currentPage = ref<number>(1);
 
 const contactList = ref<UserContact[]>();
 
 const params = ref<GetContactListParams>({
 	statement: '',
-	pageNumber: '',
-	pageSize: '',
+	pageNumber: '1',
+	pageSize: '20',
 });
 
 const getContactList = async () => {
@@ -96,13 +105,62 @@ const getContactList = async () => {
 		currentPage.value = result.totalCount;
 	}
 	catch (error) {
-		// await getContactList();
 		console.log(error);
 	}
 };
 
+const deleteContactLoading = ref<boolean>(false);
+const deleteContact = async (id: string) => {
+	try {
+		deleteContactLoading.value = true;
+
+		await userRepo.deleteContact({ contactUserId: id });
+
+		toast.add({
+			title: useT('operationSuccess'),
+			id: 'modal-success',
+			timeout: 5000,
+			color: 'green',
+		});
+
+		await getContactList();
+		modal.close();
+
+		deleteContactLoading.value = false;
+	}
+	catch (error) {
+		deleteContactLoading.value = false;
+		console.log(error);
+	}
+};
+
+const openDeleteModal = (uid: string) => {
+	try {
+		modal.open(ConfirmModal, {
+			onSuccess() {
+				deleteContact(uid);
+			},
+
+			successBtn: useT('yesDeleteIt'),
+			closeBtn: useT('cancelAction'),
+			title: useT('deleteContact'),
+			body: useT('areYouSure'),
+			successLoadingBtn: deleteContactLoading.value,
+			overlay: true,
+
+			onClose() {
+				modal.close();
+			},
+		});
+	}
+	catch (error) {
+		console.log(error);
+	}
+};
 onMounted(async () => {
-	await getContactList();
+	await Promise.all([
+		getContactList(),
+	]);
 });
 
 function onPageChange(newPage: number) {
