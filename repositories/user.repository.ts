@@ -193,8 +193,13 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 		return response;
 	},
 	async deleteContact(params: DeleteContactListParams): Promise<CommonRes> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
 		const url = `/v1/user/wbl/contact_delete`;
-		const response = await fetch<CommonRes>(`${url}`, {
+		const response = await fetch<CommonRes>(`${url}?${query.toString()}`, {
 			noAuth: false,
 			apiName: url,
 			method: 'DELETE',

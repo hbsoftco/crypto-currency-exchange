@@ -28,7 +28,7 @@
 					<tbody>
 						<tr
 							v-for="row in contactList"
-							:key="row.uid"
+							:key="row.contactUID"
 							class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark last:border-none odd:bg-hover2-light dark:odd:bg-hover2-dark even:bg-background-light dark:even:bg-background-dark"
 						>
 							<td
@@ -43,7 +43,7 @@
 							<td class="text-sm font-normal py-2 text-accent-red flex items-center cursor-pointer">
 								<span
 									class="cursor-pointer"
-									@click="openDeleteModal(String(row.uid))"
+									@click="openDeleteModal(String(row.contactUID))"
 								>
 									{{ $t('delete') }}
 									<UIcon
@@ -134,11 +134,11 @@ const deleteContact = async (id: string) => {
 	}
 };
 
-const openDeleteModal = (uid: string) => {
+const openDeleteModal = (id: string) => {
 	try {
 		modal.open(ConfirmModal, {
 			onSuccess() {
-				deleteContact(uid);
+				deleteContact(id);
 			},
 
 			successBtn: useT('yesDeleteIt'),
