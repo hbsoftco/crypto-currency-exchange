@@ -9,6 +9,10 @@
 		v-else
 		class="py-4 p-5"
 	>
+		<NickNameModal
+			v-if="showDetail"
+			@close="closeDetail"
+		/>
 		<div class="flex pb-6 mb-4 border-b border-primary-gray-light dark:border-primary-gray-dark">
 			<div>
 				<div class="relative ml-4">
@@ -27,18 +31,24 @@
 				<div class="flex justify-start items-center mb-4">
 					<h5>{{ getValueByKey(profileData, 'NICKNAME') || $t('anonymousUser') }}</h5>
 					<div class="mx-2">
-						<IconPencil class="text-subtle-text-light dark:text-subtle-text-50 text-xl cursor-pointer" />
-					</div>
-					<div class="flex justify-start items-center bg-primary-yellow-light dark:bg-primary-yellow-dark rounded-full p-0.5 px-3">
-						<p class="dark:text-text-dark font-medium ml-2">
-							{{ $t('vipClubAction') }}
-						</p>
-						<NuxtImg
-							src="/images/delete/gem.svg"
-							alt="gem"
-							class="w-4 h-4"
+						<IconPencil
+							class="text-subtle-text-light dark:text-subtle-text-50 text-xl cursor-pointer"
+							@click="openDetail"
 						/>
 					</div>
+
+					<ULink to="/account/over-view/special-club">
+						<div class="flex justify-start items-center bg-primary-yellow-light dark:bg-primary-yellow-dark rounded-full p-0.5 px-3">
+							<p class="dark:text-text-dark font-medium ml-2">
+								{{ $t('vipClubAction') }}
+							</p>
+							<NuxtImg
+								src="/images/delete/gem.svg"
+								alt="gem"
+								class="w-4 h-4"
+							/>
+						</div>
+					</ULink>
 				</div>
 
 				<div class="flex justify-start items-center mb-4">
@@ -231,6 +241,7 @@ import { useNumber } from '~/composables/useNumber';
 import { formatDateToIranTime } from '~/utils/date-time';
 import { userRepository } from '~/repositories/user.repository';
 import type { ReferralBriefItem } from '~/types/response/user.types';
+import NickNameModal from '~/components/pages/Site/Account/OverView/NickNameModal.vue';
 
 definePageMeta({
 	layout: 'account',
@@ -279,5 +290,15 @@ const isAssetVisible = ref(false);
 
 const toggleAssetVisibility = () => {
 	isAssetVisible.value = !isAssetVisible.value;
+};
+
+const showDetail = ref(false);
+
+const openDetail = () => {
+	showDetail.value = true;
+};
+
+const closeDetail = () => {
+	showDetail.value = false;
 };
 </script>

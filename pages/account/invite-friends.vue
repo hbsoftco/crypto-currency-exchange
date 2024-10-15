@@ -223,356 +223,14 @@
 				</div>
 			</section>
 
-			<section>
-				<div class="block md:flex items-center justify-between my-12 py-4 px-0 md:px-8 border-none md:border border-primary-gray-light dark:border-primary-gray-dark">
-					<div class="flex">
-						<span class="text-2xl font-bold ml-4">{{ $t('dashboard') }}</span>
-						<div>
-							<USelect
-								icon="heroicons:calendar-date-range-16-solid"
-								:ui="{
-									color: {
-										white: {
-											outline: 'shadow-sm bg-background-light dark:bg-background-dark text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
-										},
-									},
-								}"
-								class="w-44"
-								:options="['همه', 'Canada', 'Mexico']"
-							/>
-						</div>
-					</div>
-					<div class="block md:flex">
-						<div class="w-72 ml-8 my-8 md:my-0 px-4 py-2 bg-hover-light dark:bg-hover-dark rounded-md shadow-md">
-							<div class="flex border-b border-primary-gray-light dark:border-primary-gray-dark pb-4">
-								<NuxtImg
-									src="/images/profile/money.png"
-									alt="money"
-									class="w-6 h-6 ml-1"
-								/>
-								<span class="text-base font-bold text-subtle-text-light dark:text-subtle-text-dark">{{ $t('totalIncome') }}</span>
-							</div>
-							<div class="flex justify-between pt-4 py-8">
-								<span class="text-sm font-medium text-subtle-text-light dark:text-subtle-text-dark">{{ $t('toman') }}</span><span class="text-sm font-medium">{{ useNumber('۵۶۷،۴۷۴') }}</span>
-							</div>
-						</div>
-						<div class="w-72 px-4 py-2 bg-hover-light dark:bg-hover-dark rounded-md shadow-md">
-							<div class="flex border-b border-primary-gray-light dark:border-primary-gray-dark pb-4">
-								<IconUserInvite class="ml-1 text-2xl text-primary-yellow-light dark:text-primary-yellow-dark " />
-								<span class="text-base font-bold text-subtle-text-light dark:text-subtle-text-dark">{{ $t('totalIncome') }}</span>
-							</div>
-							<div class="flex w-60 pt-4 py-8">
-								<div class="w-36 pl-2 border-l-4 border-primary-gray-light dark:border-primary-gray-dark">
-									<div class="flex justify-between">
-										<span class="text-sm font-medium">{{ $t('direct') }}</span><span class="text-sm font-bold">{{ useNumber('۳۰') }}</span>
-									</div>
-									<div class="flex justify-between text-subtle-text-light dark:text-subtle-text-dark">
-										<span class="text-sm font-medium">{{ $t('active') }}</span><span class="text-sm font-bold">{{ useNumber('۲۰') }}</span>
-									</div>
-									<div class="flex justify-between text-subtle-text-light dark:text-subtle-text-dark">
-										<span class="text-sm font-medium">{{ $t('inactive') }}</span><span class="text-sm font-bold">{{ useNumber('۱۰') }}</span>
-									</div>
-								</div>
-								<div class="w-36 pr-2">
-									<div class="flex justify-between">
-										<span class="text-sm font-medium">{{ $t('direct') }}</span><span class="text-sm font-bold">{{ useNumber('۳۰') }}</span>
-									</div>
-									<div class="flex justify-between text-subtle-text-light dark:text-subtle-text-dark">
-										<span class="text-sm font-medium">{{ $t('active') }}</span><span class="text-sm font-bold">{{ useNumber('۲۰') }}</span>
-									</div>
-									<div class="flex justify-between text-subtle-text-light dark:text-subtle-text-dark">
-										<span class="text-sm font-medium">{{ $t('inactive') }}</span><span class="text-sm font-bold">{{ useNumber('۱۰') }}</span>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
+			<Dashboard />
 
-			<section class="mb-12">
-				<div class="md:border border-primary-gray-light dark:border-primary-gray-dark rounded-md ">
-					<div class="py-8 px-1 md:px-6 block md:flex justify-between md:border-b border-primary-gray-light dark:border-primary-gray-dark ">
-						<div class="flex">
-							<span class="text-base font-bold ml-2 mb-2 md:mb-0">
-								{{ $t('invitationHistory') }}
-							</span>
-							<IconQuestion class="text-2xl" />
-						</div>
-						<div class="w-full md:w-auto flex justify-between">
-							<div>
-								<USelect
-									icon="heroicons:calendar-date-range-16-solid"
-									:ui="{
-										color: {
-											white: {
-												outline: 'shadow-sm bg-background-light dark:bg-background-dark text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
-											},
-										},
-									}"
-									class="w-auto md:w-44"
-									:options="['همه', 'Canada', 'Mexico']"
-								/>
-							</div>
-							<div class="mx-1 md:mx-3">
-								<USelect
-									icon="heroicons:calendar-date-range-16-solid"
-									:ui="{
-										color: {
-											white: {
-												outline: 'shadow-sm bg-background-light dark:bg-background-dark text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
-											},
-										},
-									}"
-									class="w-auto md:w-44"
-									:options="['همه', 'Canada', 'Mexico']"
-								/>
-							</div>
-							<div class="py-2 px-4 border border-primary-gray-light dark:border-primary-gray-dark rounded-md">
-								<IconNote />
-							</div>
-						</div>
-					</div>
-					<div class="py-6 px-1 md:px-8">
-						<div class="hidden md:block">
-							<table class="min-w-full py-6 my-2 text-right">
-								<thead>
-									<tr class="pb-2 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark">
-										<th class="py-2 text-sm font-bold">
-											{{ $t('subSet') }}
-										</th>
-										<th class="py-2 text-sm font-bold">
-											{{ $t('userCode') }}
-										</th>
-										<th class="py-2 text-sm font-bold">
-											{{ $t('invitationTime') }}
-										</th>
-										<th class="py-2 text-sm font-bold">
-											{{ $t('feeReceived') }}
-										</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr
-										v-for="row in inviteList"
-										:key="row.uid"
-										class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark last:border-none"
-									>
-										<td class="text-sm font-normal py-2">
-											{{ row.user }}
-										</td>
-										<td class="text-sm font-normal py-2">
-											{{ useNumber(row.uid) }}
-										</td>
-										<td class="text-sm font-normal py-2">
-											{{ useNumber(formatDateToIranTime(row.regTime)) }}
-										</td>
-										<td class="text-sm font-normal py-2">
-											{{ useNumber(row.income) }}
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-						<div
-							v-for="row in inviteList"
-							:key="row.uid"
-						>
-							<div class="block md:hidden my-2 py-2 px-4 bg-hover-light dark:bg-hover-dark">
-								<div class="flex">
-									<div class="bg-subtle-text-light dark:bg-subtle-text-dark rounded-full w-8 h-8 flex items-center justify-center ml-4">
-										<IconUserInvite
-											class="text-[1.7rem] text-white dark:text-black"
-										/>
-									</div>
-									<div>
-										<div class="text-sm font-normal border-b border-primary-gray-light dark:border-primary-gray-dark">
-											{{ row.user }}
-										</div>
-										<div class="text-sm font-normal">
-											{{ useNumber(row.uid) }}
-										</div>
-									</div>
-								</div>
-								<div class="flex justify-between py-1">
-									<div class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
-										{{ $t('invitationTime') }}
-									</div>
-									<div class="text-sm font-medium">
-										{{ useNumber(formatDateToIranTime(row.regTime)) }}
-									</div>
-								</div>
-								<div class="flex justify-between">
-									<div class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
-										{{ $t('feeReceived') }}
-									</div>
-									<div class="text-sm font-medium">
-										{{ useNumber(row.income) }}
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="flex justify-center py-4">
-							<UPagination
-								:model-value="20"
-								:page-count="20"
-								:total="20"
-								:max="6"
-								size="xl"
-								ul-class="flex space-x-2 bg-blue-500 border-none"
-								li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500 px-3"
-								button-class-base="flex items-center justify-center w-full h-full transition-colors duration-200"
-								button-class-inactive="bg-green-700 hover:bg-gray-600"
-								button-class-active="bg-blue-500"
-								class="my-14"
-								@update:model-value="onPageChangeInvite"
-							/>
-						</div>
-					</div>
-				</div>
-			</section>
+			<TableInvite :invite-list="inviteList || []" />
 
-			<section class="mb-12">
-				<div class="md:border border-primary-gray-light dark:border-primary-gray-dark rounded-md ">
-					<div class="py-8 px-1 md:px-6 block md:flex justify-between md:border-b border-primary-gray-light dark:border-primary-gray-dark ">
-						<div class="flex">
-							<span class="text-base font-bold ml-2 mb-2 md:mb-0">
-								{{ $t('historyInvitationCommission') }}
-							</span>
-							<IconQuestion class="text-2xl" />
-						</div>
-						<div class="flex justify-between">
-							<div class="mx-3">
-								<USelect
-									icon="heroicons:calendar-date-range-16-solid"
-									:ui="{
-										color: {
-											white: {
-												outline: 'shadow-sm bg-background-light dark:bg-background-dark text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
-											},
-										},
-									}"
-									class="w-44"
-									:options="['همه', 'Canada', 'Mexico']"
-								/>
-							</div>
-							<div class="py-2 px-4 border border-primary-gray-light dark:border-primary-gray-dark rounded-md">
-								<IconNote />
-							</div>
-						</div>
-					</div>
-					<div class="py-6 px-1 md:px-8">
-						<div class="hidden md:block">
-							<table class=" min-w-full py-6 my-2 text-right">
-								<thead>
-									<tr class="pb-2 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark">
-										<th class="py-2 text-sm font-bold">
-											{{ $t('subSet') }}
-										</th>
-										<th class="py-2 text-sm font-bold">
-											{{ $t('userCode') }}
-										</th>
-										<th class="py-2 text-sm font-bold">
-											{{ $t('tradingTime') }}
-										</th>
-										<th class="py-2 text-sm font-bold">
-											{{ $t('feePercentage') }}
-										</th>
-										<th class="py-2 text-sm font-bold">
-											{{ $t('feeAmount') }}
-										</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr
-										v-for="item in ReceivedList"
-										:key="item.id"
-										class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark last:border-none"
-									>
-										<td class="text-sm font-normal py-2">
-											{{ item.tUser }}
-										</td>
-										<td class="text-sm font-normal py-2">
-											{{ item.tuid }}
-										</td>
-										<td class="text-sm font-normal py-2">
-											{{ useNumber(formatDateToIranTime(item.tTime)) }}
-										</td>
-										<td class="text-sm font-normal py-2">
-											{{ useNumber(item.perc) }}
-										</td>
-										<td class="text-sm font-normal py-2">
-											{{ useNumber(item.tFee) }}
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-						<div
-							v-for="item in ReceivedList"
-							:key="item.id"
-						>
-							<div class="block md:hidden my-2 py-2 px-4 bg-hover-light dark:bg-hover-dark">
-								<div class="flex">
-									<div class="bg-subtle-text-light dark:bg-subtle-text-dark rounded-full w-8 h-8 flex items-center justify-center ml-4">
-										<IconUserInvite
-											class="text-[1.7rem] text-white dark:text-black"
-										/>
-									</div>
-									<div>
-										<div class="text-sm font-normal border-b border-primary-gray-light dark:border-primary-gray-dark">
-											{{ $t('userCode') }}
-										</div>
-										<div class="text-sm font-normal">
-											{{ item.tuid }}
-										</div>
-									</div>
-								</div>
-								<div class="flex justify-between py-1">
-									<div class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
-										{{ $t('tradingTime') }}
-									</div>
-									<div class="text-sm font-medium">
-										{{ useNumber(formatDateToIranTime(item.tTime)) }}
-									</div>
-								</div>
-								<div class="flex justify-between">
-									<div class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
-										{{ $t('feePercentage') }}
-									</div>
-									<div class="text-sm font-medium">
-										{{ useNumber(item.perc) }}
-									</div>
-								</div>
-								<div class="flex justify-between">
-									<div class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
-										{{ $t('feeAmount') }}
-									</div>
-									<div class="text-sm font-medium">
-										{{ useNumber(item.tFee) }}
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="flex justify-center py-4">
-							<UPagination
-								:model-value="20"
-								:page-count="20"
-								:total="20"
-								:max="6"
-								size="xl"
-								ul-class="flex space-x-2 bg-blue-500 border-none"
-								li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500 px-3"
-								button-class-base="flex items-center justify-center w-full h-full transition-colors duration-200"
-								button-class-inactive="bg-green-700 hover:bg-gray-600"
-								button-class-active="bg-blue-500"
-								class="my-14"
-								@update:model-value="onPageChangeReceived"
-							/>
-						</div>
-					</div>
-				</div>
-			</section>
+			<TableCommission
+				:received-list="receivedList || []"
+				:current-page-received="currentPageReceived"
+			/>
 		</UContainer>
 	</div>
 </template>
@@ -586,9 +244,6 @@ import IconUser from '~/assets/svg-icons/profile/user.svg';
 import IconGift from '~/assets/svg-icons/gift.svg';
 import IconArrowUp from '~/assets/svg-icons/menu/arrow-up.svg';
 import IconArrowDown from '~/assets/svg-icons/menu/arrow-down.svg';
-import IconUserInvite from '~/assets/svg-icons/menu/user-fill.svg';
-import IconNote from '~/assets/svg-icons/profile/note.svg';
-import IconQuestion from '~/assets/svg-icons/profile/question.svg';
 import { useNumber } from '~/composables/useNumber';
 import ModalInviteFriends from '~/components/pages/Site/Account/InviteFriends/ModalInviteFriends.vue';
 import EditCodeInviteFriends from '~/components/pages/Site/Account/InviteFriends/EditCodeInviteFriends.vue';
@@ -596,20 +251,22 @@ import IconEdit from '~/assets/svg-icons/profile/edit.svg';
 import { referralRepository } from '~/repositories/referral.repository';
 import type { InviteList, ReceivedList } from '~/types/response/referral.types';
 import type { GetInvitationParams } from '~/types/base.types';
-import { formatDateToIranTime } from '~/utils/date-time';
+import TableInvite from '~/components/pages/Site/Account/InviteFriends/TableInvite.vue';
+import TableCommission from '~/components/pages/Site/Account/InviteFriends/TableCommission.vue';
+import Dashboard from '~/components/pages/Site/Account/InviteFriends/Dashboard.vue';
 
 definePageMeta({
 	layout: 'account-single',
 });
 
-const currentPageInvite = ref<number>(1);
-const currentPageReceived = ref<number>(1);
-
 const { $api } = useNuxtApp();
 const referralRepo = referralRepository($api);
 
 const inviteList = ref<InviteList[]>();
-const ReceivedList = ref<ReceivedList[]>();
+const receivedList = ref<ReceivedList[]>();
+
+const currentPageInvite = ref<number>(1);
+const currentPageReceived = ref<number>(1);
 
 const paramsInvite = ref<GetInvitationParams>({
 	getMode: '',
@@ -639,7 +296,7 @@ const getInviteList = async () => {
 const getcommissionList = async () => {
 	try {
 		const { result } = await referralRepo.getCommissionReceived(paramsReceived.value);
-		ReceivedList.value = result.rows;
+		receivedList.value = result.rows;
 		currentPageReceived.value = result.totalCount;
 	}
 	catch (error) {
@@ -653,12 +310,6 @@ onMounted(async () => {
 	]);
 });
 
-function onPageChangeInvite(newPage: number) {
-	currentPageInvite.value = newPage;
-}
-function onPageChangeReceived(newPage: number) {
-	currentPageReceived.value = newPage;
-}
 const showModalInviteFriends = ref(false);
 const showEditCodeInviteFriends = ref(false);
 
