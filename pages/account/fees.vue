@@ -6,12 +6,12 @@
 					<UiTitleWithBack :title="$t('yourFeeLevel')" />
 				</div>
 				<p class=" w-auto md:w-96 text-base font-medium mt-6">
-					سطح کارمزد معاملات بر اساس حجم معامله‌های ۹۰ روز گذشته شما در هر پایه بازار محاسبه می‌شود.
+					{{ $t('feeLevelCalculation') }}
 				</p>
 				<div class="flex items-center mt-10">
 					<div class="w-[28.375rem] relative bg-primary-gray-light dark:bg-primary-gray-dark py-20 px-4 rounded-r-md overflow-hidden">
 						<p class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
-							حجم معاملات ۹۰ روزه شما
+							{{ $t('your90DayTradingVolume') }}
 						</p>
 						<div class="absolute -top-16 -left-10 w-80 h-80 flex justify-center items-center border-4 border-accent-green bg-hover-light dark:bg-hover-dark rounded-full">
 							<Chart />
@@ -68,10 +68,10 @@
 				</template>
 				<template #item="{ item }">
 					<div
-						v-if="item.key === 'transactionFees'"
+						v-if="item.key === 'transactionFees' && userTraderCommission?.length"
 						class="space-y-3"
 					>
-						<TransactionFees />
+						<TransactionFees :commission="userTraderCommission || []" />
 					</div>
 					<div
 						v-else-if="item.key === 'depositFee'"
@@ -96,9 +96,118 @@ import Chart from '~/components/pages/Site/Account/Chart.vue';
 import TransactionFees from '~/components/pages/Site/Account/Fees/TransactionFees.vue';
 import DepositFee from '~/components/pages/Site/Account/Fees/DepositFee.vue';
 import WithdrawalFee from '~/components/pages/Site/Account/Fees/WithdrawalFee.vue';
+import type { Commission, TraderBriefItem } from '~/types/response/trader.types';
+import { userRepository } from '~/repositories/user.repository';
+import type { DepositCoinListParams, GetTraderBriefParams } from '~/types/base.types';
+import { depositRepository } from '~/repositories/deposit.repository';
+import { DepositType } from '~/utils/enums/deposit.enum';
+import type { DepositCoinItem } from '~/types/response/deposit.types';
+import { withdrawRepository } from '~/repositories/withdraw.repository';
+import type { WithdrawCoinItem } from '~/types/response/withdraw.type';
+import { MarketType } from '~/utils/enums/market.enum';
 
 definePageMeta({
 	layout: 'account',
+});
+
+const { $api } = useNuxtApp();
+const userRepo = userRepository($api);
+const depositRepo = depositRepository($api);
+const withdrawRepos = withdrawRepository($api);
+
+const traderBriefParams = ref<GetTraderBriefParams>({
+	assetType: useEnv('assetType'),
+	id: '1',
+});
+const traderBriefItemLoading = ref<boolean>(false);
+const traderBriefItem = ref<TraderBriefItem>();
+const getTraderBrief = async () => {
+	try {
+		traderBriefItemLoading.value = true;
+
+		const { result } = await userRepo.getTraderBrief(traderBriefParams.value);
+
+		traderBriefItem.value = result;
+		traderBriefItemLoading.value = true;
+	}
+	catch (error) {
+		traderBriefItemLoading.value = true;
+		console.log(error);
+	}
+};
+
+const depositCoinListParams = ref<DepositCoinListParams>({
+	pageNumber: '1',
+	pageSize: '20',
+	statement: '',
+	type: DepositType.CRYPTO,
+});
+const depositCoinListLoading = ref<boolean>(false);
+const depositCoinItem = ref<DepositCoinItem[]>();
+const getDepositCoinList = async () => {
+	try {
+		depositCoinListLoading.value = true;
+
+		const { result } = await depositRepo.getDepositCoinList(depositCoinListParams.value);
+
+		depositCoinItem.value = result.rows;
+		depositCoinListLoading.value = true;
+	}
+	catch (error) {
+		depositCoinListLoading.value = true;
+		console.log(error);
+	}
+};
+
+const withdrawCoinListParams = ref<DepositCoinListParams>({
+	pageNumber: '1',
+	pageSize: '20',
+	statement: '',
+	type: DepositType.CRYPTO,
+});
+const withdrawCoinListLoading = ref<boolean>(false);
+const withdrawCoinItem = ref<WithdrawCoinItem[]>();
+const getWithdrawCoinList = async () => {
+	try {
+		withdrawCoinListLoading.value = true;
+
+		const { result } = await withdrawRepos.getWithdrawCoinList(withdrawCoinListParams.value);
+
+		withdrawCoinItem.value = result.rows;
+		withdrawCoinListLoading.value = true;
+	}
+	catch (error) {
+		withdrawCoinListLoading.value = true;
+		console.log(error);
+	}
+};
+
+const userTraderCommissionListLoading = ref<boolean>(false);
+const userTraderCommission = ref<Commission[]>();
+const getUserTraderCommissionList = async () => {
+	try {
+		userTraderCommissionListLoading.value = true;
+
+		const { result } = await userRepo.getUserTraderCommissionList({ marketType: String(MarketType.SPOT) });
+
+		userTraderCommission.value = result.rows;
+		console.log('userTraderCommission.value', userTraderCommission.value);
+
+		userTraderCommissionListLoading.value = true;
+	}
+	catch (error) {
+		userTraderCommissionListLoading.value = true;
+		console.log(error);
+	}
+};
+
+onMounted(async () => {
+	await Promise.all([
+		getTraderBrief(),
+		getDepositCoinList(),
+		getWithdrawCoinList(),
+		getUserTraderCommissionList(),
+	]);
 });
 
 const items = [

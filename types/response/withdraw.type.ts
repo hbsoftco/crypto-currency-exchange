@@ -45,7 +45,32 @@ type GetWithdrawResponse = {
 	};
 };
 
+type WithdrawCoinItem = {
+	cid: number;
+	chainId: number;
+	netId: number;
+	netName: string;
+	withdrawEnabled: boolean;
+	memoable: boolean;
+	contractId: string;
+	withdrawFee: number;
+	withdrawCostPerc: number;
+	withdrawMin: number;
+	withdrawMax: number;
+	withdrawNote: string;
+};
+
+type getWithdrawCoinListRes = {
+	statusCode: number;
+	result: {
+		totalCount: number;
+		rows: WithdrawCoinItem[];
+	};
+};
+
 export type {
+	getWithdrawCoinListRes,
+	WithdrawCoinItem,
 	GetWithdrawResponse,
 	Withdraw,
 };

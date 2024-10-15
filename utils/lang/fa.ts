@@ -937,6 +937,9 @@ const persian = {
 	cardNumberBank: 'شماره کارت بانکی',
 	saveCardBank: 'ثبت کارت بانکی',
 	newCardSuccess: 'کارت بانکی جدید با موفقیت ثبت شد.',
+	feeLevelCalculation: 'سطح کارمزد معاملات بر اساس حجم معامله‌های ۹۰ روز گذشته شما در هر پایه بازار محاسبه می‌شود',
+	your90DayTradingVolume: 'حجم معاملات ۹۰ روزه شما',
+
 };
 
 export default persian;

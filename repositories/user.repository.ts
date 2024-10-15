@@ -8,15 +8,31 @@ import type { GetAddressListRes, GetBankListResponse,
 	UserProfileResponse } from '../types/response/user.types';
 
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
-import type { DeleteAddressListParams, DeleteContactListParams, GetAddressListParams, GetBankParams,
+import type {
+	DeleteAddressListParams,
+	DeleteContactListParams,
+	GetAddressListParams,
+	GetBankParams,
 	GetCommissionReceivedListParams,
 	GetContactListParams,
 	GetReferralBestListParams,
 	GetRewardExposedParams,
 	GetRewardReceivedListParams,
-	GetTraderBestListParams } from '~/types/base.types';
-import type { GetTraderBestListResponse } from '~/types/response/trader.types';
-import type { AddCardBankSetDto, AddressSetDto, CodeInviteDto, ContactSetDto, IdentificationResendDto, IdentificationSendDto, NickNameSetDto } from '~/types/dto/user.dto';
+	GetTraderBestListParams,
+	GetTraderBriefParams,
+	GetUserTraderCommissionListParams } from '~/types/base.types';
+import type {
+	GetTraderBestListResponse,
+	GetTraderBriefResponse,
+	GetUserTraderCommissionListResponse } from '~/types/response/trader.types';
+import type {
+	AddCardBankSetDto,
+	AddressSetDto,
+	CodeInviteDto,
+	ContactSetDto,
+	IdentificationResendDto,
+	IdentificationSendDto,
+	NickNameSetDto } from '~/types/dto/user.dto';
 import type { CommonRes, IdentificationRes } from '~/types/response/common.types';
 
 type UserRepository = {
@@ -27,7 +43,6 @@ type UserRepository = {
 	getBankAccList: (params: GetBankParams) => Promise<GetBankListResponse>;
 	getReferralBestList: (params: GetReferralBestListParams) => Promise<GetBestListResponse>;
 	getRewardExposedList: (params: GetRewardExposedParams) => Promise<GetRewardReceivedListResponse>;
-	getTraderBestList: (params: GetTraderBestListParams) => Promise<GetTraderBestListResponse>;
 	getContactList: (params: GetContactListParams) => Promise<GetContactListResponse>;
 	storeContact: (params: ContactSetDto) => Promise<CommonRes>;
 	deleteContact: (params: DeleteContactListParams) => Promise<CommonRes>;
@@ -39,6 +54,9 @@ type UserRepository = {
 	identificationResend: (params: IdentificationResendDto) => Promise<IdentificationRes>;
 	getIdentificationCode: (params: IdentificationSendDto) => Promise<IdentificationRes>;
 	editCodeInvite: (params: CodeInviteDto) => Promise<CommonRes>;
+	getTraderBestList: (params: GetTraderBestListParams) => Promise<GetTraderBestListResponse>;
+	getTraderBrief: (params: GetTraderBriefParams) => Promise<GetTraderBriefResponse>;
+	getUserTraderCommissionList: (params: GetUserTraderCommissionListParams) => Promise<GetUserTraderCommissionListResponse>;
 };
 
 export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserRepository => ({
@@ -147,20 +165,6 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 			apiName: url,
 			queryParams: params,
 			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getTraderBestList(params: GetTraderBestListParams): Promise<GetTraderBestListResponse> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-
-		const url = '/v1/user/trader/best_list';
-		const response = await fetch<GetTraderBestListResponse>(`${url}?${query.toString()}`, {
-			noAuth: false,
-			apiName: url,
 		} as CustomNitroFetchOptions);
 
 		return response;
@@ -289,6 +293,48 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 			apiName: url,
 			method: 'POST',
 			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getTraderBestList(params: GetTraderBestListParams): Promise<GetTraderBestListResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/user/trader/best_list';
+		const response = await fetch<GetTraderBestListResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			apiName: url,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getTraderBrief(params: GetTraderBriefParams): Promise<GetTraderBriefResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/user/trader/brief';
+		const response = await fetch<GetTraderBriefResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			apiName: url,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getUserTraderCommissionList(params: GetUserTraderCommissionListParams): Promise<GetUserTraderCommissionListResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/user/trader/commission_list';
+		const response = await fetch<GetUserTraderCommissionListResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			apiName: url,
 		} as CustomNitroFetchOptions);
 
 		return response;

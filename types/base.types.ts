@@ -206,6 +206,20 @@ type GetDepositAddressParams = {
 	pageSize: string;
 };
 
+type DepositCoinListParams = {
+	type: string;
+	statement: string;
+	pageNumber: string;
+	pageSize: string;
+};
+
+type WithdrawCoinListParams = {
+	type: string;
+	statement: string;
+	pageNumber: string;
+	pageSize: string;
+};
+
 type GetTicketListParams = {
 	state: string;
 	typeId: string;
@@ -228,6 +242,11 @@ type GetRewardExposedParams = {
 type GetTraderBestListParams = {
 	id: string;
 	periodCo: string;
+	assetType: string;
+};
+
+type GetTraderBriefParams = {
+	id: string;
 	assetType: string;
 };
 
@@ -377,4 +396,7 @@ export type {
 	GetReferralParams,
 	GetInvitationParams,
 	GetCommissionReceivedParams,
+	GetTraderBriefParams,
+	DepositCoinListParams,
+	WithdrawCoinListParams,
 };

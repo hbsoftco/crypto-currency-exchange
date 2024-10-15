@@ -45,10 +45,42 @@ type GetTraderBestListResponse = {
 	};
 };
 
+type TraderBriefLevel = {
+	indicator: number;
+	name: string;
+	valMax: number;
+	valMin: number;
+	logoUrl: string;
+};
+
+type SpotOrFutures = {
+	coL1M: number;
+	coL3M: number;
+	coL6M: number;
+	coLY: number;
+	vasmL1M: number;
+	vasmL3M: number;
+	vasmL6M: number;
+	vasmLY: number;
+};
+
+type TraderBriefItem = {
+	level: TraderBriefLevel;
+	spot: SpotOrFutures;
+	futures: SpotOrFutures;
+};
+
+type GetTraderBriefResponse = {
+	statusCode: number;
+	result: TraderBriefItem;
+};
+
 export type {
 	GetUserTraderCommissionListResponse,
 	Commission,
 	GetTraderBestListResponse,
 	BesetTraderItem,
 	BestListTrader,
+	GetTraderBriefResponse,
+	TraderBriefItem,
 };
