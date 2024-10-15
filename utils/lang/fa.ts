@@ -934,6 +934,9 @@ const persian = {
 	deleteContact: 'حذف مخاطب',
 	newContactSuccess: 'مخاطب جدید با موفقیت ثبت شد',
 	saveContact: 'ثبت مخاطب',
+	cardNumberBank: 'شماره کارت بانکی',
+	saveCardBank: 'ثبت کارت بانکی',
+	newCardSuccess: 'کارت بانکی جدید با موفقیت ثبت شد.',
 };
 
 export default persian;

@@ -12,6 +12,7 @@
 					icon=""
 					dir="ltr"
 					color-type="transparent"
+					:error-message="v$.emailAddressOrMobile.$error? $t('fieldIsRequired') : ''"
 				/>
 			</div>
 			<div class="mb-8 text-right">
@@ -25,6 +26,7 @@
 					icon=""
 					dir="rtl"
 					color-type="transparent"
+					:error-message="v$.description.$error? $t('fieldIsRequired') : ''"
 				/>
 			</div>
 			<div>
@@ -45,10 +47,12 @@
 					v-model="dto.verificationCode"
 					type="text"
 					input-class="text-left"
-					:label="$t('verification')"
+					label="verification"
 					placeholder=""
 					icon=""
 					dir="ltr"
+					color-type="transparent"
+					:error-message="v$.verificationCode.$error? $t('fieldIsRequired') : ''"
 				/>
 				<ULink>
 					<span class="text-xs font-normal text-primary-yellow-light dark:text-primary-yellow-dark">{{ $t('sendCodePhone') }}</span>
@@ -72,6 +76,8 @@
 <script setup lang="ts">
 // import IconCopy from '~/assets/svg-icons/menu/copy.svg';
 // import { useNumber } from '~/composables/useNumber';
+import useVuelidate from '@vuelidate/core';
+
 import TextareaFieldInput from '~/components/forms/TextareaFieldInput.vue';
 import OtpFieldInput from '~/components/forms/OtpFieldInput.vue';
 import { userRepository } from '~/repositories/user.repository';
@@ -110,6 +116,14 @@ const dto = ref<ContactSetDto>({
 	emailAddressOrMobile: '',
 	description: '',
 });
+const contactDtoRules = {
+	verificationId: { required: validations.required },
+	verificationCode: { required: validations.required },
+	emailAddressOrMobile: { required: validations.required },
+	description: { required: validations.required },
+};
+
+const v$ = useVuelidate(contactDtoRules, dto);
 
 const storeContactLoading = ref<boolean>(false);
 

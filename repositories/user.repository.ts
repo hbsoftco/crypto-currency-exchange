@@ -16,7 +16,7 @@ import type { DeleteAddressListParams, DeleteContactListParams, GetAddressListPa
 	GetRewardReceivedListParams,
 	GetTraderBestListParams } from '~/types/base.types';
 import type { GetTraderBestListResponse } from '~/types/response/trader.types';
-import type { AddCardBankSetDto, AddressSetDto, ContactSetDto, IdentificationResendDto, IdentificationSendDto, NickNameSetDto } from '~/types/dto/user.dto';
+import type { AddCardBankSetDto, AddressSetDto, CodeInviteDto, ContactSetDto, IdentificationResendDto, IdentificationSendDto, NickNameSetDto } from '~/types/dto/user.dto';
 import type { CommonRes, IdentificationRes } from '~/types/response/common.types';
 
 type UserRepository = {
@@ -38,7 +38,7 @@ type UserRepository = {
 	storeBankAccAdd: (params: AddCardBankSetDto) => Promise<CommonRes>;
 	identificationResend: (params: IdentificationResendDto) => Promise<IdentificationRes>;
 	getIdentificationCode: (params: IdentificationSendDto) => Promise<IdentificationRes>;
-
+	editCodeInvite: (params: CodeInviteDto) => Promise<CommonRes>;
 };
 
 export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserRepository => ({
@@ -274,6 +274,17 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 	async getIdentificationCode(dto: IdentificationSendDto): Promise<IdentificationRes> {
 		const url = `/v1/user/identification/send`;
 		const response = await fetch<IdentificationRes>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async editCodeInvite(dto: CodeInviteDto): Promise<CommonRes> {
+		const url = `/v1/user/alter/referral_code_set`;
+		const response = await fetch<CommonRes>(`${url}`, {
 			noAuth: false,
 			apiName: url,
 			method: 'POST',

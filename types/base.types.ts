@@ -311,6 +311,26 @@ type GetRecentListParams = {
 	rowCount: string;
 };
 
+type GetReferralParams = {
+	assessmentCurrencyId: string;
+};
+
+type GetInvitationParams = {
+	getMode?: string;
+	sortMode?: string;
+	assessmentCurrencyId: string;
+	pageNumber?: string;
+	pageSize?: string;
+};
+
+type GetCommissionReceivedParams = {
+	marketType?: string;
+	from?: string;
+	to?: string;
+	pageNumber?: string;
+	pageSize?: string;
+};
+
 export type {
 	GetReferralBestListParams,
 	GetRewardExposedParams,
@@ -354,4 +374,7 @@ export type {
 	GetPanelListParams,
 	GetAssetBoxParams,
 	GetRecentListParams,
+	GetReferralParams,
+	GetInvitationParams,
+	GetCommissionReceivedParams,
 };

@@ -354,29 +354,29 @@
 								</thead>
 								<tbody>
 									<tr
-										v-for="row in rows"
-										:key="row.id"
+										v-for="row in inviteList"
+										:key="row.uid"
 										class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark last:border-none"
 									>
 										<td class="text-sm font-normal py-2">
-											{{ row.subSet }}
+											{{ row.user }}
 										</td>
 										<td class="text-sm font-normal py-2">
-											{{ row.userCode }}
+											{{ useNumber(row.uid) }}
 										</td>
 										<td class="text-sm font-normal py-2">
-											{{ row.invitationTime }}
+											{{ useNumber(formatDateToIranTime(row.regTime)) }}
 										</td>
 										<td class="text-sm font-normal py-2">
-											{{ row.feeReceived }}
+											{{ useNumber(row.income) }}
 										</td>
 									</tr>
 								</tbody>
 							</table>
 						</div>
 						<div
-							v-for="row in rows"
-							:key="row.id"
+							v-for="row in inviteList"
+							:key="row.uid"
 						>
 							<div class="block md:hidden my-2 py-2 px-4 bg-hover-light dark:bg-hover-dark">
 								<div class="flex">
@@ -387,10 +387,10 @@
 									</div>
 									<div>
 										<div class="text-sm font-normal border-b border-primary-gray-light dark:border-primary-gray-dark">
-											{{ row.subSet }}
+											{{ row.user }}
 										</div>
 										<div class="text-sm font-normal">
-											{{ row.userCode }}
+											{{ useNumber(row.uid) }}
 										</div>
 									</div>
 								</div>
@@ -399,7 +399,7 @@
 										{{ $t('invitationTime') }}
 									</div>
 									<div class="text-sm font-medium">
-										{{ row.invitationTime }}
+										{{ useNumber(formatDateToIranTime(row.regTime)) }}
 									</div>
 								</div>
 								<div class="flex justify-between">
@@ -407,24 +407,25 @@
 										{{ $t('feeReceived') }}
 									</div>
 									<div class="text-sm font-medium">
-										{{ row.feeReceived }}
+										{{ useNumber(row.income) }}
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="flex justify-center py-4">
 							<UPagination
-								:model-value="currentPage"
-								:page-count="10"
-								:total="100"
-								:max="4"
+								:model-value="20"
+								:page-count="20"
+								:total="20"
+								:max="6"
+								size="xl"
 								ul-class="flex space-x-2 bg-blue-500 border-none"
-								li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500"
+								li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500 px-3"
 								button-class-base="flex items-center justify-center w-full h-full transition-colors duration-200"
 								button-class-inactive="bg-green-700 hover:bg-gray-600"
 								button-class-active="bg-blue-500"
 								class="my-14"
-								@update:model-value="onPageChange"
+								@update:model-value="onPageChangeInvite"
 							/>
 						</div>
 					</div>
@@ -475,9 +476,6 @@
 											{{ $t('tradingTime') }}
 										</th>
 										<th class="py-2 text-sm font-bold">
-											{{ $t('feeTime') }}
-										</th>
-										<th class="py-2 text-sm font-bold">
 											{{ $t('feePercentage') }}
 										</th>
 										<th class="py-2 text-sm font-bold">
@@ -487,34 +485,31 @@
 								</thead>
 								<tbody>
 									<tr
-										v-for="item in items"
+										v-for="item in ReceivedList"
 										:key="item.id"
 										class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark last:border-none"
 									>
 										<td class="text-sm font-normal py-2">
-											{{ item.subSet }}
+											{{ item.tUser }}
 										</td>
 										<td class="text-sm font-normal py-2">
-											{{ item.userCode }}
+											{{ item.tuid }}
 										</td>
 										<td class="text-sm font-normal py-2">
-											{{ item.tradingTime }}
+											{{ useNumber(formatDateToIranTime(item.tTime)) }}
 										</td>
 										<td class="text-sm font-normal py-2">
-											{{ item.feeTime }}
+											{{ useNumber(item.Perc) }}
 										</td>
 										<td class="text-sm font-normal py-2">
-											{{ item.feePercentage }}
-										</td>
-										<td class="text-sm font-normal py-2">
-											{{ item.feeAmount }}
+											{{ useNumber(item.tFee) }}
 										</td>
 									</tr>
 								</tbody>
 							</table>
 						</div>
 						<div
-							v-for="item in items"
+							v-for="item in ReceivedList"
 							:key="item.id"
 						>
 							<div class="block md:hidden my-2 py-2 px-4 bg-hover-light dark:bg-hover-dark">
@@ -526,10 +521,10 @@
 									</div>
 									<div>
 										<div class="text-sm font-normal border-b border-primary-gray-light dark:border-primary-gray-dark">
-											{{ item.subSet }}
+											{{ $t('userCode') }}
 										</div>
 										<div class="text-sm font-normal">
-											{{ item.userCode }}feeTime
+											{{ item.tuid }}
 										</div>
 									</div>
 								</div>
@@ -538,15 +533,7 @@
 										{{ $t('tradingTime') }}
 									</div>
 									<div class="text-sm font-medium">
-										{{ item.tradingTime }}
-									</div>
-								</div>
-								<div class="flex justify-between">
-									<div class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
-										{{ $t('feeTime') }}
-									</div>
-									<div class="text-sm font-medium">
-										{{ item.feeTime }}
+										{{ useNumber(formatDateToIranTime(item.tTime)) }}
 									</div>
 								</div>
 								<div class="flex justify-between">
@@ -554,7 +541,7 @@
 										{{ $t('feePercentage') }}
 									</div>
 									<div class="text-sm font-medium">
-										{{ item.feePercentage }}
+										{{ useNumber(item.Perc) }}
 									</div>
 								</div>
 								<div class="flex justify-between">
@@ -562,24 +549,25 @@
 										{{ $t('feeAmount') }}
 									</div>
 									<div class="text-sm font-medium">
-										{{ item.feeAmount }}
+										{{ useNumber(item.tFee) }}
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="flex justify-center py-4">
 							<UPagination
-								:model-value="currentPage"
-								:page-count="10"
-								:total="100"
-								:max="4"
+								:model-value="20"
+								:page-count="20"
+								:total="20"
+								:max="6"
+								size="xl"
 								ul-class="flex space-x-2 bg-blue-500 border-none"
-								li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500"
+								li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500 px-3"
 								button-class-base="flex items-center justify-center w-full h-full transition-colors duration-200"
 								button-class-inactive="bg-green-700 hover:bg-gray-600"
 								button-class-active="bg-blue-500"
 								class="my-14"
-								@update:model-value="onPageChange"
+								@update:model-value="onPageChangeReceived"
 							/>
 						</div>
 					</div>
@@ -605,29 +593,72 @@ import { useNumber } from '~/composables/useNumber';
 import ModalInviteFriends from '~/components/pages/Site/Account/InviteFriends/ModalInviteFriends.vue';
 import EditCodeInviteFriends from '~/components/pages/Site/Account/InviteFriends/EditCodeInviteFriends.vue';
 import IconEdit from '~/assets/svg-icons/profile/edit.svg';
+import { referralRepository } from '~/repositories/referral.repository';
+import type { InviteList, ReceivedList } from '~/types/response/referral.types';
+import type { GetInvitationParams } from '~/types/base.types';
+import { formatDateToIranTime } from '~/utils/date-time';
 
 definePageMeta({
 	layout: 'account-single',
 });
-const currentPage = ref(1);
 
-function onPageChange(newPage: number) {
-	currentPage.value = newPage;
+const currentPageInvite = ref<number>(1);
+const currentPageReceived = ref<number>(1);
+
+const { $api } = useNuxtApp();
+const referralRepo = referralRepository($api);
+
+const inviteList = ref<InviteList[]>();
+const ReceivedList = ref<ReceivedList[]>();
+
+const paramsInvite = ref<GetInvitationParams>({
+	getMode: '',
+	sortMode: '',
+	assessmentCurrencyId: '3',
+	pageNumber: '1',
+	pageSize: '20',
+});
+const paramsReceived = ref<GetInvitationParams>({
+	getMode: '',
+	sortMode: '',
+	assessmentCurrencyId: '3',
+	pageNumber: '1',
+	pageSize: '20',
+});
+const getInviteList = async () => {
+	try {
+		const { result } = await referralRepo.getInvitation(paramsInvite.value);
+		inviteList.value = result.rows;
+		currentPageInvite.value = result.totalCount;
+	}
+	catch (error) {
+		console.log(error);
+	}
+};
+
+const getcommissionList = async () => {
+	try {
+		const { result } = await referralRepo.getCommissionReceived(paramsReceived.value);
+		ReceivedList.value = result.rows;
+		currentPageReceived.value = result.totalCount;
+	}
+	catch (error) {
+		console.log(error);
+	}
+};
+onMounted(async () => {
+	await Promise.all([
+		getInviteList(),
+		getcommissionList(),
+	]);
+});
+
+function onPageChangeInvite(newPage: number) {
+	currentPageInvite.value = newPage;
 }
-const rows = ref([
-	{ id: 1, subSet: 'حساب دوستان', userCode: 'UID ', invitationTime: 'زمان دعوت', feeReceived: 'تومان' },
-	{ id: 2, subSet: 'حساب دوستان', userCode: 'UID ', invitationTime: 'زمان دعوت', feeReceived: 'تومان' },
-	{ id: 3, subSet: 'حساب دوستان', userCode: 'UID ', invitationTime: 'زمان دعوت', feeReceived: 'تومان' },
-	{ id: 4, subSet: 'حساب دوستان', userCode: 'UID ', invitationTime: 'زمان دعوت', feeReceived: 'تومان' },
-]);
-
-const items = ref([
-	{ id: 1, subSet: 'حساب دوستان', userCode: 'UID ', tradingTime: 'زمان دعوت', feeTime: 'تومان', feePercentage: 'تومان', feeAmount: 'تومان' },
-	{ id: 2, subSet: 'حساب دوستان', userCode: 'UID ', tradingTime: 'زمان دعوت', feeTime: 'تومان', feePercentage: 'تومان', feeAmount: 'تومان' },
-	{ id: 3, subSet: 'حساب دوستان', userCode: 'UID ', tradingTime: 'زمان دعوت', feeTime: 'تومان', feePercentage: 'تومان', feeAmount: 'تومان' },
-	{ id: 4, subSet: 'حساب دوستان', userCode: 'UID ', tradingTime: 'زمان دعوت', feeTime: 'تومان', feePercentage: 'تومان', feeAmount: 'تومان' },
-]);
-
+function onPageChangeReceived(newPage: number) {
+	currentPageReceived.value = newPage;
+}
 const showModalInviteFriends = ref(false);
 const showEditCodeInviteFriends = ref(false);
 
@@ -650,5 +681,3 @@ const toggleDescription = () => {
 	showDescription.value = !showDescription.value;
 };
 </script>
-
-<style scoped></style>

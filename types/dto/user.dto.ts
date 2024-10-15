@@ -35,6 +35,9 @@ type IdentificationSendDto = {
 	sendType: string;
 };
 
+type CodeInviteDto = {
+	referralCode: string;
+};
 export type {
 	ContactSetDto,
 	AddressSetDto,
@@ -42,4 +45,5 @@ export type {
 	AddCardBankSetDto,
 	IdentificationResendDto,
 	IdentificationSendDto,
+	CodeInviteDto,
 };
