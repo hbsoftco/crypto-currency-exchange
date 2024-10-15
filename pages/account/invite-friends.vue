@@ -499,7 +499,7 @@
 											{{ useNumber(formatDateToIranTime(item.tTime)) }}
 										</td>
 										<td class="text-sm font-normal py-2">
-											{{ useNumber(item.Perc) }}
+											{{ useNumber(item.perc) }}
 										</td>
 										<td class="text-sm font-normal py-2">
 											{{ useNumber(item.tFee) }}
@@ -541,7 +541,7 @@
 										{{ $t('feePercentage') }}
 									</div>
 									<div class="text-sm font-medium">
-										{{ useNumber(item.Perc) }}
+										{{ useNumber(item.perc) }}
 									</div>
 								</div>
 								<div class="flex justify-between">
