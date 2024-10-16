@@ -134,7 +134,7 @@
 						button-class-inactive="bg-green-700 hover:bg-gray-600"
 						button-class-active="bg-blue-500"
 						class="my-14"
-						@update:model-value="onPageChangeInvite"
+						@update:model-value="onPageChange"
 					/>
 				</div>
 			</div>
@@ -145,19 +145,42 @@
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
 import { formatDateToIranTime } from '~/utils/date-time';
-import type { InviteList } from '~/types/response/referral.types';
 import IconNote from '~/assets/svg-icons/profile/note.svg';
 import IconQuestion from '~/assets/svg-icons/profile/question.svg';
+import { userRepository } from '~/repositories/user.repository';
+import type { InviteList } from '~/types/response/referral.types';
+import type { GetInvitationParams } from '~/types/base.types';
 
-interface PropsDefinition {
-	inviteList: InviteList[];
-}
+const { $api } = useNuxtApp();
+const userRepo = userRepository($api);
+const inviteList = ref<InviteList[]>();
+const currentPage = ref<number>(1);
 
-defineProps<PropsDefinition>();
+const params = ref<GetInvitationParams>({
+	getMode: '',
+	sortMode: '',
+	assessmentCurrencyId: '3',
+	pageNumber: '1',
+	pageSize: '20',
+});
+const getCommissionList = async () => {
+	try {
+		const { result } = await userRepo.getInvitation(params.value);
+		inviteList.value = result.rows;
+		currentPage.value = result.totalCount;
+	}
+	catch (error) {
+		console.log(error);
+	}
+};
 
-const currentPageInvite = ref<number>(1);
+onMounted(async () => {
+	await Promise.all([
+		getCommissionList(),
+	]);
+});
 
-function onPageChangeInvite(newPage: number) {
-	currentPageInvite.value = newPage;
+function onPageChange(newPage: number) {
+	currentPage.value = newPage;
 }
 </script>

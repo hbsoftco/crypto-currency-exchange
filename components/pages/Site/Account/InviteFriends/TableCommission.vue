@@ -9,20 +9,24 @@
 					<IconQuestion class="text-2xl" />
 				</div>
 				<div class="flex justify-between">
-					<div class="mx-3">
-						<USelect
-							icon="heroicons:calendar-date-range-16-solid"
+					<div class="ml-6 my-1 col-span-2">
+						<USelectMenu
+							v-model="MarketTypeFilter"
+							:options="MarketTypeItems"
+							:placeholder="$t('all')"
+							option-attribute="value"
 							:ui="{
+								background: '',
 								color: {
 									white: {
-										outline: 'shadow-sm bg-background-light dark:bg-background-dark text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
+										outline: ' bg-hover-light dark:bg-hover-dark',
 									},
 								},
 							}"
-							class="w-44"
-							:options="['همه', 'Canada', 'Mexico']"
+							@change="applyFilters"
 						/>
 					</div>
+					<!-- MarketType -->
 					<div class="py-2 px-4 border border-primary-gray-light dark:border-primary-gray-dark rounded-md">
 						<IconNote />
 					</div>
@@ -52,7 +56,7 @@
 						</thead>
 						<tbody>
 							<tr
-								v-for="item in receivedList"
+								v-for="item in commissionList"
 								:key="item.tid"
 								class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark last:border-none"
 							>
@@ -76,7 +80,7 @@
 					</table>
 				</div>
 				<div
-					v-for="item in receivedList"
+					v-for="item in commissionList"
 					:key="item.tid"
 				>
 					<div class="block md:hidden my-2 py-2 px-4 bg-hover-light dark:bg-hover-dark">
@@ -123,7 +127,7 @@
 				</div>
 				<div class="flex justify-center py-4">
 					<UPagination
-						:model-value="currentPageReceived"
+						:model-value="20"
 						:page-count="20"
 						:total="20"
 						:max="6"
@@ -134,7 +138,7 @@
 						button-class-inactive="bg-green-700 hover:bg-gray-600"
 						button-class-active="bg-blue-500"
 						class="my-14"
-						@update:model-value="onPageChangeReceived"
+						@update:model-value="onPageChange"
 					/>
 				</div>
 			</div>
@@ -145,20 +149,63 @@
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
 import { formatDateToIranTime } from '~/utils/date-time';
-import type { ReceivedList } from '~/types/response/referral.types';
+import type { CommissionList } from '~/types/response/referral.types';
 import IconNote from '~/assets/svg-icons/profile/note.svg';
 import IconQuestion from '~/assets/svg-icons/profile/question.svg';
+import type { GetCommissionReceivedListParams, KeyValue } from '~/types/base.types';
+import { userRepository } from '~/repositories/user.repository';
+import { MarketType } from '~/utils/enums/market.enum';
 
-interface PropsDefinition {
-	receivedList: ReceivedList[];
-	currentPageReceived: number;
-}
+const { $api } = useNuxtApp();
+const userRepo = userRepository($api);
+const commissionList = ref<CommissionList[]>();
+const currentPage = ref<number>(1);
+const MarketTypeFilter = ref<KeyValue>();
 
-defineProps<PropsDefinition>();
+const MarketTypeItems = ref<KeyValue[]>([
+	{
+		key: '',
+		value: useT('all'),
+	},
+	{
+		key: String(MarketType.SPOT),
+		value: useT('spot'),
+	},
+	{
+		key: String(MarketType.FUTURES),
+		value: useT('futures'),
+	},
+]);
+const params = ref<GetCommissionReceivedListParams>({
+	marketType: '',
+	from: '',
+	to: '',
+	pageNumber: '1',
+	pageSize: '100',
+});
+const getCommissionList = async () => {
+	try {
+		const { result } = await userRepo.getCommissionReceived(params.value);
+		commissionList.value = result.rows;
+		currentPage.value = result.totalCount;
+	}
+	catch (error) {
+		console.log(error);
+	}
+};
 
-const emit = defineEmits(['update:modelValue']);
+const applyFilters = async () => {
+	params.value.marketType = MarketTypeFilter.value ? MarketTypeFilter.value.key : '';
+	await getCommissionList();
+};
 
-function onPageChangeReceived(newPage: number) {
-	emit('update:currentPageReceived', newPage);
+onMounted(async () => {
+	await Promise.all([
+		getCommissionList(),
+	]);
+});
+
+function onPageChange(newPage: number) {
+	currentPage.value = newPage;
 }
 </script>

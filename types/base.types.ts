@@ -342,14 +342,6 @@ type GetInvitationParams = {
 	pageSize?: string;
 };
 
-type GetCommissionReceivedParams = {
-	marketType?: string;
-	from?: string;
-	to?: string;
-	pageNumber?: string;
-	pageSize?: string;
-};
-
 export type {
 	GetReferralBestListParams,
 	GetRewardExposedParams,
@@ -395,7 +387,6 @@ export type {
 	GetRecentListParams,
 	GetReferralParams,
 	GetInvitationParams,
-	GetCommissionReceivedParams,
 	GetTraderBriefParams,
 	DepositCoinListParams,
 	WithdrawCoinListParams,

@@ -60,7 +60,7 @@ type GetInvitationListRes = {
 	};
 };
 
-type ReceivedList = {
+type CommissionList = {
 	tid: number;
 	mid: number;
 	mSymbol: string;
@@ -80,7 +80,7 @@ type GetCommissionRes = {
 	statusCode: number;
 	result: {
 		totalCount: number;
-		rows: ReceivedList[];
+		rows: CommissionList[];
 
 	};
 };
@@ -90,5 +90,5 @@ export type {
 	GetInvitationListRes,
 	GetCommissionRes,
 	InviteList,
-	ReceivedList,
+	CommissionList,
 };

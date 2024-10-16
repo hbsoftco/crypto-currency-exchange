@@ -225,12 +225,9 @@
 
 			<Dashboard />
 
-			<TableInvite :invite-list="inviteList || []" />
+			<TableInvite />
 
-			<TableCommission
-				:received-list="receivedList || []"
-				:current-page-received="currentPageReceived"
-			/>
+			<TableCommission />
 		</UContainer>
 	</div>
 </template>
@@ -248,66 +245,12 @@ import { useNumber } from '~/composables/useNumber';
 import ModalInviteFriends from '~/components/pages/Site/Account/InviteFriends/ModalInviteFriends.vue';
 import EditCodeInviteFriends from '~/components/pages/Site/Account/InviteFriends/EditCodeInviteFriends.vue';
 import IconEdit from '~/assets/svg-icons/profile/edit.svg';
-import type { InviteList, ReceivedList } from '~/types/response/referral.types';
-import type { GetCommissionReceivedParams, GetInvitationParams } from '~/types/base.types';
 import TableInvite from '~/components/pages/Site/Account/InviteFriends/TableInvite.vue';
 import TableCommission from '~/components/pages/Site/Account/InviteFriends/TableCommission.vue';
 import Dashboard from '~/components/pages/Site/Account/InviteFriends/Dashboard.vue';
-import { userRepository } from '~/repositories/user.repository';
 
 definePageMeta({
 	layout: 'account-single',
-});
-
-const { $api } = useNuxtApp();
-const userRepo = userRepository($api);
-
-const inviteList = ref<InviteList[]>();
-const receivedList = ref<ReceivedList[]>();
-
-const currentPageInvite = ref<number>(1);
-const currentPageReceived = ref<number>(1);
-
-const paramsInvite = ref<GetInvitationParams>({
-	getMode: '',
-	sortMode: '',
-	assessmentCurrencyId: '3',
-	pageNumber: '1',
-	pageSize: '20',
-});
-const paramsReceived = ref<GetCommissionReceivedParams>({
-	marketType: '',
-	from: '',
-	to: '',
-	pageNumber: '1',
-	pageSize: '100',
-});
-const getInviteList = async () => {
-	try {
-		const { result } = await userRepo.getInvitation(paramsInvite.value);
-		inviteList.value = result.rows;
-		currentPageInvite.value = result.totalCount;
-	}
-	catch (error) {
-		console.log(error);
-	}
-};
-
-const getCommissionList = async () => {
-	try {
-		const { result } = await userRepo.getCommissionReceived(paramsReceived.value);
-		receivedList.value = result.rows;
-		currentPageReceived.value = result.totalCount;
-	}
-	catch (error) {
-		console.log(error);
-	}
-};
-onMounted(async () => {
-	await Promise.all([
-		getInviteList(),
-		getCommissionList(),
-	]);
 });
 
 const showModalInviteFriends = ref(false);
