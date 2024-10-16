@@ -248,19 +248,19 @@ import { useNumber } from '~/composables/useNumber';
 import ModalInviteFriends from '~/components/pages/Site/Account/InviteFriends/ModalInviteFriends.vue';
 import EditCodeInviteFriends from '~/components/pages/Site/Account/InviteFriends/EditCodeInviteFriends.vue';
 import IconEdit from '~/assets/svg-icons/profile/edit.svg';
-import { referralRepository } from '~/repositories/referral.repository';
 import type { InviteList, ReceivedList } from '~/types/response/referral.types';
 import type { GetCommissionReceivedParams, GetInvitationParams } from '~/types/base.types';
 import TableInvite from '~/components/pages/Site/Account/InviteFriends/TableInvite.vue';
 import TableCommission from '~/components/pages/Site/Account/InviteFriends/TableCommission.vue';
 import Dashboard from '~/components/pages/Site/Account/InviteFriends/Dashboard.vue';
+import { userRepository } from '~/repositories/user.repository';
 
 definePageMeta({
 	layout: 'account-single',
 });
 
 const { $api } = useNuxtApp();
-const referralRepo = referralRepository($api);
+const userRepo = userRepository($api);
 
 const inviteList = ref<InviteList[]>();
 const receivedList = ref<ReceivedList[]>();
@@ -284,7 +284,7 @@ const paramsReceived = ref<GetCommissionReceivedParams>({
 });
 const getInviteList = async () => {
 	try {
-		const { result } = await referralRepo.getInvitation(paramsInvite.value);
+		const { result } = await userRepo.getInvitation(paramsInvite.value);
 		inviteList.value = result.rows;
 		currentPageInvite.value = result.totalCount;
 	}
@@ -295,7 +295,7 @@ const getInviteList = async () => {
 
 const getCommissionList = async () => {
 	try {
-		const { result } = await referralRepo.getCommissionReceived(paramsReceived.value);
+		const { result } = await userRepo.getCommissionReceived(paramsReceived.value);
 		receivedList.value = result.rows;
 		currentPageReceived.value = result.totalCount;
 	}

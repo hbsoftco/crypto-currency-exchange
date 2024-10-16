@@ -51,6 +51,7 @@ export default defineNuxtConfig({
 			'GridComponent',
 			'TooltipComponent',
 			'ToolboxComponent',
+			'GraphicComponent',
 		],
 	},
 	eslint: {

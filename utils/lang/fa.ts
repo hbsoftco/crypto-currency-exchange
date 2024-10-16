@@ -941,7 +941,7 @@ const persian = {
 	your90DayTradingVolume: 'حجم معاملات ۹۰ روزه شما',
 	nickName: 'نام مستعار',
 	bitlandSpecialClub: 'باشگاه ویژه بیت لند',
-
+	noAward: 'جایزه‌ای ندارد',
 };
 
 export default persian;

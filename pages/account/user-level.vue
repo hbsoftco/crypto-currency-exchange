@@ -130,38 +130,44 @@
 				{{ $t('userLevelRatingTable') }}
 			</h3>
 			<div class="hidden md:block">
-				<table class="min-w-full mt-6">
+				<div v-if="traderBriefItemLoading && levelListLoading">
+					{{ $t('isLoading') }} ...
+				</div>
+				<table
+					v-else
+					class="min-w-full mt-6"
+				>
 					<thead>
-						<tr class="hidden md:block py-3 text-right border-b border-b-primary-gray-light dark:border-b-primary-gray-dark">
+						<!-- <tr class="hidden md:block py-3 text-right border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"> -->
+						<tr class="py-3 text-right border-b border-b-primary-gray-light dark:border-b-primary-gray-dark">
 							<th class="text-sm font-bold py-3">
-								سطح
+								{{ $t('level') }}
 							</th>
 							<th class="text-sm font-bold py-3">
-								شرایط
+								{{ $t('conditions') }}
 							</th>
 							<th class="text-sm font-bold py-3">
-								جوایز
+								{{ $t('awards') }}
 							</th>
 							<th class="text-sm font-bold py-3" />
 						</tr>
 					</thead>
 					<tbody>
 						<TableRow
-							v-for="item in LevelList"
+							v-for="item in levelList"
 							:key="item.levelId"
 							:level="item.header"
 							:condition="item.condition"
 							:award="item.prize"
 							:icon-src="item.imgLogoUrl"
 							:image-src="item.imgBenefitsUrl"
-							:is-even="item.levelId % 2 === 0"
-							:active="item.indicator"
+							:is-active="findIndicator(item.indicator)"
 						/>
 					</tbody>
 				</table>
 			</div>
 			<div
-				v-for="item in LevelList"
+				v-for="item in levelList"
 				:key="item.levelId"
 				class="block md:hidden"
 			>
@@ -239,6 +245,8 @@ import IconArrowLeftActive from '~/assets/svg-icons/profile/arrow-left-active.sv
 import IconClose from '~/assets/svg-icons/close.svg';
 import { userRepository } from '~/repositories/user.repository';
 import type { LevelRow } from '~/types/response/user.types';
+import type { GetTraderBriefParams } from '~/types/base.types';
+import type { TraderBriefItem } from '~/types/response/trader.types';
 
 const selectedButton = ref('ninety');
 definePageMeta({
@@ -247,19 +255,54 @@ definePageMeta({
 
 const { $api } = useNuxtApp();
 const userRepo = userRepository($api);
-const LevelList = ref<LevelRow[]>();
 
-const getLevelList = async () => {
+const traderBriefParams = ref<GetTraderBriefParams>({
+	assetType: useEnv('assetType'),
+	id: '1',
+});
+const traderBriefItemLoading = ref<boolean>(false);
+const traderBriefItem = ref<TraderBriefItem>();
+const getTraderBrief = async () => {
 	try {
-		const { result } = await userRepo.getLevelDate();
-		LevelList.value = result.rows;
+		traderBriefItemLoading.value = true;
+
+		const { result } = await userRepo.getTraderBrief(traderBriefParams.value);
+
+		traderBriefItem.value = result;
+		traderBriefItemLoading.value = true;
 	}
 	catch (error) {
+		traderBriefItemLoading.value = true;
 		console.log(error);
 	}
 };
+
+const levelListLoading = ref<boolean>(false);
+const levelList = ref<LevelRow[]>();
+const getLevelList = async () => {
+	try {
+		levelListLoading.value = true;
+		const { result } = await userRepo.getLevelDate();
+		levelList.value = result.rows;
+		levelListLoading.value = false;
+	}
+	catch (error) {
+		levelListLoading.value = false;
+		console.log(error);
+	}
+};
+
+const findIndicator = (indicator: number) => {
+	if (traderBriefItem.value?.level.indicator === indicator) {
+		return (traderBriefItem.value?.level.indicator === indicator);
+	}
+
+	return false;
+};
+
 onMounted(async () => {
 	await Promise.all([
+		getTraderBrief(),
 		getLevelList(),
 	]);
 });
