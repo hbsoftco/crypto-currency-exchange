@@ -9,34 +9,45 @@
 					<IconQuestion class="text-2xl" />
 				</div>
 				<div class="w-full md:w-auto flex justify-between">
-					<div>
-						<USelect
+					<div class="ml-6 my-1 col-span-2">
+						<USelectMenu
+							v-model="SortModeFilter"
+							:options="SortModeItems"
+							:placeholder="$t('all')"
+							option-attribute="value"
 							icon="heroicons:calendar-date-range-16-solid"
 							:ui="{
+								background: '',
 								color: {
 									white: {
-										outline: 'shadow-sm bg-background-light dark:bg-background-dark text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
+										outline: ' bg-hover-light dark:bg-hover-dark',
 									},
 								},
 							}"
-							class="w-auto md:w-44"
-							:options="['همه', 'Canada', 'Mexico']"
+							@change="applyFilters"
 						/>
 					</div>
-					<div class="mx-1 md:mx-3">
-						<USelect
+					<!-- MarketType -->
+
+					<div class="ml-6 my-1 col-span-2">
+						<USelectMenu
+							v-model="GetModeFilter"
+							:options="GetModeItems"
+							:placeholder="$t('all')"
+							option-attribute="value"
 							icon="heroicons:calendar-date-range-16-solid"
 							:ui="{
+								background: '',
 								color: {
 									white: {
-										outline: 'shadow-sm bg-background-light dark:bg-background-dark text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
+										outline: ' bg-hover-light dark:bg-hover-dark',
 									},
 								},
 							}"
-							class="w-auto md:w-44"
-							:options="['همه', 'Canada', 'Mexico']"
+							@change="applyFiltersMode"
 						/>
 					</div>
+					<!-- MarketType -->
 					<div class="py-2 px-4 border border-primary-gray-light dark:border-primary-gray-dark rounded-md">
 						<IconNote />
 					</div>
@@ -149,12 +160,49 @@ import IconNote from '~/assets/svg-icons/profile/note.svg';
 import IconQuestion from '~/assets/svg-icons/profile/question.svg';
 import { userRepository } from '~/repositories/user.repository';
 import type { InviteList } from '~/types/response/referral.types';
-import type { GetInvitationParams } from '~/types/base.types';
+import type { GetInvitationParams, KeyValue } from '~/types/base.types';
+import { GetMode, SortMode } from '~/utils/enums/referral.enum';
 
 const { $api } = useNuxtApp();
 const userRepo = userRepository($api);
 const inviteList = ref<InviteList[]>();
 const currentPage = ref<number>(1);
+
+const SortModeFilter = ref<KeyValue>();
+const SortModeItems = ref<KeyValue[]>([
+	{
+		key: String(SortMode.LatestInvitation),
+		value: useT('LatestInvitation'),
+	},
+	{
+		key: String(SortMode.OldestInvitation),
+		value: useT('OldestInvitation'),
+	},
+	{
+		key: String(SortMode.LowestIncome),
+		value: useT('LowestIncome'),
+	},
+	{
+		key: String(SortMode.HighestIncome),
+		value: useT('HighestIncome'),
+	},
+]);
+
+const GetModeFilter = ref<KeyValue>();
+const GetModeItems = ref<KeyValue[]>([
+	{
+		key: String(GetMode.Any),
+		value: useT('all'),
+	},
+	{
+		key: String(GetMode.Directs),
+		value: useT('direct'),
+	},
+	{
+		key: String(GetMode.Indirects),
+		value: useT('inDirect'),
+	},
+]);
 
 const params = ref<GetInvitationParams>({
 	getMode: '',
@@ -180,6 +228,15 @@ onMounted(async () => {
 	]);
 });
 
+const applyFilters = async () => {
+	params.value.sortMode = SortModeFilter.value ? SortModeFilter.value.key : '';
+	await getCommissionList();
+};
+
+const applyFiltersMode = async () => {
+	params.value.getMode = GetModeFilter.value ? GetModeFilter.value.key : '';
+	await getCommissionList();
+};
 function onPageChange(newPage: number) {
 	currentPage.value = newPage;
 }

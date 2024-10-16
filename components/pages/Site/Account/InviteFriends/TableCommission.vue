@@ -15,6 +15,7 @@
 							:options="MarketTypeItems"
 							:placeholder="$t('all')"
 							option-attribute="value"
+							icon="heroicons:calendar-date-range-16-solid"
 							:ui="{
 								background: '',
 								color: {

@@ -942,6 +942,10 @@ const persian = {
 	nickName: 'نام مستعار',
 	bitlandSpecialClub: 'باشگاه ویژه بیت لند',
 	noAward: 'جایزه‌ای ندارد',
+	LatestInvitation: 'جدیدترین دعوت',
+	OldestInvitation: 'قدیمی‌ترین دعوت',
+	LowestIncome: 'کمترین دریافتی',
+	HighestIncome: 'بیشترین دریافتی',
 };
 
 export default persian;
