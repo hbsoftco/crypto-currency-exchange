@@ -147,6 +147,7 @@
 </template>
 
 <script setup lang="ts">
+import IconUserInvite from '~/assets/svg-icons/menu/user-fill.svg';
 import { useNumber } from '~/composables/useNumber';
 import { formatDateToIranTime } from '~/utils/date-time';
 import type { CommissionList } from '~/types/response/referral.types';
@@ -189,8 +190,10 @@ const getCommissionList = async () => {
 		commissionList.value = result.rows;
 		currentPage.value = result.totalCount;
 	}
-	catch (error) {
-		console.log(error);
+	catch (error: any) {
+		if (error.response._data.statusCode === -1110000) {
+			commissionList.value = [];
+		}
 	}
 };
 

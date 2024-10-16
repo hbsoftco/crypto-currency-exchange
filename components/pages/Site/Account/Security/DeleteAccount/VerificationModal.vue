@@ -82,7 +82,7 @@
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
+// import { useNumber } from '~/composables/useNumber';
 import IconClose from '~/assets/svg-icons/close.svg';
 import OtpFieldInput from '~/components/forms/OtpFieldInput.vue';
 
@@ -99,9 +99,9 @@ const closeModal = async (value: boolean) => {
 	emit('close', value);
 };
 
-const isAssetVisible = ref(false);
+// const isAssetVisible = ref(false);
 
-const toggleAssetVisibility = () => {
-	isAssetVisible.value = !isAssetVisible.value;
-};
+// const toggleAssetVisibility = () => {
+// 	isAssetVisible.value = !isAssetVisible.value;
+// };
 </script>

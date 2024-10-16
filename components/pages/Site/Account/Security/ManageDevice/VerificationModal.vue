@@ -44,9 +44,9 @@ const closeModal = async (value: boolean) => {
 	emit('close', value);
 };
 
-const isAssetVisible = ref(false);
+// const isAssetVisible = ref(false);
 
-const toggleAssetVisibility = () => {
-	isAssetVisible.value = !isAssetVisible.value;
-};
+// const toggleAssetVisibility = () => {
+// 	isAssetVisible.value = !isAssetVisible.value;
+// };
 </script>

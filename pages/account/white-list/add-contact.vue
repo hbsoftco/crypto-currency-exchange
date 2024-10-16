@@ -20,7 +20,8 @@
 					<div class="mt-10 w-full md:w-80">
 						<div>
 							<AddNewContact
-								@state="checkState" />
+								@state="checkState"
+							/>
 						</div>
 					</div>
 					<div class="my-8">

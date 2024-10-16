@@ -68,7 +68,6 @@ export const useSpot = () => {
 			const response = await spotRepo.getOrderList(params);
 			return response;
 		}
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		catch (error: any) {
 			throw createError({
 				statusCode: 500,

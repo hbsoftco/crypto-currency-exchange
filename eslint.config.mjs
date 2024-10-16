@@ -17,7 +17,7 @@ export default withNuxt({
 		'vue/no-multiple-template-root': 'error',
 		'vue/multi-word-component-names': ['off', { ignores: ['index'] }],
 
-		'@typescript-eslint/no-explicit-any': 'warn',
+		'@typescript-eslint/no-explicit-any': 'off',
 		'@typescript-eslint/no-non-null-assertion': 'error',
 	},
 });
