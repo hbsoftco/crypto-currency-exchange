@@ -3,7 +3,9 @@ import type { NitroFetchRequest, $Fetch } from 'nitropack';
 import type { GetAddressListRes, GetBankListResponse,
 	GetBestListResponse,
 	GetCommissionReceivedList, GetContactListResponse,
+	GetLevelsDataRes,
 	GetRewardReceivedListResponse,
+	GetStateTradeRes,
 	ReferralBriefResponse,
 	UserProfileResponse } from '../types/response/user.types';
 
@@ -57,6 +59,8 @@ type UserRepository = {
 	getTraderBestList: (params: GetTraderBestListParams) => Promise<GetTraderBestListResponse>;
 	getTraderBrief: (params: GetTraderBriefParams) => Promise<GetTraderBriefResponse>;
 	getUserTraderCommissionList: (params: GetUserTraderCommissionListParams) => Promise<GetUserTraderCommissionListResponse>;
+	getTraderState: (params: GetTraderBriefParams) => Promise<GetStateTradeRes>;
+	getLevelDate: () => Promise<GetLevelsDataRes>;
 };
 
 export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserRepository => ({
@@ -335,6 +339,29 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 		const response = await fetch<GetUserTraderCommissionListResponse>(`${url}?${query.toString()}`, {
 			noAuth: false,
 			apiName: url,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getTraderState(params: GetTraderBriefParams): Promise<GetStateTradeRes> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/user/trader/stats';
+		const response = await fetch<GetStateTradeRes>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			apiName: url,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getLevelDate(): Promise<GetLevelsDataRes> {
+		const url = '/v1/user/trader/levels_list';
+		const response = await fetch<GetLevelsDataRes>(`${url}`, {
+			noAuth: false,
+			method: 'GET',
 		} as CustomNitroFetchOptions);
 
 		return response;

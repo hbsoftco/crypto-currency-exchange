@@ -147,22 +147,22 @@
 					</thead>
 					<tbody>
 						<TableRow
-							v-for="(item, index) in items"
-							:key="index"
-							:level="item.level"
+							v-for="item in LevelList"
+							:key="item.levelId"
+							:level="item.header"
 							:condition="item.condition"
-							:award="item.award"
-							:icon-src="item.iconSrc"
-							:image-src="item.imageSrc"
-							:is-even="index % 2 === 0"
-							:is-active="item.isActive"
+							:award="item.prize"
+							:icon-src="item.imgLogoUrl"
+							:image-src="item.imgBenefitsUrl"
+							:is-even="item.levelId % 2 === 0"
+							:active="item.indicator"
 						/>
 					</tbody>
 				</table>
 			</div>
 			<div
-				v-for="(item, index) in items"
-				:key="index"
+				v-for="item in LevelList"
+				:key="item.levelId"
 				class="block md:hidden"
 			>
 				<div
@@ -172,16 +172,16 @@
 						<div class="flex justify-between items-center">
 							<div class="flex items-center">
 								<div
-									v-if="item.isActive"
+									v-if="item.indicator"
 								>
 									<IconArrowLeftActive class="text-primary-yellow-light dark:text-primary-yellow-dark text-base" />
 								</div>
-								<span :class="[item.isActive ? 'mr-1 text-primary-yellow-light dark:text-primary-yellow-dark text-xs font-normal' : 'text-subtle-text-light dark:text-subtle-text-dark text-xs font-normal']">
-									{{ item.level }}
+								<span :class="[item.indicator ? 'mr-1 text-primary-yellow-light dark:text-primary-yellow-dark text-xs font-normal' : 'text-subtle-text-light dark:text-subtle-text-dark text-xs font-normal']">
+									{{ item.header }}
 								</span>
 							</div>
 							<div
-								v-if="item.isActive"
+								v-if="item.indicator"
 							>
 								<NuxtImg
 									src="/images/Confirmation.png"
@@ -192,14 +192,14 @@
 						</div>
 						<div class="flex justify-center px-16 py-8">
 							<NuxtImg
-								:src="item.iconSrc"
+								:src="item.imgLogoUrl"
 								alt="icon"
 							/>
 						</div>
 						<div class="flex justify-start">
 							<span
 								class="text-base font-medium py-2"
-								:class="[item.isActive ? 'text-primary-yellow-light dark:text-primary-yellow-dark' : 'text-black dark:text-white']"
+								:class="[item.indicator ? 'text-primary-yellow-light dark:text-primary-yellow-dark' : 'text-black dark:text-white']"
 							>
 								{{ item.condition }}
 							</span>
@@ -207,17 +207,17 @@
 						<div class="flex justify-between items-center">
 							<span
 								class="text-base font-medium"
-								:class="[item.isActive ? 'text-primary-yellow-light dark:text-primary-yellow-dark' : 'text-black dark:text-white']"
+								:class="[item.indicator ? 'text-primary-yellow-light dark:text-primary-yellow-dark' : 'text-black dark:text-white']"
 							>
-								{{ item.award }}
+								{{ item.prize }}
 							</span>
 							<div>
-								<template v-if="item.isActive">
+								<template v-if="item.indicator">
 									<IconClose class="text-4xl" />
 								</template>
 								<template v-else>
 									<NuxtImg
-										:src="item.imageSrc"
+										:src="item.imgBenefitsUrl"
 										alt="icon"
 										class="w-12 h-12"
 									/>
@@ -237,17 +237,30 @@ import TableRow from '~/components/pages/Site/Account/UserLevel/TableRow.vue';
 import Chart from '~/components/pages/Site/Account/Chart.vue';
 import IconArrowLeftActive from '~/assets/svg-icons/profile/arrow-left-active.svg';
 import IconClose from '~/assets/svg-icons/close.svg';
+import { userRepository } from '~/repositories/user.repository';
+import type { LevelRow } from '~/types/response/user.types';
 
 const selectedButton = ref('ninety');
 definePageMeta({
 	layout: 'account',
 });
 
-const items = [
-	{ level: 'میگو', condition: 'حداقل حجم معاملات ۱۰۰۰ هزار دلار', award: 'صد هزار شیبا', iconSrc: '/images/delete/fish.png', imageSrc: '/images/delete/fish.png', isActive: false },
-	{ level: 'ماهی', condition: 'حداقل حجم معاملات ۱۰ هزار دلار', award: 'یک میلیون شیبا', iconSrc: '/images/delete/fish.png', imageSrc: '/images/delete/fish.png', isActive: true }, // ردیف فعال
-	{ level: 'خرچنگ', condition: 'حداقل حجم معاملات ۵۰ هزار دلار', award: 'پنج میلیون شیبا', iconSrc: '/images/delete/fish.png', imageSrc: '/images/delete/fish.png', isActive: false },
-];
-</script>
+const { $api } = useNuxtApp();
+const userRepo = userRepository($api);
+const LevelList = ref<LevelRow[]>();
 
-<style scoped></style>
+const getLevelList = async () => {
+	try {
+		const { result } = await userRepo.getLevelDate();
+		LevelList.value = result.rows;
+	}
+	catch (error) {
+		console.log(error);
+	}
+};
+onMounted(async () => {
+	await Promise.all([
+		getLevelList(),
+	]);
+});
+</script>

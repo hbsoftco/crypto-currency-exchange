@@ -939,6 +939,8 @@ const persian = {
 	newCardSuccess: 'کارت بانکی جدید با موفقیت ثبت شد.',
 	feeLevelCalculation: 'سطح کارمزد معاملات بر اساس حجم معامله‌های ۹۰ روز گذشته شما در هر پایه بازار محاسبه می‌شود',
 	your90DayTradingVolume: 'حجم معاملات ۹۰ روزه شما',
+	nickName: 'نام مستعار',
+	bitlandSpecialClub: 'باشگاه ویژه بیت لند',
 
 };
 
