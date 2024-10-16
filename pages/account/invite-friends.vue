@@ -250,7 +250,7 @@ import EditCodeInviteFriends from '~/components/pages/Site/Account/InviteFriends
 import IconEdit from '~/assets/svg-icons/profile/edit.svg';
 import { referralRepository } from '~/repositories/referral.repository';
 import type { InviteList, ReceivedList } from '~/types/response/referral.types';
-import type { GetInvitationParams } from '~/types/base.types';
+import type { GetCommissionReceivedParams, GetInvitationParams } from '~/types/base.types';
 import TableInvite from '~/components/pages/Site/Account/InviteFriends/TableInvite.vue';
 import TableCommission from '~/components/pages/Site/Account/InviteFriends/TableCommission.vue';
 import Dashboard from '~/components/pages/Site/Account/InviteFriends/Dashboard.vue';
@@ -275,12 +275,12 @@ const paramsInvite = ref<GetInvitationParams>({
 	pageNumber: '1',
 	pageSize: '20',
 });
-const paramsReceived = ref<GetInvitationParams>({
-	getMode: '',
-	sortMode: '',
-	assessmentCurrencyId: '3',
+const paramsReceived = ref<GetCommissionReceivedParams>({
+	marketType: '',
+	from: '',
+	to: '',
 	pageNumber: '1',
-	pageSize: '20',
+	pageSize: '100',
 });
 const getInviteList = async () => {
 	try {
@@ -293,7 +293,7 @@ const getInviteList = async () => {
 	}
 };
 
-const getcommissionList = async () => {
+const getCommissionList = async () => {
 	try {
 		const { result } = await referralRepo.getCommissionReceived(paramsReceived.value);
 		receivedList.value = result.rows;
@@ -306,7 +306,7 @@ const getcommissionList = async () => {
 onMounted(async () => {
 	await Promise.all([
 		getInviteList(),
-		getcommissionList(),
+		getCommissionList(),
 	]);
 });
 

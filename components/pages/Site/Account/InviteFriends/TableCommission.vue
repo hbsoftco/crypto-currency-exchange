@@ -123,7 +123,7 @@
 				</div>
 				<div class="flex justify-center py-4">
 					<UPagination
-						:model-value="20"
+						:model-value="currentPageReceived"
 						:page-count="20"
 						:total="20"
 						:max="6"
@@ -151,12 +151,14 @@ import IconQuestion from '~/assets/svg-icons/profile/question.svg';
 
 interface PropsDefinition {
 	receivedList: ReceivedList[];
-	currentPageReceived: currentPageReceived;
+	currentPageReceived: number;
 }
 
 defineProps<PropsDefinition>();
 
+const emit = defineEmits(['update:modelValue']);
+
 function onPageChangeReceived(newPage: number) {
-	currentPageReceived.value = newPage;
+	emit('update:currentPageReceived', newPage);
 }
 </script>

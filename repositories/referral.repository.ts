@@ -44,7 +44,7 @@ export const referralRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): R
 			Object.entries(params)
 				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
 		);
-		const url = ` /v1/user/referral/commission_received_list`;
+		const url = `/v1/user/referral/commission_received_list`;
 		const response = await fetch<GetCommissionRes>(`${url}?${query.toString()}`, {
 			noAuth: false,
 			apiName: url,
