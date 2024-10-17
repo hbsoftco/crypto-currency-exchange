@@ -18,7 +18,9 @@
 					<div>
 						<div class="flex items-center mb-2">
 							<IconMessage class="text-2xl ml-2 dark:text-subtle-text-50" />
-							<span class="text-xs font-bold mr-1">{{ getValueByKey(profileData, 'EMAIL') }}</span>
+							<span class="text-xs font-bold mr-1">
+								{{ profileStore.profileLoading ? '...': getValueByKey(profileStore.userProfile, 'EMAIL') }}
+							</span>
 						</div>
 						<div class="flex items-center">
 							<IconAuthentication class="text-2xl ml-2 dark:text-subtle-text-50" />
@@ -26,7 +28,9 @@
 								id="copy-text"
 								ref="textRef"
 								class="text-xs font-bold mx-1"
-							>{{ useNumber(String(getValueByKey(profileData, 'UID'))) }}</span>
+							>
+								{{ profileStore.profileLoading ? '...': useNumber(String(getValueByKey(profileStore.userProfile, 'UID'))) }}
+							</span>
 							<IconCopy
 								class="cursor-pointer"
 								@click="copyText"
@@ -76,7 +80,7 @@
 								</div>
 								<div>
 									<span class="text-primary-yellow-light dark:text-primary-yellow-dark rounded-sm p-0.5 px-1 border border-background-light dark:border-background-50 text-[0.625rem]">
-										{{ `${$t('level')} ${useNumber(String(getValueByKey(profileData, 'KYC_LVL_ID')?getValueByKey(profileData, 'KYC_LVL_ID'): 0))}` }}
+										{{ `${$t('level')} ${useNumber(String(getValueByKey(profileStore.userProfile, 'KYC_LVL_ID')?getValueByKey(profileStore.userProfile, 'KYC_LVL_ID'): 0))}` }}
 									</span>
 								</div>
 							</ULink>
@@ -128,7 +132,7 @@
 									</p>
 								</div>
 								<div>
-									<span class="text-primary-yellow-light dark:text-primary-yellow-dark rounded-sm p-0.5 px-1 border border-background-light dark:border-background-50 text-[0.625rem]">{{ useNumber(String(getValueByKey(profileData, 'TRD_LVL_NAME'))) }}</span>
+									<span class="text-primary-yellow-light dark:text-primary-yellow-dark rounded-sm p-0.5 px-1 border border-background-light dark:border-background-50 text-[0.625rem]">{{ useNumber(String(getValueByKey(profileStore.userProfile, 'TRD_LVL_NAME'))) }}</span>
 								</div>
 							</ULink>
 						</li>
@@ -273,7 +277,6 @@ import IconSetting from '~/assets/svg-icons/menu/setting.svg';
 import IconExit from '~/assets/svg-icons/menu/exit.svg';
 import { getValueByKey } from '~/utils/find-value-by-key';
 import { useNumber } from '~/composables/useNumber';
-import type { KeyValue } from '~/types/base.types';
 
 const textRef = ref<HTMLElement | null>(null);
 
@@ -283,7 +286,6 @@ const logout = () => {
 };
 
 const profileStore = useProfileStore();
-const profileData: KeyValue[] = await profileStore.userProfile;
 
 onMounted(async () => {
 	await profileStore.fetchProfile();
