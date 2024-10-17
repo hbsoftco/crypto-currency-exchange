@@ -8,6 +8,10 @@
 			v-if="showEditCodeInviteFriends"
 			@close="closeEditCodeInviteFriends"
 		/>
+		<QRCodeModal
+			v-if="showQRCode"
+			@close="closeQRCode"
+		/>
 		<UContainer>
 			<section>
 				<div class="my-6 block md:hidden">
@@ -93,7 +97,10 @@
 								{{ $t("inviteFriends") }}
 							</UButton>
 							<div class="w-12 h-12 bg-primary-gray-light dark:bg-primary-gray-dark flex justify-center items-center cursor-pointer rounded-md">
-								<IconQrCode class="text-3xl" />
+								<IconQrCode
+									class="text-3xl"
+									@click.prevent="openQRCode"
+								/>
 							</div>
 						</div>
 					</div>
@@ -267,6 +274,7 @@ import TableCommission from '~/components/pages/Site/Account/InviteFriends/Table
 import Dashboard from '~/components/pages/Site/Account/InviteFriends/Dashboard.vue';
 import { userRepository } from '~/repositories/user.repository';
 import type { ReferralBriefItem } from '~/types/response/user.types';
+import QRCodeModal from '~/components/pages/Site/Account/InviteFriends/QRCodeModal.vue';
 
 definePageMeta({
 	layout: 'account-single',
@@ -311,6 +319,8 @@ onMounted(async () => {
 });
 const showModalInviteFriends = ref(false);
 const showEditCodeInviteFriends = ref(false);
+const showQRCode = ref(false);
+
 const referralLink = useEnv('referralLink');
 
 const openModalInviteFriends = () => {
@@ -320,11 +330,20 @@ const openModalInviteFriends = () => {
 const closeModalInviteFriends = () => {
 	showModalInviteFriends.value = false;
 };
+
 const openEditCodeInviteFriends = () => {
 	showEditCodeInviteFriends.value = true;
 };
 const closeEditCodeInviteFriends = () => {
 	showEditCodeInviteFriends.value = false;
+};
+
+const openQRCode = () => {
+	showQRCode.value = true;
+};
+
+const closeQRCode = () => {
+	showQRCode.value = false;
 };
 const showDescription = ref(true);
 

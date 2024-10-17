@@ -958,7 +958,8 @@ const persian = {
 	lastOneMonths: '۱ ماه گذشته',
 	welcomeMessage: 'با ورود به سایت بیت‌لند، دنیایی از ارزهای دیجیتال را در دسترس خود خواهید داشت و می‌توانید با دانلود نرم‌افزار ما از خدمات بیت‌لند در هر کجا و هر زمان بهره‌مند شوید.',
 	tetherPriceInBitland: 'قیمت تتر در بیت‌لند',
-
+	codeInviteRegisteredSuccessfully: 'کد دعوت با موفقیت ثبت شد!',
+	registerCodeInvite: 'ویرایش کد دعوت',
 };
 
 export default persian;

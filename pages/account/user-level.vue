@@ -28,7 +28,7 @@
 
 			<div class="ml-0 md:ml-40 mt-10">
 				<NuxtImg
-					src="/images/profile/fish.png"
+					:src="traderBriefItem?.level.logoUrl"
 					alt="icon user level"
 					class="w-full md:w-[19.313rem] h-[21.063rem] mb-2 "
 				/>
@@ -45,12 +45,13 @@
 							class="w-4 h-4"
 						/>
 						<div>
-							<span class="text-sm font-bold mr-1">سطح ماهی</span>
+							<span class="text-sm font-bold mr-1">{{ traderBriefItem?.level.name }}</span>
 						</div>
 					</div>
 				</div>
 			</div>
 		</section>
+
 		<section class="py-4 px-0 md:px-8 mb-4 border-t md:border border-primary-gray-light dark:border-primary-gray-dark rounded-md">
 			<h2 class="text-xl font-bold px-4 mb-4">
 				{{ $t('yourTotalStatisticsTransactions') }}
@@ -125,6 +126,7 @@
 				</tbody>
 			</table>
 		</section>
+
 		<section class="py-4 px-0 md:px-8 mb-4 border-none md:border border-primary-gray-light dark:border-primary-gray-dark rounded-md">
 			<h3 class="text-xl font-bold px-4 mb-4">
 				{{ $t('userLevelRatingTable') }}
@@ -178,16 +180,16 @@
 						<div class="flex justify-between items-center">
 							<div class="flex items-center">
 								<div
-									v-if="item.indicator"
+									v-if="findIndicator(item.indicator)"
 								>
 									<IconArrowLeftActive class="text-primary-yellow-light dark:text-primary-yellow-dark text-base" />
 								</div>
-								<span :class="[item.indicator ? 'mr-1 text-primary-yellow-light dark:text-primary-yellow-dark text-xs font-normal' : 'text-subtle-text-light dark:text-subtle-text-dark text-xs font-normal']">
+								<span :class="[findIndicator(item.indicator) ? 'mr-1 text-primary-yellow-light dark:text-primary-yellow-dark text-xs font-normal' : 'text-subtle-text-light dark:text-subtle-text-dark text-xs font-normal']">
 									{{ item.header }}
 								</span>
 							</div>
 							<div
-								v-if="item.indicator"
+								v-if="findIndicator(item.indicator)"
 							>
 								<NuxtImg
 									src="/images/Confirmation.png"
@@ -205,7 +207,7 @@
 						<div class="flex justify-start">
 							<span
 								class="text-base font-medium py-2"
-								:class="[item.indicator ? 'text-primary-yellow-light dark:text-primary-yellow-dark' : 'text-black dark:text-white']"
+								:class="[findIndicator(item.indicator) ? 'text-primary-yellow-light dark:text-primary-yellow-dark' : 'text-black dark:text-white']"
 							>
 								{{ item.condition }}
 							</span>
@@ -213,12 +215,12 @@
 						<div class="flex justify-between items-center">
 							<span
 								class="text-base font-medium"
-								:class="[item.indicator ? 'text-primary-yellow-light dark:text-primary-yellow-dark' : 'text-black dark:text-white']"
+								:class="[findIndicator(item.indicator) ? 'text-primary-yellow-light dark:text-primary-yellow-dark' : 'text-black dark:text-white']"
 							>
-								{{ item.prize }}
+								{{ item.prize ? item.prize : $t('noAward') }}
 							</span>
 							<div>
-								<template v-if="item.indicator">
+								<template v-if="findIndicator(item.indicator)">
 									<IconClose class="text-4xl" />
 								</template>
 								<template v-else>

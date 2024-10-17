@@ -27,6 +27,7 @@
 								</p>
 							</div>
 							<UButton
+								to="/account/security/two-step-login"
 								color="gray"
 								class="text-black dark:text-white text-sm font-normal bg-hover-light dark:bg-hover-dark shadow-none border border-subtle-text-50"
 							>
@@ -58,6 +59,7 @@
 								</p>
 							</div>
 							<UButton
+								to="/account/security/change-email"
 								color="gray"
 								class="text-black dark:text-white text-sm font-normal bg-hover-light dark:bg-hover-dark shadow-none border border-subtle-text-50"
 							>
@@ -87,7 +89,7 @@
 								color="gray"
 								class="text-black dark:text-white text-sm font-normal bg-hover-light dark:bg-hover-dark shadow-none border border-subtle-text-50"
 							>
-								{{ $t("ثبت کردن") }}
+								{{ $t('register') }}
 							</UButton>
 						</div>
 					</div>
@@ -122,6 +124,7 @@
 								</p>
 							</div>
 							<UButton
+								to="/account/security/anti-phishing"
 								color="gray"
 								class="text-accent-red dark:text-accent-red text-sm font-normal bg-hover-light dark:bg-hover-dark shadow-none border border-subtle-text-50"
 							>
@@ -149,6 +152,7 @@
 								</p>
 							</div>
 							<UButton
+								to="/account/security/pin-code"
 								color="gray"
 								class="text-black dark:text-white text-sm font-normal bg-hover-light dark:bg-hover-dark shadow-none border border-subtle-text-50"
 							>
@@ -173,6 +177,7 @@
 								</p>
 							</div>
 							<UButton
+								to="/account/security/manage-white-list"
 								color="gray"
 								class="text-black dark:text-white text-sm font-normal bg-hover-light dark:bg-hover-dark shadow-none border border-subtle-text-50"
 							>
@@ -197,6 +202,7 @@
 								</p>
 							</div>
 							<UButton
+								to="/account/security/change-password"
 								color="gray"
 								class="text-black dark:text-white text-sm font-normal bg-hover-light dark:bg-hover-dark shadow-none border border-subtle-text-50"
 							>
@@ -229,6 +235,7 @@
 								</p>
 							</div>
 							<UButton
+								to="/account/security/active-account"
 								color="gray"
 								class="text-black dark:text-white text-sm font-normal bg-hover-light dark:bg-hover-dark shadow-none border border-subtle-text-50"
 							>
@@ -249,6 +256,7 @@
 								</p>
 							</div>
 							<UButton
+								to="/account/security/device-manage"
 								color="gray"
 								class="text-black dark:text-white text-sm font-normal bg-hover-light dark:bg-hover-dark shadow-none border border-subtle-text-50"
 							>
@@ -273,6 +281,7 @@
 								</p>
 							</div>
 							<UButton
+								to="/account/security/freeze-account"
 								color="gray"
 								class="text-accent-red dark:text-accent-red  text-sm font-normal bg-hover-light dark:bg-hover-dark shadow-none border border-subtle-text-50"
 							>
@@ -297,6 +306,7 @@
 								</p>
 							</div>
 							<UButton
+								to="/account/security/delete-account"
 								color="gray"
 								class="text-accent-red dark:text-accent-red  text-sm font-normal bg-hover-light dark:bg-hover-dark shadow-none border border-subtle-text-50"
 							>
