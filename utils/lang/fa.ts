@@ -946,6 +946,11 @@ const persian = {
 	OldestInvitation: 'قدیمی‌ترین دعوت',
 	LowestIncome: 'کمترین دریافتی',
 	HighestIncome: 'بیشترین دریافتی',
+	allInvite: 'کل دعوت',
+	lastYear: 'یکسال گذشته',
+	lastSixMonths: '۶ ماه گذشته',
+	lastThreeMonths: '۳ ماه گذشته',
+	lastOneMonths: '۱ ماه گذشته',
 };
 
 export default persian;

@@ -9,12 +9,13 @@
 					<IconQuestion class="text-2xl" />
 				</div>
 				<div class="w-full md:w-auto flex justify-between">
-					<div class="ml-6 my-1 col-span-2">
+					<div class="my-1">
 						<USelectMenu
 							v-model="SortModeFilter"
 							:options="SortModeItems"
 							:placeholder="$t('all')"
 							option-attribute="value"
+							class="w-auto md:w-44"
 							icon="heroicons:calendar-date-range-16-solid"
 							:ui="{
 								background: '',
@@ -27,16 +28,18 @@
 							@change="applyFilters"
 						/>
 					</div>
-					<!-- MarketType -->
+					<!-- SortMode -->
 
-					<div class="ml-6 my-1 col-span-2">
+					<div class="my-1 mx-0 md:mx-2">
 						<USelectMenu
 							v-model="GetModeFilter"
 							:options="GetModeItems"
 							:placeholder="$t('all')"
 							option-attribute="value"
+							class="w-auto md:w-44"
 							icon="heroicons:calendar-date-range-16-solid"
 							:ui="{
+								class: 'min-w-10',
 								background: '',
 								color: {
 									white: {
@@ -47,10 +50,10 @@
 							@change="applyFiltersMode"
 						/>
 					</div>
-					<!-- MarketType -->
-					<div class="py-2 px-4 border border-primary-gray-light dark:border-primary-gray-dark rounded-md">
+					<!-- GetMode -->
+					<!-- <div class="py-2 px-4 border border-primary-gray-light dark:border-primary-gray-dark rounded-md">
 						<IconNote />
-					</div>
+					</div> -->
 				</div>
 			</div>
 			<div class="py-6 px-1 md:px-8">
@@ -155,8 +158,9 @@
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
+import IconUserInvite from '~/assets/svg-icons/menu/user-fill.svg';
 import { formatDateToIranTime } from '~/utils/date-time';
-import IconNote from '~/assets/svg-icons/profile/note.svg';
+// import IconNote from '~/assets/svg-icons/profile/note.svg';
 import IconQuestion from '~/assets/svg-icons/profile/question.svg';
 import { userRepository } from '~/repositories/user.repository';
 import type { InviteList } from '~/types/response/referral.types';
