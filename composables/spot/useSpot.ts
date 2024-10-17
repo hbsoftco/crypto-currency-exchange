@@ -68,11 +68,8 @@ export const useSpot = () => {
 			const response = await spotRepo.getOrderList(params);
 			return response;
 		}
-		catch (error: any) {
-			throw createError({
-				statusCode: 500,
-				statusMessage: `${error.response?._data?.message || 'Unknown error'}`,
-			});
+		catch (error) {
+			console.log(error);
 		}
 		finally {
 			loading.value = false;

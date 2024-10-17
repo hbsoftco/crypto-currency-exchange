@@ -266,6 +266,7 @@ import type { UploadAvatarDto } from '~/types/response/common.types';
 
 definePageMeta({
 	layout: 'account',
+	middleware: 'auth',
 });
 
 const { $api } = useNuxtApp();

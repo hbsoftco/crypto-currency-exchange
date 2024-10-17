@@ -103,6 +103,10 @@ import TradingMarkets from '~/components/pages/Site/MainPage/TradingMarkets.vue'
 import WhyBitland from '~/components/pages/Site/MainPage/WhyBitland.vue';
 // import { currencyRepository } from '~/repositories/currency.repository';
 
+// definePageMeta({
+// 	middleware: import.meta.client ? 'auth' : undefined,
+// });
+
 // const { $api } = useNuxtApp();
 // const tags = currencyRepository($api);
 
