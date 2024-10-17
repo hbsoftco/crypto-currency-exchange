@@ -956,6 +956,9 @@ const persian = {
 	lastSixMonths: '۶ ماه گذشته',
 	lastThreeMonths: '۳ ماه گذشته',
 	lastOneMonths: '۱ ماه گذشته',
+	welcomeMessage: 'با ورود به سایت بیت‌لند، دنیایی از ارزهای دیجیتال را در دسترس خود خواهید داشت و می‌توانید با دانلود نرم‌افزار ما از خدمات بیت‌لند در هر کجا و هر زمان بهره‌مند شوید.',
+	tetherPriceInBitland: 'قیمت تتر در بیت‌لند',
+
 };
 
 export default persian;

@@ -11,17 +11,19 @@
 
 			<div class="flex justify-around w-[38rem] mt-14">
 				<UButton
+					:to="`/spot/USDT_TMN`"
 					class="flex justify-center w-[18.8rem] my-4 bg-primary-yellow-light dark:bg-primary-yellow-dark shadow-none border border-primary-yellow"
 				>
-					<span class="text-base font-extrabold">قیمت تتر در بیت‌لند</span>
+					<span class="text-base font-extrabold">{{ $t('tetherPriceInBitland') }}</span>
 					<div
 						class="flex mr-6 text-base font-extrabold text-text-dark dark:text-text-dark"
 					>
-						<span>51,130 </span>
-						<span>تومان</span>
+						<span class="ml-1">{{ useNumber('51,130') }}</span>
+						<span>{{ $t('toman') }}</span>
 					</div>
 				</UButton>
 				<UButton
+					:to="`/spot/BTC_USDT`"
 					class="flex justify-center w-[18.8rem] my-4 text-primary-yellow-light dark:text-primary-yellow-dark text-base hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-yellow"
 				>
 					<span class="text-base font-extrabold">{{
@@ -34,9 +36,7 @@
 			</div>
 			<div class="w-[27.3rem]">
 				<p class="text-sm font-medium">
-					با ورود به سایت بیت‌لند، دنیایی از ارزهای دیجیتال را در دسترس خود
-					خواهید داشت و می‌توانید با دانلود نرم افزار ما از خدمات بیت‌لند در هر
-					کجا و هر زمان بهره مند شوید.
+					{{ $t('welcomeMessage') }}
 				</p>
 			</div>
 		</div>
@@ -56,6 +56,7 @@
 
 <script setup lang="ts">
 import IconArrowLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';
+import { useNumber } from '~/composables/useNumber';
 
 const colorMode = useColorMode();
 const isDark = computed({

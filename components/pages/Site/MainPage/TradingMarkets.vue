@@ -115,10 +115,18 @@ const getSocketDataForRow = (id: number) => {
 
 const marketIdParams = ref<string>('');
 
+watch(() => marketIdParams.value, (newData) => {
+	if (newData) {
+		console.log(newData);
+	}
+}, { deep: true });
+
 onMounted(async () => {
 	await fetchMarketData();
 
 	await connect();
+	console.log(marketIdParams.value);
+
 	sendMessage(createSubscriptionData(
 		SocketId.SPOT_TICKER,
 		'SUBSCRIBE',
