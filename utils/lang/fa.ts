@@ -952,6 +952,11 @@ const persian = {
 	uploadAvatar: 'آپلود آواتار',
 	avatarUploadSuccess: 'آپلود آواتار با موفقیت انجام شد!',
 
+	allInvite: 'کل دعوت',
+	lastYear: 'یکسال گذشته',
+	lastSixMonths: '۶ ماه گذشته',
+	lastThreeMonths: '۳ ماه گذشته',
+	lastOneMonths: '۱ ماه گذشته',
 };
 
 export default persian;

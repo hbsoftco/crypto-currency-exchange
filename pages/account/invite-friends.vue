@@ -48,7 +48,7 @@
 								dir="ltr"
 							>
 								<p class="truncate text-ellipsis overflow-hidden pr-6">
-									1cUFo
+									{{ useNumber(String(referralBrief?.refCode)) }}
 								</p>
 								<div class="flex justify-between">
 									<IconEdit
@@ -162,42 +162,50 @@
 					<div class="flex ml-1 md:ml-10 items-center">
 						<div class="w-1 h-4 ml-1 md:ml-2 bg-primary-yellow-light dark:bg-primary-yellow-dark" />
 						<span class="text-xs md:text-sm font-medium text-subtle-text-light dark:text-subtle-text-dark">{{ $t('directCommissionPercentage') }}: </span>
-						<span class="text-xs md:text-base font-bold mr-0 md:mr-1">{{ useNumber('۳۰') }}%</span>
+						<span class="text-xs md:text-base font-bold mr-0 md:mr-1">{{ useNumber(String(referralBrief?.config.percentages.dPerc)) }}%</span>
 					</div>
-					<div>
+					<div class="flex">
 						<span class="text-xs md:text-sm font-medium text-subtle-text-light dark:text-subtle-text-dark">{{ $t('percentageTreeCommission') }}: </span>
-						<span class="text-xs md:text-base font-bold mr-0 md:mr-1">{{ useNumber('۵۰') }}%</span>
+						<span class="text-xs md:text-base font-bold mr-0 md:mr-1">{{ useNumber(String(referralBrief?.config.percentages.oPerc)) }}%</span>
 					</div>
 				</div>
 				<div class="flex justify-between">
 					<div>
-						<span class="text-base font-bold">سطح ۱</span>
+						<span class="text-base font-bold">{{ $t('level') }} {{ nowInvite }} </span>
 
-						<div class="text-xs font-normal">
+						<!-- <div class="text-xs font-normal">
 							<span class="ml-1">{{ $t('commissionLevel') }}:</span><span>{{ useNumber('30') }}%</span>
-						</div>
+						</div> -->
 					</div>
 					<div>
-						<span class="text-base font-bold">سطح 0</span>
+						<span class="text-base font-bold">{{ $t('level') }} {{ useNumber(String(referralBrief?.config.indicator)) }}</span>
 
 						<div class="text-xs font-normal">
-							<span class="ml-1">{{ $t('commissionLevel') }}:</span><span>{{ useNumber('30') }}%</span>
+							<span class="ml-1">{{ $t('commissionLevel') }}:</span><span>{{ useNumber(String(referralBrief?.config.percentages.dPerc)) }}%</span>
 						</div>
 					</div>
 				</div>
 				<div class="my-4">
-					<UiProgressBar />
+					<UiProgressBar :progress="referralBrief?.coDirectActive" />
 				</div>
 				<div class="flex justify-between pb-4 px-4">
 					<div class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
-						<span class="ml-1">{{ $t('user') }}</span><span>{{ useNumber('50') }}</span>
+						<span class="ml-1">{{ $t('user') }}</span><span>{{ useNumber(String(referralBrief?.config.to)) }}</span>
 					</div>
 					<div class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
-						<span class="ml-1">{{ $t('user') }}</span><span>{{ useNumber('50') }}</span>
+						<span class="ml-1">{{ $t('user') }}</span><span>{{ useNumber(String(referralBrief?.config.from)) }}</span>
 					</div>
 				</div>
 				<div class="text-subtle-text-light dark:text-subtle-text-dark text-sm font-normal">
-					<p>شما <span>{{ useNumber('4') }}</span> نفر تاکنون به بیت لند دعوت کرده اید، تعداد <span>{{ useNumber('8') }}</span> نفر دیگر دعوت کنید تا به سطح <span>{{ useNumber('1') }}</span> ارتقا یابید.</p>
+					<p
+						v-if="!referralBriefLoading"
+						class="text-subtle-text-light dark:text-subtle-text-dark text-sm font-normal"
+					>
+						شما
+						<span>{{ useNumber(String(referralBrief?.coDirectActive)) }}</span> نفر تاکنون به بیت لند دعوت کرده‌اید، تعداد
+						<span>{{ useNumber(String(mustInvite)) }}</span> نفر دیگر دعوت کنید تا به سطح
+						<span>{{ useNumber(String(nowInvite)) }}</span> ارتقا یابید.
+					</p>
 				</div>
 			</section>
 
@@ -206,11 +214,11 @@
 					<div class="py-6 px-1 md:px-12 ml-1 md:ml-28">
 						<div class="flex flex-col border-b border-primary-gray-light dark:border-primary-gray-dark pb-4">
 							<span class="text-xl font-bold mb-6 text-subtle-text-light dark:text-subtle-text-dark">{{ $t('allInvitees') }}</span>
-							<span class="text-4xl font-extrabold text-primary-yellow-light dark:text-primary-yellow-dark">{{ useNumber('8,000+') }}</span>
+							<span class="text-4xl font-extrabold text-primary-yellow-light dark:text-primary-yellow-dark">{{ useNumber(String(referralBrief?.global.receivers)) }}</span>
 						</div>
 						<div>
 							<span class="flex flex-col text-xl font-bold mb-6 text-subtle-text-light dark:text-subtle-text-dark pt-4">{{ $t('totalCommissionPaid') }}</span>
-							<span class="text-4xl font-extrabold text-primary-yellow-light dark:text-primary-yellow-dark">{{ useNumber('۶.۲۰۰') }} {{ $t('toman') }}</span>
+							<span class="text-4xl font-extrabold text-primary-yellow-light dark:text-primary-yellow-dark">{{ useNumber(String(referralBrief?.global.overallPayment)) }} {{ $t('toman') }}</span>
 						</div>
 					</div>
 					<div>
@@ -223,7 +231,10 @@
 				</div>
 			</section>
 
-			<Dashboard />
+			<Dashboard
+				v-if="referralBrief"
+				:referral-brief="referralBrief"
+			/>
 
 			<TableInvite />
 
@@ -248,11 +259,49 @@ import IconEdit from '~/assets/svg-icons/profile/edit.svg';
 import TableInvite from '~/components/pages/Site/Account/InviteFriends/TableInvite.vue';
 import TableCommission from '~/components/pages/Site/Account/InviteFriends/TableCommission.vue';
 import Dashboard from '~/components/pages/Site/Account/InviteFriends/Dashboard.vue';
+import { userRepository } from '~/repositories/user.repository';
+import type { ReferralBriefItem } from '~/types/response/user.types';
 
 definePageMeta({
 	layout: 'account-single',
 });
 
+const { $api } = useNuxtApp();
+const userRepo = userRepository($api);
+
+const referralBriefLoading = ref<boolean>(false);
+const referralBrief = ref<ReferralBriefItem>();
+const getReferralBrief = async () => {
+	try {
+		referralBriefLoading.value = true;
+
+		const { result } = await userRepo.getReferralBrief('3');
+		referralBrief.value = result;
+		referralBriefLoading.value = false;
+	}
+	catch (error) {
+		referralBriefLoading.value = false;
+		console.log(error);
+	}
+};
+
+const mustInvite = computed(() => {
+	const configTo = referralBrief.value?.config?.to ?? 0;
+	const coDirectActive = referralBrief.value?.coDirectActive ?? 0;
+
+	return configTo - coDirectActive;
+});
+
+const nowInvite = computed(() => {
+	const config = referralBrief.value?.config?.indicator ?? 0;
+	return config + 1;
+});
+
+onMounted(async () => {
+	await Promise.all([
+		getReferralBrief(),
+	]);
+});
 const showModalInviteFriends = ref(false);
 const showEditCodeInviteFriends = ref(false);
 
