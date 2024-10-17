@@ -45,7 +45,7 @@
 		>
 			<div class="flex items-center justify-center w-full h-full">
 				<NuxtImg
-					src="/images/delete/phone-banner-home.webp"
+					:src="isDark ? '/images/phone-banner-home-black.webp' : '/images/phone-banner-home.webp'"
 					alt="Brand Logo"
 					class="px-36"
 				/>
@@ -56,6 +56,14 @@
 
 <script setup lang="ts">
 import IconArrowLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';
-</script>
 
-<style scoped></style>
+const colorMode = useColorMode();
+const isDark = computed({
+	get() {
+		return colorMode.value === 'dark';
+	},
+	set() {
+		colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark';
+	},
+});
+</script>

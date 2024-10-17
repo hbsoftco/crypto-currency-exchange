@@ -40,6 +40,7 @@ const mobileDetect = $mobileDetect as MobileDetect;
 
 onMounted(() => {
 	isMobile.value = !!mobileDetect.mobile();
+	console.log('mobileDetect.mobile', isMobile.value);
 });
 
 const baseDataStore = useBaseDataStore();

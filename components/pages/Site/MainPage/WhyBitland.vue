@@ -9,7 +9,7 @@
 			</div>
 			<div>
 				<NuxtImg
-					:src="isDark ? '/images/why-bitland-black.png' : '/images/why-bitland.png'"
+					:src="isDark ? '/images/why-bitland-black.webp' : '/images/why-bitland.webp'"
 					alt="platform"
 					class="w-full mt-14"
 				/>

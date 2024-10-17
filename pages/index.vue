@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<section
-			v-if="!authStore.isLoggedIn"
+			v-if="!authStore.isLoggedIn && !isMobile"
 			class="hidden md:block"
 		>
 			<ImageCover>
@@ -12,7 +12,7 @@
 		</section>
 
 		<section
-			v-if="authStore.isLoggedIn"
+			v-if="authStore.isLoggedIn && !isMobile"
 			class="hidden md:block"
 		>
 			<ImageCoverLogin>
@@ -100,7 +100,14 @@ import TopSlider from '~/components/pages/Site/MainPage/TopSlider.vue';
 import TradingMarkets from '~/components/pages/Site/MainPage/TradingMarkets.vue';
 import WhyBitland from '~/components/pages/Site/MainPage/WhyBitland.vue';
 
+const { $mobileDetect } = useNuxtApp();
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
+
 const authStore = useAuthStore();
 
-authStore.loadAuthData();
+onMounted(() => {
+	isMobile.value = !!mobileDetect.mobile();
+	authStore.loadAuthData();
+});
 </script>
