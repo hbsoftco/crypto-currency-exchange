@@ -141,7 +141,7 @@ const chartOptions = computed(() => ({
 							offset: 1,
 							color: isDark.value
 								? 'rgba(51, 24, 29, 1)'
-								: 'rgba(255, 200, 200, 1)', // رنگ حالت دارک و لایت برای SELL
+								: 'rgba(255, 200, 200, 1)',
 						},
 						{
 							offset: 1,

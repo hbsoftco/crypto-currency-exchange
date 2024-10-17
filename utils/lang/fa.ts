@@ -951,7 +951,6 @@ const persian = {
 	enterNickname: 'لطفا نام مستعار را وارد کنید',
 	uploadAvatar: 'آپلود آواتار',
 	avatarUploadSuccess: 'آپلود آواتار با موفقیت انجام شد!',
-
 	allInvite: 'کل دعوت',
 	lastYear: 'یکسال گذشته',
 	lastSixMonths: '۶ ماه گذشته',

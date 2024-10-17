@@ -1,7 +1,7 @@
 <template>
 	<div class="">
 		<section class="relative">
-			<PagesImageCover>
+			<ImageCover>
 				<UContainer class="h-full">
 					<div class="w-full h-full relative flex justify-between">
 						<div class="absolute top-0 md:top-40">
@@ -29,7 +29,7 @@
 						/>
 					</div>
 				</UContainer>
-			</PagesImageCover>
+			</ImageCover>
 		</section>
 
 		<section class="md:mx-8 mt-12">
@@ -58,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import ImageCover from '~/components/pages/ImageCover.vue';
 
 const items = ref([
 	{

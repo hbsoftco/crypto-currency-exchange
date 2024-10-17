@@ -9,7 +9,7 @@
 			</div>
 			<div>
 				<NuxtImg
-					src="/images/why-bitland.png"
+					:src="isDark ? '/images/why-bitland-black.png' : '/images/why-bitland.png'"
 					alt="platform"
 					class="w-full mt-14"
 				/>
@@ -19,8 +19,13 @@
 </template>
 
 <script setup lang="ts">
+const colorMode = useColorMode();
+const isDark = computed({
+	get() {
+		return colorMode.value === 'dark';
+	},
+	set() {
+		colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark';
+	},
+});
 </script>
-
-<style scoped>
-
-</style>
