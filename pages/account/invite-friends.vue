@@ -55,7 +55,10 @@
 										class="cursor-pointer text-xl text-subtle-text-light dark:text-subtle-text-50"
 										@click.prevent="openEditCodeInviteFriends"
 									/>
-									<IconCopy class="cursor-pointer text-xl text-subtle-text-light dark:text-subtle-text-50" />
+									<IconCopy
+										class="cursor-pointer text-xl text-subtle-text-light dark:text-subtle-text-50"
+										@click="copyText(`${referralBrief?.refCode}`)"
+									/>
 								</div>
 							</div>
 						</div>
@@ -71,10 +74,13 @@
 								dir="ltr"
 							>
 								<p class="truncate text-ellipsis overflow-hidden pr-1 md:pr-6">
-									https://www.bitland.com/register?inviteCode=1cUFo
+									<span>{{ referralBrief?.refCode ? `${referralLink}${referralBrief?.refCode}` : '...' }}</span>
 								</p>
 								<div>
-									<IconCopy class="cursor-pointer text-xl text-subtle-text-light dark:text-subtle-text-50" />
+									<IconCopy
+										class="cursor-pointer text-xl text-subtle-text-light dark:text-subtle-text-50"
+										@click="copyText(`${referralLink}${referralBrief?.refCode}`)"
+									/>
 								</div>
 							</div>
 						</div>
@@ -265,6 +271,7 @@ import type { ReferralBriefItem } from '~/types/response/user.types';
 definePageMeta({
 	layout: 'account-single',
 });
+const { copyText } = useClipboard();
 
 const { $api } = useNuxtApp();
 const userRepo = userRepository($api);
@@ -304,6 +311,7 @@ onMounted(async () => {
 });
 const showModalInviteFriends = ref(false);
 const showEditCodeInviteFriends = ref(false);
+const referralLink = useEnv('referralLink');
 
 const openModalInviteFriends = () => {
 	showModalInviteFriends.value = true;
