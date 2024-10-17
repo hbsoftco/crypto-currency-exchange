@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import TradingMarketsHeaderItems from '~/components/pages/Site/MainPage/TradingMarketsHeaderItems.vue';
+import TradingMarketsHeaderItems from '~/components/pages/MainPage/TradingMarketsHeaderItems.vue';
 import { MarketType, SortMode } from '~/utils/enums/market.enum';
 import { Language } from '~/utils/enums/language.enum';
 import type { CurrencyBriefItem } from '~/types/response/brief-list.types';

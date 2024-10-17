@@ -45,9 +45,8 @@
 </template>
 
 <script setup lang="ts">
-import TradingMarketsHeader from './TradingMarketsHeader.vue';
-import TradingMarketRow from './TradingMarketRow.vue';
-
+import TradingMarketsHeader from '~/components/pages/MainPage/TradingMarketsHeader.vue';
+import TradingMarketRow from '~/components/pages/MainPage/TradingMarketRow.vue';
 import type { ErrorResponse } from '~/types/response/error.type';
 import type { MarketListWithSparkLineChartItem } from '~/types/response/market.types';
 import { MarketType, SortMode } from '~/utils/enums/market.enum';
@@ -115,9 +114,23 @@ const getSocketDataForRow = (id: number) => {
 
 const marketIdParams = ref<string>('');
 
-watch(() => marketIdParams.value, (newData) => {
+watch(() => marketIdParams.value, (newData, oldData) => {
 	if (newData) {
+		sendMessage(createSubscriptionData(
+			SocketId.SPOT_TICKER,
+			'UNSUBSCRIBE',
+			PublicTopic.SPOT_TICKER,
+			oldData,
+		));
+		console.log(oldData);
 		console.log(newData);
+
+		sendMessage(createSubscriptionData(
+			SocketId.SPOT_TICKER,
+			'SUBSCRIBE',
+			PublicTopic.SPOT_TICKER,
+			marketIdParams.value,
+		));
 	}
 }, { deep: true });
 
