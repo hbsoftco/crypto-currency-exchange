@@ -36,7 +36,7 @@ import type {
 	IdentificationResendDto,
 	IdentificationSendDto,
 	NickNameSetDto } from '~/types/dto/user.dto';
-import type { CommonRes, IdentificationRes } from '~/types/response/common.types';
+import type { CommonRes, IdentificationRes, UploadAvatarDto } from '~/types/response/common.types';
 import type { GetCommissionRes, GetInvitationListRes } from '~/types/response/referral.types';
 
 type UserRepository = {
@@ -65,6 +65,7 @@ type UserRepository = {
 	getLevelDate: () => Promise<GetLevelsDataRes>;
 	getInvitation: (params: GetInvitationParams) => Promise<GetInvitationListRes>;
 	getCommissionReceived: (params: GetCommissionReceivedListParams) => Promise<GetCommissionRes>;
+	uploadAvatar: (dto: UploadAvatarDto) => Promise<CommonRes>;
 };
 
 export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserRepository => ({
@@ -394,6 +395,20 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 			noAuth: false,
 			apiName: url,
 			query: {},
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async uploadAvatar(dto: UploadAvatarDto): Promise<CommonRes> {
+		const formData = new FormData();
+		formData.append('image', dto.image);
+		// formData.append('usid', dto.usid);
+
+		const url = `/v1/upload/avatar`;
+		const response = await fetch<CommonRes>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body: formData,
 		} as CustomNitroFetchOptions);
 
 		return response;

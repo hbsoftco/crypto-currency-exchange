@@ -214,17 +214,17 @@ const items = [
 	{
 		key: 'transactionFees',
 		label: 'transactionFees',
-		content: 'This is the content shown for Tab1',
+		content: '',
 	},
 	{
 		key: 'depositFee',
 		label: 'depositFee',
-		content: 'And, this is the content for Tab2',
+		content: '',
 	},
 	{
 		key: 'withdrawalFee',
 		label: 'withdrawalFee',
-		content: 'And, this is the content for Tab2',
+		content: '',
 	},
 ];
 </script>

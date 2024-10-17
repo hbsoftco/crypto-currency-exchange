@@ -19,17 +19,38 @@
 					<div
 						class="bg-bg-secondary-gray-light dark:bg-secondary-gray-50 rounded-full mr-1 w-16 h-16 text-center flex justify-center items-center"
 					>
-						<IconUserFill class="text-black text-6xl" />
+						<IconUserFill
+							v-if="!getValueByKey(profileStore.userProfile, 'NICKNAME')"
+							class="text-black text-6xl"
+						/>
+						<NuxtImg
+							v-else
+							:src="getValueByKey(profileStore.userProfile, 'AVATAR_URL') || ''"
+							alt="user-avatar"
+							class="w-16 h-16 rounded-full"
+						/>
+						<!-- {{ getValueByKey(profileStore.userProfile, 'AVATAR_URL') }} -->
 					</div>
 					<div class="bg-primary-gray-light dark:bg-primary-gray-dark w-6 h-6 p-1 cursor-pointer shadow-sm rounded-full absolute right-0 bottom-0 flex justify-center items-center">
-						<IconPencil class="text-subtle-text-light dark:text-subtle-text-50 text-xl" />
+						<UiDropZone
+							@on-transfer="handleFiles"
+							@on-drag-enter="handleDragEnter"
+							@on-drag-leave="handleDragLeave"
+						>
+							<template #default="{ dropZoneActive }">
+								<IconPencil
+									:class="{ 'dropzone-active': dropZoneActive }"
+									class="text-subtle-text-light dark:text-subtle-text-50 text-xl"
+								/>
+							</template>
+						</UiDropZone>
 					</div>
 				</div>
 			</div>
 
 			<div class="">
 				<div class="flex justify-start items-center mb-4">
-					<h5>{{ getValueByKey(profileData, 'NICKNAME') || $t('anonymousUser') }}</h5>
+					<h5>{{ getValueByKey(profileStore.userProfile, 'NICKNAME') || $t('anonymousUser') }}</h5>
 					<div class="mx-2">
 						<IconPencil
 							class="text-subtle-text-light dark:text-subtle-text-50 text-xl cursor-pointer"
@@ -62,7 +83,7 @@
 								name="i-heroicons-eye-slash"
 								class="w-4 h-4 ml-2 cursor-pointer text-subtle-text-light dark:text-subtle-text-50"
 							/> -->
-							<span>{{ getValueByKey(profileData, 'EMAIL') }}</span>
+							<span>{{ getValueByKey(profileStore.userProfile, 'EMAIL') }}</span>
 						</p>
 					</div>
 
@@ -73,9 +94,9 @@
 						<p class="flex justify-start items-center">
 							<IconCopy
 								class="cursor-pointer text-xl text-subtle-text-light dark:text-subtle-text-50"
-								@click="copyText(useNumber(String(getValueByKey(profileData, 'UID'))))"
+								@click="copyText(useNumber(String(getValueByKey(profileStore.userProfile, 'UID'))))"
 							/>
-							<span class="mr-2">{{ useNumber(String(getValueByKey(profileData, 'UID'))) }}</span>
+							<span class="mr-2">{{ useNumber(String(getValueByKey(profileStore.userProfile, 'UID'))) }}</span>
 						</p>
 					</div>
 
@@ -84,7 +105,7 @@
 							{{ $t('registrationTime') }}
 						</p>
 						<p class="flex justify-start items-center">
-							<span dir="ltr">{{ useNumber(formatDateToIranTime(getValueByKey(profileData, 'REG_TIME')!)) }}</span>
+							<span dir="ltr">{{ useNumber(formatDateToIranTime(getValueByKey(profileStore.userProfile, 'REG_TIME')!)) }}</span>
 						</p>
 					</div>
 
@@ -93,7 +114,7 @@
 							{{ $t('lastLogin') }}
 						</p>
 						<p class="flex justify-start items-center">
-							<span dir="ltr">{{ useNumber(formatDateToIranTime(getValueByKey(profileData, 'LATEST_LOGIN_TIME')!)) }}</span>
+							<span dir="ltr">{{ useNumber(formatDateToIranTime(getValueByKey(profileStore.userProfile, 'LATEST_LOGIN_TIME')!)) }}</span>
 						</p>
 					</div>
 				</div>
@@ -235,13 +256,13 @@ import IconGift from '~/assets/svg-icons/gift.svg';
 import IconEducation from '~/assets/svg-icons/education.svg';
 import IconPencil from '~/assets/svg-icons/pencil.svg';
 import IconCopy from '~/assets/svg-icons/menu/copy.svg';
-import type { KeyValue } from '~/types/base.types';
 import { getValueByKey } from '~/utils/find-value-by-key';
 import { useNumber } from '~/composables/useNumber';
 import { formatDateToIranTime } from '~/utils/date-time';
 import { userRepository } from '~/repositories/user.repository';
 import type { ReferralBriefItem } from '~/types/response/user.types';
 import NickNameModal from '~/components/pages/Site/Account/OverView/NickNameModal.vue';
+import type { UploadAvatarDto } from '~/types/response/common.types';
 
 definePageMeta({
 	layout: 'account',
@@ -252,11 +273,11 @@ const userRepo = userRepository($api);
 
 const assetStore = useAssetStore();
 
+const toast = useToast();
+
 const { copyText } = useClipboard();
 
 const profileStore = useProfileStore();
-await profileStore.fetchProfile();
-const profileData = ref<KeyValue[]>([]);
 
 const referralLink = useEnv('referralLink');
 const referralCode = ref<string | null>(null);
@@ -278,10 +299,56 @@ const getReferralBrief = async () => {
 	}
 };
 
+const handleFiles = (files: FileList) => {
+	const file = files[0];
+	if (file) {
+		const reader = new FileReader();
+
+		if (file.type === 'application/pdf') {
+			alert('hosseinam');
+		}
+		else if (file.type.startsWith('image/')) {
+			reader.onload = () => {
+				uploadAvatar(file);
+			};
+			reader.readAsDataURL(file);
+		}
+	}
+};
+
+const handleDragEnter = (event: DragEvent) => {
+	console.log('Drag Enter event:', event);
+};
+
+const handleDragLeave = (event: DragEvent) => {
+	console.log('Drag Leave event:', event);
+};
+
+const uploadAvatar = async (data: File) => {
+	const dto: UploadAvatarDto = {
+		image: data,
+	};
+
+	try {
+		await userRepo.uploadAvatar(dto);
+		await profileStore.fetchProfile();
+
+		toast.add({
+			title: useT('uploadAvatar'),
+			description: useT('avatarUploadSuccess'),
+			timeout: 5000,
+			color: 'green',
+		});
+	}
+	catch (error) {
+		console.error('Error uploading file:', error);
+	}
+};
+
 const assetTotal = ref();
 
 onMounted(async () => {
-	profileData.value = await profileStore.userProfile;
+	await profileStore.fetchProfile();
 	await getReferralBrief();
 	assetTotal.value = await assetStore.getAssetTotal();
 });

@@ -17,8 +17,18 @@ type IdentificationRes = {
 	};
 };
 
+type UploadFileDto = {
+	data: File;
+};
+
+type UploadAvatarDto = {
+	image: File;
+};
+
 export type {
 	CommonRes,
 	KeyValueRes,
 	IdentificationRes,
+	UploadAvatarDto,
+	UploadFileDto,
 };

@@ -13,7 +13,7 @@ export const useProfileStore = defineStore('profile', () => {
 	const authStore = useAuthStore();
 
 	const fetchProfile = async () => {
-		if (isProfileDataFetched.value || profileLoading.value) return;
+		if (profileLoading.value) return;
 
 		profileLoading.value = true;
 		error.value = null;
@@ -37,11 +37,8 @@ export const useProfileStore = defineStore('profile', () => {
 		isProfileDataFetched.value = false;
 	};
 
-	const userProfile = computed(async () => {
+	const userProfile = computed(() => {
 		if (authStore.isLoggedIn) {
-			if (!profile.value.length) {
-				await fetchProfile();
-			}
 			return profile.value;
 		}
 		else {

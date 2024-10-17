@@ -946,6 +946,12 @@ const persian = {
 	OldestInvitation: 'قدیمی‌ترین دعوت',
 	LowestIncome: 'کمترین دریافتی',
 	HighestIncome: 'بیشترین دریافتی',
+	registerNickname: 'ثبت نام مستعار',
+	nickNameRegisteredSuccessfully: 'نام مستعار با موفقیت ثبت شد!',
+	enterNickname: 'لطفا نام مستعار را وارد کنید',
+	uploadAvatar: 'آپلود آواتار',
+	avatarUploadSuccess: 'آپلود آواتار با موفقیت انجام شد!',
+
 };
 
 export default persian;
