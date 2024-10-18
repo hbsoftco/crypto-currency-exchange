@@ -15,10 +15,10 @@ export const useMarketStore = defineStore('market', () => {
 	const marketList = ref<MarketListWithSparkLineChartItem[]>([]);
 	const isMarketListLoading = ref(false);
 	const isMarketListFetched = ref(false);
-	const lastParamsHash = ref(''); // To store the hash of last parameters
+	const lastParamsHash = ref('');
 
 	const fetchMarketListWithSparkLineChart = async (params: GetMarketListWithSparkLineChartParams) => {
-		const currentParamsHash = md5(JSON.stringify(params)); // Hash the current parameters
+		const currentParamsHash = md5(JSON.stringify(params));
 		if (isMarketListLoading.value && lastParamsHash.value === currentParamsHash) return;
 
 		isMarketListLoading.value = true;
