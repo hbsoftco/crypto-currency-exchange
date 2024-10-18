@@ -19,7 +19,10 @@
 					{{ $t('registerAndVerifyBonus') }}
 				</p>
 
-				<UButton class="px-8 font-medium text-sm">
+				<UButton
+					class="px-8 font-medium text-sm"
+					to="/auth/sign-up"
+				>
 					{{ $t('signup') }}
 				</UButton>
 			</div>
@@ -37,6 +40,7 @@
 				</p>
 
 				<UButton
+					to="/auth/sign-up"
 					color="white"
 					variant="ghost"
 					class="px-8 font-medium text-sm border"
@@ -58,6 +62,7 @@
 				</p>
 
 				<UButton
+					to="/auth/sign-up"
 					color="white"
 					variant="ghost"
 					class="px-8 font-medium text-sm border"
