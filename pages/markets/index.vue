@@ -42,7 +42,7 @@
 					class="hidden md:flex justify-between"
 				>
 					<div v-if="mostProfitableMarketsPending === 'pending'">
-						<p>{{ $t('isLoading') }} ...</p>
+						<MarketStateSkeleton />
 					</div>
 					<MarketState
 						v-else
@@ -51,7 +51,7 @@
 					/>
 
 					<div v-if="hottestMarketsPending === 'pending'">
-						<p>{{ $t('isLoading') }} ...</p>
+						<MarketStateSkeleton />
 					</div>
 					<MarketState
 						v-else
@@ -60,7 +60,7 @@
 					/>
 
 					<div v-if="latestMarketsPending === 'pending'">
-						<p>{{ $t('isLoading') }} ...</p>
+						<MarketStateSkeleton />
 					</div>
 					<MarketState
 						v-else
@@ -126,6 +126,7 @@ import IconSearch from '~/assets/svg-icons/menu/search.svg';
 import MarketTable from '~/components/pages/Market/MarketTable.vue';
 import { marketRepository } from '~/repositories/market.repository';
 import { Language } from '~/utils/enums/language.enum';
+import MarketStateSkeleton from '~/components/pages/Market/MarketStateSkeleton.vue';
 
 const { $api } = useNuxtApp();
 const marketRepo = marketRepository($api);

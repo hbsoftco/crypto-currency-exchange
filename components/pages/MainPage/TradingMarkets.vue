@@ -97,7 +97,7 @@ const params = ref({
 	tagTypeId: '1',
 });
 
-const marketData = ref<MarketListWithSparkLineChartItem[]>();
+const marketData = ref<MarketListWithSparkLineChartItem[]>([]);
 
 const updateFilter = async (selectedValue: SortMode) => {
 	params.value.sortMode = String(selectedValue);
