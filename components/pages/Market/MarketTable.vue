@@ -35,6 +35,51 @@
 					</tr>
 				</thead>
 
+				<tbody v-if="status==='pending'">
+					<tr
+						v-for="n in 10"
+						:key="n"
+					>
+						<td class="py-3">
+							<div class="flex items-center space-x-4">
+								<USkeleton
+									class="h-9 w-9 ml-3 mr-2"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+								<div class="space-y-2">
+									<USkeleton class="h-4 w-28" />
+									<USkeleton class="h-4 w-24" />
+								</div>
+							</div>
+						</td>
+						<td class="text-left">
+							<div class="flex justify-end pl-8">
+								<USkeleton class="h-4 w-24" />
+							</div>
+						</td>
+						<td>
+							<div class="flex justify-end pl-8">
+								<USkeleton class="h-4 w-20" />
+							</div>
+						</td>
+						<td>
+							<div class="flex justify-center pl-8">
+								<USkeleton class="h-4 w-36" />
+							</div>
+						</td>
+						<td>
+							<div class="flex justify-end pl-8">
+								<USkeleton class="h-4 w-20" />
+							</div>
+						</td>
+						<td>
+							<div class="flex justify-center pl-8">
+								<USkeleton class="h-4 w-36" />
+							</div>
+						</td>
+					</tr>
+				</tbody>
+
 				<tbody v-if="status==='success'">
 					<MarketTableRow
 						v-for="(item, index) in markets"

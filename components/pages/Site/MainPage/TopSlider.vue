@@ -4,6 +4,7 @@
 		class="relative top-4 md:-top-14"
 	>
 		<UCarousel
+			ref="carouselRef"
 			v-slot="{ item }"
 			:items="slides"
 			:ui="{
@@ -36,4 +37,18 @@ const baseDataStore = useBaseDataStore();
 await baseDataStore.fetchSlides();
 
 const slides = baseDataStore.slides;
+
+const carouselRef = ref();
+
+onMounted(() => {
+	setInterval(() => {
+		if (!carouselRef.value) return;
+
+		if (carouselRef.value.page === carouselRef.value.pages) {
+			return carouselRef.value.select(0);
+		}
+
+		carouselRef.value.next();
+	}, 3000);
+});
 </script>

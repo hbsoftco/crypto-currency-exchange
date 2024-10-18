@@ -6,14 +6,8 @@
 			<div class="flex items-center">
 				<div class="block md:flex items-center text-center">
 					<IconStar
-						v-if="!isFavorite"
 						class="text-2xl cursor-pointer pl-1 md:pl-0"
-						@click="toggleFavorite"
-					/>
-					<IconFillStar
-						v-else
-						class="text-2xl pl-1 md:pl-0 text-primary-yellow-light dark:text-primary-yellow-dark group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark cursor-pointer"
-						@click="toggleFavorite"
+						@click="router.push('/auth/login')"
 					/>
 					<NuxtImg
 						:src="`https://api-bitland.site/media/currency/${market?.marketBriefItem?.currencyBriefItem?.cSymbol}.png`"
@@ -89,18 +83,13 @@ import { splitMarket } from '~/utils/splitMarket';
 import { useNumber } from '~/composables/useNumber';
 import { formatBigNumber } from '~/utils/format-big-number';
 import IconStar from '~/assets/svg-icons/market/star.svg';
-import IconFillStar from '~/assets/svg-icons/market/fill-star.svg';
 import type { Market } from '~/types/response/market.types';
+
+const router = useRouter();
 
 interface Props {
 	market: Market;
 }
 
 defineProps<Props>();
-
-const isFavorite = ref(false);
-
-function toggleFavorite() {
-	isFavorite.value = !isFavorite.value;
-}
 </script>
