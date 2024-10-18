@@ -342,6 +342,34 @@ type GetInvitationParams = {
 	pageSize?: string;
 };
 
+type getDeviceListParams = {
+	from?: string;
+	to?: string;
+	pageNumber?: string;
+	pageSize?: string;
+};
+
+type getReasonListParams = {
+	entityType?: string;
+	langId?: string;
+};
+
+type getMiniRoutineParams = {
+	tagType: string;
+};
+
+type getActivitiesListParams = {
+	logTypeId?: string;
+	from?: string;
+	to?: string;
+	pageNumber?: string;
+	pageSize?: string;
+};
+
+type getTypeListParams = {
+	entityTypeId: string;
+	langId?: string;
+};
 export type {
 	GetReferralBestListParams,
 	GetRewardExposedParams,
@@ -390,4 +418,9 @@ export type {
 	GetTraderBriefParams,
 	DepositCoinListParams,
 	WithdrawCoinListParams,
+	getDeviceListParams,
+	getReasonListParams,
+	getMiniRoutineParams,
+	getActivitiesListParams,
+	getTypeListParams,
 };

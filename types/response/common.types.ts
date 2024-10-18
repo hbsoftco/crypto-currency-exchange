@@ -25,10 +25,38 @@ type UploadAvatarDto = {
 	image: File;
 };
 
+type Tip = {
+	key: number;
+	value: string;
+};
+
+type Faq = {
+	key: number;
+	value: string;
+};
+
+type Help = {
+	key: number;
+	value: string;
+};
+
+type GetMiniRoutineRes = {
+	statusCode: number;
+	result: {
+		tips: Tip[];
+		faqs: Faq[];
+		helps: Help[];
+	};
+};
+
 export type {
 	CommonRes,
 	KeyValueRes,
 	IdentificationRes,
 	UploadAvatarDto,
 	UploadFileDto,
+	GetMiniRoutineRes,
+	Tip,
+	Faq,
+	Help,
 };

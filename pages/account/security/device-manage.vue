@@ -33,33 +33,29 @@
 										{{ $t('addressIp') }}
 									</th>
 									<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5">
-										{{ $t('place') }}
+										{{ $t('status') }}
 									</th>
-									<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5" />
 								</tr>
 							</thead>
 							<tbody>
 								<tr
-									v-for="(item, index) in 20"
-									:key="index"
-									class="py-3 px-4  border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"
+									v-for="item in deviceItems"
+									:key="item.id"
+									class="py-3 px-4 odd:bg-hover2-light dark:odd:bg-hover2-dark border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"
 								>
 									<td class="text-nowrap text-xs font-normal py-2">
-										ff
+										{{ item.device }}
 									</td>
 									<td class="text-nowrap text-xs font-normal py-2">
-										fff
+										{{ useNumber(formatDateToIranTime(item.latestTime)) }}
 									</td>
 									<td class="text-nowrap text-xs font-normal py-2">
-										fff
+										{{ item.iPv4 }}
 									</td>
 									<td class="text-nowrap text-xs font-normal py-2">
-										fff
-									</td>
-									<td class="text-nowrap text-xs font-normal py-2">
-										<IconClose
-											class="cursor-pointer text-accent-red"
-										/>
+										<span v-if="item.inactive">{{ $t('exiting') }}</span>
+										<span v-if="item.inactive==false && item.isExpired==true">{{ $t('loginInactive') }}</span>
+										<span v-if="item.inactive==false && item.isExpired==false">{{ $t('loginActive') }}</span>
 									</td>
 								</tr>
 							</tbody>
@@ -88,11 +84,46 @@
 
 <script setup lang="ts">
 import IconQrCode from '~/assets/svg-icons/profile/qrCode.svg';
-import IconClose from '~/assets/svg-icons/close.svg';
 import VerificationModal from '~/components/pages/Site/Account/Security/ManageDevice/VerificationModal.vue';
+import { userRepository } from '~/repositories/user.repository';
+import type { DeviceItem } from '~/types/response/user.types';
+import type { getDeviceListParams } from '~/types/base.types';
+import { useNumber } from '~/composables/useNumber';
+import { formatDateToIranTime } from '~/utils/date-time';
 
 definePageMeta({
 	layout: 'account-single',
+});
+
+const { $api } = useNuxtApp();
+const userRepo = userRepository($api);
+const params = ref<getDeviceListParams>({
+	from: '',
+	to: '',
+	pageNumber: '1',
+	pageSize: '20',
+});
+const deviceItemLoading = ref<boolean>(false);
+const deviceItems = ref<DeviceItem[]>();
+const getDeviceList = async () => {
+	try {
+		deviceItemLoading.value = true;
+
+		const { result } = await userRepo.getDeviceList(params.value);
+		deviceItems.value = result.rows;
+		deviceItemLoading.value = false;
+	}
+	catch (error) {
+		deviceItemLoading.value = false;
+		console.log(error);
+	}
+};
+console.log('deviceItems-------------', deviceItems);
+
+onMounted(async () => {
+	await Promise.all([
+		getDeviceList(),
+	]);
 });
 const showDetail = ref(false);
 

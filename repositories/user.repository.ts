@@ -1,8 +1,10 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { GetAddressListRes, GetBankListResponse,
+import type { GetActivitiesListRes, GetAddressListRes, GetBankListResponse,
 	GetBestListResponse,
 	GetCommissionReceivedList, GetContactListResponse,
+	GetDeviceListRes,
+	GetDevLinkGenerateRes,
 	GetLevelsDataRes,
 	GetRewardReceivedListResponse,
 	GetStateTradeRes,
@@ -13,16 +15,19 @@ import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options
 import type {
 	DeleteAddressListParams,
 	DeleteContactListParams,
+	getActivitiesListParams,
 	GetAddressListParams,
 	GetBankParams,
 	GetCommissionReceivedListParams,
 	GetContactListParams,
+	getDeviceListParams,
 	GetInvitationParams,
 	GetReferralBestListParams,
 	GetRewardExposedParams,
 	GetRewardReceivedListParams,
 	GetTraderBestListParams,
 	GetTraderBriefParams,
+	getTypeListParams,
 	GetUserTraderCommissionListParams } from '~/types/base.types';
 import type {
 	GetTraderBestListResponse,
@@ -33,10 +38,19 @@ import type {
 	AddressSetDto,
 	CodeInviteDto,
 	ContactSetDto,
+	DeleteAccountDto,
 	IdentificationResendDto,
 	IdentificationSendDto,
-	NickNameSetDto } from '~/types/dto/user.dto';
-import type { CommonRes, IdentificationRes, UploadAvatarDto } from '~/types/response/common.types';
+	IdentificationSendNewDto,
+	NickNameSetDto,
+	SetAntiPhishingDto,
+	SetBasicDto,
+	SetEmailDto,
+	SetLiveDto,
+	SetMobileDto,
+	SetPasswordDto,
+	SetPinCodeDto } from '~/types/dto/user.dto';
+import type { CommonRes, IdentificationRes, KeyValueRes, UploadAvatarDto } from '~/types/response/common.types';
 import type { GetCommissionRes, GetInvitationListRes } from '~/types/response/referral.types';
 
 type UserRepository = {
@@ -66,6 +80,19 @@ type UserRepository = {
 	getInvitation: (params: GetInvitationParams) => Promise<GetInvitationListRes>;
 	getCommissionReceived: (params: GetCommissionReceivedListParams) => Promise<GetCommissionRes>;
 	uploadAvatar: (dto: UploadAvatarDto) => Promise<CommonRes>;
+	getDeviceList: (params: getDeviceListParams) => Promise<GetDeviceListRes>;
+	storeDeleteAccount: (dto: DeleteAccountDto) => Promise<CommonRes>;
+	storeSetBasic: (dto: SetBasicDto) => Promise<CommonRes>;
+	storeSetLive: (dto: SetLiveDto) => Promise<CommonRes>;
+	getDevLinkGenerate: () => Promise<GetDevLinkGenerateRes>;
+	getActivitiesList: (params: getActivitiesListParams) => Promise<GetActivitiesListRes>;
+	getTypeList: (params: getTypeListParams) => Promise<KeyValueRes>;
+	storeIdentificationSendNew: (dto: IdentificationSendNewDto) => Promise<IdentificationRes>;
+	storeSetEmail: (dto: SetEmailDto) => Promise<CommonRes>;
+	storeSetMobile: (dto: SetMobileDto) => Promise<CommonRes>;
+	storeSetPassword: (dto: SetPasswordDto) => Promise<CommonRes>;
+	storeSetPinCode: (dto: SetPinCodeDto) => Promise<CommonRes>;
+	storeSetAntiPhishing: (dto: SetAntiPhishingDto) => Promise<CommonRes>;
 };
 
 export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserRepository => ({
@@ -284,6 +311,17 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
+	async storeIdentificationSendNew(dto: IdentificationSendNewDto): Promise<IdentificationRes> {
+		const url = `/v1/user/identification/send_new`;
+		const response = await fetch<IdentificationRes>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
 	async getIdentificationCode(dto: IdentificationSendDto): Promise<IdentificationRes> {
 		const url = `/v1/user/identification/send`;
 		const response = await fetch<IdentificationRes>(`${url}`, {
@@ -409,6 +447,146 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 			noAuth: false,
 			method: 'POST',
 			body: formData,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getDeviceList(params: getDeviceListParams): Promise<GetDeviceListRes> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+		const url = `/v1/user/logs/device_list`;
+		const response = await fetch<GetDeviceListRes>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			apiName: url,
+			query: {},
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+
+	async storeDeleteAccount(dto: DeleteAccountDto): Promise<CommonRes> {
+		const url = `/v1/user/account/delete`;
+		const response = await fetch<CommonRes>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async storeSetBasic(dto: SetBasicDto): Promise<CommonRes> {
+		const url = `/v1/user/profile/set_basic`;
+		const response = await fetch<CommonRes>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async storeSetLive(dto: SetLiveDto): Promise<CommonRes> {
+		const url = `/v1/user/profile/set_live`;
+		const response = await fetch<CommonRes>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getDevLinkGenerate(): Promise<GetDevLinkGenerateRes> {
+		const url = '/v1/user/account/devlink_qrc_generate';
+		const response = await fetch<GetDevLinkGenerateRes>(`${url}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getActivitiesList(params: getActivitiesListParams): Promise<GetActivitiesListRes> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+		const url = `/v1/user/logs/activities_list`;
+		const response = await fetch<GetActivitiesListRes>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			apiName: url,
+			query: {},
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getTypeList(params: getTypeListParams): Promise<KeyValueRes> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+		const url = `/v1/routine/common/type_list`;
+		const response = await fetch<KeyValueRes>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			apiName: url,
+			query: {},
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async storeSetEmail(dto: SetEmailDto): Promise<CommonRes> {
+		const url = `/v1/user/alter/email_set`;
+		const response = await fetch<CommonRes>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async storeSetMobile(dto: SetMobileDto): Promise<CommonRes> {
+		const url = `/v1/user/alter/mobile_set`;
+		const response = await fetch<CommonRes>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async storeSetPassword(dto: SetPasswordDto): Promise<CommonRes> {
+		const url = `/v1/user/alter/password_set`;
+		const response = await fetch<CommonRes>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async storeSetPinCode(dto: SetPinCodeDto): Promise<CommonRes> {
+		const url = `/v1/user/alter/withdraw_pincode_set`;
+		const response = await fetch<CommonRes>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async storeSetAntiPhishing(dto: SetAntiPhishingDto): Promise<CommonRes> {
+		const url = `/v1/user/alter/antiphishing_phrase_set`;
+		const response = await fetch<CommonRes>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'POST',
+			body: dto,
 		} as CustomNitroFetchOptions);
 
 		return response;

@@ -1,7 +1,8 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { GetCurrencyParams, GetFAQListParams, GetHowBuyListParams, GetRootListParams, GetSubjectLiveChatParams } from '~/types/base.types';
+import type { GetCurrencyParams, GetFAQListParams, GetHowBuyListParams, getMiniRoutineParams, getReasonListParams, GetRootListParams, GetSubjectLiveChatParams } from '~/types/base.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
+import type { GetMiniRoutineRes, KeyValueRes } from '~/types/response/common.types';
 import type { GetFaqRes, GetHowToBuyListResponse, GetLiveChatListResponse, GetRootListResponse, GetShortListResponse } from '~/types/response/help.types';
 
 type HelpRepository = {
@@ -11,6 +12,8 @@ type HelpRepository = {
 	getFAQList: (params: GetFAQListParams) => Promise<GetLiveChatListResponse>;
 	getSubjectList: (params: GetSubjectLiveChatParams) => Promise<GetLiveChatListResponse>;
 	getHelpData: (params: GetCurrencyParams) => Promise<GetFaqRes>;
+	getReasonList: (params: getReasonListParams) => Promise<KeyValueRes>;
+	getMiniRoutine: (params: getMiniRoutineParams) => Promise<GetMiniRoutineRes>;
 };
 
 export const helpRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): HelpRepository => ({
@@ -97,6 +100,36 @@ export const helpRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): HelpR
 
 		const url = '/v1/routine/help/get';
 		const response = await fetch<GetFaqRes>(`${url}?${query.toString()}`, {
+			noAuth: true,
+			apiName: url,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getReasonList(params: getReasonListParams): Promise<KeyValueRes> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/routine/common/reason_list';
+		const response = await fetch<KeyValueRes>(`${url}?${query.toString()}`, {
+			noAuth: true,
+			apiName: url,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getMiniRoutine(params: getMiniRoutineParams): Promise<GetMiniRoutineRes> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/routine/help/mini_routine';
+		const response = await fetch<GetMiniRoutineRes>(`${url}?${query.toString()}`, {
 			noAuth: true,
 			apiName: url,
 			method: 'GET',

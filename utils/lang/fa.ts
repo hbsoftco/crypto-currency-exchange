@@ -912,7 +912,7 @@ const persian = {
 	place: 'محل',
 	deviceManagement: 'مدیریت دستگاه ها',
 	linkDevice: 'لینک کردن دستگاه',
-	lastCheckTime: 'آخرین زمان ورود',
+	lastCheckTime: 'آخرین زمان استفاده',
 	consequences: 'پیامدها',
 	consequencesOne: ' تا زمانی که برای لغو مسدود کردن حساب خود با خدمات مشتریان تماس نگیرید، نمی توانید وارد سیستم شوید.',
 	consequencesTwo: ' تمام عملکرد‌های معاملاتی حساب شما غیرفعال خواهد شد.',
@@ -960,6 +960,9 @@ const persian = {
 	tetherPriceInBitland: 'قیمت تتر در بیت‌لند',
 	codeInviteRegisteredSuccessfully: 'کد دعوت با موفقیت ثبت شد!',
 	registerCodeInvite: 'ویرایش کد دعوت',
+	exiting: 'خارج شده',
+	loginActive: 'کاربر لاگین شده فعال',
+	loginInactive: 'لاگین شده خارج شده',
 };
 
 export default persian;

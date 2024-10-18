@@ -263,6 +263,49 @@ type GetLevelsDataRes = {
 		rows: LevelRow[];
 	};
 };
+type DeviceItem = {
+	id: number;
+	iPv4: string;
+	iPv6: string;
+	device: string;
+	isExpired: boolean;
+	latestTime: string;
+	inactive: boolean;
+};
+
+type GetDeviceListRes = {
+	statusCode: number;
+	result: {
+		totalCount: number;
+		rows: DeviceItem[];
+	};
+};
+
+type GetDevLinkGenerateRes = {
+	statusCode: number;
+	result: {
+		devLinkID: number;
+		devLinkSecret: string;
+	};
+};
+type ActivitiesList = {
+	uid: number;
+	user: string;
+	typeId: number;
+	typeName: string;
+	logTime: string;
+	device: string;
+	iPv4: string;
+	iPv6: string;
+};
+
+type GetActivitiesListRes = {
+	statusCode: number;
+	result: {
+		totalCount: number;
+		rows: ActivitiesList[];
+	};
+};
 
 export type {
 	ReferralBriefItem,
@@ -286,4 +329,9 @@ export type {
 	GetStateTradeRes,
 	GetLevelsDataRes,
 	LevelRow,
+	GetDeviceListRes,
+	DeviceItem,
+	GetDevLinkGenerateRes,
+	GetActivitiesListRes,
+	ActivitiesList,
 };
