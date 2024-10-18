@@ -53,7 +53,7 @@
 				</div>
 				<div class="hidden md:block">
 					<NuxtImg
-						src="/images/svg/icon-download-app.svg"
+						src="/images/icon-download-app.webp"
 						alt="platform"
 						class="w-[38.596rem] h-[25.875rem]"
 					/>

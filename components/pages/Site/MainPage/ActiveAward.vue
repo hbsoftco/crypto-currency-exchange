@@ -3,7 +3,7 @@
 		<IconArrowLeft class="text-9xl text-primary-yellow-light dark:text-primary-yellow-dark" />
 		<div class="flex justify-between items-center px-20">
 			<NuxtImg
-				src="/images/award.png"
+				src="/images/award.webp"
 				alt="award"
 				class="w-[19.5rem] h-[22.813rem]"
 			/>

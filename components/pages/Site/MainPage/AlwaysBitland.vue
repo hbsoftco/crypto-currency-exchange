@@ -3,7 +3,7 @@
 		<div class="flex justify-between py-8 mt-20">
 			<div class="max-w-[31rem] max-h-[31rem] h-[31rem] w-[31rem]">
 				<NuxtImg
-					src="/images/always-bitland.png"
+					src="/images/always-bitland.webp"
 					alt="always-bitland"
 					class="w-full"
 				/>

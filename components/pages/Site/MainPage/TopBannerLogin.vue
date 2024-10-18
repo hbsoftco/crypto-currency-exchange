@@ -63,7 +63,7 @@
 			>
 				<div class="flex">
 					<NuxtImg
-						src="/images/award.png"
+						src="/images/award.webp"
 						alt="award"
 						class="w-6 h-6"
 					/>

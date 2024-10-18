@@ -57,7 +57,7 @@
 				</div>
 				<div>
 					<NuxtImg
-						src="/images/svg/icon-download-app.svg"
+						src="/images/icon-download-app.webp"
 						alt="platform"
 						class="w-[35.875rem] h-80"
 					/>

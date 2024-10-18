@@ -13,6 +13,8 @@ import { MarketType } from '~/utils/enums/market.enum';
 import type { Commission } from '~/types/response/trader.types';
 import { userTraderRepository } from '~/repositories/trader.repository';
 import type { GetUserTraderCommissionListParams } from '~/types/base.types';
+import { CACHE_KEY_CURRENCY_BRIEF_ITEMS, CACHE_KEY_MARKET_BRIEF_ITEMS, CACHE_KEY_QUOTE_ITEMS, CACHE_KEY_TAG_ITEMS } from '~/utils/constants/common';
+import { useCurrencyWorker } from '~/workers/currency-worker/currency-worker-wrapper';
 
 export const useBaseDataStore = defineStore('baseData', () => {
 	const { $api } = useNuxtApp();
@@ -52,14 +54,24 @@ export const useBaseDataStore = defineStore('baseData', () => {
 	const fetchTagItems = async () => {
 		if (isTagDataFetched.value || isTagLoading.value) return;
 
-		const api = baseDateRepository($api);
-		isTagLoading.value = true;
-
 		try {
+			const cachedData: Tag[] = await loadFromCache(CACHE_KEY_TAG_ITEMS) || [];
+
+			if (cachedData.length) {
+				tagItems.value = cachedData;
+				isTagDataFetched.value = true;
+				return;
+			}
+
+			const api = baseDateRepository($api);
+			isTagLoading.value = true;
+
 			const response = await api.getTagList({ languageId: Language.PERSIAN });
 			if (response.result) {
 				tagItems.value = response.result;
 				isTagDataFetched.value = true;
+
+				await saveToCache(CACHE_KEY_TAG_ITEMS, response.result);
 			}
 		}
 		catch (error) {
@@ -102,14 +114,24 @@ export const useBaseDataStore = defineStore('baseData', () => {
 	const fetchQuoteItems = async (marketTypeId: number) => {
 		if (isQuoteDataFetched.value || isQuoteLoading.value) return;
 
-		const api = baseDateRepository($api);
-		isQuoteLoading.value = true;
-
 		try {
+			const cachedData: QuoteItem[] = await loadFromCache(CACHE_KEY_QUOTE_ITEMS) || [];
+
+			if (cachedData.length) {
+				quoteItems.value = cachedData;
+				isQuoteDataFetched.value = true;
+				return;
+			}
+
+			const api = baseDateRepository($api);
+			isQuoteLoading.value = true;
+
 			const response = await api.getQuoteList({ marketTypeId });
 			if (response.result) {
 				quoteItems.value = response.result;
 				isQuoteDataFetched.value = true;
+
+				await saveToCache(CACHE_KEY_QUOTE_ITEMS, response.result);
 			}
 		}
 		catch (error) {
@@ -127,14 +149,24 @@ export const useBaseDataStore = defineStore('baseData', () => {
 	const fetchMarketBriefItems = async () => {
 		if (isMarketBriefDataFetched.value || isMarketBriefLoading.value) return;
 
-		const api = baseDateRepository($api);
-		isMarketBriefLoading.value = true;
-
 		try {
+			const cachedData: MarketBriefItem[] = await loadFromCache(CACHE_KEY_MARKET_BRIEF_ITEMS) || [];
+
+			if (cachedData.length) {
+				marketBriefItems.value = cachedData;
+				isMarketBriefDataFetched.value = true;
+				return;
+			}
+
+			const api = baseDateRepository($api);
+			isMarketBriefLoading.value = true;
+
 			const response = await api.getMarketBriefList();
 			if (response.result) {
 				marketBriefItems.value = response.result || [];
 				isMarketBriefDataFetched.value = true;
+
+				await saveToCache(CACHE_KEY_MARKET_BRIEF_ITEMS, response.result);
 			}
 		}
 		catch (error) {
@@ -152,14 +184,24 @@ export const useBaseDataStore = defineStore('baseData', () => {
 	const fetchCurrencyBriefItems = async (languageId: number) => {
 		if (isCurrencyBriefDataFetched.value || isCurrencyBriefLoading.value) return;
 
-		const api = baseDateRepository($api);
-		isCurrencyBriefLoading.value = true;
-
 		try {
+			const cachedData: CurrencyBriefItem[] = await loadFromCache(CACHE_KEY_CURRENCY_BRIEF_ITEMS) || [];
+
+			if (cachedData.length) {
+				currencyBriefItems.value = cachedData;
+				isCurrencyBriefDataFetched.value = true;
+				return;
+			}
+
+			const api = baseDateRepository($api);
+			isCurrencyBriefLoading.value = true;
+
 			const response = await api.getCurrencyBriefList({ languageId });
 			if (response.result) {
 				currencyBriefItems.value = response.result;
 				isCurrencyBriefDataFetched.value = true;
+
+				await saveToCache(CACHE_KEY_CURRENCY_BRIEF_ITEMS, response.result);
 			}
 		}
 		catch (error) {
@@ -208,6 +250,12 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		}
 
 		return null;
+	};
+
+	const findCurrencyById2 = async (id: number): Promise<CurrencyBriefItem | null> => {
+		const worker = useCurrencyWorker();
+		const result = await worker.findCurrencyById(id);
+		return result;
 	};
 
 	const bigIcons = ref<IconItem[]>([]);
@@ -317,6 +365,7 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		icons, fetchIcons, isIconsLoading,
 		getMatchedCurrencyItems,
 		findCurrencyById,
+		findCurrencyById2,
 		findCommission,
 	};
 });

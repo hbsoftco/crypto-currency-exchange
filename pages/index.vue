@@ -106,6 +106,10 @@ const mobileDetect = $mobileDetect as MobileDetect;
 
 const authStore = useAuthStore();
 
+const baseDataStore = useBaseDataStore();
+const currency = await baseDataStore.findCurrencyById2(4);
+console.log('hey dude', currency);
+
 onMounted(() => {
 	isMobile.value = !!mobileDetect.mobile();
 	authStore.loadAuthData();
