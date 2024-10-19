@@ -1,6 +1,9 @@
 import { defineStore } from 'pinia';
 
 export const useSpotSettingsStore = defineStore('spotSettings', () => {
+	const isOpenSidebarSettingsSpot = ref<boolean>(false);
+	const isSpotPage = ref<boolean>(false);
+
 	const selectedChanging = ref('greenUp');
 	const selectedTrading = ref('classic');
 	const selectedDisplayListOrders = ref('priceQuantity');
@@ -55,6 +58,10 @@ export const useSpotSettingsStore = defineStore('spotSettings', () => {
 		stopMarket.value = value;
 	};
 
+	const toggleSidebarSettingsSpot = (value: boolean) => {
+		isOpenSidebarSettingsSpot.value = value;
+	};
+
 	return {
 		// States
 		selectedChanging,
@@ -81,5 +88,9 @@ export const useSpotSettingsStore = defineStore('spotSettings', () => {
 		setMarket,
 		setStopPrice,
 		setStopMarket,
+
+		isOpenSidebarSettingsSpot,
+		toggleSidebarSettingsSpot,
+		isSpotPage,
 	};
 });

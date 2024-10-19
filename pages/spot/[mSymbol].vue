@@ -86,7 +86,7 @@ definePageMeta({
 	layout: 'trade',
 });
 
-const settingsStore = useSettingsStore();
+const settingsStore = useSpotSettingsStore();
 const spotStore = useSpotStore();
 
 const route = useRoute();
@@ -100,4 +100,12 @@ const params = ref<SpotDataParams>({
 });
 
 spotStore.getSnapshotData(mSymbol, `${currency}${quote}`, quote, currency, params.value);
+
+onMounted(() => {
+	settingsStore.isSpotPage = true;
+});
+
+onBeforeUnmount(() => {
+	settingsStore.isSpotPage = false;
+});
 </script>

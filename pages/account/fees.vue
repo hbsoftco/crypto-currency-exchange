@@ -228,6 +228,3 @@ const items = [
 	},
 ];
 </script>
-
-<style scoped>
-</style>

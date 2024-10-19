@@ -102,7 +102,7 @@
 							<Download />
 						</div>
 						<div>
-							<Setting v-if="!spotPageState" />
+							<Setting v-if="!settingsStore.isSpotPage" />
 							<SidebarSettingAction v-else />
 						</div>
 					</div>
@@ -124,16 +124,9 @@ import Setting from './Header/Setting.vue';
 import Transaction from './Header/Transaction.vue';
 import UserLogin from './Header/UserLogin/index.vue';
 
-const spotPageState = ref<boolean>(false);
-const route = useRoute();
+const settingsStore = useSpotSettingsStore();
 
 onMounted(() => {
-	if (route.name === 'spot-mSymbol') {
-		spotPageState.value = true;
-	}
-	else {
-		spotPageState.value = false;
-	}
 });
 
 // import Notif from '~/components/layouts/Default/Notif.vue';

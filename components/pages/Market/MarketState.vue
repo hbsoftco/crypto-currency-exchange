@@ -14,7 +14,10 @@
 				:key="`${title}-${market.id}`"
 				class="flex justify-between my-4"
 			>
-				<div class="flex justify-start w-28 text-left">
+				<div
+					class="flex justify-start w-28 text-left cursor-pointer"
+					@click="router.push(`/spot/${splitMarket(market?.marketBriefItem?.mSymbol)}`)"
+				>
 					<NuxtImg
 						:src="`https://api-bitland.site/media/currency/${market?.marketBriefItem?.currencyBriefItem?.cSymbol}.png`"
 						:alt="market?.marketBriefItem?.currencyBriefItem?.cName"
@@ -46,6 +49,7 @@
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
 import type { MarketState } from '~/types/response/market.types';
+import { splitMarket } from '~/utils/splitMarket';
 
 interface Props {
 	title: string;
@@ -53,4 +57,6 @@ interface Props {
 }
 
 defineProps<Props>();
+
+const router = useRouter();
 </script>
