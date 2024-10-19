@@ -12,10 +12,10 @@
 			<li
 				v-for="market in items"
 				:key="`${title}-${market.id}`"
-				class="flex justify-between my-4"
+				class="flex justify-between items-center my-4"
 			>
 				<div
-					class="flex justify-start w-28 text-left cursor-pointer"
+					class="flex justify-start w-28 text-left items-center cursor-pointer"
 					@click="router.push(`/spot/${splitMarket(market?.marketBriefItem?.mSymbol)}`)"
 				>
 					<NuxtImg
@@ -32,7 +32,7 @@
 					</div>
 				</div>
 				<div class="w-20 text-left">
-					<span class="text-sm font-normal">{{ useNumber(market.indexPrice) }}</span>
+					<span class="text-sm font-normal">{{ useNumber(priceFormat(market.indexPrice)) }}</span>
 				</div>
 				<div class="w-20">
 					<UiChangeIndicator
@@ -48,6 +48,7 @@
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
+import { priceFormat } from '~/utils/price-format';
 import type { MarketState } from '~/types/response/market.types';
 import { splitMarket } from '~/utils/splitMarket';
 

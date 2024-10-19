@@ -1,5 +1,8 @@
 <template>
-	<tr class="text-center font-normal md:font-medium text-sm md:text-base hover:bg-hover-light dark:hover:bg-hover-dark py-3 group">
+	<tr
+		:class="rowClass"
+		class="text-center font-normal md:font-medium text-sm md:text-base hover:bg-hover-light dark:hover:bg-hover-dark py-3 group"
+	>
 		<td
 			class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-2 md:px-10 py-2"
 		>
@@ -50,30 +53,30 @@
 				</div>
 			</div>
 		</td>
-		<td class="text-base font-medium px-2 md:px-10 text-left">
-			<span>{{ useNumber(market?.indexPrice) }}</span>
+		<td class="text-sm font-medium px-2 md:px-10 text-left">
+			<span>{{ useNumber(priceFormat(localRow?.indexPrice)) }}</span>
 			<span class="block md:hidden text-sm font-medium text-subtle-text-light dark:text-subtle-text-dark">
-				{{ useNumber(market?.indexPrice) }}
+				{{ useNumber(priceFormat(localRow?.indexPrice)) }}
 			</span>
 		</td>
 		<td class="text-base font-medium px-2 md:px-10 text-left">
 			<UiChangeIndicator
 				pl="pl-0"
-				:change="parseFloat(market.priceChangePercIn24H)"
+				:change="parseFloat(priceFormat(localRow.priceChangePercIn24H))"
 				:icon="true"
 			/>
 		</td>
 		<td class="text-sm font-normal px-10 md:table-cell hidden text-left">
-			{{ useNumber(market?.hPriceIn24H) }}
+			{{ useNumber(priceFormat(localRow?.hPriceIn24H)) }}
 		</td>
 		<td class="text-sm font-normal px-10 md:table-cell hidden text-left">
-			{{ useNumber(market?.lPriceIn24H) }}
+			{{ useNumber(priceFormat(localRow?.lPriceIn24H)) }}
 		</td>
 		<td
 			class="text-sm font-normal px-10 md:table-cell hidden text-left"
 			dir="ltr"
 		>
-			{{ useNumber(formatBigNumber(market?.volumeOfTradesIn24H, 2)) }}
+			{{ useNumber(formatBigNumber(localRow?.volumeOfTradesIn24H, 2)) }}
 		</td>
 	</tr>
 </template>
@@ -81,15 +84,44 @@
 <script setup lang="ts">
 import { splitMarket } from '~/utils/splitMarket';
 import { useNumber } from '~/composables/useNumber';
+import { priceFormat } from '~/utils/price-format';
 import { formatBigNumber } from '~/utils/format-big-number';
 import IconStar from '~/assets/svg-icons/market/star.svg';
 import type { Market } from '~/types/response/market.types';
+import type { SocketSpotData } from '~/types/socket.types';
 
 const router = useRouter();
 
 interface Props {
 	market: Market;
+	socketData: SocketSpotData | null;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+const localRow = ref({ ...props.market });
+const bgClass = ref('');
+
+watch(() => props.socketData, (newData) => {
+	if (newData) {
+		const newIndexPrice = newData.i;
+
+		if (newIndexPrice > localRow.value.indexPrice) {
+			bgClass.value = 'bg-[#c8ffc8] dark:bg-[#13241f]';
+		}
+		else {
+			bgClass.value = 'bg-[#ffc8c8] dark:bg-[#2b181c]';
+		}
+
+		localRow.value.indexPrice = newIndexPrice;
+		localRow.value.priceChangePercIn24H = newData.p;
+		localRow.value.lPriceIn24H = newData.l;
+		localRow.value.hPriceIn24H = newData.h;
+
+		setTimeout(() => {
+			bgClass.value = '';
+		}, 500);
+	}
+});
+
+const rowClass = computed(() => `${bgClass.value} transition duration-500`);
 </script>

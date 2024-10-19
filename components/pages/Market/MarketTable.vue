@@ -84,23 +84,22 @@
 					<MarketTableRow
 						v-for="(item, index) in markets"
 						:key="index"
+						:socket-data="publicSocketStore.findMarketDataById(item.id)"
 						:market="item"
 					/>
 				</tbody>
 			</table>
+
 			<div class="flex justify-center py-4">
 				<UPagination
 					:model-value="Number(params.pageNumber)"
 					:page-count="20"
 					:total="totalCount"
+					:to="(page: number) => ({
+						query: { page },
+					})"
 					:max="6"
 					size="xl"
-					ul-class="flex space-x-2 bg-blue-500 border-none"
-					li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500 px-3"
-					button-class-base="flex items-center justify-center w-full h-full transition-colors duration-200"
-					button-class-inactive="bg-green-700 hover:bg-gray-600"
-					button-class-active="bg-blue-500"
-					class="my-14"
 					@update:model-value="onPageChange"
 				/>
 			</div>
@@ -117,6 +116,8 @@ import { Language } from '~/utils/enums/language.enum';
 
 const { $api } = useNuxtApp();
 const marketRepo = marketRepository($api);
+
+const publicSocketStore = usePublicSocketStore();
 
 interface PropsDefinition {
 	searchQuery: string;
@@ -147,6 +148,12 @@ const params = ref({
 const { data: markets, status } = useAsyncData('markets', async () => {
 	const response = await marketRepo.getMarkets(params.value);
 	totalCount.value = response.result.totalCount;
+
+	const fixedIds = response.result.rows.map((market) => market.id);
+	const combinedMarketIds = `${fixedIds.join(',')}`;
+
+	publicSocketStore.refreshSocketRequest(combinedMarketIds);
+
 	return useProcessMarketData(response.result.rows, marketBriefList, currencyBriefList);
 }, { watch: [params.value], deep: true });
 

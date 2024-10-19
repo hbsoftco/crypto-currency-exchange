@@ -47,6 +47,10 @@ export default defineAppConfig({
 		modal: {
 			background: 'bg-background-light dark:bg-background-dark bg-opacity-40 backdrop-blur-sm dark:bg-opacity-40 dark:backdrop-blur-sm',
 		},
+		pagination: {
+			wrapper: 'flex items-center space-x-1',
+			base: 'rounded min-w-11 flex justify-center items-center border-none mx-1 text-center',
+		},
 	},
 	colorMode: {
 		preference: 'dark',

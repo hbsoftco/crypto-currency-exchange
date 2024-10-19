@@ -17,7 +17,7 @@
 				dir="rtl"
 				class="text-left pl-8"
 			>
-				<span class="text-sm md:text-base font-medium">{{ useNumber(localRow.indexPrice) }}</span>
+				<span class="text-sm md:text-base font-medium">{{ useNumber(priceFormat(localRow.indexPrice)) }}</span>
 			</div>
 		</td>
 		<td>
@@ -40,13 +40,14 @@ import ChangeIndicator from '~/components/ui/ChangeIndicator.vue';
 import TradingAction from '~/components/ui/TradingAction.vue';
 import WeeklyChart from '~/components/ui/WeeklyChart.vue';
 import { useNumber } from '~/composables/useNumber';
+import { priceFormat } from '~/utils/price-format';
 import type { MarketListWithSparkLineChartItem } from '~/types/response/market.types';
-import type { SocketSpotTickerMessage } from '~/types/socket.types';
+import type { SocketSpotData } from '~/types/socket.types';
 
 const isHovered = ref(false);
 interface Props {
 	row: MarketListWithSparkLineChartItem;
-	socketData: SocketSpotTickerMessage | null;
+	socketData: SocketSpotData | null;
 }
 
 const props = defineProps<Props>();
@@ -59,7 +60,7 @@ const chartColor = computed(() => {
 
 watch(() => props.socketData, (newData) => {
 	if (newData) {
-		const newIndexPrice = newData.data.i;
+		const newIndexPrice = newData.i;
 
 		if (newIndexPrice > localRow.value.indexPrice) {
 			bgClass.value = 'bg-[#c8ffc8] dark:bg-[#13241f]';
@@ -69,31 +70,13 @@ watch(() => props.socketData, (newData) => {
 		}
 
 		localRow.value.indexPrice = newIndexPrice;
-		localRow.value.priceChangePercIn24H = newData.data.p;
+		localRow.value.priceChangePercIn24H = newData.p;
 
 		setTimeout(() => {
 			bgClass.value = '';
 		}, 500);
 	}
 });
-
-// watch(() => props.socketData, (newData) => {
-// 	if (newData) {
-// 		const newIndexPrice = newData.data.i;
-// 		if (newIndexPrice > localRow.value.indexPrice) {
-// 			bgClass.value = 'bg-[#13241f]';
-// 		}
-// 		else {
-// 			bgClass.value = 'bg-[#2b181c]';
-// 		}
-// 		localRow.value.indexPrice = newIndexPrice;
-// 		localRow.value.priceChangePercIn24H = newData.data.p;
-
-// 		setTimeout(() => {
-// 			bgClass.value = '';
-// 		}, 500);
-// 	}
-// });
 
 const rowClass = computed(() => `${bgClass.value} transition duration-500`);
 </script>

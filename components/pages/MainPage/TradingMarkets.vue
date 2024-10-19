@@ -67,7 +67,7 @@
 						v-else
 						:key="row.id || index"
 						:row="row"
-						:socket-data="getSocketDataForRow(row.id)"
+						:socket-data="publicSocketStore.findMarketDataById(row.id)"
 					/>
 				</tbody>
 			</table>
@@ -86,9 +86,9 @@ import TradingMarketRow from '~/components/pages/MainPage/TradingMarketRow.vue';
 import type { ErrorResponse } from '~/types/response/error.type';
 import type { MarketListWithSparkLineChartItem } from '~/types/response/market.types';
 import { MarketType, SortMode } from '~/utils/enums/market.enum';
-import { PublicTopic, SocketId } from '~/utils/enums/socket.enum';
 
 const marketStore = useMarketStore();
+const publicSocketStore = usePublicSocketStore();
 
 const params = ref({
 	sortMode: String(SortMode.BY_MARKET_CAPS),
@@ -120,6 +120,7 @@ const fetchMarketData = async () => {
 		marketData.value = response || [];
 
 		marketIdParams.value = marketData.value.map((item) => item.id).join(',');
+		publicSocketStore.refreshSocketRequest(marketIdParams.value, 'main');
 	}
 	catch (error: unknown) {
 		const err = error as ErrorResponse;
@@ -130,74 +131,9 @@ const fetchMarketData = async () => {
 	}
 };
 
-const { messages, connect, socket, sendMessage } = usePublicWebSocket();
-
-const parsedMessages = computed(() => {
-	return messages.value.map((msg) => {
-		try {
-			return msg;
-		}
-		catch (error) {
-			console.error('Error parsing message:', error);
-			return null;
-		}
-	}).filter((item) => item !== null);
-});
-
-const getSocketDataForRow = (id: number) => {
-	return parsedMessages.value.find((msg) => msg.data.mi === id) || null;
-};
-
 const marketIdParams = ref<string>('');
-
-watch(() => marketIdParams.value, (newData, oldData) => {
-	if (newData) {
-		sendMessage(createSubscriptionData(
-			SocketId.SPOT_TICKER,
-			'UNSUBSCRIBE',
-			PublicTopic.SPOT_TICKER,
-			oldData,
-		));
-		console.log(oldData);
-		console.log(newData);
-
-		sendMessage(createSubscriptionData(
-			SocketId.SPOT_TICKER,
-			'SUBSCRIBE',
-			PublicTopic.SPOT_TICKER,
-			marketIdParams.value,
-		));
-	}
-}, { deep: true });
 
 onMounted(async () => {
 	await fetchMarketData();
-
-	await connect();
-	console.log(marketIdParams.value);
-
-	sendMessage(createSubscriptionData(
-		SocketId.SPOT_TICKER,
-		'SUBSCRIBE',
-		PublicTopic.SPOT_TICKER,
-		marketIdParams.value,
-	));
 });
-
-onBeforeUnmount(() => {
-	if (socket.value) {
-		sendMessage(createSubscriptionData(
-			SocketId.SPOT_TICKER,
-			'UNSUBSCRIBE',
-			PublicTopic.SPOT_TICKER,
-			marketIdParams.value,
-		));
-	}
-});
-
-// const { data: marketData } = await useAsyncData('fetchMarketList', () =>
-// 	marketStore.fetchMarketListWithSparkLineChart(params.value),
-// );
-// const baseDataStore = useBaseDataStore();
-// await useAsyncData('fetchMarketBriefItems', () => baseDataStore.fetchMarketBriefItems());
 </script>

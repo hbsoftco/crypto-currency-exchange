@@ -18,7 +18,7 @@
 					<div
 						class="flex mr-6 text-base font-extrabold text-text-dark dark:text-text-dark"
 					>
-						<span class="ml-1">{{ useNumber('51,130') }}</span>
+						<span class="ml-1">{{ useNumber(priceFormat(tetter)) }}</span>
 						<span>{{ $t('toman') }}</span>
 					</div>
 				</UButton>
@@ -57,6 +57,7 @@
 <script setup lang="ts">
 import IconArrowLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';
 import { useNumber } from '~/composables/useNumber';
+import { priceFormat } from '~/utils/price-format';
 
 const colorMode = useColorMode();
 const isDark = computed({
@@ -66,5 +67,18 @@ const isDark = computed({
 	set() {
 		colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark';
 	},
+});
+
+const publicSocketStore = usePublicSocketStore();
+publicSocketStore.refreshSocketRequest('1795');
+
+const tetter = computed(() => {
+	const result = publicSocketStore.findMarketDataById(1795);
+
+	if (result) {
+		return result.i;
+	}
+
+	return 0;
 });
 </script>

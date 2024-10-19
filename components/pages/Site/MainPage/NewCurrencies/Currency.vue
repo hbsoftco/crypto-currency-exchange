@@ -19,7 +19,7 @@
 				class="flex justify-between flex-col"
 				dir="ltr"
 			>
-				<span class="text-base font-bold text-left">{{ useNumber(currency.indexPrice) }}</span>
+				<span class="text-base font-bold text-left">{{ useNumber(priceFormat(currency.indexPrice, ',')) }}</span>
 				<span :class="priceChangeClass">{{ useNumber(currency.priceChangePercIn24H) }}</span>
 			</div>
 			<div class="w-24 h-14 pt-3">
@@ -36,6 +36,7 @@
 </template>
 
 <script setup lang="ts">
+import { priceFormat } from '~/utils/price-format';
 import { splitMarket } from '~/utils/splitMarket';
 import { useNumber } from '~/composables/useNumber';
 import type { MarketListWithSparkLineChartItem } from '~/types/response/market.types';
