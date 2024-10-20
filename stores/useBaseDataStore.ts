@@ -15,6 +15,7 @@ import { userTraderRepository } from '~/repositories/trader.repository';
 import type { GetUserTraderCommissionListParams } from '~/types/base.types';
 import { CACHE_KEY_CURRENCY_BRIEF_ITEMS, CACHE_KEY_MARKET_BRIEF_ITEMS, CACHE_KEY_QUOTE_ITEMS, CACHE_KEY_TAG_ITEMS } from '~/utils/constants/common';
 import { useCurrencyWorker } from '~/workers/currency-worker/currency-worker-wrapper';
+import { useMarketWorker } from '~/workers/market-worker/market-worker-wrapper';
 
 export const useBaseDataStore = defineStore('baseData', () => {
 	const { $api } = useNuxtApp();
@@ -258,6 +259,18 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		return result;
 	};
 
+	const findCurrencyBycSymbol = async (cSymbol: string): Promise<CurrencyBriefItem | null> => {
+		const worker = useCurrencyWorker();
+		const result = await worker.findCurrencyBycSymbol(cSymbol);
+		return result;
+	};
+
+	const findMarketBymSymbol = async (mSymbol: string): Promise<MarketBriefItem | null> => {
+		const worker = useMarketWorker();
+		const result = await worker.findMarketBymSymbol(mSymbol);
+		return result;
+	};
+
 	const bigIcons = ref<IconItem[]>([]);
 	const isBigIconsFetched = ref(false);
 	const isBigIconsLoading = ref(false);
@@ -366,6 +379,8 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		getMatchedCurrencyItems,
 		findCurrencyById,
 		findCurrencyById2,
+		findCurrencyBycSymbol,
+		findMarketBymSymbol,
 		findCommission,
 	};
 });

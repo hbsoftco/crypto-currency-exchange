@@ -14,8 +14,6 @@ const fetchCurrencyBriefItems = async () => {
 	else {
 		currencyBriefItems = [];
 	}
-
-	console.log('hi form worker');
 };
 
 const findCurrencyById = async (id: number): Promise<CurrencyBriefItem | null> => {
@@ -42,7 +40,16 @@ const findCurrencyById = async (id: number): Promise<CurrencyBriefItem | null> =
 	return null;
 };
 
+const findCurrencyBycSymbol = async (cSymbol: string): Promise<CurrencyBriefItem | null> => {
+	await fetchCurrencyBriefItems();
+
+	const currency = currencyBriefItems.find((x) => x.cSymbol === cSymbol);
+
+	return currency || null;
+};
+
 Comlink.expose({
 	fetchCurrencyBriefItems,
 	findCurrencyById,
+	findCurrencyBycSymbol,
 });

@@ -967,6 +967,8 @@ const persian = {
 	phoneNumber2: 'شماره تماس',
 	bitlandProductByCompany: 'بیت لند، محصول شرکت عصر زراندیشان آراد',
 	bitlandExchangeDescription: 'صرافی بیت‌لند، محیطی که هر آنچه درباره جهان پول دیجیتال و ارزهای رمزنگاری شده نیاز دارید گردآوری شده است',
+	priceInToman: 'قیمت تومانی',
+	priceInDollar: 'قیمت دلاری',
 
 };
 

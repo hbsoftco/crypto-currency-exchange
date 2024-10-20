@@ -1,56 +1,75 @@
 <template>
 	<div>
-		<div
-			v-if="loading"
-			class="h-80 w-full flex justify-center items-center"
-		>
-			<span>{{ $t('isLoading') }} ...</span>
-		</div>
-		<div
-			v-else
-			class="h-80 w-full"
-		>
-			<div class="flex justify-between mt-2 mb-7">
-				<div
-					dir="ltr"
-					class="mr-14"
-				>
-					<span
-						class="text-base font-bold text-subtle-text-light dark:text-subtle-text-dark"
-					>${{ useNumber(price) }}</span>
-					<span class="text-sm font-normal text-accent-green mx-1">
-						<UiChangePrice
-							classes="text-sm font-normal"
-							:show-percent="true"
-							pl="pl-0.5"
-							:change="parseFloat(String(priceChangePerc7d))"
-							:icon="false"
-						/>
-					</span>
-					<span
-						class="text-sm ml-1 font-normal text-subtle-text-light dark:text-subtle-text-dark"
-					>(1D)</span>
-				</div>
-				<ul class="flex">
-					<li
-						v-for="(option, index) in options"
-						:key="index"
-						class="mx-2 text-sm font-normal cursor-pointer rounded mb-0 px-1 pt-0.5"
-						:class="[selectedOption.header_option === option.header_option ? 'bg-primary-yellow-light dark:bg-primary-yellow-dark font-bold dark:font-bold dark:text-text-dark' : 'text-subtle-text-light dark:text-subtle-text-dark']"
-						@click="updateChart(option)"
-					>
-						<span>
-							{{ option.header_option }}
-						</span>
-					</li>
-				</ul>
+		<div>
+			<div
+				v-if="loading"
+				class="h-80 w-full flex justify-center items-center"
+			>
+				<span>{{ $t('isLoading') }} ...</span>
 			</div>
-			<ClientOnly>
+			<div
+				v-else
+				class="h-80 w-full"
+			>
+				<div class="flex justify-between mt-2 mb-7">
+					<div
+						dir="ltr"
+						class="mr-14"
+					>
+						<span
+							class="text-base font-bold text-subtle-text-light dark:text-subtle-text-dark"
+						>${{ useNumber(priceFormat(price)) }}</span>
+						<span class="text-sm font-normal text-accent-green mx-1">
+							<UiChangePrice
+								classes="text-sm font-normal"
+								:show-percent="true"
+								pl="pl-0.5"
+								:change="parseFloat(String(priceChangePerc7d))"
+								:icon="false"
+							/>
+						</span>
+					</div>
+					<ul class="flex">
+						<li
+							v-for="(option, index) in options"
+							:key="index"
+							class="mx-2 text-sm font-normal cursor-pointer rounded mb-0 px-1 pt-0.5"
+							:class="[selectedOption.header_option === option.header_option ? 'bg-primary-yellow-light dark:bg-primary-yellow-dark font-bold dark:font-bold dark:text-text-dark' : 'text-subtle-text-light dark:text-subtle-text-dark']"
+							@click="updateChart(option)"
+						>
+							<span>
+								{{ option.header_option }}
+							</span>
+						</li>
+					</ul>
+				</div>
 				<VChart
 					:option="chartOptions"
 					class="w-full h-full"
 				/>
-			</ClientOnly>
+			</div>
+		</div>
+		<div class="relative top-16">
+			<ul class="flex justify-center items-center">
+				<li
+					:class="['flex justify-center items-center cursor-pointer ml-4', selectedCurrency === 'TMN' ? 'text-text-dark dark:text-text-light' : 'text-gray-400']"
+					@click="changeMarket('TMN')"
+				>
+					<span class="text-sm ml-1 font-semibold">{{ $t('priceInToman') }}</span>
+					<span
+						:class="['w-3 h-3 rounded-full inline-block', selectedCurrency === 'TMN' ? 'bg-primary-yellow-light dark:bg-primary-yellow-dark' : 'bg-gray-300']"
+					/>
+				</li>
+				<li
+					:class="['flex justify-center items-center cursor-pointer', selectedCurrency === 'USDT' ? 'text-text-dark dark:text-text-light' : 'text-gray-400']"
+					@click="changeMarket('USDT')"
+				>
+					<span class="text-sm ml-1 font-semibold">{{ $t('priceInDollar') }}</span>
+					<span
+						:class="['w-3 h-3 rounded-full inline-block', selectedCurrency === 'USDT' ? 'bg-primary-yellow-light dark:bg-primary-yellow-dark' : 'bg-gray-300']"
+					/>
+				</li>
+			</ul>
 		</div>
 	</div>
 </template>
@@ -58,11 +77,10 @@
 <script setup lang="ts">
 import { useSpot } from '~/composables/spot/useSpot';
 import { useNumber } from '~/composables/useNumber';
-import { MarketType } from '~/utils/enums/market.enum';
+import { priceFormat } from '~/utils/price-format';
 
 interface PropsDefinition {
 	symbol: string;
-	quote: string;
 	price: string;
 	priceChangePerc7d: string;
 	priceChangePerc24h: string;
@@ -71,12 +89,21 @@ interface PropsDefinition {
 	priceChangePerc90d: string;
 }
 
+const props = defineProps<PropsDefinition>();
+
+const selectedCurrency = ref<'TMN' | 'USDT'>('TMN');
+
 const baseDataStore = useBaseDataStore();
 await baseDataStore.fetchMarketBriefItems();
 
-const props = defineProps<PropsDefinition>();
-
 const { loading, getChartKline } = useSpot();
+
+const changeMarket = async (quote: 'TMN' | 'USDT') => {
+	selectedCurrency.value = quote;
+
+	await getMarketId();
+	await fetchChartKline();
+};
 
 const options = [
 	{ header_option: '24h', timeFrameType: '5min', timeTo: 'TOMORROW', timeFrom: '24HOURS_AGO' },
@@ -86,12 +113,11 @@ const options = [
 	{ header_option: '1y', timeFrameType: '1day', timeTo: 'TOMORROW', timeFrom: '1YEAR_AGO' },
 ];
 
-const getMarketId = (quote: string): number | null => {
-	const qot = quote === 'USDT' ? 3 : quote === 'TMN' ? 1 : null;
-
-	if (qot === null) return null;
-	const marketItem = baseDataStore.marketBriefItems.find((item) => item.cqId === qot && item.typeId === MarketType.SPOT);
-
+const getMarketId = async (): Promise<number | null> => {
+	const marketItem = await baseDataStore.findMarketBymSymbol(`${props.symbol}${selectedCurrency.value}`);
+	if (marketItem) {
+		params.value.marketId = String(marketItem.id);
+	}
 	return marketItem ? marketItem.id : null;
 };
 
@@ -117,8 +143,6 @@ const getEpochTime = (timeFrame: string): number => {
 
 const updateChart = async (option: { header_option: string; timeFrameType: string; timeTo: string; timeFrom: string }) => {
 	selectedOption.value = option;
-	console.log(selectedOption.value);
-
 	params.value.timeFrom = String(getEpochTime(option.timeFrom));
 	params.value.timeTo = String(getEpochTime(option.timeTo));
 	params.value.timeFrameType = option.timeFrameType;
@@ -133,10 +157,9 @@ const xAxisData = ref<string[]>([]);
 const params = ref({
 	timeFrom: String(getEpochTime('1WEEK_AGO')),
 	timeTo: String(getEpochTime('TOMORROW')),
-	symbol: props.symbol,
 	candleCount: '1000',
 	timeFrameType: '1hour',
-	marketId: props.quote ? String(getMarketId(props.quote)) : '',
+	marketId: '',
 });
 
 const processChartData = (data: any[]) => {
@@ -147,8 +170,6 @@ const processChartData = (data: any[]) => {
 
 const fetchChartKline = async () => {
 	try {
-		// console.log('getChartKline params', params.value);
-
 		const { result } = await getChartKline(params.value);
 		const { timestamps, values } = processChartData(result);
 		chartData.value = values;
@@ -160,6 +181,7 @@ const fetchChartKline = async () => {
 };
 
 onMounted(async () => {
+	await getMarketId();
 	await fetchChartKline();
 });
 

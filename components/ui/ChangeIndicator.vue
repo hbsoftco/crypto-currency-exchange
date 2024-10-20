@@ -50,6 +50,6 @@ const containerClass = computed(() => {
 });
 
 const formattedChange = computed(() => {
-	return props.change > 0 ? `+${props.change}٪` : `${props.change}٪`;
+	return props.change > 0 ? `+${props.change}%` : `${props.change}%`;
 });
 </script>

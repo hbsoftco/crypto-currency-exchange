@@ -59,7 +59,7 @@ const containerClass = computed(() => {
 const formattedChange = computed(() => {
 	const change = props.change;
 	return props.change > 0
-		? `+${change}${props.showPercent ? '٪' : ''}`
-		: `${change}${props.showPercent ? '٪' : ''}`;
+		? `+${change}${props.showPercent ? '%' : ''}`
+		: `${change}${props.showPercent ? '%' : ''}`;
 });
 </script>
