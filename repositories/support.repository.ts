@@ -13,7 +13,7 @@ export const supportRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Su
 	async getSocialNetList(): Promise<SocialNetListResponse> {
 		const url = '/v1/routine/support/social_net_list';
 		const response = await fetch<SocialNetListResponse>(`${url}`, {
-			noAuth: false,
+			noAuth: true,
 			apiName: url,
 		} as CustomNitroFetchOptions);
 
@@ -26,7 +26,7 @@ export const supportRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Su
 		);
 		const url = 'v1/routine/support/staff_check';
 		const response = await fetch<StaffCheckResponse>(`${url}?${query.toString()}`, {
-			noAuth: false,
+			noAuth: true,
 			apiName: url,
 		} as CustomNitroFetchOptions);
 

@@ -18,11 +18,15 @@
 					</p>
 					<div class="block md:flex items-center mt-11 mb-16">
 						<span class="text-xl font-bold">{{ $t('suggestDownloadApp') }}</span>
-						<NuxtImg
-							src="/images/QR.png"
-							alt="QR"
-							class="w-52 h-52 mr-20 mt-4 md:mt-0"
-						/>
+						<div class="flex justify-center mx-10 my-4">
+							<vue-qrcode
+								:value="link"
+								:size="200"
+								:level="'H'"
+								:background="'#ffffff'"
+								:foreground="'#000000'"
+							/>
+						</div>
 					</div>
 					<p class="text-xl font-bold mb-6">
 						{{ $t('titrDownloadApp') }}
@@ -42,7 +46,10 @@
 								class="w-52 h-16"
 							/>
 						</ULink>
-						<ULink to="">
+						<ULink
+							to="https://play.google.com/store/apps/details?id=io.bitland"
+							target="_blank"
+						>
 							<NuxtImg
 								src="/images/svg/google-play.svg"
 								alt="google-play"
@@ -73,6 +80,7 @@ const helpRepo = helpRepository($api);
 
 const helpDataLoading = ref<boolean>(false);
 const helpData = ref<FaqItem>();
+const link = ref<string>('https://play.google.com/store/apps/details?id=io.bitland');
 
 const getHelpData = async () => {
 	try {

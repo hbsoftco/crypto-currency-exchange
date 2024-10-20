@@ -120,7 +120,6 @@ const getDeviceList = async () => {
 		console.log(error);
 	}
 };
-console.log('deviceItems-------------', deviceItems);
 
 onMounted(async () => {
 	await Promise.all([
