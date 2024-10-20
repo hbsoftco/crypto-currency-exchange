@@ -1,5 +1,8 @@
 <template>
 	<div class="mt-24">
+		<UContainer v-if="currencyDetailLoading">
+			<UiLogoLoading />
+		</UContainer>
 		<UContainer v-if="!currencyDetailLoading && currencyDetail">
 			<div class="grid grid-cols-12 gap-4">
 				<div class="col-span-8">

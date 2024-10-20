@@ -44,7 +44,7 @@
 					<div v-if="mostProfitableMarketsPending === 'pending'">
 						<MarketStateSkeleton />
 					</div>
-					<MarketState
+					<TopMarketState
 						v-else
 						:title="$t('mostProfitableAssets')"
 						:items="mostProfitableMarkets ?? []"
@@ -53,7 +53,7 @@
 					<div v-if="hottestMarketsPending === 'pending'">
 						<MarketStateSkeleton />
 					</div>
-					<MarketState
+					<TopMarketState
 						v-else
 						:title="$t('hotTopics')"
 						:items="hottestMarkets ?? []"
@@ -62,7 +62,7 @@
 					<div v-if="latestMarketsPending === 'pending'">
 						<MarketStateSkeleton />
 					</div>
-					<MarketState
+					<TopMarketState
 						v-else
 						:title="$t('newest')"
 						:items="latestMarkets ?? []"
@@ -121,7 +121,7 @@
 </template>
 
 <script setup lang="ts">
-import MarketState from '~/components/pages/Market/MarketState.vue';
+import TopMarketState from '~/components/pages/Market/TopMarketState.vue';
 import IconSearch from '~/assets/svg-icons/menu/search.svg';
 import MarketTable from '~/components/pages/Market/MarketTable.vue';
 import { marketRepository } from '~/repositories/market.repository';

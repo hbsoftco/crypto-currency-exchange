@@ -1,7 +1,7 @@
 <template>
 	<UContainer>
 		<div v-if="chartsDataLoading === 'pending'">
-			........
+			<UiLogoLoading />
 		</div>
 		<div v-if="chartsDataLoading === 'success'">
 			<div class="mb-4 mt-8">
@@ -14,12 +14,10 @@
 					v-if="negativeMarketsItems.length > 0"
 					class="w-[50%]"
 				>
-					<ClientOnly>
-						<VChart
-							:option="positiveMarketBarOptions"
-							class="w-full h-96"
-						/>
-					</ClientOnly>
+					<VChart
+						:option="positiveMarketBarOptions"
+						class="w-full h-96"
+					/>
 					<div class="text-center text-base font-bold">
 						{{ $t("numberOfRisingMarkets") }}
 					</div>
@@ -28,12 +26,10 @@
 					v-if="positiveMarketsItems.length > 0"
 					class="w-[50%]"
 				>
-					<ClientOnly>
-						<VChart
-							:option="negativeMarketBarOptions"
-							class="w-full h-96"
-						/>
-					</ClientOnly>
+					<VChart
+						:option="negativeMarketBarOptions"
+						class="w-full h-96"
+					/>
 					<div class="text-center text-base font-bold">
 						{{ $t("numberOfDecliningMarkets") }}
 					</div>
@@ -42,12 +38,10 @@
 					v-if="neutralMarketsItems.length > 0"
 					class="w-80 h-80 absolute left-0 right-0 m-auto -top-2"
 				>
-					<ClientOnly>
-						<VChart
-							:option="neutralPieOptions"
-							class="w-full h-80"
-						/>
-					</ClientOnly>
+					<VChart
+						:option="neutralPieOptions"
+						class="w-full h-80"
+					/>
 				</div>
 			</div>
 		</div>

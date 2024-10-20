@@ -42,7 +42,7 @@
 								{{ $t("trade") }}
 							</UButton>
 							<div>
-								<ULink :to="`/coins/${market?.marketBriefItem?.currencyBriefItem?.cSymbol}_${market?.marketBriefItem?.quoteItem?.cSymbol}`">
+								<ULink :to="`/coins/${market?.marketBriefItem?.currencyBriefItem?.cSymbol}`">
 									<span
 										class="text-xs font-normal text-primary-yellow-light dark:text-primary-yellow-dark"
 									>{{ $t("detail") }}</span>
