@@ -29,7 +29,7 @@
 						</div>
 						<div class="flex justify-center my-4">
 							<vue-qrcode
-								:value="link"
+								:value="linkQR"
 								:size="200"
 								:level="'H'"
 								:background="'#ffffff'"
@@ -52,8 +52,18 @@
 
 <script setup lang="ts">
 import IconClose from '~/assets/svg-icons/close.svg';
+import type { ReferralBriefItem } from '~/types/response/user.types';
 
-const link = ref<string>('https://bitland.io/auth/sign-up?inviter=123456');
+interface PropsDefinition {
+	referralBrief: ReferralBriefItem;
+}
+
+const props = defineProps<PropsDefinition>();
+
+const codeQr = props.referralBrief.refCode;
+const link = ref<string>('https://bitland.io/auth/sign-up?inviter=');
+
+const linkQR = link.value + codeQr;
 
 const isOpen = ref(true);
 interface EmitDefinition {

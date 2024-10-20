@@ -7,7 +7,6 @@
 					<USelectMenu
 						v-model="DateFilter"
 						:options="DateItems"
-						:placeholder="$t('all')"
 						option-attribute="value"
 						class="w-auto md:w-44"
 						icon="heroicons:calendar-date-range-16-solid"
@@ -19,7 +18,6 @@
 								},
 							},
 						}"
-						@change="applyFilters"
 					/>
 				</div>
 			</div>
@@ -34,7 +32,7 @@
 						<span class="text-base font-bold text-subtle-text-light dark:text-subtle-text-dark">{{ $t('totalIncome') }}</span>
 					</div>
 					<div class="flex justify-between pt-4 py-8">
-						<span class="text-sm font-medium text-subtle-text-light dark:text-subtle-text-dark">{{ $t('toman') }}</span><span class="text-sm font-medium">{{ useNumber('۵۶۷،۴۷۴') }}</span>
+						<span class="text-sm font-medium text-subtle-text-light dark:text-subtle-text-dark">{{ $t('toman') }}</span><span class="text-sm font-medium">{{ useNumber(DateFilter?.key) }}</span>
 					</div>
 				</div>
 				<div class="w-72 px-4 py-2 bg-hover-light dark:bg-hover-dark rounded-md shadow-md">
@@ -98,7 +96,10 @@ const inDirective = computed(() => {
 	return coIndirectInactive + coIndirectActive;
 });
 
-const DateFilter = ref<KeyValue>();
+const DateFilter = ref<KeyValue>({
+	key: String(props.referralBrief?.subject.inLY),
+	value: useT('lastYear'),
+});
 const DateItems = ref<KeyValue[]>([
 	{
 		key: String(props.referralBrief?.subject.inLY),
@@ -117,8 +118,4 @@ const DateItems = ref<KeyValue[]>([
 		value: useT('lastOneMonths'),
 	},
 ]);
-
-const applyFilters = async () => {
-	// params.value.sortMode = DateFilter.value ? DateFilter.value.key : '';
-};
 </script>

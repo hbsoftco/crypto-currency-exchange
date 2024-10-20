@@ -11,21 +11,24 @@
 						جا به آسانی به خدمات بیت‌لند دسترسی داشته باشید.
 					</p>
 					<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-						<ULink to="">
+						<!-- <ULink to="">
 							<NuxtImg
 								src="/images/svg/app-store.svg"
 								alt="app-store"
 								class="w-52 h-16"
 							/>
-						</ULink>
-						<ULink to="">
+						</ULink> -->
+						<ULink
+							to="https://play.google.com/store/apps/details?id=io.bitland"
+							target="_blank"
+						>
 							<NuxtImg
 								src="/images/svg/google-play.svg"
 								alt="google-play"
 								class="w-52 h-16"
 							/>
 						</ULink>
-						<ULink to="">
+						<!-- <ULink to="">
 							<NuxtImg
 								src="/images/svg/windows.svg"
 								alt="windows"
@@ -39,7 +42,10 @@
 								class="w-52 h-16"
 							/>
 						</ULink>
-						<ULink to="">
+						<ULink
+							to="https://play.google.com/store/apps/details?id=io.bitland"
+							target="_blank"
+						>
 							<NuxtImg
 								src="/images/svg/google-play.svg"
 								alt="google-play"
@@ -52,7 +58,7 @@
 								alt="windows"
 								class="w-52 h-16"
 							/>
-						</ULink>
+						</ULink> -->
 					</div>
 				</div>
 				<div>

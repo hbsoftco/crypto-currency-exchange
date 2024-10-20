@@ -33,7 +33,8 @@
 				<UButton
 					size="lg"
 					variant="ghost"
-					class="px-8 mt-6 font-bold text-sm text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark"
+					to="/account/rewards"
+					class="px-8 mt-6 font-bold text-sm text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark hover:bg-primary-yellow-light hover:dark:bg-primary-yellow-dark hover:text-white hover:dark:text-white"
 				>
 					{{ $t('receiveAward') }}
 				</UButton>
