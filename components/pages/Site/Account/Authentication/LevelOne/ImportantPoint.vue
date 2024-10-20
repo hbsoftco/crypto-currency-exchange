@@ -50,8 +50,37 @@
 	</div>
 </template>
 
-<script>
-export default {
+<script setup lang="ts">
+import { helpRepository } from '~/repositories/help.repository';
+import type { getMiniRoutineParams } from '~/types/base.types';
+import type { Help } from '~/types/response/common.types';
+import { TagType } from '~/utils/enums/help.enum';
 
+const { $api } = useNuxtApp();
+const helpRepo = helpRepository($api);
+const params = ref<getMiniRoutineParams>({
+	tagType: TagType.IDENTIFICATION,
+});
+const helpLoading = ref<boolean>(false);
+const helpItems = ref<Help[]>();
+const gethelpList = async () => {
+	try {
+		helpLoading.value = true;
+
+		const { result } = await helpRepo.getMiniRoutine(params.value);
+		helpItems.value = result.helps;
+		helpLoading.value = false;
+	}
+	catch (error) {
+		helpLoading.value = false;
+		console.log(error);
+	}
 };
+// console.log('------------------------helpItems', helpItems);
+
+onMounted(async () => {
+	await Promise.all([
+		gethelpList(),
+	]);
+});
 </script>

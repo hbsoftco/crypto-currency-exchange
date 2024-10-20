@@ -20,37 +20,49 @@
 								</p>
 								<div>
 									<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-										<!-- <UnverifiedModal
-			v-if="showDetail"
-			@close="closeDetail"
-		/> -->
-										<VerifiedModal
-											v-if="showDetail"
+										<UnverifiedModal
+											v-if="hasError && showDetail"
+											:staff-id="params.staffId"
 											@close="closeDetail"
 										/>
-										<div
-											class="col-span-3"
-										>
+										<VerifiedModal
+											v-if="!hasError && showDetail"
+											:staff-id="String(params.staffId)"
+											@close="closeDetail"
+										/>
+										<div class="col-span-3 my-8">
 											<USelectMenu
-												v-model="selected"
+												v-model="params.profileTypeId"
 												:options="socialNetList"
-												:placeholder="$t('networkSelected')"
-												value-attribute="id"
-												:ui="{
-													background: ' bg-background-light dark:bg-background-dark',
-												}"
+												:placeholder="$t('networkType')"
+												value-attribute="key"
 												option-attribute="value"
-												class="my-8"
 												size="lg"
+												:ui="{
+													background: '',
+													color: {
+														white: {
+															outline: ' bg-hover-light dark:bg-hover-dark',
+														},
+													},
+												}"
 											/>
 										</div>
 										<div class="col-span-8">
 											<FormsFieldInput
 												id="info"
-												v-model="info"
+												v-model="params.staffId"
 												type="text"
 												input-class="text-right bg-background-light dark:bg-background-dark"
 												label=""
+												:ui="{
+													background: '',
+													color: {
+														white: {
+															outline: ' bg-hover-light dark:bg-hover-dark',
+														},
+													},
+												}"
 												:placeholder="$t('placeholderInfo')"
 												icon=""
 												dir="rtl"
@@ -61,7 +73,7 @@
 												size="lg"
 												class="my-8 text-base font-medium p-2"
 												to=""
-												@click="openDetail"
+												@click="getStaffCheck"
 											>
 												<div class="rounded-full p-1 bg-accent-secondaryYellow">
 													<IconEnter class="text-black" />
@@ -95,28 +107,78 @@
 
 <script setup lang="ts">
 import IconEnter from '~/assets/svg-icons/enter.svg';
-// import UnverifiedModal from '~/components/pages/Site/Support/UnverifiedModal.vue';
+import UnverifiedModal from '~/components/pages/Site/Support/UnverifiedModal.vue';
 import VerifiedModal from '~/components/pages/Site/Support/VerifiedModal.vue';
 import { supportRepository } from '~/repositories/support.repository';
-import type { KeyValue } from '~/types/base.types';
+import type { GetStaffParams, KeyValue } from '~/types/base.types';
+import { Language } from '~/utils/enums/language.enum';
 
 const { $api } = useNuxtApp();
 const supportRepo = supportRepository($api);
 const socialNetList = ref<KeyValue[]>();
+const socialListLoading = ref<boolean>(false);
 
-const response = await supportRepo.getSocialNetList();
-socialNetList.value = response.result;
-console.log(response);
-console.log(socialNetList.value);
+const hasError = ref(false);
+
+const getSocialList = async () => {
+	try {
+		socialListLoading.value = true;
+		const { result } = await supportRepo.getSocialNetList();
+		socialNetList.value = result;
+		socialListLoading.value = false;
+	}
+	catch (error) {
+		socialListLoading.value = false;
+		console.log(error);
+	}
+};
+
+const params = ref<GetStaffParams>({
+	languageId: String(Language.PERSIAN),
+	staffId: '',
+	profileTypeId: '',
+});
+
+const staffCheckListLoading = ref<boolean>(false);
+
+const getStaffCheck = async () => {
+	try {
+		staffCheckListLoading.value = true;
+
+		hasError.value = false;
+
+		const { result } = await supportRepo.getStaffCheck(params.value);
+		console.log(result);
+
+		params.value.staffId = info.value;
+
+		staffCheckListLoading.value = false;
+
+		showDetail.value = true;
+	}
+	catch (error) {
+		staffCheckListLoading.value = false;
+
+		hasError.value = true;
+		showDetail.value = true;
+		console.log(error);
+	}
+};
+
+onMounted(async () => {
+	await getSocialList();
+});
+onMounted(async () => {
+	await Promise.all([
+		getSocialList(),
+		getStaffCheck(),
+	]);
+});
+
 const info = ref('');
 const showDetail = ref(false);
-
-const openDetail = () => {
-	showDetail.value = true;
-};
 
 const closeDetail = () => {
 	showDetail.value = false;
 };
-const selected = ref<KeyValue['key'] | null>(null);
 </script>

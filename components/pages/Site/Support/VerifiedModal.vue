@@ -28,7 +28,7 @@
 						</h3>
 						<div class="my-6">
 							<p class="text-xs font-normal text-justify">
-								جستجوی شما [XXX] یک منبع رسمی و مورد تایید در بیت لند
+								جستجوی شما {{staffId }} یک منبع رسمی و مورد تایید در بیت لند
 								می باشد.
 							</p>
 						</div>
@@ -50,8 +50,12 @@
 </template>
 
 <script setup lang="ts">
-// import { useNumber } from '~/composables/useNumber';
 import IconClose from '~/assets/svg-icons/close.svg';
+
+interface PropsDefinition {
+	staffId: string;
+}
+defineProps<PropsDefinition>();
 
 const isOpen = ref(true);
 interface EmitDefinition {

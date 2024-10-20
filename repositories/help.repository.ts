@@ -130,7 +130,7 @@ export const helpRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): HelpR
 
 		const url = '/v1/routine/help/mini_routine';
 		const response = await fetch<GetMiniRoutineRes>(`${url}?${query.toString()}`, {
-			noAuth: true,
+			noAuth: false,
 			apiName: url,
 			method: 'GET',
 		} as CustomNitroFetchOptions);
