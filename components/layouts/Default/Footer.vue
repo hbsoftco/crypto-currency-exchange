@@ -9,18 +9,17 @@
 						class="mb-3 w-28 h-12"
 					/>
 					<span class="font-bold leading-loose text-base">
-						بیت  لند، محصول شرکت عصر زراندیشان آراد
+						{{ $t('bitlandProductByCompany') }}
 					</span>
 					<p class="leading-loose text-sm font-normal">
-						صرافی بیت‌لند، محیطی که هر آنچه در باره جهان پول دیجیتال و ارز های
-						رمز نگاری شده نیاز دارید گرد آوری شده است.
+						{{ $t('bitlandExchangeDescription') }}
 					</p>
 					<div>
-						<span class="leading-loose text-sm font-normal">شماره تماس :</span>
-						<span class="leading-loose text-sm font-normal">۰۲۱۲۸۲۲۳۱۳۱</span>
+						<span class="leading-loose text-sm font-normal">{{ $t('phoneNumber2') }} :</span>
+						<span class="leading-loose text-sm font-normal">{{ useNumber('02128223131') }}</span>
 					</div>
 					<div>
-						<span class="leading-loose text-sm font-normal">آدرس ایمیل :</span>
+						<span class="leading-loose text-sm font-normal">{{ $t('emailAddress') }} :</span>
 						<span class="leading-loose text-sm font-normal">
 							admin@bitland.ir
 						</span>
@@ -56,26 +55,33 @@
 								</div>
 							</div>
 						</div>
-						<div
-							class="grid grid-cols-4 gap-2"
-						>
-							<ULink
-								v-for="(subItem, subIndex) in footerItems[0].subItems"
-								:key="subIndex"
-								:to="subItem.url"
-								target="_blank"
-								class="w-6 h-6"
+						<div>
+							<h5
+								class="text-subtle-text-light dark:text-subtle-text-dark text-sm font-bold mb-4"
 							>
-								<component :is="subItem.name" />
-							</ULink>
+								{{ $t('followUs') }}
+							</h5>
+							<div
+								class="grid grid-cols-4 gap-2"
+							>
+								<ULink
+									v-for="(subItem, subIndex) in footerItems[0].subItems"
+									:key="subIndex"
+									:to="subItem.url"
+									target="_blank"
+									class="w-8 h-8"
+								>
+									<component :is="subItem.name" />
+								</ULink>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<div class="border-t-secondary-gray-light dark:border-t-secondary-gray-dark border-t text-center">
+			<div class="border-t-secondary-gray-light dark:border-t-secondary-gray-dark border-t text-center mt-10">
 				<p class="text-subtle-text-light dark:text-subtle-text-dark text-sm font-normal p-2">
-					تمامی حقوق مادی و معنوی وب سایت متعلق به مجموعه بیت‌لند می باشد
+					{{ $t('copyrightNotice') }}
 				</p>
 			</div>
 		</UContainer>
@@ -83,21 +89,22 @@
 </template>
 
 <script setup lang="ts">
-// import IconGoogle from '~/assets/svg-icons/social/google.svg';
+import { useNumber } from '~/composables/useNumber';
 import IconInstagram from '~/assets/svg-icons/social/instagram.svg';
-// import IconLinkedin from '~/assets/svg-icons/social/linkedin.svg';
-// import IconMessenger from '~/assets/svg-icons/social/messenger.svg';
-// import IconMicrosoftTeam from '~/assets/svg-icons/social/microsoft-team.svg';
 import IconTelegram from '~/assets/svg-icons/social/telegram.svg';
-// import IconTwitch from '~/assets/svg-icons/social/twitch.svg';
 import IconTwitter from '~/assets/svg-icons/social/twitter.svg';
-// import IconViber from '~/assets/svg-icons/social/viber.svg';
-// import IconWechat from '~/assets/svg-icons/social/wechat.svg';
 import IconWhatsapp from '~/assets/svg-icons/social/whatsapp.svg';
 import { decorationRepository } from '~/repositories/decoration.repository';
 import type { GetRootListParams } from '~/types/base.types';
 import type { Section } from '~/types/response/decoration.types';
 import { Language } from '~/utils/enums/language.enum';
+// import IconGoogle from '~/assets/svg-icons/social/google.svg';
+// import IconLinkedin from '~/assets/svg-icons/social/linkedin.svg';
+// import IconMessenger from '~/assets/svg-icons/social/messenger.svg';
+// import IconMicrosoftTeam from '~/assets/svg-icons/social/microsoft-team.svg';
+// import IconTwitch from '~/assets/svg-icons/social/twitch.svg';
+// import IconViber from '~/assets/svg-icons/social/viber.svg';
+// import IconWechat from '~/assets/svg-icons/social/wechat.svg';
 // import IconYoutube from '~/assets/svg-icons/social/youtube.svg';
 
 const followUs = 'followUs';
@@ -106,17 +113,17 @@ const footerItems = [
 	{
 		title: followUs,
 		subItems: [
-			// { name: IconGoogle, url: '#' },
 			{ name: IconInstagram, url: 'https://instagram.com/bitland.io' },
+			{ name: IconTelegram, url: 'https://t.me/bitlandio' },
+			{ name: IconTwitter, url: 'https://x.com/bitlandio' },
+			{ name: IconWhatsapp, url: 'https://wa.me/+989026031145' },
+			// { name: IconGoogle, url: '#' },
 			// { name: IconLinkedin, url: '#' },
 			// { name: IconMessenger, url: '#' },
 			// { name: IconMicrosoftTeam, url: '#' },
-			{ name: IconTelegram, url: 'https://t.me/bitlandio' },
 			// { name: IconTwitch, url: '#' },
-			{ name: IconTwitter, url: 'https://x.com/bitlandio' },
 			// { name: IconViber, url: '#' },
 			// { name: IconWechat, url: '#' },
-			{ name: IconWhatsapp, url: 'https://wa.me/+989026031145' },
 			// { name: IconYoutube, url: '#' },
 		],
 	},
@@ -153,5 +160,3 @@ onMounted(async () => {
 	]);
 });
 </script>
-
-<style scoped></style>

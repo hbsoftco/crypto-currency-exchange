@@ -963,6 +963,11 @@ const persian = {
 	exiting: 'خارج شده',
 	loginActive: 'کاربر لاگین شده فعال',
 	loginInactive: 'لاگین شده خارج شده',
+	copyrightNotice: 'تمامی حقوق مادی و معنوی وب‌سایت متعلق به مجموعه بیت‌لند می‌باشد',
+	phoneNumber2: 'شماره تماس',
+	bitlandProductByCompany: 'بیت لند، محصول شرکت عصر زراندیشان آراد',
+	bitlandExchangeDescription: 'صرافی بیت‌لند، محیطی که هر آنچه درباره جهان پول دیجیتال و ارزهای رمزنگاری شده نیاز دارید گردآوری شده است',
+
 };
 
 export default persian;
