@@ -1,5 +1,8 @@
 <template>
 	<UContainer>
+		<div v-if="chartsDataLoading === 'pending'">
+			........
+		</div>
 		<div v-if="chartsDataLoading === 'success'">
 			<div class="mb-4 mt-8">
 				<UiTitleWithBack :title="$t('marketStatistics')" />

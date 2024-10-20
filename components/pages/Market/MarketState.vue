@@ -31,10 +31,10 @@
 						<span>{{ market.marketBriefItem?.quoteItem?.cSymbol }}</span>
 					</div>
 				</div>
-				<div class="w-20 text-left">
+				<div class="w-28 text-left">
 					<span class="text-sm font-normal">{{ useNumber(priceFormat(market.indexPrice)) }}</span>
 				</div>
-				<div class="w-20">
+				<div class="w-24">
 					<UiChangeIndicator
 						pl="pl-0"
 						:change="parseFloat(String(market.priceChangePercIn24H))"

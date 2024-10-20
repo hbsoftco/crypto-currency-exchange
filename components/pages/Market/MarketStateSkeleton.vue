@@ -23,12 +23,12 @@
 						<USkeleton class="h-4 w-16" />
 					</div>
 				</div>
-				<div class="w-20 text-left">
+				<div class="w-28 text-left">
 					<div class="flex justify-end">
 						<USkeleton class="h-4 w-14" />
 					</div>
 				</div>
-				<div class="w-20">
+				<div class="w-24">
 					<div class="flex justify-end">
 						<USkeleton class="h-4 w-14" />
 					</div>

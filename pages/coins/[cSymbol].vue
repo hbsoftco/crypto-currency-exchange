@@ -481,7 +481,7 @@
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
-import MarketChart from '~/components/pages/Coins/Chart.vue';
+import MarketChart from '~/components/pages/Coins/MarketChart.vue';
 import MarketState from '~/components/pages/Coins/MarketState.vue';
 import FAQItems from '~/components/ui/FAQItems.vue';
 import Calculator from '~/components/ui/Calculator.vue';
@@ -498,6 +498,7 @@ const marketRepo = marketRepository($api);
 
 const route = useRoute();
 const cSymbol = String(route.params.cSymbol);
+
 const [symbol, quote] = cSymbol.split('_');
 
 const baseDataStore = useBaseDataStore();

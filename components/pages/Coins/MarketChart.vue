@@ -136,7 +136,7 @@ const params = ref({
 	symbol: props.symbol,
 	candleCount: '1000',
 	timeFrameType: '1hour',
-	marketId: String(getMarketId(props.quote)),
+	marketId: props.quote ? String(getMarketId(props.quote)) : '',
 });
 
 const processChartData = (data: any[]) => {
@@ -147,6 +147,8 @@ const processChartData = (data: any[]) => {
 
 const fetchChartKline = async () => {
 	try {
+		// console.log('getChartKline params', params.value);
+
 		const { result } = await getChartKline(params.value);
 		const { timestamps, values } = processChartData(result);
 		chartData.value = values;

@@ -17,6 +17,7 @@ export const spotRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SpotR
 			Object.entries(params)
 				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
 		);
+		console.log(query.toString());
 
 		const url = '/v1/spot/routine/kline';
 		const response = await fetch<GetKlineResponse>(`${url}?${query.toString()}`, {
