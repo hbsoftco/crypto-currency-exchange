@@ -50,7 +50,8 @@
 										{{ useNumber(formatDateToIranTime(item.latestTime)) }}
 									</td>
 									<td class="text-nowrap text-xs font-normal py-2">
-										{{ item.iPv4 }}
+										<span v-if="isValidIPv6(item.iPv6)">{{ item.iPv6 }}</span>
+										<span v-if="isValidIPv4(item.iPv4)">{{ item.iPv4 }}</span>
 									</td>
 									<td class="text-nowrap text-xs font-normal py-2">
 										<span v-if="item.inactive">{{ $t('exiting') }}</span>
@@ -90,6 +91,7 @@ import type { DeviceItem } from '~/types/response/user.types';
 import type { getDeviceListParams } from '~/types/base.types';
 import { useNumber } from '~/composables/useNumber';
 import { formatDateToIranTime } from '~/utils/date-time';
+import { isValidIPv6, isValidIPv4 } from '~/utils/valid-ip';
 
 definePageMeta({
 	layout: 'account-single',

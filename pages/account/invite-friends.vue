@@ -9,7 +9,8 @@
 			@close="closeEditCodeInviteFriends"
 		/>
 		<QRCodeModal
-			v-if="showQRCode"
+			v-if="showQRCode && referralBrief"
+			:referral-brief="referralBrief"
 			@close="closeQRCode"
 		/>
 		<UContainer>

@@ -46,7 +46,10 @@
 										:key="index"
 										class="text-sm font-medium pb-2"
 									>
-										<ULink :to="link.url">
+										<ULink
+											:to="link.url"
+											target="_blank"
+										>
 											{{ link.info[0]?.title }}
 										</ULink>
 									</div>
@@ -59,7 +62,8 @@
 							<ULink
 								v-for="(subItem, subIndex) in footerItems[0].subItems"
 								:key="subIndex"
-								:href="subItem.url"
+								:to="subItem.url"
+								target="_blank"
 								class="w-6 h-6"
 							>
 								<component :is="subItem.name" />
@@ -142,8 +146,6 @@ const getLinkList = async () => {
 		console.log(error);
 	}
 };
-
-console.log('---------------------------', sectionList);
 
 onMounted(async () => {
 	await Promise.all([

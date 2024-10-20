@@ -47,15 +47,17 @@
 				<IconQR class="text-3xl mx-7 m1-2" />
 			</ULink>
 			<ULink
+				to="https://play.google.com/store/apps/details?id=io.bitland"
+				target="_blank"
 				class="flex items-center bg-transparency-light dark:bg-transparency-dark opacity-70 mx-1  px-8 py-2 rounded"
 			>
 				<IconPlayStore class="text-3xl mx-7 m1-2" />
 			</ULink>
-			<ULink
+			<!-- <ULink
 				class="flex items-center bg-transparency-light dark:bg-transparency-dark opacity-70 mx-1 px-8 py-2 rounded"
 			>
 				<IconApple class="text-3xl mx-7 m1-2" />
-			</ULink>
+			</ULink> -->
 		</div>
 		<ul class="flex bg-transparency-light dark:bg-transparency-dark opacity-90 mt-8 py-2 rounded-md">
 			<li
@@ -135,7 +137,7 @@
 import IconLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';
 import IconQR from '~/assets/svg-icons/qr-code.svg';
 import IconPlayStore from '~/assets/svg-icons/play-store.svg';
-import IconApple from '~/assets/svg-icons/apple.svg';
+// import IconApple from '~/assets/svg-icons/apple.svg';
 </script>
 
 <style scoped></style>
