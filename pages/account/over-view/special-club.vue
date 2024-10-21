@@ -26,7 +26,10 @@
 										:src="LevelItem?.logoUrl"
 										class="w-4 h-4"
 									/>
-									<span class="mr-1 md:mr-4 text-sm md:text-lg font-normal md:font-bold text-primary-yellow-light dark:text-primary-yellow-dark">سارا</span>
+									<span class="mr-1 md:mr-4 text-sm md:text-lg font-normal md:font-bold text-primary-yellow-light dark:text-primary-yellow-dark">
+										{{ profileStore.profileLoading ? '...': getValueByKey(profileStore.userProfile, 'NAME') }}
+										{{ profileStore.profileLoading ? '...': getValueByKey(profileStore.userProfile, 'FAMILY') }}
+									</span>
 								</div>
 								<div>
 									<h5 class="text-xs md:text-base font-light md:font-semibold text-subtle-text-light dark:text-subtle-text-dark">
@@ -43,7 +46,7 @@
 					{{ $t('specialClubLevelKeyBenefits') }}
 				</h2>
 				<div>
-					<span>dddd</span>
+					<CardLevel />
 				</div>
 			</section>
 
@@ -114,6 +117,8 @@ import type { Level, levelList } from '~/types/response/user.types';
 import { useNumber } from '~/composables/useNumber';
 import { priceFormat } from '~/utils/price-format';
 import type { GetTraderBriefParams } from '~/types/base.types';
+import { getValueByKey } from '~/utils/find-value-by-key';
+import CardLevel from '~/components/pages/Site/Account/OverView/CardLevel.vue';
 
 definePageMeta({
 	layout: 'account-single',
@@ -158,12 +163,13 @@ const getHolderBerif = async () => {
 	}
 };
 
-console.log('------------------------------LevelItem', LevelItem);
+const profileStore = useProfileStore();
 
 onMounted(async () => {
 	await Promise.all([
 		getLevelList(),
 		getHolderBerif(),
+		profileStore.fetchProfile(),
 	]);
 });
 </script>
