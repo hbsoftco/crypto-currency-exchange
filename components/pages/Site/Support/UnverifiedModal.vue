@@ -5,10 +5,10 @@
 			fullscreen
 		>
 			<div
-				class="h-full flex flex-col items-center justify-center overflow-y-scroll py-20 pt-56"
+				class="h-full flex flex-col items-center justify-center overflow-y-scroll"
 			>
 				<div
-					class="w-full md:w-[30rem] flex flex-col justify-center items-center text-center rounded-md bg-background-light dark:bg-background-dark px-1 md:px-14 py-6 md:py-8 mt-56 md:mt-56"
+					class="w-full md:w-[30rem] flex flex-col justify-center items-center text-center rounded-md bg-background-light dark:bg-background-dark px-1 md:px-14 py-6 md:py-8"
 				>
 					<div class="block md:hidden w-full">
 						<UiTitleWithBack
@@ -28,21 +28,31 @@
 						</h3>
 						<div class="my-6">
 							<p class="text-xs font-normal text-justify">
-								جستجوی شما [XXX] یک منبع رسمی و تایید شده در بیت لند نیست.
+								جستجوی شما <span
+									class="text-left"
+									dir="ltr"
+								>{{ staffId }}</span> یک منبع رسمی و تایید شده در بیت لند نیست.
 							</p>
 						</div>
 						<div class="my-6 text-sm font-medium text-right p-2 bg-hover-light dark:bg-hover-dark text-primary-yellow-light dark:text-primary-yellow-dark">
-							<span>لطفاً بررسی کنید که اطلاعات و قالبی که وارد کرده اید صحیح باشد:</span>
-							<span>شماره موبایل: xx-xxxxxxxxx</span>
-							<span>تلگرام / توییتر / فیس بوک / یوتیوب: @xxxxx (با نماد @)</span>
-							<span>TikTok/Instagram: xxxx (بدون علامت @)</span>
-							<span>اختلاف: xxxx#xxxx (بدون علامت @)</span>
-							<span>لینکدین/گروه تلگرام/مدیوم/ردیت: https://xxxxx (لینک وب سایت)</span>
-							<span>اگر در مورد قالب سؤالی دارید، لطفاً با خدمات مشتری تماس بگیرید.</span>
+							<span>{{ $t('unVerficationTipOne') }}:</span><br>
+							<span>{{ $t('phoneNumber') }}: xx-xxxxxxxxx</span><br>
+							<span>{{ $t('unVerficationTipTwo') }}: @xxxxx (با نماد @)</span><br>
+							<span>{{ $t('unVerficationTipThree') }}: xxxx (بدون علامت @)</span><br>
+							<span>{{ $t('diferent') }}: xxxx#xxxx (بدون علامت @)</span><br>
+							<span>{{ $t('unVerficationTipFour') }}: {{ $t('unVerficationTipFourRes') }}</span><br>
+							<span>{{ $t('unVerficationTipLast') }}</span><br>
 						</div>
 						<div class=" text-base font-medium text-right border-t border-primary-gray-light dark:border-primary-gray-dark">
 							<span>{{ $t('verificationModalTextOne') }}</span><br>
-							<span>{{ $t('verificationModalTextOne') }}</span>
+							<h5>
+								مراقب کلاهبرداری باشید و با احتیاط عمل کنید. برای اطلاعات بیشتر لطفا به <ULink
+									to="/help-center"
+									class="text-accent-blue cursor-pointer"
+								>
+									{{ $t('guidCenter') }}
+								</ULink> مراجعه نمایید.
+							</h5>
 						</div>
 					</div>
 				</div>
@@ -61,6 +71,10 @@
 // import { useNumber } from '~/composables/useNumber';
 import IconClose from '~/assets/svg-icons/close.svg';
 
+interface PropsDefinition {
+	staffId: string;
+}
+defineProps<PropsDefinition>();
 const isOpen = ref(true);
 interface EmitDefinition {
 	(event: 'close', value: boolean): void;
