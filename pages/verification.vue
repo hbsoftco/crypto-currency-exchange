@@ -1,7 +1,7 @@
 <template>
 	<div class="mb-[30rem] md:mb-24">
 		<section>
-			<PagesImageCover>
+			<ImageCover>
 				<UContainer class="h-full">
 					<div class="w-full h-full relative flex justify-between">
 						<div class="mt-10 md:mt-12">
@@ -21,12 +21,12 @@
 								<div>
 									<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
 										<UnverifiedModal
-											v-if="hasError && showDetail"
-											:staff-id="params.staffId"
+											v-if="showDetail && !isValid"
+											:staff-id="String(params.staffId)"
 											@close="closeDetail"
 										/>
 										<VerifiedModal
-											v-if="!hasError && showDetail"
+											v-if="showDetail && isValid"
 											:staff-id="String(params.staffId)"
 											@close="closeDetail"
 										/>
@@ -53,19 +53,12 @@
 												id="info"
 												v-model="params.staffId"
 												type="text"
-												input-class="text-right bg-background-light dark:bg-background-dark"
+												input-class="text-left bg-background-light dark:bg-background-dark"
 												label=""
-												:ui="{
-													background: '',
-													color: {
-														white: {
-															outline: ' bg-hover-light dark:bg-hover-dark',
-														},
-													},
-												}"
 												:placeholder="$t('placeholderInfo')"
 												icon=""
-												dir="rtl"
+												dir="ltr"
+												color-type="bg-hover-light dark:bg-hover-dark"
 											/>
 										</div>
 										<div class="col-span-1">
@@ -100,13 +93,14 @@
 						/>
 					</div>
 				</UContainer>
-			</PagesImageCover>
+			</ImageCover>
 		</section>
 	</div>
 </template>
 
 <script setup lang="ts">
 import IconEnter from '~/assets/svg-icons/enter.svg';
+import ImageCover from '~/components/pages/ImageCover.vue';
 import UnverifiedModal from '~/components/pages/Site/Support/UnverifiedModal.vue';
 import VerifiedModal from '~/components/pages/Site/Support/VerifiedModal.vue';
 import { supportRepository } from '~/repositories/support.repository';
@@ -117,8 +111,8 @@ const { $api } = useNuxtApp();
 const supportRepo = supportRepository($api);
 const socialNetList = ref<KeyValue[]>();
 const socialListLoading = ref<boolean>(false);
-
-const hasError = ref(false);
+const isValid = ref<boolean>(false);
+const showDetail = ref<boolean>(false);
 
 const getSocialList = async () => {
 	try {
@@ -145,40 +139,24 @@ const getStaffCheck = async () => {
 	try {
 		staffCheckListLoading.value = true;
 
-		hasError.value = false;
-
-		const { result } = await supportRepo.getStaffCheck(params.value);
-		console.log(result);
-
-		params.value.staffId = info.value;
-
-		staffCheckListLoading.value = false;
-
-		showDetail.value = true;
+		await supportRepo.getStaffCheck(params.value);
+		isValid.value = true;
 	}
 	catch (error) {
-		staffCheckListLoading.value = false;
-
-		hasError.value = true;
-		showDetail.value = true;
+		isValid.value = false;
 		console.log(error);
 	}
+	finally {
+		staffCheckListLoading.value = false;
+		showDetail.value = true;
+	}
+};
+
+const closeDetail = () => {
+	showDetail.value = false;
 };
 
 onMounted(async () => {
 	await getSocialList();
 });
-onMounted(async () => {
-	await Promise.all([
-		getSocialList(),
-		getStaffCheck(),
-	]);
-});
-
-const info = ref('');
-const showDetail = ref(false);
-
-const closeDetail = () => {
-	showDetail.value = false;
-};
 </script>

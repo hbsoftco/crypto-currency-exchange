@@ -1,3 +1,5 @@
+import UnverifiedModal from "~/components/pages/Site/Support/UnverifiedModal.vue";
+
 const persian = {
 	welcome: 'خوش آمدید',
 	login: 'ورود',
@@ -972,6 +974,13 @@ const persian = {
 	tipsUploadLetter: 'لطفا متن زیر با به صورت خوانا نوشته و امضا کرده و با شناسنامه یا کارت ملی به صورت سلفی، با رعایت شئونات اسلامی عکس بگیرید و بارگذاری کنید.',
 	tipsUploadLetterTow: 'اینجانب ( نام و نام خانوادگی ) به کد ملی ( کد ملی ) ضمن مطالعه و تایید قوانین خدمات استفاده از بیت لند، متعهد میشوم از امکانات بیت لند برای خودم استفاده نموده و از قرار دادن این حساب در اختیار دیگران خودداری نمایم.',
 	pleaseWait: 'لطفا منتظر بمانید ...',
+	unVerficationTipOne: 'لطفاً بررسی کنید که اطلاعات و قالبی که وارد کرده اید صحیح باشد',
+	unVerficationTipTwo: 'تلگرام / توییتر / فیس بوک / یوتیوب',
+	unVerficationTipThree: 'TikTok/Instagram',
+	diferent: 'اختلاف',
+	unVerficationTipFour: 'لینکدین/گروه تلگرام/مدیوم/ردیت',
+	unVerficationTipFourRes: ' https://xxxxx (لینک وب سایت)',
+	unVerficationTipLast: 'اگر در مورد قالب سؤالی دارید، لطفاً با خدمات مشتری تماس بگیرید.',
 };
 
 export default persian;

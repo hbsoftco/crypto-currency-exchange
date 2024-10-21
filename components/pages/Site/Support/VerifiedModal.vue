@@ -5,10 +5,10 @@
 			fullscreen
 		>
 			<div
-				class="h-full flex flex-col items-center justify-center overflow-y-scroll py-20 pt-56"
+				class="h-full flex flex-col items-center justify-center overflow-y-scroll"
 			>
 				<div
-					class="w-full md:w-[30rem] flex flex-col justify-center items-center text-center rounded-md bg-background-light dark:bg-background-dark px-1 md:px-14 py-6 md:py-8 mt-56 md:mt-56"
+					class="w-full md:w-[30rem] flex flex-col justify-center items-center text-center rounded-md bg-background-light dark:bg-background-dark px-1 md:px-14 py-6 md:py-8"
 				>
 					<div class="block md:hidden w-full">
 						<UiTitleWithBack
@@ -23,12 +23,15 @@
 								class="w-40 h-40"
 							/>
 						</div>
-						<h3 class="text-base font-bold text-accent-green  dark:text-accent-green my-8">
+						<h3 class="text-base font-bold text-accent-green dark:text-accent-green my-8">
 							{{ $t('verifiedSource') }}
 						</h3>
 						<div class="my-6">
 							<p class="text-xs font-normal text-justify">
-								جستجوی شما {{staffId }} یک منبع رسمی و مورد تایید در بیت لند
+								جستجوی شما <span
+									class="text-left"
+									dir="ltr"
+								>{{ staffId }}</span> یک منبع رسمی و مورد تایید در بیت لند
 								می باشد.
 							</p>
 						</div>
@@ -55,13 +58,13 @@ import IconClose from '~/assets/svg-icons/close.svg';
 interface PropsDefinition {
 	staffId: string;
 }
-defineProps<PropsDefinition>();
+const props = defineProps<PropsDefinition>();
+console.log('staff-id', props.staffId);
 
 const isOpen = ref(true);
 interface EmitDefinition {
 	(event: 'close', value: boolean): void;
 }
-
 const emit = defineEmits<EmitDefinition>();
 
 const closeModal = async (value: boolean) => {
