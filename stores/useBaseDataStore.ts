@@ -16,6 +16,7 @@ import type { GetUserTraderCommissionListParams } from '~/types/base.types';
 import { CACHE_KEY_CURRENCY_BRIEF_ITEMS, CACHE_KEY_MARKET_BRIEF_ITEMS, CACHE_KEY_QUOTE_ITEMS, CACHE_KEY_TAG_ITEMS } from '~/utils/constants/common';
 import { useCurrencyWorker } from '~/workers/currency-worker/currency-worker-wrapper';
 import { useMarketWorker } from '~/workers/market-worker/market-worker-wrapper';
+import { loadFromCache } from '~/utils/indexeddb';
 
 export const useBaseDataStore = defineStore('baseData', () => {
 	const { $api } = useNuxtApp();
@@ -227,7 +228,7 @@ export const useBaseDataStore = defineStore('baseData', () => {
 			.filter((item) => item !== undefined) as CurrencyBriefItem[];
 	};
 
-	const findCurrencyById = async (id: number, languageId: number = Language.PERSIAN): Promise<CurrencyBriefItem | null> => {
+	const findCurrencyById2 = async (id: number, languageId: number = Language.PERSIAN): Promise<CurrencyBriefItem | null> => {
 		if (currencyBriefItems.value.length === 0) {
 			await fetchCurrencyBriefItems(languageId);
 		}
@@ -253,7 +254,7 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		return null;
 	};
 
-	const findCurrencyById2 = async (id: number): Promise<CurrencyBriefItem | null> => {
+	const findCurrencyById = async (id: number): Promise<CurrencyBriefItem | null> => {
 		const worker = useCurrencyWorker();
 		const result = await worker.findCurrencyById(id);
 		return result;

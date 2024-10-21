@@ -1,8 +1,8 @@
 <template>
-	<PagesAuth title="forgotPasswordNoQuestion">
+	<Auth title="forgotPasswordNoQuestion">
 		<div>
-			<PagesAuthForgetPasswordGetCode v-if="false" />
-			<PagesAuthForgetPasswordSetCode />
+			<GetCode v-if="true" />
+			<SetCode v-if="false" />
 		</div>
 
 		<div class="flex justify-center items-center mt-8">
@@ -18,9 +18,11 @@
 				</ULink>
 			</div>
 		</div>
-	</PagesAuth>
+	</Auth>
 </template>
 
 <script setup>
-
+import GetCode from '~/components/pages/Auth/ForgetPassword/GetCode.vue';
+import SetCode from '~/components/pages/Auth/ForgetPassword/SetCode.vue';
+import Auth from '~/components/pages/Auth/Auth.vue';
 </script>

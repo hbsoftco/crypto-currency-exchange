@@ -126,10 +126,11 @@ import UserLogin from './Header/UserLogin/index.vue';
 
 const settingsStore = useSpotSettingsStore();
 
+const headerMenuStore = useHeaderMenuStore();
+await headerMenuStore.getInitMarkets();
+
 onMounted(() => {
 });
 
 // import Notif from '~/components/layouts/Default/Notif.vue';
 </script>
-
-<style lang="scss" scoped></style>

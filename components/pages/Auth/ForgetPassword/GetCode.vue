@@ -30,4 +30,5 @@
 
 <script setup lang="ts">
 const phoneOrEmail = ref<string>('');
+// const v$ = useVuelidate(ticketDtoRules, ticketDto);
 </script>

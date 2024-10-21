@@ -2,6 +2,7 @@ import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
 import type { CaptchaResponse } from '~/types/captcha-response.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
+// import type { ForgetPasswordDto } from '~/types/dto/forget-password.dto';
 import type { CaptchaRequestDto } from '~/types/dto/generate-captcha.dto';
 import type { LoginByEmailDto, LoginByMobileDto } from '~/types/dto/login.dto';
 import type { SignupByEmailDto, SignupByMobileDto } from '~/types/dto/signup.dto';
@@ -29,6 +30,8 @@ type AuthRepository = {
 	generateNewOTC: () => Promise<CheckOTCResponse>;
 	// listenKey Socket
 	getSocketListenKey: () => Promise<GetSocketListenKeyResponse>;
+	// Forget Password
+	// forgetPassword: (dto: ForgetPasswordDto) => Promise<LoginByEmailResponse>;
 };
 
 export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthRepository => ({

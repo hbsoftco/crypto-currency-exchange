@@ -1,5 +1,6 @@
 import * as Comlink from 'comlink';
 
+import { loadFromCache } from '~/utils/indexeddb';
 import type { MarketBriefItem } from '~/types/response/brief-list.types';
 import { CACHE_KEY_MARKET_BRIEF_ITEMS } from '~/utils/constants/common';
 

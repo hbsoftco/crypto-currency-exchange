@@ -24,6 +24,12 @@
 					:currency="item"
 					:data="item"
 				/>
+				<Currency
+					v-for="(item, index) in [...marketData]"
+					:key="`top2-duplicate-${index}`"
+					:currency="item"
+					:data="item"
+				/>
 			</div>
 		</div>
 		<div
@@ -40,6 +46,12 @@
 				<Currency
 					v-for="(item, index) in [...marketData]"
 					:key="`bottom-duplicate-${index}`"
+					:currency="item"
+					:data="item"
+				/>
+				<Currency
+					v-for="(item, index) in [...marketData]"
+					:key="`bottom2-duplicate-${index}`"
 					:currency="item"
 					:data="item"
 				/>

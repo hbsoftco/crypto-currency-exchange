@@ -123,6 +123,9 @@ export const useAuthStore = defineStore('auth', () => {
 
 	const socketListenKey = computed(() => listenKeyCookie.value);
 
+	// Forget Password
+	const forgetPasswordLoading = ref<boolean>(false);
+
 	return {
 		otc,
 		userId,
@@ -138,5 +141,8 @@ export const useAuthStore = defineStore('auth', () => {
 		getSocketListenKey,
 		saveSocketListenKey,
 		socketListenKey,
+
+		// Forget Password
+		forgetPasswordLoading,
 	};
 });

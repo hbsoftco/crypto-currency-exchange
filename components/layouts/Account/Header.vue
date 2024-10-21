@@ -121,6 +121,7 @@ import Futures from '../Default/Header/Futures.vue';
 import Search from '../Default/Header/Search/index.vue';
 
 const route = useRoute();
-</script>
 
-<style lang="scss" scoped></style>
+const headerMenuStore = useHeaderMenuStore();
+await headerMenuStore.getInitMarkets();
+</script>
