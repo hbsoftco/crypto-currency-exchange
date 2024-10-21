@@ -1,5 +1,3 @@
-import UnverifiedModal from "~/components/pages/Site/Support/UnverifiedModal.vue";
-
 const persian = {
 	welcome: 'خوش آمدید',
 	login: 'ورود',
@@ -981,6 +979,15 @@ const persian = {
 	unVerficationTipFour: 'لینکدین/گروه تلگرام/مدیوم/ردیت',
 	unVerficationTipFourRes: ' https://xxxxx (لینک وب سایت)',
 	unVerficationTipLast: 'اگر در مورد قالب سؤالی دارید، لطفاً با خدمات مشتری تماس بگیرید.',
+	specialClubLevelKeyBenefits: 'سطح باشگاه ویژه و مزایای کلیدی',
+	specialCustomerClubBenefitsCriteria: 'معیارهای مزایای باشگاه مشتریان ویژه',
+	typeClub: 'نوع کلاپ',
+	numberDaysKeepAsset: 'تعداد روز حفظ دارایی',
+	featuresSpecialCustomerClubBenefits: 'ویژگی های مزایای باشگاه مشتریان ویژه',
+	featuresSpecialCustomerClubBenefitsOne: '1. یک عکس فوری از کل دارایی های شما بین ساعت 00:00 تا 24:00 (UTC+8) روز قبل برای محاسبه گرفته می شود.',
+	featuresSpecialCustomerClubBenefitsTwo: '2. سطوح و مزایای VIP هر روز بین ساعت 00:00 تا 08:00 (UTC+8) تعیین و به روز می شود. با توجه به حجم بالای داده های پردازش شده، ممکن است تاخیر در به روز رسانی سطح VIP وجود داشته باشد. لطفاً به زمان واقعی به روز رسانی مراجعه کنید.',
+	featuresSpecialCustomerClubBenefitsThree: '3. در طول دوره نگهداری پس از اعمال آخرین سطح VIP شما، سطح VIP شما کاهش نخواهد یافت. اگر در این مدت شرایط ارتقا را داشته باشید، سطح VIP شما به طور خودکار ارتقا می یابد. شما می توانید از حقوق VIP به غیر از هزینه های ویژه معاملاتی در طول دوره نگهداری بهره مند شوید.',
+	featuresSpecialCustomerClubBenefitsFour: '4. برای تنظیم کارمزد معاملات ویژه، لطفاً برای ارتقا و تنظیم با مدیر VIP خود تماس بگیرید. اگر مجموع دارایی های شما در 7 روز متوالی استاندارد VIP مربوطه را برآورده نکند، کارمزد معاملات ویژه لغو خواهد شد.',
 };
 
 export default persian;

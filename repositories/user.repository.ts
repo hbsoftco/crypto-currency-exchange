@@ -5,6 +5,8 @@ import type { GetActivitiesListRes, GetAddressListRes, GetBankListResponse,
 	GetCommissionReceivedList, GetContactListResponse,
 	GetDeviceListRes,
 	GetDevLinkGenerateRes,
+	GetHolderLevelListRes,
+	GetHolderRes,
 	GetLevelsDataRes,
 	GetRewardReceivedListResponse,
 	GetStateTradeRes,
@@ -93,6 +95,8 @@ type UserRepository = {
 	storeSetPassword: (dto: SetPasswordDto) => Promise<CommonRes>;
 	storeSetPinCode: (dto: SetPinCodeDto) => Promise<CommonRes>;
 	storeSetAntiPhishing: (dto: SetAntiPhishingDto) => Promise<CommonRes>;
+	getHolder: (params: GetTraderBriefParams) => Promise<GetHolderRes>;
+	getHolderLevelList: () => Promise<GetHolderLevelListRes>;
 };
 
 export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserRepository => ({
@@ -587,6 +591,29 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 			apiName: url,
 			method: 'POST',
 			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getHolder(params: GetTraderBriefParams): Promise<GetHolderRes> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+		const url = `/v1/user/holder/brief`;
+		const response = await fetch<GetHolderRes>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			apiName: url,
+			query: {},
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getHolderLevelList(): Promise<GetHolderLevelListRes> {
+		const url = '/v1/user/holder/levels_list';
+		const response = await fetch<GetHolderLevelListRes>(`${url}`, {
+			noAuth: false,
+			method: 'GET',
 		} as CustomNitroFetchOptions);
 
 		return response;
