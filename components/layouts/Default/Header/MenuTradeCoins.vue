@@ -28,9 +28,8 @@
 						class="flex items-center justify-start"
 						:to="`/spot/${splitMarket(market?.market?.mSymbol)}`"
 					>
-						:src="`https://api-bitland.site/media/currency/${market?.currency?.cSymbol}.png`"
 						<NuxtImg
-							:src="`https://api-bitland.site/media/currency/USDT.png`"
+							:src="`https://api-bitland.site/media/currency/${market?.currency?.cSymbol}.png`"
 							:alt="market?.currency?.cName"
 							class="w-4 h-4 mr-1 rounded-full"
 							format="webp"
