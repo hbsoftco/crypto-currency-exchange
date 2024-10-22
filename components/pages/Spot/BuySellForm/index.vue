@@ -140,7 +140,7 @@ const getAssetsByCurrencies = async (currencies: string) => {
 };
 
 onMounted(() => {
-	getAssetsByCurrencies('3,4');
+	// getAssetsByCurrencies('3,4');
 });
 
 const activeButton = ref<'buy' | 'sell'>('buy');

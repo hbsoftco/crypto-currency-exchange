@@ -11,8 +11,10 @@ export const useHeaderMenuStore = defineStore('headerMenu', () => {
 	const fastTradeMarketItems = ref<MarketL16[]>([]);
 	const spotMarketItems = ref<MarketL16[]>([]);
 
+	const initMarketsLoading = ref<boolean>(false);
+
 	const fastTradeParams = ref({
-		currencyQuoteId: '',
+		currencyQuoteId: '1',
 		marketTypeId: String(MarketType.SPOT),
 		tagTypeId: '',
 		searchStatement: '',
@@ -21,7 +23,7 @@ export const useHeaderMenuStore = defineStore('headerMenu', () => {
 	});
 
 	const spotParams = ref({
-		currencyQuoteId: '',
+		currencyQuoteId: '1',
 		marketTypeId: String(MarketType.SPOT),
 		tagTypeId: '',
 		searchStatement: '',
@@ -30,20 +32,29 @@ export const useHeaderMenuStore = defineStore('headerMenu', () => {
 	});
 
 	const getInitMarkets = async () => {
-		const { result } = await marketRepo.getMarketListL16(fastTradeParams.value);
-		const items = await Promise.all(result.rows.map(async (market) => {
-			const currency = await baseDataStore.findCurrencyById(market.cid);
-			console.log(currency);
+		try {
+			initMarketsLoading.value = true;
 
-			return {
-				...market,
-				currency,
-			};
-		}));
+			const { result } = await marketRepo.getMarketListL16(fastTradeParams.value);
+			const items = await Promise.all(result.rows.map(async (market) => {
+				return {
+					...market,
+					currency: await baseDataStore.findCurrencyById(market.cid),
+					market: await baseDataStore.findMarketById(market.id),
+				};
+			}));
 
-		console.log('items', items);
-
-		return items;
+			if (items.length) {
+				fastTradeMarketItems.value = items;
+				spotMarketItems.value = items;
+			}
+		}
+		catch (error) {
+			console.log(error);
+		}
+		finally {
+			initMarketsLoading.value = false;
+		}
 	};
 
 	return {

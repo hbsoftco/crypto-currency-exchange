@@ -145,7 +145,9 @@ type MarketL16 = {
 	cid: number;
 	indexPrice: string;
 	priceChangePercIn24H: string;
-	marketBriefItem: MarketBriefItem | null;
+	marketBriefItem?: MarketBriefItem | null;
+	currency: CurrencyBriefItem | null;
+	market: MarketBriefItem | null;
 };
 
 export type {

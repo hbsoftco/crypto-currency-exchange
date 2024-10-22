@@ -60,7 +60,10 @@ export const useBaseDataStore = defineStore('baseData', () => {
 			const cachedData: Tag[] = await loadFromCache(CACHE_KEY_TAG_ITEMS) || [];
 
 			if (cachedData.length) {
-				tagItems.value = cachedData;
+				tagItems.value = [
+					{ id: 0, tag: useT('all') },
+					...cachedData,
+				];
 				isTagDataFetched.value = true;
 				return;
 			}
@@ -266,6 +269,12 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		return result;
 	};
 
+	const findMarketById = async (id: number): Promise<MarketBriefItem | null> => {
+		const worker = useMarketWorker();
+		const result = await worker.findMarketById(id);
+		return result;
+	};
+
 	const findMarketBymSymbol = async (mSymbol: string): Promise<MarketBriefItem | null> => {
 		const worker = useMarketWorker();
 		const result = await worker.findMarketBymSymbol(mSymbol);
@@ -381,6 +390,7 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		findCurrencyById,
 		findCurrencyById2,
 		findCurrencyBycSymbol,
+		findMarketById,
 		findMarketBymSymbol,
 		findCommission,
 	};

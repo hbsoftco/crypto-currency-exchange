@@ -2,12 +2,11 @@
 	<div dir="rtl">
 		<div class="mb-2">
 			<MenuTradeFilters
-				:tags="tags"
 				@selected-tag="selectedTag"
 			/>
 		</div>
 		<div
-			v-if="isLoading"
+			v-if="!headerMenuStore.spotMarketItems.length"
 			class="max-h-72 min-h-72 text-center text-sm pt-8 overflow-y-scroll"
 		>
 			{{ $t('isLoading') }} ...
@@ -17,7 +16,7 @@
 			class="max-h-72 min-h-72 overflow-y-scroll"
 		>
 			<div
-				v-for="(market, index) in markets"
+				v-for="(market, index) in headerMenuStore.spotMarketItems"
 				:key="index"
 				class="mx-1 cursor-pointer border-b last:border-none border-b-primary-gray-light dark:border-b-primary-gray-dark"
 			>
@@ -27,19 +26,19 @@
 				>
 					<ULink
 						class="flex items-center justify-start"
-						:to="`/spot/${splitMarket(market?.marketBriefItem?.mSymbol)}`"
+						:to="`/spot/${splitMarket(market?.market?.mSymbol)}`"
 					>
 						<NuxtImg
-							:src="`https://api-bitland.site/media/currency/${market?.marketBriefItem?.currencyBriefItem?.cSymbol}.png`"
-							:alt="market?.marketBriefItem?.currencyBriefItem?.cName"
+							:src="`https://api-bitland.site/media/currency/${market?.currency?.cSymbol}.png`"
+							:alt="market?.currency?.cName"
 							class="w-4 h-4 mr-1 rounded-full"
 							format="webp"
 							densities="x1"
 						/>
 						<div class="flex mr-1 items-center">
-							<span class="text-xs font-normal">{{ market?.marketBriefItem?.currencyBriefItem?.cName }}</span>/
+							<span class="text-xs font-normal">{{ market?.currency?.cName }}</span>/
 							<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
-								{{ market.marketBriefItem?.quoteItem?.cName }}
+								{{ market.currency?.cName }}
 							</span>
 						</div>
 					</ULink>
@@ -65,17 +64,15 @@
 import MenuTradeFilters from './MenuTradeFilters.vue';
 
 import { splitMarket } from '~/utils/splitMarket';
-import type { Tag } from '~/types/response/tag.types';
-import type { MarketL16 } from '~/types/response/market.types';
 import ChangePrice from '~/components/ui/ChangePrice.vue';
 
 interface Props {
-	tags: Tag[];
-	markets: MarketL16[];
-	isLoading: boolean;
+	type: 'spot' | 'fast-trade';
 }
 
 defineProps<Props>();
+
+const headerMenuStore = useHeaderMenuStore();
 
 interface EmitDefinition {
 	(event: 'selectedTag', value: number): void;

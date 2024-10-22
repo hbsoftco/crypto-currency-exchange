@@ -22,19 +22,31 @@
 					v-if="item.key === 'openOrders'"
 					class="space-y-3"
 				>
-					<OpenOrder />
+					<OpenOrder v-if="authStore.isLoggedIn" />
+					<UiMustBeLogin
+						v-else
+						:text="$t('noDataToDisplay')"
+					/>
 				</div>
 				<div
 					v-else-if="item.key === 'orderHistory'"
 					class="space-y-3"
 				>
-					<OrderHistory />
+					<OrderHistory v-if="authStore.isLoggedIn" />
+					<UiMustBeLogin
+						v-else
+						:text="$t('noDataToDisplay')"
+					/>
 				</div>
 				<div
 					v-else-if="item.key === 'tradeHistory'"
 					class="space-y-3"
 				>
-					<TradeHistory />
+					<TradeHistory v-if="authStore.isLoggedIn" />
+					<UiMustBeLogin
+						v-else
+						:text="$t('noDataToDisplay')"
+					/>
 				</div>
 			</template>
 		</UTabs>
@@ -77,6 +89,13 @@ const items = [
 		content: '',
 	},
 ];
+
+const authStore = useAuthStore();
+
+onMounted(() => {
+	authStore.loadAuthData();
+});
+
 const selectCheckBox = ref(true);
 const translatedLabel = useT('showOtherMarkets');
 </script>

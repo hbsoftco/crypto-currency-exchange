@@ -7,7 +7,7 @@
 			<UCarousel
 				ref="carouselRef"
 				v-slot="{ item }"
-				:items="tags"
+				:items="tagItems"
 				:ui="{
 					item: 'basis-full md:basis-1/3 lg:basis-1/4 xl:basis-1/6 snap-center md:snap-start',
 					default: {
@@ -52,11 +52,8 @@
 import { useNumber } from '~/composables/useNumber';
 import type { Tag } from '~/types/response/tag.types';
 
-interface Props {
-	tags: Tag[];
-}
-
-defineProps<Props>();
+const baseDataStore = useBaseDataStore();
+const tagItems = computed(() => baseDataStore.tagItems);
 
 interface EmitDefinition {
 	(event: 'selectedTag', value: number): void;

@@ -990,6 +990,9 @@ const persian = {
 	featuresSpecialCustomerClubBenefitsFour: '4. برای تنظیم کارمزد معاملات ویژه، لطفاً برای ارتقا و تنظیم با مدیر VIP خود تماس بگیرید. اگر مجموع دارایی های شما در 7 روز متوالی استاندارد VIP مربوطه را برآورده نکند، کارمزد معاملات ویژه لغو خواهد شد.',
 	TMN: 'تومان',
 	bitlandSpecialSymbol: 'نماد ویژه بیت لند',
+	registerOrLogin: 'ثبت‌نام/ورود',
+	noDataToDisplay: 'هیچ اطلاعاتی برای نمایش وجود ندارد!',
+
 };
 
 export default persian;
