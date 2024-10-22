@@ -4,17 +4,21 @@
 			<div class="grid grid-cols-12 gap-4 my-4">
 				<div class="col-span-12 md:col-span-8">
 					<UiTitleWithBack :title="$t('bitlandSpecialClub')" />
-					<div>
-						<span class="text-2xl font-bold text-primary-yellow-light dark:text-primary-yellow-dark">۱ به ۱</span>
-						<span class="text-sm font-normal">۲۴/۷ سرویس مشتریان ویژه</span>
-					</div>
-					<div>
-						<span class="text-2xl font-bold text-primary-yellow-light dark:text-primary-yellow-dark">۱۰ +</span>
-						<span class="text-sm font-normal">حقوق انحصاری</span>
+					<div class="flex items-center mt-4">
+						<div class="flex items-center ml-4">
+							<span class="text-2xl font-bold text-primary-yellow-light dark:text-primary-yellow-dark">{{ useNumber('1به1') }}</span>
+							<p class="text-sm font-normal mr-2">
+								{{ useNumber('۲۴/۷ سرویس مشتریان ویژه') }}
+							</p>
+						</div>
+						<div class="flex items-center">
+							<span class="text-2xl font-bold text-primary-yellow-light dark:text-primary-yellow-dark">۱۰ +</span>
+							<span class="text-sm font-normal mr-2">حقوق انحصاری</span>
+						</div>
 					</div>
 				</div>
 				<div class="col-span-12 md:col-span-4">
-					<div>
+					<div class="text-center">
 						<div class="relative">
 							<NuxtImg
 								src="./images/profile/Business_card.png"
@@ -38,15 +42,24 @@
 								</div>
 							</div>
 						</div>
+						<ULink
+							to="/account/over-view/send-card"
+							class="text-base font-bold text-primary-yellow-light dark:text-primary-yellow-dark"
+						>
+							{{ $t('requestSendCard') }}
+						</ULink>
 					</div>
 				</div>
 			</div>
 			<section>
-				<h2 class="text-base font-bold">
+				<h2 class="text-base font-bold mb-6">
 					{{ $t('specialClubLevelKeyBenefits') }}
 				</h2>
 				<div>
-					<CardLevel />
+					<CardLevel
+						v-if="levelListItem"
+						:level-list-item="levelListItem"
+					/>
 				</div>
 			</section>
 
@@ -70,7 +83,7 @@
 					</thead>
 					<tbody>
 						<tr
-							v-for="item in levelList"
+							v-for="item in filteredLevelList"
 							:key="item.levelId"
 							class="py-8 odd:bg-hover2-light dark:odd:bg-hover2-dark text-right border-b-primary-gray-light dark:border-b-primary-gray-dark border-b "
 						>
@@ -128,13 +141,13 @@ definePageMeta({
 const { $api } = useNuxtApp();
 const userRepo = userRepository($api);
 const levelListLoading = ref<boolean>(false);
-const levelList = ref<levelList[]>();
+const levelListItem = ref<levelList[]>();
 
 const getLevelList = async () => {
 	try {
 		levelListLoading.value = true;
 		const { result } = await userRepo.getHolderLevelList();
-		levelList.value = result.rows;
+		levelListItem.value = result.rows;
 		levelListLoading.value = false;
 	}
 	catch (error) {
@@ -142,6 +155,11 @@ const getLevelList = async () => {
 		console.log(error);
 	}
 };
+
+const filteredLevelList = computed(() => {
+	return levelListItem.value ? levelListItem.value.filter((item) => item.levelId !== 1510100) : [];
+});
+
 const berifLoading = ref<boolean>(false);
 const LevelItem = ref<Level>();
 
