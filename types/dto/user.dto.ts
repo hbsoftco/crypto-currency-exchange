@@ -102,6 +102,13 @@ type SetAntiPhishingDto = {
 	anitphishingPhrase: string;
 };
 
+type SetCardPrintDto = {
+	address: string;
+	postalCode: string;
+	emergencyTelno: string;
+	printingMobileAllowed: boolean;
+};
+
 export type {
 	ContactSetDto,
 	AddressSetDto,
@@ -119,4 +126,5 @@ export type {
 	SetPasswordDto,
 	SetPinCodeDto,
 	SetAntiPhishingDto,
+	SetCardPrintDto,
 };

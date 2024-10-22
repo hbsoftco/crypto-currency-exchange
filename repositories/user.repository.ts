@@ -47,6 +47,7 @@ import type {
 	NickNameSetDto,
 	SetAntiPhishingDto,
 	SetBasicDto,
+	SetCardPrintDto,
 	SetEmailDto,
 	SetLiveDto,
 	SetMobileDto,
@@ -97,6 +98,7 @@ type UserRepository = {
 	storeSetAntiPhishing: (dto: SetAntiPhishingDto) => Promise<CommonRes>;
 	getHolder: (params: GetTraderBriefParams) => Promise<GetHolderRes>;
 	getHolderLevelList: () => Promise<GetHolderLevelListRes>;
+	storeCardPrint: (dto: SetCardPrintDto) => Promise<CommonRes>;
 };
 
 export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserRepository => ({
@@ -614,6 +616,17 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 		const response = await fetch<GetHolderLevelListRes>(`${url}`, {
 			noAuth: false,
 			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async storeCardPrint(dto: SetCardPrintDto): Promise<CommonRes> {
+		const url = `/v1/user/holder/card_print_req`;
+		const response = await fetch<CommonRes>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'POST',
+			body: dto,
 		} as CustomNitroFetchOptions);
 
 		return response;
