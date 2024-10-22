@@ -3,7 +3,7 @@
 		v-if="spotStore.snapshotLoading"
 		class="p-4"
 	>
-		<span>{{ $t('isLoading') }} ...</span>
+		<UiLogoLoading />
 	</div>
 	<div v-else>
 		<div class="mb-3">
@@ -99,9 +99,8 @@ const params = ref<SpotDataParams>({
 	rows: '20',
 });
 
-spotStore.getSnapshotData(mSymbol, `${currency}${quote}`, quote, currency, params.value);
-
 onMounted(() => {
+	spotStore.getSnapshotData(mSymbol, `${currency}${quote}`, quote, currency, params.value);
 	settingsStore.isSpotPage = true;
 });
 

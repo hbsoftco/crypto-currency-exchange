@@ -20,17 +20,15 @@
 				<div
 					class="w-72 hover:rounded-sm p-1 pl-0 bg-hover-light dark:bg-hover-dark shadow-lg rounded transition-opacity duration-200"
 				>
-					<ul class="flex flex-col space-y-2">
+					<ul class="flex flex-col">
 						<li
 							v-for="(item, index) in menuItems"
 							:key="index"
-							class="relative flex justify-between hover:bg-primary-gray-light dark:hover:bg-hover2-50 border-transparent border-r-[3px] hover:border-r-[3px] hover:border-r-primary-yellow-light hover:dark:border-r-[3px] dark:hover:border-r-primary-yellow-dark border-b-primary-gray-light dark:border-b-primary-gray-dark border-b last:border-b-0 duration-200 transition-all hover:rounded-r-md"
-							@mouseover="showSubmenu(index)"
-							@mouseleave="hideSubmenu(index)"
+							class="relative group/item flex justify-between hover:bg-primary-gray-light dark:hover:bg-hover2-50 border-transparent border-r-[3px] hover:border-r-[3px] hover:border-r-primary-yellow-light hover:dark:border-r-[3px] dark:hover:border-r-primary-yellow-dark border-b-primary-gray-light dark:border-b-primary-gray-dark border-b last:border-b-0 duration-200 transition-all hover:rounded-r-md"
 						>
 							<div class="flex justify-between items-center w-full mx-3 p-2">
 								<ULink
-									:to="item.link"
+									:to="checkPathLink(item.link, item.ignore)"
 									class="flex justify-between items-start w-full"
 								>
 									<div class="text-base ml-2">
@@ -50,8 +48,8 @@
 
 							<!-- Submenu -->
 							<div
-								v-if="item.hover && item.subItems"
-								class="absolute top-0 right-full ml-2 shadow-lg overflow-hidden rounded z-10 transition-opacity duration-200 max-w-72 w-72"
+								v-if="item.subItems"
+								class="absolute top-0 right-full hidden group-hover/item:block ml-2 shadow-lg overflow-hidden rounded z-10 transition-opacity duration-200 max-w-72 w-72"
 							>
 								<ul>
 									<MenuTrade />
@@ -72,38 +70,36 @@ import IconArrowDown from '~/assets/svg-icons/menu/arrow-down.svg';
 import IconArrowUp from '~/assets/svg-icons/menu/arrow-up.svg';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
 
+const { checkPathLink } = useLinkManager();
+
 const menuItems = ref([
 	{
 		name: 'quickTrade',
 		description: 'buyingSellingSpot',
+		ignore: true,
 		hover: false,
 		subItems: [{ name: 'Sub-item 1' }, { name: 'Sub-item 2' }],
 	},
 	{
 		name: 'professionalDeal',
 		description: 'buyingSellingSpot',
+		ignore: true,
 		hover: false,
 		subItems: [{ name: 'Sub-item 3' }, { name: 'Sub-item 4' }],
 	},
 	{
 		name: 'listOrdersTransactions',
 		description: 'buyingSellingSpot',
+		ignore: false,
 		hover: false,
 		link: '/spot/list',
 	},
 	{
 		name: 'trialTransaction',
 		description: 'buyingSellingSpot',
+		ignore: true,
 		hover: false,
 		link: '/spot/list',
 	},
 ]);
-
-const showSubmenu = (index) => {
-	menuItems.value[index].hover = true;
-};
-
-const hideSubmenu = (index) => {
-	menuItems.value[index].hover = false;
-};
 </script>

@@ -34,7 +34,7 @@ export const useMarketStore = defineStore('market', () => {
 
 			await baseDataStore.fetchMarketBriefItems();
 			await baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
-			await baseDataStore.fetchIcons();
+			// await baseDataStore.fetchIcons();
 
 			marketList.value = marketList.value.map((marketItem) => {
 				const matchedBriefItem = baseDataStore.marketBriefItems.find(
