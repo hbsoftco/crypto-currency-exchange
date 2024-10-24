@@ -349,7 +349,7 @@ type getDeviceListParams = {
 	pageSize?: string;
 };
 
-type getReasonListParams = {
+type GetReasonListParams = {
 	entityType?: string;
 	langId?: string;
 };
@@ -419,7 +419,7 @@ export type {
 	DepositCoinListParams,
 	WithdrawCoinListParams,
 	getDeviceListParams,
-	getReasonListParams,
+	GetReasonListParams,
 	getMiniRoutineParams,
 	getActivitiesListParams,
 	getTypeListParams,

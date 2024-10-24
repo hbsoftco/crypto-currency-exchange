@@ -84,7 +84,7 @@ type UserRepository = {
 	getCommissionReceived: (params: GetCommissionReceivedListParams) => Promise<GetCommissionRes>;
 	uploadAvatar: (dto: UploadAvatarDto) => Promise<CommonRes>;
 	getDeviceList: (params: getDeviceListParams) => Promise<GetDeviceListRes>;
-	storeDeleteAccount: (dto: DeleteAccountDto) => Promise<CommonRes>;
+	deleteAccount: (dto: DeleteAccountDto) => Promise<CommonRes>;
 	storeSetBasic: (dto: SetBasicDto) => Promise<CommonRes>;
 	storeSetLive: (dto: SetLiveDto) => Promise<CommonRes>;
 	getDevLinkGenerate: () => Promise<GetDevLinkGenerateRes>;
@@ -472,7 +472,7 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 		return response;
 	},
 
-	async storeDeleteAccount(dto: DeleteAccountDto): Promise<CommonRes> {
+	async deleteAccount(dto: DeleteAccountDto): Promise<CommonRes> {
 		const url = `/v1/user/account/delete`;
 		const response = await fetch<CommonRes>(`${url}`, {
 			noAuth: false,

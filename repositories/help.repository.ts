@@ -1,6 +1,6 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { GetCurrencyParams, GetFAQListParams, GetHowBuyListParams, getMiniRoutineParams, getReasonListParams, GetRootListParams, GetSubjectLiveChatParams } from '~/types/base.types';
+import type { GetCurrencyParams, GetFAQListParams, GetHowBuyListParams, getMiniRoutineParams, GetReasonListParams, GetRootListParams, GetSubjectLiveChatParams } from '~/types/base.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import type { GetMiniRoutineRes, KeyValueRes } from '~/types/response/common.types';
 import type { GetFaqRes, GetHowToBuyListResponse, GetLiveChatListResponse, GetRootListResponse, GetShortListResponse } from '~/types/response/help.types';
@@ -12,7 +12,7 @@ type HelpRepository = {
 	getFAQList: (params: GetFAQListParams) => Promise<GetLiveChatListResponse>;
 	getSubjectList: (params: GetSubjectLiveChatParams) => Promise<GetLiveChatListResponse>;
 	getHelpData: (params: GetCurrencyParams) => Promise<GetFaqRes>;
-	getReasonList: (params: getReasonListParams) => Promise<KeyValueRes>;
+	getReasonList: (params: GetReasonListParams) => Promise<KeyValueRes>;
 	getMiniRoutine: (params: getMiniRoutineParams) => Promise<GetMiniRoutineRes>;
 };
 
@@ -107,7 +107,7 @@ export const helpRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): HelpR
 
 		return response;
 	},
-	async getReasonList(params: getReasonListParams): Promise<KeyValueRes> {
+	async getReasonList(params: GetReasonListParams): Promise<KeyValueRes> {
 		const query = new URLSearchParams(
 			Object.entries(params)
 				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),

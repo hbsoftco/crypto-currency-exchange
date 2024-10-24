@@ -160,7 +160,7 @@ const filteredLevelList = computed(() => {
 	return levelListItem.value ? levelListItem.value.filter((item) => item.levelId !== 1510100) : [];
 });
 
-const berifLoading = ref<boolean>(false);
+const briefLoading = ref<boolean>(false);
 const LevelItem = ref<Level>();
 
 const params = ref<GetTraderBriefParams>({
@@ -168,15 +168,15 @@ const params = ref<GetTraderBriefParams>({
 	assetType: '',
 });
 
-const getHolderBerif = async () => {
+const getHolderBrief = async () => {
 	try {
-		berifLoading.value = true;
+		briefLoading.value = true;
 		const { result } = await userRepo.getHolder(params.value);
 		LevelItem.value = result.level;
-		berifLoading.value = false;
+		briefLoading.value = false;
 	}
 	catch (error) {
-		berifLoading.value = false;
+		briefLoading.value = false;
 		console.log(error);
 	}
 };
@@ -186,7 +186,7 @@ const profileStore = useProfileStore();
 onMounted(async () => {
 	await Promise.all([
 		getLevelList(),
-		getHolderBerif(),
+		getHolderBrief(),
 		profileStore.fetchProfile(),
 	]);
 });

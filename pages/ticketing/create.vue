@@ -135,6 +135,7 @@ import { Priority } from '~/utils/enums/ticketing.enum';
 definePageMeta({
 	middleware: 'auth',
 });
+
 const { $api } = useNuxtApp();
 const ticketRepo = ticketRepository($api);
 

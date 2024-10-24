@@ -1,11 +1,11 @@
 import { profileRepository } from '~/repositories/profile.repository';
-import type { ProfilePair } from '~/types/response/profile.types';
+import type { KeyValue } from '~/types/base.types';
 
 export const useProfileStore = defineStore('profile', () => {
 	const { $api } = useNuxtApp();
 	const profileRepo = profileRepository($api);
 
-	const profile = ref<ProfilePair[]>([]);
+	const profile = ref<KeyValue[]>([]);
 	const isProfileDataFetched = ref(false);
 	const profileLoading = ref<boolean>(false);
 	const error = ref<string | null>(null);
@@ -13,7 +13,10 @@ export const useProfileStore = defineStore('profile', () => {
 	const authStore = useAuthStore();
 
 	const fetchProfile = async () => {
-		if (profileLoading.value) return;
+		console.log('------------------>', isProfileDataFetched.value);
+
+		if (profileLoading.value && isProfileDataFetched.value) return;
+		console.log('------------------>', isProfileDataFetched.value);
 
 		profileLoading.value = true;
 		error.value = null;
@@ -24,7 +27,6 @@ export const useProfileStore = defineStore('profile', () => {
 			isProfileDataFetched.value = true;
 		}
 		catch (err) {
-			// error.value = 'Failed to fetch profile data';
 			console.error('Error fetching profile:', err);
 		}
 		finally {

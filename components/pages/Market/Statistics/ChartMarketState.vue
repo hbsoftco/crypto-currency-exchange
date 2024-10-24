@@ -9,7 +9,7 @@
 			</ClientOnly>
 		</div>
 		<!-- List of Items -->
-		<table class="min-w-full p-6 text-right">
+		<table class="min-w-full p-6 text-right relative z-1">
 			<thead>
 				<tr class="pb-2 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark  text-subtle-text-light dark:text-subtle-text-dark">
 					<th />

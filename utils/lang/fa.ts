@@ -883,7 +883,6 @@ const persian = {
 	settingPinCode: 'تنظیم پین کد برداشت',
 	settingPinCodeAlert: 'لطفاً ۶ کاراکتر عددی برای پین کد خود در قسمت برداشت انتخاب نمایید. این قسمت امنیت دارایی شما را افزایش می دهد.',
 	save: 'ذخیره',
-	verificationCodeSentEmailText: 'لطفا کد ارسالی به ali****@***.com وارد کنید',
 	ManageWhiteListIp: 'مدیریت لیست سفید IP',
 	listAllowedIps: 'لیست IP های مجاز',
 	howSetupIPUseSystem: 'نحوه تنظیم IP  مجاز برای استفاده از سیستم چگونه است ؟',
@@ -920,7 +919,7 @@ const persian = {
 	consequencesFour: ' برای لغو مسدود کردن حساب خود باید با خدمات مشتریان تماس بگیرید.',
 	confirmDeleteAccount: 'تایید برای حذف حساب',
 	iKnow: 'من متوجه عواقب حذف شدن حسابم هستم.',
-	deleteAccountTilte: 'لطفاً دلیل حذف کردن حساب خود را انتخاب کنید ',
+	deleteAccountTitle: 'لطفاً دلیل حذف کردن حساب خود را انتخاب کنید ',
 	doYouSure: 'آیا مطمئن هستید که می خواهید حساب خود را حذف کنید ؟',
 	reasonAccountDeletion: 'دلیل حذف حساب',
 	errorMessage: 'پیام اخطار',
@@ -1022,6 +1021,7 @@ const persian = {
 	allNotificationsReadSuccessfully: 'همه اعلانات با موفقیت خوانده شدند!',
 	yesDoIt: 'بله، انجام بده!',
 	referralCode: 'کد دعوت',
+	on: 'روشن',
 };
 
 export default persian;

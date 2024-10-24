@@ -65,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import ImportantPoint from '~/components/pages/Site/Account/Security/DeleteAccount/ImportantPoint.vue';
+import ImportantPoint from '~/components/pages/Account/Security/DeleteAccount/ImportantPoint.vue';
 import DropDown from '~/components/forms/DropDown.vue';
 import VerificationModal from '~/components/pages/Site/Account/Security/FreezeAccount/VerificationModal.vue';
 

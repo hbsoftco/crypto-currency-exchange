@@ -123,5 +123,8 @@ import Search from '../Default/Header/Search/index.vue';
 const route = useRoute();
 
 const headerMenuStore = useHeaderMenuStore();
-await headerMenuStore.getInitMarkets();
+
+onMounted(async () => {
+	await headerMenuStore.getInitMarkets();
+});
 </script>

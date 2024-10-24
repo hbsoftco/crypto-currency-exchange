@@ -40,13 +40,15 @@ type Help = {
 	value: string;
 };
 
+type MiniRoutine = {
+	tips: Tip[];
+	faqs: Faq[];
+	helps: Help[];
+};
+
 type GetMiniRoutineRes = {
 	statusCode: number;
-	result: {
-		tips: Tip[];
-		faqs: Faq[];
-		helps: Help[];
-	};
+	result: MiniRoutine;
 };
 
 export type {
@@ -56,6 +58,7 @@ export type {
 	UploadAvatarDto,
 	UploadFileDto,
 	GetMiniRoutineRes,
+	MiniRoutine,
 	Tip,
 	Faq,
 	Help,

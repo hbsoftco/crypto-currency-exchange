@@ -3,7 +3,7 @@
 		v-if="profileStore.profileLoading"
 		class="p-5"
 	>
-		{{ $t('isLoading') }}...
+		<UiLogoLoading />
 	</div>
 	<div
 		v-else

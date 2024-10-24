@@ -127,9 +127,9 @@ import UserLogin from './Header/UserLogin/index.vue';
 const settingsStore = useSpotSettingsStore();
 
 const headerMenuStore = useHeaderMenuStore();
-await headerMenuStore.getInitMarkets();
 
-onMounted(() => {
+onMounted(async () => {
+	await headerMenuStore.getInitMarkets();
 });
 
 // import Notif from '~/components/layouts/Default/Notif.vue';

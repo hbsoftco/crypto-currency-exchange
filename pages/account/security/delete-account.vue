@@ -12,12 +12,10 @@
 </template>
 
 <script setup lang="ts">
-import DeleteAccount from '~/components/pages/Site/Account/Security/DeleteAccount/index.vue';
+import DeleteAccount from '~/components/pages/Account/Security/DeleteAccount/index.vue';
 
 definePageMeta({
 	layout: 'account-single',
 	middleware: 'auth',
 });
 </script>
-
-<style scoped></style>

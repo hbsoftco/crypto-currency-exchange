@@ -125,7 +125,7 @@ const params = ref<GetTraderBriefParams>({
 	assetType: '',
 });
 
-const getHolderBerif = async () => {
+const getHolderBrief = async () => {
 	try {
 		berifLoading.value = true;
 		const { result } = await userRepo.getHolder(params.value);
@@ -209,7 +209,7 @@ console.log('help------------', helpItem);
 
 onMounted(async () => {
 	await Promise.all([
-		getHolderBerif(),
+		getHolderBrief(),
 		getMiniRoutine(),
 	]);
 });
