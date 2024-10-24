@@ -1014,6 +1014,9 @@ const persian = {
 	cardPrintTwo: 'این کارت میتواند به عنوان کارت ویزیت شما استفاده شود و از کیفیت بالایی دارد و دارای ....... میباشد.',
 	cardPrintThree: 'شما قبل از سفارش میتوانید برای کارت خود گزینه ای مورد نظر خود را فعال یا غیر فعال کنید.',
 	requestCardVisitPrint: 'درخواست چاپ کارت ویزیت',
+	deleteAllNotifications: 'حذف همه اعلان‌ها',
+	deleteAllNotificationsDescription: 'آیا شما از حذف همه اعلانات اطمینان دارید؟',
+	allNotificationsDeletedSuccessfully: 'همه اعلانات با موفقیت حذف شدند!',
 };
 
 export default persian;

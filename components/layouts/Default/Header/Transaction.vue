@@ -52,7 +52,7 @@
 								class="absolute top-0 right-full hidden group-hover/item:block ml-2 shadow-lg overflow-hidden rounded z-10 transition-opacity duration-200 max-w-72 w-72"
 							>
 								<ul>
-									<MenuTrade />
+									<MenuTrade :type="item.type" />
 								</ul>
 							</div>
 						</li>
@@ -75,6 +75,7 @@ const { checkPathLink } = useLinkManager();
 const menuItems = ref([
 	{
 		name: 'quickTrade',
+		type: 'spot',
 		description: 'buyingSellingSpot',
 		ignore: true,
 		hover: false,
@@ -82,6 +83,7 @@ const menuItems = ref([
 	},
 	{
 		name: 'professionalDeal',
+		type: 'fast-trade',
 		description: 'buyingSellingSpot',
 		ignore: true,
 		hover: false,

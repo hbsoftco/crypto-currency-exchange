@@ -57,6 +57,7 @@ const rewardList = ref<Reward[]>(response.result.rows);
 
 definePageMeta({
 	layout: 'account',
+	middleware: 'auth',
 });
 </script>
 

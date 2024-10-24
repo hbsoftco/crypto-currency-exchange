@@ -33,17 +33,20 @@
 				>
 					<td>{{ useNumber(index+1) }}</td>
 					<td class="text-xs font-normal py-2 ">
-						<div class="flex justify-start items-center">
+						<ULink
+							class="flex justify-start items-center"
+							:to="`/spot/${splitMarket(currency.currencyDetails?.cSymbol+'USDT')}`"
+						>
 							<NuxtImg
 								:src="`https://api-bitland.site/media/currency/${currency.currencyDetails?.cSymbol}.png`"
 								:alt="currency.currencyDetails?.cName"
-								class="w-5 h-5 rounded-full"
+								class="w-5 h-5 rounded-full ml-1"
 								format="webp"
 								densities="x1"
 							/>
-							<span class="text-xs font-normal mx-1 text-subtle-text-light dark:text-subtle-text-dark">{{ currency.currencyDetails?.cSymbol }} </span>/
-							<span class="text-xs font-normal mx-1 text-subtle-text-light dark:text-subtle-text-dark">USDT</span>
-						</div>
+							<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ currency.currencyDetails?.cSymbol }} </span>/
+							<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">USDT</span>
+						</ULink>
 					</td>
 					<td class="text-sm font-normal py-2">
 						<span>{{ useNumber(currency.indexPrice) }}</span>
@@ -64,6 +67,7 @@
 </template>
 
 <script setup lang="ts">
+import { splitMarket } from '~/utils/splitMarket';
 import type { MarketCategoryInfo } from '~/types/response/market.types';
 import { useNumber } from '~/composables/useNumber';
 

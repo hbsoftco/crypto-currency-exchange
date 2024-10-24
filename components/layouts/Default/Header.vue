@@ -33,9 +33,9 @@
 						<li>
 							<Transaction />
 						</li>
-						<li class="flex items-centers space-x-2">
+						<!-- <li class="flex items-centers space-x-2">
 							<Futures />
-						</li>
+						</li> -->
 						<li class="flex items-center">
 							<ULink
 								to="/account/rewards"
@@ -118,7 +118,7 @@ import SidebarSettingAction from '../Trade/SidebarSettingAction.vue';
 
 import Search from './Header/Search/index.vue';
 import Download from './Header/Download.vue';
-import Futures from './Header/Futures.vue';
+// import Futures from './Header/Futures.vue';
 import QuickAccessMenu from './Header/QuickAccessMenu.vue';
 import Setting from './Header/Setting.vue';
 import Transaction from './Header/Transaction.vue';

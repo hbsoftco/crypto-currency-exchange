@@ -59,7 +59,7 @@
 		</div>
 
 		<div class="flex flex-wrap justify-around">
-			<MarketState
+			<ChartMarketState
 				v-for="(item, index) in marketListByCategory"
 				:key="index"
 				:item="item"
@@ -70,7 +70,7 @@
 
 <script setup lang="ts">
 import CurrencyCategorySlider from '~/components/pages/Market/Statistics/CurrencyCategorySlider.vue';
-import MarketState from '~/components/pages/Market/Statistics/MarketState.vue';
+import ChartMarketState from '~/components/pages/Market/Statistics/ChartMarketState.vue';
 import { useNumber } from '~/composables/useNumber';
 import { marketRepository } from '~/repositories/market.repository';
 import type { MarketCurrencyCategoriesResponse, MarketListByCategoryResponse, NeutralMarketItem, PriceChangeState } from '~/types/response/market.types';

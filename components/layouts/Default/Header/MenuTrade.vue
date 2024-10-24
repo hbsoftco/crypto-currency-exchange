@@ -24,10 +24,10 @@
 			<template #item="{ item }">
 				<div class="border-t border-t-primary-gray-light dark:border-t-primary-gray-dark p-2">
 					<div v-if="item.key === 'USDT'">
-						<MenuTradeCoins type="fast-trade" />
+						<MenuTradeCoins :type="type" />
 					</div>
 					<div v-else-if="item.key === 'TMN'">
-						<MenuTradeCoins type="fast-trade" />
+						<MenuTradeCoins :type="type" />
 					</div>
 				</div>
 			</template>
@@ -37,6 +37,12 @@
 
 <script setup lang="ts">
 import MenuTradeCoins from '~/components/layouts/Default/Header/MenuTradeCoins.vue';
+
+interface Props {
+	type: 'spot' | 'fast-trade';
+}
+
+defineProps<Props>();
 
 const quoteItems = ref<QuoteTab[]>([
 	{

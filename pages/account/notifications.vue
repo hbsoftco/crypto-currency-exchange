@@ -36,20 +36,22 @@
 							color="red"
 							variant="solid"
 							class="rounded"
+							:loading="deleteAllNotificationsLoading"
+							@click="deleteAllNotifications"
 						>
 							{{ $t('deleteAll') }}
 						</UButton>
-						<UButton
+						<!-- <UButton
 							color="primary"
 							variant="solid"
 							class="mx-3 rounded"
 						>
 							{{ $t('readAll') }}
-						</UButton>
+						</UButton> -->
 					</div>
 				</div>
 				<div v-if="isLoading">
-					{{ $t('isLoading') }}...
+					<UiLogoLoading />
 				</div>
 				<div v-else>
 					<div
@@ -105,10 +107,17 @@ import { sanitizedHtml } from '~/utils/html-sanitizer';
 import { formatDateToIranTime } from '~/utils/date-time';
 import IconMessage from '~/assets/svg-icons/menu/message.svg';
 import { useNumber } from '~/composables/useNumber';
+import { notificationRepository } from '~/repositories/notification.repository';
 
 definePageMeta({
 	layout: 'account-single',
+	middleware: 'auth',
 });
+
+const { $api, $swal } = useNuxtApp();
+const notificationRepo = notificationRepository($api);
+
+const toast = useToast();
 
 const notificationStore = useNotificationStore();
 
@@ -133,6 +142,41 @@ const fetchNotifications = async () => {
 	}
 	finally {
 		isLoading.value = false;
+	}
+};
+
+const deleteAllNotificationsLoading = ref<boolean>(false);
+const deleteAllNotifications = async () => {
+	const confirmation = await $swal.fire({
+		title: useT('deleteAllNotifications'),
+		text: useT('deleteAllNotificationsDescription'),
+		icon: 'warning',
+		showCancelButton: true,
+		confirmButtonText: useT('yesDeleteIt'),
+		cancelButtonText: useT('cancel'),
+	});
+
+	if (confirmation.isConfirmed) {
+		deleteAllNotificationsLoading.value = true;
+
+		try {
+			await notificationRepo.deleteAllNotifications();
+
+			toast.add({
+				title: useT('deleteAllNotifications'),
+				description: 'allNotificationsDeletedSuccessfully',
+				timeout: 5000,
+				color: 'green',
+			});
+
+			await fetchNotifications();
+
+			deleteAllNotificationsLoading.value = false;
+		}
+		catch (error) {
+			deleteAllNotificationsLoading.value = false;
+			console.error('Error deleting notification:', error);
+		}
 	}
 };
 

@@ -140,10 +140,18 @@ const notificationStore = useNotificationStore();
 const isLoading = ref(false);
 const error = ref(null);
 
+const params = ref({
+	from: '',
+	to: '',
+	typeId: '',
+	pageNumber: '1',
+	pageSize: '20',
+});
+
 const fetchNotifications = async () => {
 	try {
 		isLoading.value = true;
-		await notificationStore.getNotifications({});
+		await notificationStore.getNotifications(params.value);
 	}
 	catch (error) {
 		console.error('Error fetching trades:', error);

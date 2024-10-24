@@ -41,7 +41,10 @@
 					:change="parseFloat(String(currency.priceChangePercIn24H))"
 					:icon="false"
 				/>
-				<div class="flex justify-start">
+				<ULink
+					class="flex justify-start"
+					:to="`/spot/${splitMarket(currency.currencyDetails?.cSymbol+'USDT')}`"
+				>
 					<span class="text-sm font-normal mx-2">{{ currency.currencyDetails?.cSymbol }} USDT</span>
 					<NuxtImg
 						:src="`https://api-bitland.site/media/currency/${currency.currencyDetails?.cSymbol}.png`"
@@ -50,13 +53,14 @@
 						format="webp"
 						densities="x1"
 					/>
-				</div>
+				</ULink>
 			</li>
 		</ul>
 	</div>
 </template>
 
 <script setup lang="ts">
+import { splitMarket } from '~/utils/splitMarket';
 import type { MarketCurrencyCategoryItem } from '~/types/response/market.types';
 
 interface PropsDefinition {

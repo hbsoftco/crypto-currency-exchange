@@ -8,7 +8,7 @@
 			>
 				<ULink
 					class="flex justify-between"
-					:to="`/spot/${market?.marketBriefItem?.currencyBriefItem?.cSymbol}`"
+					:to="`/spot/${splitMarket(market?.marketBriefItem?.mSymbol)}`"
 				>
 					<NuxtImg
 						:src="`https://api-bitland.site/media/currency/${market?.marketBriefItem?.currencyBriefItem?.cSymbol}.png`"
@@ -38,6 +38,7 @@
 </template>
 
 <script setup lang="ts">
+import { splitMarket } from '~/utils/splitMarket';
 import { useNumber } from '~/composables/useNumber';
 import type { MarketState } from '~/types/response/market.types';
 
