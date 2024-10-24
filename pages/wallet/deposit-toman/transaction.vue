@@ -30,4 +30,8 @@
 import SuccessfulTransaction from '~/components/pages/Site/Wallet/DepositToman/SuccessfulTransaction.vue';
 import NotSuccessfulTransaction from '~/components/pages/Site/Wallet/DepositToman/NotSuccessfulTransaction.vue';
 import Table from '~/components/pages/Site/Wallet/DepositToman/Table.vue';
+
+definePageMeta({
+	middleware: 'auth',
+});
 </script>

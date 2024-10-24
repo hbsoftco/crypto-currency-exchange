@@ -16,6 +16,7 @@ import PinCodeWithdrawal from '~/components/pages/Site/Account/Security/PinCodeW
 
 definePageMeta({
 	layout: 'account-single',
+	middleware: 'auth',
 });
 </script>
 

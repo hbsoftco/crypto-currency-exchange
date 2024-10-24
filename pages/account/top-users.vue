@@ -208,6 +208,7 @@ import type { BestReferralItem, Reward } from '~/types/response/user.types';
 
 definePageMeta({
 	layout: 'account',
+	middleware: 'auth',
 });
 
 const { $api } = useNuxtApp();

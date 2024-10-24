@@ -95,6 +95,7 @@ import { isValidIPv6, isValidIPv4 } from '~/utils/valid-ip';
 
 definePageMeta({
 	layout: 'account-single',
+	middleware: 'auth',
 });
 
 const { $api } = useNuxtApp();

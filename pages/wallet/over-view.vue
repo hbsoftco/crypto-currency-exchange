@@ -116,6 +116,7 @@ import FutureAccordion from '~/components/pages/Wallet/Overview/FutureAccordion.
 
 definePageMeta({
 	layout: 'wallet',
+	middleware: 'auth',
 });
 
 const assetStore = useAssetStore();

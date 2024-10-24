@@ -42,6 +42,7 @@ import type { NetBlockchainItem } from '~/types/response/currency.types';
 
 definePageMeta({
 	layout: 'account-single',
+	middleware: 'auth',
 });
 
 const { $api } = useNuxtApp();

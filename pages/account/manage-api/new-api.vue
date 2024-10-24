@@ -158,6 +158,7 @@ import SearchCrypto from '~/components/forms/SearchCrypto.vue';
 
 definePageMeta({
 	layout: 'account',
+	middleware: 'auth',
 });
 const phoneOrEmail = ref('');
 const checkboxes = ref([

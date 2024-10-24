@@ -32,4 +32,8 @@
 import StepDetail from '~/components/pages/Site/Wallet/TomanWithdrawal/StepDetail.vue';
 import FormWithdraw from '~/components/pages/Site/Wallet/TomanWithdrawal/FormWithdraw.vue';
 import Table from '~/components/pages/Site/Wallet/TomanWithdrawal/Table.vue';
+
+definePageMeta({
+	middleware: 'auth',
+});
 </script>

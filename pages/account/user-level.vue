@@ -253,6 +253,7 @@ import type { TraderBriefItem } from '~/types/response/trader.types';
 const selectedButton = ref('ninety');
 definePageMeta({
 	layout: 'account',
+	middleware: 'auth',
 });
 
 const { $api } = useNuxtApp();

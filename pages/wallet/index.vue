@@ -7,5 +7,6 @@
 <script setup lang="ts">
 definePageMeta({
 	layout: 'wallet',
+	middleware: 'auth',
 });
 </script>

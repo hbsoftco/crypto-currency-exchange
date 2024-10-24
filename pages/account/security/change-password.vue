@@ -16,6 +16,7 @@ import ChangePassword from '~/components/pages/Site/Account/Security/ChangePassw
 
 definePageMeta({
 	layout: 'account-single',
+	middleware: 'auth',
 });
 </script>
 

@@ -282,6 +282,7 @@ import TransferModal from '~/components/pages/Site/Wallet/Menu/TransferModal.vue
 
 definePageMeta({
 	layout: 'wallet',
+	middleware: 'auth',
 });
 const selected = ref(false);
 const phoneOrEmail = ref<string>('');

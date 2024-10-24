@@ -32,4 +32,9 @@
 import StepDetail from '~/components/pages/Site/Wallet/Deposit/StepDetail.vue';
 import FormDeposit from '~/components/pages/Site/Wallet/Deposit/FormDeposit.vue';
 import Table from '~/components/pages/Site/Wallet/Deposit/Table.vue';
+
+definePageMeta({
+	layout: 'wallet',
+	middleware: 'auth',
+});
 </script>

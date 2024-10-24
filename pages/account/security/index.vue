@@ -385,6 +385,7 @@ import IconArrowRight from '~/assets/svg-icons/menu/arrow-left.svg';
 
 definePageMeta({
 	layout: 'account',
+	middleware: 'auth',
 });
 
 const securityLevel = ref('weak');

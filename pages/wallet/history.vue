@@ -83,6 +83,7 @@ import Withdraw from '~/components/pages/Site/Wallet/Menu/History/Withdraw/index
 
 definePageMeta({
 	layout: 'wallet',
+	middleware: 'auth',
 });
 
 const items = [

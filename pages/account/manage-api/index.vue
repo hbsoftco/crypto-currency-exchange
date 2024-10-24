@@ -117,6 +117,7 @@ import IconCopy from '~/assets/svg-icons/menu/copy.svg';
 
 definePageMeta({
 	layout: 'account',
+	middleware: 'auth',
 });
 const rows = ref([
 	{ id: 1, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },

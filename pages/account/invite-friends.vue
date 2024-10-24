@@ -279,6 +279,7 @@ import QRCodeModal from '~/components/pages/Site/Account/InviteFriends/QRCodeMod
 
 definePageMeta({
 	layout: 'account-single',
+	middleware: 'auth',
 });
 const { copyText } = useClipboard();
 

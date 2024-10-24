@@ -132,9 +132,6 @@ import type { KeyValue } from '~/types/base.types';
 import type { StoreTicketDto } from '~/types/dto/ticketing.dto';
 import { Priority } from '~/utils/enums/ticketing.enum';
 
-definePageMeta({
-	middleware: 'auth',
-});
 const { $api } = useNuxtApp();
 const ticketRepo = ticketRepository($api);
 

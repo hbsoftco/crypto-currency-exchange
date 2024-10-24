@@ -167,6 +167,7 @@ import { DepositType } from '~/utils/enums/deposit.enum';
 
 definePageMeta({
 	layout: 'account-single',
+	middleware: 'auth',
 });
 
 const fromDate = ref();

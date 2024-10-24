@@ -29,6 +29,7 @@ import UploadDocuments from '~/components/pages/Site/Account/Authentication/Leve
 
 definePageMeta({
 	layout: 'account-single',
+	middleware: 'auth',
 });
 const steps = [
 	{ label: 'بارگذاری تصویر تعهد نامه', completed: true, current: false },

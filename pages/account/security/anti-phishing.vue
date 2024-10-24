@@ -16,6 +16,7 @@ import AntiPhishing from '~/components/pages/Site/Account/Security/AntiPhishing/
 
 definePageMeta({
 	layout: 'account-single',
+	middleware: 'auth',
 });
 </script>
 

@@ -251,6 +251,7 @@ import IconInfo from '~/assets/svg-icons/profile/add-info.svg';
 
 definePageMeta({
 	layout: 'account',
+	middleware: 'auth',
 });
 
 const isConfirmed = true;

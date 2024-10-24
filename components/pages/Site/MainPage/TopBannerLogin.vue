@@ -7,11 +7,11 @@
 		</h1>
 		<div class="flex mt-6">
 			<NuxtImg
-				src="/images/fish.png"
+				:src="traderBriefItem?.level.logoUrl"
 				alt="fish"
 				class="w-6 h-6 ml-2"
 			/>
-			<span class="ml-1">{{ $t("yourLevel") }}: </span><span>اسکلت </span>
+			<span class="ml-1">{{ $t("yourLevel") }}: </span><span>{{ profileStore.profileLoading ? '...': getValueByKey(profileStore.userProfile, 'TRD_LVL_NAME') }}</span>
 		</div>
 		<div
 			class="my-6 flex flex-col text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
@@ -24,7 +24,7 @@
 			</div>
 		</div>
 		<ULink
-			to=""
+			to="/account/fees"
 			class="flex"
 		>
 			<span
@@ -36,12 +36,14 @@
 		</ULink>
 		<div class="flex mt-6">
 			<UButton
+				to="/wallet/deposit-toman"
 				class="px-20 font-bold text-sm ml-1"
 				size="lg"
 			>
 				{{ $t("depositToman") }}
 			</UButton>
 			<ULink
+				to="/app"
 				class="flex items-center bg-transparency-light dark:bg-transparency-dark opacity-70 mx-1 px-8 py-2 rounded"
 			>
 				<IconQR class="text-3xl mx-7 m1-2" />
@@ -134,10 +136,54 @@
 </template>
 
 <script setup lang="ts">
+import { getValueByKey } from '~/utils/find-value-by-key';
 import IconLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';
 import IconQR from '~/assets/svg-icons/qr-code.svg';
 import IconPlayStore from '~/assets/svg-icons/play-store.svg';
+// import type { TraderBriefItem } from '~/types/response/trader.types';
+import { userRepository } from '~/repositories/user.repository';
+import type { GetTraderBriefParams } from '~/types/base.types';
+import type { TraderBriefItem } from '~/types/response/trader.types';
 // import IconApple from '~/assets/svg-icons/apple.svg';
-</script>
 
-<style scoped></style>
+const profileStore = useProfileStore();
+
+const { $api } = useNuxtApp();
+const userRepo = userRepository($api);
+
+const traderBriefParams = ref<GetTraderBriefParams>({
+	assetType: useEnv('assetType'),
+	id: '1',
+});
+const traderBriefItemLoading = ref<boolean>(false);
+const traderBriefItem = ref<TraderBriefItem>();
+const getTraderBrief = async () => {
+	try {
+		traderBriefItemLoading.value = true;
+
+		const { result } = await userRepo.getTraderBrief(traderBriefParams.value);
+
+		traderBriefItem.value = result;
+		traderBriefItemLoading.value = true;
+	}
+	catch (error) {
+		traderBriefItemLoading.value = true;
+		console.log(error);
+	}
+};
+
+// const findIndicator = (indicator: number) => {
+// 	if (traderBriefItem.value?.level.indicator === indicator) {
+// 		return (traderBriefItem.value?.level.indicator === indicator);
+// 	}
+
+// 	return false;
+// };
+console.log('traderBriefItem', traderBriefItem);
+
+onMounted(async () => {
+	await Promise.all([
+		getTraderBrief,
+	]);
+});
+</script>

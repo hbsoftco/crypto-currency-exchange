@@ -16,6 +16,7 @@ import ManageWhiteList from '~/components/pages/Site/Account/Security/ManageWhit
 
 definePageMeta({
 	layout: 'account-single',
+	middleware: 'auth',
 });
 </script>
 

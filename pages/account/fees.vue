@@ -108,6 +108,7 @@ import { MarketType } from '~/utils/enums/market.enum';
 
 definePageMeta({
 	layout: 'account',
+	middleware: 'auth',
 });
 
 const { $api } = useNuxtApp();

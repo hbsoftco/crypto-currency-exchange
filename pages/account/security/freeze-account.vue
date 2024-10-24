@@ -16,6 +16,7 @@ import FreezeAccount from '~/components/pages/Site/Account/Security/FreezeAccoun
 
 definePageMeta({
 	layout: 'account-single',
+	middleware: 'auth',
 });
 </script>
 

@@ -33,6 +33,7 @@ import UploadLetter from '~/components/pages/Site/Account/Authentication/LevelOn
 
 definePageMeta({
 	layout: 'account-single',
+	middleware: 'auth',
 });
 const steps = [
 	{ label: 'اطلاعات هویتی', completed: true, current: false },

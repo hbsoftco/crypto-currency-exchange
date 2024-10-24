@@ -199,6 +199,7 @@ import { DepositType } from '~/utils/enums/deposit.enum';
 
 definePageMeta({
 	layout: 'wallet',
+	middleware: 'auth',
 });
 const { $api } = useNuxtApp();
 const depositRepo = depositRepository($api);

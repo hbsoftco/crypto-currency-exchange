@@ -16,6 +16,7 @@ import ChangeEmail from '~/components/pages/Site/Account/Security/ChangeEmail/in
 
 definePageMeta({
 	layout: 'account-single',
+	middleware: 'auth',
 });
 </script>
 

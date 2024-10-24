@@ -39,6 +39,7 @@ import ImportantPoint from '~/components/pages/Site/Account/WhiteList/ImportantP
 
 definePageMeta({
 	layout: 'account-single',
+	middleware: 'auth',
 });
 const checkState = () => {
 	steps.value[0].completed = true;

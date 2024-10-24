@@ -16,6 +16,7 @@ import DeleteAccount from '~/components/pages/Site/Account/Security/DeleteAccoun
 
 definePageMeta({
 	layout: 'account-single',
+	middleware: 'auth',
 });
 </script>
 

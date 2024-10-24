@@ -47,6 +47,7 @@ import Spot from '~/components/pages/Site/Wallet/Menu/ProfitLoss/Spot/index.vue'
 
 definePageMeta({
 	layout: 'wallet',
+	middleware: 'auth',
 });
 
 const items = [

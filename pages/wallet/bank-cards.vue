@@ -74,7 +74,9 @@ import type { Bank } from '~/types/response/user.types';
 
 definePageMeta({
 	layout: 'wallet',
+	middleware: 'auth',
 });
+
 const { $api } = useNuxtApp();
 const bankRepo = userRepository($api);
 

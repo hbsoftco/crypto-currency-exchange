@@ -33,6 +33,7 @@ import FormStepTwoLogin from '~/components/pages/Site/Account/Security/TwoStepLo
 
 definePageMeta({
 	layout: 'account-single',
+	middleware: 'auth',
 });
 const items = [
 	{ title: useT('stepOne'), description: useT('stepOneText'), isActive: true },

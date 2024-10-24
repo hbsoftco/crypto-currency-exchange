@@ -80,4 +80,7 @@ import { useNumber } from '~/composables/useNumber';
 import FileUploader from '~/components/forms/FileUploader.vue';
 
 const phoneOrEmail = ref<string>('');
+definePageMeta({
+	middleware: 'auth',
+});
 </script>

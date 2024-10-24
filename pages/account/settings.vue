@@ -169,6 +169,7 @@ import IconNotification from '~/assets/svg-icons/menu/notification.svg';
 
 definePageMeta({
 	layout: 'account',
+	middleware: 'auth',
 });
 
 const themes = [

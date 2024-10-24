@@ -103,6 +103,9 @@ import { ticketRepository } from '~/repositories/ticketing.repository';
 import type { GetTicketListParams } from '~/types/base.types';
 import type { Ticket } from '~/types/response/ticketing.types';
 
+definePageMeta({
+	middleware: 'auth',
+});
 const { $api } = useNuxtApp();
 const ticketRepo = ticketRepository($api);
 
