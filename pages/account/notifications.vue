@@ -189,7 +189,7 @@ const readAllNotifications = async () => {
 
 		toast.add({
 			title: useT('readAllNotifications'),
-			description: 'allNotificationsReadSuccessfully',
+			description: useT('allNotificationsReadSuccessfully'),
 			timeout: 5000,
 			color: 'green',
 		});
