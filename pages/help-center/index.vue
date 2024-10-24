@@ -94,7 +94,7 @@
 							/>
 							<p class="text-sm font-medium mr-3">
 								{{ $t(item.info.header) }}
-								{{ $t(item.info.content) }}
+								<!-- {{ $t(item.info.content) }} -->
 							</p>
 						</div>
 					</div>
