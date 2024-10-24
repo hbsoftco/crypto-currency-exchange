@@ -1,11 +1,11 @@
 <template>
 	<div class="grid grid-cols-1 md:flex">
 		<div>
-			<NuxtImg
+			<img
 				src="/images/delete/slider1.webp"
 				alt="Brand Logo"
 				class="w-72 h-28"
-			/>
+			>
 		</div>
 		<div class="mr-0 md:mr-6 ml-0 md:ml-96">
 			<p class="text-base font-bold">

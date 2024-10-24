@@ -29,12 +29,12 @@
 			</div>
 
 			<div class="flex item-center py-4">
-				<NuxtImg
+				<img
 					v-if="reward.logoUrl"
 					:src="reward.logoUrl"
 					alt="award"
 					class="w-12 h-12 rounded-full ml-2"
-				/>
+				>
 				<div class="">
 					<h4
 						v-if="reward.header"
@@ -64,11 +64,11 @@
 
 				class="pb-6 flex item-center flex-row-reverse justify-start text-sm font-normal"
 			>
-				<NuxtImg
+				<img
 					:src="`https://api-bitland.site/media/currency/${reward.currency?.cSymbol}.png`"
 					:alt="reward.currency?.cName"
 					class="w-4 h-4 rounded-full mr-2"
-				/>
+				>
 				<span v-if="reward.prizeTitle">{{ reward.prizeTitle }}</span>
 			</div>
 			<div class="flex justify-between flex-row-reverse pb-4">

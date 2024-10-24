@@ -9,12 +9,12 @@
 			</div>
 			<div class="flex justify-start flex-row-reverse items-center">
 				<div>
-					<NuxtImg
+					<img
 						v-if="spotStore.currency"
 						:src="`https://api-bitland.site/media/currency/${spotStore.currency}.png`"
 						alt="Brand Logo"
 						class="w-7 h-7 rounded-full"
-					/>
+					>
 				</div>
 
 				<div class="ml-2 text-left">

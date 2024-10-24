@@ -12,11 +12,11 @@
 			>
 				<IconArrowLeftActive class="text-primary-yellow-light dark:text-primary-yellow-dark" />
 			</div>
-			<NuxtImg
+			<img
 				:src="iconSrc"
 				alt="icon"
 				class="w-16 h-16 ml-1"
-			/>
+			>
 			<div :class="[isActive ? 'text-primary-yellow-light dark:text-primary-yellow-dark' : 'text-black dark:text-white']">
 				<span>
 					{{ level }}
@@ -40,11 +40,11 @@
 				<IconClose class="text-4xl" />
 			</template>
 			<template v-else>
-				<NuxtImg
+				<img
 					:src="imageSrc"
 					alt="icon"
 					class="w-16 h-16"
-				/>
+				>
 			</template>
 		</td>
 	</tr>

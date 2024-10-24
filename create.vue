@@ -10,11 +10,11 @@
 						<span class="py-4 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('ticketTitle') }}</span>
 					</div>
 					<div>
-						<NuxtImg
+						<img
 							src="/images/svg/ticketing.svg"
 							alt="ticketing"
 							class="w-80 h-80"
-						/>
+						>
 					</div>
 				</div>
 			</UContainer>

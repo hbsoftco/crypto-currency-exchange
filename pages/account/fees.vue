@@ -21,11 +21,11 @@
 			</div>
 
 			<div class="ml-0 md:ml-40  hidden md:block">
-				<NuxtImg
+				<img
 					src="/images/profile/fees.png"
 					alt="icon fees"
 					class="w-[19.313rem] h-[21.063rem] mb-2"
-				/>
+				>
 				<div class="flex justify-between bg-hover-light dark:bg-hover-dark rounded-lg p-2">
 					<div>
 						<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
@@ -33,11 +33,11 @@
 						</span>
 					</div>
 					<div class="flex items-center">
-						<NuxtImg
+						<img
 							src="/images/Confirmation.png"
 							alt="Confirmation"
 							class="w-4 h-4"
-						/>
+						>
 						<div>
 							<span class="text-sm font-bold mr-1">سطح ماهی</span>
 						</div>

@@ -6,17 +6,17 @@
 				@close="closeDepositDetail"
 			/>
 			<div class="absolute left-2">
-				<NuxtImg
-					src="./images/profile/vip.svg"
+				<img
+					src="/images/profile/vip.svg"
 					class="w-40 h-20"
-				/>
+				>
 			</div>
 			<section>
 				<div class="flex">
-					<NuxtImg
+					<img
 						:src="levelListItem[1].imgLogoUrl"
 						class="w-12 h-12"
-					/>
+					>
 					<div>
 						<div class="flex items-center">
 							<h2 class="text-base font-bold text-black dark:text-black">
@@ -145,17 +145,17 @@
 				@close="closeDepositDetail"
 			/>
 			<div class="absolute left-2">
-				<NuxtImg
-					src="./images/profile/vip.svg"
+				<img
+					src="/images/profile/vip.svg"
 					class="w-40 h-20"
-				/>
+				>
 			</div>
 			<section>
 				<div class="flex">
-					<NuxtImg
+					<img
 						:src="levelListItem[2].imgLogoUrl"
 						class="w-12 h-12"
-					/>
+					>
 					<div>
 						<div class="flex items-center">
 							<h2 class="text-base font-bold text-black dark:text-black">
@@ -284,17 +284,17 @@
 				@close="closeDepositDetail"
 			/>
 			<div class="absolute left-2">
-				<NuxtImg
-					src="./images/profile/vip.svg"
+				<img
+					src="/images/profile/vip.svg"
 					class="w-40 h-20"
-				/>
+				>
 			</div>
 			<section>
 				<div class="flex">
-					<NuxtImg
+					<img
 						:src="levelListItem[3].imgLogoUrl"
 						class="w-12 h-12"
-					/>
+					>
 					<div>
 						<div class="flex items-center">
 							<h2 class="text-base font-bold text-black dark:text-black">

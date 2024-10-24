@@ -46,13 +46,13 @@
 					:to="`/spot/${splitMarket(currency.currencyDetails?.cSymbol+'USDT')}`"
 				>
 					<span class="text-sm font-normal mx-2">{{ currency.currencyDetails?.cSymbol }} USDT</span>
-					<NuxtImg
+					<img
 						:src="`https://api-bitland.site/media/currency/${currency.currencyDetails?.cSymbol}.png`"
 						:alt="currency.currencyDetails?.cName"
 						class="w-5 h-5 rounded-full"
 						format="webp"
 						densities="x1"
-					/>
+					>
 				</ULink>
 			</li>
 		</ul>

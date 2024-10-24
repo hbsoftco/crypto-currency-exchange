@@ -7,11 +7,11 @@
 			class="py-4 border-b border-primary-gray-light dark:border-primary-gray-dark"
 		>
 			<div class="flex items-center">
-				<NuxtImg
-					src="./images/svg/profile/shield.svg"
+				<img
+					src="/images/svg/profile/shield.svg"
 					alt="shield"
 					class="w-6 h-6"
-				/>
+				>
 				<h3 class="text-sm font-bold mr-1">
 					{{ $t("TwoStepLogin") }}
 				</h3>
@@ -41,20 +41,20 @@
 			class="py-4 border-b border-primary-gray-light dark:border-primary-gray-dark"
 		>
 			<div class="flex items-center">
-				<NuxtImg
-					src="./images/svg/profile/message.svg"
+				<img
+					src="/images/svg/profile/message.svg"
 					alt="message"
 					class="w-6 h-6"
-				/>
+				>
 				<h3 class="text-sm font-bold mr-1">
 					{{ $t("emailSetup") }}
 				</h3>
 				<div class="flex items-center mr-4">
-					<NuxtImg
+					<img
 						src="/images/Confirmation.png"
 						alt="Confirmation"
 						class="w-4 h-4"
-					/>
+					>
 					<span class="text-sm font-medium mr-1">{{
 						useNumber(
 							String(getValueByKey(profileStore.userProfile, "EMAIL")),
@@ -80,11 +80,11 @@
 		<!-- Mobile Section -->
 		<div class="py-4">
 			<div class="flex items-center">
-				<NuxtImg
-					src="./images/svg/profile/mobile.svg"
+				<img
+					src="/images/svg/profile/mobile.svg"
 					alt="mobile"
 					class="w-6 h-6"
-				/>
+				>
 				<h3 class="text-sm font-bold mr-1">
 					{{ $t("mobileNumberSetting") }}
 				</h3>

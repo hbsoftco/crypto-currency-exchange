@@ -8,11 +8,11 @@
 			<div
 				class="flex items-center bg-background-light dark:bg-background-dark rounded shadow-lg h-full p-2"
 			>
-				<NuxtImg
+				<img
 					src="/images/delete/bitcoin.png"
 					alt="bitcoin Logo"
 					class="w-5 h-5"
-				/>
+				>
 				<div class="flex flex-col mr-2">
 					<div>
 						<span class="text-sm font-normal"> بیت کوین </span>/

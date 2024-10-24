@@ -22,11 +22,11 @@
 					</UButton>
 				</div>
 				<div>
-					<NuxtImg
+					<img
 						src="/images/Confirmation.png"
 						alt="Confirmation"
 						class="w-52 h-52"
-					/>
+					>
 				</div>
 			</div>
 		</section>

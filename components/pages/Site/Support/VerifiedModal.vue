@@ -17,11 +17,11 @@
 					</div>
 					<div>
 						<div class="flex justify-center text-center">
-							<NuxtImg
-								src="./images/svg/site/confirm.svg"
+							<img
+								src="/images/svg/site/confirm.svg"
 								alt="confirm"
 								class="w-40 h-40"
-							/>
+							>
 						</div>
 						<h3 class="text-base font-bold text-accent-green dark:text-accent-green my-8">
 							{{ $t('verifiedSource') }}

@@ -54,11 +54,11 @@
 							</td>
 							<td class="text-xs font-normal text-nowrap py-2">
 								<div class=" flex justify-center items-center">
-									<NuxtImg
+									<img
 										src="/images/delete/bitcoin.png"
 										alt="Brand Logo"
 										class="w-4 h-4 ml-1"
-									/>
+									>
 									{{ row.currencyType }}
 								</div>
 							</td>

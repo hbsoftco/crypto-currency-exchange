@@ -20,11 +20,11 @@
 									: 'border-secondary-gray-light dark:border-secondary-gray-dark',
 							]"
 						>
-							<NuxtImg
+							<img
 								src="/images/gift.png"
 								alt="gift"
 								class="w-4 h-4"
-							/>
+							>
 						</div>
 						<IconArrowDown
 							v-if="isSignInVisible"
@@ -57,11 +57,11 @@
 									: 'border-secondary-gray-light dark:border-secondary-gray-dark',
 							]"
 						>
-							<NuxtImg
+							<img
 								src="/images/gift.png"
 								alt="gift"
 								class="w-4 h-4"
-							/>
+							>
 						</div>
 						<IconArrowDown
 							v-if="isDepositVisible"
@@ -94,11 +94,11 @@
 									: 'border-secondary-gray-light dark:border-secondary-gray-dark',
 							]"
 						>
-							<NuxtImg
+							<img
 								src="/images/gift.png"
 								alt="gift"
 								class="w-4 h-4"
-							/>
+							>
 						</div>
 						<IconArrowDown
 							v-if="isTransactionVisible"

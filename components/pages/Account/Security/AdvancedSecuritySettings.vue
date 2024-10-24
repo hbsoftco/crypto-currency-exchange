@@ -17,11 +17,11 @@
 			class="py-4 border-b border-primary-gray-light dark:border-primary-gray-dark"
 		>
 			<div class="flex items-center">
-				<NuxtImg
-					src="./images/svg/profile/password.svg"
+				<img
+					src="/images/svg/profile/password.svg"
 					alt="message"
 					class="w-6 h-6"
-				/>
+				>
 				<h3 class="text-sm font-bold mr-1">
 					{{ $t("antiPhishingPhrase") }}
 				</h3>
@@ -45,11 +45,11 @@
 
 		<div class="py-4">
 			<div class="flex items-center">
-				<NuxtImg
-					src="./images/svg/profile/password.svg"
+				<img
+					src="/images/svg/profile/password.svg"
 					alt="message"
 					class="w-6 h-6"
-				/>
+				>
 				<h3 class="text-sm font-bold mr-1">
 					{{ $t("pinCodeWithdrawal") }}
 				</h3>
@@ -75,11 +75,11 @@
 			class="py-4 border-b border-primary-gray-light dark:border-primary-gray-dark"
 		>
 			<div class="flex items-center">
-				<NuxtImg
-					src="./images/svg/profile/bullet.svg"
+				<img
+					src="/images/svg/profile/bullet.svg"
 					alt="bullet"
 					class="w-6 h-6"
-				/>
+				>
 				<h3 class="text-sm font-bold mr-1">
 					{{ $t("ipWhitelist") }}
 				</h3>
@@ -100,11 +100,11 @@
 
 		<div class="py-4">
 			<div class="flex items-center">
-				<NuxtImg
-					src="./images/svg/profile/lock.svg"
+				<img
+					src="/images/svg/profile/lock.svg"
 					alt="lock"
 					class="w-6 h-6"
-				/>
+				>
 				<h3 class="text-sm font-bold mr-1">
 					{{ $t("loginPassword") }}
 				</h3>

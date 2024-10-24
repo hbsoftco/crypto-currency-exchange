@@ -26,19 +26,19 @@
 				>
 					<ULink
 						class="flex items-center justify-start"
-						:to="`/spot/${splitMarket(market?.market?.mSymbol)}`"
+						:to="`/spot/${splitMarket(market?.currency?.cSymbol +'_'+quote)}`"
 					>
-						<NuxtImg
+						<img
 							:src="`https://api-bitland.site/media/currency/${market?.currency?.cSymbol}.png`"
 							:alt="market?.currency?.cName"
 							class="w-4 h-4 mr-1 rounded-full"
 							format="webp"
 							densities="x1"
-						/>
+						>
 						<div class="flex mr-1 items-center">
 							<span class="text-xs font-normal">{{ market?.currency?.cName }}</span>/
 							<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
-								{{ market.currency?.cName }}
+								{{ $t(quote) }}
 							</span>
 						</div>
 					</ULink>
@@ -68,6 +68,7 @@ import ChangePrice from '~/components/ui/ChangePrice.vue';
 
 interface Props {
 	type: 'spot' | 'fast-trade';
+	quote: 'TMN' | 'USDT';
 }
 
 defineProps<Props>();

@@ -10,11 +10,11 @@
 						<span class="py-4 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('helpBuyListTitle') }}</span>
 					</div>
 					<div>
-						<NuxtImg
+						<img
 							src="/images/svg/help-buy-cryoto.svg"
 							alt="help-buy"
 							class="w-96 h-60"
-						/>
+						>
 					</div>
 				</div>
 				<div class="w-full md:w-96">
@@ -44,11 +44,11 @@
 							:buy="item"
 						>
 							<div class="flex items-center">
-								<NuxtImg
+								<img
 									:src="`https://api-bitland.site/media/currency/${item.currency?.cSymbol}.png`"
 									:alt="item.currency?.cName"
 									class="w-6 h-6 rounded-full ml-2"
-								/>
+								>
 								<span class="text-sm font-bold ml-1">{{ item.info?.header }}</span>
 							</div>
 							<div>

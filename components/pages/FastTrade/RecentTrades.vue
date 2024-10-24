@@ -109,22 +109,22 @@
 					>
 						<td class=" text-xs font-normal py-2">
 							<div class="flex">
-								<NuxtImg
+								<img
 									src="/images/delete/bitcoin.png"
 									alt="bitcoin"
 									class="w-4 h-4 ml-2"
-								/>
+								>
 								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ row.from }}</span>
 								{{ useNumber(row.count) }}
 							</div>
 						</td>
 						<td class="text-xs font-normal py-2">
 							<div class="flex">
-								<NuxtImg
+								<img
 									src="/images/delete/bitcoin.png"
 									alt="bitcoin"
 									class="w-4 h-4 ml-2"
-								/>
+								>
 								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ row.to }}</span>
 								{{ useNumber(row.count) }}
 							</div>

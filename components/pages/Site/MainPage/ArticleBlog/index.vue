@@ -48,7 +48,7 @@
 const items = [
 	[
 		{
-			imgSrc: './images/delete/slider1.webp',
+			imgSrc: '/images/delete/slider1.webp',
 			author: 'سارا اعتمادیان',
 			date: '1403/06/02',
 			title: 'خرید ارز تتر؛ جایگزین مناسب سرمایه گذاری در دلار',

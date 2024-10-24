@@ -7,11 +7,11 @@
 						<div class="mt-10 md:mt-12">
 							gggg
 						</div>
-						<NuxtImg
+						<img
 							src="/images/svg/calculator.svg"
 							alt="calculator"
 							class="absolute bottom-0 left-0 hidden md:block w-[30rem] h-[36.125rem]"
-						/>
+						>
 					</div>
 				</UContainer>
 			</PagesImageCover>
@@ -30,45 +30,45 @@
 				<div>Slider</div>
 				<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
 					<div class="py-3 flex border-b border-primary-gray-light dark:border-primary-gray-dark">
-						<NuxtImg
+						<img
 							src="/images/delete/bitcoin.png"
 							alt="Brand Logo"
 							class="w-4 h-4 mr-1"
-						/>
+						>
 						<span class="text-sm font-normal mr-3">PEPE به USD</span>
 					</div>
 
 					<div class="py-3 flex border-b border-primary-gray-light dark:border-primary-gray-dark">
-						<NuxtImg
+						<img
 							src="/images/delete/bitcoin.png"
 							alt="Brand Logo"
 							class="w-4 h-4 mr-1"
-						/>
+						>
 						<span class="text-sm font-normal mr-3">PEPE به USD</span>
 					</div>
 					<div class="py-3 flex border-b border-primary-gray-light dark:border-primary-gray-dark">
-						<NuxtImg
+						<img
 							src="/images/delete/bitcoin.png"
 							alt="Brand Logo"
 							class="w-4 h-4 mr-1"
-						/>
+						>
 						<span class="text-sm font-normal mr-3">PEPE به USD</span>
 					</div>
 
 					<div class="py-3 flex border-b border-primary-gray-light dark:border-primary-gray-dark">
-						<NuxtImg
+						<img
 							src="/images/delete/bitcoin.png"
 							alt="Brand Logo"
 							class="w-4 h-4 mr-1"
-						/>
+						>
 						<span class="text-sm font-normal mr-3">PEPE به USD</span>
 					</div>
 					<div class="py-3 flex border-b border-primary-gray-light dark:border-primary-gray-dark">
-						<NuxtImg
+						<img
 							src="/images/delete/bitcoin.png"
 							alt="Brand Logo"
 							class="w-4 h-4 mr-1"
-						/>
+						>
 						<span class="text-sm font-normal mr-3">PEPE به USD</span>
 					</div>
 				</div>

@@ -2,11 +2,11 @@
 	<div class="min-h-screen flex">
 		<div class="bg-yellow-400 w-full md:w-1/2 items-center justify-center hidden md:flex">
 			<div class="w-full h-full flex items-center justify-center">
-				<NuxtImg
+				<img
 					src="/images/bg/market.webp"
 					alt="Market Icon"
 					class="object-cover w-full h-full"
-				/>
+				>
 			</div>
 		</div>
 		<div class="bg-primaryGray-light dark:bg-primaryGray-dark text-white w-full md:w-1/2 flex flex-col items-center justify-center p-8 relative">
@@ -14,11 +14,11 @@
 				<div class="flex justify-between items-center px-8">
 					<div>
 						<ULink to="/">
-							<NuxtImg
+							<img
 								src="/images/svg/brand-logo.svg"
 								alt="Brand Logo Icon"
 								class="w-[77.6px] h-[32px]"
-							/>
+							>
 						</ULink>
 					</div>
 					<div>

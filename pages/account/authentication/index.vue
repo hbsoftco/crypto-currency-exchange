@@ -14,11 +14,11 @@
 						<span class="text-sm font-bold">
 							{{ $t('baseLevel') }}
 						</span>
-						<NuxtImg
+						<img
 							src="/images/Confirmation.png"
 							alt="Confirmation"
 							class="w-4 h-4 mr-2"
-						/>
+						>
 					</div>
 					<div class="py-4 h-full flex flex-col justify-between">
 						<div class="flex justify-between mt-4">
@@ -30,12 +30,12 @@
 								}"
 								class="w-24 flex justify-center items-center py-1 px-2 rounded-2xl text-sm font-medium"
 							>
-								<NuxtImg
+								<img
 									v-if="isConfirmed"
 									src="/images/Confirmation.png"
 									alt="Confirmation"
 									class="w-4 h-4 ml-1"
-								/>
+								>
 								{{ isConfirmed ? $t('confirmed') : $t('notConfirmed') }}
 							</div>
 						</div>
@@ -57,12 +57,12 @@
 								}"
 								class="w-24 flex justify-center items-center py-1 px-2 rounded-2xl text-sm font-medium"
 							>
-								<NuxtImg
+								<img
 									v-if="isConfirmed"
 									src="/images/Confirmation.png"
 									alt="Confirmation"
 									class="w-4 h-4 ml-1"
-								/>
+								>
 								{{ isConfirmed ? $t('confirmed') : $t('notConfirmed') }}
 							</div>
 						</div>
@@ -75,12 +75,12 @@
 								}"
 								class="w-24 flex justify-center items-center py-1 px-2 rounded-2xl text-sm font-medium"
 							>
-								<NuxtImg
+								<img
 									v-if="isConfirmed"
 									src="/images/Confirmation.png"
 									alt="Confirmation"
 									class="w-4 h-4 ml-1"
-								/>
+								>
 								{{ isConfirmed ? $t('confirmed') : $t('notConfirmed') }}
 							</div>
 						</div>
@@ -93,12 +93,12 @@
 								}"
 								class="w-24 flex justify-center items-center py-1 px-2 rounded-2xl text-sm font-medium"
 							>
-								<NuxtImg
+								<img
 									v-if="isConfirmed"
 									src="/images/Confirmation.png"
 									alt="Confirmation"
 									class="w-4 h-4 ml-1"
-								/>
+								>
 								{{ isConfirmed ? $t('confirmed') : $t('notConfirmed') }}
 							</div>
 						</div>
@@ -122,11 +122,11 @@
 						<span class="text-sm font-bold">
 							{{ $t('baseLevel') }}
 						</span>
-						<NuxtImg
+						<img
 							src="/images/Confirmation.png"
 							alt="Confirmation"
 							class="w-4 h-4 mr-2"
-						/>
+						>
 					</div>
 					<div class="py-4 h-full flex flex-col justify-between">
 						<div class="flex justify-between">
@@ -138,12 +138,12 @@
 								}"
 								class="w-24 flex justify-center items-center py-1 px-2 rounded-2xl text-sm font-medium"
 							>
-								<NuxtImg
+								<img
 									v-if="isConfirmed"
 									src="/images/Confirmation.png"
 									alt="Confirmation"
 									class="w-4 h-4 ml-1"
-								/>
+								>
 								{{ isConfirmed ? $t('confirmed') : $t('notConfirmed') }}
 							</div>
 						</div>
@@ -203,36 +203,36 @@
 							<span>{{ item.title }}</span>
 						</td>
 						<td class="text-sm font-normal py-2">
-							<NuxtImg
+							<img
 								v-if="item.baseLevel"
 								src="/images/Confirmation.png"
 								alt="Confirmation"
 								class="w-6 h-6"
-							/>
+							>
 							<IconClose
 								v-if="!item.baseLevel"
 								class="text-2xl text-accent-red"
 							/>
 						</td>
 						<td class="text-sm font-normal py-2">
-							<NuxtImg
+							<img
 								v-if="item.level1"
 								src="/images/Confirmation.png"
 								alt="Confirmation"
 								class="w-6 h-6"
-							/>
+							>
 							<IconClose
 								v-if="!item.level1"
 								class="text-2xl text-accent-red"
 							/>
 						</td>
 						<td class="text-sm font-normal py-2">
-							<NuxtImg
+							<img
 								v-if="item.level1"
 								src="/images/Confirmation.png"
 								alt="Confirmation"
 								class="w-6 h-6"
-							/>
+							>
 							<IconClose
 								v-if="!item.level1"
 								class="text-2xl text-accent-red"

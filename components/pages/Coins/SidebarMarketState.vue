@@ -10,13 +10,13 @@
 					class="flex justify-between"
 					:to="`/spot/${splitMarket(market?.marketBriefItem?.mSymbol)}`"
 				>
-					<NuxtImg
+					<img
 						:src="`https://api-bitland.site/media/currency/${market?.marketBriefItem?.currencyBriefItem?.cSymbol}.png`"
 						:alt="market?.marketBriefItem?.currencyBriefItem?.cName"
 						class="w-8 h-8 rounded-full"
 						format="webp"
 						densities="x1"
-					/>
+					>
 					<div class="flex flex-col mr-2">
 						<span class="text-sm font-normal">{{ market?.marketBriefItem?.mSymbol }}</span>
 						<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">

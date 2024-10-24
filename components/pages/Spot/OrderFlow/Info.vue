@@ -6,11 +6,11 @@
 					class="flex justify-start "
 					dir="ltr"
 				>
-					<NuxtImg
+					<img
 						src="/images/delete/bitcoin.png"
 						alt="bitcoin Logo"
 						class="w-6 h-6 mx-1"
-					/>
+					>
 					<h1 class="text-2xl font-bold">
 						XRP
 					</h1>

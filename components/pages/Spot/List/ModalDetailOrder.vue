@@ -20,11 +20,11 @@
 					<section>
 						<div class="flex justify-between px-1 md:px-16 my-4">
 							<div class="flex">
-								<NuxtImg
+								<img
 									src="/images/delete/bitcoin.png"
 									alt="bitcoin"
 									class="w-16 h-16"
-								/>
+								>
 								<div class="mr-2">
 									<span class="text-base font-bold">BabyDoge</span>
 									<div class="mt-1 px-2 py-1 text-accent-red bg-[#33181D] rounded-md">

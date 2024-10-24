@@ -67,11 +67,11 @@
 			class="py-4 border-b border-primary-gray-light dark:border-primary-gray-dark"
 		>
 			<div class="flex items-center">
-				<NuxtImg
-					src="./images/svg/profile/hamberger.svg"
+				<img
+					src="/images/svg/profile/hamberger.svg"
 					alt="bullet"
 					class="w-6 h-6"
-				/>
+				>
 				<h3 class="text-sm font-bold mr-1">
 					{{ $t("freezeAccount") }}
 				</h3>
@@ -92,11 +92,11 @@
 
 		<div class="py-4">
 			<div class="flex items-center">
-				<NuxtImg
-					src="./images/svg/profile/user-delete.svg"
+				<img
+					src="/images/svg/profile/user-delete.svg"
 					alt="lock"
 					class="w-6 h-6"
-				/>
+				>
 				<h3 class="text-sm font-bold mr-1">
 					{{ $t("deleteAccount") }}
 				</h3>

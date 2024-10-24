@@ -12,13 +12,13 @@
 						class="text-2xl cursor-pointer pl-1 md:pl-0"
 						@click="router.push('/auth/login')"
 					/>
-					<NuxtImg
+					<img
 						:src="`https://api-bitland.site/media/currency/${market?.marketBriefItem?.currencyBriefItem?.cSymbol}.png`"
 						:alt="market?.marketBriefItem?.currencyBriefItem?.cName"
 						class="w-4 md:w-8 h-4 md:h-8 mx-0 md:mx-2 rounded-full"
 						format="webp"
 						densities="x1"
-					/>
+					>
 				</div>
 				<div class="text-right">
 					<div

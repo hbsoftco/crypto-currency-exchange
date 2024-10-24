@@ -23,11 +23,11 @@
 								</p>
 							</div>
 						</div>
-						<NuxtImg
+						<img
 							src="/images/svg/invite.svg"
 							alt="invite-friends"
 							class="absolute bottom-0 left-0 hidden md:block w-[32.5rem] h-[32.5rem]"
-						/>
+						>
 					</div>
 				</UContainer>
 			</PagesImageCover>
@@ -75,11 +75,11 @@
 			<UContainer>
 				<div class="mt-16 md:mt-0 md:flex md:justify-between mb-20">
 					<div>
-						<NuxtImg
+						<img
 							src="/images/svg/platform.svg"
 							alt="platform"
 							class="w-[66rem]"
-						/>
+						>
 					</div>
 					<div class="px-4 md:px-28 mt-8 md:mt-10">
 						<p class="text-2xl md:text-4xl font-extrabold pb-8">

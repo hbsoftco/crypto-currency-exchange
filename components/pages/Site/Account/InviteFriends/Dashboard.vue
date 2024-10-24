@@ -24,11 +24,11 @@
 			<div class="block md:flex">
 				<div class="w-72 ml-8 my-8 md:my-0 px-4 py-2 bg-hover-light dark:bg-hover-dark rounded-md shadow-md">
 					<div class="flex border-b border-primary-gray-light dark:border-primary-gray-dark pb-4">
-						<NuxtImg
+						<img
 							src="/images/profile/money.png"
 							alt="money"
 							class="w-6 h-6 ml-1"
-						/>
+						>
 						<span class="text-base font-bold text-subtle-text-light dark:text-subtle-text-dark">{{ $t('totalIncome') }}</span>
 					</div>
 					<div class="flex justify-between pt-4 py-8">

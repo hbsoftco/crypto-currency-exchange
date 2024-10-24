@@ -34,7 +34,6 @@ export default defineNuxtConfig({
 		'@formkit/auto-animate',
 		'@pinia/nuxt',
 		'nuxt-svgo',
-		'@nuxt/image',
 		'nuxt-echarts',
 	],
 	i18n: {
@@ -64,9 +63,6 @@ export default defineNuxtConfig({
 				arrowParens: true,
 			},
 		},
-	},
-	image: {
-		// domains: ['https://api-bitland.site'],
 	},
 	colorMode: {
 		classPrefix: '',

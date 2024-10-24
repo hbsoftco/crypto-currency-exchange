@@ -45,11 +45,11 @@
 							</div>
 						</div>
 						<div class="m-2">
-							<NuxtImg
+							<img
 								src="/images/QR.png"
 								alt="QR"
 								class=""
-							/>
+							>
 						</div>
 					</div>
 				</div>

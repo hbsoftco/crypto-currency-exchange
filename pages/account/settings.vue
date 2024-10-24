@@ -56,10 +56,10 @@
 						<template #label="{ option }">
 							<p class="flex">
 								{{ option.label }}
-								<NuxtImg
+								<img
 									:src="option.icon"
 									class="mr-2 w-6 h-6"
-								/>
+								>
 							</p>
 						</template>
 					</URadioGroup>
@@ -84,10 +84,10 @@
 						<template
 							#label="{ option }"
 						>
-							<NuxtImg
+							<img
 								:src="option.icon"
 								class="ml-1"
-							/>
+							>
 							<p class="">
 								{{ option.label }}
 							</p>

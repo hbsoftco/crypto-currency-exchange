@@ -33,11 +33,11 @@
 							تا ۵۰% کمیسیون در هر معامله از زیر مجموعه های خود دریافت کنید.
 						</h3>
 					</div>
-					<NuxtImg
-						src="images/svg/platform.svg"
+					<img
+						src="/images/svg/platform.svg"
 						alt="platform"
 						class="w-[36.174rem] md:h-[30.099rem]"
-					/>
+					>
 				</div>
 			</section>
 
@@ -168,11 +168,11 @@
 						</h6>
 					</div>
 					<div>
-						<NuxtImg
+						<img
 							src="/images/profile/upgrade.png"
 							alt="upgrade"
 							class=""
-						/>
+						>
 					</div>
 				</div>
 				<div class="flex my-6">
@@ -242,11 +242,11 @@
 						</div>
 					</div>
 					<div>
-						<NuxtImg
+						<img
 							src="/images/profile/gift-invite.png"
 							alt="gift-invite"
 							class="w-44 md:w-[27.607rem] h-36 md:h-[22.5rem]"
-						/>
+						>
 					</div>
 				</div>
 			</section>

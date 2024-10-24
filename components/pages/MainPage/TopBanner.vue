@@ -44,11 +44,11 @@
 			class="bg-transparency-light hidden xl:block dark:bg-transparency-dark rounded-full w-[36rem] h-[36rem]"
 		>
 			<div class="flex items-center justify-center w-full h-full">
-				<NuxtImg
+				<img
 					:src="isDark ? '/images/phone-banner-home-black.webp' : '/images/phone-banner-home.webp'"
 					alt="Brand Logo"
 					class="px-36"
-				/>
+				>
 			</div>
 		</div>
 	</div>

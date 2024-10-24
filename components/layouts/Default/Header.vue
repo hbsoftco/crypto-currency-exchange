@@ -6,11 +6,11 @@
 			<div class="flex justify-between items-center h-full">
 				<div class="flex justify-between">
 					<ULink to="/">
-						<NuxtImg
+						<img
 							src="/images/svg/brand-logo.svg"
 							alt="Brand Logo"
 							class="w-20 h-8"
-						/>
+						>
 					</ULink>
 
 					<ul class="flex items-center space-x-4 mr-8">

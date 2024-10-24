@@ -2,11 +2,11 @@
 	<div class="flex justify-between items-center">
 		<IconArrowLeft class="text-9xl text-primary-yellow-light dark:text-primary-yellow-dark" />
 		<div class="flex justify-between items-center px-20">
-			<NuxtImg
+			<img
 				src="/images/award.webp"
 				alt="award"
 				class="w-[19.5rem] h-[22.813rem]"
-			/>
+			>
 			<div class="px-20">
 				<div class="flex">
 					<div

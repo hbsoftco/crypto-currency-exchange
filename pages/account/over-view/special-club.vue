@@ -20,16 +20,16 @@
 				<div class="col-span-12 md:col-span-4">
 					<div class="text-center">
 						<div class="relative">
-							<NuxtImg
-								src="./images/profile/Business_card.png"
+							<img
+								src="/images/profile/Business_card.png"
 								class="h-72"
-							/>
+							>
 							<div class="absolute top-28 right-12 md:right-20">
 								<div class="flex items-center">
-									<NuxtImg
+									<img
 										:src="LevelItem?.logoUrl"
 										class="w-4 h-4"
-									/>
+									>
 									<span class="mr-1 md:mr-4 text-sm md:text-lg font-normal md:font-bold text-primary-yellow-light dark:text-primary-yellow-dark">
 										{{ profileStore.profileLoading ? '...': getValueByKey(profileStore.userProfile, 'NAME') }}
 										{{ profileStore.profileLoading ? '...': getValueByKey(profileStore.userProfile, 'FAMILY') }}

@@ -5,11 +5,11 @@
 		dir="rtl"
 	>
 		<div class="flex flex-row-reverse items-center">
-			<NuxtImg
+			<img
 				:src="`https://api-bitland.site/media/currency/${currency.marketBriefItem?.currencyBriefItem?.cSymbol}.png`"
 				:alt="currency.marketBriefItem?.currencyBriefItem?.cName"
 				class="w-8 h-8 mr-3 rounded-full"
-			/>
+			>
 			<span class="text-base font-bold">{{ currency.marketBriefItem?.currencyBriefItem?.cSymbol }}</span>
 			<span class="mx-0.5">/</span>
 			<span class="text-base font-bold">{{ currency.marketBriefItem?.quoteItem?.cSymbol }}</span>

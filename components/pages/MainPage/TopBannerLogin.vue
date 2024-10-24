@@ -6,11 +6,11 @@
 			کمترین کارمزد و بالاترین سود را تجربه کنید!
 		</h1>
 		<div class="flex mt-6">
-			<NuxtImg
+			<img
 				:src="traderBriefItem?.level.logoUrl"
 				alt="fish"
 				class="w-6 h-6 ml-2"
-			/>
+			>
 			<span class="ml-1">{{ $t("yourLevel") }}: </span><span>{{ profileStore.profileLoading ? '...': getValueByKey(profileStore.userProfile, 'TRD_LVL_NAME') }}</span>
 		</div>
 		<div
@@ -66,11 +66,11 @@
 				class="px-4 py-2 border-l border-primary-gray-light dark:border-primary-gray-dark"
 			>
 				<div class="flex">
-					<NuxtImg
+					<img
 						src="/images/award.webp"
 						alt="award"
 						class="w-6 h-6"
-					/>
+					>
 					<span class="text-sm font-bold mr-2 text-dark dark:text-white">{{
 						$t("getYourReward")
 					}}</span>
@@ -84,11 +84,11 @@
 				class="px-4 py-2 border-l border-primary-gray-light dark:border-primary-gray-dark"
 			>
 				<div class="flex">
-					<NuxtImg
+					<img
 						src="/images/Rectangle.png"
 						alt="Rectangle"
 						class="w-6 h-6"
-					/>
+					>
 					<span class="text-sm font-bold mr-2 text-dark dark:text-white">{{
 						$t("inviteFriends")
 					}}</span>
@@ -101,11 +101,11 @@
 				class="px-4 py-2 border-l border-primary-gray-light dark:border-primary-gray-dark"
 			>
 				<div class="flex">
-					<NuxtImg
+					<img
 						src="/images/Rectangle2.png"
 						alt="Rectangle"
 						class="w-6 h-6"
-					/>
+					>
 					<span class="text-sm font-bold mr-2 text-dark dark:text-white">{{
 						$t("guid")
 					}}</span>
@@ -118,11 +118,11 @@
 				class="px-4 py-2"
 			>
 				<div class="flex">
-					<NuxtImg
+					<img
 						src="/images/Rectangle3.png"
 						alt="award"
 						class="w-6 h-6"
-					/>
+					>
 					<span class="text-sm font-bold mr-2 text-dark dark:text-white">{{
 						$t("trade")
 					}}</span>

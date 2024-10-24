@@ -10,20 +10,20 @@
 				:style="{ width: `${progress}%` }"
 			>
 				<!-- Image at the head of progress bar -->
-				<NuxtImg
+				<img
 					src="/images/svg/train.svg"
 					alt="Progress"
 					class="absolute w-12 h-12 -right-12"
-				/>
+				>
 			</div>
 		</div>
 
 		<!-- Image at the end of progress bar -->
-		<NuxtImg
+		<img
 			src="/images/svg/diamond.svg"
 			alt="Diamond"
 			class="w-6 h-6 ml-2 absolute right-0"
-		/>
+		>
 	</div>
 </template>
 

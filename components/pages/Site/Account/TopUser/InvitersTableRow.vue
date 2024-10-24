@@ -6,30 +6,30 @@
 			class="text-base font-medium py-2"
 		>
 			<div class="flex justify-start items-center">
-				<NuxtImg
+				<img
 					v-if="index === 0"
 					src="/images/profile/golden.png"
 					alt="golden"
 					class=""
-				/>
-				<NuxtImg
+				>
+				<img
 					v-else-if="index === 1"
 					src="/images/profile/silver.png"
 					alt="silver"
 					class=""
-				/>
-				<NuxtImg
+				>
+				<img
 					v-else-if="index === 2"
 					src="/images/profile/boronz.png"
 					alt="silver"
 					class=""
-				/>
-				<NuxtImg
+				>
+				<img
 					v-else
 					src="/images/profile/medal.png"
 					alt="golden"
 					class=""
-				/>
+				>
 				<p class="mr-1">
 					{{ useNumber(index+1) }}
 				</p>

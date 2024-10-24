@@ -192,11 +192,11 @@
 							>
 								<td class="text-nowrap text-base font-medium py-2">
 									<div class="flex items-center">
-										<NuxtImg
+										<img
 											src="/images/delete/bitcoin.png"
 											alt="Brand Logo"
 											class="w-4 h-4 mx-1"
-										/>
+										>
 										{{ $t(row.name) }}
 									</div>
 								</td>

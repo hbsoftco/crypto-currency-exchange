@@ -1,11 +1,11 @@
 <template>
 	<div class="p-4 bg-primary-gray-light dark:bg-primary-gray-dark rounded-md">
 		<div class="flex items-center">
-			<NuxtImg
-				src="./images/svg/profile/shield.svg"
+			<img
+				src="/images/svg/profile/shield.svg"
 				alt="shield"
 				class="w-4 h-4"
-			/>
+			>
 			<span class="text-sm font-bold mr-2">{{ $t("securityLevel") }}</span>
 		</div>
 		<div class="py-4">

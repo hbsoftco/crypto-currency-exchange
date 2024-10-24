@@ -2,11 +2,11 @@
 	<div>
 		<div class="flex justify-between py-8 mt-20">
 			<div class="max-w-[31rem] max-h-[31rem] h-[31rem] w-[31rem]">
-				<NuxtImg
+				<img
 					src="/images/always-bitland.webp"
 					alt="always-bitland"
 					class="w-full"
-				/>
+				>
 			</div>
 			<div class="flex flex-col w-[33rem] pr-8">
 				<span class="text-[2.5rem] font-black">

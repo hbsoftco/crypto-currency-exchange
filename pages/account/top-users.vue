@@ -64,11 +64,11 @@
 				</div>
 				<!-- Right Side -->
 				<div class="relative">
-					<NuxtImg
+					<img
 						src="/images/svg/profile/top-user.svg"
 						alt="top-user"
 						class="relative w-[41.921rem] h-[29.5rem]"
-					/>
+					>
 					<div class="absolute w-full h-full bottom-0 pl-[5.4rem] pr-[4.5rem]">
 						<div class="flex justify-between items-end h-full">
 							<div class="w-[154px] mb-1">
@@ -81,11 +81,11 @@
 									</h5>
 								</div>
 								<div class="px-4 relative">
-									<NuxtImg
+									<img
 										src="/images/svg/profile/rectangle-three.svg"
 										alt="top-user"
 										class="relative h-[7.2rem] m-auto"
-									/>
+									>
 									<div class="absolute text-center top-7 left-0 right-0">
 										<h5 class="text-white font-bold mb-0.5">
 											{{ $t('thirdPerson') }}
@@ -115,11 +115,11 @@
 									</h5>
 								</div>
 								<div class="px-2 relative">
-									<NuxtImg
+									<img
 										src="/images/svg/profile/rectangle.svg"
 										alt="top-user"
 										class="relative w-full"
-									/>
+									>
 									<div class="absolute text-center top-8 left-0 right-0">
 										<h5 class="text-white font-bold mb-1">
 											{{ $t('firstPerson') }}
@@ -149,11 +149,11 @@
 									</h5>
 								</div>
 								<div class="px-4 relative">
-									<NuxtImg
+									<img
 										src="/images/svg/profile/rectangle-two.svg"
 										alt="top-user"
 										class="relative h-32 m-auto"
-									/>
+									>
 									<div class="absolute text-center top-7 left-0 right-0">
 										<h5 class="text-white font-bold mb-1">
 											{{ $t('secondPerson') }}

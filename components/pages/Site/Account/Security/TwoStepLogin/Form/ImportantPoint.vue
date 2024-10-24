@@ -7,11 +7,11 @@
 			</h2>
 		</div>
 		<div class="flex justify-center">
-			<NuxtImg
-				src="images/svg/profile/Google_Authenticator.svg"
+			<img
+				src="/images/svg/profile/Google_Authenticator.svg"
 				alt="Google_Authenticator"
 				class="w-36 h-36"
-			/>
+			>
 		</div>
 		<div class="my-6">
 			<p class="text-sm font-bold text-justify">

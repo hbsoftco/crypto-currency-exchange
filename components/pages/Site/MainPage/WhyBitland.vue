@@ -8,11 +8,11 @@
 				</p>
 			</div>
 			<div>
-				<NuxtImg
+				<img
 					:src="isDark ? '/images/why-bitland-black.webp' : '/images/why-bitland.webp'"
 					alt="platform"
 					class="w-full mt-14"
-				/>
+				>
 			</div>
 		</UContainer>
 	</div>

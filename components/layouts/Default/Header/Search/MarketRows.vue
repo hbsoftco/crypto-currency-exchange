@@ -1,11 +1,11 @@
 <template>
 	<div class="flex justify-between items-center">
 		<div class="flex">
-			<NuxtImg
+			<img
 				src="/images/delete/bitcoin.png"
 				alt="bitcoin Logo"
 				class="w-5 h-5 ml-1"
-			/>
+			>
 			<span class="text-sm font-normal">BTC</span>/
 			<span class="text-sm font-normal">USDT</span>
 		</div>

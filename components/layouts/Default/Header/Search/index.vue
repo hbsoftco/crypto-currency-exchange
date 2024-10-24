@@ -29,11 +29,11 @@
 			<div class="w-auto md:w-96 bg-hover-light dark:bg-hover-dark shadow-lg rounded p-2">
 				<div class="flex items-center mb-1">
 					<span class="text-sm font-bold ml-1">{{ $t("hotTopics") }}</span>
-					<NuxtImg
+					<img
 						src="/images/svg/fire.svg"
 						alt="fire Logo"
 						class="w-4 h-4"
-					/>
+					>
 				</div>
 				<div class="flex justify-between">
 					<div
@@ -47,11 +47,11 @@
 
 				<div class="flex items-center mb-1 mt-3">
 					<span class="text-sm font-bold ml-1">{{ $t("newArrivals") }}</span>
-					<NuxtImg
+					<img
 						src="/images/svg/new-message.svg"
 						alt="message Logo"
 						class="w-4 h-4"
-					/>
+					>
 				</div>
 				<div class="flex justify-between">
 					<div
@@ -65,11 +65,11 @@
 
 				<div class="flex items-center mb-1 mt-3">
 					<span class="text-sm font-bold ml-1">{{ $t("latestNews") }}</span>
-					<NuxtImg
+					<img
 						src="/images/svg/Analytics.svg"
 						alt="Analytics Logo"
 						class="w-4 h-4"
-					/>
+					>
 				</div>
 				<div>
 					<div
@@ -126,11 +126,11 @@
 				</div>
 				<div class="flex items-center mb-1 mt-3">
 					<span class="text-sm font-bold ml-1">{{ $t("latestNews") }}</span>
-					<NuxtImg
+					<img
 						src="/images/svg/Analytics.svg"
 						alt="Analytics Logo"
 						class="w-4 h-4"
-					/>
+					>
 				</div>
 				<div
 					v-for="(item, index) in gridItems"

@@ -9,11 +9,11 @@ import { if } from '../../../../../../.nuxt/eslint-typegen';
 				{{ props.title }}
 			</span>
 			<div v-if="isActive">
-				<NuxtImg
+				<img
 					src="/images/Confirmation.png"
 					alt="Confirmation"
 					class="w-4 h-4 mr-3"
-				/>
+				>
 			</div>
 		</div>
 		<div class="my-4 flex justify-center items-center text-center">

@@ -22,11 +22,11 @@
 								</p>
 							</div>
 						</div>
-						<NuxtImg
+						<img
 							src="/images/svg/privacy.svg"
 							alt="invite"
 							class="absolute bottom-0 left-0 hidden md:block w-[30rem] h-[36.125rem]"
-						/>
+						>
 					</div>
 				</UContainer>
 			</ImageCover>

@@ -10,11 +10,11 @@
 			<div
 				class="flex items-center justify-center bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-full px-3 py-1"
 			>
-				<NuxtImg
+				<img
 					src="/images/delete/fish.png"
 					alt="Fish Icon"
 					class="w-5 h-5"
-				/>
+				>
 				<span class="text-white text-sm mr-2">سطح ماهی</span>
 			</div>
 		</div>

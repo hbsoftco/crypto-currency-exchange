@@ -7,12 +7,12 @@
 			<div class="grid grid-cols-12 gap-4">
 				<div class="col-span-8">
 					<div class="flex items-center">
-						<NuxtImg
+						<img
 							:src="`https://api-bitland.site/media/currency/${currency?.cSymbol}.png`"
 							:alt="currency?.cName"
 							class="w-10 h-10 rounded-full"
 							format="webp"
-						/>
+						>
 						<h1 class="text-base md:text-xl font-bold mr-4">
 							{{ currency?.cName }} ({{ currency?.cSymbol }})
 						</h1>

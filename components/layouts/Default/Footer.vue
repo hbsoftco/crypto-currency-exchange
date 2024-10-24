@@ -3,11 +3,11 @@
 		<UContainer>
 			<div class="grid grid-cols-1 md:grid-cols-12 gap-4 pt-6">
 				<div class="col-span-12 md:col-span-5 px-0 md:px-4">
-					<NuxtImg
+					<img
 						src="/images/svg/brand-logo.svg"
 						alt="Brand Logo"
 						class="mb-3 w-28 h-12"
-					/>
+					>
 					<span class="font-bold leading-loose text-base">
 						{{ $t('bitlandProductByCompany') }}
 					</span>

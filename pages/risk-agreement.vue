@@ -23,11 +23,11 @@
 								</p>
 							</div>
 						</div>
-						<NuxtImg
+						<img
 							src="/images/svg/risk.svg"
 							alt="invite"
 							class="absolute bottom-0 left-0 hidden md:block w-[42.875rem] h-[38.313rem]"
-						/>
+						>
 					</div>
 				</UContainer>
 			</PagesImageCover>

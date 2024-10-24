@@ -15,11 +15,11 @@
 						/>
 					</div>
 					<div class="hidden md:block">
-						<NuxtImg
+						<img
 							src="/images/svg/site/support.svg"
 							alt="support"
 							class="w-full md:w-52 h-56"
-						/>
+						>
 					</div>
 				</div>
 			</UContainer>
@@ -39,11 +39,11 @@
 						:key="index"
 						class="flex flex-col items-center justify-center py-3 px-2 cursor-pointer bg-hover2-light dark:bg-hover2-dark rounded-md"
 					>
-						<NuxtImg
+						<img
 							:src="item.mediaUrl"
 							:alt="item.info.header"
 							class="w-6 h-6 rounded-full ml-2"
-						/>
+						>
 						<span class="mt-2 text-sm font-medium">{{ item.info.header }}</span>
 					</div>
 				</div>
@@ -76,11 +76,11 @@
 					</div>
 					<div class="col-span-12 md:col-span-4 text-center">
 						<div class="flex justify-center">
-							<NuxtImg
+							<img
 								src="/images/svg/live-chat.svg"
 								alt="live-chat"
 								class="w-64 h-72 cursor-pointer"
-							/>
+							>
 						</div>
 					</div>
 				</div>

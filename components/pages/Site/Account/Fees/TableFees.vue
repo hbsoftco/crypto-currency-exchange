@@ -47,11 +47,11 @@
 					<div class=" px-4 py-2 my-1 bg-hover-light dark:bg-hover-dark shadow-md">
 						<div class="flex justify-between">
 							<div class="flex items-center">
-								<NuxtImg
+								<img
 									:src="row.iconSrc"
 									alt="icon"
 									class="w-8 h-8 ml-1"
-								/>
+								>
 								<div class="text-right">
 									<div
 										class="border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"

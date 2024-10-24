@@ -10,11 +10,11 @@
 		</div>
 		<div class="text-center">
 			<div class="flex justify-center text-center p-8 border-b border-subtle-text-light dark:border-subtle-text-dark">
-				<NuxtImg
+				<img
 					src="/images/QR.png"
 					alt="QR"
 					class="w-52 h-52"
-				/>
+				>
 			</div>
 			<div class="my-8">
 				<span class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark">{{ $t('copySecurityKey') }}</span>

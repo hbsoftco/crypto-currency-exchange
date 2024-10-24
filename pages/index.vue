@@ -95,7 +95,7 @@ import Prize from '~/components/pages/Site/MainPage/Prize.vue';
 import NewCurrencies from '~/components/pages/Site/MainPage/NewCurrencies/index.vue';
 import QuickMenuMobile from '~/components/pages/Site/MainPage/QuickMenuMobile.vue';
 import TopBanner from '~/components/pages/MainPage/TopBanner.vue';
-import TopBannerLogin from '~/components/pages/Site/MainPage/TopBannerLogin.vue';
+import TopBannerLogin from '~/components/pages/MainPage/TopBannerLogin.vue';
 import TopSlider from '~/components/pages/Site/MainPage/TopSlider.vue';
 import TradingMarkets from '~/components/pages/MainPage/TradingMarkets.vue';
 import WhyBitland from '~/components/pages/Site/MainPage/WhyBitland.vue';

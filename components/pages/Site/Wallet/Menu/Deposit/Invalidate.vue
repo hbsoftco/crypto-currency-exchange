@@ -18,11 +18,11 @@
 					<div class="grid grid-cols-2 gap-4">
 						<div class="text-center">
 							<div class="flex justify-center">
-								<NuxtImg
+								<img
 									src="/images/QR.png"
 									alt="QR"
 									class="w-24 h-24"
-								/>
+								>
 							</div>
 							<div class="mt-4 mb-5">
 								<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">Memo/tag</span>
@@ -38,11 +38,11 @@
 						</div>
 						<div class=" text-center">
 							<div class="flex justify-center">
-								<NuxtImg
+								<img
 									src="/images/QR.png"
 									alt="QR"
 									class="w-24 h-24"
-								/>
+								>
 							</div>
 							<div class="mt-4 mb-5">
 								<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('address') }}</span>

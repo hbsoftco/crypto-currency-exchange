@@ -18,10 +18,10 @@
 					<template #label="{ option }">
 						<p class="flex px-1 w-1/2 cursor-pointer">
 							<span class="text-nowrap">{{ option.label }}</span>
-							<NuxtImg
+							<img
 								:src="option.icon"
 								class="mr-2 w-6 h-6"
-							/>
+							>
 						</p>
 					</template>
 				</URadioGroup>
@@ -45,9 +45,9 @@
 				>
 					<template #label="{ option }">
 						<p class="flex flex-col justify-center items-center cursor-pointer">
-							<NuxtImg
+							<img
 								:src="option.icon"
-							/>
+							>
 							<span class="mt-2">{{ option.label }}</span>
 						</p>
 					</template>
@@ -131,9 +131,9 @@
 				>
 					<template #label="{ option }">
 						<p class="flex flex-col justify-center items-center cursor-pointer">
-							<NuxtImg
+							<img
 								:src="option.icon"
-							/>
+							>
 							{{ option.label }}
 						</p>
 					</template>
@@ -158,9 +158,9 @@
 				>
 					<template #label="{ option }">
 						<p class="flex flex-col justify-center items-center cursor-pointer">
-							<NuxtImg
+							<img
 								:src="option.icon"
-							/>
+							>
 							{{ option.label }}
 						</p>
 					</template>

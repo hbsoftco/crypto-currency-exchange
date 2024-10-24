@@ -22,11 +22,11 @@
 					</h4>
 					<div class="flex justify-between items-center w-full my-8">
 						<div class="flex items-center">
-							<NuxtImg
+							<img
 								:src="String(reward.currencyId)"
 								alt="logo"
 								class="w-20 h-20 rounded-full ml-2"
-							/>
+							>
 							<div>
 								<h5 class="text-sm font-bold text-primary-yellow-light dark:text-primary-yellow-dark">
 									{{ useNumber(reward.amount) }}

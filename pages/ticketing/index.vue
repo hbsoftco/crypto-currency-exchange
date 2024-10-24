@@ -19,11 +19,11 @@
 						</div>
 					</div>
 					<div>
-						<NuxtImg
+						<img
 							src="/images/svg/ticketing.svg"
 							alt="ticketing"
 							class="w-80 h-80"
-						/>
+						>
 					</div>
 				</div>
 			</UContainer>

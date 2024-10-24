@@ -17,11 +17,11 @@
 					</div>
 					<div class="flex items-center">
 						<div>
-							<NuxtImg
+							<img
 								src="/images/wallet/deposit.webp"
 								alt="deposit"
 								class="w-40 h-56"
-							/>
+							>
 						</div>
 						<div class="mx-8 text-center">
 							<p class="text-base font-medium mt-4 mb-8">

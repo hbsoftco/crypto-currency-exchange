@@ -48,11 +48,11 @@
 										v-model="item.checked"
 										class=""
 									/>
-									<NuxtImg
+									<img
 										:src="item.icon"
 										alt="Brand Logo"
 										class="w-4 h-4"
-									/>
+									>
 									<span class="text-xs font-normal">{{ item.label }}</span>
 								</div>
 							</div>
@@ -70,11 +70,11 @@
 										v-model="item.checked"
 										class=""
 									/>
-									<NuxtImg
+									<img
 										:src="item.icon"
 										alt="Brand Logo"
 										class="w-4 h-4"
-									/>
+									>
 									<span class="text-xs font-normal">{{ item.label }}</span>
 								</div>
 							</div>
@@ -133,11 +133,11 @@
 			<div class="my-4">
 				<UiTitleWithBack :title="$t('manageAPI')" />
 			</div>
-			<NuxtImg
+			<img
 				src="/images/profile/api.png"
 				alt="api"
 				class="p-14"
-			/>
+			>
 			<p class="text-base font-bold">
 				{{ $t('apiText') }}
 			</p>

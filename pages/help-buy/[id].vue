@@ -41,11 +41,11 @@
 								</div>
 							</div>
 						</div>
-						<NuxtImg
+						<img
 							src="/images/delete/bitcoin.png"
 							alt="logo"
 							class="hidden md:block w-80 h-80"
-						/>
+						>
 					</div>
 				</UContainer>
 			</PagesImageCover>
@@ -114,7 +114,7 @@
 					</div>
 				</div>
 				<div class="flex items-center">
-					<!-- <NuxtImg
+					<!-- <img
 						:src="`https://api-bitland.site/media/currency/${item.currency?.cSymbol}.png`"
 						:alt="item.currency?.cName"
 						class="w-6 h-6 rounded-full ml-2"

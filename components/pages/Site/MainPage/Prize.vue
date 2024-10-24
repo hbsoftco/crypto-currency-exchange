@@ -1,11 +1,11 @@
 <template>
 	<div class="py-20">
 		<h5 class="flex justify-start items-center mb-6 ">
-			<NuxtImg
+			<img
 				src="/images/svg/site/main-page/prize.svg"
 				alt="prize"
 				class="ml-4"
-			/>
+			>
 			<strong class="font-bold text-2xl">{{ $t('claimYourPrizeNow') }}</strong>
 		</h5>
 

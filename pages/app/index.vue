@@ -4,11 +4,11 @@
 			<div class="flex justify-between items-center mt-20 mb-32">
 				<div>
 					<ULink to="/">
-						<NuxtImg
+						<img
 							src="/images/svg/brand-logo.svg"
 							alt="Brand Logo"
 							class="w-28 h-12"
-						/>
+						>
 					</ULink>
 					<h1 class="mt-11 mb-6 text-2xl font-bold">
 						{{ helpData?.info[0].header }}
@@ -33,37 +33,37 @@
 					</p>
 					<div class="grid grid-cols-1 md:grid-cols-3  gap-3">
 						<ULink to="">
-							<NuxtImg
+							<img
 								src="/images/svg/windows.svg"
 								alt="windows"
 								class="w-52 h-16"
-							/>
+							>
 						</ULink>
 						<ULink to="">
-							<NuxtImg
+							<img
 								src="/images/svg/app-store.svg"
 								alt="app-store"
 								class="w-52 h-16"
-							/>
+							>
 						</ULink>
 						<ULink
 							to="https://play.google.com/store/apps/details?id=io.bitland"
 							target="_blank"
 						>
-							<NuxtImg
+							<img
 								src="/images/svg/google-play.svg"
 								alt="google-play"
 								class="w-52 h-16"
-							/>
+							>
 						</ULink>
 					</div>
 				</div>
 				<div class="hidden md:block">
-					<NuxtImg
+					<img
 						src="/images/icon-download-app.webp"
 						alt="platform"
 						class="w-[38.596rem] h-[25.875rem]"
-					/>
+					>
 				</div>
 			</div>
 		</UContainer>

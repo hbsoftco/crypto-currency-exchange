@@ -24,10 +24,16 @@
 			<template #item="{ item }">
 				<div class="border-t border-t-primary-gray-light dark:border-t-primary-gray-dark p-2">
 					<div v-if="item.key === 'USDT'">
-						<MenuTradeCoins :type="type" />
+						<MenuTradeCoins
+							:type="type"
+							:quote="item.key"
+						/>
 					</div>
 					<div v-else-if="item.key === 'TMN'">
-						<MenuTradeCoins :type="type" />
+						<MenuTradeCoins
+							:type="type"
+							:quote="item.key"
+						/>
 					</div>
 				</div>
 			</template>

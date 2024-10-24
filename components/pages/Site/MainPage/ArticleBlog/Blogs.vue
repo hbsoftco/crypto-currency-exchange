@@ -1,11 +1,11 @@
 <template>
 	<div>
 		<div class="shadow rounded-md overflow-hidden">
-			<NuxtImg
+			<img
 				:src="data.imgSrc"
 				alt="slider img"
 				class="w-full"
-			/>
+			>
 			<div class="bg-primary-gray-light dark:bg-primary-gray-dark text-right p-4 ">
 				<div class="flex flex-row-reverse justify-between py-3">
 					<div class="flex flex-row-reverse items-center">

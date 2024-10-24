@@ -12,7 +12,7 @@
 					</p>
 					<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 						<!-- <ULink to="">
-							<NuxtImg
+							<img
 								src="/images/svg/app-store.svg"
 								alt="app-store"
 								class="w-52 h-16"
@@ -22,21 +22,21 @@
 							to="https://play.google.com/store/apps/details?id=io.bitland"
 							target="_blank"
 						>
-							<NuxtImg
+							<img
 								src="/images/svg/google-play.svg"
 								alt="google-play"
 								class="w-52 h-16"
-							/>
+							>
 						</ULink>
 						<!-- <ULink to="">
-							<NuxtImg
+							<img
 								src="/images/svg/windows.svg"
 								alt="windows"
 								class="w-52 h-16"
 							/>
 						</ULink>
 						<ULink to="">
-							<NuxtImg
+							<img
 								src="/images/svg/app-store.svg"
 								alt="app-store"
 								class="w-52 h-16"
@@ -46,14 +46,14 @@
 							to="https://play.google.com/store/apps/details?id=io.bitland"
 							target="_blank"
 						>
-							<NuxtImg
+							<img
 								src="/images/svg/google-play.svg"
 								alt="google-play"
 								class="w-52 h-16"
 							/>
 						</ULink>
 						<ULink to="">
-							<NuxtImg
+							<img
 								src="/images/svg/windows.svg"
 								alt="windows"
 								class="w-52 h-16"
@@ -62,11 +62,11 @@
 					</div>
 				</div>
 				<div>
-					<NuxtImg
+					<img
 						src="/images/icon-download-app.webp"
 						alt="platform"
 						class="w-[35.875rem] h-80"
-					/>
+					>
 				</div>
 			</div>
 		</UContainer>

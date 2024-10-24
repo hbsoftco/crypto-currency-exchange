@@ -139,11 +139,11 @@
 							</td>
 							<td class="text-nowrap text-xs font-normal py-2">
 								<div class="flex">
-									<NuxtImg
+									<img
 										:src="`https://api-bitland.site/media/currency/${item.currency?.cSymbol}.png`"
 										:alt="item.currency?.cName"
 										class="w-4 h-4 rounded-full"
-									/>
+									>
 									<span class="mr-1">{{ item.currency?.cName }}</span>
 								</div>
 							</td>

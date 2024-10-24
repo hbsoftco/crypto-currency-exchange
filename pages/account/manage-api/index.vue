@@ -93,11 +93,11 @@
 			<div class="my-1">
 				<UiTitleWithBack :title="$t('manageAPI')" />
 			</div>
-			<NuxtImg
+			<img
 				src="/images/profile/api.png"
 				alt="api"
 				class="p-14"
-			/>
+			>
 			<p class="text-base font-bold">
 				{{ $t('apiText') }}
 			</p>

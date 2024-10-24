@@ -19,33 +19,33 @@
 					:class="{ 'opacity-100': activeButton === 'all', 'opacity-40': activeButton !== 'all' }"
 					@click="setActiveButton('all')"
 				>
-					<NuxtImg
+					<img
 						:src="getIconSrc('all')"
 						alt="handicap"
 						class="w-6 h-6"
-					/>
+					>
 				</button>
 				<button
 					class="w-7 h-7 flex justify-center items-center mx-3"
 					:class="{ 'opacity-100': activeButton === 'buy', 'opacity-40': activeButton !== 'buy' }"
 					@click="setActiveButton('buy')"
 				>
-					<NuxtImg
+					<img
 						:src="getIconSrc('buy')"
 						alt="handicap"
 						class="w-6 h-6"
-					/>
+					>
 				</button>
 				<button
 					class="w-7 h-7 flex justify-center items-center"
 					:class="{ 'opacity-100': activeButton === 'sell', 'opacity-40': activeButton !== 'sell' }"
 					@click="setActiveButton('sell')"
 				>
-					<NuxtImg
+					<img
 						:src="getIconSrc('sell')"
 						alt="handicap"
 						class="w-6 h-6"
-					/>
+					>
 				</button>
 			</div>
 			<!-- Buttons -->

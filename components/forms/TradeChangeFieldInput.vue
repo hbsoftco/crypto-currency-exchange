@@ -26,11 +26,11 @@
 					<template #label>
 						<div class="flex justify-between items-start">
 							<div class="ml-1.5 mt-1">
-								<NuxtImg
+								<img
 									:src="`https://api-bitland.site/media/currency/${selected.cSymbol}.png`"
 									:alt="selected.cSymbol"
 									class="w-6 h-6 rounded-full"
-								/>
+								>
 							</div>
 							<div class="flex flex-col items-start min-w-20">
 								<div>

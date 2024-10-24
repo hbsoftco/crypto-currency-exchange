@@ -23,12 +23,12 @@
 							v-if="!getValueByKey(profileStore.userProfile, 'NICKNAME')"
 							class="text-black text-6xl"
 						/>
-						<NuxtImg
+						<img
 							v-else
 							:src="getValueByKey(profileStore.userProfile, 'AVATAR_URL') || ''"
 							alt="user-avatar"
 							class="w-16 h-16 rounded-full"
-						/>
+						>
 						<!-- {{ getValueByKey(profileStore.userProfile, 'AVATAR_URL') }} -->
 					</div>
 					<div class="bg-primary-gray-light dark:bg-primary-gray-dark w-6 h-6 p-1 cursor-pointer shadow-sm rounded-full absolute right-0 bottom-0 flex justify-center items-center">
@@ -63,11 +63,11 @@
 							<p class="dark:text-text-dark font-medium ml-2">
 								{{ $t('vipClubAction') }}
 							</p>
-							<NuxtImg
+							<img
 								src="/images/delete/gem.svg"
 								alt="gem"
 								class="w-4 h-4"
-							/>
+							>
 						</div>
 					</ULink>
 				</div>

@@ -27,11 +27,11 @@
 								</div>
 							</div>
 						</div>
-						<NuxtImg
+						<img
 							src="/images/svg/help-center.svg"
 							alt="help-center"
 							class="absolute bottom-0 left-0 hidden md:block w-[30rem] h-[36.125rem]"
-						/>
+						>
 					</div>
 				</UContainer>
 			</ImageCover>
@@ -52,11 +52,11 @@
 							:key="index"
 							class="flex flex-col justify-center items-center py-4 px-4 border border-primary-gray-light dark:border-primary-gray-dark rounded-md"
 						>
-							<NuxtImg
+							<img
 								:src="item.mediaUrl"
 								alt="icon"
 								class="w-12 h-12"
-							/>
+							>
 							<p class="text-sm font-bold mt-4">
 								{{ $t(item.info.header) }}
 							</p>
@@ -87,11 +87,11 @@
 							:key="index"
 							class="flex items-center py-4 border-b border-primary-gray-light dark:border-primary-gray-dark"
 						>
-							<NuxtImg
+							<img
 								:src="item.mediaUrl"
 								alt="icon"
 								class="w-5 h-5"
-							/>
+							>
 							<p class="text-sm font-medium mr-3">
 								{{ $t(item.info.header) }}
 								<!-- {{ $t(item.info.content) }} -->

@@ -26,11 +26,11 @@
 					>
 						{{ $t("congratulations") }}
 					</h4>
-					<NuxtImg
+					<img
 						src="/images/profile/Award-modal.png"
 						alt="award"
 						class="w-full md:w-80 h-80 text-center"
-					/>
+					>
 					<div class="flex">
 						<p class="text-base font-bold text-white text-center">
 							{{ props.reward.prizeTitle }}

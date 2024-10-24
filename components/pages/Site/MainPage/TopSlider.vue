@@ -20,12 +20,12 @@
 			class="rounded-lg overflow-hidden pb-10"
 		>
 			<div class="px-0 md:px-4 mb-2 w-full md:w-auto">
-				<NuxtImg
+				<img
 					:src="item.mediaUrl"
 					densities="x1"
 					:alt="item.header"
 					class="w-full md:w-64 h-40 mx-0 md:mx-2 shadow-sm rounded-md"
-				/>
+				>
 			</div>
 		</UCarousel>
 	</div>

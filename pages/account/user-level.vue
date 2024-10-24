@@ -27,11 +27,11 @@
 			</div>
 
 			<div class="ml-0 md:ml-40 mt-10">
-				<NuxtImg
+				<img
 					:src="traderBriefItem?.level.logoUrl"
 					alt="icon user level"
 					class="w-full md:w-[19.313rem] h-[21.063rem] mb-2 "
-				/>
+				>
 				<div class="flex justify-between bg-hover-light dark:bg-hover-dark rounded-lg p-2">
 					<div>
 						<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
@@ -39,11 +39,11 @@
 						</span>
 					</div>
 					<div class="flex justify-center items-center">
-						<NuxtImg
+						<img
 							src="/images/Confirmation.png"
 							alt="Confirmation"
 							class="w-4 h-4"
-						/>
+						>
 						<div>
 							<span class="text-sm font-bold mr-1">{{ traderBriefItem?.level.name }}</span>
 						</div>
@@ -191,18 +191,18 @@
 							<div
 								v-if="findIndicator(item.indicator)"
 							>
-								<NuxtImg
+								<img
 									src="/images/Confirmation.png"
 									alt="Confirmation"
 									class="w-4 h-4"
-								/>
+								>
 							</div>
 						</div>
 						<div class="flex justify-center px-16 py-8">
-							<NuxtImg
+							<img
 								:src="item.imgLogoUrl"
 								alt="icon"
-							/>
+							>
 						</div>
 						<div class="flex justify-start">
 							<span
@@ -224,11 +224,11 @@
 									<IconClose class="text-4xl" />
 								</template>
 								<template v-else>
-									<NuxtImg
+									<img
 										:src="item.imgBenefitsUrl"
 										alt="icon"
 										class="w-12 h-12"
-									/>
+									>
 								</template>
 							</div>
 						</div>

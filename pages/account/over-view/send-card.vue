@@ -5,16 +5,16 @@
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-20 bg-primary-gray-light dark:bg-primary-gray-dark rounded-md shadow-md  py-6 md:py-10 px-1 md:px-20 my-8 ">
 				<div>
 					<div class="relative">
-						<NuxtImg
-							src="./images/profile/Business_card.png"
+						<img
+							src="/images/profile/Business_card.png"
 							class="h-72"
-						/>
+						>
 						<div class="absolute top-28 right-12 md:right-20">
 							<div class="flex items-center">
-								<NuxtImg
+								<img
 									:src="LevelItem?.logoUrl"
 									class="w-4 h-4"
-								/>
+								>
 								<span class="mr-1 md:mr-4 text-sm md:text-lg font-normal md:font-bold text-primary-yellow-light dark:text-primary-yellow-dark">
 									{{ profileStore.profileLoading ? '...': getValueByKey(profileStore.userProfile, 'NAME') }}
 									{{ profileStore.profileLoading ? '...': getValueByKey(profileStore.userProfile, 'FAMILY') }}

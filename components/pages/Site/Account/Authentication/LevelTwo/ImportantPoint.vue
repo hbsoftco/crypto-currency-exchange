@@ -12,10 +12,10 @@
 			</p>
 		</div>
 		<div>
-			<NuxtImg
-				src="./images/svg/profile/level-user.svg"
+			<img
+				src="/images/svg/profile/level-user.svg"
 				alt="level-user"
-			/>
+			>
 		</div>
 		<div class="my-6">
 			<p class="my-6 text-sm font-normal text-black dark:text-white">

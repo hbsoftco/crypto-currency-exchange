@@ -4,13 +4,13 @@
 		dir="rtl"
 	>
 		<div class="text-center mb-2">
-			<NuxtImg
+			<img
 				:src="`https://api-bitland.site/media/currency/btc.png`"
 				alt="btc"
 				class="w-8 h-8 rounded-full m-auto"
 				format="webp"
 				densities="x1"
-			/>
+			>
 		</div>
 		<h4 class="text-center font-bold text-xl mb-2">
 			کاراته

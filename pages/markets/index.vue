@@ -7,11 +7,11 @@
 				</h1>
 				<div class="flex">
 					<div class="flex ml-10">
-						<NuxtImg
+						<img
 							src="/images/svg/market/new.png"
 							alt="new-currencies"
 							class="w-9 h-6"
-						/>
+						>
 						<ULink to="/markets/upcoming">
 							<div>
 								<span class="text-sm font-normal mr-2">{{
@@ -21,11 +21,11 @@
 						</ULink>
 					</div>
 					<div class="flex">
-						<NuxtImg
+						<img
 							src="/images/svg/market/chart.png"
 							alt="chart-statistics"
 							class="w-5 h-5"
-						/>
+						>
 						<ULink to="/markets/statistics">
 							<div>
 								<span class="text-sm font-normal mr-2">{{
@@ -109,11 +109,11 @@
 					to=""
 					class="block absolute left-0 top-0 md:hidden"
 				>
-					<NuxtImg
+					<img
 						src="/images/svg/market/chart.png"
 						alt="chart"
 						class="w-5 h-5 mt-3"
-					/>
+					>
 				</ULink>
 			</div>
 		</UContainer>
