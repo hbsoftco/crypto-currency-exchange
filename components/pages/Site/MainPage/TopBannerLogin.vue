@@ -179,7 +179,7 @@ const getTraderBrief = async () => {
 
 // 	return false;
 // };
-console.log('traderBriefItem', traderBriefItem);
+// console.log('traderBriefItem', traderBriefItem);
 
 onMounted(async () => {
 	await Promise.all([

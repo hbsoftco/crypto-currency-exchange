@@ -10,6 +10,7 @@
 			<div class="flex justify-start flex-row-reverse items-center">
 				<div>
 					<NuxtImg
+						v-if="spotStore.currency"
 						:src="`https://api-bitland.site/media/currency/${spotStore.currency}.png`"
 						alt="Brand Logo"
 						class="w-7 h-7 rounded-full"

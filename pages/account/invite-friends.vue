@@ -1,5 +1,8 @@
 <template>
-	<div>
+	<div v-if="referralBriefLoading">
+		<UiLogoLoading />
+	</div>
+	<div v-else>
 		<ModalInviteFriends
 			v-if="showModalInviteFriends"
 			@close="closeModalInviteFriends"
@@ -185,7 +188,7 @@
 				</div>
 				<div class="flex justify-between">
 					<div>
-						<span class="text-base font-bold">{{ $t('level') }} {{ nowInvite }} </span>
+						<span class="text-base font-bold">{{ $t('level') }} {{ useNumber(nowInvite) }} </span>
 
 						<!-- <div class="text-xs font-normal">
 							<span class="ml-1">{{ $t('commissionLevel') }}:</span><span>{{ useNumber('30') }}%</span>
@@ -195,7 +198,8 @@
 						<span class="text-base font-bold">{{ $t('level') }} {{ useNumber(String(referralBrief?.config.indicator)) }}</span>
 
 						<div class="text-xs font-normal">
-							<span class="ml-1">{{ $t('commissionLevel') }}:</span><span>{{ useNumber(String(referralBrief?.config.percentages.dPerc)) }}%</span>
+							<span class="ml-1">{{ $t('commissionLevel') }}:</span>
+							<span>{{ useNumber(String(referralBrief?.config.percentages.dPerc)) }}%</span>
 						</div>
 					</div>
 				</div>
@@ -204,10 +208,12 @@
 				</div>
 				<div class="flex justify-between pb-4 px-4">
 					<div class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
-						<span class="ml-1">{{ $t('user') }}</span><span>{{ useNumber(String(referralBrief?.config.to)) }}</span>
+						<span class="ml-1">{{ $t('user') }}</span>
+						<span>{{ useNumber(String(referralBrief?.config.to)) }}</span>
 					</div>
 					<div class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
-						<span class="ml-1">{{ $t('user') }}</span><span>{{ useNumber(String(referralBrief?.config.from)) }}</span>
+						<span class="ml-1">{{ $t('user') }}</span>
+						<span>{{ useNumber(String(referralBrief?.config.from)) }}</span>
 					</div>
 				</div>
 				<div class="text-subtle-text-light dark:text-subtle-text-dark text-sm font-normal">
@@ -228,11 +234,11 @@
 					<div class="py-6 px-1 md:px-12 ml-1 md:ml-28">
 						<div class="flex flex-col border-b border-primary-gray-light dark:border-primary-gray-dark pb-4">
 							<span class="text-xl font-bold mb-6 text-subtle-text-light dark:text-subtle-text-dark">{{ $t('allInvitees') }}</span>
-							<span class="text-4xl font-extrabold text-primary-yellow-light dark:text-primary-yellow-dark">{{ useNumber(String(referralBrief?.global.receivers)) }}</span>
+							<span class="text-4xl font-extrabold text-primary-yellow-light dark:text-primary-yellow-dark">{{ useNumber(priceFormat(String(referralBrief?.global.receivers))) }}</span>
 						</div>
 						<div>
 							<span class="flex flex-col text-xl font-bold mb-6 text-subtle-text-light dark:text-subtle-text-dark pt-4">{{ $t('totalCommissionPaid') }}</span>
-							<span class="text-4xl font-extrabold text-primary-yellow-light dark:text-primary-yellow-dark">{{ useNumber(String(referralBrief?.global.overallPayment)) }} {{ $t('toman') }}</span>
+							<span class="text-4xl font-extrabold text-primary-yellow-light dark:text-primary-yellow-dark">{{ useNumber(priceFormat(String(referralBrief?.global.overallPayment))) }} {{ $t('toman') }}</span>
 						</div>
 					</div>
 					<div>
@@ -250,14 +256,15 @@
 				:referral-brief="referralBrief"
 			/>
 
-			<TableInvite />
+			<InvitationHistoryTable />
 
-			<TableCommission />
+			<InvitationCommissionHistoryTable />
 		</UContainer>
 	</div>
 </template>
 
 <script setup lang="ts">
+import { priceFormat } from '~/utils/price-format';
 import IconCopy from '~/assets/svg-icons/menu/copy.svg';
 import IconQrCode from '~/assets/svg-icons/profile/qrCode.svg';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
@@ -270,8 +277,8 @@ import { useNumber } from '~/composables/useNumber';
 import ModalInviteFriends from '~/components/pages/Site/Account/InviteFriends/ModalInviteFriends.vue';
 import EditCodeInviteFriends from '~/components/pages/Site/Account/InviteFriends/EditCodeInviteFriends.vue';
 import IconEdit from '~/assets/svg-icons/profile/edit.svg';
-import TableInvite from '~/components/pages/Site/Account/InviteFriends/TableInvite.vue';
-import TableCommission from '~/components/pages/Site/Account/InviteFriends/TableCommission.vue';
+import InvitationHistoryTable from '~/components/pages/Site/Account/InviteFriends/InvitationHistoryTable.vue';
+import InvitationCommissionHistoryTable from '~/components/pages/Site/Account/InviteFriends/InvitationCommissionHistoryTable.vue';
 import Dashboard from '~/components/pages/Site/Account/InviteFriends/Dashboard.vue';
 import { userRepository } from '~/repositories/user.repository';
 import type { ReferralBriefItem } from '~/types/response/user.types';

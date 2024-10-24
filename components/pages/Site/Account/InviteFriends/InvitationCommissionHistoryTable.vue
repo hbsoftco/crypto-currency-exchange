@@ -4,18 +4,18 @@
 			<div class="py-8 px-1 md:px-6 block md:flex justify-between md:border-b border-primary-gray-light dark:border-primary-gray-dark ">
 				<div class="flex">
 					<span class="text-base font-bold ml-2 mb-2 md:mb-0">
-						{{ $t('invitationHistory') }}
+						{{ $t('historyInvitationCommission') }}
 					</span>
 					<IconQuestion class="text-2xl" />
 				</div>
-				<div class="w-full md:w-auto flex justify-between">
-					<div class="my-1">
+				<div class="flex justify-between">
+					<div class="my-1 mx-2">
 						<USelectMenu
-							v-model="SortModeFilter"
-							:options="SortModeItems"
+							v-model="MarketTypeFilter"
+							:options="MarketTypeItems"
 							:placeholder="$t('all')"
-							option-attribute="value"
 							class="w-auto md:w-44"
+							option-attribute="value"
 							icon="heroicons:calendar-date-range-16-solid"
 							:ui="{
 								background: '',
@@ -28,29 +28,7 @@
 							@change="applyFilters"
 						/>
 					</div>
-					<!-- SortMode -->
-
-					<div class="my-1 mx-0 md:mx-2">
-						<USelectMenu
-							v-model="GetModeFilter"
-							:options="GetModeItems"
-							:placeholder="$t('all')"
-							option-attribute="value"
-							class="w-auto md:w-44"
-							icon="heroicons:calendar-date-range-16-solid"
-							:ui="{
-								class: 'min-w-10',
-								background: '',
-								color: {
-									white: {
-										outline: ' bg-hover-light dark:bg-hover-dark',
-									},
-								},
-							}"
-							@change="applyFiltersMode"
-						/>
-					</div>
-					<!-- GetMode -->
+					<!-- MarketType -->
 					<!-- <div class="py-2 px-4 border border-primary-gray-light dark:border-primary-gray-dark rounded-md">
 						<IconNote />
 					</div> -->
@@ -58,7 +36,7 @@
 			</div>
 			<div class="py-6 px-1 md:px-8">
 				<div class="hidden md:block">
-					<table class="min-w-full py-6 my-2 text-right">
+					<table class=" min-w-full py-6 my-2 text-right">
 						<thead>
 							<tr class="pb-2 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark">
 								<th class="py-2 text-sm font-bold">
@@ -68,38 +46,50 @@
 									{{ $t('userCode') }}
 								</th>
 								<th class="py-2 text-sm font-bold">
-									{{ $t('invitationTime') }}
+									{{ $t('tradingTime') }}
 								</th>
 								<th class="py-2 text-sm font-bold">
-									{{ $t('feeReceived') }}
+									{{ $t('feePercentage') }}
+								</th>
+								<th class="py-2 text-sm font-bold">
+									{{ $t('feeAmount') }}
 								</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr
-								v-for="row in inviteList"
-								:key="row.uid"
+								v-for="item in commissionList"
+								:key="item.tid"
 								class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark last:border-none"
 							>
 								<td class="text-sm font-normal py-2">
-									{{ row.user }}
+									<span
+										dir="ltr"
+										class="text-left"
+									>{{ useNumber(item.tUser) }}</span>
 								</td>
 								<td class="text-sm font-normal py-2">
-									{{ useNumber(row.uid) }}
+									{{ useNumber(item.tuid) }}
 								</td>
 								<td class="text-sm font-normal py-2">
-									{{ useNumber(formatDateToIranTime(row.regTime)) }}
+									<span
+										dir="ltr"
+										class="text-left"
+									>{{ useNumber(formatDateToIranTime(item.tTime)) }}</span>
 								</td>
 								<td class="text-sm font-normal py-2">
-									{{ useNumber(row.income) }}
+									{{ useNumber(item.perc) }}
+								</td>
+								<td class="text-sm font-normal py-2">
+									{{ useNumber(item.tFee) }}
 								</td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
 				<div
-					v-for="row in inviteList"
-					:key="row.uid"
+					v-for="item in commissionList"
+					:key="item.tid"
 				>
 					<div class="block md:hidden my-2 py-2 px-4 bg-hover-light dark:bg-hover-dark">
 						<div class="flex">
@@ -110,27 +100,35 @@
 							</div>
 							<div>
 								<div class="text-sm font-normal border-b border-primary-gray-light dark:border-primary-gray-dark">
-									{{ row.user }}
+									{{ $t('userCode') }}
 								</div>
 								<div class="text-sm font-normal">
-									{{ useNumber(row.uid) }}
+									{{ item.tuid }}
 								</div>
 							</div>
 						</div>
 						<div class="flex justify-between py-1">
 							<div class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
-								{{ $t('invitationTime') }}
+								{{ $t('tradingTime') }}
 							</div>
 							<div class="text-sm font-medium">
-								{{ useNumber(formatDateToIranTime(row.regTime)) }}
+								{{ useNumber(formatDateToIranTime(item.tTime)) }}
 							</div>
 						</div>
 						<div class="flex justify-between">
 							<div class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
-								{{ $t('feeReceived') }}
+								{{ $t('feePercentage') }}
 							</div>
 							<div class="text-sm font-medium">
-								{{ useNumber(row.income) }}
+								{{ useNumber(item.perc) }}
+							</div>
+						</div>
+						<div class="flex justify-between">
+							<div class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
+								{{ $t('feeAmount') }}
+							</div>
+							<div class="text-sm font-medium">
+								{{ useNumber(item.tFee) }}
 							</div>
 						</div>
 					</div>
@@ -157,73 +155,59 @@
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
 import IconUserInvite from '~/assets/svg-icons/menu/user-fill.svg';
+import { useNumber } from '~/composables/useNumber';
 import { formatDateToIranTime } from '~/utils/date-time';
+import type { CommissionList } from '~/types/response/referral.types';
 // import IconNote from '~/assets/svg-icons/profile/note.svg';
 import IconQuestion from '~/assets/svg-icons/profile/question.svg';
+import type { GetCommissionReceivedListParams, KeyValue } from '~/types/base.types';
 import { userRepository } from '~/repositories/user.repository';
-import type { InviteList } from '~/types/response/referral.types';
-import type { GetInvitationParams, KeyValue } from '~/types/base.types';
-import { GetMode, SortMode } from '~/utils/enums/referral.enum';
+import { MarketType } from '~/utils/enums/market.enum';
 
 const { $api } = useNuxtApp();
 const userRepo = userRepository($api);
-const inviteList = ref<InviteList[]>();
+const commissionList = ref<CommissionList[]>();
 const currentPage = ref<number>(1);
+const MarketTypeFilter = ref<KeyValue>();
 
-const SortModeFilter = ref<KeyValue>();
-const SortModeItems = ref<KeyValue[]>([
+const MarketTypeItems = ref<KeyValue[]>([
 	{
-		key: String(SortMode.LatestInvitation),
-		value: useT('LatestInvitation'),
-	},
-	{
-		key: String(SortMode.OldestInvitation),
-		value: useT('OldestInvitation'),
-	},
-	{
-		key: String(SortMode.LowestIncome),
-		value: useT('LowestIncome'),
-	},
-	{
-		key: String(SortMode.HighestIncome),
-		value: useT('HighestIncome'),
-	},
-]);
-
-const GetModeFilter = ref<KeyValue>();
-const GetModeItems = ref<KeyValue[]>([
-	{
-		key: String(GetMode.Any),
+		key: '',
 		value: useT('all'),
 	},
 	{
-		key: String(GetMode.Directs),
-		value: useT('direct'),
+		key: String(MarketType.SPOT),
+		value: useT('spot'),
 	},
 	{
-		key: String(GetMode.Indirects),
-		value: useT('inDirect'),
+		key: String(MarketType.FUTURES),
+		value: useT('futures'),
 	},
 ]);
-
-const params = ref<GetInvitationParams>({
-	getMode: '',
-	sortMode: '',
-	assessmentCurrencyId: '3',
+const params = ref<GetCommissionReceivedListParams>({
+	marketType: '',
+	from: '',
+	to: '',
 	pageNumber: '1',
-	pageSize: '20',
+	pageSize: '100',
 });
 const getCommissionList = async () => {
 	try {
-		const { result } = await userRepo.getInvitation(params.value);
-		inviteList.value = result.rows;
+		const { result } = await userRepo.getCommissionReceived(params.value);
+		commissionList.value = result.rows;
 		currentPage.value = result.totalCount;
 	}
-	catch (error) {
-		console.log(error);
+	catch (error: any) {
+		if (error.response._data.statusCode === -1110000) {
+			commissionList.value = [];
+		}
 	}
+};
+
+const applyFilters = async () => {
+	params.value.marketType = MarketTypeFilter.value ? MarketTypeFilter.value.key : '';
+	await getCommissionList();
 };
 
 onMounted(async () => {
@@ -232,15 +216,6 @@ onMounted(async () => {
 	]);
 });
 
-const applyFilters = async () => {
-	params.value.sortMode = SortModeFilter.value ? SortModeFilter.value.key : '';
-	await getCommissionList();
-};
-
-const applyFiltersMode = async () => {
-	params.value.getMode = GetModeFilter.value ? GetModeFilter.value.key : '';
-	await getCommissionList();
-};
 function onPageChange(newPage: number) {
 	currentPage.value = newPage;
 }

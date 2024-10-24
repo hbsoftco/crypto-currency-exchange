@@ -1021,6 +1021,7 @@ const persian = {
 	readAllNotificationsDescription: 'آیا شما از خواندن همه اعلانات اطمینان دارید؟',
 	allNotificationsReadSuccessfully: 'همه اعلانات با موفقیت خوانده شدند!',
 	yesDoIt: 'بله، انجام بده!',
+	referralCode: 'کد دعوت',
 };
 
 export default persian;
