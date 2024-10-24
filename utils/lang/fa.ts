@@ -1017,6 +1017,10 @@ const persian = {
 	deleteAllNotifications: 'حذف همه اعلان‌ها',
 	deleteAllNotificationsDescription: 'آیا شما از حذف همه اعلانات اطمینان دارید؟',
 	allNotificationsDeletedSuccessfully: 'همه اعلانات با موفقیت حذف شدند!',
+	readAllNotifications: 'خواندن همه اعلان‌ها',
+	readAllNotificationsDescription: 'آیا شما از خواندن همه اعلانات اطمینان دارید؟',
+	allNotificationsReadSuccessfully: 'همه اعلانات با موفقیت خوانده شدند!',
+	yesDoIt: 'بله، انجام بده!',
 };
 
 export default persian;

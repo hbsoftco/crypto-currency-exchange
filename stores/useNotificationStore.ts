@@ -12,8 +12,9 @@ export const useNotificationStore = defineStore('notification', () => {
 	const { $api } = useNuxtApp();
 	const notificationRepo = notificationRepository($api);
 
+	const getNotificationsLoading = ref(false);
 	const getNotifications = async (params: NotificationRequestDto) => {
-		loading.value = true;
+		getNotificationsLoading.value = true;
 		try {
 			const { result } = await notificationRepo.getNotifications(params);
 			notifications.value = result.rows;
@@ -26,7 +27,7 @@ export const useNotificationStore = defineStore('notification', () => {
 			});
 		}
 		finally {
-			loading.value = false;
+			getNotificationsLoading.value = false;
 		}
 	};
 
@@ -61,6 +62,8 @@ export const useNotificationStore = defineStore('notification', () => {
 
 	return {
 		getNotifications,
+		getNotificationsLoading,
+
 		getNotificationsTag,
 
 		notificationList,

@@ -19,3 +19,19 @@ svg {
 .text-active * {
   @apply text-primary-yellow-light dark:text-primary-yellow-dark;
 }
+
+/* sweet alert */
+.swal2-confirm {
+  @apply bg-primary-yellow-light dark:bg-primary-yellow-dark dark:text-text-dark;
+}
+
+.swal2-icon, .swal2-warning, div:where(.swal2-icon).swal2-warning {
+  @apply border-primary-yellow-light dark:border-primary-yellow-dark;
+}
+
+.swal2-popup {
+  @apply bg-primary-gray-light dark:bg-primary-gray-dark;
+}
+
+/* sweet alert */
+

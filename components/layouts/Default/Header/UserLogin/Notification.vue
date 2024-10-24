@@ -2,21 +2,19 @@
 <template>
 	<div>
 		<div
-			v-if="isLoading"
+			v-if="notificationStore.getNotificationsLoading"
 			class="text-center"
 		>
-			...
+			<IconNotification
+				class="text-2xl block group-hover:hidden group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark"
+			/>
+			<IconNotificationFill
+				class="text-2xl hidden group-hover:block text-primary-yellow-light dark:text-primary-yellow-dark group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark"
+			/>
 		</div>
 
 		<div
-			v-if="error"
-			class="text-center text-red-500"
-		>
-			{{ error }}
-		</div>
-
-		<div
-			v-if="!isLoading && !error"
+			v-if="!notificationStore.getNotificationsLoading"
 			class="relative group items-center space-x-2"
 		>
 			<div class="relative cursor-pointer">
@@ -49,7 +47,7 @@
 
 								<ULink
 									v-if="unreadMessages.length > 0"
-									to=""
+									@click="readAllNotifications"
 								>
 									<span
 										class="mr-1 text-xs font-bold text-primary-yellow-light dark:text-primary-yellow-dark"
@@ -71,44 +69,34 @@
 								</div>
 							</ULink>
 						</div>
-						<div>
+						<div class="max-h-96 overflow-y-scroll mt-4">
 							<ul>
-								<ULink
+								<div
 									v-if="unreadMessages.length > 0"
-									to="#"
 								>
 									<li
 										v-for="(item, index) in unreadMessages"
 										:key="index"
-										class="flex justify-between p-2"
+										class="flex justify-between rounded-md p-2 transition-all duration-200 hover:bg-hover2-light dark:hover:bg-[#1f1f1f] border-transparent border-r-[3px] hover:border-r-[3px] hover:border-primary-yellow-light hover:dark:border-r-[3px] dark:hover:border-primary-yellow-dark"
 									>
-										<IconMessage class="text-2xl" />
-										<div class="flex flex-col pr-4">
+										<div class="w-8">
+											<IconMessage class="text-2xl" />
+										</div>
+										<div class="flex flex-col pr-4 overflow-x-hidden">
 											<span class="text-sm font-bold">{{ item.noticeHeader }}</span>
-											<p v-html="sanitizedHtml(item.noticeBody)" />
-											<div class="flex">
-												<UButton
-													color="gray"
-													class="text-[#2196F3] text-xs bg-hover-light dark:bg-hover-dark shadow-none border border-[#2196F3]"
-												>
-													{{ $t("transaction") }}
-												</UButton>
-												<UButton
-													color="gray"
-													class="text-[#2196F3] text-xs bg-hover-light dark:bg-hover-dark shadow-none border border-[#2196F3] mr-1"
-												>
-													{{ $t("transaction") }}
-												</UButton>
-											</div>
+											<p
+												class="text-nowrap truncate text-ellipsis text-sm h-5 my-1 overflow-y-hidden"
+												v-html="sanitizedHtml(useNumber(item.noticeBody))"
+											/>
 											<span
 												class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-light"
 											>{{ useNumber(formatDateToIran(item.regTime)) }}</span>
 										</div>
 									</li>
-								</ULink>
+								</div>
 								<ULink
 									v-else
-									class="w-full text-center py-3"
+									class="w-full text-center py-10"
 								>
 									<li>
 										<div class="w-full flex justify-center">
@@ -134,11 +122,14 @@ import IconArrowLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';
 import IconMessage from '~/assets/svg-icons/menu/message.svg';
 import { useNumber } from '~/composables/useNumber';
 import { formatDateToIran } from '~/utils/persian-date';
+import { notificationRepository } from '~/repositories/notification.repository';
+
+const { $api, $swal } = useNuxtApp();
+const notificationRepo = notificationRepository($api);
+
+const toast = useToast();
 
 const notificationStore = useNotificationStore();
-
-const isLoading = ref(false);
-const error = ref(null);
 
 const params = ref({
 	from: '',
@@ -148,24 +139,48 @@ const params = ref({
 	pageSize: '20',
 });
 
-const fetchNotifications = async () => {
-	try {
-		isLoading.value = true;
-		await notificationStore.getNotifications(params.value);
-	}
-	catch (error) {
-		console.error('Error fetching trades:', error);
-	}
-	finally {
-		isLoading.value = false;
+const readAllNotificationsLoading = ref<boolean>(false);
+const readAllNotifications = async () => {
+	const confirmation = await $swal.fire({
+		title: useT('readAllNotifications'),
+		text: useT('readAllNotificationsDescription'),
+		icon: 'warning',
+		showCancelButton: true,
+		confirmButtonText: useT('yesDoIt'),
+		cancelButtonText: useT('cancel'),
+	});
+
+	if (confirmation.isConfirmed) {
+		readAllNotificationsLoading.value = true;
+
+		try {
+			await notificationRepo.readAllNotifications();
+
+			toast.add({
+				title: useT('readAllNotifications'),
+				description: 'allNotificationsReadSuccessfully',
+				timeout: 5000,
+				color: 'green',
+			});
+
+			await notificationStore.getNotifications(params.value);
+
+			readAllNotificationsLoading.value = false;
+		}
+		catch (error) {
+			readAllNotificationsLoading.value = false;
+			console.error('Error deleting notification:', error);
+		}
 	}
 };
 
-onMounted(fetchNotifications);
+onMounted(async () => {
+	await notificationStore.getNotifications(params.value);
+});
 
 const messageItems = computed(() => notificationStore.notificationList);
 
 const unreadMessages = computed(() =>
-	messageItems.value.filter((item) => !item.readTime),
+	messageItems.value.filter((item) => !item.readTime || item.readTime === '0001-01-01T00:00:00'),
 );
 </script>

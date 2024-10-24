@@ -180,7 +180,34 @@ const deleteAllNotifications = async () => {
 	}
 };
 
-onMounted(fetchNotifications);
+const readAllNotificationsLoading = ref<boolean>(false);
+const readAllNotifications = async () => {
+	readAllNotificationsLoading.value = true;
+
+	try {
+		await notificationRepo.readAllNotifications();
+
+		toast.add({
+			title: useT('readAllNotifications'),
+			description: 'allNotificationsReadSuccessfully',
+			timeout: 5000,
+			color: 'green',
+		});
+
+		await notificationStore.getNotifications(params.value);
+
+		readAllNotificationsLoading.value = false;
+	}
+	catch (error) {
+		readAllNotificationsLoading.value = false;
+		console.error('Error deleting notification:', error);
+	}
+};
+
+onMounted(async () => {
+	await fetchNotifications();
+	await readAllNotifications();
+});
 
 const localNotificationList = computed(() => notificationStore.notificationList);
 const localNotificationTagsList = computed(() => notificationStore.notificationTagsList);
