@@ -1,7 +1,7 @@
 <template>
 	<div class="relative min-h-50rem">
 		<img
-			src="/images/svg/site/cover.svg"
+			src="/images/svg/site/cover.webp"
 			alt="bg-cover"
 			class="w-full"
 		>
