@@ -50,7 +50,7 @@
 										alt="Confirmation"
 										class="w-4 h-4"
 									/>
-									<span class="text-sm font-medium mr-1">{{ $t('as***9@gmail.com') }}</span>
+									<span class="text-sm font-medium mr-1">{{ useNumber(String(getValueByKey(profileStore.userProfile, 'EMAIL'))) }}</span>
 								</div>
 							</div>
 							<div class="my-3">
@@ -382,6 +382,10 @@ import IconDevice from '~/assets/svg-icons/profile/device.svg';
 import IconDate from '~/assets/svg-icons/menu/quick-menu/transaction-history.svg';
 import IconEducation from '~/assets/svg-icons/education.svg';
 import IconArrowRight from '~/assets/svg-icons/menu/arrow-left.svg';
+import { getValueByKey } from '~/utils/find-value-by-key';
+import { useNumber } from '~/composables/useNumber';
+
+const profileStore = useProfileStore();
 
 definePageMeta({
 	layout: 'account',

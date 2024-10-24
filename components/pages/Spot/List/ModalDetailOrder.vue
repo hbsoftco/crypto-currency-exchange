@@ -5,10 +5,10 @@
 			fullscreen
 		>
 			<div
-				class="h-full flex flex-col items-center justify-center "
+				class="h-full flex flex-col items-center justify-center overflow-y-scroll"
 			>
 				<div
-					class="overflow-y-scroll w-full md:w-[45rem] flex flex-col justify-center items-center text-center rounded-md bg-background-light dark:bg-background-dark px-2 md:px-14 pt-[40rem] md:pt-96 mt-20"
+					class=" w-full md:w-[40rem] flex flex-col justify-center items-center text-center rounded-md bg-background-light dark:bg-background-dark px-1 md:px-14 py-6 md:py-8"
 				>
 					<div class="flex md:hidden justify-between py-3 items-center ">
 						<UiTitleWithBack
