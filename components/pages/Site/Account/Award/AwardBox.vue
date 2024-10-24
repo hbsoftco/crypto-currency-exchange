@@ -65,9 +65,8 @@
 				class="pb-6 flex item-center flex-row-reverse justify-start text-sm font-normal"
 			>
 				<NuxtImg
-					v-if="reward.currencyId"
-					:src="String(reward.currencyId)"
-					alt="award"
+					:src="`https://api-bitland.site/media/currency/${reward.currency?.cSymbol}.png`"
+					:alt="reward.currency?.cName"
 					class="w-4 h-4 rounded-full mr-2"
 				/>
 				<span v-if="reward.prizeTitle">{{ reward.prizeTitle }}</span>

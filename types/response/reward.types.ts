@@ -1,3 +1,5 @@
+import type { CurrencyBriefItem } from "./brief-list.types";
+
 type Reward = {
 	id: number;
 	logoUrl: string;
@@ -15,6 +17,7 @@ type Reward = {
 	progressPerc: number;
 	coAllocated: number;
 	iDsToOpen: string;
+	currency?: CurrencyBriefItem | null;
 };
 
 type GetExposedListResponse = {
