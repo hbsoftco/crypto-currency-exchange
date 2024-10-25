@@ -11,6 +11,7 @@ import type { GetActivitiesListRes, GetAddressListRes, GetBankListResponse,
 	GetRewardReceivedListResponse,
 	GetStateTradeRes,
 	ReferralBriefResponse,
+	TwoStepLoginResponse,
 	UserProfileResponse } from '../types/response/user.types';
 
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
@@ -57,6 +58,7 @@ import type { CommonRes, IdentificationRes, KeyValueRes, UploadAvatarDto } from 
 import type { GetCommissionRes, GetInvitationListRes } from '~/types/response/referral.types';
 
 type UserRepository = {
+	generate2Fa: () => Promise<TwoStepLoginResponse>;
 	getProfile: () => Promise<UserProfileResponse>;
 	getCommissionReceivedList: (params: GetCommissionReceivedListParams) => Promise<GetCommissionReceivedList>;
 	getReferralBrief: (assessmentCurrencyId: string) => Promise<ReferralBriefResponse>;
@@ -102,6 +104,16 @@ type UserRepository = {
 };
 
 export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserRepository => ({
+	async generate2Fa(): Promise<TwoStepLoginResponse> {
+		const url = '/v1/user/2fa/generate';
+		const response = await fetch<TwoStepLoginResponse>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
 	async getProfile(): Promise<UserProfileResponse> {
 		return fetch<UserProfileResponse>('/v1/currency/routine/tag_list');
 	},
@@ -471,7 +483,6 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
-
 	async deleteAccount(dto: DeleteAccountDto): Promise<CommonRes> {
 		const url = `/v1/user/account/delete`;
 		const response = await fetch<CommonRes>(`${url}`, {

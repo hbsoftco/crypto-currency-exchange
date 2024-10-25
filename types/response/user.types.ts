@@ -328,6 +328,7 @@ type GetHolderRes = {
 		info: Info;
 	};
 };
+
 type levelList = {
 	levelId: number;
 	levelName: string;
@@ -352,7 +353,25 @@ type GetHolderLevelListRes = {
 	};
 };
 
+type TwoStepLogin = {
+	v2FId: number;
+	enabled: boolean;
+	v2FSecret: string;
+	setup: {
+		account: string;
+		manualEntryKey: string;
+		qrCodeSetupImageUrl: string;
+	};
+};
+
+type TwoStepLoginResponse = {
+	statusCode: number;
+	result: TwoStepLogin;
+};
+
 export type {
+	TwoStepLogin,
+	TwoStepLoginResponse,
 	ReferralBriefItem,
 	ReferralBriefResponse,
 	BestListUser,

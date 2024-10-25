@@ -16,8 +16,8 @@
 </template>
 
 <script setup lang="ts">
-import ImportantPoint from '~/components/pages/Site/Account/Security/AntiPhishing/Form/ImportantPoint.vue';
-import SettingForm from '~/components/pages/Site/Account/Security/AntiPhishing/Form/SettingForm.vue';
+import ImportantPoint from '~/components/pages/Account/Security/AntiPhishing/Form/ImportantPoint.vue';
+import SettingForm from '~/components/pages/Account/Security/AntiPhishing/Form/SettingForm.vue';
 
 definePageMeta({
 	layout: 'account-single',

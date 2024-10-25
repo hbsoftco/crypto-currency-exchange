@@ -1,4 +1,4 @@
-import type { CurrencyBriefItem } from "./brief-list.types";
+import type { CurrencyBriefItem } from './brief-list.types';
 
 type Reward = {
 	id: number;

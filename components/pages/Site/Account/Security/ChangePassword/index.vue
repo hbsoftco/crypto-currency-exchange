@@ -62,7 +62,7 @@
 </template>
 
 <script setup lang="ts">
-import ImportantPoint from '~/components/pages/Site/Account/Security/AntiPhishing/Form/ImportantPoint.vue';
+import ImportantPoint from '~/components/pages/Account/Security/AntiPhishing/Form/ImportantPoint.vue';
 
 const phoneOrEmail = ref<string>('');
 

@@ -11,12 +11,13 @@
 			</div>
 			<section class="my-14">
 				<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-					<Step
-						v-for="(item, index) in items"
+					<HelpStep
+						v-for="(item, index) in twoFaStore.steps"
 						:key="index"
 						:title="item.title"
 						:description="item.description"
 						:is-active="item.isActive"
+						:done="item.done"
 					/>
 				</div>
 			</section>
@@ -28,19 +29,21 @@
 </template>
 
 <script setup lang="ts">
-import Step from '~/components/pages/Site/Account/Security/TwoStepLogin/Step.vue';
-import FormStepTwoLogin from '~/components/pages/Site/Account/Security/TwoStepLogin/FormStepTwoLogin.vue';
+import HelpStep from '~/components/pages/Account/Security/TwoStepLogin/HelpStep.vue';
+import FormStepTwoLogin from '~/components/pages/Account/Security/TwoStepLogin/FormStepTwoLogin.vue';
 
 definePageMeta({
 	layout: 'account-single',
 	middleware: 'auth',
 });
-const items = [
-	{ title: useT('stepOne'), description: useT('stepOneText'), isActive: true },
-	{ title: useT('stepTwo'), description: useT('stepTwoText'), isActive: false },
-	{ title: useT('stepThree'), description: useT('stepThreeText'), isActive: false },
-	{ title: useT('stepFour'), description: useT('stepFourText'), isActive: false },
-];
-</script>
 
-<style scoped></style>
+const twoFaStore = use2FaStore();
+
+onMounted(async () => {
+	console.log(twoFaStore.steps);
+
+	await twoFaStore.getGenerate2FaData();
+	twoFaStore.updateStepStatus(4);
+	console.log(twoFaStore.steps);
+});
+</script>

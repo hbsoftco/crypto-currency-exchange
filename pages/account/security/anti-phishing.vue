@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import AntiPhishing from '~/components/pages/Site/Account/Security/AntiPhishing/index.vue';
+import AntiPhishing from '~/components/pages/Account/Security/AntiPhishing/index.vue';
 
 definePageMeta({
 	layout: 'account-single',

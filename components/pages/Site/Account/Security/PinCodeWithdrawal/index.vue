@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import ImportantPoint from '~/components/pages/Site/Account/Security/AntiPhishing/Form/ImportantPoint.vue';
+import ImportantPoint from '~/components/pages/Account/Security/AntiPhishing/Form/ImportantPoint.vue';
 import OtpFieldInput from '~/components/forms/OtpFieldInput.vue';
 import VerificationModal from '~/components/pages/Site/Account/Security/PinCodeWithdrawal/VerificationModal.vue';
 
