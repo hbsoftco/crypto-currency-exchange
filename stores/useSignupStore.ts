@@ -20,6 +20,26 @@ export const useSignupStore = defineStore('Signup', () => {
 		verificationId: 0,
 	});
 
+	const resetAllData = () => {
+		const captchaStore = useCaptchaStore();
+		captchaStore.openCaptcha = false;
+
+		signupByEmailDto.value = {
+			captchaKey: '',
+			email: '',
+			password: '',
+			refereeCode: '',
+		};
+		checkCodeVerificationDto.value = {
+			userId: 0,
+			verificationCode: '',
+			verificationId: 0,
+		};
+
+		signupByEmailLoading.value = false;
+		checkCodeVerificationLoading.value = false;
+	};
+
 	const signupByEmailIsValid = ref<boolean>(true);
 	const signupByEmailLoading = ref<boolean>(false);
 	const signupByEmail = async () => {
@@ -83,6 +103,7 @@ export const useSignupStore = defineStore('Signup', () => {
 				timeout: 5000,
 				color: 'green',
 			});
+
 			return response.statusCode;
 		}
 		catch (error: any) {
@@ -107,5 +128,6 @@ export const useSignupStore = defineStore('Signup', () => {
 		checkCodeVerification,
 		verificationResend,
 		signupByEmail,
+		resetAllData,
 	};
 });

@@ -23,7 +23,7 @@
 			<UButton
 				size="lg"
 				block
-				:loading="signupStore.checkCodeVerificationLoading"
+				:loading="signupStore.checkCodeVerificationLoading || localLoading"
 				@click="submit"
 			>
 				{{ $t('activateAccount') }}
@@ -47,6 +47,7 @@ const router = useRouter();
 const typeData = ref<string>();
 const type = ref<string>(route.query.type as string);
 const verificationCodeText = ref<string>('');
+const localLoading = ref<boolean>(false);
 
 const resendCode = async () => {
 	let resendType = SendType.Email;
@@ -79,10 +80,13 @@ const submit = async () => {
 			return;
 		}
 
+		localLoading.value = true;
 		await signupStore.checkCodeVerification();
+		signupStore.resetAllData();
 		router.push('/');
 	}
 	catch (error) {
+		localLoading.value = false;
 		console.error('Failed:', error);
 	}
 };
