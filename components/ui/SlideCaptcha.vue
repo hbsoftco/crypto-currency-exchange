@@ -99,7 +99,7 @@ watch(() => props.hasError, (error: boolean) => {
 const refreshCaptcha = () => {
 	sliderValue.value = 0;
 	buzzEffect();
-	// emit('refresh');
+	emit('refresh', sliderValue.value);
 };
 
 const closeCaptcha = () => {

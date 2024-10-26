@@ -32,7 +32,7 @@ type IdentificationResendDto = {
 };
 
 type IdentificationSendNewDto = {
-	emailOrMobile: number;
+	emailOrMobile: string;
 	sendType: string;
 };
 
@@ -63,11 +63,11 @@ type SetLiveDto = {
 };
 
 type SetEmailDto = {
-	uvIdEmailAddressOld: string;
+	uvIdEmailAddressOld: number;
 	uvCodeEmailAddressOld: string;
 	uvCodeEmailAddressNew: string;
-	uvIdEmailAddressNew: string;
-	v2FACode: string;
+	uvIdEmailAddressNew: number;
+	v2FACode: string | null;
 	emailAddressNew: string;
 };
 

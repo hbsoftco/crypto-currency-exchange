@@ -5,36 +5,44 @@
 				errorMessage? 'border-accent-red focus:border-accent-red' : 'border-gray-600  focus:border-primary-yellow-light dark:focus:border-primary-yellow-dark',
 			]"
 		>
-			<ClientOnly>
-				<v-otp-input
-					ref="otpInput"
-					v-model:value="internalValue"
-					input-classes="otp-input border-none outline-none bg-transparent"
-					:conditional-class="['w-5', 'w-5', 'w-5', 'w-5', 'w-5', 'w-5']"
-					separator=""
-					input-type="letter-numeric"
-					:num-inputs="6"
-					:should-auto-focus="true"
-					:should-focus-order="true"
-					:placeholder="['-', '-', '-', '-', '-', '-']"
-					@on-change="handleOnChange"
-					@on-complete="handleOnComplete"
-				/>
-			</ClientOnly>
+			<v-otp-input
+				ref="otpInput"
+				v-model:value="internalValue"
+				input-classes="otp-input border-none outline-none bg-transparent"
+				:conditional-class="conditionalClass"
+				separator=""
+				input-type="letter-numeric"
+				:num-inputs="6"
+				:should-auto-focus="true"
+				:should-focus-order="true"
+				:placeholder="['-', '-', '-', '-', '-', '-']"
+				@on-change="handleOnChange"
+				@on-complete="handleOnComplete"
+			/>
 
 			<div
-				v-if="countdown>0 && countDownState"
+				v-if="localCountdown>0 && countDownState"
 				class="absolute right-5 top-4"
 			>
-				<strong>{{ useNumber(countdown) }}</strong>
+				<strong>{{ useNumber(localCountdown) }}</strong>
 				<span> S</span>
 			</div>
 
 			<div
-				v-else-if="countDownState"
+				v-else-if="countDownState && sendType === 'resend'"
 				class="flex justify-center flex-row-reverse cursor-pointer items-center absolute right-5 top-3.5"
+				@click="resendCode"
 			>
 				<span class="ml-1 text-sm text-accent-green">{{ $t('resend') }}</span>
+				<IconRefresh class="text-accent-green" />
+			</div>
+
+			<div
+				v-else-if="countDownState && sendType === 'send'"
+				class="flex justify-center flex-row-reverse cursor-pointer items-center absolute right-5 top-3.5"
+				@click="sendCode"
+			>
+				<span class="ml-1 text-sm text-accent-green">{{ $t('sendCode') }}</span>
 				<IconRefresh class="text-accent-green" />
 			</div>
 
@@ -61,8 +69,56 @@ import IconRefresh from '~/assets/svg-icons/refresh.svg';
 import { useNumber } from '~/composables/useNumber';
 
 const otpInput = ref<InstanceType<typeof VOtpInput> | null>(null);
-const countdown = ref(60);
+const localCountdown = ref(0);
 let interval: NodeJS.Timeout | undefined;
+
+interface PropsDefinition {
+	id: string;
+	modelValue: string | number | null;
+	type?: string;
+	sendType?: 'resend' | 'send';
+	label: string;
+	placeholder?: string;
+	required?: boolean;
+	disabled?: boolean;
+	inputClass?: string;
+	labelClass?: string;
+	icon?: string;
+	errorMessage?: string;
+	conditionalClass?: string[];
+	colorType?: string;
+	countDownState?: boolean;
+	countdown?: number;
+}
+
+const props = withDefaults(defineProps<PropsDefinition>(), {
+	countDownState: true,
+	sendType: 'resend',
+	countdown: 60,
+	conditionalClass: () => ['w-5', 'w-5', 'w-5', 'w-5', 'w-5', 'w-5'],
+});
+
+interface EmitDefinition {
+	(event: 'update:modelValue', value: unknown): void;
+	(event: 'resend' | 'sendCode'): void;
+}
+const emit = defineEmits<EmitDefinition>();
+
+const resendCode = () => {
+	emit('resend');
+	localCountdown.value = props.countdown;
+	startCountdown();
+};
+
+const sendCode = () => {
+	emit('sendCode');
+	localCountdown.value = props.countdown;
+	startCountdown();
+};
+
+watch(() => props.countdown, (newValue) => {
+	localCountdown.value = newValue;
+});
 
 const handleOnComplete = (value: string) => {
 	console.log('OTP completed: ', value);
@@ -74,8 +130,8 @@ const handleOnChange = (value: string) => {
 
 const startCountdown = () => {
 	interval = setInterval(() => {
-		if (countdown.value > 0) {
-			countdown.value -= 1;
+		if (localCountdown.value > 0) {
+			localCountdown.value -= 1;
 		}
 		else {
 			if (interval !== undefined) {
@@ -86,6 +142,7 @@ const startCountdown = () => {
 };
 
 onMounted(() => {
+	localCountdown.value = props.countdown;
 	startCountdown();
 });
 
@@ -103,30 +160,6 @@ onUnmounted(() => {
 // 	console.log(value);
 // 	otpInput.value?.fillInput(value);
 // };
-
-interface PropsDefinition {
-	id: string;
-	modelValue: string | null;
-	type?: string;
-	label: string;
-	placeholder?: string;
-	required?: boolean;
-	disabled?: boolean;
-	inputClass?: string;
-	labelClass?: string;
-	icon?: string;
-	errorMessage?: string;
-	colorType?: string;
-	countDownState?: boolean;
-}
-
-const props = withDefaults(defineProps<PropsDefinition>(), {
-	countDownState: true,
-});
-interface EmitDefinition {
-	(event: 'update:modelValue', value: unknown): void;
-}
-const emit = defineEmits<EmitDefinition>();
 
 const internalValue = ref(props.modelValue || '');
 // const isPasswordVisible = ref(false);

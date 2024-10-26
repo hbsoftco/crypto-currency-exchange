@@ -4,9 +4,9 @@
 			<div class="mt-10 w-full">
 				<div>
 					<FormOne />
-					<FormTwo />
+					<!-- <FormTwo />
 					<FormThree />
-					<FormFour />
+					<FormFour /> -->
 				</div>
 			</div>
 			<div class="my-8">
@@ -19,11 +19,7 @@
 <script setup lang="ts">
 import ImportantPoint from '~/components/pages/Account/Security/TwoStepLogin/Form/ImportantPoint.vue';
 import FormOne from '~/components/pages/Account/Security/TwoStepLogin/Form/StepOne.vue';
-import FormTwo from '~/components/pages/Account/Security/TwoStepLogin/Form/StepTwo.vue';
-import FormThree from '~/components/pages/Account/Security/TwoStepLogin/Form/StepThree.vue';
-import FormFour from '~/components/pages/Account/Security/TwoStepLogin/Form/StepFour.vue';
-
-definePageMeta({
-	layout: 'account-single',
-});
+// import FormTwo from '~/components/pages/Account/Security/TwoStepLogin/Form/StepTwo.vue';
+// import FormThree from '~/components/pages/Account/Security/TwoStepLogin/Form/StepThree.vue';
+// import FormFour from '~/components/pages/Account/Security/TwoStepLogin/Form/StepFour.vue';
 </script>

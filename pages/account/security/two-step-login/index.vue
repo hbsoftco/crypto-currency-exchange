@@ -40,10 +40,7 @@ definePageMeta({
 const twoFaStore = use2FaStore();
 
 onMounted(async () => {
-	console.log(twoFaStore.steps);
-
 	await twoFaStore.getGenerate2FaData();
-	twoFaStore.updateStepStatus(4);
-	console.log(twoFaStore.steps);
+	// twoFaStore.updateStepStatus(4);
 });
 </script>

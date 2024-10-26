@@ -1,8 +1,8 @@
 <template>
 	<Auth title="forgotPasswordNoQuestion">
 		<div>
-			<GetCode v-if="true" />
-			<SetCode v-if="false" />
+			<GetCode v-if="forgetPasswordStore.stepState === 'getCode'" />
+			<SetCode v-if="forgetPasswordStore.stepState === 'setCode'" />
 		</div>
 
 		<div class="flex justify-center items-center mt-8">
@@ -25,4 +25,6 @@
 import GetCode from '~/components/pages/Auth/ForgetPassword/GetCode.vue';
 import SetCode from '~/components/pages/Auth/ForgetPassword/SetCode.vue';
 import Auth from '~/components/pages/Auth/Auth.vue';
+
+const forgetPasswordStore = useForgetPasswordStore();
 </script>

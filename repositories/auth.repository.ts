@@ -3,20 +3,22 @@ import type { NitroFetchRequest, $Fetch } from 'nitropack';
 import type { CaptchaResponse } from '~/types/captcha-response.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 // import type { ForgetPasswordDto } from '~/types/dto/forget-password.dto';
-import type { CaptchaRequestDto } from '~/types/dto/generate-captcha.dto';
+import type { CaptchaRequestParams } from '~/types/dto/generate-captcha.dto';
 import type { LoginByEmailDto, LoginByMobileDto } from '~/types/dto/login.dto';
 import type { SignupByEmailDto, SignupByMobileDto } from '~/types/dto/signup.dto';
 import type { ValidateCaptchaDto } from '~/types/dto/validate-captcha.dto';
 import type { CheckCodeDto } from '~/types/dto/verification.dto';
+import type { CheckForgetPasswordDto, CheckForgetPasswordResponse, InitForgetPasswordDto, InitForgetPasswordResponse, RestForgetPasswordDto } from '~/types/forget-password.types';
 import type { ResposneType } from '~/types/response.types';
 import type { CheckOTCResponse, GetSocketListenKeyResponse } from '~/types/response/check-otc.types';
+import type { CommonRes } from '~/types/response/common.types';
 import type { LoginByEmailResponse } from '~/types/response/login.types';
 import type { SignUpResponse } from '~/types/response/sign-up.types';
 import type { VerificationCheckCodeResponse } from '~/types/response/verification.types';
 
 type AuthRepository = {
 	// Captcha
-	generateCaptcha: (data: CaptchaRequestDto) => Promise<CaptchaResponse>;
+	generateCaptcha: (data: CaptchaRequestParams) => Promise<CaptchaResponse>;
 	validateCaptcha: (data: ValidateCaptchaDto) => Promise<ResposneType>;
 	// SignUp
 	signupByMobile: (data: SignupByMobileDto) => Promise<ResposneType>;
@@ -31,12 +33,14 @@ type AuthRepository = {
 	// listenKey Socket
 	getSocketListenKey: () => Promise<GetSocketListenKeyResponse>;
 	// Forget Password
-	// forgetPassword: (dto: ForgetPasswordDto) => Promise<LoginByEmailResponse>;
+	initForgetPassword: (dto: InitForgetPasswordDto) => Promise<InitForgetPasswordResponse>;
+	resetForgetPassword: (dto: RestForgetPasswordDto) => Promise<CommonRes>;
+	checkForgetPassword: (dto: CheckForgetPasswordDto) => Promise<CheckForgetPasswordResponse>;
 };
 
 export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthRepository => ({
 	// Captcha
-	async generateCaptcha(data: CaptchaRequestDto): Promise<CaptchaResponse> {
+	async generateCaptcha(data: CaptchaRequestParams): Promise<CaptchaResponse> {
 		const { result } = await fetch<ResposneType>(`/v1/captcha/generate`, {
 			params: {
 				username: data.username,
@@ -105,6 +109,40 @@ export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthR
 		const response = await fetch<GetSocketListenKeyResponse>(`${url}`, {
 			noAuth: false,
 			apiName: url,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	// Forget Password
+	async initForgetPassword(dto: InitForgetPasswordDto): Promise<InitForgetPasswordResponse> {
+		const url = '/v1/auth/forget_password/init';
+		const response = await fetch<InitForgetPasswordResponse>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async resetForgetPassword(dto: RestForgetPasswordDto): Promise<CommonRes> {
+		const url = '/v1/auth/forget_password/reset';
+		const response = await fetch<CommonRes>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async checkForgetPassword(dto: CheckForgetPasswordDto): Promise<CheckForgetPasswordResponse> {
+		const url = '/v1/verification/forget_password_check';
+		const response = await fetch<CheckForgetPasswordResponse>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'POST',
+			body: dto,
 		} as CustomNitroFetchOptions);
 
 		return response;

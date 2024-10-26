@@ -31,7 +31,14 @@
 <script setup lang="ts">
 import OtpFieldInput from '~/components/forms/OtpFieldInput.vue';
 
+const forgetPasswordStore = useForgetPasswordStore();
+
 const phoneOrEmail = ref<string>('');
-const typeData = ref<string>('hossein.bajan@gmail.com');
+const typeData = ref<string>();
 const type = ref<'Email' | 'Mobile'>('Email');
+
+onMounted(() => {
+	typeData.value = forgetPasswordStore.forgetPasswordDto.emailOrMobile;
+	type.value = 'Email';
+});
 </script>

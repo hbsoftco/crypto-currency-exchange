@@ -13,10 +13,7 @@ export const useProfileStore = defineStore('profile', () => {
 	const authStore = useAuthStore();
 
 	const fetchProfile = async () => {
-		console.log('------------------>', isProfileDataFetched.value);
-
 		if (profileLoading.value && isProfileDataFetched.value) return;
-		console.log('------------------>', isProfileDataFetched.value);
 
 		profileLoading.value = true;
 		error.value = null;

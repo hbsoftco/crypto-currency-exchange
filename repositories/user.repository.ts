@@ -92,8 +92,8 @@ type UserRepository = {
 	getDevLinkGenerate: () => Promise<GetDevLinkGenerateRes>;
 	getActivitiesList: (params: getActivitiesListParams) => Promise<GetActivitiesListRes>;
 	getTypeList: (params: getTypeListParams) => Promise<KeyValueRes>;
-	storeIdentificationSendNew: (dto: IdentificationSendNewDto) => Promise<IdentificationRes>;
-	storeSetEmail: (dto: SetEmailDto) => Promise<CommonRes>;
+	identificationSendNew: (dto: IdentificationSendNewDto) => Promise<IdentificationRes>;
+	setEmail: (dto: SetEmailDto) => Promise<CommonRes>;
 	storeSetMobile: (dto: SetMobileDto) => Promise<CommonRes>;
 	storeSetPassword: (dto: SetPasswordDto) => Promise<CommonRes>;
 	storeSetPinCode: (dto: SetPinCodeDto) => Promise<CommonRes>;
@@ -329,7 +329,7 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
-	async storeIdentificationSendNew(dto: IdentificationSendNewDto): Promise<IdentificationRes> {
+	async identificationSendNew(dto: IdentificationSendNewDto): Promise<IdentificationRes> {
 		const url = `/v1/user/identification/send_new`;
 		const response = await fetch<IdentificationRes>(`${url}`, {
 			noAuth: false,
@@ -553,7 +553,7 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
-	async storeSetEmail(dto: SetEmailDto): Promise<CommonRes> {
+	async setEmail(dto: SetEmailDto): Promise<CommonRes> {
 		const url = `/v1/user/alter/email_set`;
 		const response = await fetch<CommonRes>(`${url}`, {
 			noAuth: false,

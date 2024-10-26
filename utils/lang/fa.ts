@@ -1022,6 +1022,8 @@ const persian = {
 	yesDoIt: 'بله، انجام بده!',
 	referralCode: 'کد دعوت',
 	on: 'روشن',
+	changeEmail: 'تغییر آدرس ایمیل',
+	active2Fa: 'فعال سازی دو مرحله‌ای',
 };
 
 export default persian;

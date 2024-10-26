@@ -6,6 +6,9 @@ export const use2FaStore = defineStore('2FA', () => {
 	const { $api } = useNuxtApp();
 	const userRepo = userRepository($api);
 
+	const toast = useToast();
+	const router = useRouter();
+
 	const steps = ref<HelpStepItem[]>([
 		{ title: useT('stepOne'), description: useT('stepOneText'), isActive: false, done: false },
 		{ title: useT('stepTwo'), description: useT('stepTwoText'), isActive: false, done: false },
@@ -24,8 +27,15 @@ export const use2FaStore = defineStore('2FA', () => {
 			const { result } = await userRepo.generate2Fa();
 			generate2FaData.value = result;
 		}
-		catch (error) {
-			throw Error(String(error));
+		catch (error: any) {
+			router.push('/account/security');
+
+			toast.add({
+				title: useT('active2Fa'),
+				description: error.response._data.message,
+				timeout: 5000,
+				color: 'red',
+			});
 		}
 		finally {
 			generate2FaLoading.value = false;
