@@ -51,6 +51,18 @@ type GetMiniRoutineRes = {
 	result: MiniRoutine;
 };
 
+type CountryItem = {
+	id: number;
+	name: string;
+	abbreviation: string ;
+	phonePrefix: string ;
+};
+
+type GetCountryListRes = {
+	statusCode: number;
+	result: CountryItem[];
+};
+
 export type {
 	CommonRes,
 	KeyValueRes,
@@ -62,4 +74,6 @@ export type {
 	Tip,
 	Faq,
 	Help,
+	GetCountryListRes,
+	CountryItem,
 };

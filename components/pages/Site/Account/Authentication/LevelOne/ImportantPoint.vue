@@ -6,7 +6,7 @@
 				{{ $t('importantPoints') }}
 			</h2>
 		</div>
-		<div>
+		<!-- <div>
 			<p class="mt-6 text-base font-bold text-accent-red dark:text-accent-red text-justify">
 				{{ $t('pointLevel1') }}
 			</p>
@@ -24,6 +24,15 @@
 			<p class="mt-6  text-sm font-normal text-black dark:text-white">
 				{{ $t('pointLevelItem4') }}
 			</p>
+		</div> -->
+		<div
+
+			v-for="row in helpItemsTips"
+			:key="row.key"
+		>
+			<p class="mt-6 text-sm font-normal text-black dark:text-white">
+				{{ row.value }}
+			</p>
 		</div>
 		<div class="flex justify-between mt-10 mb-6">
 			<div class="flex">
@@ -36,7 +45,7 @@
 				{{ $t('showMore') }}
 			</ULink>
 		</div>
-		<div>
+		<!-- <div>
 			<p class="py-2 text-sm font-normal">
 				اگر توکن اشتباهی را واریز کنم چه می شود؟
 			</p>
@@ -45,6 +54,15 @@
 			</p>
 			<p class="py-2 text-sm font-normal">
 				مشاهده تمام وضعیت سپرده و برداشت
+			</p>
+		</div> -->
+		<div
+
+			v-for="row in helpItemsFaqs"
+			:key="row.key"
+		>
+			<p class="mt-6 text-sm font-normal text-black dark:text-white">
+				{{ row.value }}
 			</p>
 		</div>
 	</div>
@@ -62,13 +80,17 @@ const params = ref<getMiniRoutineParams>({
 	tagType: TagType.IDENTIFICATION,
 });
 const helpLoading = ref<boolean>(false);
-const helpItems = ref<Help[]>();
+const helpItemsTips = ref<Help[]>();
+const helpItemsFaqs = ref<Help[]>();
+const helpItemsHelps = ref<Help[]>();
 const gethelpList = async () => {
 	try {
 		helpLoading.value = true;
 
 		const { result } = await helpRepo.getMiniRoutine(params.value);
-		helpItems.value = result.helps;
+		helpItemsTips.value = result.tips;
+		helpItemsFaqs.value = result.faqs;
+		helpItemsHelps.value = result.helps;
 		helpLoading.value = false;
 	}
 	catch (error) {
@@ -76,7 +98,9 @@ const gethelpList = async () => {
 		console.log(error);
 	}
 };
-// console.log('------------------------helpItems', helpItems);
+// console.log('------------------------helpItemsTips', helpItemsTips);
+// console.log('------------------------helpItemsFaqs', helpItemsFaqs);
+// console.log('------------------------helpItemsHelps', helpItemsHelps);
 
 onMounted(async () => {
 	await Promise.all([

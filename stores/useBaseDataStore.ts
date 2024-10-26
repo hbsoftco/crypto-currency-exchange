@@ -13,13 +13,47 @@ import { MarketType } from '~/utils/enums/market.enum';
 import type { Commission } from '~/types/response/trader.types';
 import { userTraderRepository } from '~/repositories/trader.repository';
 import type { GetUserTraderCommissionListParams } from '~/types/base.types';
-import { CACHE_KEY_CURRENCY_BRIEF_ITEMS, CACHE_KEY_MARKET_BRIEF_ITEMS, CACHE_KEY_QUOTE_ITEMS, CACHE_KEY_TAG_ITEMS } from '~/utils/constants/common';
+import { CACHE_KEY_COUNTRY_ITEMS, CACHE_KEY_CURRENCY_BRIEF_ITEMS, CACHE_KEY_MARKET_BRIEF_ITEMS, CACHE_KEY_QUOTE_ITEMS, CACHE_KEY_TAG_ITEMS } from '~/utils/constants/common';
 import { useCurrencyWorker } from '~/workers/currency-worker/currency-worker-wrapper';
 import { useMarketWorker } from '~/workers/market-worker/market-worker-wrapper';
 import { loadFromCache } from '~/utils/indexeddb';
+import type { CountryItem } from '~/types/response/common.types';
+import { userRepository } from '~/repositories/user.repository';
 
 export const useBaseDataStore = defineStore('baseData', () => {
 	const { $api } = useNuxtApp();
+
+	const countries = ref<CountryItem[]>([]);
+	const isCountryDataFetched = ref(false);
+	const isCountryLoading = ref(false);
+	const fetchCountries = async () => {
+		if (isCountryDataFetched.value || isCountryLoading.value) return;
+
+		const user = userRepository($api);
+		isCountryLoading.value = true;
+
+		try {
+			const cachedData: CountryItem[] = await loadFromCache(CACHE_KEY_COUNTRY_ITEMS) || [];
+
+			if (cachedData.length) {
+				isCountryDataFetched.value = true;
+				return;
+			}
+			const response = await user.getCountryList();
+			if (response.result) {
+				countries.value = response.result;
+				isCountryDataFetched.value = true;
+
+				await saveToCache(CACHE_KEY_COUNTRY_ITEMS, response.result);
+			}
+		}
+		catch (error) {
+			throw Error(String(error));
+		}
+		finally {
+			isCountryLoading.value = false;
+		}
+	};
 
 	const slides = ref<SliderItem[]>([]);
 	const isSliderDataFetched = ref(false);
@@ -393,5 +427,6 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		findMarketById,
 		findMarketBymSymbol,
 		findCommission,
+		fetchCountries, countries,
 	};
 });

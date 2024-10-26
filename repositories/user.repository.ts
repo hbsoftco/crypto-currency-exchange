@@ -54,7 +54,7 @@ import type {
 	SetMobileDto,
 	SetPasswordDto,
 	SetPinCodeDto } from '~/types/dto/user.dto';
-import type { CommonRes, IdentificationRes, KeyValueRes, UploadAvatarDto } from '~/types/response/common.types';
+import type { CommonRes, GetCountryListRes, IdentificationRes, KeyValueRes, UploadAvatarDto } from '~/types/response/common.types';
 import type { GetCommissionRes, GetInvitationListRes } from '~/types/response/referral.types';
 
 type UserRepository = {
@@ -101,6 +101,7 @@ type UserRepository = {
 	getHolder: (params: GetTraderBriefParams) => Promise<GetHolderRes>;
 	getHolderLevelList: () => Promise<GetHolderLevelListRes>;
 	storeCardPrint: (dto: SetCardPrintDto) => Promise<CommonRes>;
+	getCountryList: () => Promise<GetCountryListRes>;
 };
 
 export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserRepository => ({
@@ -638,6 +639,16 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 			apiName: url,
 			method: 'POST',
 			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getCountryList(): Promise<GetCountryListRes> {
+		const url = '/v1/routine/common/country_list';
+		const response = await fetch<GetCountryListRes>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'GET',
 		} as CustomNitroFetchOptions);
 
 		return response;
