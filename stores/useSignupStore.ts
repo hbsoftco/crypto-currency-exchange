@@ -1,5 +1,5 @@
 import { authRepository } from '~/repositories/auth.repository';
-import type { SignupByEmailDto } from '~/types/dto/signup.dto';
+import type { SignupByEmailDto, SignupByMobileDto } from '~/types/dto/signup.dto';
 import type { CheckCodeDto, ResendVerificationParams } from '~/types/verification.types';
 
 export const useSignupStore = defineStore('Signup', () => {
@@ -11,6 +11,12 @@ export const useSignupStore = defineStore('Signup', () => {
 	const signupByEmailDto = ref<SignupByEmailDto>({
 		captchaKey: '',
 		email: '',
+		password: '',
+		refereeCode: '',
+	});
+	const signupByMobileDto = ref<SignupByMobileDto>({
+		captchaKey: '',
+		mobile: '',
 		password: '',
 		refereeCode: '',
 	});
@@ -30,6 +36,12 @@ export const useSignupStore = defineStore('Signup', () => {
 			password: '',
 			refereeCode: '',
 		};
+		signupByMobileDto.value = {
+			captchaKey: '',
+			mobile: '',
+			password: '',
+			refereeCode: '',
+		};
 		checkCodeVerificationDto.value = {
 			userId: 0,
 			verificationCode: '',
@@ -38,6 +50,40 @@ export const useSignupStore = defineStore('Signup', () => {
 
 		signupByEmailLoading.value = false;
 		checkCodeVerificationLoading.value = false;
+	};
+
+	const signupByMobileIsValid = ref<boolean>(true);
+	const signupByMobileLoading = ref<boolean>(false);
+	const signupByMobile = async () => {
+		try {
+			signupByMobileLoading.value = true;
+
+			const response = await authRepo.signupByMobile({
+				...signupByMobileDto.value,
+				password: btoa(signupByMobileDto.value.password),
+			});
+
+			checkCodeVerificationDto.value.userId = response.result.userId;
+			checkCodeVerificationDto.value.verificationId = response.result.verificationId;
+
+			verificationResendParams.value.lastVerificationId = String(response.result.verificationId);
+			verificationResendParams.value.userId = String(response.result.userId);
+
+			signupByMobileLoading.value = false;
+		}
+		catch (error: any) {
+			if (error.response._data.statusCode === -1311165) {
+				signupByMobileIsValid.value = false;
+				toast.add({
+					title: useT('signup'),
+					description: useT('mobileAlreadyExist'),
+					timeout: 5000,
+					color: 'red',
+				});
+			}
+
+			signupByMobileLoading.value = false;
+		}
 	};
 
 	const signupByEmailIsValid = ref<boolean>(true);
@@ -120,6 +166,7 @@ export const useSignupStore = defineStore('Signup', () => {
 	};
 
 	return {
+		// SignUp
 		signupByEmailDto,
 		checkCodeVerificationDto,
 		signupByEmailLoading,
@@ -128,6 +175,11 @@ export const useSignupStore = defineStore('Signup', () => {
 		checkCodeVerification,
 		verificationResend,
 		signupByEmail,
+		// Mobile
+		signupByMobileDto,
+		signupByMobile,
+		signupByMobileIsValid,
+		signupByMobileLoading,
 		resetAllData,
 	};
 });

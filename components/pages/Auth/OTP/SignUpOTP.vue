@@ -95,5 +95,8 @@ onMounted(() => {
 	if (type.value === 'email') {
 		typeData.value = signupStore.signupByEmailDto.email;
 	}
+	else {
+		typeData.value = signupStore.signupByMobileDto.mobile;
+	}
 });
 </script>

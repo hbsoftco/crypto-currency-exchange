@@ -3,31 +3,33 @@
 		<div class="my-8">
 			<FormsFieldInput
 				id="mobile"
-				v-model="mobile"
+				v-model="signupStore.signupByMobileDto.mobile"
 				type="text"
 				input-class="text-left"
 				label="phoneNumber"
-				placeholder="۰۹۱۰۰۰۰"
+				:placeholder="useNumber('0910000')"
 				icon="i-heroicons-phone"
 				dir="ltr"
+				:error-message="v$.mobile.$error? $t('fieldIsRequired') : ''"
 			/>
 		</div>
 		<div>
 			<FormsFieldInput
 				id="mobile_password"
-				v-model="password"
+				v-model="signupStore.signupByMobileDto.password"
 				type="password"
 				input-class="text-left"
 				label="password"
 				placeholder=""
 				icon="i-heroicons-eye"
 				dir="ltr"
+				:error-message="v$.password.$error? $t('fieldIsRequired') : ''"
 			/>
 		</div>
 		<div class="my-8">
 			<ReferralFieldInput
 				id="mobile_refereeCode"
-				v-model="refereeCode"
+				v-model="signupStore.signupByMobileDto.refereeCode"
 				type="text"
 				input-class="text-left"
 				label="haveReferralCode"
@@ -57,32 +59,32 @@
 			<UButton
 				size="lg"
 				block
-				:loading="loading"
+				:loading="captchaStore.generateCaptchaLoading || signupStore.signupByMobileLoading"
 				:disabled="!isAgreeChecked"
-				@click="signup"
+				@click="submit"
 			>
 				{{ $t('signup') }}
 			</UButton>
 		</div>
 		<div>
 			<SlideCaptcha
-				v-if="showCaptcha"
-				:data="captchaData!"
-				@close="showCaptcha = false"
+				v-if="captchaStore.openCaptcha"
+				:has-error="captchaHasError"
+				:data="captchaStore.captchaResponse"
+				@close="captchaStore.openCaptcha=false"
 				@slider-value="handleCaptchaValidation"
-				@refresh="refreshCaptcha({ username: mobile, action: 'signup' })"
+				@refresh="getNewCaptcha"
 			/>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import SlideCaptcha from '~/components/ui/SlideCaptcha.vue';
-import { useCaptcha } from '~/composables/auth/useCaptcha';
-import { useAuth } from '~/composables/auth/useAuth';
-import ReferralFieldInput from '~/components/forms/ReferralFieldInput.vue';
+import useVuelidate from '@vuelidate/core';
 
-const { signupByMobile } = useAuth();
+import { useNumber } from '~/composables/useNumber';
+import SlideCaptcha from '~/components/ui/SlideCaptcha.vue';
+import ReferralFieldInput from '~/components/forms/ReferralFieldInput.vue';
 
 interface PropsDefinition {
 	inviter: string | null;
@@ -90,71 +92,78 @@ interface PropsDefinition {
 
 const props = defineProps<PropsDefinition>();
 
-const mobile = ref<string>('+989155859539');
-const refereeCode = ref<string>('');
-const password = ref<string>('123@qweQWE');
-const isAgreeChecked = ref<boolean>(false);
+const signupStore = useSignupStore();
+const captchaStore = useCaptchaStore();
+
+const router = useRouter();
+
+captchaStore.captchaInput.action = 'signup';
 
 const isVisible = ref(false);
+const isAgreeChecked = ref(false);
+const captchaHasError = ref(false);
 
 if (props.inviter) {
-	refereeCode.value = props.inviter;
+	signupStore.signupByMobileDto.refereeCode = props.inviter;
 	isVisible.value = true;
 }
 
-const {
-	captchaData,
-	showCaptcha,
-	loading,
-	generateCaptcha,
-	validateCaptcha,
-	refreshCaptcha } = useCaptcha();
-
-const signup = async () => {
-	const captchaResult = await generateCaptcha({ username: mobile.value, action: 'signup' });
-	if (captchaResult instanceof Error) {
-		alert('Failed to generate captcha. Please try again.');
-		return;
-	}
-
-	showCaptcha.value = true;
+const signupByMobileRules = {
+	captchaKey: { },
+	refereeCode: { },
+	password: { required: validations.required },
+	mobile: { required: validations.required },
 };
 
-const handleCaptchaValidation = async (sliderValue?: number) => {
-	if (sliderValue === undefined) {
-		alert('Slider value is required. Please try again.');
-		return;
-	}
+const v$ = useVuelidate(signupByMobileRules, signupStore.signupByMobileDto);
 
-	const result = await validateCaptcha(sliderValue);
+const submit = async () => {
+	try {
+		v$.value.$touch();
+		if (v$.value.$invalid) {
+			return;
+		}
 
-	if (result instanceof Error) {
-		alert('Captcha validation failed. Please try again.');
+		await getNewCaptcha();
+
+		if (captchaStore.stateId === 11) {
+			await signupStore.signupByMobile();
+			router.push({
+				path: '/auth/otp',
+				query: { action: 'signup', type: 'mobile' },
+			});
+		}
 	}
-	else {
-		showCaptcha.value = false;
-		await doSignup();
+	catch (error) {
+		console.error('Failed:', error);
 	}
 };
 
-const doSignup = async () => {
-	if (!captchaData.value) {
-		alert('Captcha data is missing. Please try again.');
-		return;
-	}
+const getNewCaptcha = async () => {
+	captchaStore.captchaInput.username = signupStore.signupByMobileDto.mobile;
+	await captchaStore.generateCaptcha();
+};
 
-	const response = await signupByMobile({
-		captchaKey: captchaData.value.id,
-		password: password.value,
-		mobile: mobile.value,
-		refereeCode: refereeCode.value || '',
-	});
+const handleCaptchaValidation = async (sliderValue: number) => {
+	captchaStore.sliderValue = sliderValue;
 
-	if (response instanceof Error) {
-		alert('Signup failed. Please try again.');
+	await captchaStore.validateCaptcha();
+
+	if (!captchaStore.validCaptcha) {
+		captchaHasError.value = true;
+		await getNewCaptcha();
+		captchaHasError.value = false;
 	}
 	else {
-		alert('Signup successful!');
+		captchaStore.openCaptcha = false;
+		await signupStore.signupByMobile();
+
+		if (signupStore.signupByMobileIsValid) {
+			router.push({
+				path: '/auth/otp',
+				query: { action: 'signup', type: 'mobile' },
+			});
+		}
 	}
 };
 </script>

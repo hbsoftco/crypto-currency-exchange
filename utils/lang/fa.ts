@@ -1028,6 +1028,7 @@ const persian = {
 	passwordMustBeComplex: 'رمز عبور شما بایستی شامل حروف، عدد و کاراکترهای خاص باشد.',
 	passwordChangedSuccessfully: 'رمز عبور شما با موفقیت تغییر داده شد!',
 	emailAlreadyExist: 'آدرس ایمیل از قبل ثبت شده است',
+	mobileAlreadyExist: 'شماره موبایل از قبل ثبت شده است',
 	signupSuccessfully: 'ثبت‌ نام با موفقیت انجام شد!',
 };
 

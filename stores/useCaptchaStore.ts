@@ -46,6 +46,8 @@ export const useCaptchaStore = defineStore('captcha', () => {
 
 				signupStore.signupByEmailDto.captchaKey = response.id;
 
+				signupStore.signupByMobileDto.captchaKey = response.id;
+
 				if (stateId.value === 0) {
 					captchaResponse.value = response;
 

@@ -21,7 +21,7 @@ type AuthRepository = {
 	generateCaptcha: (data: CaptchaRequestParams) => Promise<CaptchaResponse>;
 	validateCaptcha: (data: ValidateCaptchaDto) => Promise<ResposneType>;
 	// SignUp
-	signupByMobile: (data: SignupByMobileDto) => Promise<ResposneType>;
+	signupByMobile: (data: SignupByMobileDto) => Promise<SignUpResponse>;
 	signupByEmail: (data: SignupByEmailDto) => Promise<SignUpResponse>;
 	// Login
 	loginByMobile: (data: LoginByMobileDto) => Promise<ResposneType>;
@@ -61,8 +61,8 @@ export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthR
 		return response;
 	},
 	// SignUp
-	async signupByMobile(data: SignupByMobileDto): Promise<ResposneType> {
-		const response = await fetch<ResposneType>(`/v1/auth/signup/by_mobile`, {
+	async signupByMobile(data: SignupByMobileDto): Promise<SignUpResponse> {
+		const response = await fetch<SignUpResponse>(`/v1/auth/signup/by_mobile`, {
 			method: 'POST',
 			body: data,
 		});
