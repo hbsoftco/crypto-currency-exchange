@@ -10,8 +10,14 @@ type RestForgetPasswordDto = {
 };
 
 type CheckForgetPasswordDto = {
-	userId: string;
-	verificationCode: number;
+	userId: number;
+	verificationCode: string;
+	verificationId: number;
+};
+
+type ResetPasswordDto = {
+	newPassword: string;
+	userSecretKey: number;
 	verificationId: number;
 };
 
@@ -36,6 +42,7 @@ type CheckForgetPasswordResponse = {
 
 export type {
 	CheckForgetPasswordDto,
+	ResetPasswordDto,
 	CheckForgetPasswordResponse,
 	InitForgetPasswordResponse,
 	RestForgetPasswordDto,

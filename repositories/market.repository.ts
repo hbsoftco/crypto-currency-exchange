@@ -3,7 +3,7 @@ import type { NitroFetchRequest, $Fetch } from 'nitropack';
 import type { GetMarketListByCategoryParams, GetMarketListWithSparkLineChartParams, GetMarketsParams, GetMarketStatusParams } from '~/types/base.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import type { FavoriteMarketDto } from '~/types/dto/market.dto';
-import type { CommonRes } from '~/types/response/common.types';
+import type { CommonResponse } from '~/types/response/common.types';
 import type {
 	MarketCurrencyCategoriesResponse,
 	MarketListByCategoryResponse,
@@ -25,8 +25,8 @@ type MarketRepository = {
 	getMarketCurrencyCategories: () => Promise<MarketCurrencyCategoriesResponse>;
 	getMarketListByCategory: (params: GetMarketListByCategoryParams) => Promise<MarketListByCategoryResponse>;
 	getMarketList: (params: GetMarketListByCategoryParams) => Promise<MarketListResponse>;
-	likeMarket: (dto: FavoriteMarketDto) => Promise<CommonRes>;
-	dislikeMarket: (dto: FavoriteMarketDto) => Promise<CommonRes>;
+	likeMarket: (dto: FavoriteMarketDto) => Promise<CommonResponse>;
+	dislikeMarket: (dto: FavoriteMarketDto) => Promise<CommonResponse>;
 	getMarketListL16: (params: GetMarketsParams) => Promise<MarketsL16Response>;
 };
 
@@ -138,9 +138,9 @@ export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Mar
 
 		return response;
 	},
-	async likeMarket(dto: FavoriteMarketDto): Promise<CommonRes> {
+	async likeMarket(dto: FavoriteMarketDto): Promise<CommonResponse> {
 		const url = '/v1/user/market/like';
-		const response = await fetch<CommonRes>(`${url}`, {
+		const response = await fetch<CommonResponse>(`${url}`, {
 			noAuth: false,
 			method: 'POST',
 			body: dto,
@@ -148,9 +148,9 @@ export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Mar
 
 		return response;
 	},
-	async dislikeMarket(dto: FavoriteMarketDto): Promise<CommonRes> {
+	async dislikeMarket(dto: FavoriteMarketDto): Promise<CommonResponse> {
 		const url = '/v1/user/market/like';
-		const response = await fetch<CommonRes>(`${url}`, {
+		const response = await fetch<CommonResponse>(`${url}`, {
 			noAuth: false,
 			method: 'POST',
 			body: dto,

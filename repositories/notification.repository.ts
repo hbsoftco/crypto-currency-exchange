@@ -2,14 +2,14 @@ import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import type { NotificationRequestDto } from '~/types/dto/notification.dto';
-import type { CommonRes } from '~/types/response/common.types';
+import type { CommonResponse } from '~/types/response/common.types';
 import type { NotificationResponse, NotificationTag } from '~/types/response/notification.types';
 
 type NotificationRepository = {
 	getNotifications: (params: NotificationRequestDto) => Promise<NotificationResponse>;
 	getNotificationsTag: () => Promise<NotificationTag>;
-	readAllNotifications: () => Promise<CommonRes>;
-	deleteAllNotifications: () => Promise<CommonRes>;
+	readAllNotifications: () => Promise<CommonResponse>;
+	deleteAllNotifications: () => Promise<CommonResponse>;
 };
 
 export const notificationRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): NotificationRepository => ({
@@ -37,9 +37,9 @@ export const notificationRepository = (fetch: $Fetch<unknown, NitroFetchRequest>
 		} as CustomNitroFetchOptions);
 		return result;
 	},
-	async readAllNotifications(): Promise<CommonRes> {
+	async readAllNotifications(): Promise<CommonResponse> {
 		const url = `/v1/user/logs/notice_read_all`;
-		const response = await fetch<CommonRes>(`${url}`, {
+		const response = await fetch<CommonResponse>(`${url}`, {
 			noAuth: false,
 			apiName: url,
 			method: 'POST',
@@ -47,9 +47,9 @@ export const notificationRepository = (fetch: $Fetch<unknown, NitroFetchRequest>
 
 		return response;
 	},
-	async deleteAllNotifications(): Promise<CommonRes> {
+	async deleteAllNotifications(): Promise<CommonResponse> {
 		const url = `/v1/user/logs/notice_del_all`;
-		const response = await fetch<CommonRes>(`${url}`, {
+		const response = await fetch<CommonResponse>(`${url}`, {
 			noAuth: false,
 			apiName: url,
 			method: 'DELETE',

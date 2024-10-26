@@ -1,7 +1,7 @@
 import { useVuelidate } from '@vuelidate/core';
 
 import { authRepository } from '~/repositories/auth.repository';
-import type { CheckCodeDto } from '~/types/dto/verification.dto';
+import type { CheckCodeDto } from '~/types/verification.types';
 import type { BodyErrorResponse, ErrorResponse } from '~/types/response/error.type';
 import type { VerificationCheckCodeResponse } from '~/types/response/verification.types';
 

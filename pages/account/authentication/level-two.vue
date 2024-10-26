@@ -24,8 +24,8 @@
 </template>
 
 <script setup lang="ts">
-import ImportantPoint from '~/components/pages/Site/Account/Authentication/LevelTwo/ImportantPoint.vue';
-import UploadDocuments from '~/components/pages/Site/Account/Authentication/LevelTwo/UploadDocuments.vue';
+import ImportantPoint from '~/components/pages/Account/Authentication/LevelTwo/ImportantPoint.vue';
+import UploadDocuments from '~/components/pages/Account/Authentication/LevelTwo/UploadDocuments.vue';
 
 definePageMeta({
 	layout: 'account-single',

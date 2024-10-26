@@ -1,6 +1,6 @@
 import type { KeyValue } from '../base.types';
 
-type CommonRes = {
+type CommonResponse = {
 	statusCode: number;
 	result: string;
 };
@@ -51,8 +51,20 @@ type GetMiniRoutineRes = {
 	result: MiniRoutine;
 };
 
+type CountryItem = {
+	id: number;
+	name: string;
+	abbreviation: string ;
+	phonePrefix: string ;
+};
+
+type GetCountryListRes = {
+	statusCode: number;
+	result: CountryItem[];
+};
+
 export type {
-	CommonRes,
+	CommonResponse,
 	KeyValueRes,
 	IdentificationRes,
 	UploadAvatarDto,
@@ -62,4 +74,6 @@ export type {
 	Tip,
 	Faq,
 	Help,
+	GetCountryListRes,
+	CountryItem,
 };

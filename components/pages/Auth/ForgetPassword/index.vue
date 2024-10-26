@@ -21,7 +21,7 @@
 	</Auth>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import GetCode from '~/components/pages/Auth/ForgetPassword/GetCode.vue';
 import SetCode from '~/components/pages/Auth/ForgetPassword/SetCode.vue';
 import Auth from '~/components/pages/Auth/Auth.vue';

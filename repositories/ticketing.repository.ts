@@ -3,16 +3,16 @@ import type { NitroFetchRequest, $Fetch } from 'nitropack';
 import type { GetTicketListParams } from '~/types/base.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import type { AddChatDto, StoreTicketDto, TicketCloseDto } from '~/types/dto/ticketing.dto';
-import type { CommonRes, KeyValueRes } from '~/types/response/common.types';
+import type { CommonResponse, KeyValueRes } from '~/types/response/common.types';
 import type { GetChatListRes, StoreAddChatRes, StoreTicketRes } from '~/types/response/ticketing.types';
 import type { GetTicketListResponse } from '~/types/response/user.types';
 
 type TicketRepository = {
 	storeTicket: (dto: StoreTicketDto) => Promise<StoreTicketRes>;
 	getTicketTypes: () => Promise<KeyValueRes>;
-	uploadFile: (wloId: string, dto: any) => Promise<CommonRes>;
+	uploadFile: (wloId: string, dto: any) => Promise<CommonResponse>;
 	getTicketList: (params: GetTicketListParams) => Promise<GetTicketListResponse>;
-	ticketClose: (params: TicketCloseDto) => Promise<CommonRes>;
+	ticketClose: (params: TicketCloseDto) => Promise<CommonResponse>;
 	storeAddChat: (dto: AddChatDto) => Promise<StoreAddChatRes>;
 	getChatList: (id: string) => Promise<GetChatListRes>;
 };
@@ -39,12 +39,12 @@ export const ticketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Tic
 
 		return response;
 	},
-	async uploadFile(wloId: string, dto: any): Promise<CommonRes> {
+	async uploadFile(wloId: string, dto: any): Promise<CommonResponse> {
 		const formData = new FormData();
 		formData.append('file', dto.file);
 
 		const url = `/v1/upload/ticket`;
-		const response = await fetch<CommonRes>(`${url}`, {
+		const response = await fetch<CommonResponse>(`${url}`, {
 			method: 'POST',
 			body: formData,
 		});
@@ -67,9 +67,9 @@ export const ticketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Tic
 
 		return response;
 	},
-	async ticketClose(dto: TicketCloseDto): Promise<CommonRes> {
+	async ticketClose(dto: TicketCloseDto): Promise<CommonResponse> {
 		const url = `v1/user/ticketing/close`;
-		const response = await fetch<CommonRes>(`${url}`, {
+		const response = await fetch<CommonResponse>(`${url}`, {
 			noAuth: false,
 			apiName: url,
 			method: 'POST',

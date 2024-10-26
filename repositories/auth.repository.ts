@@ -7,11 +7,11 @@ import type { CaptchaRequestParams } from '~/types/dto/generate-captcha.dto';
 import type { LoginByEmailDto, LoginByMobileDto } from '~/types/dto/login.dto';
 import type { SignupByEmailDto, SignupByMobileDto } from '~/types/dto/signup.dto';
 import type { ValidateCaptchaDto } from '~/types/dto/validate-captcha.dto';
-import type { CheckCodeDto } from '~/types/dto/verification.dto';
-import type { CheckForgetPasswordDto, CheckForgetPasswordResponse, InitForgetPasswordDto, InitForgetPasswordResponse, RestForgetPasswordDto } from '~/types/forget-password.types';
+import type { CheckCodeDto, ResendVerificationParams, ResendVerificationResponse } from '~/types/verification.types';
+import type { CheckForgetPasswordDto, CheckForgetPasswordResponse, InitForgetPasswordDto, InitForgetPasswordResponse, ResetPasswordDto, RestForgetPasswordDto } from '~/types/forget-password.types';
 import type { ResposneType } from '~/types/response.types';
 import type { CheckOTCResponse, GetSocketListenKeyResponse } from '~/types/response/check-otc.types';
-import type { CommonRes } from '~/types/response/common.types';
+import type { CommonResponse } from '~/types/response/common.types';
 import type { LoginByEmailResponse } from '~/types/response/login.types';
 import type { SignUpResponse } from '~/types/response/sign-up.types';
 import type { VerificationCheckCodeResponse } from '~/types/response/verification.types';
@@ -28,14 +28,16 @@ type AuthRepository = {
 	loginByEmail: (data: LoginByEmailDto) => Promise<LoginByEmailResponse>;
 	// Verification
 	checkCodeVerification: (data: CheckCodeDto) => Promise<VerificationCheckCodeResponse>;
+	verificationResend: (params: ResendVerificationParams) => Promise<ResendVerificationResponse>;
 	// OTC
 	generateNewOTC: () => Promise<CheckOTCResponse>;
 	// listenKey Socket
 	getSocketListenKey: () => Promise<GetSocketListenKeyResponse>;
 	// Forget Password
 	initForgetPassword: (dto: InitForgetPasswordDto) => Promise<InitForgetPasswordResponse>;
-	resetForgetPassword: (dto: RestForgetPasswordDto) => Promise<CommonRes>;
+	resetForgetPassword: (dto: RestForgetPasswordDto) => Promise<CommonResponse>;
 	checkForgetPassword: (dto: CheckForgetPasswordDto) => Promise<CheckForgetPasswordResponse>;
+	resetPassword: (dto: ResetPasswordDto) => Promise<CommonResponse>;
 };
 
 export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthRepository => ({
@@ -96,6 +98,22 @@ export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthR
 		});
 		return response;
 	},
+	async verificationResend(params: ResendVerificationParams): Promise<ResendVerificationResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/verification/resend';
+		const response = await fetch<ResendVerificationResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			apiName: url,
+			queryParams: params,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
 	// OTC
 	async generateNewOTC(): Promise<CheckOTCResponse> {
 		const response = await fetch<CheckOTCResponse>(`/v1/otc/check`, {
@@ -125,9 +143,9 @@ export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthR
 
 		return response;
 	},
-	async resetForgetPassword(dto: RestForgetPasswordDto): Promise<CommonRes> {
+	async resetForgetPassword(dto: RestForgetPasswordDto): Promise<CommonResponse> {
 		const url = '/v1/auth/forget_password/reset';
-		const response = await fetch<CommonRes>(`${url}`, {
+		const response = await fetch<CommonResponse>(`${url}`, {
 			noAuth: false,
 			apiName: url,
 			method: 'POST',
@@ -139,6 +157,17 @@ export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthR
 	async checkForgetPassword(dto: CheckForgetPasswordDto): Promise<CheckForgetPasswordResponse> {
 		const url = '/v1/verification/forget_password_check';
 		const response = await fetch<CheckForgetPasswordResponse>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async resetPassword(dto: RestForgetPasswordDto): Promise<CommonResponse> {
+		const url = '/v1/auth/forget_password/reset';
+		const response = await fetch<CommonResponse>(`${url}`, {
 			noAuth: false,
 			apiName: url,
 			method: 'POST',

@@ -46,6 +46,8 @@ import useVuelidate from '@vuelidate/core';
 
 import SlideCaptcha from '~/components/ui/SlideCaptcha.vue';
 
+const router = useRouter();
+
 const forgetPasswordStore = useForgetPasswordStore();
 const captchaStore = useCaptchaStore();
 
@@ -68,7 +70,8 @@ const submit = async () => {
 		await getNewCaptcha();
 
 		if (captchaStore.stateId === 11) {
-			forgetPasswordStore.stepState = 'setCode';
+			await forgetPasswordStore.initForgetPassword();
+			router.push('/auth/set-password');
 		}
 	}
 	catch (error) {
@@ -92,8 +95,8 @@ const handleCaptchaValidation = async (sliderValue: number) => {
 		captchaHasError.value = false;
 	}
 	else {
-		await forgetPasswordStore.initForgetPassword();
 		forgetPasswordStore.stepState = 'setCode';
+		await forgetPasswordStore.initForgetPassword();
 	}
 };
 

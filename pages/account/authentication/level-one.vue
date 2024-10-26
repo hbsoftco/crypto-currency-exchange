@@ -26,10 +26,10 @@
 </template>
 
 <script setup lang="ts">
-import IdentityInfo from '~/components/pages/Site/Account/Authentication/LevelOne/IdentityInfo.vue';
-import ImportantPoint from '~/components/pages/Site/Account/Authentication/LevelOne/ImportantPoint.vue';
-import UploadDocuments from '~/components/pages/Site/Account/Authentication/LevelOne/UploadDocuments.vue';
-import UploadLetter from '~/components/pages/Site/Account/Authentication/LevelOne/UploadLetter.vue';
+import IdentityInfo from '~/components/pages/Account/Authentication/LevelOne/IdentityInfo.vue';
+import ImportantPoint from '~/components/pages/Account/Authentication/LevelOne/ImportantPoint.vue';
+import UploadDocuments from '~/components/pages/Account/Authentication/LevelOne/UploadDocuments.vue';
+import UploadLetter from '~/components/pages/Account/Authentication/LevelOne/UploadLetter.vue';
 
 definePageMeta({
 	layout: 'account-single',

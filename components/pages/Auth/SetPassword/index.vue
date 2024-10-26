@@ -1,11 +1,12 @@
 <template>
-	<PagesAuth title="createPassword">
+	<Auth title="createPassword">
 		<div>
-			<PagesAuthSetPasswordNewPassword />
+			<NewPassword />
 		</div>
-	</PagesAuth>
+	</Auth>
 </template>
 
-<script setup>
-
+<script setup lang="ts">
+import Auth from '~/components/pages/Auth/Auth.vue';
+import NewPassword from '~/components/pages/Auth/SetPassword/NewPassword.vue';
 </script>
