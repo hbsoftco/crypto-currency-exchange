@@ -1,5 +1,5 @@
 <template>
-	<PagesAuth title="signup">
+	<Auth title="signup">
 		<UTabs :items="items">
 			<template #default="{ item, selected }">
 				<span
@@ -12,13 +12,13 @@
 					v-if="item.key === 'phoneNumber'"
 					class="space-y-3"
 				>
-					<PagesAuthSignUpWithMobile :inviter="inviter ? String(inviter) : null" />
+					<WithMobile :inviter="inviter ? String(inviter) : null" />
 				</div>
 				<div
 					v-else-if="item.key === 'email'"
 					class="space-y-3"
 				>
-					<PagesAuthSignUpWithEmail :inviter="inviter ? String(inviter) : null" />
+					<WithEmail :inviter="inviter ? String(inviter) : null" />
 				</div>
 			</template>
 		</UTabs>
@@ -36,10 +36,14 @@
 				</ULink>
 			</div>
 		</div>
-	</PagesAuth>
+	</Auth>
 </template>
 
 <script setup lang="ts">
+import Auth from '~/components/pages/Auth/Auth.vue';
+import WithEmail from '~/components/pages/Auth/SignUp/WithEmail.vue';
+import WithMobile from '~/components/pages/Auth/SignUp/WithMobile.vue';
+
 const route = useRoute();
 const inviter = route.query.inviter || null;
 
@@ -56,5 +60,3 @@ const items = [
 	},
 ];
 </script>
-
-<style></style>

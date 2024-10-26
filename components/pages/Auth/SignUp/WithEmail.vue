@@ -3,33 +3,33 @@
 		<div class="my-8">
 			<FormsFieldInput
 				id="email"
-				v-model="signupByEmailForm.email"
+				v-model="signupStore.signupByEmailDto.email"
 				type="text"
 				input-class="text-left"
 				label="emailAddress"
 				placeholder="your@email.com"
 				icon="i-heroicons-envelope"
 				dir="ltr"
-				:error-message="vbyEmail$.email.$error? $t('fieldIsRequired') : ''"
+				:error-message="v$.email.$error? $t('fieldIsRequired') : ''"
 			/>
 		</div>
 		<div>
 			<FormsFieldInput
 				id="password"
-				v-model="signupByEmailForm.password"
+				v-model="signupStore.signupByEmailDto.password"
 				type="password"
 				input-class="text-left"
 				label="password"
 				placeholder=""
 				icon="i-heroicons-eye"
 				dir="ltr"
-				:error-message="vbyEmail$.password.$error? $t('fieldIsRequired') : ''"
+				:error-message="v$.password.$error? $t('fieldIsRequired') : ''"
 			/>
 		</div>
 		<div class="my-8">
 			<ReferralFieldInput
 				id="email_refereeCode"
-				v-model="signupByEmailForm.refereeCode"
+				v-model="signupStore.signupByEmailDto.refereeCode"
 				type="text"
 				input-class="text-left"
 				label="haveReferralCode"
@@ -59,36 +59,31 @@
 			<UButton
 				size="lg"
 				block
-				:loading="loading"
 				:disabled="!isAgreeChecked"
-				@click="handleSignup"
+				:loading="captchaStore.generateCaptchaLoading || signupStore.signupByEmailLoading"
+				@click="submit"
 			>
 				{{ $t('signup') }}
 			</UButton>
 		</div>
 		<div>
 			<SlideCaptcha
-				v-if="showCaptcha"
+				v-if="captchaStore.openCaptcha"
 				:has-error="captchaHasError"
-				:data="captchaData!"
-				@close="showCaptcha = false"
+				:data="captchaStore.captchaResponse"
+				@close="captchaStore.openCaptcha=false"
 				@slider-value="handleCaptchaValidation"
-				@refresh="captchaRefresh"
+				@refresh="getNewCaptcha"
 			/>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
+import useVuelidate from '@vuelidate/core';
+
 import ReferralFieldInput from '~/components/forms/ReferralFieldInput.vue';
 import SlideCaptcha from '~/components/ui/SlideCaptcha.vue';
-import { useCaptcha } from '~/composables/auth/useCaptcha';
-import { useSignUp } from '~/composables/auth/useSignUp';
-
-const authStore = useAuthStore();
-const verificationStore = useVerificationStore();
-
-const router = useRouter();
 
 interface PropsDefinition {
 	inviter: string | null;
@@ -96,131 +91,78 @@ interface PropsDefinition {
 
 const props = defineProps<PropsDefinition>();
 
-const {
-	signupByEmailForm,
-	signupByEmail,
-	vbyEmail$,
-	validate,
-	errorMessage,
-} = useSignUp();
-const {
-	captchaData,
-	showCaptcha,
-	loading,
-	closeCaptcha,
-	refreshCaptcha,
-	generateCaptcha,
-	validateCaptcha,
-	validateData,
-} = useCaptcha();
+const signupStore = useSignupStore();
+const captchaStore = useCaptchaStore();
 
+const router = useRouter();
+
+captchaStore.captchaInput.action = 'signup';
+
+const isVisible = ref(false);
 const isAgreeChecked = ref(false);
 const captchaHasError = ref(false);
-const isVisible = ref(false);
 
 if (props.inviter) {
-	signupByEmailForm.refereeCode = props.inviter;
+	signupStore.signupByEmailDto.refereeCode = props.inviter;
 	isVisible.value = true;
 }
 
-const savePassword = (password: string): string => {
-	const md5Password = md5WithUtf16LE(password);
-	authStore.savePassword(md5Password);
-
-	return md5Password;
+const signupByEmailRules = {
+	captchaKey: { },
+	refereeCode: { },
+	password: { required: validations.required },
+	email: { required: validations.required },
 };
 
-const handleSignup = async () => {
-	if (!validate(SIGNUP.BY_EMAIL)) return;
+const v$ = useVuelidate(signupByEmailRules, signupStore.signupByEmailDto);
 
-	const captchaResponse = await generateCaptcha({
-		username: signupByEmailForm.email,
-		action: 'signup',
-	});
-
-	if (captchaResponse && captchaResponse.stateId === 11) {
-		await handleSuccessfulCaptcha();
-	}
-	else {
-		showCaptcha.value = true;
-	}
-};
-
-const captchaRefresh = async () => {
-	captchaHasError.value = false;
-	await refreshCaptcha({ username: signupByEmailForm.email, action: 'signup' });
-	captchaHasError.value = true;
-};
-
-const handleSuccessfulCaptcha = async () => {
+const submit = async () => {
 	try {
-		loading.value = true;
-		if (validateData.value.captchaKey) {
-			signupByEmailForm.captchaKey = validateData.value.captchaKey;
-			const response = await signupByEmail();
-
-			if (response.statusCode === 200) {
-				savePassword(signupByEmailForm.password);
-
-				verificationStore.setVerificationData({
-					verificationId: response.result.verificationId,
-					userId: response.result.userId,
-					wloId: response.result.wloId,
-					type: 'email',
-					username: signupByEmailForm.email,
-				});
-
-				router.push({
-					path: '/auth/otp',
-					query: { action: 'signup', type: 'email' },
-				});
-			}
+		v$.value.$touch();
+		if (v$.value.$invalid) {
+			return;
 		}
-	}
-	catch (error) {
-		throw new Error(`Login failed. ${error}`);
-	}
-};
 
-const handleCaptchaValidation = async (sliderValue: number) => {
-	try {
-		loading.value = true;
-		const { captchaKey, validate } = await validateCaptcha(sliderValue);
-		if (validate && captchaKey) {
-			signupByEmailForm.captchaKey = captchaKey;
-			captchaHasError.value = false;
-			closeCaptcha();
+		await getNewCaptcha();
 
-			// Check signup
-			const { result } = await signupByEmail();
-
-			// Save data into store
-			verificationStore.setVerificationData({
-				verificationId: result.verificationId,
-				userId: result.userId,
-				wloId: result.wloId,
-				type: 'email',
-				username: signupByEmailForm.email,
-			});
-
+		if (captchaStore.stateId === 11) {
+			await signupStore.signupByEmail();
 			router.push({
 				path: '/auth/otp',
 				query: { action: 'signup', type: 'email' },
 			});
 		}
-		else {
-			if (!errorMessage.value) {
-				captchaRefresh();
-			}
-
-			errorMessage.value = null;
-		}
 	}
 	catch (error) {
-		if (!errorMessage.value) {
-			captchaRefresh();
+		console.error('Failed:', error);
+	}
+};
+
+const getNewCaptcha = async () => {
+	captchaStore.captchaInput.username = signupStore.signupByEmailDto.email;
+	await captchaStore.generateCaptcha();
+};
+
+const handleCaptchaValidation = async (sliderValue: number) => {
+	captchaStore.sliderValue = sliderValue;
+
+	await captchaStore.validateCaptcha();
+
+	if (!captchaStore.validCaptcha) {
+		captchaHasError.value = true;
+		await getNewCaptcha();
+		captchaHasError.value = false;
+	}
+	else {
+		captchaStore.openCaptcha = false;
+		await signupStore.signupByEmail();
+
+		if (signupStore.signupByEmailIsValid) {
+			router.push({
+				path: '/auth/otp',
+				query: { action: 'signup', type: 'email' },
+			});
 		}
-		return `${error}`;
 	}
 };
 </script>

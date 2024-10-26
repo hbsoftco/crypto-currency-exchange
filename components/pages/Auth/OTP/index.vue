@@ -1,11 +1,11 @@
 <template>
-	<PagesAuth
+	<Auth
 		v-if="title"
 		:title="title"
 	>
 		<div>
-			<PagesAuthOTPLoginOTP v-if="action === 'login'" />
-			<PagesAuthOTPSignUpOTP v-if="action === 'signup'" />
+			<LoginOTP v-if="action === 'login'" />
+			<SignUpOTP v-if="action === 'signup'" />
 		</div>
 
 		<div class="flex justify-center items-center mt-8">
@@ -32,10 +32,14 @@
 				</ULink>
 			</div>
 		</div>
-	</PagesAuth>
+	</Auth>
 </template>
 
 <script setup lang="ts">
+import Auth from '~/components/pages/Auth/Auth.vue';
+import LoginOTP from '~/components/pages/Auth/OTP/LoginOTP.vue';
+import SignUpOTP from '~/components/pages/Auth/OTP/SignUpOTP.vue';
+
 const route = useRoute();
 
 const action = ref<string | undefined>(route.query.action as string || '');

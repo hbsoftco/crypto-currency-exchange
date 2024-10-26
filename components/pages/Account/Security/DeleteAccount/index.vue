@@ -163,7 +163,7 @@ const submitDeleteAccount = async () => {
 		await deleteAccount();
 	}
 	catch (error) {
-		console.error('Failed to submit ticket:', error);
+		console.error('Failed:', error);
 	}
 	finally {
 		submitDeleteAccountLoading.value = false;

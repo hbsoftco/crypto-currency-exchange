@@ -174,7 +174,7 @@ const submitCardPrint = async () => {
 		});
 	}
 	catch (error: any) {
-		console.error('Failed to submit ticket:', error);
+		console.error('Failed:', error);
 		toast.add({
 			title: useT('registerCardPrint'),
 			description: error.response._data.message,

@@ -63,7 +63,7 @@ const submit = async () => {
 		router.push('/auth/set-password');
 	}
 	catch (error) {
-		console.error('Failed to submit ticket:', error);
+		console.error('Failed:', error);
 	}
 };
 

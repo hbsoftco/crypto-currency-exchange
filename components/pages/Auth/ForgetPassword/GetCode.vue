@@ -75,7 +75,7 @@ const submit = async () => {
 		}
 	}
 	catch (error) {
-		console.error('Failed to submit ticket:', error);
+		console.error('Failed:', error);
 	}
 };
 

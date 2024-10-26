@@ -1027,6 +1027,8 @@ const persian = {
 	countrySelected: 'انتخاب کشور',
 	passwordMustBeComplex: 'رمز عبور شما بایستی شامل حروف، عدد و کاراکترهای خاص باشد.',
 	passwordChangedSuccessfully: 'رمز عبور شما با موفقیت تغییر داده شد!',
+	emailAlreadyExist: 'آدرس ایمیل از قبل ثبت شده است',
+	signupSuccessfully: 'ثبت‌ نام با موفقیت انجام شد!',
 };
 
 export default persian;

@@ -206,7 +206,7 @@ const submitTicket = async () => {
 		});
 	}
 	catch (error) {
-		console.error('Failed to submit ticket:', error);
+		console.error('Failed:', error);
 	}
 	finally {
 		submitTicketLoading.value = false;

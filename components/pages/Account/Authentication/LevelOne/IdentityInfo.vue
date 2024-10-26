@@ -149,7 +149,7 @@ const submitSetBasic = async () => {
 		]);
 	}
 	catch (error: any) {
-		console.error('Failed to submit ticket:', error);
+		console.error('Failed:', error);
 	}
 	finally {
 		submitSetBasicLoading.value = false;

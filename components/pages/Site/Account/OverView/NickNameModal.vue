@@ -111,7 +111,7 @@ const submitNickName = async () => {
 		closeModal(true);
 	}
 	catch (error: any) {
-		console.error('Failed to submit ticket:', error);
+		console.error('Failed:', error);
 		toast.add({
 			title: useT('registerNickname'),
 			description: error.response._data.message,
