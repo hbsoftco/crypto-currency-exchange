@@ -15,8 +15,11 @@
 				placeholder=""
 				icon=""
 				dir="ltr"
+				:clear="clearCode"
 				:error-message="v$.verificationCode.$error? $t('fieldIsRequired') : ''"
 				@resend="resendCode"
+				@completed="submit"
+				@cleared="setClearCode"
 			/>
 		</div>
 		<div>
@@ -48,6 +51,7 @@ const typeData = ref<string>();
 const type = ref<string>(route.query.type as string);
 const verificationCodeText = ref<string>('');
 const localLoading = ref<boolean>(false);
+const clearCode = ref<boolean>(false);
 
 const resendCode = async () => {
 	let resendType = SendType.Email;
@@ -64,6 +68,10 @@ if (type.value === 'email') {
 else {
 	verificationCodeText.value = 'verificationCode6charSentToMobile';
 }
+
+const setClearCode = () => {
+	clearCode.value = false;
+};
 
 const checkCodeVerificationDtoRules = {
 	verificationId: { required: validations.required },
@@ -82,11 +90,21 @@ const submit = async () => {
 
 		localLoading.value = true;
 		await signupStore.checkCodeVerification();
-		signupStore.resetAllData();
-		router.push('/');
+
+		if (signupStore.checkCodeVerificationIsValid) {
+			signupStore.resetAllData();
+			router.push('/');
+		}
+		else {
+			localLoading.value = false;
+			signupStore.checkCodeVerificationLoading = false;
+
+			localStorage.removeItem('password');
+		}
 	}
 	catch (error) {
 		localLoading.value = false;
+		clearCode.value = true;
 		console.error('Failed:', error);
 	}
 };

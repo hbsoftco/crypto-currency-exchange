@@ -54,7 +54,7 @@ export const useAuthStore = defineStore('auth', () => {
 
 		removeFromCache(CACHE_KEY_CURRENT_USER);
 
-		getAuthCredentials();
+		currentUser.value = [];
 
 		authStatus.value = false;
 	};

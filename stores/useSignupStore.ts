@@ -141,6 +141,7 @@ export const useSignupStore = defineStore('Signup', () => {
 		}
 	};
 
+	const checkCodeVerificationIsValid = ref<boolean>(true);
 	const checkCodeVerificationLoading = ref<boolean>(false);
 	const checkCodeVerification = async () => {
 		try {
@@ -157,6 +158,15 @@ export const useSignupStore = defineStore('Signup', () => {
 			return response.statusCode;
 		}
 		catch (error: any) {
+			checkCodeVerificationIsValid.value = false;
+			if (error.response._data.statusCode === -1311431) {
+				toast.add({
+					title: useT('login'),
+					description: error.response._data.message,
+					timeout: 5000,
+					color: 'red',
+				});
+			}
 			if (error.response._data.statusCode === 422) {
 				toast.add({
 					title: useT('password'),
@@ -177,6 +187,7 @@ export const useSignupStore = defineStore('Signup', () => {
 		checkCodeVerificationLoading,
 		signupByEmailIsValid,
 		checkCodeVerification,
+		checkCodeVerificationIsValid,
 		verificationResend,
 		signupByEmail,
 		// Mobile

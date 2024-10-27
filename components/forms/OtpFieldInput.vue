@@ -89,18 +89,20 @@ interface PropsDefinition {
 	colorType?: string;
 	countDownState?: boolean;
 	countdown?: number;
+	clear?: boolean;
 }
 
 const props = withDefaults(defineProps<PropsDefinition>(), {
 	countDownState: true,
 	sendType: 'resend',
 	countdown: 60,
+	clear: false,
 	conditionalClass: () => ['w-5', 'w-5', 'w-5', 'w-5', 'w-5', 'w-5'],
 });
 
 interface EmitDefinition {
 	(event: 'update:modelValue', value: unknown): void;
-	(event: 'resend' | 'sendCode'): void;
+	(event: 'resend' | 'sendCode' | 'completed' | 'cleared'): void;
 }
 const emit = defineEmits<EmitDefinition>();
 
@@ -120,8 +122,19 @@ watch(() => props.countdown, (newValue) => {
 	localCountdown.value = newValue;
 });
 
-const handleOnComplete = (value: string) => {
-	console.log('OTP completed: ', value);
+watch(() => props.clear, (newValue) => {
+	if (newValue) {
+		clearInput();
+		emit('cleared');
+	}
+});
+
+const clearInput = () => {
+	otpInput.value?.clearInput();
+};
+
+const handleOnComplete = () => {
+	emit('completed');
 };
 
 const handleOnChange = (value: string) => {
@@ -151,18 +164,8 @@ onUnmounted(() => {
 		clearInterval(interval);
 	}
 });
-// const clearInput = () => {
-// 	otpInput.value?.clearInput();
-// };
-
-// const fillInput = (value: string) => {
-// 	// eslint-disable-next-line no-console
-// 	console.log(value);
-// 	otpInput.value?.fillInput(value);
-// };
 
 const internalValue = ref(props.modelValue || '');
-// const isPasswordVisible = ref(false);
 
 watch(internalValue, (newValue) => {
 	emit('update:modelValue', newValue);
