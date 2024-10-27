@@ -16,8 +16,6 @@ export default defineNuxtPlugin(() => {
 				const tokenHeaders = await authStore.generateToken();
 				if (tokenHeaders) {
 					options.headers = { ...options.headers, ...tokenHeaders };
-
-					console.log('options.headers', options.headers);
 				}
 			}
 			catch (error) {

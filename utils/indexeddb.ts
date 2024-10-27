@@ -1,4 +1,4 @@
-import { get, set } from 'idb-keyval';
+import { get, set, del } from 'idb-keyval';
 
 const CACHE_DURATION = 24 * 60 * 60 * 1000;
 
@@ -29,7 +29,12 @@ const loadFromCache = async <T>(key: string): Promise<T | null> => {
 	return value;
 };
 
+const removeFromCache = async (key: string): Promise<void> => {
+	await del(key);
+};
+
 export {
 	saveToCache,
 	loadFromCache,
+	removeFromCache,
 };

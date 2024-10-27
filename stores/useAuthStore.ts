@@ -4,16 +4,25 @@ import { authRepository } from '~/repositories/auth.repository';
 import { userRepository } from '~/repositories/user.repository';
 import type { KeyValue } from '~/types/base.types';
 import { CACHE_KEY_CURRENT_USER } from '~/utils/constants/common';
+import { removeFromCache } from '~/utils/indexeddb';
 
 export const useAuthStore = defineStore('auth', () => {
+	const authStatus = ref(!!(localStorage.getItem('otc')
+		&& localStorage.getItem('userId')
+		&& localStorage.getItem('userSecretKey')));
+
 	const setAuthCredentials = (_otc: string, _userId: number, _userSecretKey: number) => {
 		localStorage.setItem('otc', _otc);
 		localStorage.setItem('userId', String(_userId));
 		localStorage.setItem('userSecretKey', String(_userSecretKey));
+
+		authStatus.value = true;
 	};
 
 	const setPassword = (_password: string) => {
 		localStorage.setItem('password', md5WithUtf16LE(_password));
+
+		authStatus.value = true;
 	};
 
 	const getAuthCredentials = () => {
@@ -43,7 +52,11 @@ export const useAuthStore = defineStore('auth', () => {
 		localStorage.removeItem('userSecretKey');
 		localStorage.removeItem('password');
 
+		removeFromCache(CACHE_KEY_CURRENT_USER);
+
 		getAuthCredentials();
+
+		authStatus.value = false;
 	};
 
 	const generateToken = (): Record<string, string> | null => {
@@ -81,6 +94,8 @@ export const useAuthStore = defineStore('auth', () => {
 
 			const { result: otc } = await authRepo.refreshOtc();
 			localStorage.setItem('otc', otc);
+
+			authStatus.value = true;
 		}
 		catch (error) {
 			return error;
@@ -127,13 +142,7 @@ export const useAuthStore = defineStore('auth', () => {
 
 	const getCurrentUser = computed(() => currentUser.value);
 
-	const isLoggedIn = computed(() => {
-		console.log('i am from isLoggedIn computed');
-
-		const result = getAuthCredentials();
-		if (result) return true;
-		return false;
-	});
+	const isLoggedIn = computed(() => authStatus.value);
 
 	return {
 		isLoggedIn,

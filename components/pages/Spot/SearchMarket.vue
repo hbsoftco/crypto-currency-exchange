@@ -172,7 +172,7 @@
 </template>
 
 <script setup lang="ts">
-import { splitMarket } from '~/utils/splitMarket';
+import { splitMarket } from '~/utils/split-market';
 import { useNumber } from '~/composables/useNumber';
 import IconStar from '~/assets/svg-icons/market/star.svg';
 import IconFillStar from '~/assets/svg-icons/market/fill-star.svg';

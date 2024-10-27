@@ -164,7 +164,7 @@ const deleteAllNotifications = async () => {
 
 			toast.add({
 				title: useT('deleteAllNotifications'),
-				description: 'allNotificationsDeletedSuccessfully',
+				description: useT('allNotificationsDeletedSuccessfully'),
 				timeout: 5000,
 				color: 'green',
 			});

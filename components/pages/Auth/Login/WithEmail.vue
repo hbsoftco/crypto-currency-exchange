@@ -90,10 +90,13 @@ const submit = async () => {
 
 		if (captchaStore.stateId === 11) {
 			await loginStore.loginByEmail();
-			router.push({
-				path: '/auth/otp',
-				query: { action: 'login', type: 'mobile' },
-			});
+
+			if (loginStore.loginByEmailIsValid) {
+				router.push({
+					path: '/auth/otp',
+					query: { action: 'login', type: 'email' },
+				});
+			}
 			localLoading.value = false;
 		}
 	}
@@ -120,7 +123,7 @@ const handleCaptchaValidation = async (sliderValue: number) => {
 		if (loginStore.loginByEmailIsValid) {
 			router.push({
 				path: '/auth/otp',
-				query: { action: 'login', type: 'mobile' },
+				query: { action: 'login', type: 'email' },
 			});
 		}
 	}

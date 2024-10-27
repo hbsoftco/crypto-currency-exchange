@@ -46,6 +46,16 @@ export const useLoginStore = defineStore('login', () => {
 			password: '',
 			ignore2FA: null,
 		};
+
+		checkCodeVerificationDto.value = {
+			userId: 0,
+			verificationCode: '',
+			verificationId: 0,
+		};
+
+		loginByEmailLoading.value = false;
+		loginByMobileLoading.value = false;
+		checkCodeVerificationLoading.value = false;
 	};
 
 	const loginByEmailIsValid = ref<boolean>(true);
@@ -71,7 +81,7 @@ export const useLoginStore = defineStore('login', () => {
 		}
 		catch (error: any) {
 			loginByEmailIsValid.value = false;
-			if (error.response._data.statusCode === -1110153) {
+			if (error.response._data.statusCode === -1110153 || error.response._data.statusCode === 422) {
 				toast.add({
 					title: useT('login'),
 					description: useT('invalidUsernameOrPassword'),

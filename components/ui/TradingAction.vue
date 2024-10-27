@@ -47,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import { splitMarket } from '~/utils/splitMarket';
+import { splitMarket } from '~/utils/split-market';
 import type { MarketBriefItem } from '~/types/response/brief-list.types';
 
 interface Props {

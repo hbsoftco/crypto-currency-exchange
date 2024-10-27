@@ -127,10 +127,13 @@ const submit = async () => {
 
 		if (captchaStore.stateId === 11) {
 			await signupStore.signupByEmail();
-			router.push({
-				path: '/auth/otp',
-				query: { action: 'signup', type: 'email' },
-			});
+
+			if (signupStore.signupByEmailIsValid) {
+				router.push({
+					path: '/auth/otp',
+					query: { action: 'signup', type: 'email' },
+				});
+			}
 		}
 	}
 	catch (error) {

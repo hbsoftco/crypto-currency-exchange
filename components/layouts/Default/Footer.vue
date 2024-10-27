@@ -29,7 +29,7 @@
 				<div class="col-span-12 md:col-span-7 mt-0 md:mt-4">
 					<div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 						<div
-							v-for="section in sectionList"
+							v-for="section in footerStore.sectionList"
 							:key="section.id"
 						>
 							<span
@@ -94,10 +94,6 @@ import IconInstagram from '~/assets/svg-icons/social/instagram.svg';
 import IconTelegram from '~/assets/svg-icons/social/telegram.svg';
 import IconTwitter from '~/assets/svg-icons/social/twitter.svg';
 import IconWhatsapp from '~/assets/svg-icons/social/whatsapp.svg';
-import { decorationRepository } from '~/repositories/decoration.repository';
-import type { GetRootListParams } from '~/types/base.types';
-import type { Section } from '~/types/response/decoration.types';
-import { Language } from '~/utils/enums/language.enum';
 // import IconGoogle from '~/assets/svg-icons/social/google.svg';
 // import IconLinkedin from '~/assets/svg-icons/social/linkedin.svg';
 // import IconMessenger from '~/assets/svg-icons/social/messenger.svg';
@@ -106,6 +102,8 @@ import { Language } from '~/utils/enums/language.enum';
 // import IconViber from '~/assets/svg-icons/social/viber.svg';
 // import IconWechat from '~/assets/svg-icons/social/wechat.svg';
 // import IconYoutube from '~/assets/svg-icons/social/youtube.svg';
+
+const footerStore = useFooterStore();
 
 const followUs = 'followUs';
 
@@ -128,35 +126,8 @@ const footerItems = [
 		],
 	},
 ];
-const { $api } = useNuxtApp();
-const decorationRepo = decorationRepository($api);
-
-const RootListParams = ref<GetRootListParams>({
-	languageId: String(Language.PERSIAN),
-	group: 'Footer',
-});
-const linkListLoading = ref<boolean>(false);
-const sectionList = ref<Section[]>();
-const getLinkList = async () => {
-	try {
-		linkListLoading.value = true;
-		const { result } = await decorationRepo.getLinkList(RootListParams.value);
-		sectionList.value = result.sections;
-
-		for (const section of sectionList.value) {
-			section.links = result.links.filter((link) => link.sectionId === section.id);
-		}
-		linkListLoading.value = false;
-	}
-	catch (error) {
-		linkListLoading.value = false;
-		console.log(error);
-	}
-};
 
 onMounted(async () => {
-	await Promise.all([
-		getLinkList(),
-	]);
+	await footerStore.fetchFooter();
 });
 </script>

@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { splitMarket } from '~/utils/splitMarket';
+import { splitMarket } from '~/utils/split-market';
 import { useNumber } from '~/composables/useNumber';
 import type { MarketState } from '~/types/response/market.types';
 

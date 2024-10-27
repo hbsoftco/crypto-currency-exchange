@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
 import { priceFormat } from '~/utils/price-format';
-import { splitMarket } from '~/utils/splitMarket';
+import { splitMarket } from '~/utils/split-market';
 import { useNumber } from '~/composables/useNumber';
 import type { MarketListWithSparkLineChartItem } from '~/types/response/market.types';
 

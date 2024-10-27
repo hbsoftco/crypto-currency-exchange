@@ -92,10 +92,13 @@ const submit = async () => {
 
 		if (captchaStore.stateId === 11) {
 			await loginStore.loginByMobile();
-			router.push({
-				path: '/auth/otp',
-				query: { action: 'login', type: 'mobile' },
-			});
+
+			if (loginStore.loginByMobileIsValid) {
+				router.push({
+					path: '/auth/otp',
+					query: { action: 'login', type: 'mobile' },
+				});
+			}
 			localLoading.value = false;
 		}
 	}
@@ -126,8 +129,6 @@ const handleCaptchaValidation = async (sliderValue: number) => {
 			});
 		}
 	}
-
-	console.log(loginStore.loginByMobileIsValid);
 
 	localLoading.value = false;
 };

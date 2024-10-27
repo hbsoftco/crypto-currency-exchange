@@ -63,7 +63,7 @@
 <script setup lang="ts">
 import MenuTradeFilters from './MenuTradeFilters.vue';
 
-import { splitMarket } from '~/utils/splitMarket';
+import { splitMarket } from '~/utils/split-market';
 import ChangePrice from '~/components/ui/ChangePrice.vue';
 
 interface Props {

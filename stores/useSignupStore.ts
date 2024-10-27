@@ -37,12 +37,14 @@ export const useSignupStore = defineStore('Signup', () => {
 			password: '',
 			refereeCode: '',
 		};
+
 		signupByMobileDto.value = {
 			captchaKey: '',
 			mobile: '',
 			password: '',
 			refereeCode: '',
 		};
+
 		checkCodeVerificationDto.value = {
 			userId: 0,
 			verificationCode: '',

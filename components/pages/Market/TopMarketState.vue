@@ -50,7 +50,7 @@
 import { useNumber } from '~/composables/useNumber';
 import { priceFormat } from '~/utils/price-format';
 import type { MarketState } from '~/types/response/market.types';
-import { splitMarket } from '~/utils/splitMarket';
+import { splitMarket } from '~/utils/split-market';
 
 interface Props {
 	title: string;

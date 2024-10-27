@@ -38,8 +38,4 @@ import Wallet from '~/components/layouts/Default/Header/UserLogin/Wallet.vue';
 import Notification from '~/components/layouts/Default/Header/UserLogin/Notification.vue';
 
 const authStore = useAuthStore();
-
-onMounted(() => {
-	// authStore.loadAuthData();
-});
 </script>
