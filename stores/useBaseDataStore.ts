@@ -16,7 +16,7 @@ import type { GetUserTraderCommissionListParams } from '~/types/base.types';
 import { CACHE_KEY_COUNTRY_ITEMS, CACHE_KEY_CURRENCY_BRIEF_ITEMS, CACHE_KEY_MARKET_BRIEF_ITEMS, CACHE_KEY_QUOTE_ITEMS, CACHE_KEY_TAG_ITEMS } from '~/utils/constants/common';
 import { useCurrencyWorker } from '~/workers/currency-worker/currency-worker-wrapper';
 import { useMarketWorker } from '~/workers/market-worker/market-worker-wrapper';
-import { loadFromCache } from '~/utils/indexeddb';
+import { loadFromCache, saveToCache } from '~/utils/indexeddb';
 import type { CountryItem } from '~/types/response/common.types';
 import { userRepository } from '~/repositories/user.repository';
 

@@ -61,8 +61,10 @@ import type {
 	SetPinCodeDto } from '~/types/dto/user.dto';
 import type { CommonResponse, GetCountryListRes, IdentificationRes, KeyValueRes, UploadAvatarDto } from '~/types/response/common.types';
 import type { GetCommissionRes, GetInvitationListRes } from '~/types/response/referral.types';
+import type { ProfileResponse } from '~/types/response/profile.types';
 
 type UserRepository = {
+	getCurrentUser: () => Promise<ProfileResponse>;
 	generate2Fa: () => Promise<TwoStepLoginResponse>;
 	getProfile: () => Promise<UserProfileResponse>;
 	getCommissionReceivedList: (params: GetCommissionReceivedListParams) => Promise<GetCommissionReceivedList>;
@@ -115,6 +117,17 @@ type UserRepository = {
 };
 
 export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserRepository => ({
+	// Profile
+	async getCurrentUser(): Promise<ProfileResponse> {
+		const url = `/v1/user/profile/get`;
+		const response = await fetch<ProfileResponse>(url, {
+			noAuth: false,
+			apiName: url,
+			query: {},
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
 	async generate2Fa(): Promise<TwoStepLoginResponse> {
 		const url = '/v1/user/2fa/generate';
 		const response = await fetch<TwoStepLoginResponse>(`${url}`, {

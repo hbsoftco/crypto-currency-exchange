@@ -7,8 +7,8 @@ export default defineNuxtPlugin(() => {
 
 	const api = $fetch.create({
 		baseURL,
-		// retry: 1,
-		// retryStatusCodes: [StatusCodes.OTC_EXPIRED.fa],
+		retry: 1,
+		retryStatusCodes: [StatusCodes.OTC_EXPIRED.fa],
 		async onRequest({ options }: CustomFetchContext<unknown>) {
 			try {
 				if (options.noAuth !== false) return;

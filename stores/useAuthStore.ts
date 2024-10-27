@@ -1,6 +1,9 @@
 import { defineStore } from 'pinia';
 
 import { authRepository } from '~/repositories/auth.repository';
+import { userRepository } from '~/repositories/user.repository';
+import type { KeyValue } from '~/types/base.types';
+import { CACHE_KEY_CURRENT_USER } from '~/utils/constants/common';
 
 export const useAuthStore = defineStore('auth', () => {
 	const setAuthCredentials = (_otc: string, _userId: number, _userSecretKey: number) => {
@@ -87,7 +90,46 @@ export const useAuthStore = defineStore('auth', () => {
 		}
 	};
 
+	const currentUser = ref<KeyValue[]>([]);
+	const currentUserFetched = ref(false);
+	const currentUserLoading = ref<boolean>(false);
+	const fetchCurrentUser = async (force: boolean = false) => {
+		if (currentUserLoading.value && currentUserFetched.value && !force) return;
+
+		currentUserLoading.value = true;
+
+		try {
+			if (!force) {
+				const cachedData: KeyValue[] = await loadFromCache(CACHE_KEY_CURRENT_USER) || [];
+				if (cachedData.length) {
+					currentUser.value = cachedData;
+					currentUserFetched.value = true;
+					return;
+				}
+			}
+
+			const { $api } = useNuxtApp();
+			const userRepo = userRepository($api);
+
+			const response = await userRepo.getCurrentUser();
+			currentUser.value = response.result;
+			currentUserFetched.value = true;
+
+			await saveToCache(CACHE_KEY_CURRENT_USER, response.result);
+		}
+		catch (err) {
+			console.error('Error fetching profile:', err);
+		}
+		finally {
+			currentUserLoading.value = false;
+		}
+	};
+
+	const getCurrentUser = computed(() => currentUser.value);
+
 	const isLoggedIn = computed(() => {
+		console.log('i am from isLoggedIn computed');
+
 		const result = getAuthCredentials();
 		if (result) return true;
 		return false;
@@ -102,5 +144,10 @@ export const useAuthStore = defineStore('auth', () => {
 		clearAuthCredentials,
 		refreshOtcLoading,
 		refreshOtc,
+		//
+		fetchCurrentUser,
+		currentUserLoading,
+		getCurrentUser,
+		currentUser,
 	};
 });

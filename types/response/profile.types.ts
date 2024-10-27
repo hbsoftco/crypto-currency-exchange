@@ -1,14 +1,10 @@
-type ProfilePair = {
-	key: string;
-	value: string;
-};
+import type { KeyValue } from '../base.types';
 
 type ProfileResponse = {
-	result: ProfilePair[];
+	result: KeyValue[];
 	statusCode: number;
 };
 
 export type {
 	ProfileResponse,
-	ProfilePair,
 };

@@ -16,10 +16,28 @@
 			>
 				<div class="w-60 bg-hover-light dark:bg-hover-dark shadow-lg rounded p-4">
 					<div>
-						<div class="flex items-center mb-2">
+						<div
+							v-if="getValueByKey(authStore.getCurrentUser, 'EMAIL')"
+							class="flex items-center mb-2"
+						>
 							<IconMessage class="text-2xl ml-2 dark:text-subtle-text-50" />
 							<span class="text-xs font-bold mr-1">
-								{{ profileStore.profileLoading ? '...': getValueByKey(profileStore.userProfile, 'EMAIL') }}
+								{{ authStore.currentUserLoading ? '...': getValueByKey(authStore.getCurrentUser, 'EMAIL') }}
+							</span>
+						</div>
+						<div
+							v-if="getValueByKey(authStore.getCurrentUser, 'MOBILE')"
+							class="flex items-center mb-2"
+						>
+							<UIcon
+								name="i-heroicons-phone"
+								class="w-6 h-6 ml-2 dark:text-subtle-text-50"
+							/>
+							<span
+								class="text-xs font-bold mr-1"
+								dir="ltr"
+							>
+								{{ authStore.currentUserLoading ? '...': getValueByKey(authStore.getCurrentUser, 'MOBILE') }}
 							</span>
 						</div>
 						<div class="flex items-center">
@@ -29,7 +47,7 @@
 								ref="textRef"
 								class="text-xs font-bold mx-1"
 							>
-								{{ profileStore.profileLoading ? '...': useNumber(String(getValueByKey(profileStore.userProfile, 'UID'))) }}
+								{{ authStore.currentUserLoading ? '...': useNumber(String(getValueByKey(authStore.getCurrentUser, 'UID'))) }}
 							</span>
 							<IconCopy
 								class="cursor-pointer"
@@ -80,7 +98,7 @@
 								</div>
 								<div>
 									<span class="text-primary-yellow-light dark:text-primary-yellow-dark rounded-sm p-0.5 px-1 border border-background-light dark:border-background-50 text-[0.625rem]">
-										{{ `${$t('level')} ${useNumber(String(getValueByKey(profileStore.userProfile, 'KYC_LVL_ID')?getValueByKey(profileStore.userProfile, 'KYC_LVL_ID'): 0))}` }}
+										{{ `${$t('level')} ${useNumber(String(getValueByKey(authStore.getCurrentUser, 'KYC_LVL_ID')?getValueByKey(authStore.getCurrentUser, 'KYC_LVL_ID'): 0))}` }}
 									</span>
 								</div>
 							</ULink>
@@ -132,7 +150,7 @@
 									</p>
 								</div>
 								<div>
-									<span class="text-primary-yellow-light dark:text-primary-yellow-dark rounded-sm p-0.5 px-1 border border-background-light dark:border-background-50 text-[0.625rem]">{{ useNumber(String(getValueByKey(profileStore.userProfile, 'TRD_LVL_NAME'))) }}</span>
+									<span class="text-primary-yellow-light dark:text-primary-yellow-dark rounded-sm p-0.5 px-1 border border-background-light dark:border-background-50 text-[0.625rem]">{{ useNumber(String(getValueByKey(authStore.getCurrentUser, 'TRD_LVL_NAME'))) }}</span>
 								</div>
 							</ULink>
 						</li>
@@ -279,16 +297,14 @@ import { getValueByKey } from '~/utils/find-value-by-key';
 import { useNumber } from '~/composables/useNumber';
 
 const textRef = ref<HTMLElement | null>(null);
+const authStore = useAuthStore();
 
 const logout = () => {
-	const authStore = useAuthStore();
 	authStore.clearAuthCredentials();
 };
 
-const profileStore = useProfileStore();
-
-onMounted(async () => {
-	await profileStore.fetchProfile();
+onMounted(() => {
+	authStore.fetchCurrentUser();
 });
 
 const copyText = () => {
