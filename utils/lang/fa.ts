@@ -1027,6 +1027,7 @@ const persian = {
 	countrySelected: 'انتخاب کشور',
 	passwordMustBeComplex: 'رمز عبور شما بایستی شامل حروف، عدد و کاراکترهای خاص باشد.',
 	passwordChangedSuccessfully: 'رمز عبور شما با موفقیت تغییر داده شد!',
+	joinBitland: 'به بیت لند ملحق شوید !',
 };
 
 export default persian;
