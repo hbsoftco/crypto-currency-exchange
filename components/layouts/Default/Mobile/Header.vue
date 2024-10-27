@@ -32,6 +32,6 @@ import Search from '~/components/layouts/Default/Header/Search/index.vue';
 const authStore = useAuthStore();
 
 onMounted(() => {
-	authStore.loadAuthData();
+	// authStore.loadAuthData();
 });
 </script>

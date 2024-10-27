@@ -4,7 +4,7 @@ import type { CaptchaResponse } from '~/types/captcha-response.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 // import type { ForgetPasswordDto } from '~/types/dto/forget-password.dto';
 import type { CaptchaRequestParams } from '~/types/dto/generate-captcha.dto';
-import type { LoginByEmailDto, LoginByMobileDto } from '~/types/dto/login.dto';
+import type { LoginByEmailDto, LoginByMobileDto } from '~/types/login.types';
 import type { SignupByEmailDto, SignupByMobileDto } from '~/types/dto/signup.dto';
 import type { ValidateCaptchaDto } from '~/types/dto/validate-captcha.dto';
 import type { CheckCodeDto, ResendVerificationParams, ResendVerificationResponse } from '~/types/verification.types';
@@ -30,7 +30,7 @@ type AuthRepository = {
 	checkCodeVerification: (data: CheckCodeDto) => Promise<VerificationCheckCodeResponse>;
 	verificationResend: (params: ResendVerificationParams) => Promise<ResendVerificationResponse>;
 	// OTC
-	generateNewOTC: () => Promise<CheckOTCResponse>;
+	refreshOtc: () => Promise<CheckOTCResponse>;
 	// listenKey Socket
 	getSocketListenKey: () => Promise<GetSocketListenKeyResponse>;
 	// Forget Password
@@ -115,7 +115,7 @@ export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthR
 		return response;
 	},
 	// OTC
-	async generateNewOTC(): Promise<CheckOTCResponse> {
+	async refreshOtc(): Promise<CheckOTCResponse> {
 		const response = await fetch<CheckOTCResponse>(`/v1/otc/check`, {
 			noAuth: false,
 		} as CustomNitroFetchOptions);

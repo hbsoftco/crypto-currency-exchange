@@ -108,6 +108,6 @@ const authStore = useAuthStore();
 
 onMounted(() => {
 	isMobile.value = !!mobileDetect.mobile();
-	authStore.loadAuthData();
+	// authStore.loadAuthData();
 });
 </script>

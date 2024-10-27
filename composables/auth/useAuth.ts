@@ -12,7 +12,7 @@ export const useAuth = () => {
 
 		loading.value = true;
 		try {
-			const response = await auth.generateNewOTC();
+			const response = await auth.refreshOtc();
 			const authStore = useAuthStore();
 			if (response.result) {
 				authStore.saveNewOTC(response.result);

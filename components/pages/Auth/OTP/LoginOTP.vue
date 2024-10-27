@@ -8,7 +8,7 @@
 		<div class="my-8">
 			<OtpFieldInput
 				id="verificationCodeText"
-				v-model="checkCodeVerificationForm.verificationCode"
+				v-model="loginStore.checkCodeVerificationDto.verificationCode"
 				type="text"
 				input-class="text-left"
 				:label="`verificationCodeSentTo${capitalizer(type)}`"
@@ -16,14 +16,15 @@
 				icon=""
 				dir="ltr"
 				:error-message="v$.verificationCode.$error? $t('fieldIsRequired') : ''"
+				@resend="resendCode"
 			/>
 		</div>
 		<div>
 			<UButton
 				size="lg"
 				block
-				:loading="loading"
-				@click="handleLogin"
+				:loading="loginStore.checkCodeVerificationLoading || localLoading"
+				@click="submit"
 			>
 				{{ $t('login') }}
 			</UButton>
@@ -32,13 +33,13 @@
 </template>
 
 <script setup lang="ts">
-import OtpFieldInput from '~/components/forms/OtpFieldInput.vue';
-import { useVerification } from '~/composables/auth/useVerification';
-import capitalizer from '~/utils/capitalizer';
+import useVuelidate from '@vuelidate/core';
 
-const { checkCodeVerification, loading, validate, v$, checkCodeVerificationForm } = useVerification();
-const { verificationData } = useVerificationStore();
-const authStore = useAuthStore();
+import OtpFieldInput from '~/components/forms/OtpFieldInput.vue';
+import capitalizer from '~/utils/capitalizer';
+import { SendType } from '~/utils/enums/user.enum';
+
+const loginStore = useLoginStore();
 
 const route = useRoute();
 const router = useRouter();
@@ -46,31 +47,56 @@ const router = useRouter();
 const typeData = ref<string>();
 const type = ref<string>(route.query.type as string);
 const verificationCodeText = ref<string>('');
+const localLoading = ref<boolean>(false);
 
-typeData.value = verificationData.username;
+const resendCode = async () => {
+	let resendType = SendType.Email;
+	if (type.value === 'mobile') {
+		resendType = SendType.SMS;
+	}
 
-if (type.value === 'email' && verificationData.type === 'email') {
+	await loginStore.verificationResend(resendType);
+};
+
+if (type.value === 'email') {
 	verificationCodeText.value = 'verificationCode6charSentToEmail';
 }
 else {
 	verificationCodeText.value = 'verificationCode6charSentToMobile';
 }
 
-const handleLogin = async () => {
-	checkCodeVerificationForm.userId = verificationData.userId;
-	checkCodeVerificationForm.verificationId = verificationData.verificationId;
-
-	if (!validate()) return;
-
-	// Send request to verification code
-	const { result } = await checkCodeVerification();
-
-	authStore.saveAuthData({
-		otc: result.otc,
-		userId: result.userId,
-		userSecretKey: result.userSecretKey,
-	});
-
-	router.push({ path: '/'	});
+const checkCodeVerificationDtoRules = {
+	verificationId: { required: validations.required },
+	verificationCode: { required: validations.required },
+	userId: { required: validations.required },
 };
+
+const v$ = useVuelidate(checkCodeVerificationDtoRules, loginStore.checkCodeVerificationDto);
+
+const submit = async () => {
+	try {
+		v$.value.$touch();
+		if (v$.value.$invalid) {
+			return;
+		}
+
+		localLoading.value = true;
+		await loginStore.checkCodeVerification();
+		loginStore.resetAllData();
+		router.push('/');
+	}
+	catch (error) {
+		localLoading.value = false;
+		console.error('Failed:', error);
+	}
+};
+
+onMounted(() => {
+	if (type.value === 'email') {
+		typeData.value = loginStore.loginByEmailDto.email;
+	}
+	else {
+		typeData.value = loginStore.loginByMobileDto.mobile;
+	}
+});
 </script>

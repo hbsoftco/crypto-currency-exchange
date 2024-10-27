@@ -3,180 +3,128 @@
 		<div class="my-8">
 			<FormsFieldInput
 				id="email"
-				v-model="loginByEmailForm.email"
+				v-model="loginStore.loginByEmailDto.email"
 				type="text"
 				input-class="text-left"
 				label="emailAddress"
 				placeholder="your@email.com"
 				icon="i-heroicons-envelope"
 				dir="ltr"
-				:error-message="vbyEmail$.email.$error? $t('fieldIsRequired') : ''"
+				:error-message="v$.email.$error? $t('fieldIsRequired') : ''"
 			/>
 		</div>
 		<div>
 			<FormsFieldInput
 				id="email_password"
-				v-model="loginByEmailForm.password"
+				v-model="loginStore.loginByEmailDto.password"
 				type="password"
 				input-class="text-left"
 				label="password"
 				placeholder=""
 				icon="i-heroicons-eye"
 				dir="ltr"
-				:error-message="vbyEmail$.password.$error? $t('fieldIsRequired') : ''"
+				:error-message="v$.password.$error? $t('fieldIsRequired') : ''"
 			/>
 		</div>
 		<div>
 			<UButton
 				size="lg"
 				block
-				:loading="loading"
-				@click="handleLogin"
+				:loading="captchaStore.generateCaptchaLoading || loginStore.loginByEmailLoading || localLoading"
+				@click="submit"
 			>
 				{{ $t('login') }}
 			</UButton>
 		</div>
 		<div>
 			<SlideCaptcha
-				v-if="showCaptcha"
+				v-if="captchaStore.openCaptcha"
 				:has-error="captchaHasError"
-				:data="captchaData!"
-				@close="showCaptcha = false"
+				:data="captchaStore.captchaResponse"
+				@close="captchaStore.openCaptcha=false"
 				@slider-value="handleCaptchaValidation"
-				@refresh="captchaRefresh"
+				@refresh="getNewCaptcha"
 			/>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
+import useVuelidate from '@vuelidate/core';
+
 import SlideCaptcha from '~/components/ui/SlideCaptcha.vue';
-import { useCaptcha } from '~/composables/auth/useCaptcha';
-import { useLogin } from '~/composables/auth/useLogin';
 
-const {
-	loginByEmailForm,
-	loginByEmail,
-	vbyEmail$,
-	validate,
-	errorMessage,
-} = useLogin();
-const {
-	captchaData,
-	showCaptcha,
-	loading,
-	closeCaptcha,
-	refreshCaptcha,
-	generateCaptcha,
-	validateCaptcha,
-	validateData,
-} = useCaptcha();
-
-const authStore = useAuthStore();
-const verificationStore = useVerificationStore();
+const loginStore = useLoginStore();
+const captchaStore = useCaptchaStore();
 
 const router = useRouter();
 
+captchaStore.captchaInput.action = 'login';
+
 const captchaHasError = ref(false);
+const localLoading = ref(false);
 
-const savePassword = (password: string): string => {
-	const md5Password = md5WithUtf16LE(password);
-	authStore.savePassword(md5Password);
-
-	return md5Password;
+const loginByEmailRules = {
+	captchaKey: { },
+	ignore2FA: { },
+	password: { required: validations.required },
+	email: { required: validations.required },
 };
 
-const handleLogin = async () => {
-	if (!validate(LOGIN.BY_EMAIL)) return;
+const v$ = useVuelidate(loginByEmailRules, loginStore.loginByEmailDto);
 
-	const captchaResponse = await generateCaptcha({
-		username: loginByEmailForm.email,
-		action: 'login',
-	});
-
-	if (captchaResponse && captchaResponse.stateId === 11) {
-		await handleSuccessfulCaptcha();
-	}
-	else {
-		showCaptcha.value = true;
-	}
+const getNewCaptcha = async () => {
+	captchaStore.captchaInput.username = loginStore.loginByEmailDto.email;
+	await captchaStore.generateCaptcha();
 };
 
-const captchaRefresh = async () => {
-	captchaHasError.value = false;
-	await refreshCaptcha({ username: loginByEmailForm.email, action: 'signup' });
-	captchaHasError.value = true;
-};
-
-const handleSuccessfulCaptcha = async () => {
+const submit = async () => {
 	try {
-		loading.value = true;
-		if (validateData.value.captchaKey) {
-			loginByEmailForm.captchaKey = validateData.value.captchaKey;
-			const { result } = await loginByEmail();
+		v$.value.$touch();
+		if (v$.value.$invalid) {
+			return;
+		}
 
-			savePassword(loginByEmailForm.password);
+		localLoading.value = true;
+		await getNewCaptcha();
 
-			verificationStore.setVerificationData({
-				verificationId: result.verificationId,
-				userId: result.userId,
-				wloId: result.wloId,
-				type: 'email',
-				username: loginByEmailForm.email,
-			});
-
+		if (captchaStore.stateId === 11) {
+			await loginStore.loginByEmail();
 			router.push({
 				path: '/auth/otp',
-				query: { action: 'login', type: 'email' },
+				query: { action: 'login', type: 'mobile' },
 			});
+			localLoading.value = false;
 		}
 	}
 	catch (error) {
-		throw new Error(`Login failed. ${error}`);
+		localLoading.value = false;
+		console.error('Failed:', error);
 	}
 };
 
 const handleCaptchaValidation = async (sliderValue: number) => {
-	try {
-		loading.value = true;
-		const { captchaKey, validate } = await validateCaptcha(sliderValue);
-		if (validate && captchaKey) {
-			loginByEmailForm.captchaKey = captchaKey;
-			captchaHasError.value = false;
-			closeCaptcha();
+	captchaStore.sliderValue = sliderValue;
+	localLoading.value = true;
+	await captchaStore.validateCaptcha();
 
-			// Check login
-			const { result } = await loginByEmail();
+	if (!captchaStore.validCaptcha) {
+		captchaHasError.value = true;
+		await getNewCaptcha();
+		captchaHasError.value = false;
+	}
+	else {
+		captchaStore.openCaptcha = false;
+		await loginStore.loginByEmail();
 
-			savePassword(loginByEmailForm.password);
-
-			// Save data into store
-			verificationStore.setVerificationData({
-				verificationId: result.verificationId,
-				userId: result.userId,
-				wloId: result.wloId,
-				type: 'email',
-				username: loginByEmailForm.email,
-			});
-
+		if (loginStore.loginByEmailIsValid) {
 			router.push({
 				path: '/auth/otp',
-				query: { action: 'login', type: 'email' },
+				query: { action: 'login', type: 'mobile' },
 			});
 		}
-		else {
-			if (!errorMessage.value) {
-				captchaRefresh();
-			}
+	}
 
-			errorMessage.value = null;
-		}
-	}
-	catch (error) {
-		if (!errorMessage.value) {
-			captchaRefresh();
-		}
-		return `${error}`;
-	}
+	localLoading.value = false;
 };
 </script>

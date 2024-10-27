@@ -1,6 +1,5 @@
 export const useLinkManager = () => {
 	const authStore = useAuthStore();
-	authStore.loadAuthData();
 
 	const checkPathLink = (link: string, ignore: boolean = true, destination: 'login' | 'register' = 'login'): string => {
 		if (authStore.isLoggedIn || ignore) {

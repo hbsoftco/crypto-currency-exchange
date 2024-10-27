@@ -1,7 +1,7 @@
 import { useVuelidate } from '@vuelidate/core';
 
 import { authRepository } from '~/repositories/auth.repository';
-import type { LoginByMobileDto, LoginByEmailDto } from '~/types/dto/login.dto';
+import type { LoginByMobileDto, LoginByEmailDto } from '~/types/login.types';
 import type { BodyErrorResponse, ErrorResponse } from '~/types/response/error.type';
 import type { LoginByEmailResponse } from '~/types/response/login.types';
 

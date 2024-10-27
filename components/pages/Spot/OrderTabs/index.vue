@@ -93,7 +93,7 @@ const items = [
 const authStore = useAuthStore();
 
 onMounted(() => {
-	authStore.loadAuthData();
+	// authStore.loadAuthData();
 });
 
 const selectCheckBox = ref(true);

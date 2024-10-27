@@ -1,4 +1,3 @@
-import { useAuth } from '~/composables/auth/useAuth';
 import type { CustomFetchContext } from '~/types/custom-fetch-options.types';
 import { StatusCodes } from '~/utils/constants/status-codes';
 
@@ -8,21 +7,37 @@ export default defineNuxtPlugin(() => {
 
 	const api = $fetch.create({
 		baseURL,
-		retry: 1,
-		retryStatusCodes: [StatusCodes.OTC_EXPIRED.fa],
+		// retry: 1,
+		// retryStatusCodes: [StatusCodes.OTC_EXPIRED.fa],
 		async onRequest({ options }: CustomFetchContext<unknown>) {
-			if (options.noAuth !== false) return;
+			try {
+				// console.log(await authStore.generateToken());
+			// console.log(await authStore.isLoggedIn2);
 
-			options.headers = { ...options.headers, ...(await authStore.getAuthHeaders()) };
+				if (options.noAuth !== false) return;
+
+				const tokenHeaders = await authStore.generateToken();
+				if (tokenHeaders) {
+					console.log('umadam in too');
+					console.log('tokenHeaders', tokenHeaders);
+
+					options.headers = { ...options.headers, ...tokenHeaders };
+
+					console.log('options.headers', options.headers);
+				}
+			}
+			catch (error) {
+				console.log(error);
+			}
 		},
 		async onResponse({ response }) {
 			if (response && response?._data && response?._data?.statusCode === StatusCodes.OTC_EXPIRED.fa) {
-				const { refreshOTC } = useAuth();
-				await refreshOTC();
+				await authStore.refreshOtc();
+				console.log('hiiii baad otc');
 			}
 			else if (response && response?._data && response?._data?.statusCode === StatusCodes.USER_LOGGED_OUT.fa) {
-				const authStore = useAuthStore();
-				await authStore.clearAuthData();
+				// const authStore = useAuthStore();
+				// await authStore.clearAuthCredentials();
 			}
 		},
 	});

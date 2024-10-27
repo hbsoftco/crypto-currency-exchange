@@ -501,7 +501,7 @@ import IconTelegram from '~/assets/svg-icons/social/telegram.svg';
 
 const authStore = useAuthStore();
 
-authStore.loadAuthData();
+// authStore.loadAuthData();
 
 const textRef = ref<HTMLElement | null>(null);
 
@@ -512,7 +512,7 @@ const close = () => {
 };
 
 const logout = () => {
-	authStore.clearAuthData();
+	authStore.clearAuthCredentials();
 };
 
 const copyText = () => {

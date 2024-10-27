@@ -9,6 +9,7 @@ export const useCaptchaStore = defineStore('captcha', () => {
 
 	const forgetPasswordStore = useForgetPasswordStore();
 	const signupStore = useSignupStore();
+	const loginStore = useLoginStore();
 
 	const captchaInput = ref<CaptchaRequestParams>({
 		username: '',
@@ -45,8 +46,10 @@ export const useCaptchaStore = defineStore('captcha', () => {
 				forgetPasswordStore.forgetPasswordDto.captchaKey = response.id;
 
 				signupStore.signupByEmailDto.captchaKey = response.id;
-
 				signupStore.signupByMobileDto.captchaKey = response.id;
+
+				loginStore.loginByMobileDto.captchaKey = response.id;
+				loginStore.loginByEmailDto.captchaKey = response.id;
 
 				if (stateId.value === 0) {
 					captchaResponse.value = response;

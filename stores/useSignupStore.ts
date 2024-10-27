@@ -166,7 +166,7 @@ export const useSignupStore = defineStore('Signup', () => {
 	};
 
 	return {
-		// SignUp
+		// Email
 		signupByEmailDto,
 		checkCodeVerificationDto,
 		signupByEmailLoading,

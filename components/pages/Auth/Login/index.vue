@@ -1,5 +1,5 @@
 <template>
-	<PagesAuth title="login">
+	<Auth title="login">
 		<UTabs :items="items">
 			<template #default="{ item, selected }">
 				<span
@@ -52,13 +52,14 @@
 				</ULink>
 			</div>
 		</div>
-	</PagesAuth>
+	</Auth>
 </template>
 
 <script setup>
-const WithEmail = defineAsyncComponent(() => import('./WithEmail.vue'));
-const WithMobile = defineAsyncComponent(() => import('./WithMobile.vue'));
-const WithQRCode = defineAsyncComponent(() => import('./WithQRCode.vue'));
+import Auth from '~/components/pages/Auth/Auth.vue';
+import WithEmail from '~/components/pages/Auth/Login/WithEmail.vue';
+import WithMobile from '~/components/pages/Auth/Login/WithMobile.vue';
+import WithQRCode from '~/components/pages/Auth/Login/WithQRCode.vue';
 
 const items = [
 	{

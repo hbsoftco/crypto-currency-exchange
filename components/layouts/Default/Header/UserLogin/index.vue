@@ -40,6 +40,6 @@ import Notification from '~/components/layouts/Default/Header/UserLogin/Notifica
 const authStore = useAuthStore();
 
 onMounted(() => {
-	authStore.loadAuthData();
+	// authStore.loadAuthData();
 });
 </script>
