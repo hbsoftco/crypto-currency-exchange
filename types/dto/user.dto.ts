@@ -1,3 +1,5 @@
+import type { KeyValue } from '../base.types';
+
 type ContactSetDto = {
 	verificationId: number;
 	verificationCode: string ;
@@ -109,6 +111,28 @@ type SetCardPrintDto = {
 	printingMobileAllowed: boolean;
 };
 
+type SetApiAddDto = {
+	uvId?: number;
+	v2fId?: number;
+	passPhrase: string;
+	appName: string;
+	iPsAsArray?: string;
+	marketIDsAsArray?: string;
+	permissions?: KeyValue[];
+	countDaysValid?: number;
+};
+
+type SetApiEditDto = {
+	uvId?: number;
+	v2fId?: number;
+	apiKey: string;
+	passPhrase: string;
+	appName: string;
+	iPsAsArray?: string;
+	marketIDsAsArray?: string;
+	permissions?: KeyValue[];
+	countDaysValid?: number;
+};
 export type {
 	ContactSetDto,
 	AddressSetDto,
@@ -127,4 +151,6 @@ export type {
 	SetPinCodeDto,
 	SetAntiPhishingDto,
 	SetCardPrintDto,
+	SetApiAddDto,
+	SetApiEditDto,
 };

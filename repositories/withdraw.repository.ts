@@ -2,11 +2,12 @@ import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import type { GetWithdrawParams, WithdrawCoinListParams } from '~/types/base.types';
-import type { getWithdrawCoinListRes, GetWithdrawResponse } from '~/types/response/withdraw.type';
+import type { GetCurrencyInfoResponse, getWithdrawCoinListRes, GetWithdrawResponse } from '~/types/response/withdraw.type';
 
 type WithdrawRepository = {
 	getWithdraw: (params: GetWithdrawParams) => Promise<GetWithdrawResponse>;
 	getWithdrawCoinList: (params: WithdrawCoinListParams) => Promise<getWithdrawCoinListRes>;
+	getCryptoRequestableList: () => Promise<GetCurrencyInfoResponse>;
 };
 
 export const withdrawRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): WithdrawRepository => ({
@@ -37,6 +38,16 @@ export const withdrawRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): W
 			noAuth: false,
 			method: 'GET',
 		} as CustomNitroFetchOptions);
+		return response;
+	},
+	async getCryptoRequestableList(): Promise<GetCurrencyInfoResponse> {
+		const url = '/v1/withdraw/crypto/requestable_list';
+		const response = await fetch<GetCurrencyInfoResponse>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
 		return response;
 	},
 });

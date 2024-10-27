@@ -370,6 +370,18 @@ type getTypeListParams = {
 	entityTypeId: string;
 	langId?: string;
 };
+
+type getApiListParams = {
+	srchKey?: string;
+	from?: string;
+	to?: string;
+	pageNumber?: string;
+	pageSize?: string;
+};
+type getApiParams = {
+	apiKey: string;
+};
+
 export type {
 	GetReferralBestListParams,
 	GetRewardExposedParams,
@@ -423,4 +435,6 @@ export type {
 	getMiniRoutineParams,
 	getActivitiesListParams,
 	getTypeListParams,
+	getApiListParams,
+	getApiParams,
 };

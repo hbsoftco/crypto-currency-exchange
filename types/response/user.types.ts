@@ -369,6 +369,50 @@ type TwoStepLoginResponse = {
 	result: TwoStepLogin;
 };
 
+type ApiList = {
+	uid: number;
+	user: string;
+	apiName: string;
+	apiKey: string;
+	expireTime: string;
+	regTime: string;
+	restrictedMarkets: number[];
+	restrictedIPs: string;
+	permissions: string;
+	disabled: boolean;
+};
+
+type GetApiListRes = {
+	statusCode: number;
+	result: {
+		totalCount: number;
+		rows: ApiList[];
+	};
+};
+
+type GetApiRes = {
+	statusCode: number;
+	result: {
+		uid: number;
+		apiKey: string;
+		passPhraseHash: string;
+		apiSecret: string;
+		wlstIPv4s: string;
+		wlstIPv6s: string;
+
+	};
+};
+
+type StoreApiRes = {
+	statusCode: number;
+	result: {
+		apiKey: string;
+		secretKey: string;
+		expireTime: string;
+
+	};
+};
+
 export type {
 	TwoStepLogin,
 	TwoStepLoginResponse,
@@ -403,4 +447,8 @@ export type {
 	levelList,
 	Level,
 	Info,
+	GetApiListRes,
+	ApiList,
+	GetApiRes,
+	StoreApiRes,
 };
