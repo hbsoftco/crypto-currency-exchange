@@ -1032,7 +1032,7 @@ const persian = {
 	signupSuccessfully: 'ثبت‌ نام با موفقیت انجام شد!',
 	loggedInSuccessfully: 'ورود با موفقیت انجام شد!',
 	invalidUsernameOrPassword: 'نام کاربری یا رمز ورود اشتباه است',
-
+	joinBitland: 'به بیت‌لند ملحق شوید !',
 };
 
 export default persian;

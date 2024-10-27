@@ -68,9 +68,37 @@ type getWithdrawCoinListRes = {
 	};
 };
 
+type Network = {
+	enabled: boolean;
+	chainId: number;
+	netId: number;
+	netName: string;
+	memoable: boolean;
+	contractId: string;
+	confirmationCo: number;
+	fee: number;
+	percentage: number;
+	note: string;
+	min: number;
+	max: number;
+};
+
+type GetCurrencyInfoResponse = {
+	statusCode: number;
+	result: {
+		totalCount: number;
+		rows: {
+			cid: number;
+			withdrawable: string;
+			networks: Network[];
+		};
+	};
+};
 export type {
 	getWithdrawCoinListRes,
 	WithdrawCoinItem,
 	GetWithdrawResponse,
 	Withdraw,
+	GetCurrencyInfoResponse,
+	Network,
 };

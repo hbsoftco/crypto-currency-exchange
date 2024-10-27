@@ -1,6 +1,6 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { GetActivitiesListRes, GetAddressListRes, GetBankListResponse,
+import type { GetActivitiesListRes, GetAddressListRes, GetApiListRes, GetApiRes, GetBankListResponse,
 	GetBestListResponse,
 	GetCommissionReceivedList, GetContactListResponse,
 	GetDeviceListRes,
@@ -11,6 +11,7 @@ import type { GetActivitiesListRes, GetAddressListRes, GetBankListResponse,
 	GetRewardReceivedListResponse,
 	GetStateTradeRes,
 	ReferralBriefResponse,
+	StoreApiRes,
 	TwoStepLoginResponse,
 	UserProfileResponse } from '../types/response/user.types';
 
@@ -20,6 +21,8 @@ import type {
 	DeleteContactListParams,
 	getActivitiesListParams,
 	GetAddressListParams,
+	getApiListParams,
+	getApiParams,
 	GetBankParams,
 	GetCommissionReceivedListParams,
 	GetContactListParams,
@@ -47,6 +50,8 @@ import type {
 	IdentificationSendNewDto,
 	NickNameSetDto,
 	SetAntiPhishingDto,
+	SetApiAddDto,
+	SetApiEditDto,
 	SetBasicDto,
 	SetCardPrintDto,
 	SetEmailDto,
@@ -102,6 +107,11 @@ type UserRepository = {
 	getHolderLevelList: () => Promise<GetHolderLevelListRes>;
 	storeCardPrint: (dto: SetCardPrintDto) => Promise<CommonResponse>;
 	getCountryList: () => Promise<GetCountryListRes>;
+	getApiList: (params: getApiListParams) => Promise<GetApiListRes>;
+	getApi: (params: getApiParams) => Promise<GetApiRes>;
+	storeApiAdd: (dto: SetApiAddDto) => Promise<StoreApiRes>;
+	storeApiEdit: (dto: SetApiEditDto) => Promise<StoreApiRes>;
+	deleteApi: (params: getApiParams) => Promise<CommonResponse>;
 };
 
 export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserRepository => ({
@@ -649,6 +659,72 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 			noAuth: false,
 			apiName: url,
 			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getApiList(params: getApiListParams): Promise<GetApiListRes> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+		const url = `/v1/user/apiexch/list`;
+		const response = await fetch<GetApiListRes>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			apiName: url,
+			query: {},
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getApi(params: getApiParams): Promise<GetApiRes> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+		const url = `/v1/user/apiexch/get`;
+		const response = await fetch<GetApiRes>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			apiName: url,
+			query: {},
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async storeApiAdd(dto: SetApiAddDto): Promise<StoreApiRes> {
+		const url = `/v1/user/apiexch/add`;
+		const response = await fetch<StoreApiRes>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async storeApiEdit(dto: SetApiEditDto): Promise<StoreApiRes> {
+		const url = `/v1/user/apiexch/edit`;
+		const response = await fetch<StoreApiRes>(`${url}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async deleteApi(params: getApiParams): Promise<CommonResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = `/v1/user/apiexch/delete`;
+		const response = await fetch<CommonResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'DELETE',
+			queryParams: params,
 		} as CustomNitroFetchOptions);
 
 		return response;
