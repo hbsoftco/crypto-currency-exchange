@@ -82,6 +82,7 @@
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core';
 
+import { normalizeMobile } from '~/utils/normalize-mobile';
 import { useNumber } from '~/composables/useNumber';
 import SlideCaptcha from '~/components/ui/SlideCaptcha.vue';
 import ReferralFieldInput from '~/components/forms/ReferralFieldInput.vue';
@@ -140,7 +141,7 @@ const submit = async () => {
 };
 
 const getNewCaptcha = async () => {
-	captchaStore.captchaInput.username = signupStore.signupByMobileDto.mobile;
+	captchaStore.captchaInput.username = normalizeMobile(signupStore.signupByMobileDto.mobile);
 	await captchaStore.generateCaptcha();
 };
 

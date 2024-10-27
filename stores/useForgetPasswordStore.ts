@@ -1,6 +1,8 @@
 import { authRepository } from '~/repositories/auth.repository';
 import type { CheckForgetPasswordDto, InitForgetPasswordDto, ResetPasswordDto } from '~/types/forget-password.types';
 import type { ResendVerificationParams } from '~/types/verification.types';
+import { detectEmail } from '~/utils/detect-email';
+import { normalizeMobile } from '~/utils/normalize-mobile';
 
 export const useForgetPasswordStore = defineStore('forgetPassword', () => {
 	const { $api } = useNuxtApp();
@@ -8,6 +10,7 @@ export const useForgetPasswordStore = defineStore('forgetPassword', () => {
 
 	const toast = useToast();
 
+	const type = ref<'email' | 'mobile'>();
 	const otc = ref<string>();
 	const stepState = ref<'getCode' | 'setCode'>('getCode');
 	const forgetPasswordDto = ref<InitForgetPasswordDto>({
@@ -24,6 +27,13 @@ export const useForgetPasswordStore = defineStore('forgetPassword', () => {
 		verificationId: 0,
 		userSecretKey: 0,
 	});
+
+	watch(
+		() => forgetPasswordDto.value.emailOrMobile,
+		(newValue) => {
+			type.value = detectEmail(newValue);
+		},
+	);
 
 	const resetAllData = () => {
 		const captchaStore = useCaptchaStore();
@@ -51,12 +61,18 @@ export const useForgetPasswordStore = defineStore('forgetPassword', () => {
 		resetPasswordLoading.value = false;
 	};
 
+	const initForgetPasswordIsValid = ref<boolean>(true);
 	const initForgetPasswordLoading = ref<boolean>(false);
 	const initForgetPassword = async () => {
 		try {
 			initForgetPasswordLoading.value = true;
 
-			const response = await authRepo.initForgetPassword(forgetPasswordDto.value);
+			const response = await authRepo.initForgetPassword({
+				...forgetPasswordDto.value,
+				emailOrMobile: type.value === 'email'
+					? forgetPasswordDto.value.emailOrMobile
+					: normalizeMobile(forgetPasswordDto.value.emailOrMobile),
+			});
 
 			checkForgetPasswordDto.value.userId = response.result.userId;
 			checkForgetPasswordDto.value.verificationId = response.result.verificationId;
@@ -69,7 +85,15 @@ export const useForgetPasswordStore = defineStore('forgetPassword', () => {
 			initForgetPasswordLoading.value = false;
 		}
 		catch (error: any) {
-			console.log(error);
+			initForgetPasswordIsValid.value = false;
+			if (error.response._data.statusCode === -1110121 || error.response._data.statusCode === -1311761) {
+				toast.add({
+					title: useT('forgotPasswordNoQuestion'),
+					description: error.response._data.message,
+					timeout: 5000,
+					color: 'red',
+				});
+			}
 			initForgetPasswordLoading.value = false;
 		}
 	};
@@ -142,6 +166,7 @@ export const useForgetPasswordStore = defineStore('forgetPassword', () => {
 
 	return {
 		initForgetPassword,
+		initForgetPasswordIsValid,
 		checkForgetPasswordDto,
 		resetPasswordDto,
 		forgetPasswordDto,
@@ -151,6 +176,7 @@ export const useForgetPasswordStore = defineStore('forgetPassword', () => {
 		checkForgetPassword,
 		verificationResend,
 		resetPassword,
+		type,
 		resetAllData,
 	};
 });

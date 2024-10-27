@@ -44,12 +44,15 @@
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core';
 
+import { normalizeMobile } from '~/utils/normalize-mobile';
 import SlideCaptcha from '~/components/ui/SlideCaptcha.vue';
 
 const router = useRouter();
 
 const forgetPasswordStore = useForgetPasswordStore();
 const captchaStore = useCaptchaStore();
+
+const localLoading = ref(false);
 
 captchaStore.captchaInput.action = 'signup';
 
@@ -67,24 +70,36 @@ const submit = async () => {
 			return;
 		}
 
+		localLoading.value = true;
 		await getNewCaptcha();
 
 		if (captchaStore.stateId === 11) {
 			await forgetPasswordStore.initForgetPassword();
 			router.push('/auth/set-password');
+
+			localLoading.value = false;
 		}
 	}
 	catch (error) {
+		localLoading.value = false;
 		console.error('Failed:', error);
 	}
 };
 
 const getNewCaptcha = async () => {
-	captchaStore.captchaInput.username = forgetPasswordStore.forgetPasswordDto.emailOrMobile;
+	console.log(forgetPasswordStore.type);
+
+	if (forgetPasswordStore.type === 'mobile') {
+		captchaStore.captchaInput.username = normalizeMobile(forgetPasswordStore.forgetPasswordDto.emailOrMobile);
+	}
+	else {
+		captchaStore.captchaInput.username = forgetPasswordStore.forgetPasswordDto.emailOrMobile;
+	}
 	await captchaStore.generateCaptcha();
 };
 
 const handleCaptchaValidation = async (sliderValue: number) => {
+	localLoading.value = true;
 	captchaStore.sliderValue = sliderValue;
 
 	await captchaStore.validateCaptcha();
@@ -95,9 +110,15 @@ const handleCaptchaValidation = async (sliderValue: number) => {
 		captchaHasError.value = false;
 	}
 	else {
-		forgetPasswordStore.stepState = 'setCode';
+		captchaStore.openCaptcha = false;
 		await forgetPasswordStore.initForgetPassword();
+
+		if (forgetPasswordStore.initForgetPasswordIsValid) {
+			forgetPasswordStore.stepState = 'setCode';
+		}
 	}
+
+	localLoading.value = false;
 };
 
 const captchaHasError = ref(false);

@@ -1,6 +1,7 @@
 import { authRepository } from '~/repositories/auth.repository';
 import type { LoginByEmailDto, LoginByMobileDto } from '~/types/login.types';
 import type { CheckCodeDto, ResendVerificationParams } from '~/types/verification.types';
+import { normalizeMobile } from '~/utils/normalize-mobile';
 
 export const useLoginStore = defineStore('login', () => {
 	const { $api } = useNuxtApp();
@@ -69,8 +70,8 @@ export const useLoginStore = defineStore('login', () => {
 			loginByEmailLoading.value = false;
 		}
 		catch (error: any) {
+			loginByEmailIsValid.value = false;
 			if (error.response._data.statusCode === -1110153) {
-				loginByEmailIsValid.value = false;
 				toast.add({
 					title: useT('login'),
 					description: useT('invalidUsernameOrPassword'),
@@ -106,11 +107,19 @@ export const useLoginStore = defineStore('login', () => {
 			loginByMobileLoading.value = false;
 		}
 		catch (error: any) {
-			if (error.response._data.statusCode === -1110153) {
-				loginByMobileIsValid.value = false;
+			loginByMobileIsValid.value = false;
+			if (error.response._data.statusCode === -1110153 || error.response._data.statusCode === 422) {
 				toast.add({
 					title: useT('login'),
 					description: useT('invalidUsernameOrPassword'),
+					timeout: 5000,
+					color: 'red',
+				});
+			}
+			if (error.response._data.statusCode === -1311135) {
+				toast.add({
+					title: useT('login'),
+					description: error.response._data.message,
 					timeout: 5000,
 					color: 'red',
 				});

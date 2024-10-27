@@ -74,8 +74,8 @@ export const useSignupStore = defineStore('Signup', () => {
 			signupByMobileLoading.value = false;
 		}
 		catch (error: any) {
+			signupByMobileIsValid.value = false;
 			if (error.response._data.statusCode === -1311135) {
-				signupByMobileIsValid.value = false;
 				toast.add({
 					title: useT('signup'),
 					description: useT('mobileAlreadyExist'),
@@ -108,8 +108,8 @@ export const useSignupStore = defineStore('Signup', () => {
 			signupByEmailLoading.value = false;
 		}
 		catch (error: any) {
+			signupByEmailIsValid.value = false;
 			if (error.response._data.statusCode === -1311165) {
-				signupByEmailIsValid.value = false;
 				toast.add({
 					title: useT('signup'),
 					description: useT('emailAlreadyExist'),

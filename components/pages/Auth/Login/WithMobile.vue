@@ -52,6 +52,7 @@
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core';
 
+import { normalizeMobile } from '~/utils/normalize-mobile';
 import { useNumber } from '~/composables/useNumber';
 import SlideCaptcha from '~/components/ui/SlideCaptcha.vue';
 
@@ -75,7 +76,7 @@ const loginByMobileRules = {
 const v$ = useVuelidate(loginByMobileRules, loginStore.loginByMobileDto);
 
 const getNewCaptcha = async () => {
-	captchaStore.captchaInput.username = loginStore.loginByMobileDto.mobile;
+	captchaStore.captchaInput.username = normalizeMobile(loginStore.loginByMobileDto.mobile);
 	await captchaStore.generateCaptcha();
 };
 
@@ -125,6 +126,8 @@ const handleCaptchaValidation = async (sliderValue: number) => {
 			});
 		}
 	}
+
+	console.log(loginStore.loginByMobileIsValid);
 
 	localLoading.value = false;
 };

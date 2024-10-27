@@ -2,7 +2,7 @@
 	<div>
 		<div>
 			<p class="text-sm mb-6 mt-4">
-				{{ `${$t(`sentVerificationCodeTo${type}`)} ${typeData} ${$t('sent')}` }}
+				{{ `${$t(`sentVerificationCodeTo${forgetPasswordStore.type}`)} ${forgetPasswordStore.forgetPasswordDto.emailOrMobile} ${$t('sent')}` }}
 			</p>
 		</div>
 		<div class="my-8">
@@ -16,7 +16,7 @@
 				icon=""
 				dir="ltr"
 				:error-message="v$.verificationCode.$error? $t('fieldIsRequired') : ''"
-				@resend="forgetPasswordStore.verificationResend(SendType.Email)"
+				@resend="resendCode"
 			/>
 		</div>
 		<div>
@@ -40,8 +40,7 @@ import { SendType } from '~/utils/enums/user.enum';
 
 const router = useRouter();
 
-const typeData = ref<string>();
-const type = ref<'Email' | 'Mobile'>('Email');
+const type = ref<'email' | 'mobile'>('email');
 const forgetPasswordStore = useForgetPasswordStore();
 
 const checkForgetPasswordDtoRules = {
@@ -67,8 +66,7 @@ const submit = async () => {
 	}
 };
 
-onMounted(() => {
-	typeData.value = forgetPasswordStore.forgetPasswordDto.emailOrMobile;
-	type.value = 'Email';
-});
+const resendCode = () => {
+	forgetPasswordStore.verificationResend(forgetPasswordStore.type === 'mobile' ? SendType.SMS : SendType.Email);
+};
 </script>
