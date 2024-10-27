@@ -4,7 +4,7 @@ import type { CaptchaResponse } from '~/types/captcha-response.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 // import type { ForgetPasswordDto } from '~/types/dto/forget-password.dto';
 import type { CaptchaRequestParams } from '~/types/dto/generate-captcha.dto';
-import type { LoginByEmailDto, LoginByMobileDto } from '~/types/login.types';
+import type { LoginByEmailDto, LoginByMobileDto, LoginByMobileResponse } from '~/types/login.types';
 import type { SignupByEmailDto, SignupByMobileDto } from '~/types/dto/signup.dto';
 import type { ValidateCaptchaDto } from '~/types/dto/validate-captcha.dto';
 import type { CheckCodeDto, ResendVerificationParams, ResendVerificationResponse } from '~/types/verification.types';
@@ -24,7 +24,7 @@ type AuthRepository = {
 	signupByMobile: (data: SignupByMobileDto) => Promise<SignUpResponse>;
 	signupByEmail: (data: SignupByEmailDto) => Promise<SignUpResponse>;
 	// Login
-	loginByMobile: (data: LoginByMobileDto) => Promise<ResposneType>;
+	loginByMobile: (data: LoginByMobileDto) => Promise<LoginByMobileResponse>;
 	loginByEmail: (data: LoginByEmailDto) => Promise<LoginByEmailResponse>;
 	// Verification
 	checkCodeVerification: (data: CheckCodeDto) => Promise<VerificationCheckCodeResponse>;
@@ -76,8 +76,8 @@ export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthR
 		return response;
 	},
 	// Login
-	async loginByMobile(data: LoginByMobileDto): Promise<ResposneType> {
-		const response = await fetch<ResposneType>(`/v1/auth/login/by_mobile`, {
+	async loginByMobile(data: LoginByMobileDto): Promise<LoginByMobileResponse> {
+		const response = await fetch<LoginByMobileResponse>(`/v1/auth/login/by_mobile`, {
 			method: 'POST',
 			body: data,
 		});

@@ -1031,6 +1031,8 @@ const persian = {
 	mobileAlreadyExist: 'شماره موبایل از قبل ثبت شده است',
 	signupSuccessfully: 'ثبت‌ نام با موفقیت انجام شد!',
 	loggedInSuccessfully: 'ورود با موفقیت انجام شد!',
+	invalidUsernameOrPassword: 'نام کاربری یا رمز ورود اشتباه است',
+
 };
 
 export default persian;

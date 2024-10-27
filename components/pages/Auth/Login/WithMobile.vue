@@ -3,78 +3,129 @@
 		<div class="my-8">
 			<FormsFieldInput
 				id="mobile"
-				v-model="loginByMobileForm.mobile"
+				v-model="loginStore.loginByMobileDto.mobile"
 				type="text"
 				input-class="text-left"
 				label="phoneNumber"
-				placeholder="۰۹۱۰۰۰۰"
+				:placeholder="useNumber('0910000')"
 				icon="i-heroicons-phone"
 				dir="ltr"
-				:error-message="vbyMobile$.mobile.$error? $t('fieldIsRequired') : ''"
+				:error-message="v$.mobile.$error? $t('fieldIsRequired') : ''"
 			/>
 		</div>
 		<div>
 			<FormsFieldInput
 				id="password"
-				v-model="loginByMobileForm.password"
+				v-model="loginStore.loginByMobileDto.password"
 				type="password"
 				input-class="text-left"
 				label="password"
 				placeholder=""
 				icon="i-heroicons-eye"
 				dir="ltr"
-				:error-message="vbyMobile$.password.$error? $t('fieldIsRequired') : ''"
+				:error-message="v$.password.$error? $t('fieldIsRequired') : ''"
 			/>
 		</div>
 		<div>
 			<UButton
 				size="lg"
 				block
-				:loading="loading"
-				@click="handleLogin"
+				:loading="captchaStore.generateCaptchaLoading || loginStore.loginByMobileLoading || localLoading"
+				@click="submit"
 			>
 				{{ $t('login') }}
 			</UButton>
 		</div>
 		<div>
 			<SlideCaptcha
-				v-if="showCaptcha"
-				:data="captchaData!"
-				@close="showCaptcha = false"
-				@refresh="refreshCaptcha({ username: loginByMobileForm.mobile, action: 'login' })"
-				@slider-value="captchaValidation"
+				v-if="captchaStore.openCaptcha"
+				:has-error="captchaHasError"
+				:data="captchaStore.captchaResponse"
+				@close="captchaStore.openCaptcha=false"
+				@slider-value="handleCaptchaValidation"
+				@refresh="getNewCaptcha"
 			/>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
+import useVuelidate from '@vuelidate/core';
+
+import { useNumber } from '~/composables/useNumber';
 import SlideCaptcha from '~/components/ui/SlideCaptcha.vue';
-import { useCaptcha } from '~/composables/auth/useCaptcha';
-import { useLogin } from '~/composables/auth/useLogin';
 
-const { loginByMobileForm, loginByMobile, vbyMobile$, validate } = useLogin();
-const { captchaData, showCaptcha, loading, refreshCaptcha, generateCaptcha, validateCaptcha } = useCaptcha();
+const loginStore = useLoginStore();
+const captchaStore = useCaptchaStore();
 
-const handleLogin = async () => {
-	if (!validate(LOGIN.BY_MOBILE)) return;
+const router = useRouter();
 
-	await generateCaptcha({
-		username: loginByMobileForm.mobile,
-		action: 'login',
-	});
+captchaStore.captchaInput.action = 'login';
+
+const captchaHasError = ref(false);
+const localLoading = ref(false);
+
+const loginByMobileRules = {
+	captchaKey: { },
+	ignore2FA: { },
+	password: { required: validations.required },
+	mobile: { required: validations.required },
 };
 
-const captchaValidation = async (sliderValue: number) => {
+const v$ = useVuelidate(loginByMobileRules, loginStore.loginByMobileDto);
+
+const getNewCaptcha = async () => {
+	captchaStore.captchaInput.username = loginStore.loginByMobileDto.mobile;
+	await captchaStore.generateCaptcha();
+};
+
+const submit = async () => {
 	try {
-		const captchaKey = await validateCaptcha(sliderValue);
-		if (captchaKey) {
-			loginByMobileForm.captchaKey = captchaKey;
-			await loginByMobile();
+		v$.value.$touch();
+		if (v$.value.$invalid) {
+			return;
+		}
+
+		localLoading.value = true;
+		await getNewCaptcha();
+
+		if (captchaStore.stateId === 11) {
+			await loginStore.loginByMobile();
+			router.push({
+				path: '/auth/otp',
+				query: { action: 'login', type: 'mobile' },
+			});
+			localLoading.value = false;
 		}
 	}
 	catch (error) {
-		throw new Error(`Captcha validation failed. ${error}`);
+		localLoading.value = false;
+		console.error('Failed:', error);
 	}
+};
+
+const handleCaptchaValidation = async (sliderValue: number) => {
+	captchaStore.sliderValue = sliderValue;
+	localLoading.value = true;
+	await captchaStore.validateCaptcha();
+
+	if (!captchaStore.validCaptcha) {
+		captchaHasError.value = true;
+		await getNewCaptcha();
+		captchaHasError.value = false;
+	}
+	else {
+		captchaStore.openCaptcha = false;
+		await loginStore.loginByMobile();
+
+		if (loginStore.loginByMobileIsValid) {
+			router.push({
+				path: '/auth/otp',
+				query: { action: 'login', type: 'mobile' },
+			});
+		}
+	}
+
+	localLoading.value = false;
 };
 </script>

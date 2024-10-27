@@ -69,17 +69,54 @@ export const useLoginStore = defineStore('login', () => {
 			loginByEmailLoading.value = false;
 		}
 		catch (error: any) {
-			if (error.response._data.statusCode === -1311165) {
+			if (error.response._data.statusCode === -1110153) {
 				loginByEmailIsValid.value = false;
 				toast.add({
-					title: useT('signup'),
-					description: useT('emailAlreadyExist'),
+					title: useT('login'),
+					description: useT('invalidUsernameOrPassword'),
 					timeout: 5000,
 					color: 'red',
 				});
 			}
 
 			loginByEmailLoading.value = false;
+		}
+	};
+
+	const loginByMobileIsValid = ref<boolean>(true);
+	const loginByMobileLoading = ref<boolean>(false);
+	const loginByMobile = async () => {
+		try {
+			loginByMobileLoading.value = true;
+
+			const response = await authRepo.loginByMobile({
+				...loginByMobileDto.value,
+				mobile: normalizeMobile(loginByMobileDto.value.mobile),
+				password: btoa(loginByMobileDto.value.password),
+			});
+
+			authStore.setPassword(loginByMobileDto.value.password);
+
+			checkCodeVerificationDto.value.userId = response.result.userId;
+			checkCodeVerificationDto.value.verificationId = response.result.verificationId;
+
+			verificationResendParams.value.lastVerificationId = String(response.result.verificationId);
+			verificationResendParams.value.userId = String(response.result.userId);
+
+			loginByMobileLoading.value = false;
+		}
+		catch (error: any) {
+			if (error.response._data.statusCode === -1110153) {
+				loginByMobileIsValid.value = false;
+				toast.add({
+					title: useT('login'),
+					description: useT('invalidUsernameOrPassword'),
+					timeout: 5000,
+					color: 'red',
+				});
+			}
+
+			loginByMobileLoading.value = false;
 		}
 	};
 
@@ -144,6 +181,9 @@ export const useLoginStore = defineStore('login', () => {
 		checkCodeVerificationLoading,
 		// Mobile
 		loginByMobileDto,
+		loginByMobileIsValid,
+		loginByMobileLoading,
+		loginByMobile,
 		resetAllData,
 	};
 });

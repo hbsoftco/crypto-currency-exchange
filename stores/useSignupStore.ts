@@ -1,6 +1,7 @@
 import { authRepository } from '~/repositories/auth.repository';
 import type { SignupByEmailDto, SignupByMobileDto } from '~/types/dto/signup.dto';
 import type { CheckCodeDto, ResendVerificationParams } from '~/types/verification.types';
+import { normalizeMobile } from '~/utils/normalize-mobile';
 
 export const useSignupStore = defineStore('Signup', () => {
 	const { $api } = useNuxtApp();
@@ -60,6 +61,7 @@ export const useSignupStore = defineStore('Signup', () => {
 
 			const response = await authRepo.signupByMobile({
 				...signupByMobileDto.value,
+				mobile: normalizeMobile(signupByMobileDto.value.mobile),
 				password: btoa(signupByMobileDto.value.password),
 			});
 
@@ -72,7 +74,7 @@ export const useSignupStore = defineStore('Signup', () => {
 			signupByMobileLoading.value = false;
 		}
 		catch (error: any) {
-			if (error.response._data.statusCode === -1311165) {
+			if (error.response._data.statusCode === -1311135) {
 				signupByMobileIsValid.value = false;
 				toast.add({
 					title: useT('signup'),

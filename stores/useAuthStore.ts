@@ -39,6 +39,8 @@ export const useAuthStore = defineStore('auth', () => {
 		localStorage.removeItem('userId');
 		localStorage.removeItem('userSecretKey');
 		localStorage.removeItem('password');
+
+		getAuthCredentials();
 	};
 
 	const generateToken = (): Record<string, string> | null => {

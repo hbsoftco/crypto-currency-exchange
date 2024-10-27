@@ -282,7 +282,7 @@ const textRef = ref<HTMLElement | null>(null);
 
 const logout = () => {
 	const authStore = useAuthStore();
-	authStore.clearAuthData();
+	authStore.clearAuthCredentials();
 };
 
 const profileStore = useProfileStore();
