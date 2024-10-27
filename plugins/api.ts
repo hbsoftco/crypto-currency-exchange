@@ -11,16 +11,10 @@ export default defineNuxtPlugin(() => {
 		// retryStatusCodes: [StatusCodes.OTC_EXPIRED.fa],
 		async onRequest({ options }: CustomFetchContext<unknown>) {
 			try {
-				// console.log(await authStore.generateToken());
-			// console.log(await authStore.isLoggedIn2);
-
 				if (options.noAuth !== false) return;
 
 				const tokenHeaders = await authStore.generateToken();
 				if (tokenHeaders) {
-					console.log('umadam in too');
-					console.log('tokenHeaders', tokenHeaders);
-
 					options.headers = { ...options.headers, ...tokenHeaders };
 
 					console.log('options.headers', options.headers);
@@ -33,11 +27,10 @@ export default defineNuxtPlugin(() => {
 		async onResponse({ response }) {
 			if (response && response?._data && response?._data?.statusCode === StatusCodes.OTC_EXPIRED.fa) {
 				await authStore.refreshOtc();
-				console.log('hiiii baad otc');
 			}
 			else if (response && response?._data && response?._data?.statusCode === StatusCodes.USER_LOGGED_OUT.fa) {
-				// const authStore = useAuthStore();
-				// await authStore.clearAuthCredentials();
+				const authStore = useAuthStore();
+				await authStore.clearAuthCredentials();
 			}
 		},
 	});
