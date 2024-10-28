@@ -7,6 +7,8 @@ import { CACHE_KEY_CURRENT_USER } from '~/utils/constants/common';
 import { removeFromCache } from '~/utils/indexeddb';
 
 export const useAuthStore = defineStore('auth', () => {
+	const router = useRouter();
+
 	const authStatus = ref(!!(localStorage.getItem('otc')
 		&& localStorage.getItem('userId')
 		&& localStorage.getItem('userSecretKey')));
@@ -55,6 +57,8 @@ export const useAuthStore = defineStore('auth', () => {
 		removeFromCache(CACHE_KEY_CURRENT_USER);
 
 		currentUser.value = [];
+
+		router.push('/');
 
 		authStatus.value = false;
 	};

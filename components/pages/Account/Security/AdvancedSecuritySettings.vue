@@ -25,9 +25,13 @@
 				<h3 class="text-sm font-bold mr-1">
 					{{ $t("antiPhishingPhrase") }}
 				</h3>
-				<div class="bg-accent-green rounded-full px-2 mr-4">
-					<span class="text-sm font-medium">{{ $t("light") }}</span>
-				</div>
+				<UBadge
+					color="green"
+					variant="solid"
+					class="mr-1"
+				>
+					{{ $t("on") }}
+				</UBadge>
 			</div>
 			<div class="my-3">
 				<p class="text-sm font-normal">
@@ -36,8 +40,10 @@
 			</div>
 			<UButton
 				to="/account/security/anti-phishing"
-				color="gray"
-				class="text-accent-red dark:text-accent-red text-sm font-normal bg-hover-light dark:bg-hover-dark shadow-none border border-subtle-text-50"
+				size="sm"
+				variant="ghost"
+				color="red"
+				class="font-bold text-sm border border-red-400"
 			>
 				{{ $t("remove") }}
 			</UButton>
@@ -53,9 +59,13 @@
 				<h3 class="text-sm font-bold mr-1">
 					{{ $t("pinCodeWithdrawal") }}
 				</h3>
-				<div class="bg-accent-red rounded-full px-2 mr-4">
-					<span class="text-sm font-medium">{{ $t("off") }}</span>
-				</div>
+				<UBadge
+					color="red"
+					variant="solid"
+					class="mr-1"
+				>
+					{{ $t("off") }}
+				</UBadge>
 			</div>
 			<div class="my-3">
 				<p class="text-sm font-normal">

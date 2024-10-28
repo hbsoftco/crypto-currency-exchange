@@ -5,9 +5,10 @@
 				id="mobile"
 				v-model="signupStore.signupByMobileDto.mobile"
 				type="text"
+				:number="true"
 				input-class="text-left"
 				label="phoneNumber"
-				:placeholder="useNumber('0910000')"
+				:placeholder="useNumber('09120000000')"
 				icon="i-heroicons-phone"
 				dir="ltr"
 				:error-message="v$.mobile.$error? $t('fieldIsRequired') : ''"
@@ -23,7 +24,11 @@
 				placeholder=""
 				icon="i-heroicons-eye"
 				dir="ltr"
-				:error-message="v$.password.$error? $t('fieldIsRequired') : ''"
+				:error-message="
+					v$.password.$error
+						? (v$.password.required.$response ? $t('passwordMustBeComplex') : $t('fieldIsRequired'))
+						: ''
+				"
 			/>
 		</div>
 		<div class="my-8">
@@ -86,6 +91,7 @@ import { normalizeMobile } from '~/utils/normalize-mobile';
 import { useNumber } from '~/composables/useNumber';
 import SlideCaptcha from '~/components/ui/SlideCaptcha.vue';
 import ReferralFieldInput from '~/components/forms/ReferralFieldInput.vue';
+import { complexPassword } from '~/utils/validation-rules';
 
 interface PropsDefinition {
 	inviter: string | null;
@@ -112,7 +118,7 @@ if (props.inviter) {
 const signupByMobileRules = {
 	captchaKey: { },
 	refereeCode: { },
-	password: { required: validations.required },
+	password: { required: validations.required, complexPassword },
 	mobile: { required: validations.required },
 };
 

@@ -13,7 +13,7 @@
 		/>
 		<input
 			:id="id"
-			v-model="internalValue"
+			v-model="formattedValue"
 			:type="
 				type === 'password' ? (isPasswordVisible ? 'text' : 'password') : type
 			"
@@ -54,6 +54,7 @@ interface Props {
 	label: string;
 	placeholder?: string;
 	required?: boolean;
+	number?: boolean;
 	disabled?: boolean;
 	inputClass?: string;
 	labelClass?: string;
@@ -68,6 +69,30 @@ interface EmitDefinition {
 	(event: 'update:modelValue', value: unknown): void;
 }
 const emit = defineEmits<EmitDefinition>();
+
+const formattedValue = computed({
+	get() {
+		if (!props.number) {
+			return internalValue.value;
+		}
+
+		const value = String(internalValue.value);
+
+		const numericValue = props.number
+			? isNaN(Number(value.replace(/,/g, ''))) ? '0' : value
+			: value;
+
+		return numericValue;
+	},
+	set(newValue) {
+		if (props.number) {
+			internalValue.value = convertToEnglishDigits(String(newValue)) || '';
+		}
+		else {
+			internalValue.value = newValue;
+		}
+	},
+});
 
 const internalValue = ref(props.modelValue);
 const isPasswordVisible = ref(false);

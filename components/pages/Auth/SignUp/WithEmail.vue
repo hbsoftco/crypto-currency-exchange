@@ -23,7 +23,11 @@
 				placeholder=""
 				icon="i-heroicons-eye"
 				dir="ltr"
-				:error-message="v$.password.$error? $t('fieldIsRequired') : ''"
+				:error-message="
+					v$.password.$error
+						? (v$.password.required.$response ? $t('passwordMustBeComplex') : $t('fieldIsRequired'))
+						: ''
+				"
 			/>
 		</div>
 		<div class="my-8">
@@ -84,6 +88,7 @@ import useVuelidate from '@vuelidate/core';
 
 import ReferralFieldInput from '~/components/forms/ReferralFieldInput.vue';
 import SlideCaptcha from '~/components/ui/SlideCaptcha.vue';
+import { complexPassword } from '~/utils/validation-rules';
 
 interface PropsDefinition {
 	inviter: string | null;
@@ -110,7 +115,7 @@ if (props.inviter) {
 const signupByEmailRules = {
 	captchaKey: { },
 	refereeCode: { },
-	password: { required: validations.required },
+	password: { required: validations.required, complexPassword },
 	email: { required: validations.required },
 };
 

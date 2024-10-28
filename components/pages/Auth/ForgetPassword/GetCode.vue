@@ -75,7 +75,10 @@ const submit = async () => {
 
 		if (captchaStore.stateId === 11) {
 			await forgetPasswordStore.initForgetPassword();
-			router.push('/auth/set-password');
+
+			if (forgetPasswordStore.initForgetPasswordIsValid) {
+				router.push('/auth/set-password');
+			}
 
 			localLoading.value = false;
 		}

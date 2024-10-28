@@ -55,6 +55,4 @@ definePageMeta({
 	layout: 'account',
 	middleware: 'auth',
 });
-
-// const profileStore = useProfileStore();
 </script>

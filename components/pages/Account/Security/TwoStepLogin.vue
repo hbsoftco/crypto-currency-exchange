@@ -15,12 +15,13 @@
 				<h3 class="text-sm font-bold mr-1">
 					{{ $t("TwoStepLogin") }}
 				</h3>
-				<div
-					:class="twoStepLoginButtonClass"
-					class="rounded-full px-2 mr-4"
+				<UBadge
+					:color="twoStepLogin ? 'green' : 'red'"
+					variant="solid"
+					class="mr-1"
 				>
-					<span class="text-sm font-medium">{{ twoStepLoginText }}</span>
-				</div>
+					{{ twoStepLogin ? $t('on') :$t("off") }}
+				</UBadge>
 			</div>
 			<div class="my-3">
 				<p class="text-sm font-normal">
@@ -29,8 +30,9 @@
 			</div>
 			<UButton
 				to="/account/security/two-step-login"
-				color="gray"
-				class="text-black dark:text-white text-sm font-normal bg-hover-light dark:bg-hover-dark shadow-none border border-subtle-text-50"
+				size="sm"
+				variant="ghost"
+				class="font-bold text-sm text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark"
 			>
 				{{ $t("adjust") }}
 			</UButton>
@@ -49,7 +51,10 @@
 				<h3 class="text-sm font-bold mr-1">
 					{{ $t("emailSetup") }}
 				</h3>
-				<div class="flex items-center mr-4">
+				<div
+					v-if="getValueByKey(authStore.getCurrentUser, 'EMAIL')"
+					class="flex items-center mr-4"
+				>
 					<img
 						src="/images/Confirmation.png"
 						alt="Confirmation"
@@ -57,7 +62,7 @@
 					>
 					<span class="text-sm font-medium mr-1">{{
 						useNumber(
-							String(getValueByKey(profileStore.userProfile, "EMAIL")),
+							String(getValueByKey(authStore.getCurrentUser, "EMAIL")),
 						)
 					}}</span>
 				</div>
@@ -69,10 +74,11 @@
 			</div>
 			<UButton
 				to="/account/security/change-email"
-				color="gray"
-				class="text-black dark:text-white text-sm font-normal bg-hover-light dark:bg-hover-dark shadow-none border border-subtle-text-50"
+				size="sm"
+				variant="ghost"
+				class="font-bold text-sm text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark"
 			>
-				{{ $t("toChange") }}
+				{{ getValueByKey(authStore.getCurrentUser, 'EMAIL') ? $t('toChange') : $t("register") }}
 			</UButton>
 		</div>
 		<!-- Email -->
@@ -89,6 +95,25 @@
 					{{ $t("mobileNumberSetting") }}
 				</h3>
 				<div
+					v-if="getValueByKey(authStore.getCurrentUser, 'MOBILE')"
+					class="flex items-center mr-4"
+				>
+					<img
+						src="/images/Confirmation.png"
+						alt="Confirmation"
+						class="w-4 h-4"
+					>
+					<span
+						class="text-sm font-medium mr-1"
+						dir="ltr"
+					>{{
+						useNumber(
+							String(getValueByKey(authStore.getCurrentUser, "MOBILE")),
+						)
+					}}</span>
+				</div>
+				<div
+					v-else
 					:class="mobileNumberButtonClass"
 					class="rounded-full px-2 mr-4"
 				>
@@ -101,10 +126,11 @@
 				</p>
 			</div>
 			<UButton
-				color="gray"
-				class="text-black dark:text-white text-sm font-normal bg-hover-light dark:bg-hover-dark shadow-none border border-subtle-text-50"
+				size="sm"
+				variant="ghost"
+				class="font-bold text-sm text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark"
 			>
-				{{ $t("register") }}
+				{{ getValueByKey(authStore.getCurrentUser, 'MOBILE') ? $t('toChange') : $t("register") }}
 			</UButton>
 		</div>
 		<!-- Mobile -->
@@ -115,23 +141,15 @@
 import { useNumber } from '~/composables/useNumber';
 import { getValueByKey } from '~/utils/find-value-by-key';
 
-const profileStore = useProfileStore();
-const twoStepLoginValue = getValueByKey(profileStore.userProfile, '2FA_ENABLED');
-const mobileNumberValue = getValueByKey(profileStore.userProfile, 'MOBILE');
+const authStore = useAuthStore();
+const twoStepLoginValue = getValueByKey(authStore.getCurrentUser, '2FA_ENABLED');
+const mobileNumberValue = getValueByKey(authStore.getCurrentUser, 'MOBILE');
 
-// Two-Step Login Computed Properties
-const twoStepLoginText = computed(() => {
+const twoStepLogin = computed(() => {
 	if (twoStepLoginValue === undefined) {
-		return useT('off');
+		return false;
 	}
-	return twoStepLoginValue === '1' ? useT('on') : useT('off');
-});
-
-const twoStepLoginButtonClass = computed(() => {
-	if (twoStepLoginValue === undefined) {
-		return 'bg-accent-red';
-	}
-	return twoStepLoginValue === '1' ? 'bg-accent-green' : 'bg-accent-red';
+	return twoStepLoginValue === '1' ? true : false;
 });
 
 // Mobile Number Computed Properties

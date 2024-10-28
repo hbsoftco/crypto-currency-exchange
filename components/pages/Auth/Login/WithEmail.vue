@@ -23,7 +23,11 @@
 				placeholder=""
 				icon="i-heroicons-eye"
 				dir="ltr"
-				:error-message="v$.password.$error? $t('fieldIsRequired') : ''"
+				:error-message="
+					v$.password.$error
+						? (v$.password.required.$response ? $t('passwordMustBeComplex') : $t('fieldIsRequired'))
+						: ''
+				"
 			/>
 		</div>
 		<div>
@@ -53,6 +57,7 @@
 import useVuelidate from '@vuelidate/core';
 
 import SlideCaptcha from '~/components/ui/SlideCaptcha.vue';
+import { complexPassword } from '~/utils/validation-rules';
 
 const loginStore = useLoginStore();
 const captchaStore = useCaptchaStore();
@@ -67,7 +72,7 @@ const localLoading = ref(false);
 const loginByEmailRules = {
 	captchaKey: { },
 	ignore2FA: { },
-	password: { required: validations.required },
+	password: { required: validations.required, complexPassword },
 	email: { required: validations.required },
 };
 
