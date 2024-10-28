@@ -100,7 +100,9 @@ const submit = async () => {
 			clearCode.value = true;
 			loginStore.checkCodeVerificationLoading = false;
 
-			localStorage.removeItem('password');
+			loginStore.checkCodeVerificationIsValid = true;
+
+			// localStorage.removeItem('password');
 		}
 	}
 	catch (error) {

@@ -89,6 +89,14 @@ export const useLoginStore = defineStore('login', () => {
 					color: 'red',
 				});
 			}
+			if (error.response._data.statusCode === -1311761) {
+				toast.add({
+					title: useT('login'),
+					description: error.response._data.message,
+					timeout: 5000,
+					color: 'red',
+				});
+			}
 
 			loginByEmailLoading.value = false;
 		}
@@ -126,7 +134,7 @@ export const useLoginStore = defineStore('login', () => {
 					color: 'red',
 				});
 			}
-			if (error.response._data.statusCode === -1311135) {
+			if (error.response._data.statusCode === -1311135 || error.response._data.statusCode === -1311761) {
 				toast.add({
 					title: useT('login'),
 					description: error.response._data.message,
