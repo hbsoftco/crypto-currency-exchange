@@ -86,7 +86,9 @@ export const useForgetPasswordStore = defineStore('forgetPassword', () => {
 		}
 		catch (error: any) {
 			initForgetPasswordIsValid.value = false;
-			if (error.response._data.statusCode === -1110121 || error.response._data.statusCode === -1311761) {
+			if (error.response._data.statusCode === -1110121
+				|| error.response._data.statusCode === -1311761
+				|| error.response._data.statusCode === -1311431) {
 				toast.add({
 					title: useT('forgotPasswordNoQuestion'),
 					description: error.response._data.message,
@@ -98,6 +100,7 @@ export const useForgetPasswordStore = defineStore('forgetPassword', () => {
 		}
 	};
 
+	const checkForgetPasswordIsValid = ref<boolean>(true);
 	const checkForgetPasswordLoading = ref<boolean>(false);
 	const checkForgetPassword = async () => {
 		try {
@@ -112,7 +115,15 @@ export const useForgetPasswordStore = defineStore('forgetPassword', () => {
 			checkForgetPasswordLoading.value = false;
 		}
 		catch (error: any) {
-			console.log(error);
+			checkForgetPasswordIsValid.value = false;
+			if (error.response._data.statusCode === -1311431) {
+				toast.add({
+					title: useT('forgotPasswordNoQuestion'),
+					description: error.response._data.message,
+					timeout: 5000,
+					color: 'red',
+				});
+			}
 			checkForgetPasswordLoading.value = false;
 		}
 	};
@@ -167,7 +178,9 @@ export const useForgetPasswordStore = defineStore('forgetPassword', () => {
 	return {
 		initForgetPassword,
 		initForgetPasswordIsValid,
+		initForgetPasswordLoading,
 		checkForgetPasswordDto,
+		checkForgetPasswordIsValid,
 		resetPasswordDto,
 		forgetPasswordDto,
 		stepState,

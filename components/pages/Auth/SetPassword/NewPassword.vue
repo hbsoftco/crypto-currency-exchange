@@ -47,6 +47,8 @@
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core';
 
+import { complexPassword } from '~/utils/validation-rules';
+
 const forgetPasswordStore = useForgetPasswordStore();
 
 const router = useRouter();
@@ -58,8 +60,8 @@ const dto = ref({
 });
 
 const resetPasswordDtoRules = {
-	newPassword: { required: validations.required },
-	rePassword: { required: validations.required },
+	newPassword: { required: validations.required, complexPassword },
+	rePassword: { required: validations.required, complexPassword },
 };
 
 const v$ = useVuelidate(resetPasswordDtoRules, dto.value);

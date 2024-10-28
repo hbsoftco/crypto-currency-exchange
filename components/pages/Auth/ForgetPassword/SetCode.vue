@@ -15,8 +15,11 @@
 				placeholder=""
 				icon=""
 				dir="ltr"
+				:clear="clearCode"
 				:error-message="v$.verificationCode.$error? $t('fieldIsRequired') : ''"
 				@resend="resendCode"
+				@completed="submit"
+				@cleared="setClearCode"
 			/>
 		</div>
 		<div>
@@ -42,6 +45,11 @@ const router = useRouter();
 
 const type = ref<'email' | 'mobile'>('email');
 const forgetPasswordStore = useForgetPasswordStore();
+const clearCode = ref<boolean>(false);
+
+const setClearCode = () => {
+	clearCode.value = false;
+};
 
 const checkForgetPasswordDtoRules = {
 	verificationId: { required: validations.required },
@@ -59,7 +67,10 @@ const submit = async () => {
 		}
 
 		await forgetPasswordStore.checkForgetPassword();
-		router.push('/auth/set-password');
+
+		if (forgetPasswordStore.checkForgetPasswordIsValid) {
+			router.push('/auth/set-password');
+		}
 	}
 	catch (error) {
 		console.error('Failed:', error);

@@ -22,7 +22,7 @@
 			<UButton
 				size="lg"
 				block
-				:loading="captchaStore.generateCaptchaLoading"
+				:loading="captchaStore.generateCaptchaLoading || forgetPasswordStore.initForgetPasswordLoading"
 				@click="submit"
 			>
 				{{ $t('sendCode') }}
@@ -47,7 +47,7 @@ import useVuelidate from '@vuelidate/core';
 import { normalizeMobile } from '~/utils/normalize-mobile';
 import SlideCaptcha from '~/components/ui/SlideCaptcha.vue';
 
-const router = useRouter();
+// const router = useRouter();
 
 const forgetPasswordStore = useForgetPasswordStore();
 const captchaStore = useCaptchaStore();
@@ -77,10 +77,9 @@ const submit = async () => {
 			await forgetPasswordStore.initForgetPassword();
 
 			if (forgetPasswordStore.initForgetPasswordIsValid) {
-				router.push('/auth/set-password');
+				forgetPasswordStore.stepState = 'setCode';
 			}
-
-			localLoading.value = false;
+			// localLoading.value = false;
 		}
 	}
 	catch (error) {
@@ -121,7 +120,7 @@ const handleCaptchaValidation = async (sliderValue: number) => {
 		}
 	}
 
-	localLoading.value = false;
+	// localLoading.value = false;
 };
 
 const captchaHasError = ref(false);
