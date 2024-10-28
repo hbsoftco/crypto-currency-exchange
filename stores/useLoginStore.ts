@@ -139,7 +139,12 @@ export const useLoginStore = defineStore('login', () => {
 			checkCodeVerificationDto.value.verificationId = response.result.verificationId;
 		}
 		catch (error: any) {
-			console.log(error);
+			toast.add({
+				title: useT('login'),
+				description: error.response._data.message,
+				timeout: 5000,
+				color: 'red',
+			});
 		}
 	};
 
@@ -165,22 +170,12 @@ export const useLoginStore = defineStore('login', () => {
 		}
 		catch (error: any) {
 			checkCodeVerificationIsValid.value = false;
-			if (error.response._data.statusCode === -1311431) {
-				toast.add({
-					title: useT('login'),
-					description: error.response._data.message,
-					timeout: 5000,
-					color: 'red',
-				});
-			}
-			if (error.response._data.statusCode === 422) {
-				toast.add({
-					title: useT('password'),
-					description: useT('passwordMustBeComplex'),
-					timeout: 5000,
-					color: 'red',
-				});
-			}
+			toast.add({
+				title: useT('password'),
+				description: error.response._data.message,
+				timeout: 5000,
+				color: 'red',
+			});
 			checkCodeVerificationLoading.value = false;
 		}
 	};

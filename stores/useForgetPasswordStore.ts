@@ -86,16 +86,12 @@ export const useForgetPasswordStore = defineStore('forgetPassword', () => {
 		}
 		catch (error: any) {
 			initForgetPasswordIsValid.value = false;
-			if (error.response._data.statusCode === -1110121
-				|| error.response._data.statusCode === -1311761
-				|| error.response._data.statusCode === -1311431) {
-				toast.add({
-					title: useT('forgotPasswordNoQuestion'),
-					description: error.response._data.message,
-					timeout: 5000,
-					color: 'red',
-				});
-			}
+			toast.add({
+				title: useT('forgotPasswordNoQuestion'),
+				description: error.response._data.message,
+				timeout: 5000,
+				color: 'red',
+			});
 			initForgetPasswordLoading.value = false;
 		}
 	};
@@ -116,14 +112,12 @@ export const useForgetPasswordStore = defineStore('forgetPassword', () => {
 		}
 		catch (error: any) {
 			checkForgetPasswordIsValid.value = false;
-			if (error.response._data.statusCode === -1311431) {
-				toast.add({
-					title: useT('forgotPasswordNoQuestion'),
-					description: error.response._data.message,
-					timeout: 5000,
-					color: 'red',
-				});
-			}
+			toast.add({
+				title: useT('forgotPasswordNoQuestion'),
+				description: error.response._data.message,
+				timeout: 5000,
+				color: 'red',
+			});
 			checkForgetPasswordLoading.value = false;
 		}
 	};
@@ -143,7 +137,12 @@ export const useForgetPasswordStore = defineStore('forgetPassword', () => {
 			resetPasswordDto.value.verificationId = response.result.verificationId;
 		}
 		catch (error: any) {
-			console.log(error);
+			toast.add({
+				title: useT('forgotPasswordNoQuestion'),
+				description: error.response._data.message,
+				timeout: 5000,
+				color: 'red',
+			});
 		}
 	};
 
@@ -163,14 +162,12 @@ export const useForgetPasswordStore = defineStore('forgetPassword', () => {
 			return response.statusCode;
 		}
 		catch (error: any) {
-			if (error.response._data.statusCode === 422) {
-				toast.add({
-					title: useT('password'),
-					description: useT('passwordMustBeComplex'),
-					timeout: 5000,
-					color: 'red',
-				});
-			}
+			toast.add({
+				title: useT('password'),
+				description: error.response._data.message,
+				timeout: 5000,
+				color: 'red',
+			});
 			resetPasswordLoading.value = false;
 		}
 	};

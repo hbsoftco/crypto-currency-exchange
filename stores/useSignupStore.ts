@@ -77,14 +77,12 @@ export const useSignupStore = defineStore('Signup', () => {
 		}
 		catch (error: any) {
 			signupByMobileIsValid.value = false;
-			if (error.response._data.statusCode === -1311135) {
-				toast.add({
-					title: useT('signup'),
-					description: useT('mobileAlreadyExist'),
-					timeout: 5000,
-					color: 'red',
-				});
-			}
+			toast.add({
+				title: useT('signup'),
+				description: error.response._data.message,
+				timeout: 5000,
+				color: 'red',
+			});
 
 			signupByMobileLoading.value = false;
 		}
@@ -111,15 +109,12 @@ export const useSignupStore = defineStore('Signup', () => {
 		}
 		catch (error: any) {
 			signupByEmailIsValid.value = false;
-			if (error.response._data.statusCode === -1311165) {
-				toast.add({
-					title: useT('signup'),
-					description: useT('emailAlreadyExist'),
-					timeout: 5000,
-					color: 'red',
-				});
-			}
-
+			toast.add({
+				title: useT('signup'),
+				description: error.response._data.message,
+				timeout: 5000,
+				color: 'red',
+			});
 			signupByEmailLoading.value = false;
 		}
 	};
@@ -137,7 +132,12 @@ export const useSignupStore = defineStore('Signup', () => {
 			checkCodeVerificationDto.value.verificationId = response.result.verificationId;
 		}
 		catch (error: any) {
-			console.log(error);
+			toast.add({
+				title: useT('signup'),
+				description: error.response._data.message,
+				timeout: 5000,
+				color: 'red',
+			});
 		}
 	};
 
@@ -159,22 +159,12 @@ export const useSignupStore = defineStore('Signup', () => {
 		}
 		catch (error: any) {
 			checkCodeVerificationIsValid.value = false;
-			if (error.response._data.statusCode === -1311431) {
-				toast.add({
-					title: useT('login'),
-					description: error.response._data.message,
-					timeout: 5000,
-					color: 'red',
-				});
-			}
-			if (error.response._data.statusCode === 422) {
-				toast.add({
-					title: useT('password'),
-					description: useT('passwordMustBeComplex'),
-					timeout: 5000,
-					color: 'red',
-				});
-			}
+			toast.add({
+				title: useT('signup'),
+				description: error.response._data.message,
+				timeout: 5000,
+				color: 'red',
+			});
 			checkCodeVerificationLoading.value = false;
 		}
 	};
