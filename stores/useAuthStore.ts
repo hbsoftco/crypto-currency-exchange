@@ -148,6 +148,32 @@ export const useAuthStore = defineStore('auth', () => {
 
 	const isLoggedIn = computed(() => authStatus.value);
 
+	let refreshInterval: NodeJS.Timeout | undefined | null;
+
+	const startRefreshInterval = () => {
+		if (!refreshInterval) {
+			refreshInterval = setInterval(() => {
+				refreshOtc();
+			}, 20000);
+		}
+	};
+
+	const stopRefreshInterval = () => {
+		if (refreshInterval) {
+			clearInterval(refreshInterval);
+			refreshInterval = null;
+		}
+	};
+
+	watch(isLoggedIn, (newVal) => {
+		if (newVal) {
+			startRefreshInterval();
+		}
+		else {
+			stopRefreshInterval();
+		}
+	});
+
 	return {
 		isLoggedIn,
 		setPassword,
@@ -157,6 +183,7 @@ export const useAuthStore = defineStore('auth', () => {
 		clearAuthCredentials,
 		refreshOtcLoading,
 		refreshOtc,
+		startRefreshInterval,
 		//
 		fetchCurrentUser,
 		currentUserLoading,

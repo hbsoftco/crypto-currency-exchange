@@ -5,6 +5,9 @@ export default defineNuxtPlugin(() => {
 	const authStore = useAuthStore();
 	const baseURL = useEnv('apiBaseUrl');
 
+	let refreshing = false;
+	let waitingRequests: (() => void)[] = [];
+
 	const api = $fetch.create({
 		baseURL,
 		retry: 1,
@@ -24,10 +27,26 @@ export default defineNuxtPlugin(() => {
 		},
 		async onResponse({ response }) {
 			if (response && response?._data && response?._data?.statusCode === StatusCodes.OTC_EXPIRED.fa) {
-				await authStore.refreshOtc();
+				if (!refreshing) {
+					refreshing = true;
+
+					try {
+						await authStore.refreshOtc();
+						waitingRequests.forEach((resolve) => resolve());
+						waitingRequests = [];
+					}
+					catch (error) {
+						console.error('Error refreshing OTC:', error);
+					}
+					finally {
+						refreshing = false;
+					}
+				}
+				else {
+					await new Promise<void>((resolve) => waitingRequests.push(resolve));
+				}
 			}
 			else if (response && response?._data && response?._data?.statusCode === StatusCodes.USER_LOGGED_OUT.fa) {
-				const authStore = useAuthStore();
 				await authStore.clearAuthCredentials();
 			}
 		},

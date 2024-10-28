@@ -1,5 +1,8 @@
 <template>
-	<div class="relative mb-8">
+	<div
+		class="relative mb-8"
+		@click="focusOtpInput"
+	>
 		<div
 			:class="['mt-8 h-11 block cursor-text appearance-none focus:outline-none focus:ring-0 px-2.5 pl-10 pb-2.5 pt-3 w-full text-sm text-text-dark dark:text-text-light bg-transparent rounded-lg border peer',
 				errorMessage? 'border-accent-red focus:border-accent-red' : 'border-gray-600  focus:border-primary-yellow-light dark:focus:border-primary-yellow-dark',
@@ -11,7 +14,7 @@
 				input-classes="otp-input border-none outline-none bg-transparent"
 				:conditional-class="conditionalClass"
 				separator=""
-				input-type="letter-numeric"
+				input-type="numeric"
 				:num-inputs="6"
 				:should-auto-focus="true"
 				:should-focus-order="true"
@@ -128,6 +131,11 @@ watch(() => props.clear, (newValue) => {
 		emit('cleared');
 	}
 });
+
+const focusOtpInput = () => {
+	const inputElement = otpInput.value?.$el.querySelector('input');
+	inputElement?.focus();
+};
 
 const clearInput = () => {
 	otpInput.value?.clearInput();
