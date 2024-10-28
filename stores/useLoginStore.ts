@@ -87,22 +87,6 @@ export const useLoginStore = defineStore('login', () => {
 				timeout: 5000,
 				color: 'red',
 			});
-			// if (error.response._data.statusCode === -1110153 || error.response._data.statusCode === 422) {
-			// 	toast.add({
-			// 		title: useT('login'),
-			// 		description: useT('invalidUsernameOrPassword'),
-			// 		timeout: 5000,
-			// 		color: 'red',
-			// 	});
-			// }
-			// if (error.response._data.statusCode === -1311761) {
-			// 	toast.add({
-			// 		title: useT('login'),
-			// 		description: error.response._data.message,
-			// 		timeout: 5000,
-			// 		color: 'red',
-			// 	});
-			// }
 
 			loginByEmailLoading.value = false;
 		}
@@ -138,23 +122,6 @@ export const useLoginStore = defineStore('login', () => {
 				timeout: 5000,
 				color: 'red',
 			});
-			// if (error.response._data.statusCode === -1110153 || error.response._data.statusCode === 422) {
-			// 	toast.add({
-			// 		title: useT('login'),
-			// 		description: useT('invalidUsernameOrPassword'),
-			// 		timeout: 5000,
-			// 		color: 'red',
-			// 	});
-			// }
-			// if (error.response._data.statusCode === -1311135 || error.response._data.statusCode === -1311761) {
-			// 	toast.add({
-			// 		title: useT('login'),
-			// 		description: error.response._data.message,
-			// 		timeout: 5000,
-			// 		color: 'red',
-			// 	});
-			// }
-
 			loginByMobileLoading.value = false;
 		}
 	};
