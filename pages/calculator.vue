@@ -113,8 +113,8 @@ const getMarkets = async () => {
 		const items = await Promise.all(result.rows.map(async (market) => {
 			return {
 				...market,
-				currency: await baseDataStore.findCurrencyById(market.cid),
-				market: await baseDataStore.findMarketById(market.id),
+				currency: await baseDataStore.findCurrencyById(marketList.cid),
+				// market: await baseDataStore.findMarketById(market.id),
 			};
 		}));
 	}
