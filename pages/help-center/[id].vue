@@ -1,11 +1,9 @@
 <template>
 	<div>
-		detail
+		ddddddddddddddddddddddd
 	</div>
 </template>
 
 <script setup lang="ts">
-definePageMeta({
-	layout: 'help',
-});
+
 </script>

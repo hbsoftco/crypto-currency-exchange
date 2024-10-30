@@ -83,4 +83,48 @@
 </template>
 
 <script setup lang="ts">
+import { marketRepository } from '~/repositories/market.repository';
+import type { Market } from '~/types/response/market.types';
+import { MarketType } from '~/utils/enums/market.enum';
+
+const { $api } = useNuxtApp();
+const marketRepo = marketRepository($api);
+
+const baseDataStore = useBaseDataStore();
+
+const params = ref({
+	sortMode: '',
+	currencyQuoteId: '',
+	marketTypeId: String(MarketType.SPOT),
+	tagTypeId: '',
+	searchStatement: '',
+	pageNumber: '1',
+	pageSize: '20',
+});
+
+const marketList = ref<Market[]>();
+
+const getMarkets = async () => {
+	try {
+		const { result } = await marketRepo.getMarkets(params.value);
+
+		marketList.value = result.rows;
+
+		const items = await Promise.all(result.rows.map(async (market) => {
+			return {
+				...market,
+				currency: await baseDataStore.findCurrencyById(market.cid),
+				market: await baseDataStore.findMarketById(market.id),
+			};
+		}));
+	}
+	catch (error) {
+		console.error('Error fetching trades:', error);
+	}
+};
+console.log('currencyBriefList', marketList);
+
+onMounted(async () => {
+	await getMarkets();
+});
 </script>

@@ -82,9 +82,10 @@
 					</div>
 
 					<div class="grid grid-col-2 md:grid-cols-3 gap-4 my-12">
-						<div
+						<ULink
 							v-for="(item, index) in helpList"
 							:key="index"
+							:to="`help-center/${item.id}`"
 							class="flex items-center py-4 border-b border-primary-gray-light dark:border-primary-gray-dark"
 						>
 							<img
@@ -96,7 +97,7 @@
 								{{ $t(item.info.header) }}
 								<!-- {{ $t(item.info.content) }} -->
 							</p>
-						</div>
+						</ULink>
 					</div>
 				</div>
 			</UContainer>

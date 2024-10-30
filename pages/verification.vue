@@ -30,7 +30,7 @@
 											:staff-id="String(params.staffId)"
 											@close="closeDetail"
 										/>
-										<div class="col-span-3 my-8">
+										<div class="col-span-12 md:col-span-3 my-4 md:my-8">
 											<USelectMenu
 												v-model="params.profileTypeId"
 												:options="socialNetList"
@@ -48,23 +48,24 @@
 												}"
 											/>
 										</div>
-										<div class="col-span-8">
+										<div class="col-span-10 md:col-span-8">
 											<FormsFieldInput
 												id="info"
 												v-model="params.staffId"
 												type="text"
-												input-class="text-left bg-background-light dark:bg-background-dark"
+												input-class="text-left text-left placeholder:text-right bg-background-light dark:bg-background-dark"
 												label=""
 												:placeholder="$t('placeholderInfo')"
 												icon=""
+												mt-class="mt-0 md:mt-8"
 												dir="ltr"
 												color-type="bg-hover-light dark:bg-hover-dark"
 											/>
 										</div>
-										<div class="col-span-1">
+										<div class="col-span-2 md:col-span-1">
 											<UButton
 												size="lg"
-												class="my-8 text-base font-medium p-2"
+												class="my-0 md:my-8 text-base font-medium p-2"
 												to=""
 												@click="getStaffCheck"
 											>
