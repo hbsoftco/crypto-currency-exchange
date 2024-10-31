@@ -85,20 +85,21 @@
 </template>
 
 <script setup lang="ts">
-import DownloadApp from '~/components/common/DownloadApp.vue';
-import ImageCover from '~/components/pages/ImageCover.vue';
-import ImageCoverLogin from '~/components/pages/ImageCoverLogin.vue';
-import ActiveAward from '~/components/pages/Site/MainPage/ActiveAward.vue';
 import Info from '~/components/pages/Site/MainPage/Info.vue';
-import AlwaysBitland from '~/components/pages/Site/MainPage/AlwaysBitland.vue';
-import Prize from '~/components/pages/Site/MainPage/Prize.vue';
-import NewCurrencies from '~/components/pages/Site/MainPage/NewCurrencies/index.vue';
 import QuickMenuMobile from '~/components/pages/Site/MainPage/QuickMenuMobile.vue';
-import TopBanner from '~/components/pages/MainPage/TopBanner.vue';
-import TopBannerLogin from '~/components/pages/MainPage/TopBannerLogin.vue';
-import TopSlider from '~/components/pages/Site/MainPage/TopSlider.vue';
-import TradingMarkets from '~/components/pages/MainPage/TradingMarkets.vue';
-import WhyBitland from '~/components/pages/Site/MainPage/WhyBitland.vue';
+import TopSlider from '~/components/pages/MainPage/TopSlider.vue';
+
+const ImageCover = defineAsyncComponent(() => import('~/components/pages/ImageCover.vue'));
+const ImageCoverLogin = defineAsyncComponent(() => import('~/components/pages/ImageCoverLogin.vue'));
+const TopBannerLogin = defineAsyncComponent(() => import('~/components/pages/MainPage/TopBannerLogin.vue'));
+const TopBanner = defineAsyncComponent(() => import('~/components/pages/MainPage/TopBanner.vue'));
+const ActiveAward = defineAsyncComponent(() => import('~/components/pages/MainPage/ActiveAward.vue'));
+const TradingMarkets = defineAsyncComponent(() => import('~/components/pages/MainPage/TradingMarkets.vue'));
+const WhyBitland = defineAsyncComponent(() => import('~/components/pages/MainPage/WhyBitland.vue'));
+const DownloadApp = defineAsyncComponent(() => import('~/components/common/DownloadApp.vue'));
+const AlwaysBitland = defineAsyncComponent(() => import('~/components/pages/MainPage/AlwaysBitland.vue'));
+const Prize = defineAsyncComponent(() => import('~/components/pages/MainPage/Prize.vue'));
+const NewCurrencies = defineAsyncComponent(() => import('~/components/pages/MainPage/NewCurrencies/index.vue'));
 
 const { $mobileDetect } = useNuxtApp();
 const isMobile = ref(false);

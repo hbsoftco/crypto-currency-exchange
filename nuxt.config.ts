@@ -36,6 +36,9 @@ export default defineNuxtConfig({
 		'nuxt-svgo',
 		'nuxt-echarts',
 	],
+	pwa: {
+		/* PWA options */
+	},
 	i18n: {
 		vueI18n: './i18n.config.ts',
 	},

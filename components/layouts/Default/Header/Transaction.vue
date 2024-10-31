@@ -64,11 +64,11 @@
 </template>
 
 <script setup>
-import MenuTrade from './MenuTrade.vue';
-
 import IconArrowDown from '~/assets/svg-icons/menu/arrow-down.svg';
 import IconArrowUp from '~/assets/svg-icons/menu/arrow-up.svg';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
+
+const MenuTrade = defineAsyncComponent(() => import('~/components/layouts/Default/Header/MenuTrade.vue'));
 
 const { checkPathLink } = useLinkManager();
 

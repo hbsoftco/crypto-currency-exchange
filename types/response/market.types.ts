@@ -42,6 +42,7 @@ type MarketsResponse = {
 };
 
 type Market = {
+	cid: number;
 	id: number;
 	indexPrice: string;
 	hPriceIn24H: string;
@@ -49,7 +50,8 @@ type Market = {
 	priceChangePercIn24H: string;
 	valueOfTradesIn24H: string;
 	volumeOfTradesIn24H: string;
-	marketBriefItem: MarketBriefItem | null;
+	marketBriefItem?: MarketBriefItem | null;
+	currency: CurrencyBriefItem | null;
 };
 
 type MarketStatisticsChartsResponse = {

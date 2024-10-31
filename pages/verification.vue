@@ -3,7 +3,7 @@
 		<section>
 			<ImageCover>
 				<UContainer class="h-full">
-					<div class="w-full h-full relative flex justify-between">
+					<div class="w-full h-full relative flex items-center justify-between">
 						<div class="mt-10 md:mt-12">
 							<h1
 								class="text-light dark:text-dark text-lg md:text-7xl font-extrabold mb-2 md:mb-8"
