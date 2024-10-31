@@ -7,8 +7,7 @@ import { CACHE_KEY_FOOTER_ITEMS } from '~/utils/constants/common';
 import { Language } from '~/utils/enums/language.enum';
 
 export const useFooterStore = defineStore('footer', () => {
-	// const linkList = ref<LinkListResult | null>();
-	const linkList = ref<LinkListResult | null>(null);
+	const linkList = ref<LinkListResult>();
 	const footerFetched = ref(false);
 	const footerLoading = ref<boolean>(false);
 	const RootListParams = ref<GetRootListParams>({
