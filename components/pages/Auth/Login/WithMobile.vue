@@ -46,7 +46,7 @@
 				v-if="captchaStore.openCaptcha"
 				:has-error="captchaHasError"
 				:data="captchaStore.captchaResponse"
-				@close="captchaStore.openCaptcha=false"
+				@close="closeCaptcha"
 				@slider-value="handleCaptchaValidation"
 				@refresh="getNewCaptcha"
 			/>
@@ -139,5 +139,12 @@ const handleCaptchaValidation = async (sliderValue: number) => {
 	}
 
 	localLoading.value = false;
+};
+
+const closeCaptcha = () => {
+	captchaStore.openCaptcha = false;
+	captchaStore.generateCaptchaLoading = false;
+	localLoading.value = false;
+	loginStore.loginByEmailLoading = false;
 };
 </script>

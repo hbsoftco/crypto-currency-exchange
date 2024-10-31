@@ -17,6 +17,11 @@ export default defineNuxtPlugin(() => {
 				if (options.noAuth !== false) return;
 
 				const tokenHeaders = await authStore.generateToken();
+
+				console.log('options ============>', options);
+				console.log('options.noAuth ============>', options.noAuth);
+				console.log('tokenHeaders ============>', tokenHeaders);
+
 				if (tokenHeaders) {
 					options.headers = { ...options.headers, ...tokenHeaders };
 				}

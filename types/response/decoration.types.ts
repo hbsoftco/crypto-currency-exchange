@@ -16,15 +16,18 @@ type Link = {
 	info: Info[];
 };
 
-type GetLinkListRes = {
+type LinkListResult = {
+	sections: Section[];
+	links: Link[];
+};
+
+type GetLinkListResponse = {
 	statusCode: number;
-	result: {
-		sections: Section[];
-		links: Link[];
-	};
+	result: LinkListResult | null;
 };
 export type {
-	GetLinkListRes,
+	LinkListResult,
+	GetLinkListResponse,
 	Section,
 	Link,
 };
