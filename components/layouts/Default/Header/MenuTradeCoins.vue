@@ -35,7 +35,10 @@
 							format="webp"
 							densities="x1"
 						>
-						<div class="flex mr-1 items-center">
+						<div
+							class="flex mr-1 items-center"
+							dir="ltr"
+						>
 							<span class="text-sm font-normal">{{ market?.currency?.cSymbol }}</span>/
 							<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
 								{{ quote }}
