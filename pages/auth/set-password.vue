@@ -9,6 +9,6 @@ import SetPassword from '~/components/pages/Auth/SetPassword/index.vue';
 
 definePageMeta({
 	layout: 'auth',
-	middleware: 'no-auth',
+	// middleware: 'no-auth',
 });
 </script>

@@ -27,12 +27,13 @@
 </template>
 
 <script setup lang="ts">
-import SupportButtons from '~/components/pages/SupportButtons.vue';
 import Header from '~/components/layouts/Default/Header.vue';
-import MobileHeader from '~/components/layouts/Default/Mobile/Header.vue';
-import Footer from '~/components/layouts/Default/Footer.vue';
-import MobileFooter from '~/components/layouts/Default/Mobile/Footer.vue';
 import { Language } from '~/utils/enums/language.enum';
+
+const SupportButtons = defineAsyncComponent(() => import('~/components/pages/SupportButtons.vue'));
+const MobileFooter = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/Footer.vue'));
+const MobileHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/Header.vue'));
+const Footer = defineAsyncComponent(() => import('~/components/layouts/Default/Footer.vue'));
 
 const { $mobileDetect } = useNuxtApp();
 const isMobile = ref(false);

@@ -112,13 +112,14 @@
 </template>
 
 <script setup lang="ts">
-import UserLogin from '../Default/Header/UserLogin/index.vue';
-import Download from '../Default/Header/Download.vue';
-import Setting from '../Default/Header/Setting.vue';
-import QuickAccessMenu from '../Default/Header/QuickAccessMenu.vue';
-import Transaction from '../Default/Header/Transaction.vue';
 import Futures from '../Default/Header/Futures.vue';
 import Search from '../Default/Header/Search/index.vue';
+
+const UserLogin = defineAsyncComponent(() => import('../Default/Header/UserLogin/index.vue'));
+const Download = defineAsyncComponent(() => import('../Default/Header/Download.vue'));
+const Setting = defineAsyncComponent(() => import('../Default/Header/Setting.vue'));
+const QuickAccessMenu = defineAsyncComponent(() => import('../Default/Header/QuickAccessMenu.vue'));
+const Transaction = defineAsyncComponent(() => import('../Default/Header/Transaction.vue'));
 
 const route = useRoute();
 

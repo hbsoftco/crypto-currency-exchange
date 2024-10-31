@@ -9,6 +9,6 @@ import Login from '~/components/pages/Auth/Login/index.vue';
 
 definePageMeta({
 	layout: 'auth',
-	middleware: 'no-auth',
+	// middleware: 'no-auth',
 });
 </script>

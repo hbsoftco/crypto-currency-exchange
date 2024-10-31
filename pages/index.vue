@@ -48,6 +48,7 @@
 		<section>
 			<UContainer>
 				<TradingMarkets />
+				<!-- <LazyPagesMainPageTradingMarkets /> -->
 			</UContainer>
 		</section>
 
@@ -62,6 +63,7 @@
 
 		<section>
 			<NewCurrencies />
+			<!-- <LazyPagesMainPageNewCurrencies /> -->
 		</section>
 
 		<section>
