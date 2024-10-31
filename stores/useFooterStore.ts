@@ -26,6 +26,7 @@ export const useFooterStore = defineStore('footer', () => {
 		try {
 			const cachedData: LinkListResult | null = await loadFromCache(CACHE_KEY_FOOTER_ITEMS) || null;
 			if (cachedData) {
+				linkList.value = cachedData;
 				footerFetched.value = true;
 				return;
 			}

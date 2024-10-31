@@ -18,7 +18,7 @@
 			<div
 				v-for="(market, index) in headerMenuStore.spotMarketItems"
 				:key="index"
-				class="mx-1 cursor-pointer border-b last:border-none border-b-primary-gray-light dark:border-b-primary-gray-dark"
+				class="mx-1 my-1 py-1 cursor-pointer border-b last:border-none border-b-primary-gray-light dark:border-b-primary-gray-dark"
 			>
 				<ULink
 					to="/fast-trade"
@@ -31,14 +31,14 @@
 						<img
 							:src="`https://api-bitland.site/media/currency/${market?.currency?.cSymbol}.png`"
 							:alt="market?.currency?.cName"
-							class="w-4 h-4 mr-1 rounded-full"
+							class="w-6 h-6 mr-1 rounded-full"
 							format="webp"
 							densities="x1"
 						>
 						<div class="flex mr-1 items-center">
-							<span class="text-xs font-normal">{{ market?.currency?.cName }}</span>/
-							<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
-								{{ $t(quote) }}
+							<span class="text-sm font-normal">{{ market?.currency?.cSymbol }}</span>/
+							<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
+								{{ quote }}
 							</span>
 						</div>
 					</ULink>

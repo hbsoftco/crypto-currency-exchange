@@ -29,12 +29,10 @@
 				<div class="col-span-12 md:col-span-7 mt-0 md:mt-4">
 					<div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 						<div
-							v-for="section in footerStore.sectionList"
+							v-for="section in footerStore.linkList?.sections || []"
 							:key="section.id"
 						>
-							<span
-								class="text-subtle-text-light dark:text-subtle-text-dark text-sm font-bold"
-							>
+							<span class="text-subtle-text-light dark:text-subtle-text-dark text-sm font-bold">
 								{{ section.info[0]?.title }}
 							</span>
 
@@ -55,15 +53,14 @@
 								</div>
 							</div>
 						</div>
-						<div>
+
+						<div v-if="footerItems.length">
 							<h5
 								class="text-subtle-text-light dark:text-subtle-text-dark text-sm font-bold mb-4"
 							>
 								{{ $t('followUs') }}
 							</h5>
-							<div
-								class="grid grid-cols-4 gap-2"
-							>
+							<div class="grid grid-cols-4 gap-2">
 								<ULink
 									v-for="(subItem, subIndex) in footerItems[0].subItems"
 									:key="subIndex"
