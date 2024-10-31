@@ -1,15 +1,13 @@
 <template>
 	<div dir="rtl">
 		<div class="mb-2">
-			<MenuTradeFilters
-				@selected-tag="selectedTag"
-			/>
+			<MenuTradeFilters @selected-tag="selectedTag" />
 		</div>
 		<div
 			v-if="!headerMenuStore.spotMarketItems.length"
 			class="max-h-72 min-h-72 text-center text-sm pt-8 overflow-y-scroll"
 		>
-			{{ $t('isLoading') }} ...
+			{{ $t("isLoading") }} ...
 		</div>
 		<div
 			v-else
@@ -26,7 +24,7 @@
 				>
 					<ULink
 						class="flex items-center justify-start"
-						:to="`/spot/${splitMarket(market?.currency?.cSymbol +'_'+quote)}`"
+						:to="`/spot/${splitMarket(market?.currency?.cSymbol + quote)}`"
 					>
 						<img
 							:src="`https://api-bitland.site/media/currency/${market?.currency?.cSymbol}.png`"
@@ -39,8 +37,12 @@
 							class="flex mr-1 items-center"
 							dir="ltr"
 						>
-							<span class="text-sm font-normal">{{ market?.currency?.cSymbol }}</span>/
-							<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
+							<span class="text-sm font-normal">{{
+								market?.currency?.cSymbol
+							}}</span>/
+							<span
+								class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark"
+							>
 								{{ quote }}
 							</span>
 						</div>

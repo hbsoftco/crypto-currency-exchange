@@ -115,29 +115,29 @@ import StopMarketTab from './StopMarketTab.vue';
 import IconArrowDown from '~/assets/svg-icons/menu/arrow-down.svg';
 import IconInfo from '~/assets/svg-icons/info-fill.svg';
 // import { MarketType } from '~/utils/enums/market.enum';
-import { assetRepository } from '~/repositories/asset.repository';
-import { BoxMode, MiniAssetMode } from '~/utils/enums/asset.enum';
-import type { GetAssetListParams } from '~/types/base.types';
+// import { assetRepository } from '~/repositories/asset.repository';
+// import { BoxMode, MiniAssetMode } from '~/utils/enums/asset.enum';
+// import type { GetAssetListParams } from '~/types/base.types';
 
-const { $api } = useNuxtApp();
-const assetRepo = assetRepository($api);
+// const { $api } = useNuxtApp();
+// const assetRepo = assetRepository($api);
 
 // const assetStore = useAssetStore();
 // const baseDataStore = useBaseDataStore();
 // const spotStore = useSpotStore();
 
-const getAssetsByCurrencies = async (currencies: string) => {
-	const params = ref<GetAssetListParams>({
-		pageSize: '1000',
-		assetType: useEnv('assetType'),
-		boxMode: String(BoxMode.Spot),
-		miniAssetMode: String(MiniAssetMode.Any),
-		currencyIDs: currencies,
-	});
+// const getAssetsByCurrencies = async (currencies: string) => {
+// 	const params = ref<GetAssetListParams>({
+// 		pageSize: '1000',
+// 		assetType: useEnv('assetType'),
+// 		boxMode: String(BoxMode.Spot),
+// 		miniAssetMode: String(MiniAssetMode.Any),
+// 		currencyIDs: currencies,
+// 	});
 
-	const { result } = await assetRepo.getAssetList(params.value);
-	console.log('result ---------------->', result);
-};
+// 	const { result } = await assetRepo.getAssetList(params.value);
+// 	console.log('result ---------------->', result);
+// };
 
 onMounted(() => {
 	// getAssetsByCurrencies('3,4');

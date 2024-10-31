@@ -72,15 +72,21 @@
 </template>
 
 <script setup lang="ts">
-import BuySellForm from '~/components/pages/Spot/BuySellForm/index.vue';
-import OrderBook from '~/components/pages/Spot/OrderBook/index.vue';
-import OrderFlow from '~/components/pages/Spot/OrderFlow/index.vue';
-import OrderTabs from '~/components/pages/Spot/OrderTabs/index.vue';
-import MarketOverview from '~/components/pages/Spot/MarketOverview.vue';
-import TradingPairDetails from '~/components/pages/Spot/TradingPairDetails.vue';
-// import BuySellFormTrade from '~/components/pages/Spot/BuySellFormTrade/index.vue';
-import Setting from '~/components/pages/Spot/Setting.vue';
+// import BuySellForm from '~/components/pages/Spot/BuySellForm/index.vue';
+// import OrderBook from '~/components/pages/Spot/OrderBook/index.vue';
+// import OrderFlow from '~/components/pages/Spot/OrderFlow/index.vue';
+// import OrderTabs from '~/components/pages/Spot/OrderTabs/index.vue';
+// import MarketOverview from '~/components/pages/Spot/MarketOverview.vue';
 import type { SpotDataParams } from '~/types/base.types';
+// import BuySellFormTrade from '~/components/pages/Spot/BuySellFormTrade/index.vue';
+
+const TradingPairDetails = defineAsyncComponent(() => import('~/components/pages/Spot/TradingPairDetails.vue'));
+const Setting = defineAsyncComponent(() => import('~/components/pages/Spot/Setting.vue'));
+const BuySellForm = defineAsyncComponent(() => import('~/components/pages/Spot/BuySellForm/index.vue'));
+const OrderBook = defineAsyncComponent(() => import('~/components/pages/Spot/OrderBook/index.vue'));
+const OrderFlow = defineAsyncComponent(() => import('~/components/pages/Spot/OrderFlow/index.vue'));
+const OrderTabs = defineAsyncComponent(() => import('~/components/pages/Spot/OrderTabs/index.vue'));
+const MarketOverview = defineAsyncComponent(() => import('~/components/pages/Spot/MarketOverview.vue'));
 
 definePageMeta({
 	layout: 'trade',
