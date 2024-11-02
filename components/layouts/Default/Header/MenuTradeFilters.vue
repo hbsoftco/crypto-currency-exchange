@@ -52,19 +52,32 @@
 import { useNumber } from '~/composables/useNumber';
 import type { Tag } from '~/types/response/tag.types';
 
-const baseDataStore = useBaseDataStore();
-const tagItems = computed(() => baseDataStore.tagItems);
-
-interface EmitDefinition {
-	(event: 'selectedTag', value: number): void;
+interface Props {
+	type: 'spot' | 'fast-trade';
 }
 
-const emit = defineEmits<EmitDefinition>();
+const props = defineProps<Props>();
+
+const headerMenuStore = useHeaderMenuStore();
+const baseDataStore = useBaseDataStore();
+const tagItems = computed(() => baseDataStore.tagItems);
 
 const selectedTagItem = ref();
 
 const selectTagItem = async (item: Tag) => {
 	selectedTagItem.value = item;
-	emit('selectedTag', item.id);
+
+	if (props.type === 'spot') {
+		headerMenuStore.spotParams.tagTypeId = String(item.id);
+		await headerMenuStore.getInitMarkets('spot');
+	}
+	else {
+		headerMenuStore.fastTradeParams.tagTypeId = String(item.id);
+		await headerMenuStore.getInitMarkets('fast-trade');
+	}
 };
+
+onMounted(() => {
+	selectedTagItem.value = tagItems.value[0];
+});
 </script>

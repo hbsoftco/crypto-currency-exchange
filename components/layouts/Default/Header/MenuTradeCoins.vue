@@ -1,7 +1,7 @@
 <template>
 	<div dir="rtl">
 		<div class="mb-2">
-			<MenuTradeFilters @selected-tag="selectedTag" />
+			<MenuTradeFilters :type="type" />
 		</div>
 		<div
 			v-if="!headerMenuStore.spotMarketItems.length"
@@ -79,14 +79,4 @@ interface Props {
 defineProps<Props>();
 
 const headerMenuStore = useHeaderMenuStore();
-
-interface EmitDefinition {
-	(event: 'selectedTag', value: number): void;
-}
-
-const emit = defineEmits<EmitDefinition>();
-
-const selectedTag = (event: number) => {
-	emit('selectedTag', event);
-};
 </script>

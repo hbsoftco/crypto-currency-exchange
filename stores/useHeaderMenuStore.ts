@@ -17,7 +17,7 @@ export const useHeaderMenuStore = defineStore('headerMenu', () => {
 	const fastTradeParams = ref({
 		currencyQuoteId: '1',
 		marketTypeId: String(MarketType.SPOT),
-		tagTypeId: '',
+		tagTypeId: '0',
 		searchStatement: '',
 		pageNumber: '1',
 		pageSize: '20',
@@ -26,7 +26,7 @@ export const useHeaderMenuStore = defineStore('headerMenu', () => {
 	const spotParams = ref({
 		currencyQuoteId: '1',
 		marketTypeId: String(MarketType.SPOT),
-		tagTypeId: '',
+		tagTypeId: '0',
 		searchStatement: '',
 		pageNumber: '1',
 		pageSize: '20',
@@ -41,11 +41,20 @@ export const useHeaderMenuStore = defineStore('headerMenu', () => {
 		pageSize: '20',
 	});
 
-	const getInitMarkets = async () => {
+	const getInitMarkets = async (type: 'spot' | 'fast-trade' = 'spot') => {
 		try {
 			initMarketsLoading.value = true;
 
-			const { result } = await marketRepo.getMarketListL16(fastTradeParams.value);
+			const params = ref(spotParams);
+			if (type === 'fast-trade') {
+				params.value = fastTradeParams.value;
+			}
+
+			if (params.value.tagTypeId === '0') {
+				params.value.tagTypeId = '';
+			}
+
+			const { result } = await marketRepo.getMarketListL16(params.value);
 			const items = await Promise.all(result.rows.map(async (market) => {
 				return {
 					...market,
