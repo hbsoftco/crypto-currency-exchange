@@ -21,11 +21,18 @@ type LinkListResult = {
 	links: Link[];
 };
 
+type FooterLinkSection = {
+	id: number;
+	title: string;
+	links: Link[];
+};
+
 type GetLinkListResponse = {
 	statusCode: number;
 	result: LinkListResult | null;
 };
 export type {
+	FooterLinkSection,
 	LinkListResult,
 	GetLinkListResponse,
 	Section,

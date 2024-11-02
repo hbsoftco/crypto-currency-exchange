@@ -28,31 +28,33 @@
 
 				<div class="col-span-12 md:col-span-7 mt-0 md:mt-4">
 					<div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-						<div
-							v-for="section in footerStore.linkList?.sections || []"
-							:key="section.id"
-						>
-							<span class="text-subtle-text-light dark:text-subtle-text-dark text-sm font-bold">
-								{{ section.info[0]?.title }}
-							</span>
+						<template v-if="!footerStore.footerLoading">
+							<div
+								v-for="section in footerStore.footerLinkSection || []"
+								:key="section.id"
+							>
+								<span class="text-subtle-text-light dark:text-subtle-text-dark text-sm font-bold">
+									{{ section?.title }}
+								</span>
 
-							<div class="mt-2">
-								<div v-if="section.info[0]?.title !== followUs">
-									<div
-										v-for="(link, index) in section.links"
-										:key="index"
-										class="text-sm font-medium pb-2"
-									>
-										<ULink
-											:to="link.url"
-											target="_blank"
+								<div class="mt-2">
+									<div>
+										<div
+											v-for="(link, index) in section.links"
+											:key="index"
+											class="text-sm font-medium pb-2"
 										>
-											{{ link.info[0]?.title }}
-										</ULink>
+											<ULink
+												:to="link.url"
+												target="_blank"
+											>
+												{{ link.info[0]?.title }}
+											</ULink>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
+						</template>
 
 						<div v-if="footerItems.length">
 							<h5
