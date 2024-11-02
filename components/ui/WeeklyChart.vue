@@ -24,7 +24,7 @@ const chartOptions = computed(() => ({
 	},
 	xAxis: {
 		type: 'category',
-		data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+		data: [],
 		show: false,
 	},
 	yAxis: {
@@ -41,8 +41,11 @@ const chartOptions = computed(() => ({
 				width: 2,
 			},
 			itemStyle: {
-				opacity: 0,
+				color: props.color === 'green' ? '#4CAF50' : '#FF4D4F',
+				opacity: 1,
 			},
+			symbol: 'circle',
+			symbolSize: 6,
 			areaStyle: {
 				color: {
 					type: 'linear',

@@ -62,7 +62,7 @@ const chartOptions = computed(() => ({
 	},
 	xAxis: {
 		type: 'category',
-		data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+		data: [],
 		show: false,
 	},
 	yAxis: {
