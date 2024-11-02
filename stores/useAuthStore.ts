@@ -54,6 +54,8 @@ export const useAuthStore = defineStore('auth', () => {
 		localStorage.removeItem('userSecretKey');
 		localStorage.removeItem('password');
 
+		stopRefreshInterval();
+
 		removeFromCache(CACHE_KEY_CURRENT_USER);
 
 		currentUser.value = [];

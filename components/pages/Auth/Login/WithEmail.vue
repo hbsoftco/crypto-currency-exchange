@@ -107,7 +107,7 @@ const submit = async () => {
 	}
 	catch (error) {
 		localLoading.value = false;
-		console.error('Failed:', error);
+		console.error('Failed in login:', error);
 	}
 };
 

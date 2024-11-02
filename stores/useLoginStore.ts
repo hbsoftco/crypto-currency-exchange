@@ -63,6 +63,7 @@ export const useLoginStore = defineStore('login', () => {
 	const loginByEmail = async () => {
 		try {
 			loginByEmailLoading.value = true;
+			loginByEmailIsValid.value = true;
 
 			const response = await authRepo.loginByEmail({
 				...loginByEmailDto.value,
@@ -97,6 +98,7 @@ export const useLoginStore = defineStore('login', () => {
 	const loginByMobile = async () => {
 		try {
 			loginByMobileLoading.value = true;
+			loginByMobileIsValid.value = true;
 
 			const response = await authRepo.loginByMobile({
 				...loginByMobileDto.value,

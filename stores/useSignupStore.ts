@@ -60,6 +60,7 @@ export const useSignupStore = defineStore('Signup', () => {
 	const signupByMobile = async () => {
 		try {
 			signupByMobileLoading.value = true;
+			signupByMobileIsValid.value = true;
 
 			const response = await authRepo.signupByMobile({
 				...signupByMobileDto.value,
@@ -93,6 +94,7 @@ export const useSignupStore = defineStore('Signup', () => {
 	const signupByEmail = async () => {
 		try {
 			signupByEmailLoading.value = true;
+			signupByEmailIsValid.value = true;
 
 			const response = await authRepo.signupByEmail({
 				...signupByEmailDto.value,
