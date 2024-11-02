@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<LayoutsDefaultHeader class="hidden md:block" />
+		<Header class="hidden md:block" />
 		<LayoutsDefaultMobileHeader class="block md:hidden" />
 		<div class="pb-10">
 			<slot />
@@ -12,6 +12,7 @@
 </template>
 
 <script setup lang="ts">
+import Header from '~/components/layouts/Default/Header.vue';
 import { Language } from '~/utils/enums/language.enum';
 
 const baseDataStore = useBaseDataStore();

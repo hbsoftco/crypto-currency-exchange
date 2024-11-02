@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<LayoutsAccountHeader class="hidden md:block" />
+		<Header class="hidden md:block" />
 		<!-- <LayoutsDefaultMobileHeader class="block md:hidden" /> -->
 
 		<div class="flex justify-start">
@@ -19,6 +19,7 @@
 </template>
 
 <script setup lang="ts">
+import Header from '~/components/layouts/Default/Header.vue';
 import ProfileMenu from '~/components/layouts/Account/ProfileMenu.vue';
 import { Language } from '~/utils/enums/language.enum';
 
