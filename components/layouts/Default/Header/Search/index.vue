@@ -13,9 +13,11 @@
 			]"
 		>
 			<input
+				v-model="search"
 				type="text"
 				class="w-full h-full outline-none pr-8 text-sm bg-primary-gray-light md:bg-background-light dark:bg-primary-gray-dark  md:dark:bg-background-dark "
 				:placeholder="$t('search')"
+				:trailing="false"
 				@focus="handleFocus"
 				@input="handleInput"
 			>
@@ -190,6 +192,6 @@ onBeforeUnmount(() => {
 });
 
 const gridItems = [1, 2, 3];
-</script>
 
-<style scoped></style>
+// let searchTimeout: ReturnType<typeof setTimeout> | null = null;
+</script>
