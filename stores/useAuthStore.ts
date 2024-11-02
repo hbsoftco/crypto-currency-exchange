@@ -9,9 +9,10 @@ import { removeFromCache } from '~/utils/indexeddb';
 export const useAuthStore = defineStore('auth', () => {
 	const router = useRouter();
 
-	const authStatus = ref(!!(localStorage.getItem('otc')
+	const authStatus = ref<boolean>((!!(localStorage.getItem('otc')
 		&& localStorage.getItem('userId')
-		&& localStorage.getItem('userSecretKey')));
+		&& localStorage.getItem('password')
+		&& localStorage.getItem('userSecretKey')) || false));
 
 	const setAuthCredentials = (_otc: string, _userId: number, _userSecretKey: number) => {
 		localStorage.setItem('otc', _otc);
@@ -23,8 +24,6 @@ export const useAuthStore = defineStore('auth', () => {
 
 	const setPassword = (_password: string) => {
 		localStorage.setItem('password', md5WithUtf16LE(_password));
-
-		authStatus.value = true;
 	};
 
 	const getAuthCredentials = () => {
