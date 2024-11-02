@@ -27,7 +27,10 @@
 							@mouseleave="delayedHideSubmenu(index)"
 						>
 							<div class="flex justify-between items-center w-full mx-3 p-2">
-								<ULink to="#" class="flex justify-between items-start w-full">
+								<ULink
+									to="#"
+									class="flex justify-between items-start w-full"
+								>
 									<div class="text-base ml-2">
 										<span class="text-base font-medium">{{ $t(item.name) }}</span>
 										<p class="text-xs font-normal text-subtle-text mt-2">

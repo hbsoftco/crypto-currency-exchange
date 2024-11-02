@@ -158,9 +158,10 @@
 import IconSearch from '~/assets/svg-icons/menu/search.svg';
 import IconArrowLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';
 
-const isFocused = ref(false);
-const showBox = ref(false);
-const showAdditionalBox = ref(false);
+const isFocused = ref<boolean>(false);
+const showBox = ref<boolean>(false);
+const showAdditionalBox = ref<boolean>(false);
+const search = ref<string>('');
 const container = ref<HTMLElement | null>(null);
 
 const handleFocus = () => {
