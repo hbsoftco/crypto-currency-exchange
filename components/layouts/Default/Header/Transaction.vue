@@ -1,8 +1,6 @@
 <template>
 	<div>
-		<div
-			class="flex group relative items-center space-x-2"
-		>
+		<div class="flex group relative items-center space-x-2">
 			<span
 				class="text-base ml-1 font-semibold cursor-pointer group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark duration-200 transition-all"
 			>
@@ -15,16 +13,18 @@
 				class="text-base hidden group-hover:block group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark hover:fill-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all"
 			/>
 			<div
-				class="absolute top-4 -right-10 mt-1 hidden group-hover:block p-6 opacity-0 group-hover:opacity-100 z-10"
+				class="absolute top-4 -right-10 mt-1 hidden group-hover:block p-6 z-10"
 			>
 				<div
-					class="w-72 hover:rounded-sm p-1 pl-0 bg-hover-light dark:bg-hover-dark shadow-lg rounded transition-opacity duration-200"
+					class="w-72 hover:rounded-sm p-1 pl-0 bg-hover-light dark:bg-hover-dark shadow-lg rounded"
 				>
 					<ul class="flex flex-col">
 						<li
 							v-for="(item, index) in menuItems"
 							:key="index"
 							class="relative group/item flex justify-between hover:bg-primary-gray-light dark:hover:bg-hover2-50 border-transparent border-r-[3px] hover:border-r-[3px] hover:border-r-primary-yellow-light hover:dark:border-r-[3px] dark:hover:border-r-primary-yellow-dark border-b-primary-gray-light dark:border-b-primary-gray-dark border-b last:border-b-0 duration-200 transition-all hover:rounded-r-md"
+							@mouseover="showSubmenu(index)"
+							@mouseleave="delayedHideSubmenu(index)"
 						>
 							<div class="flex justify-between items-center w-full mx-3 p-2">
 								<ULink
@@ -32,9 +32,7 @@
 									class="flex justify-between items-start w-full"
 								>
 									<div class="text-base ml-2">
-										<span class="text-base font-medium">{{
-											$t(item.name)
-										}}</span>
+										<span class="text-base font-medium">{{ $t(item.name) }}</span>
 										<p class="text-xs font-normal text-subtle-text mt-2">
 											{{ $t(item.description) }}
 										</p>
@@ -48,8 +46,8 @@
 
 							<!-- Submenu -->
 							<div
-								v-if="item.subItems"
-								class="absolute top-0 right-full hidden group-hover/item:block ml-2 shadow-lg overflow-hidden rounded z-10 transition-opacity duration-200 max-w-72 w-72"
+								v-if="item.hover && item.subItems"
+								class="absolute top-0 right-full ml-2 shadow-lg overflow-hidden rounded z-10 max-w-72 w-72"
 							>
 								<ul>
 									<SkipHydration>
@@ -71,7 +69,6 @@ import IconArrowUp from '~/assets/svg-icons/menu/arrow-up.svg';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
 
 const MenuTrade = defineAsyncComponent(() => import('~/components/layouts/Default/Header/MenuTrade.vue'));
-
 const { checkPathLink } = useLinkManager();
 
 const menuItems = ref([
@@ -82,6 +79,7 @@ const menuItems = ref([
 		ignore: true,
 		hover: false,
 		subItems: [{ name: 'Sub-item 1' }, { name: 'Sub-item 2' }],
+		timeout: null,
 	},
 	{
 		name: 'professionalDeal',
@@ -90,6 +88,7 @@ const menuItems = ref([
 		ignore: true,
 		hover: false,
 		subItems: [{ name: 'Sub-item 3' }, { name: 'Sub-item 4' }],
+		timeout: null,
 	},
 	{
 		name: 'listOrdersTransactions',
@@ -97,6 +96,7 @@ const menuItems = ref([
 		ignore: false,
 		hover: false,
 		link: '/spot/list',
+		timeout: null,
 	},
 	{
 		name: 'trialTransaction',
@@ -104,6 +104,18 @@ const menuItems = ref([
 		ignore: true,
 		hover: false,
 		link: '/spot/list',
+		timeout: null,
 	},
 ]);
+
+const showSubmenu = (index) => {
+	clearTimeout(menuItems.value[index].timeout);
+	menuItems.value[index].hover = true;
+};
+
+const delayedHideSubmenu = (index) => {
+	menuItems.value[index].timeout = setTimeout(() => {
+		menuItems.value[index].hover = false;
+	}, 500);
+};
 </script>

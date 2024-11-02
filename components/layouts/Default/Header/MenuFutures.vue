@@ -1,7 +1,7 @@
 <template>
 	<div class="bg-primary-gray-light dark:bg-hover2-50">
 		<UTabs
-			:items="items"
+			:items="quoteItems"
 			dir="ltr"
 			class="text-left"
 			:ui="{
@@ -24,13 +24,10 @@
 			<template #item="{ item }">
 				<div class="border-t border-t-primary-gray-light dark:border-t-primary-gray-dark p-2">
 					<div v-if="item.key === 'USDT'">
-						<MenuFutureCoins />
-					</div>
-					<div v-else-if="item.key === 'BTC'">
-						<MenuFutureCoins />
-					</div>
-					<div v-else-if="item.key === 'toman'">
-						<MenuFutureCoins />
+						<MenuFutureCoins
+							:type="type"
+							:quote="item.key"
+						/>
 					</div>
 				</div>
 			</template>
@@ -41,21 +38,21 @@
 <script setup lang="ts">
 import MenuFutureCoins from './MenuFuturesCoins.vue';
 
-const items = [
+interface Props {
+	type: 'futures';
+}
+
+defineProps<Props>();
+
+const quoteItems = ref<QuoteTab[]>([
 	{
 		key: 'USDT',
 		label: 'USDT',
-		content: 'This is the content shown for Tab1',
 	},
-	{
-		key: 'BTC',
-		label: 'BTC',
-		content: 'And, this is the content for Tab2',
-	},
-	{
-		key: 'toman',
-		label: 'toman',
-		content: 'And, this is the content for Tab2',
-	},
-];
+]);
+
+type QuoteTab = {
+	label: string;
+	key: string;
+};
 </script>

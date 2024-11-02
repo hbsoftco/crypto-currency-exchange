@@ -13,11 +13,11 @@
 						<img
 							src="/images/svg/brand-logo.svg"
 							alt="Brand Logo"
-							class="w-20 h-8"
+							class="w-24 h-10"
 						>
 					</ULink>
 
-					<ul class="flex items-center space-x-4 mr-8">
+					<ul class="flex items-center space-x-4">
 						<li class="flex items-center space-x-2">
 							<QuickAccessMenu />
 						</li>
@@ -37,9 +37,9 @@
 						<li>
 							<Transaction />
 						</li>
-						<!-- <li class="flex items-centers space-x-2">
+						<li class="flex items-centers space-x-2">
 							<Futures />
-						</li> -->
+						</li>
 						<li class="flex items-center">
 							<ULink
 								to="/account/rewards"
@@ -122,7 +122,7 @@ import SidebarSettingAction from '../Trade/SidebarSettingAction.vue';
 
 import Search from './Header/Search/index.vue';
 import Download from './Header/Download.vue';
-// import Futures from './Header/Futures.vue';
+import Futures from './Header/Futures.vue';
 import QuickAccessMenu from './Header/QuickAccessMenu.vue';
 import Setting from './Header/Setting.vue';
 import Transaction from './Header/Transaction.vue';
@@ -150,6 +150,7 @@ const handleScroll = () => {
 onMounted(() => {
 	window.addEventListener('scroll', handleScroll);
 	headerMenuStore.getInitMarkets();
+	headerMenuStore.getInitFuturesMarkets();
 });
 
 onUnmounted(() => {
