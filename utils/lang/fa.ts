@@ -1037,6 +1037,8 @@ const persian = {
 	loggedInSuccessfully: 'ورود با موفقیت انجام شد!',
 	invalidUsernameOrPassword: 'نام کاربری یا رمز ورود اشتباه است',
 	joinBitland: 'به بیت‌لند ملحق شوید !',
+	learnMoreAboutCoinData: 'درباره داده‌های سکه و روند قیمت بیشتر بدانید',
+
 };
 
 export default persian;

@@ -1,5 +1,7 @@
 import * as Comlink from 'comlink';
 
+import { useCurrencyWorker } from '../currency-worker/currency-worker-wrapper';
+
 import { loadFromCache } from '~/utils/indexeddb';
 import type { MarketBriefItem } from '~/types/response/brief-list.types';
 import { CACHE_KEY_MARKET_BRIEF_ITEMS } from '~/utils/constants/common';
@@ -8,6 +10,8 @@ let marketBriefItems: MarketBriefItem[] = [];
 
 const fetchMarketBriefItems = async () => {
 	const cachedItems = await loadFromCache<MarketBriefItem[]>(CACHE_KEY_MARKET_BRIEF_ITEMS);
+
+	console.log('cachedItems -----> form worker', 'marketBriefItems loaded');
 
 	if (cachedItems && cachedItems.length > 0) {
 		marketBriefItems = cachedItems;
@@ -49,8 +53,32 @@ const findMarketBymSymbol = async (mSymbol: string): Promise<MarketBriefItem | n
 	return currency || null;
 };
 
+const searchMarkets = async (search: string, count?: number): Promise<MarketBriefItem[] | []> => {
+	await fetchMarketBriefItems();
+
+	const filteredMarkets = marketBriefItems.filter(
+		(market) =>
+			market.mSymbol.toLowerCase().includes(search.toLowerCase()),
+	);
+
+	const result = filteredMarkets.length > 0 ? filteredMarkets.slice(0, count) : [];
+
+	const currencyWorker = useCurrencyWorker();
+	await currencyWorker.fetchCurrencyBriefItems();
+
+	const data: MarketBriefItem[] = await Promise.all(result.map(async (market) => {
+		return {
+			...market,
+			currencyBriefItem: await currencyWorker.findCurrencyById(Number(market.cbId)) || null,
+		};
+	}));
+
+	return data.length > 0 ? data.slice(0, count) : [];
+};
+
 Comlink.expose({
 	fetchMarketBriefItems,
 	findMarketById,
 	findMarketBymSymbol,
+	searchMarkets,
 });

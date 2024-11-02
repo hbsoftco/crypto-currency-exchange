@@ -9,6 +9,8 @@ let currencyBriefItems: CurrencyBriefItem[] = [];
 const fetchCurrencyBriefItems = async () => {
 	const cachedItems = await loadFromCache<CurrencyBriefItem[]>(CACHE_KEY_CURRENCY_BRIEF_ITEMS);
 
+	console.log('cachedItems -----> form worker', 'currencyBriefItems loaded');
+
 	if (cachedItems && cachedItems.length > 0) {
 		currencyBriefItems = cachedItems;
 	}
@@ -18,7 +20,9 @@ const fetchCurrencyBriefItems = async () => {
 };
 
 const findCurrencyById = async (id: number): Promise<CurrencyBriefItem | null> => {
-	await fetchCurrencyBriefItems();
+	if (!currencyBriefItems.length) {
+		await fetchCurrencyBriefItems();
+	}
 
 	let start = 0;
 	let end = currencyBriefItems.length - 1;
@@ -49,8 +53,21 @@ const findCurrencyBycSymbol = async (cSymbol: string): Promise<CurrencyBriefItem
 	return currency || null;
 };
 
+const searchCurrencies = async (search: string, count?: number): Promise<CurrencyBriefItem[] | null> => {
+	await fetchCurrencyBriefItems();
+
+	const filteredCurrencies = currencyBriefItems.filter(
+		(currency) =>
+			currency.cName.toLowerCase().includes(search.toLowerCase())
+			|| currency.cSymbol.toLowerCase().includes(search.toLowerCase()),
+	);
+
+	return filteredCurrencies.length > 0 ? filteredCurrencies.slice(0, count) : [];
+};
+
 Comlink.expose({
 	fetchCurrencyBriefItems,
 	findCurrencyById,
 	findCurrencyBycSymbol,
+	searchCurrencies,
 });

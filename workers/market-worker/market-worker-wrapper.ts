@@ -6,6 +6,7 @@ interface MarketWorker {
 	fetchMarketBriefItems: () => Promise<void>;
 	findMarketById: (id: number) => Promise<MarketBriefItem | null>;
 	findMarketBymSymbol: (mSymbol: string) => Promise<MarketBriefItem | null>;
+	searchMarkets: (search: string, count?: number) => Promise<MarketBriefItem[] | []>;
 }
 
 export const useMarketWorker = () => {

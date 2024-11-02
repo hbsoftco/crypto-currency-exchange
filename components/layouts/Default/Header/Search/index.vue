@@ -25,67 +25,6 @@
 		</div>
 
 		<div
-			v-if="showBox && !showAdditionalBox"
-			class="absolute left-0 md:-left-20 top-5 py-7 opacity-100 transition-opacity duration-200 z-10"
-		>
-			<div class="w-auto md:w-96 bg-hover-light dark:bg-hover-dark shadow-lg rounded p-2">
-				<div class="flex items-center mb-1">
-					<span class="text-sm font-bold ml-1">{{ $t("hotTopics") }}</span>
-					<img
-						src="/images/svg/fire.svg"
-						alt="fire Logo"
-						class="w-4 h-4"
-					>
-				</div>
-				<div class="flex justify-between">
-					<div
-						v-for="(item, index) in gridItems"
-						:key="index"
-						class="m-1"
-					>
-						<LayoutsDefaultHeaderSearchMarketGrid />
-					</div>
-				</div>
-
-				<div class="flex items-center mb-1 mt-3">
-					<span class="text-sm font-bold ml-1">{{ $t("newArrivals") }}</span>
-					<img
-						src="/images/svg/new-message.svg"
-						alt="message Logo"
-						class="w-4 h-4"
-					>
-				</div>
-				<div class="flex justify-between">
-					<div
-						v-for="(item, index) in gridItems"
-						:key="index"
-						class="m-1"
-					>
-						<LayoutsDefaultHeaderSearchMarketGrid />
-					</div>
-				</div>
-
-				<div class="flex items-center mb-1 mt-3">
-					<span class="text-sm font-bold ml-1">{{ $t("latestNews") }}</span>
-					<img
-						src="/images/svg/Analytics.svg"
-						alt="Analytics Logo"
-						class="w-4 h-4"
-					>
-				</div>
-				<div>
-					<div
-						v-for="(item, index) in gridItems"
-						:key="index"
-						class="m-1"
-					>
-						<LayoutsDefaultHeaderSearchNews />
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div
 			v-if="showAdditionalBox"
 			class="absolute left-0 md:-left-20 top-5 py-7 opacity-100 transition-opacity duration-200 z-20"
 		>
@@ -97,7 +36,7 @@
 						<span class="text-sm font-bold">{{ $t("transaction") }}</span>
 						<div>
 							<ULink
-								to="/"
+								to="/markets"
 								class="w-full text-right flex items-center"
 							>
 								<span
@@ -110,44 +49,31 @@
 						</div>
 					</div>
 					<div
-						v-for="(item, index) in gridItems"
-						:key="index"
+						v-for="market of marketsItems"
+						:key="market.id"
 						class="my-4"
 					>
-						<LayoutsDefaultHeaderSearchMarketRows />
+						<MarketItem
+							:market="market"
+						/>
 					</div>
 					<UButton
+						to="/markets"
 						class="flex justify-center w-full my-4 text-primary-yellow-light dark:text-primary-yellow-dark text-base hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-yellow"
 					>
 						{{ $t("showMore") }}
 					</UButton>
 				</div>
-				<div class="my-8">
-					<span class="text-sm font-bold">{{ $t("currencyInformation") }}</span>
-					<LayoutsDefaultHeaderSearchCurrencyInfo class="mt-1" />
-				</div>
-				<div class="flex items-center mb-1 mt-3">
-					<span class="text-sm font-bold ml-1">{{ $t("latestNews") }}</span>
-					<img
-						src="/images/svg/Analytics.svg"
-						alt="Analytics Logo"
-						class="w-4 h-4"
-					>
-				</div>
-				<div
-					v-for="(item, index) in gridItems"
-					:key="index"
-					class="m-1"
-				>
-					<LayoutsDefaultHeaderSearchNews />
-				</div>
-
-				<div class="mx-4">
-					<UButton
-						class="flex justify-center w-full my-4 text-primary-yellow-light dark:text-primary-yellow-dark text-base hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-yellow"
-					>
-						{{ $t("showMore") }}
-					</UButton>
+				<div class="mt-6">
+					<p class="text-sm font-bold mb-2">
+						{{ $t("currencyInformation") }}
+					</p>
+					<CurrencyItem
+						v-for="currency of currenciesItems"
+						:key="currency.id"
+						:currency="currency"
+						class="mt-1"
+					/>
 				</div>
 			</div>
 		</div>
@@ -157,6 +83,12 @@
 <script setup lang="ts">
 import IconSearch from '~/assets/svg-icons/menu/search.svg';
 import IconArrowLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';
+import { useCurrencyWorker } from '~/workers/currency-worker/currency-worker-wrapper';
+import type { CurrencyBriefItem, MarketBriefItem } from '~/types/response/brief-list.types';
+import { useMarketWorker } from '~/workers/market-worker/market-worker-wrapper';
+
+const CurrencyItem = defineAsyncComponent(() => import('~/components/layouts/Default/Header/Search/CurrencyItem.vue'));
+const MarketItem = defineAsyncComponent(() => import('~/components/layouts/Default/Header/Search/MarketItem.vue'));
 
 const isFocused = ref<boolean>(false);
 const showBox = ref<boolean>(false);
@@ -164,14 +96,29 @@ const showAdditionalBox = ref<boolean>(false);
 const search = ref<string>('');
 const container = ref<HTMLElement | null>(null);
 
+const currenciesItems = ref<CurrencyBriefItem[]>([]);
+const marketsItems = ref<MarketBriefItem[]>([]);
+
+const currencyWorker = useCurrencyWorker();
+await currencyWorker.fetchCurrencyBriefItems();
+
+const marketWorker = useMarketWorker();
+await marketWorker.fetchMarketBriefItems();
+
 const handleFocus = () => {
 	isFocused.value = true;
 	showBox.value = true;
 };
 
-const handleInput = (event: Event) => {
+const handleInput = async (event: Event) => {
 	const input = event.target as HTMLInputElement;
 	showBox.value = !input.value.length;
+
+	currenciesItems.value = await currencyWorker.searchCurrencies(search.value, 3);
+	marketsItems.value = await marketWorker.searchMarkets(search.value, 3);
+
+	console.log('marketsItems --------', marketsItems.value);
+
 	showAdditionalBox.value = input.value.length > 0;
 };
 
@@ -191,8 +138,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
 	document.removeEventListener('mousedown', handleClickOutside);
 });
-
-const gridItems = [1, 2, 3];
 
 // let searchTimeout: ReturnType<typeof setTimeout> | null = null;
 </script>

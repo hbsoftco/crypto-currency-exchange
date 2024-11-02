@@ -6,6 +6,7 @@ interface CurrencyWorker {
 	fetchCurrencyBriefItems: () => Promise<void>;
 	findCurrencyById: (id: number) => Promise<CurrencyBriefItem | null>;
 	findCurrencyBycSymbol: (mSymbol: string) => Promise<CurrencyBriefItem | null>;
+	searchCurrencies: (search: string, count?: number) => Promise<CurrencyBriefItem[] | []>;
 }
 
 export const useCurrencyWorker = () => {
