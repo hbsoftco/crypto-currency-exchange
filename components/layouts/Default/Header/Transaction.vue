@@ -52,7 +52,9 @@
 								class="absolute top-0 right-full hidden group-hover/item:block ml-2 shadow-lg overflow-hidden rounded z-10 transition-opacity duration-200 max-w-72 w-72"
 							>
 								<ul>
-									<MenuTrade :type="item.type" />
+									<SkipHydration>
+										<MenuTrade :type="item.type" />
+									</SkipHydration>
 								</ul>
 							</div>
 						</li>

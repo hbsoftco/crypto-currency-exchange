@@ -65,6 +65,7 @@
 	font-family: dana;
 	font-style: normal;
 	font-weight: 960;
+	font-display: swap;
 	src: url('../fonts/dana/woff2/Dana-Heavy.woff2') format('woff2'),  /* FF39+,Chrome36+, Opera24+*/
 		 url('../fonts/dana/woff/Dana-Heavy.woff') format('woff');  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
 }
@@ -72,6 +73,7 @@
 	font-family: dana;
 	font-style: normal;
 	font-weight: 990;
+	font-display: swap;
 	src: url('../fonts/dana/woff2/Dana-Fat.woff2') format('woff2'),  /* FF39+,Chrome36+, Opera24+*/
 		 url('../fonts/dana/woff/Dana-Fat.woff') format('woff');  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
 }
@@ -79,6 +81,7 @@
 	font-family: dana;
 	font-style: normal;
 	font-weight: bold;
+	font-display: swap;
 	src: url('../fonts/dana/woff2/Dana-ExtraBold.woff2') format('woff2'),  /* FF39+,Chrome36+, Opera24+*/
 		 url('../fonts/dana/woff/Dana-ExtraBold.woff') format('woff');  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
 }
@@ -86,6 +89,7 @@
 	font-family: dana;
 	font-style: normal;
 	font-weight: normal;
+	font-display: swap;
 	src: url('../fonts/dana/woff2/Dana-Regular.woff2') format('woff2'),  /* FF39+,Chrome36+, Opera24+*/
 		 url('../fonts/dana/woff/Dana-Regular.woff') format('woff');  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
 }

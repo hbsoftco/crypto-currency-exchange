@@ -35,9 +35,19 @@ export default defineNuxtConfig({
 		'@pinia/nuxt',
 		'nuxt-svgo',
 		'nuxt-echarts',
+		'nuxt-vitalizer',
 	],
 	pwa: {
 		/* PWA options */
+	},
+	vitalizer: {
+		disablePrefetchLinks: true,
+		disableStylesheets: 'entry',
+		delayHydration: {
+			hydrateOnEvents: ['mousemove', 'scroll', 'keydown'],
+			idleCallbackTimeout: 8000,
+			postIdleTimeout: 4000,
+		},
 	},
 	i18n: {
 		vueI18n: './i18n.config.ts',

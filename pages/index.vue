@@ -6,7 +6,9 @@
 		>
 			<ImageCover>
 				<UContainer>
-					<TopBanner />
+					<SkipHydration>
+						<TopBanner />
+					</SkipHydration>
 				</UContainer>
 			</ImageCover>
 		</section>
@@ -47,8 +49,9 @@
 
 		<section>
 			<UContainer>
-				<TradingMarkets />
-				<!-- <LazyPagesMainPageTradingMarkets /> -->
+				<SkipHydration>
+					<TradingMarkets />
+				</SkipHydration>
 			</UContainer>
 		</section>
 
@@ -57,27 +60,36 @@
 			class="hidden md:block"
 		>
 			<UContainer>
-				<Prize />
+				<SkipHydration>
+					<Prize />
+				</SkipHydration>
 			</UContainer>
 		</section>
 
 		<section>
-			<NewCurrencies />
-			<!-- <LazyPagesMainPageNewCurrencies /> -->
+			<SkipHydration>
+				<NewCurrencies />
+			</SkipHydration>
 		</section>
 
 		<section>
-			<WhyBitland class="hidden md:block" />
+			<SkipHydration>
+				<WhyBitland class="hidden md:block" />
+			</SkipHydration>
 		</section>
 
 		<section>
 			<UContainer>
-				<AlwaysBitland class="hidden md:block" />
+				<SkipHydration>
+					<AlwaysBitland class="hidden md:block" />
+				</SkipHydration>
 			</UContainer>
 		</section>
 
 		<section>
-			<DownloadApp class="hidden md:block" />
+			<SkipHydration>
+				<DownloadApp class="hidden md:block" />
+			</SkipHydration>
 		</section>
 
 		<section>

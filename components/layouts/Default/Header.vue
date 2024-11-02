@@ -1,7 +1,11 @@
 <template>
 	<div>
 		<div
-			class="w-full px-14 h-14 bg-primary-gray-light dark:bg-primary-gray-dark shadow-md relative z-10"
+			:class="[
+				'w-full px-14 h-14 bg-primary-gray-light dark:bg-primary-gray-dark shadow-md z-50 transition-transform duration-1000',
+				isFixed ? 'fixed top-0 left-0 translate-y-0' : 'relative',
+				shouldTranslate ? 'translate-y-0' : '-translate-y-full',
+			]"
 		>
 			<div class="flex justify-between items-center h-full">
 				<div class="flex justify-between">
@@ -127,10 +131,29 @@ import UserLogin from './Header/UserLogin/index.vue';
 const settingsStore = useSpotSettingsStore();
 
 const headerMenuStore = useHeaderMenuStore();
+const isFixed = ref(false);
+const shouldTranslate = ref(true);
 
-onMounted(async () => {
-	await headerMenuStore.getInitMarkets();
+const handleScroll = () => {
+	const currentScrollPosition = window.scrollY;
+
+	if (currentScrollPosition > 100) {
+		isFixed.value = true;
+		shouldTranslate.value = true;
+	}
+	else {
+		isFixed.value = false;
+		shouldTranslate.value = true;
+	}
+};
+
+onMounted(() => {
+	window.addEventListener('scroll', handleScroll);
+	headerMenuStore.getInitMarkets();
 });
 
+onUnmounted(() => {
+	window.removeEventListener('scroll', handleScroll);
+});
 // import Notif from '~/components/layouts/Default/Notif.vue';
 </script>
