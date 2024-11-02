@@ -68,16 +68,20 @@ export const useAuthStore = defineStore('auth', () => {
 			const result = getAuthCredentials();
 			if (result) {
 				const { otc, password, userId, userSecretKey } = result;
-				const systemTime = Date.now().toString();
-				const signature = md5WithUtf16LE(password + otc + systemTime).toUpperCase();
+				console.log('I am form generateToken', otc, password, userId, userSecretKey);
+				if (otc && password && userId && userSecretKey) {
+					const systemTime = Date.now().toString();
+					const signature = md5WithUtf16LE(password + otc + systemTime).toUpperCase();
 
-				return {
-					'Signature': signature,
-					'Request-Time': systemTime,
-					'Uid': String(userId),
-					'Usid': String(userSecretKey),
-					'Platform': 'User',
-				};
+					return {
+						'Signature': signature,
+						'Request-Time': systemTime,
+						'Uid': String(userId),
+						'Usid': String(userSecretKey),
+						'Platform': 'User',
+					};
+				}
+				return null;
 			}
 			return null;
 		}
@@ -97,7 +101,9 @@ export const useAuthStore = defineStore('auth', () => {
 			const authRepo = authRepository($api);
 
 			const { result: otc } = await authRepo.refreshOtc();
-			localStorage.setItem('otc', otc);
+			if (otc) {
+				localStorage.setItem('otc', otc);
+			}
 
 			authStatus.value = true;
 		}
