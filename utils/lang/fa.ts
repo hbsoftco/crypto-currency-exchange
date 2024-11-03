@@ -1037,6 +1037,7 @@ const persian = {
 	loggedInSuccessfully: 'ورود با موفقیت انجام شد!',
 	invalidUsernameOrPassword: 'نام کاربری یا رمز ورود اشتباه است',
 	joinBitland: 'به بیت‌لند ملحق شوید !',
+	changeTo: 'تبدیل به',
 };
 
 export default persian;

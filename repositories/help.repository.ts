@@ -3,7 +3,7 @@ import type { NitroFetchRequest, $Fetch } from 'nitropack';
 import type { GetCurrencyParams, GetFAQListParams, GetHowBuyListParams, getMiniRoutineParams, GetReasonListParams, GetRootListParams, GetSubjectLiveChatParams } from '~/types/base.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import type { GetMiniRoutineRes, KeyValueRes } from '~/types/response/common.types';
-import type { GetFaqRes, GetHowToBuyListResponse, GetLiveChatListResponse, GetRootListResponse, GetShortListResponse } from '~/types/response/help.types';
+import type { GetFaqRes, GetHowToBuyListResponse, GetLiveChatListResponse, GetRootListResponse, GetShortListResponse, GetTreeListRes } from '~/types/response/help.types';
 
 type HelpRepository = {
 	getRootList: (params: GetRootListParams) => Promise<GetRootListResponse>;
@@ -14,6 +14,7 @@ type HelpRepository = {
 	getHelpData: (params: GetCurrencyParams) => Promise<GetFaqRes>;
 	getReasonList: (params: GetReasonListParams) => Promise<KeyValueRes>;
 	getMiniRoutine: (params: getMiniRoutineParams) => Promise<GetMiniRoutineRes>;
+	getTreeList: (params: GetRootListParams) => Promise<GetTreeListRes>;
 };
 
 export const helpRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): HelpRepository => ({
@@ -130,6 +131,21 @@ export const helpRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): HelpR
 
 		const url = '/v1/routine/help/mini_routine';
 		const response = await fetch<GetMiniRoutineRes>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getTreeList(params: GetRootListParams): Promise<GetTreeListRes> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/routine/help/tree_list';
+		const response = await fetch<GetTreeListRes>(`${url}?${query.toString()}`, {
 			noAuth: false,
 			apiName: url,
 			method: 'GET',
