@@ -119,6 +119,21 @@ type GetFaqRes = {
 	result: FaqItem;
 };
 
+type TreeList = {
+	id: number;
+	parentId: number;
+	order: number;
+	header: string;
+};
+
+type GetTreeListRes = {
+	statusCode: number;
+	result: {
+		totalCount: number;
+		rows: TreeList[];
+	};
+};
+
 export type {
 	GetRootListResponse,
 	RootList,
@@ -132,4 +147,6 @@ export type {
 	FAQ,
 	GetFaqRes,
 	FaqItem,
+	TreeList,
+	GetTreeListRes,
 };
