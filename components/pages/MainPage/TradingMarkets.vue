@@ -94,7 +94,7 @@ const params = ref({
 	sortMode: String(SortMode.BY_MARKET_CAPS),
 	currencyQuoteId: '1',
 	marketTypeId: String(MarketType.SPOT),
-	tagTypeId: '1',
+	tagTypeId: '',
 });
 
 const marketData = ref<MarketListWithSparkLineChartItem[]>([]);

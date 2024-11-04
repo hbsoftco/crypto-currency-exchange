@@ -32,7 +32,10 @@ type MarketRepository = {
 
 export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): MarketRepository => ({
 	async getMarketListWithSparkLineChart({ sortMode = '', currencyQuoteId = '', marketTypeId, tagTypeId = '' }: GetMarketListWithSparkLineChartParams): Promise<MarketListWithSparkLineChartResponse> {
-		const query = new URLSearchParams({ sortMode, marketTypeId, currencyQuoteId, tagTypeId });
+		const query = new URLSearchParams(
+			Object.entries({ sortMode, marketTypeId, currencyQuoteId, tagTypeId })
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
 		const url = '/v1/market/routine/l21_f';
 		const response = fetch<MarketListWithSparkLineChartResponse>(`${url}?${query.toString()}`, {
 			noAuth: true,

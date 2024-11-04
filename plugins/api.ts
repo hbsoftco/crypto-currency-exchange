@@ -18,7 +18,17 @@ export default defineNuxtPlugin(() => {
 
 				const tokenHeaders = await authStore.generateToken();
 				if (tokenHeaders) {
-					options.headers = { ...options.headers, ...tokenHeaders };
+					options.headers = {
+						...options.headers,
+						...tokenHeaders,
+						'Cache-Control': 'no-store',
+					};
+				}
+				else {
+					options.headers = {
+						...options.headers,
+						'Cache-Control': 'no-store',
+					};
 				}
 			}
 			catch (error) {

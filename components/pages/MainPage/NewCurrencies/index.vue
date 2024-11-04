@@ -79,7 +79,7 @@ const params = ref({
 	sortMode: String(SortMode.BY_NEWEST_COINS),
 	currencyQuoteId: '3',
 	marketTypeId: String(MarketType.SPOT),
-	tagTypeId: '1',
+	tagTypeId: '',
 });
 
 const marketData = ref<MarketListWithSparkLineChartItem[]>();
