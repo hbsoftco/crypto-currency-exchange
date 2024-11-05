@@ -1,7 +1,10 @@
 <template>
 	<div dir="rtl">
 		<div class="mb-2">
-			<MenuTradeFilters @selected-tag="selectedTag" />
+			<MenuTradeFilters
+				:type="'spot'"
+				@selected-tag="selectedTag"
+			/>
 		</div>
 		<div
 			v-if="!headerMenuStore.futuresMarketItems.length"
@@ -24,8 +27,9 @@
 				>
 					<ULink
 						class="flex items-center justify-start"
-						:to="`/futures/${splitMarket(market?.currency?.cSymbol + quote)}`"
+						to=""
 					>
+						<!-- :to="`/futures/${splitMarket(market?.currency?.cSymbol + quote)}`" -->
 						<img
 							:src="`https://api-bitland.site/media/currency/${market?.currency?.cSymbol}.png`"
 							:alt="market?.currency?.cName"
@@ -68,7 +72,7 @@
 <script setup lang="ts">
 import MenuTradeFilters from './MenuTradeFilters.vue';
 
-import { splitMarket } from '~/utils/split-market';
+// import { splitMarket } from '~/utils/split-market';
 import ChangePrice from '~/components/ui/ChangePrice.vue';
 
 interface Props {

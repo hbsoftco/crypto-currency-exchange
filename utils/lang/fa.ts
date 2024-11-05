@@ -1040,6 +1040,8 @@ const persian = {
 	learnMoreAboutCoinData: 'درباره داده‌های سکه و روند قیمت بیشتر بدانید',
 	changeTo: 'تبدیل به',
 	bilandHelpCenter: 'مرکز راهنمایی بیت لند',
+	searchResultsFor: 'نتایج جستجو برای',
+	result: 'نتیجه',
 };
 
 export default persian;

@@ -10,19 +10,20 @@
 							>
 								{{ $t("helpCenter") }}
 							</h1>
-							<div class="p-0 md:p-4 bg-transparency-light dark:bg-transparency-dark w-full md:w-[40rem]">
+							<div class="p-0 md:p-4 bg-transparency-light dark:bg-transparency-dark w-full md:w-[40rem] rounded-md">
 								<p class="hidden md:block text-sm md:text-base font-medium">
 									{{ $t("helpCenterText") }}
 								</p>
 								<div class="w-full">
 									<SearchCrypto
-										id="phoneOrEmail"
-										v-model="phoneOrEmail"
+										id="searchInput"
+										v-model="searchInput"
 										type="text"
 										input-class="text-right"
 										label=""
 										:placeholder="$t('helpCenterSearch')"
 										icon="heroicons:magnifying-glass"
+										@keyup.enter="handleSearch"
 									/>
 								</div>
 							</div>
@@ -40,16 +41,17 @@
 		<section>
 			<UContainer>
 				<div class="my-24">
-					<div class="bg-primary-gray-light dark:bg-primary-gray-dark px-12 py-4">
+					<div class="bg-primary-gray-light dark:bg-primary-gray-dark px-12 py-4 rounded-md">
 						<h2 class="text-2xl font-bold">
 							{{ $t('essentialAccess') }}
 						</h2>
 					</div>
 
 					<div class="grid grid-col-3 md:grid-cols-6 gap-4 my-4">
-						<div
+						<ULink
 							v-for="(item, index) in shortList"
 							:key="index"
+							:to="`help-center/${item.id}`"
 							class="flex flex-col justify-center items-center py-4 px-4 border border-primary-gray-light dark:border-primary-gray-dark rounded-md"
 						>
 							<img
@@ -60,7 +62,7 @@
 							<p class="text-sm font-bold mt-4">
 								{{ item.info.header }}
 							</p>
-						</div>
+						</ULink>
 					</div>
 				</div>
 			</UContainer>
@@ -69,7 +71,7 @@
 		<section>
 			<UContainer>
 				<div class="my-24">
-					<div class="flex justify-between items-center bg-primary-gray-light dark:bg-primary-gray-dark px-12">
+					<div class="flex justify-between items-center bg-primary-gray-light dark:bg-primary-gray-dark px-12 rounded-md">
 						<h2 class="text-2xl font-bold">
 							{{ $t('educationCenter') }}
 						</h2>
@@ -105,7 +107,7 @@
 		<section>
 			<UContainer>
 				<div class="my-24">
-					<div class="flex justify-between items-center bg-primary-gray-light dark:bg-primary-gray-dark px-12">
+					<div class="flex justify-between items-center bg-primary-gray-light dark:bg-primary-gray-dark px-12 rounded-md">
 						<h2 class="text-2xl font-bold">
 							{{ $t('popularArticles') }}
 						</h2>
@@ -171,6 +173,9 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
+import { useRouter } from 'vue-router'; // Import useRouter
+
 import SearchCrypto from '~/components/forms/SearchCrypto.vue';
 import IconInstagram from '~/assets/svg-icons/social/instagram.svg';
 import IconTelegram from '~/assets/svg-icons/social/telegram.svg';
@@ -182,7 +187,8 @@ import type { GetRootListParams } from '~/types/base.types';
 import type { RootList, ShortList } from '~/types/response/help.types';
 import ImageCover from '~/components/pages/ImageCover.vue';
 
-const phoneOrEmail = ref('');
+const searchInput = ref('');
+const router = useRouter(); // Initialize router
 
 const { $api } = useNuxtApp();
 const helpRepo = helpRepository($api);
@@ -191,10 +197,21 @@ const params = ref<GetRootListParams>({
 	group: '',
 });
 const response = await helpRepo.getRootList(params.value);
-
 const helpList = ref<RootList[]>(response.result.rows);
 
 const responseShort = await helpRepo.getShortList(params.value);
-
 const shortList = ref<ShortList[]>(responseShort.result.rows);
+
+// Function to handle search
+const handleSearch = () => {
+	try {
+		if (searchInput.value.trim() !== '') {
+			router.push({ path: '/help-center/search', query: { q: searchInput.value } });
+			// router.push({ name: '/help-center/search', query: { q: searchInput.value } }); // Navigate to the search page with query
+		}
+	}
+	catch (error) {
+		console.log(error);
+	}
+};
 </script>
