@@ -2,9 +2,8 @@ import { defineStore } from 'pinia';
 import md5 from 'md5';
 
 import { marketRepository } from '~/repositories/market.repository';
-import type { MarketListWithSparkLineChartItem, MarketListWithSparkLineChartResponse } from '~/types/response/market.types';
-import type { GetMarketListWithSparkLineChartParams } from '~/types/base.types';
 import { Language } from '~/utils/enums/language.enum';
+import type { MarketL21, MarketsL21Params, MarketsL21Response } from '~/types/definitions/market.types';
 
 export const useMarketStore = defineStore('market', () => {
 	const { $api } = useNuxtApp();
@@ -12,12 +11,12 @@ export const useMarketStore = defineStore('market', () => {
 
 	const baseDataStore = useBaseDataStore();
 
-	const marketList = ref<MarketListWithSparkLineChartItem[]>([]);
+	const marketList = ref<MarketL21[]>([]);
 	const isMarketListLoading = ref(false);
 	const isMarketListFetched = ref(false);
 	const lastParamsHash = ref('');
 
-	const fetchMarketListWithSparkLineChart = async (params: GetMarketListWithSparkLineChartParams) => {
+	const fetchMarketListWithSparkLineChart = async (params: MarketsL21Params) => {
 		const currentParamsHash = md5(JSON.stringify(params));
 		if (isMarketListLoading.value && lastParamsHash.value === currentParamsHash) return;
 
@@ -25,7 +24,7 @@ export const useMarketStore = defineStore('market', () => {
 		lastParamsHash.value = currentParamsHash;
 
 		try {
-			const response: MarketListWithSparkLineChartResponse = await api.getMarketListWithSparkLineChart(params);
+			const response: MarketsL21Response = await api.getMarketListL21(params);
 			marketList.value = response.result.rows.map((item) => ({
 				...item,
 				sparklineChart: JSON.parse(String(item.sparklineChart)),

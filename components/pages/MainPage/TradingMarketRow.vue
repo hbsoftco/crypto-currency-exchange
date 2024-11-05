@@ -7,8 +7,8 @@
 	>
 		<td class="py-2 px-0 md:px-2 flex justify-start items-center space-x-2 max-w-36 w-36 md:max-w-80 md:w-80">
 			<TradingAction
-				v-if="localRow.marketBriefItem"
-				:coin="localRow.marketBriefItem"
+				v-if="localRow"
+				:market="localRow"
 				:is-hovered="isHovered"
 			/>
 		</td>
@@ -41,12 +41,12 @@ import TradingAction from '~/components/ui/TradingAction.vue';
 import WeeklyChart from '~/components/ui/WeeklyChart.vue';
 import { useNumber } from '~/composables/useNumber';
 import { priceFormat } from '~/utils/price-format';
-import type { MarketListWithSparkLineChartItem } from '~/types/response/market.types';
 import type { SocketSpotData } from '~/types/socket.types';
+import type { MarketL21 } from '~/types/definitions/market.types';
 
 const isHovered = ref(false);
 interface Props {
-	row: MarketListWithSparkLineChartItem;
+	row: MarketL21;
 	socketData: SocketSpotData | null;
 }
 

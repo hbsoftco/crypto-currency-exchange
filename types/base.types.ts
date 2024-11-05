@@ -18,23 +18,6 @@ type GetStaffParams = {
 	profileTypeId: string;
 };
 
-type GetMarketListWithSparkLineChartParams = {
-	sortMode?: string;
-	currencyQuoteId?: string;
-	marketTypeId: string;
-	tagTypeId?: string;
-};
-
-type GetMarketsParams = {
-	sortMode?: string;
-	currencyQuoteId?: string;
-	marketTypeId: string;
-	tagTypeId?: string;
-	searchStatement?: string;
-	pageNumber?: string;
-	pageSize?: string;
-};
-
 type getTradesListParams = {
 	marketId?: string;
 	symbol?: string;
@@ -391,9 +374,7 @@ export type {
 	GetRootListParams,
 	GetLanguageParams,
 	GetCurrencyParams,
-	GetMarketsParams,
 	GetUserTraderCommissionListParams,
-	GetMarketListWithSparkLineChartParams,
 	GetMarketStatusParams,
 	getTradesListParams,
 	GetMarketListByCategoryParams,

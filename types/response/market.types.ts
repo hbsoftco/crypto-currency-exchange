@@ -1,22 +1,5 @@
 import type { CurrencyBriefItem, MarketBriefItem } from './brief-list.types';
 
-type MarketListWithSparkLineChartResponse = {
-	statusCode: number;
-	result: {
-		totalCount: number;
-		rows: MarketListWithSparkLineChartItem[];
-	};
-};
-
-type MarketListWithSparkLineChartItem = {
-	cid: number;
-	id: number;
-	indexPrice: string;
-	priceChangePercIn24H: string;
-	sparklineChart: number[];
-	marketBriefItem?: MarketBriefItem | null;
-};
-
 type MarketStateResponse = {
 	statusCode: number;
 	result: {
@@ -134,29 +117,7 @@ type MarketListResponse = {
 	};
 };
 
-type MarketsL16Response = {
-	statusCode: number;
-	result: {
-		totalCount: number;
-		rows: MarketL16[];
-	};
-};
-
-type MarketL16 = {
-	id: number;
-	cid: number;
-	indexPrice: string;
-	priceChangePercIn24H: string;
-	marketBriefItem?: MarketBriefItem | null;
-	currency: CurrencyBriefItem | null;
-	market: MarketBriefItem | null;
-};
-
 export type {
-	MarketsL16Response,
-	MarketL16,
-	MarketListWithSparkLineChartResponse,
-	MarketListWithSparkLineChartItem,
 	MarketStateResponse,
 	MarketState,
 	Market,

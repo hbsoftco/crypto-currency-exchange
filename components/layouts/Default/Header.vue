@@ -120,19 +120,14 @@
 <script setup lang="ts">
 import SidebarSettingAction from '../Trade/SidebarSettingAction.vue';
 
-import Futures from './Header/Futures.vue';
 import Search from './Header/Search/index.vue';
-// import Download from './Header/Download.vue';
-// import QuickAccessMenu from './Header/QuickAccessMenu.vue';
-// import Setting from './Header/Setting.vue';
-// import Transaction from './Header/Transaction.vue';
-// import UserLogin from './Header/UserLogin/index.vue';
 
-const UserLogin = defineAsyncComponent(() => import('../Default/Header/UserLogin/index.vue'));
-const Download = defineAsyncComponent(() => import('../Default/Header/Download.vue'));
-const Setting = defineAsyncComponent(() => import('../Default/Header/Setting.vue'));
-const QuickAccessMenu = defineAsyncComponent(() => import('../Default/Header/QuickAccessMenu.vue'));
-const Transaction = defineAsyncComponent(() => import('../Default/Header/Transaction.vue'));
+const UserLogin = defineAsyncComponent(() => import('~/components/layouts/Default/Header/UserLogin/index.vue'));
+const Download = defineAsyncComponent(() => import('~/components/layouts/Default/Header/Download.vue'));
+const Setting = defineAsyncComponent(() => import('~/components/layouts/Default/Header/Setting.vue'));
+const QuickAccessMenu = defineAsyncComponent(() => import('~/components/layouts/Default/Header/QuickAccessMenu.vue'));
+const Transaction = defineAsyncComponent(() => import('~/components/layouts/Default/Header/Transaction.vue'));
+const Futures = defineAsyncComponent(() => import('~/components/layouts/Default/Header/Futures.vue'));
 
 const settingsStore = useSpotSettingsStore();
 

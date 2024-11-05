@@ -27,7 +27,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<template v-if="marketStore.isMarketListLoading && !marketData?.length">
+					<template v-if="marketsLoading">
 						<tr
 							v-for="n in 6"
 							:key="n"
@@ -63,7 +63,7 @@
 					</template>
 
 					<TradingMarketRow
-						v-for="(row, index) in marketData || []"
+						v-for="(row, index) in markets || []"
 						v-else
 						:key="row.id || index"
 						:row="row"
@@ -83,12 +83,17 @@
 <script setup lang="ts">
 import TradingMarketsHeader from '~/components/pages/MainPage/TradingMarketsHeader.vue';
 import TradingMarketRow from '~/components/pages/MainPage/TradingMarketRow.vue';
-import type { ErrorResponse } from '~/types/response/error.type';
-import type { MarketListWithSparkLineChartItem } from '~/types/response/market.types';
 import { MarketType, SortMode } from '~/utils/enums/market.enum';
+import type { MarketL21 } from '~/types/definitions/market.types';
+import { marketRepository } from '~/repositories/market.repository';
+import { useCurrencyWorker } from '~/workers/currency-worker/currency-worker-wrapper';
 
-const marketStore = useMarketStore();
+const { $api } = useNuxtApp();
+const marketRepo = marketRepository($api);
+
 const publicSocketStore = usePublicSocketStore();
+
+const currencyWorker = useCurrencyWorker();
 
 const params = ref({
 	sortMode: String(SortMode.BY_MARKET_CAPS),
@@ -96,44 +101,45 @@ const params = ref({
 	marketTypeId: String(MarketType.SPOT),
 	tagTypeId: '',
 });
+const marketIdParams = ref<string>('');
 
-const marketData = ref<MarketListWithSparkLineChartItem[]>([]);
+const markets = ref<MarketL21[]>([]);
+const marketsLoading = ref<boolean>(false);
+const getMarketListL21 = async () => {
+	try {
+		marketsLoading.value = true;
+		const { result } = await marketRepo.getMarketListL21(params.value);
+
+		markets.value = await currencyWorker.addCurrencyToMarkets(result.rows, Number(params.value.currencyQuoteId));
+
+		marketIdParams.value = markets.value.map((item) => item.id).join(',');
+		publicSocketStore.refreshSocketRequest(marketIdParams.value, 'main');
+
+		console.log('PPPPP', markets.value);
+
+		marketsLoading.value = false;
+	}
+	catch (error: unknown) {
+		console.log(error);
+	}
+};
+
+onMounted(async () => {
+	await getMarketListL21();
+});
 
 const updateFilter = async (selectedValue: SortMode) => {
 	params.value.sortMode = String(selectedValue);
-	await fetchMarketData();
+	await getMarketListL21();
 };
 
 const updateTag = async (selectedValue: SortMode) => {
 	params.value.tagTypeId = String(selectedValue);
-	await fetchMarketData();
+	await getMarketListL21();
 };
 
 const updateCurrency = async (selectedId: string) => {
 	params.value.currencyQuoteId = selectedId;
-	await fetchMarketData();
+	await getMarketListL21();
 };
-
-const fetchMarketData = async () => {
-	try {
-		const response = await marketStore.fetchMarketListWithSparkLineChart(params.value);
-		marketData.value = response || [];
-
-		marketIdParams.value = marketData.value.map((item) => item.id).join(',');
-		publicSocketStore.refreshSocketRequest(marketIdParams.value, 'main');
-	}
-	catch (error: unknown) {
-		const err = error as ErrorResponse;
-		throw createError({
-			statusCode: 500,
-			statusMessage: `${err.response._data.message}`,
-		});
-	}
-};
-
-const marketIdParams = ref<string>('');
-
-onMounted(async () => {
-	await fetchMarketData();
-});
 </script>

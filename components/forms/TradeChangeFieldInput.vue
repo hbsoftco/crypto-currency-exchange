@@ -86,7 +86,7 @@
 
 <script setup lang="ts">
 import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
-import { Language } from '~/utils/enums/language.enum';
+import { useCurrencyWorker } from '~/workers/currency-worker/currency-worker-wrapper';
 
 interface Props {
 	id: string;
@@ -113,42 +113,30 @@ interface EmitDefinition {
 const props = defineProps<Props>();
 const emit = defineEmits<EmitDefinition>();
 
+const currencyWorker = useCurrencyWorker();
+await currencyWorker.fetchCurrencyBriefItems();
+
 const internalValue = ref(props.modelValue || '');
 const loading = ref(false);
 const selected = ref<CurrencyBriefItem>(props.currencies[0]);
 const filteredCurrencies = ref<CurrencyBriefItem[]>(props.currencies);
 
-const baseDataStore = useBaseDataStore();
-
-const currencyMap = new Map<number, CurrencyBriefItem>();
-
 onMounted(async () => {
-	await baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
-
-	baseDataStore.currencyBriefItems.forEach((currency) => {
-		currencyMap.set(currency.id, currency);
-	});
-
-	filteredCurrencies.value = baseDataStore.currencyBriefItems.slice(0, 200);
+	filteredCurrencies.value = await currencyWorker.searchCurrencies('', 400);
 
 	if (props.defaultSelected) {
 		selected.value = props.defaultSelected;
 	}
 });
 
-const search = (q: string) => {
+const search = async (q: string) => {
 	loading.value = true;
 
 	if (!q) {
-		filteredCurrencies.value = Array.from(currencyMap.values()).slice(0, 200);
+		filteredCurrencies.value = await currencyWorker.searchCurrencies('', 400);
 	}
 	else {
-		const results = Array.from(currencyMap.values()).filter((currency) =>
-			currency.cName.toLowerCase().includes(q.toLowerCase())
-			|| currency.cSymbol.toLowerCase().includes(q.toLowerCase()),
-		);
-
-		filteredCurrencies.value = results;
+		filteredCurrencies.value = await currencyWorker.searchCurrencies(q.toLowerCase(), 200);
 	}
 	loading.value = false;
 	return filteredCurrencies.value;

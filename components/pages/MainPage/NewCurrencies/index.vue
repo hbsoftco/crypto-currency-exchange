@@ -5,7 +5,7 @@
 		</h3>
 
 		<div
-			v-if="marketData?.length"
+			v-if="markets?.length"
 			class="currency-row overflow-hidden"
 		>
 			<div
@@ -13,46 +13,46 @@
 				dir="ltr"
 			>
 				<Currency
-					v-for="(item, index) in [...marketData]"
+					v-for="(item, index) in [...markets]"
 					:key="`top-${index}`"
-					:currency="item"
+					:market="item"
 					:data="item"
 				/>
 				<Currency
-					v-for="(item, index) in [...marketData]"
+					v-for="(item, index) in [...markets]"
 					:key="`top-duplicate-${index}`"
-					:currency="item"
+					:market="item"
 					:data="item"
 				/>
 				<Currency
-					v-for="(item, index) in [...marketData]"
+					v-for="(item, index) in [...markets]"
 					:key="`top2-duplicate-${index}`"
-					:currency="item"
+					:market="item"
 					:data="item"
 				/>
 			</div>
 		</div>
 		<div
-			v-if="marketData?.length"
+			v-if="markets?.length"
 			class="currency-row overflow-hidden mt-4"
 		>
 			<div class="flex gap-4 animate-move-right">
 				<Currency
-					v-for="(item, index) in [...marketData]"
+					v-for="(item, index) in [...markets]"
 					:key="`bottom-${index}`"
-					:currency="item"
+					:market="item"
 					:data="item"
 				/>
 				<Currency
-					v-for="(item, index) in [...marketData]"
+					v-for="(item, index) in [...markets]"
 					:key="`bottom-duplicate-${index}`"
-					:currency="item"
+					:market="item"
 					:data="item"
 				/>
 				<Currency
-					v-for="(item, index) in [...marketData]"
+					v-for="(item, index) in [...markets]"
 					:key="`bottom2-duplicate-${index}`"
-					:currency="item"
+					:market="item"
 					:data="item"
 				/>
 			</div>
@@ -69,11 +69,15 @@
 <script setup lang="ts">
 import Currency from './Currency.vue';
 
-import type { MarketListWithSparkLineChartItem } from '~/types/response/market.types';
-import type { ErrorResponse } from '~/types/response/error.type';
+import { marketRepository } from '~/repositories/market.repository';
+import type { MarketL21 } from '~/types/definitions/market.types';
 import { MarketType, SortMode } from '~/utils/enums/market.enum';
+import { useCurrencyWorker } from '~/workers/currency-worker/currency-worker-wrapper';
 
-const marketStore = useMarketStore();
+const { $api } = useNuxtApp();
+const marketRepo = marketRepository($api);
+
+const currencyWorker = useCurrencyWorker();
 
 const params = ref({
 	sortMode: String(SortMode.BY_NEWEST_COINS),
@@ -82,21 +86,52 @@ const params = ref({
 	tagTypeId: '',
 });
 
-const marketData = ref<MarketListWithSparkLineChartItem[]>();
-
-onMounted(async () => {
+const markets = ref<MarketL21[]>([]);
+const marketsLoading = ref<boolean>(false);
+const getMarketListL21 = async () => {
 	try {
-		const response = await marketStore.fetchMarketListWithSparkLineChart(params.value);
-		marketData.value = response;
+		marketsLoading.value = true;
+		const { result } = await marketRepo.getMarketListL21(params.value);
+
+		markets.value = await currencyWorker.addCurrencyToMarkets(result.rows, Number(params.value.currencyQuoteId));
+
+		console.log('Currency', markets.value);
+
+		marketsLoading.value = false;
 	}
 	catch (error: unknown) {
-		const err = error as ErrorResponse;
-		throw createError({
-			statusCode: 500,
-			statusMessage: `${err.response._data.message}`,
-		});
+		console.log(error);
 	}
+};
+
+onMounted(async () => {
+	await getMarketListL21();
 });
+
+// const marketStore = useMarketStore();
+
+// const params = ref({
+// 	sortMode: String(SortMode.BY_NEWEST_COINS),
+// 	currencyQuoteId: '3',
+// 	marketTypeId: String(MarketType.SPOT),
+// 	tagTypeId: '',
+// });
+
+// const marketData = ref<MarketL21[]>();
+
+// onMounted(async () => {
+// 	try {
+// 		const response = await marketStore.fetchMarketListWithSparkLineChart(params.value);
+// 		marketData.value = response;
+// 	}
+// 	catch (error: unknown) {
+// 		const err = error as ErrorResponse;
+// 		throw createError({
+// 			statusCode: 500,
+// 			statusMessage: `${err.response._data.message}`,
+// 		});
+// 	}
+// });
 </script>
 
 <style scoped>

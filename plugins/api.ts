@@ -11,23 +11,18 @@ export default defineNuxtPlugin(() => {
 	const api = $fetch.create({
 		baseURL,
 		retry: 1,
+		cache: 'no-store',
 		retryStatusCodes: [StatusCodes.OTC_EXPIRED.fa],
 		async onRequest({ options }: CustomFetchContext<unknown>) {
 			try {
 				if (options.noAuth !== false) return;
 
+				options.headers = { ...options.headers };
 				const tokenHeaders = await authStore.generateToken();
 				if (tokenHeaders) {
 					options.headers = {
 						...options.headers,
 						...tokenHeaders,
-						'Cache-Control': 'no-store',
-					};
-				}
-				else {
-					options.headers = {
-						...options.headers,
-						'Cache-Control': 'no-store',
 					};
 				}
 			}
