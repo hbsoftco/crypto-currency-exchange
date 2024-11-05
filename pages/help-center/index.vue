@@ -58,7 +58,7 @@
 								class="w-12 h-12"
 							>
 							<p class="text-sm font-bold mt-4">
-								{{ $t(item.info.header) }}
+								{{ item.info.header }}
 							</p>
 						</div>
 					</div>
@@ -94,8 +94,7 @@
 								class="w-5 h-5"
 							>
 							<p class="text-sm font-medium mr-3">
-								{{ $t(item.info.header) }}
-								<!-- {{ $t(item.info.content) }} -->
+								{{ item.info.header }}
 							</p>
 						</ULink>
 					</div>
@@ -194,10 +193,8 @@ const params = ref<GetRootListParams>({
 const response = await helpRepo.getRootList(params.value);
 
 const helpList = ref<RootList[]>(response.result.rows);
-console.log(helpList);
 
 const responseShort = await helpRepo.getShortList(params.value);
 
 const shortList = ref<ShortList[]>(responseShort.result.rows);
-console.log(shortList);
 </script>

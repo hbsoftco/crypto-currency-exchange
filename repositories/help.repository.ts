@@ -3,7 +3,7 @@ import type { NitroFetchRequest, $Fetch } from 'nitropack';
 import type { GetCurrencyParams, GetFAQListParams, GetHowBuyListParams, getMiniRoutineParams, GetReasonListParams, GetRootListParams, GetSubjectLiveChatParams } from '~/types/base.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import type { GetMiniRoutineRes, KeyValueRes } from '~/types/response/common.types';
-import type { GetFaqRes, GetHowToBuyListResponse, GetLiveChatListResponse, GetRootListResponse, GetShortListResponse, GetTreeListRes } from '~/types/response/help.types';
+import type { GetFaqRes, GetHowToBuyListResponse, GetLiveChatListResponse, GetRootListResponse, GetSearchListResponse, GetShortListResponse, GetTreeListRes } from '~/types/response/help.types';
 
 type HelpRepository = {
 	getRootList: (params: GetRootListParams) => Promise<GetRootListResponse>;
@@ -15,6 +15,7 @@ type HelpRepository = {
 	getReasonList: (params: GetReasonListParams) => Promise<KeyValueRes>;
 	getMiniRoutine: (params: getMiniRoutineParams) => Promise<GetMiniRoutineRes>;
 	getTreeList: (params: GetRootListParams) => Promise<GetTreeListRes>;
+	getSearchList: (params: GetFAQListParams) => Promise<GetSearchListResponse>;
 };
 
 export const helpRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): HelpRepository => ({
@@ -146,7 +147,23 @@ export const helpRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): HelpR
 
 		const url = '/v1/routine/help/tree_list';
 		const response = await fetch<GetTreeListRes>(`${url}?${query.toString()}`, {
-			noAuth: false,
+			noAuth: true,
+			apiName: url,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+
+	async getSearchList(params: GetFAQListParams): Promise<GetSearchListResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/routine/help/search_list';
+		const response = await fetch<GetSearchListResponse>(`${url}?${query.toString()}`, {
+			noAuth: true,
 			apiName: url,
 			method: 'GET',
 		} as CustomNitroFetchOptions);

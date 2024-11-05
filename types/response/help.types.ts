@@ -134,6 +134,35 @@ type GetTreeListRes = {
 	};
 };
 
+type ApiTag = {
+	key: number;
+	value: string;
+};
+
+type ApiInfo = {
+	langId: number;
+	header: string;
+	content: string;
+};
+
+type SearchItem = {
+	cid: number;
+	id: number;
+	typeId: number;
+	mediaId: number;
+	mediaUrl: string;
+	tags: ApiTag[];
+	info: ApiInfo[];
+};
+
+type GetSearchListResponse = {
+	statusCode: number;
+	result: {
+		totalCount: number;
+		rows: SearchItem[];
+	};
+};
+
 export type {
 	GetRootListResponse,
 	RootList,
@@ -149,4 +178,6 @@ export type {
 	FaqItem,
 	TreeList,
 	GetTreeListRes,
+	GetSearchListResponse,
+	SearchItem,
 };
