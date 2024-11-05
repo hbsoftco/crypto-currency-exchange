@@ -86,7 +86,7 @@
 
 <script setup lang="ts">
 import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
-import { useCurrencyWorker } from '~/workers/currency-worker/currency-worker-wrapper';
+import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 
 interface Props {
 	id: string;
@@ -113,8 +113,8 @@ interface EmitDefinition {
 const props = defineProps<Props>();
 const emit = defineEmits<EmitDefinition>();
 
-const currencyWorker = useCurrencyWorker();
-await currencyWorker.fetchCurrencyBriefItems();
+const currencyWorker = useBaseWorker();
+await currencyWorker.fetchCurrencyBriefItems(useEnv('apiBaseUrl'));
 
 const internalValue = ref(props.modelValue || '');
 const loading = ref(false);
@@ -122,7 +122,7 @@ const selected = ref<CurrencyBriefItem>(props.currencies[0]);
 const filteredCurrencies = ref<CurrencyBriefItem[]>(props.currencies);
 
 onMounted(async () => {
-	filteredCurrencies.value = await currencyWorker.searchCurrencies('', 400);
+	filteredCurrencies.value = await currencyWorker.searchCurrencies('', 400, useEnv('apiBaseUrl'));
 
 	if (props.defaultSelected) {
 		selected.value = props.defaultSelected;
@@ -133,10 +133,10 @@ const search = async (q: string) => {
 	loading.value = true;
 
 	if (!q) {
-		filteredCurrencies.value = await currencyWorker.searchCurrencies('', 400);
+		filteredCurrencies.value = await currencyWorker.searchCurrencies('', 400, useEnv('apiBaseUrl'));
 	}
 	else {
-		filteredCurrencies.value = await currencyWorker.searchCurrencies(q.toLowerCase(), 200);
+		filteredCurrencies.value = await currencyWorker.searchCurrencies(q.toLowerCase(), 200, useEnv('apiBaseUrl'));
 	}
 	loading.value = false;
 	return filteredCurrencies.value;

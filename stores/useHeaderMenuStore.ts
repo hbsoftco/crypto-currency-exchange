@@ -1,13 +1,13 @@
 import { marketRepository } from '~/repositories/market.repository';
 import type { MarketL16 } from '~/types/definitions/market.types';
 import { MarketType } from '~/utils/enums/market.enum';
-import { useCurrencyWorker } from '~/workers/currency-worker/currency-worker-wrapper';
+import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 
 export const useHeaderMenuStore = defineStore('headerMenu', () => {
 	const { $api } = useNuxtApp();
 	const marketRepo = marketRepository($api);
 
-	const currencyWorker = useCurrencyWorker();
+	const currencyWorker = useBaseWorker();
 
 	const fastTradeMarketItems = ref<MarketL16[]>([]);
 	const spotMarketItems = ref<MarketL16[]>([]);
@@ -56,8 +56,7 @@ export const useHeaderMenuStore = defineStore('headerMenu', () => {
 			}
 
 			const { result } = await marketRepo.getMarketListL16(params.value);
-			const items = await currencyWorker.addCurrencyToMarketsL16(result.rows, Number(params.value.currencyQuoteId));
-			console.log('getMarketListL16---->', items);
+			const items = await currencyWorker.addCurrencyToMarketsL16(result.rows, Number(params.value.currencyQuoteId), useEnv('apiBaseUrl'), MarketType.SPOT);
 
 			if (items.length) {
 				fastTradeMarketItems.value = items;
@@ -76,7 +75,7 @@ export const useHeaderMenuStore = defineStore('headerMenu', () => {
 			initMarketsLoading.value = true;
 
 			const { result } = await marketRepo.getMarketListL16(futuresParams.value);
-			const items = await currencyWorker.addCurrencyToMarketsL16(result.rows, Number(futuresParams.value.currencyQuoteId));
+			const items = await currencyWorker.addCurrencyToMarketsL16(result.rows, Number(futuresParams.value.currencyQuoteId), useEnv('apiBaseUrl'), MarketType.SPOT);
 
 			if (items.length) {
 				fastTradeMarketItems.value = items;

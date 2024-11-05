@@ -1,6 +1,6 @@
 import * as Comlink from 'comlink';
 
-import { useCurrencyWorker } from '../currency-worker/currency-worker-wrapper';
+import { useBaseWorker } from '../base-worker/base-worker-wrapper';
 
 import { loadFromCache } from '~/utils/indexeddb';
 import type { MarketBriefItem } from '~/types/response/brief-list.types';
@@ -63,7 +63,7 @@ const searchMarkets = async (search: string, count?: number): Promise<MarketBrie
 
 	const result = filteredMarkets.length > 0 ? filteredMarkets.slice(0, count) : [];
 
-	const currencyWorker = useCurrencyWorker();
+	const currencyWorker = useBaseWorker();
 	await currencyWorker.fetchCurrencyBriefItems();
 
 	const data: MarketBriefItem[] = await Promise.all(result.map(async (market) => {

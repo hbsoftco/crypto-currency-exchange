@@ -77,7 +77,10 @@
 <script setup lang="ts">
 import { useSpot } from '~/composables/spot/useSpot';
 import { useNumber } from '~/composables/useNumber';
+// import type { Quote } from '~/types/definitions/quote.types';
+// import { MarketType } from '~/utils/enums/market.enum';
 import { priceFormat } from '~/utils/price-format';
+// import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 
 interface PropsDefinition {
 	symbol: string;
@@ -91,8 +94,19 @@ interface PropsDefinition {
 
 const props = defineProps<PropsDefinition>();
 
+// const worker = useBaseWorker();
+// const selectedCurrency = ref<Quote[]>();
+
+// const selectedCurrency = ref<Quote[]>();
+
+onMounted(async () => {
+	await getMarketId();
+	await fetchChartKline();
+});
+
 const selectedCurrency = ref<'TMN' | 'USDT'>('TMN');
 
+//////
 const baseDataStore = useBaseDataStore();
 await baseDataStore.fetchMarketBriefItems();
 
@@ -179,11 +193,6 @@ const fetchChartKline = async () => {
 		console.error('Error fetching trades:', error);
 	}
 };
-
-onMounted(async () => {
-	await getMarketId();
-	await fetchChartKline();
-});
 
 const chartOptions = computed(() => ({
 	grid: {

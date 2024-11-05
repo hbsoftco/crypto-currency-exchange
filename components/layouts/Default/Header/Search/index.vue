@@ -83,7 +83,7 @@
 <script setup lang="ts">
 import IconSearch from '~/assets/svg-icons/menu/search.svg';
 import IconArrowLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';
-import { useCurrencyWorker } from '~/workers/currency-worker/currency-worker-wrapper';
+import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 import type { CurrencyBriefItem, MarketBriefItem } from '~/types/response/brief-list.types';
 import { useMarketWorker } from '~/workers/market-worker/market-worker-wrapper';
 
@@ -99,8 +99,8 @@ const container = ref<HTMLElement | null>(null);
 const currenciesItems = ref<CurrencyBriefItem[]>([]);
 const marketsItems = ref<MarketBriefItem[]>([]);
 
-const currencyWorker = useCurrencyWorker();
-await currencyWorker.fetchCurrencyBriefItems();
+const currencyWorker = useBaseWorker();
+await currencyWorker.fetchCurrencyBriefItems(useEnv('apiBaseUrl'));
 
 const marketWorker = useMarketWorker();
 await marketWorker.fetchMarketBriefItems();
@@ -114,7 +114,7 @@ const handleInput = async (event: Event) => {
 	const input = event.target as HTMLInputElement;
 	showBox.value = !input.value.length;
 
-	currenciesItems.value = await currencyWorker.searchCurrencies(search.value, 3);
+	currenciesItems.value = await currencyWorker.searchCurrencies(search.value, 3, useEnv('apiBaseUrl'));
 	marketsItems.value = await marketWorker.searchMarkets(search.value, 3);
 
 	console.log('marketsItems --------', marketsItems.value);

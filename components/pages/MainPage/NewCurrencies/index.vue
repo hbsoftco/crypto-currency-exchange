@@ -72,12 +72,12 @@ import Currency from './Currency.vue';
 import { marketRepository } from '~/repositories/market.repository';
 import type { MarketL21 } from '~/types/definitions/market.types';
 import { MarketType, SortMode } from '~/utils/enums/market.enum';
-import { useCurrencyWorker } from '~/workers/currency-worker/currency-worker-wrapper';
+import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 
 const { $api } = useNuxtApp();
 const marketRepo = marketRepository($api);
 
-const currencyWorker = useCurrencyWorker();
+const currencyWorker = useBaseWorker();
 
 const params = ref({
 	sortMode: String(SortMode.BY_NEWEST_COINS),
@@ -93,9 +93,7 @@ const getMarketListL21 = async () => {
 		marketsLoading.value = true;
 		const { result } = await marketRepo.getMarketListL21(params.value);
 
-		markets.value = await currencyWorker.addCurrencyToMarkets(result.rows, Number(params.value.currencyQuoteId));
-
-		console.log('Currency', markets.value);
+		markets.value = await currencyWorker.addCurrencyToMarkets(result.rows, Number(params.value.currencyQuoteId), useEnv('apiBaseUrl'), MarketType.SPOT);
 
 		marketsLoading.value = false;
 	}
