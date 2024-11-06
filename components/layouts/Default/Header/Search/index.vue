@@ -51,7 +51,7 @@
 					<div
 						v-for="market of marketsItems"
 						:key="market.id"
-						class="my-1 py-2 hover:bg-primary-gray-light hover:dark:bg-primary-gray-dark rounded-sm px-1"
+						class="my-1 py-2 px-3 hover:bg-primary-gray-light hover:dark:bg-primary-gray-dark rounded duration-200 transition-all"
 						@click="handleSelection"
 					>
 						<MarketItem :market="market" />
