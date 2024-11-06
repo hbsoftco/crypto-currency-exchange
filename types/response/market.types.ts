@@ -21,18 +21,6 @@ type Market = {
 	currency: CurrencyBriefItem | null;
 };
 
-type MarketStatisticsChartsResponse = {
-	statusCode: number;
-	result: {
-		priceChangeStats: PriceChangeState[];
-	};
-};
-
-type PriceChangeState = {
-	countOfMarkets: number;
-	priceChangeRange: string;
-};
-
 type MarketItem = {
 	id: number;
 	cid: number;
@@ -70,8 +58,6 @@ export type {
 	MarketItem,
 	MarketDetailItem,
 	MarketsResponse,
-	MarketStatisticsChartsResponse,
-	PriceChangeState,
 	NeutralMarketItem,
 	MarketListResponse,
 };

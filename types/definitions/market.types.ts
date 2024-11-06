@@ -150,6 +150,18 @@ type MarketL47Item = {
 	quote?: Quote | null;
 };
 
+type MarketDailyPriceChangeResponse = {
+	statusCode: number;
+	result: {
+		priceChangeStats: DailyPriceChange[];
+	};
+};
+
+type DailyPriceChange = {
+	countOfMarkets: number;
+	priceChangeRange: string;
+};
+
 export type {
 	MarketBrief,
 	MarketL21,
@@ -166,4 +178,6 @@ export type {
 	MarketsL47Params,
 	MarketL47,
 	MarketL47Item,
+	MarketDailyPriceChangeResponse,
+	DailyPriceChange,
 };

@@ -1,11 +1,11 @@
 <template>
-	<UContainer v-if="marketsL51Loading || marketsL47Loading">
+	<UContainer v-if="marketsL51Loading || marketsL47Loading || marketDailyPriceChangeLoading">
 		<div>
 			<UiLogoLoading />
 		</div>
 	</UContainer>
 	<UContainer v-else>
-		<div v-if="chartsDataLoading === 'success'">
+		<div>
 			<div class="mb-4 mt-8">
 				<UiTitleWithBack :title="$t('marketStatistics')" />
 			</div>
@@ -38,7 +38,7 @@
 				</div>
 				<div
 					v-if="neutralMarketsItems.length > 0"
-					class="w-80 h-80 absolute left-0 right-0 m-auto -top-2"
+					class="w-80 h-80 absolute left-0 right-0 m-auto top-8"
 				>
 					<VChart
 						:option="neutralPieOptions"
@@ -78,15 +78,23 @@ import { useNumber } from '~/composables/useNumber';
 import { marketRepository } from '~/repositories/market.repository';
 import { MarketType } from '~/utils/enums/market.enum';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
-import type { MarketL47, MarketL51, MarketsL47Params } from '~/types/definitions/market.types';
-import type {
-	NeutralMarketItem,
-	PriceChangeState } from '~/types/response/market.types';
+import type { DailyPriceChange, MarketL47, MarketL51, MarketsL47Params } from '~/types/definitions/market.types';
+import type { NeutralMarketItem } from '~/types/response/market.types';
 
 const { $api } = useNuxtApp();
 const marketRepo = marketRepository($api);
 
 const worker = useBaseWorker();
+
+const colorMode = useColorMode();
+const isDark = computed({
+	get() {
+		return colorMode.value === 'dark';
+	},
+	set() {
+		colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark';
+	},
+});
 
 const marketsL51 = ref<MarketL51[]>([]);
 const marketsL51Loading = ref<boolean>(false);
@@ -130,22 +138,30 @@ const getMarketListL47 = async () => {
 };
 // Bellow tables and its charts
 
+const marketDailyPriceChange = ref<DailyPriceChange[]>([]);
+const marketDailyPriceChangeLoading = ref<boolean>(false);
+const getMarketDailyPriceChange = async () => {
+	try {
+		marketDailyPriceChangeLoading.value = true;
+		const { result } = await marketRepo.getMarketDailyPriceChange();
+		marketDailyPriceChange.value = result.priceChangeStats;
+
+		await initChatsData();
+		marketDailyPriceChangeLoading.value = false;
+	}
+	catch (error: unknown) {
+		console.log(error);
+	}
+};
+// Market daily price changes
+
 onMounted(async () => {
 	await Promise.all([
 		getMarketListL51(),
 		getMarketListL47(),
+		getMarketDailyPriceChange(),
 	]);
 });
-
-/// //////////////////////////////////////////////////////// // OLD
-
-const { data: chartsData, status: chartsDataLoading } = useAsyncData(
-	'marketStatisticsChartsData',
-	async () => {
-		const response = await marketRepo.getMarketStatisticsCharts();
-		return response;
-	},
-);
 
 const positiveRanges: [string, string][] = [
 	['> 10%', '> +10.0%'],
@@ -165,7 +181,7 @@ const negativeRanges: [string, string][] = [
 	['-2% <', '<  00.0%'],
 ];
 
-const calculatePositiveMarkets = (priceChangeStats: PriceChangeState[], positiveRanges: [string, string][]) => {
+const calculatePositiveMarkets = (priceChangeStats: DailyPriceChange[], positiveRanges: [string, string][]) => {
 	let positive = 0;
 	positiveRanges.forEach(([_, originalRange]) => {
 		if (originalRange !== '>  00.0%') {
@@ -177,7 +193,7 @@ const calculatePositiveMarkets = (priceChangeStats: PriceChangeState[], positive
 	return positive;
 };
 
-const calculateNegativeMarkets = (priceChangeStats: PriceChangeState[], negativeRanges: [string, string][]) => {
+const calculateNegativeMarkets = (priceChangeStats: DailyPriceChange[], negativeRanges: [string, string][]) => {
 	let negative = 0;
 	negativeRanges.forEach(([_, originalRange]) => {
 		if (originalRange !== '<  00.0%') {
@@ -194,7 +210,7 @@ const getPercent = (priceChangeRange: string): number | null => {
 	return isNaN(percent) ? null : percent;
 };
 
-const calculateNeutralMarkets = (priceChangeStats: PriceChangeState[]) => {
+const calculateNeutralMarkets = (priceChangeStats: DailyPriceChange[]) => {
 	let neutral = 0;
 	priceChangeStats.forEach((d) => {
 		const percent = getPercent(d.priceChangeRange);
@@ -205,18 +221,16 @@ const calculateNeutralMarkets = (priceChangeStats: PriceChangeState[]) => {
 	return neutral;
 };
 
-const positiveMarkets = ref(0);
-const negativeMarkets = ref(0);
-const neutralMarkets = ref(0);
+const positiveMarkets = ref<number>(0);
+const negativeMarkets = ref<number>(0);
+const neutralMarkets = ref<number>(0);
 
 const positiveMarketsItems = ref<number[]>([]);
 const negativeMarketsItems = ref<number[]>([]);
 const neutralMarketsItems = ref<NeutralMarketItem[]>([]);
 
-watch(chartsData, (newData) => {
-	if (!newData || !newData.result || !newData.result.priceChangeStats) return;
-
-	const priceChangeStats = newData.result.priceChangeStats;
+const initChatsData = async () => {
+	const priceChangeStats = marketDailyPriceChange.value;
 
 	positiveMarkets.value = calculatePositiveMarkets(priceChangeStats, positiveRanges);
 	negativeMarkets.value = calculateNegativeMarkets(priceChangeStats, negativeRanges);
@@ -240,7 +254,7 @@ watch(chartsData, (newData) => {
 		{ value: negativeMarkets.value, name: useT('decline'), itemStyle: { color: '#FF4D4F' } },
 		{ value: neutralMarkets.value, name: useT('neutral'), itemStyle: { color: '#666666' } },
 	];
-});
+};
 
 const negativeMarketBarOptions = computed(() => ({
 	grid: {
@@ -273,7 +287,7 @@ const negativeMarketBarOptions = computed(() => ({
 			show: false,
 		},
 		axisLabel: {
-			color: '#FFFFFF',
+			color: isDark.value ? '#FFFFFF' : '#000000',
 			fontFamily: 'dana',
 			fontSize: 14,
 			fontWeight: 'bold',
@@ -332,7 +346,7 @@ const positiveMarketBarOptions = computed(() => ({
 			show: false,
 		},
 		axisLabel: {
-			color: '#FFFFFF',
+			color: isDark.value ? '#FFFFFF' : '#000000',
 			fontFamily: 'dana',
 			position: 'right',
 			fontSize: 14,
@@ -367,7 +381,7 @@ const neutralPieOptions = computed(() => ({
 		left: 'center',
 		top: '47%',
 		textStyle: {
-			color: '#FFFFFF',
+			color: isDark.value ? '#FFFFFF' : '#000000',
 			fontSize: 14,
 			fontFamily: 'dana',
 			fontWeight: 'bold',
@@ -376,7 +390,7 @@ const neutralPieOptions = computed(() => ({
 	tooltip: {
 		trigger: 'item',
 		backgroundColor: '#333',
-		borderColor: '#FFF',
+		borderColor: '#fff',
 		borderWidth: 1,
 		padding: 10,
 		textStyle: {
@@ -398,6 +412,7 @@ const neutralPieOptions = computed(() => ({
 			avoidLabelOverlap: false,
 			itemStyle: {
 				borderRadius: 5,
+				borderColor: isDark.value ? '#121212' : '#ffffff',
 				borderWidth: 2,
 			},
 			label: {
@@ -405,8 +420,8 @@ const neutralPieOptions = computed(() => ({
 				position: 'inside',
 				fontFamily: 'dana',
 				formatter: '{c}',
-				color: '#FFFFFF',
-				fontSize: 12,
+				color: isDark.value ? '#000000' : '#FFFFFF',
+				fontSize: 11,
 				fontWeight: 'bold',
 			},
 			labelLine: {

@@ -14,10 +14,10 @@
 					<th class="pb-2 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
 						{{ $t('tradingPair') }}
 					</th>
-					<th class="pb-2 text-sm font-normal">
+					<th class="pb-2 text-sm text-left pl-2 font-normal">
 						{{ $t('price') }}
 					</th>
-					<th class="pb-2 text-sm font-normal">
+					<th class="pb-2 text-sm text-left pl-4 font-normal">
 						{{ $t('change') }}
 					</th>
 				</tr>
@@ -46,10 +46,10 @@
 							<span class="text-sm font-normal">{{ market.currency?.cSymbol }}</span>
 						</ULink>
 					</td>
-					<td class="text-sm font-normal py-2">
+					<td class="text-sm font-normal text-left py-2">
 						<span>{{ useNumber(market.indexPrice) }}</span>
 					</td>
-					<td class="text-sm font-normal py-2">
+					<td class="text-sm text-left font-normal py-2">
 						<UiChangePrice
 							classes="text-sm font-normal"
 							:show-percent="true"

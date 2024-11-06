@@ -9,10 +9,9 @@ import type {
 	MarketsParams,
 	MarketStateParams,
 	MarketStateResponse,
-	MarketsL47Params } from '~/types/definitions/market.types';
-import type {
-	MarketListResponse,
-	MarketStatisticsChartsResponse } from '~/types/response/market.types';
+	MarketsL47Params,
+	MarketDailyPriceChangeResponse } from '~/types/definitions/market.types';
+import type { MarketListResponse } from '~/types/response/market.types';
 
 type MarketRepository = {
 	getMarketListL21: (params: MarketsL21Params) => Promise<MarketsResponse>;
@@ -24,9 +23,9 @@ type MarketRepository = {
 	getMarketListL31: (params: MarketsParams) => Promise<MarketsResponse>;
 	getMarketListL51: () => Promise<MarketsResponse>;
 	getMarketListL47: (params: MarketsL47Params) => Promise<MarketsResponse>;
+	getMarketDailyPriceChange: () => Promise<MarketDailyPriceChangeResponse>;
 
 	getMarkets: (params: MarketsParams) => Promise<MarketsResponse>;
-	getMarketStatisticsCharts: () => Promise<MarketStatisticsChartsResponse>;
 	getMarketList: (params: MarketsL47Params) => Promise<MarketListResponse>;
 	likeMarket: (dto: FavoriteMarketDto) => Promise<CommonResponse>;
 	dislikeMarket: (dto: FavoriteMarketDto) => Promise<CommonResponse>;
@@ -169,6 +168,15 @@ export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Mar
 
 		return response;
 	},
+	async getMarketDailyPriceChange(): Promise<MarketDailyPriceChangeResponse> {
+		const url = '/v1/market/routine/price_changed_in_24h_list';
+		const response = await fetch<MarketDailyPriceChangeResponse>(`${url}`, {
+			noAuth: true,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
 
 	async getMarkets(
 		params: MarketsParams): Promise<MarketsResponse> {
@@ -184,15 +192,6 @@ export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Mar
 			noAuth: true,
 			apiName: url,
 			queryParams: params,
-			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getMarketStatisticsCharts(): Promise<MarketStatisticsChartsResponse> {
-		const url = '/v1/market/routine/price_changed_in_24h_list';
-		const response = await fetch<MarketStatisticsChartsResponse>(`${url}`, {
-			noAuth: true,
 			method: 'GET',
 		} as CustomNitroFetchOptions);
 
