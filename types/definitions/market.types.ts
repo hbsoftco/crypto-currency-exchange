@@ -38,14 +38,6 @@ type MarketL21 = {
 	quote?: Quote | null;
 };
 
-type MarketsL21Response = {
-	statusCode: number;
-	result: {
-		totalCount: number;
-		rows: MarketL21[];
-	};
-};
-
 type MarketsParams = {
 	sortMode?: string;
 	currencyQuoteId?: string;
@@ -56,11 +48,11 @@ type MarketsParams = {
 	pageSize?: string;
 };
 
-type MarketsL16Response = {
+type MarketsResponse = {
 	statusCode: number;
 	result: {
 		totalCount: number;
-		rows: MarketL16[];
+		rows: MarketL16[] | MarketL21[] | MarketL31[];
 	};
 };
 
@@ -99,15 +91,30 @@ type MarketState = {
 	quote?: Quote | null;
 };
 
+type MarketL31 = {
+	id: number;
+	cid: number;
+	mSymbol?: string;
+	priceChangePercIn24H: string;
+	hPriceIn24H: string;
+	lPriceIn24H: string;
+	valueOfTradesIn24H: string;
+	volumeOfTradesIn24H: string;
+	currency: CurrencyBrief | null;
+	indexPrice: string;
+	market: MarketBrief | null;
+	quote?: Quote | null;
+};
+
 export type {
 	MarketBrief,
 	MarketL21,
-	MarketsL21Response,
 	MarketsL21Params,
 	MarketsParams,
-	MarketsL16Response,
+	MarketsResponse,
 	MarketL16,
 	MarketStateParams,
 	MarketStateResponse,
 	MarketState,
+	MarketL31,
 };

@@ -93,7 +93,11 @@ const getMarketListL21 = async () => {
 		marketsLoading.value = true;
 		const { result } = await marketRepo.getMarketListL21(params.value);
 
-		markets.value = await currencyWorker.addCurrencyToMarkets(result.rows, Number(params.value.currencyQuoteId), useEnv('apiBaseUrl'), MarketType.SPOT);
+		markets.value = await currencyWorker.addCurrencyToMarkets(
+			result.rows as MarketL21[],
+			Number(params.value.currencyQuoteId),
+			useEnv('apiBaseUrl'), MarketType.SPOT,
+		);
 
 		marketsLoading.value = false;
 	}
@@ -105,31 +109,6 @@ const getMarketListL21 = async () => {
 onMounted(async () => {
 	await getMarketListL21();
 });
-
-// const marketStore = useMarketStore();
-
-// const params = ref({
-// 	sortMode: String(SortMode.BY_NEWEST_COINS),
-// 	currencyQuoteId: '3',
-// 	marketTypeId: String(MarketType.SPOT),
-// 	tagTypeId: '',
-// });
-
-// const marketData = ref<MarketL21[]>();
-
-// onMounted(async () => {
-// 	try {
-// 		const response = await marketStore.fetchMarketListWithSparkLineChart(params.value);
-// 		marketData.value = response;
-// 	}
-// 	catch (error: unknown) {
-// 		const err = error as ErrorResponse;
-// 		throw createError({
-// 			statusCode: 500,
-// 			statusMessage: `${err.response._data.message}`,
-// 		});
-// 	}
-// });
 </script>
 
 <style scoped>

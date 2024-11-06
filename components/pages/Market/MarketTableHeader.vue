@@ -5,7 +5,7 @@
 		>
 			<div class="col-span-4 flex justify-start items-center">
 				<UDropdown
-					:items="marketFilters"
+					:items="marketsPageStore.sortModeFilters"
 					:popper="{ arrow: true }"
 					:ui="{
 						width: 'w-auto',
@@ -17,7 +17,7 @@
 					<span class="flex justify-center items-center cursor-pointer">
 						<span
 							class="ml-2 text-primary-yellow-light font-bold dark:text-primary-yellow-dark"
-						>{{ selectedMarketFilter.label }}</span>
+						>{{ marketsPageStore.selectedSortModeFilter.label }}</span>
 						<UIcon
 							name="i-heroicons-chevron-down"
 							class="w-5 h-5 text-primary-yellow-light dark:text-primary-yellow-dark"
@@ -26,11 +26,14 @@
 				</UDropdown>
 			</div>
 			<div class="col-span-6">
-				<TradingMarketsHeaderItems @tag-selected="updateTagFilter" />
+				<UiTagSlider
+					:tags="marketsPageStore.tagItems"
+					@tag-selected="setTag"
+				/>
 			</div>
 			<div class="col-span-2 pr-8 text-center flex justify-center items-center">
 				<UDropdown
-					:items="currencyOptions"
+					:items="marketsPageStore.quoteOptions"
 					:popper="{ arrow: true }"
 					:ui="{
 						width: 'w-auto',
@@ -42,7 +45,7 @@
 					<span class="flex justify-center items-center cursor-pointer">
 						<span
 							class="ml-2 text-primary-yellow-light font-bold dark:text-primary-yellow-dark"
-						>{{ selectedCurrency.label }}</span>
+						>{{ marketsPageStore.selectedQuote.label }}</span>
 						<UIcon
 							name="i-heroicons-chevron-down"
 							class="w-5 h-5 text-primary-yellow-light dark:text-primary-yellow-dark"
@@ -55,103 +58,11 @@
 </template>
 
 <script setup lang="ts">
-import TradingMarketsHeaderItems from '~/components/pages/MainPage/TradingMarketsHeaderItems.vue';
-import { MarketType, SortMode } from '~/utils/enums/market.enum';
-import { Language } from '~/utils/enums/language.enum';
-import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
+import type { Tag } from '~/types/definitions/tag.types';
 
-interface EmitDefinition {
-	(event: 'filter-change', value: number): void;
-	(event: 'currency-change' | 'tag-change', selectedId: string): void;
-}
+const marketsPageStore = useMarketsPageStore();
 
-const emit = defineEmits<EmitDefinition>();
-
-const baseDataStore = useBaseDataStore();
-const { getMatchedCurrencyItems } = baseDataStore;
-
-await baseDataStore.fetchTagItems();
-await baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
-await baseDataStore.fetchQuoteItems(MarketType.SPOT);
-
-const updateTagFilter = async (value: string) => {
-	emit('tag-change', value);
-};
-
-interface DropdownItem {
-	id: number;
-	label: string;
-	click: () => void;
-}
-
-const currencyOptions = ref<DropdownItem[][]>([]);
-
-const loadCurrencyOptions = async () => {
-	const items = await getMatchedCurrencyItems();
-
-	currencyOptions.value = [
-		items.map((item) => ({
-			id: item.id,
-			label: item.cName,
-			click: () => handleSelectCurrency(item),
-		})),
-	];
-};
-
-await loadCurrencyOptions();
-
-const marketFilters = [
-	[
-		{
-			label: useT('hottest'),
-			value: SortMode.BY_RECENTLY_CHANGED,
-			click: () => handleSelectMarketFilter(SortMode.BY_RECENTLY_CHANGED),
-		},
-		{
-			label: useT('mostProfitable'),
-			value: SortMode.BY_MOST_PROFIT,
-			click: () => handleSelectMarketFilter(SortMode.BY_MOST_PROFIT),
-		},
-		{
-			label: useT('newest'),
-			value: SortMode.BY_NEWEST_COINS,
-			click: () => handleSelectMarketFilter(SortMode.BY_NEWEST_COINS),
-		},
-		{
-			label: useT('mostVoluminous'),
-			value: SortMode.BY_TRADE_COUNT,
-			click: () => handleSelectMarketFilter(SortMode.BY_TRADE_COUNT),
-		},
-		{
-			label: useT('myFavorites'),
-			value: SortMode.BY_FAVORITES,
-			click: () => handleSelectMarketFilter(SortMode.BY_FAVORITES),
-		},
-	],
-];
-
-const selectedMarketFilter = ref({
-	label: useT('hottest'),
-	value: SortMode.BY_RECENTLY_CHANGED,
-});
-
-const handleSelectMarketFilter = (selectedValue: SortMode) => {
-	const selectedFilter = marketFilters[0].find(
-		(filter) => filter.value === selectedValue,
-	);
-
-	selectedMarketFilter.value = selectedFilter || {
-		label: useT('defaultLabel'),
-		value: SortMode.BY_RECENTLY_CHANGED,
-	};
-
-	emit('filter-change', selectedValue);
-};
-
-const selectedCurrency = ref({ label: useT('toman') });
-
-const handleSelectCurrency = (selectedItem: CurrencyBriefItem) => {
-	selectedCurrency.value = { label: selectedItem.cName };
-	emit('currency-change', String(selectedItem.id));
+const setTag = (tag: Tag) => {
+	marketsPageStore.params.tagTypeId = String(tag.id);
 };
 </script>

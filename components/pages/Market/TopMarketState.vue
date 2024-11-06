@@ -4,7 +4,7 @@
 			<div>
 				<span class="text-sm font-bold">{{ title }}</span>
 			</div>
-			<ULink to="">
+			<ULink @click="setSortMode">
 				<span class="text-sm font-medium text-primary-yellow-light dark:text-primary-yellow-dark">{{ $t('more') }}</span>
 			</ULink>
 		</div>
@@ -55,9 +55,16 @@ import { splitMarket } from '~/utils/split-market';
 interface Props {
 	title: string;
 	items: MarketState[];
+	sortMode: number;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+const marketsPageStore = useMarketsPageStore();
+
+const setSortMode = () => {
+	marketsPageStore.handleSelectMarketFilter(props.sortMode);
+};
 
 const router = useRouter();
 </script>

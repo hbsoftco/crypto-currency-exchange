@@ -6,6 +6,7 @@ import type { CurrencyBrief } from '~/types/definitions/currency.types';
 import type { MarketBrief, MarketL16, MarketL21, MarketState } from '~/types/definitions/market.types';
 import type { Quote } from '~/types/definitions/quote.types';
 import type { SuggestionItems } from '~/types/definitions/header/search.types';
+import type { Tag } from '~/types/definitions/tag.types';
 
 let currencyBriefItems: CurrencyBrief[] = [];
 let marketBriefItems: MarketBrief[] = [];
@@ -193,11 +194,14 @@ const fetchQuoteItems = async (marketTypeId: number, baseUrl: string) => {
 // Tags
 const fetchTagItems = async (languageId: number, baseUrl: string) => {
 	try {
-		let tagItems: Quote[] = [];
-		const cachedItems = await loadFromCache<Quote[]>(CACHE_KEY_TAG_ITEMS);
+		let tagItems: Tag[] = [];
+		const cachedItems = await loadFromCache<Tag[]>(CACHE_KEY_TAG_ITEMS);
 
 		if (cachedItems && cachedItems.length > 0) {
-			tagItems = cachedItems;
+			tagItems = [
+				{ id: 0, tag: 'همه' },
+				...cachedItems,
+			];
 
 			return tagItems;
 		}
@@ -207,7 +211,10 @@ const fetchTagItems = async (languageId: number, baseUrl: string) => {
 
 			await saveToCache(CACHE_KEY_TAG_ITEMS, result);
 
-			tagItems = result;
+			tagItems = [
+				{ id: 0, tag: 'همه' },
+				...result,
+			];
 
 			return tagItems;
 		}

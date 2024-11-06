@@ -35,7 +35,7 @@
 					</tr>
 				</thead>
 
-				<tbody v-if="status==='pending'">
+				<tbody v-if="marketsLoading">
 					<tr
 						v-for="n in 10"
 						:key="n"
@@ -80,7 +80,7 @@
 					</tr>
 				</tbody>
 
-				<tbody v-if="status==='success'">
+				<tbody v-else>
 					<MarketTableRow
 						v-for="(item, index) in markets"
 						:key="index"
@@ -92,7 +92,7 @@
 
 			<div class="flex justify-center py-4">
 				<UPagination
-					:model-value="Number(params.pageNumber)"
+					:model-value="Number(marketsPageStore.params.pageNumber)"
 					:page-count="20"
 					:total="totalCount"
 					:to="(page: number) => ({
@@ -110,14 +110,19 @@
 <script setup lang="ts">
 import MarketTableRow from '~/components/pages/Market/MarketTableRow.vue';
 import MarketTableHeader from '~/components/pages/Market/MarketTableHeader.vue';
-import { MarketType, SortMode } from '~/utils/enums/market.enum';
+import type { SortMode } from '~/utils/enums/market.enum';
+import { MarketType } from '~/utils/enums/market.enum';
 import { marketRepository } from '~/repositories/market.repository';
-import { Language } from '~/utils/enums/language.enum';
+import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
+import type { MarketL31 } from '~/types/definitions/market.types';
 
 const { $api } = useNuxtApp();
 const marketRepo = marketRepository($api);
 
 const publicSocketStore = usePublicSocketStore();
+const marketsPageStore = useMarketsPageStore();
+
+const worker = useBaseWorker();
 
 interface PropsDefinition {
 	searchQuery: string;
@@ -125,55 +130,66 @@ interface PropsDefinition {
 
 const props = defineProps<PropsDefinition>();
 
-const { useCachedCurrencyBriefList, useCachedMarketBriefList } = useCachedData();
-
-const { data: cachedCurrencyBriefList } = await useCachedCurrencyBriefList({ languageId: Language.PERSIAN });
-const { data: cachedMarketBriefList } = await useCachedMarketBriefList();
-
-const marketBriefList = cachedMarketBriefList.value ?? [];
-const currencyBriefList = cachedCurrencyBriefList.value ?? [];
-
 const totalCount = ref(0);
 
-const params = ref({
-	sortMode: String(SortMode.BY_MARKET_CAPS),
-	currencyQuoteId: '1',
-	marketTypeId: String(MarketType.SPOT),
-	tagTypeId: '',
-	searchStatement: '',
-	pageNumber: '1',
-	pageSize: '20',
+const marketIdParams = ref<string>('');
+
+const markets = ref<MarketL31[]>([]);
+const marketsLoading = ref<boolean>(false);
+const getMarketListL31 = async () => {
+	try {
+		if (marketsPageStore.params.tagTypeId === '0') {
+			marketsPageStore.params.tagTypeId = '';
+		}
+		marketsLoading.value = true;
+		const { result } = await marketRepo.getMarketListL31(marketsPageStore.params);
+
+		markets.value = await worker.addCurrencyToMarketsL16(
+			result.rows as MarketL31[],
+			Number(marketsPageStore.params.currencyQuoteId),
+			useEnv('apiBaseUrl'), MarketType.SPOT,
+		) as MarketL31[];
+
+		totalCount.value = result.totalCount;
+
+		marketIdParams.value = markets.value.map((item) => item.id).join(',');
+		publicSocketStore.refreshSocketRequest(marketIdParams.value, 'main');
+
+		marketsLoading.value = false;
+	}
+	catch (error: unknown) {
+		console.log(error);
+	}
+};
+
+onMounted(async () => {
+	marketsPageStore.params.searchStatement = '';
+	marketsPageStore.params.tagTypeId = '';
+
+	await getMarketListL31();
 });
 
-const { data: markets, status } = useAsyncData('markets', async () => {
-	const response = await marketRepo.getMarkets(params.value);
-	totalCount.value = response.result.totalCount;
-
-	const fixedIds = response.result.rows.map((market) => market.id);
-	const combinedMarketIds = `${fixedIds.join(',')}`;
-
-	publicSocketStore.refreshSocketRequest(combinedMarketIds);
-
-	return useProcessMarketData(response.result.rows, marketBriefList, currencyBriefList);
-}, { watch: [params.value], deep: true });
+watch(() => marketsPageStore.params, async () => {
+	await getMarketListL31();
+}, { deep: true });
 
 watch(() => props.searchQuery, (newQuery) => {
-	params.value.searchStatement = newQuery;
+	marketsPageStore.params.searchStatement = newQuery;
 });
 
 const onPageChange = async (newPage: number) => {
-	params.value.pageNumber = String(newPage);
+	marketsPageStore.params.pageNumber = String(newPage);
 };
 
 const updateFilter = async (selectedValue: SortMode) => {
-	params.value.sortMode = String(selectedValue);
+	marketsPageStore.params.sortMode = String(selectedValue);
 };
 
 const updateTag = async (selectedValue: string) => {
-	params.value.tagTypeId = selectedValue;
+	marketsPageStore.params.tagTypeId = selectedValue;
 };
 
 const updateCurrency = async (selectedId: string) => {
-	params.value.currencyQuoteId = selectedId;
+	marketsPageStore.params.currencyQuoteId = selectedId;
 };
 </script>

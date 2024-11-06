@@ -46,6 +46,7 @@
 					</div>
 					<TopMarketState
 						v-else
+						:sort-mode="SortMode.BY_MOST_PROFIT"
 						:title="$t('mostProfitableAssets')"
 						:items="mostProfitableMarkets ?? []"
 					/>
@@ -55,6 +56,7 @@
 					</div>
 					<TopMarketState
 						v-else
+						:sort-mode="SortMode.BY_RECENTLY_CHANGED"
 						:title="$t('hotTopics')"
 						:items="hottestMarkets ?? []"
 					/>
@@ -64,6 +66,7 @@
 					</div>
 					<TopMarketState
 						v-else
+						:sort-mode="SortMode.BY_NEWEST_COINS"
 						:title="$t('newest')"
 						:items="latestMarkets ?? []"
 					/>
@@ -84,7 +87,10 @@
 							v-if="item.key === 'marketSpot'"
 							class="space-y-3"
 						>
-							<MarketTable :search-query="searchQuery" />
+							<MarketTable
+								v-if="!initFilterLoading"
+								:search-query="searchQuery"
+							/>
 						</div>
 						<div
 							v-else-if="item.key === 'marketFutures'"
@@ -97,7 +103,7 @@
 				<div class="w-72 h-10 hidden md:block absolute left-0 top-0 py-2 px-3 border border-primary-gray-light dark:border-primary-gray-dark rounded-lg">
 					<div class="w-full h-full relative">
 						<input
-							v-model="searchQuery"
+							v-model="search"
 							type="text"
 							class="outline-none h-full w-full text-sm"
 							:placeholder="$t('searchMarket')"
@@ -128,13 +134,37 @@ import { marketRepository } from '~/repositories/market.repository';
 import MarketStateSkeleton from '~/components/pages/Market/MarketStateSkeleton.vue';
 import type { MarketState } from '~/types/definitions/market.types';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
+import { MarketType, SortMode } from '~/utils/enums/market.enum';
+import { Language } from '~/utils/enums/language.enum';
 
 const { $api } = useNuxtApp();
 const marketRepo = marketRepository($api);
 
+const marketsPageStore = useMarketsPageStore();
+
 const worker = useBaseWorker();
 
-const searchQuery = ref('');
+const marketTypeId = ref<number>(MarketType.SPOT);
+
+const search = ref<string>('');
+const searchQuery = ref<string>('');
+
+watch(search, (newValue) => {
+	if (searchTimeout) {
+		clearTimeout(searchTimeout);
+	}
+
+	if (newValue) {
+		searchTimeout = setTimeout(async () => {
+			searchQuery.value = newValue;
+		}, 2000);
+	}
+	else {
+		searchQuery.value = newValue;
+	}
+});
+
+let searchTimeout: ReturnType<typeof setTimeout> | null = null;
 
 const mostProfitableMarkets = ref<MarketState[]>([]);
 const mostProfitableMarketsLoading = ref<boolean>(false);
@@ -181,8 +211,19 @@ const getLatestMarkets = async () => {
 	}
 };
 
+const initFilterLoading = ref<boolean>(false);
+const initFilterItems = async () => {
+	initFilterLoading.value = true;
+	marketsPageStore.quoteItems = await worker.fetchQuoteItems(marketTypeId.value, useEnv('apiBaseUrl'));
+	marketsPageStore.tagItems = await worker.fetchTagItems(Language.PERSIAN, useEnv('apiBaseUrl'));
+
+	marketsPageStore.initQuoteOptions();
+	initFilterLoading.value = false;
+};
+
 onMounted(async () => {
 	Promise.all([
+		initFilterItems(),
 		getMostProfitableMarkets(),
 		getHottestMarkets(),
 		getLatestMarkets(),

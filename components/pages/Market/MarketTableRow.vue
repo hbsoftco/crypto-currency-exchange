@@ -13,8 +13,8 @@
 						@click="router.push('/auth/login')"
 					/>
 					<img
-						:src="`https://api-bitland.site/media/currency/${market?.marketBriefItem?.currencyBriefItem?.cSymbol}.png`"
-						:alt="market?.marketBriefItem?.currencyBriefItem?.cName"
+						:src="`https://api-bitland.site/media/currency/${market?.currency?.cSymbol}.png`"
+						:alt="market?.currency?.cName"
 						class="w-4 md:w-8 h-4 md:h-8 mx-0 md:mx-2 rounded-full"
 						format="webp"
 						densities="x1"
@@ -24,25 +24,25 @@
 					<div
 						class="border-b border-b-primary-gray-light pb-0.5 dark:border-b-primary-gray-dark"
 					>
-						<span class="text-sm font-normal">{{ market?.marketBriefItem?.currencyBriefItem?.cName }}</span>
+						<span class="text-sm font-normal">{{ market?.currency?.cName }}</span>
 						<span class="text-xs mx-0.5 text-subtle-text-light dark:text-subtle-text-dark">/</span>
-						<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ market.marketBriefItem?.quoteItem?.cName }}</span>
+						<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ market.quote?.cName }}</span>
 					</div>
 					<div class="block group-hover:hidden py-0.5">
-						<span class="text-sm font-normal">{{ market?.marketBriefItem?.currencyBriefItem?.cSymbol }}</span>
+						<span class="text-sm font-normal">{{ market?.currency?.cSymbol }}</span>
 						<span class="mx-0.5 text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">/</span>
-						<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ market.marketBriefItem?.quoteItem?.cSymbol }}</span>
+						<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ market.quote?.cSymbol }}</span>
 					</div>
 					<div class="hidden group-hover:block">
 						<div class="flex justify-start items-center">
 							<UButton
-								:to="`/spot/${splitMarket(market?.marketBriefItem?.mSymbol)}`"
+								:to="`/spot/${splitMarket(market?.mSymbol)}`"
 								class="text-xs font-normal text-black ml-1 py-1 rounded-l-none rounded-r-sm"
 							>
 								{{ $t("trade") }}
 							</UButton>
 							<div>
-								<ULink :to="`/coins/${market?.marketBriefItem?.currencyBriefItem?.cSymbol}`">
+								<ULink :to="`/coins/${market?.currency?.cSymbol}`">
 									<span
 										class="text-xs font-normal text-primary-yellow-light dark:text-primary-yellow-dark"
 									>{{ $t("detail") }}</span>
@@ -87,13 +87,13 @@ import { useNumber } from '~/composables/useNumber';
 import { priceFormat } from '~/utils/price-format';
 import { formatBigNumber } from '~/utils/format-big-number';
 import IconStar from '~/assets/svg-icons/market/star.svg';
-import type { Market } from '~/types/response/market.types';
 import type { SocketSpotData } from '~/types/socket.types';
+import type { MarketL31 } from '~/types/definitions/market.types';
 
 const router = useRouter();
 
 interface Props {
-	market: Market;
+	market: MarketL31;
 	socketData: SocketSpotData | null;
 }
 
