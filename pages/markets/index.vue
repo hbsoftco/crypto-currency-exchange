@@ -222,7 +222,7 @@ const initFilterItems = async () => {
 };
 
 onMounted(async () => {
-	Promise.all([
+	await Promise.all([
 		initFilterItems(),
 		getMostProfitableMarkets(),
 		getHottestMarkets(),

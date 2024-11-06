@@ -68,51 +68,63 @@
 						<section>
 							<Calculator />
 						</section>
+						<section v-if="hottestMarketsLoading">
+							<SidebarMarketStateSkeleton />
+						</section>
 						<section
-							v-if="hottestMarketsStatus === 'success'"
+							v-else
 							class="mt-16 mb-6"
 						>
 							<h4 class="text-xl font-bold mb-6">
 								{{ $t("hotTopics") }}
 							</h4>
 							<SidebarMarketState
-								:items="hottestMarkets ?? []"
+								:markets="hottestMarkets ?? []"
 							/>
 						</section>
 
+						<section v-if="mostProfitableMarketsLoading">
+							<SidebarMarketStateSkeleton />
+						</section>
 						<section
-							v-if="mostProfitableMarketsStatus === 'success'"
-							class="mt-16"
+							v-else
+							class="mt-16 mb-6"
 						>
 							<h4 class="text-xl font-bold mb-6">
 								{{ $t("mostProfitable") }}
 							</h4>
 							<SidebarMarketState
-								:items="mostProfitableMarkets ?? []"
+								:markets="mostProfitableMarkets ?? []"
 							/>
 						</section>
 
+						<section v-if="mostVoluminousMarketsLoading">
+							<SidebarMarketStateSkeleton />
+						</section>
 						<section
-							v-if="mostVoluminousMarketsStatus === 'success'"
+							v-else
 							class="mt-16 mb-6"
 						>
 							<h4 class="text-xl font-bold mb-6">
 								{{ $t("mostVoluminous") }}
 							</h4>
 							<SidebarMarketState
-								:items="mostVoluminousMarkets ?? []"
+								:markets="mostVoluminousMarkets ?? []"
 							/>
 						</section>
 
+						<section v-if="latestMarketsLoading">
+							<SidebarMarketStateSkeleton />
+						</section>
 						<section
-							v-if="latestMarketsStatus === 'success'"
+							v-else
 							class="mt-16 mb-6"
 						>
 							<h4 class="text-xl font-bold mb-6">
 								{{ $t("newArrivals") }}
 							</h4>
 							<SidebarMarketState
-								:items="latestMarkets ?? []"
+								:markets="latestMarkets ?? []"
 							/>
 						</section>
 					</div>
@@ -138,13 +150,89 @@ import type { Currency } from '~/types/response/currency.types';
 import PriceInformation from '~/components/pages/Coins/PriceInformation.vue';
 import GlobalMarketInformation from '~/components/pages/Coins/GlobalMarketInformation.vue';
 import CurrencyDescription from '~/components/pages/Coins/CurrencyDescription.vue';
+import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
+import type { MarketState } from '~/types/definitions/market.types';
+import SidebarMarketStateSkeleton from '~/components/pages/Coins/SidebarMarketStateSkeleton.vue';
 
 const { $api } = useNuxtApp();
 const currencyRepo = currencyRepository($api);
 const marketRepo = marketRepository($api);
 
+const worker = useBaseWorker();
+
 const route = useRoute();
 const cSymbol = String(route.params.cSymbol);
+
+const mostProfitableMarkets = ref<MarketState[]>([]);
+const mostProfitableMarketsLoading = ref<boolean>(false);
+const getMostProfitableMarkets = async () => {
+	try {
+		mostProfitableMarketsLoading.value = true;
+		const { result } = await marketRepo.getMostProfitableMarkets({ rowCount: '4' });
+
+		mostProfitableMarkets.value = await worker.addCurrencyToMarketStates(useEnv('apiBaseUrl'), result.rows);
+		mostProfitableMarketsLoading.value = false;
+	}
+	catch (error: unknown) {
+		console.log(error);
+	}
+};
+
+const hottestMarkets = ref<MarketState[]>([]);
+const hottestMarketsLoading = ref<boolean>(false);
+const getHottestMarkets = async () => {
+	try {
+		hottestMarketsLoading.value = true;
+		const { result } = await marketRepo.getHottestMarkets({ rowCount: '4' });
+
+		hottestMarkets.value = await worker.addCurrencyToMarketStates(useEnv('apiBaseUrl'), result.rows);
+		hottestMarketsLoading.value = false;
+	}
+	catch (error: unknown) {
+		console.log(error);
+	}
+};
+
+const latestMarkets = ref<MarketState[]>([]);
+const latestMarketsLoading = ref<boolean>(false);
+const getLatestMarkets = async () => {
+	try {
+		latestMarketsLoading.value = true;
+		const { result } = await marketRepo.getLatestMarkets({ rowCount: '4' });
+
+		latestMarkets.value = await worker.addCurrencyToMarketStates(useEnv('apiBaseUrl'), result.rows);
+		latestMarketsLoading.value = false;
+	}
+	catch (error: unknown) {
+		console.log(error);
+	}
+};
+
+const mostVoluminousMarkets = ref<MarketState[]>([]);
+const mostVoluminousMarketsLoading = ref<boolean>(false);
+const getMostVoluminousMarkets = async () => {
+	try {
+		mostVoluminousMarketsLoading.value = true;
+		const { result } = await marketRepo.getMostVoluminous({ rowCount: '4' });
+
+		mostVoluminousMarkets.value = await worker.addCurrencyToMarketStates(useEnv('apiBaseUrl'), result.rows);
+		mostVoluminousMarketsLoading.value = false;
+	}
+	catch (error: unknown) {
+		console.log(error);
+	}
+};
+
+onMounted(async () => {
+	await Promise.all([
+		getCurrencyDetail(),
+		getMostProfitableMarkets(),
+		getMostVoluminousMarkets(),
+		getHottestMarkets(),
+		getLatestMarkets(),
+	]);
+});
+/// /// Old
 
 const baseDataStore = useBaseDataStore();
 await baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
@@ -177,50 +265,4 @@ const getCurrencyDetail = async () => {
 		currencyDetailLoading.value = false;
 	}
 };
-
-onMounted(async () => {
-	await getCurrencyDetail();
-});
-
-//////
-
-const { useCachedCurrencyBriefList, useCachedMarketBriefList } = useCachedData();
-
-const { data: cachedCurrencyBriefList } = await useCachedCurrencyBriefList({ languageId: Language.PERSIAN });
-const { data: cachedMarketBriefList } = await useCachedMarketBriefList();
-
-const currencyBriefList = cachedCurrencyBriefList.value ?? [];
-const marketBriefList = cachedMarketBriefList.value ?? [];
-
-const { data: mostProfitableMarkets, status: mostProfitableMarketsStatus } = useAsyncData(
-	'mostProfitableMarkets',
-	async () => {
-		const response = await marketRepo.getMostProfitableMarkets({ rowCount: 4 });
-		return useProcessMarketData(response.result.rows, marketBriefList, currencyBriefList);
-	},
-);
-
-const { data: mostVoluminousMarkets, status: mostVoluminousMarketsStatus } = useAsyncData(
-	'mostVoluminousMarkets',
-	async () => {
-		const response = await marketRepo.getMostVoluminous({ rowCount: 4 });
-		return useProcessMarketData(response.result.rows, marketBriefList, currencyBriefList);
-	},
-);
-
-const { data: hottestMarkets, status: hottestMarketsStatus } = useAsyncData(
-	'hottestMarkets',
-	async () => {
-		const response = await marketRepo.getHottestMarkets({ rowCount: 4 });
-		return useProcessMarketData(response.result.rows, marketBriefList, currencyBriefList);
-	},
-);
-
-const { data: latestMarkets, status: latestMarketsStatus } = useAsyncData(
-	'latestMarkets',
-	async () => {
-		const response = await marketRepo.getLatestMarkets({ rowCount: 4 });
-		return useProcessMarketData(response.result.rows, marketBriefList, currencyBriefList);
-	},
-);
 </script>
