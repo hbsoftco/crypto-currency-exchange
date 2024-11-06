@@ -2,13 +2,22 @@ import type { CurrencyBrief } from './currency.types';
 import type { Quote } from './quote.types';
 
 type MarketBrief = {
-	id: number;
 	cbId: number;
+	contractUnitSize: string;
 	cqId: number;
-	typeId: number;
-	stateId: number;
+	fundValueMax: string;
+	fundValueMin: string;
+	id: number;
+	leverageMax: string;
+	leverageMin: string;
 	mSymbol: string;
+	maintenanceRatio: string;
+	priceDisplayFormat: string;
+	roundNo: number;
+	stateId: number;
 	tickSize: string;
+	typeId: number;
+	currency?: CurrencyBrief | null;
 };
 
 type MarketsL21Params = {
@@ -66,11 +75,39 @@ type MarketL16 = {
 	quote?: Quote | null;
 };
 
+type MarketStateParams = {
+	rowCount: string;
+};
+
+type MarketStateResponse = {
+	statusCode: number;
+	result: {
+		totalCount: number;
+		rows: MarketState[];
+	};
+};
+
+type MarketState = {
+	id: number;
+	cid: number;
+	indexPrice: string;
+	priceChangePercIn24H: string;
+	marketTypeName: string;
+	mSymbol?: string;
+	currency: CurrencyBrief | null;
+	market: MarketBrief | null;
+	quote?: Quote | null;
+};
+
 export type {
+	MarketBrief,
 	MarketL21,
 	MarketsL21Response,
 	MarketsL21Params,
 	MarketsParams,
 	MarketsL16Response,
 	MarketL16,
+	MarketStateParams,
+	MarketStateResponse,
+	MarketState,
 };

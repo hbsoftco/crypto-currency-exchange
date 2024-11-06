@@ -93,7 +93,7 @@ const marketRepo = marketRepository($api);
 
 const publicSocketStore = usePublicSocketStore();
 
-const currencyWorker = useBaseWorker();
+const worker = useBaseWorker();
 
 const params = ref({
 	sortMode: String(SortMode.BY_MARKET_CAPS),
@@ -110,7 +110,7 @@ const getMarketListL21 = async () => {
 		marketsLoading.value = true;
 		const { result } = await marketRepo.getMarketListL21(params.value);
 
-		markets.value = await currencyWorker.addCurrencyToMarkets(result.rows, Number(params.value.currencyQuoteId), useEnv('apiBaseUrl'), MarketType.SPOT);
+		markets.value = await worker.addCurrencyToMarkets(result.rows, Number(params.value.currencyQuoteId), useEnv('apiBaseUrl'), MarketType.SPOT);
 
 		marketIdParams.value = markets.value.map((item) => item.id).join(',');
 		publicSocketStore.refreshSocketRequest(marketIdParams.value, 'main');

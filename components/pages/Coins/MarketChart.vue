@@ -75,6 +75,7 @@
 </template>
 
 <script setup lang="ts">
+import { bigNumber } from '~/utils/big-number';
 import { useSpot } from '~/composables/spot/useSpot';
 import { useNumber } from '~/composables/useNumber';
 // import type { Quote } from '~/types/definitions/quote.types';
@@ -177,7 +178,9 @@ const params = ref({
 });
 
 const processChartData = (data: any[]) => {
-	const timestamps = data.map((item) => new Date(Number(item[0]) * 1000).toLocaleTimeString());
+	const timestamps = data.map((item) => String(Number(item[0])));
+	console.log('timestamps', timestamps);
+
 	const values = data.map((item) => Number(item[2]));
 	return { timestamps, values };
 };
@@ -204,7 +207,7 @@ const chartOptions = computed(() => ({
 	},
 	xAxis: {
 		type: 'category',
-		data: chartData.value,
+		data: xAxisData.value,
 		boundaryGap: false,
 		axisLine: {
 			lineStyle: {
@@ -220,9 +223,9 @@ const chartOptions = computed(() => ({
 					fontWeight: 'bold',
 				},
 			},
-			// formatter: (value: number) => {
-			// 	return new Date(value).toLocaleDateString();
-			// },
+			formatter: (value: number) => {
+				return getEpochTime(String(value));
+			},
 			// formatter: (value: any) => `<span class="font-dana">${value}</span>`,
 			// color: '#aaa',
 			// rich: {
@@ -247,12 +250,33 @@ const chartOptions = computed(() => ({
 				type: 'dashed',
 			},
 		},
+		axisLabel: {
+			rich: {
+				value: {
+					fontFamily: 'dana',
+					fontSize: 16,
+					color: '#aaa',
+					fontWeight: 'bold',
+				},
+			},
+			formatter: (value: number) => {
+				return bigNumber(value);
+			},
+			// formatter: (value: any) => `<span class="font-dana">${value}</span>`,
+			// color: '#aaa',
+			// rich: {
+			// 	fontStyle: {
+			// 		fontFamily: 'Dana',
+			// 	},
+			// },
+		},
 	},
 	series: [
 		{
 			data: chartData.value,
 			type: 'line',
 			step: 'end',
+			name: 'Fake Data',
 			lineStyle: {
 				color: '#FFA500',
 				width: 2,

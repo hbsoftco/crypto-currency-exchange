@@ -1,13 +1,16 @@
 import * as Comlink from 'comlink';
 
 import { loadFromCache } from '~/utils/indexeddb';
-import { CACHE_KEY_CURRENCY_BRIEF_ITEMS, CACHE_KEY_QUOTE_ITEMS, CACHE_KEY_TAG_ITEMS } from '~/utils/constants/common';
+import { CACHE_KEY_CURRENCY_BRIEF_ITEMS, CACHE_KEY_MARKET_BRIEF_ITEMS, CACHE_KEY_QUOTE_ITEMS, CACHE_KEY_TAG_ITEMS } from '~/utils/constants/common';
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
-import type { MarketL16, MarketL21 } from '~/types/definitions/market.types';
+import type { MarketBrief, MarketL16, MarketL21, MarketState } from '~/types/definitions/market.types';
 import type { Quote } from '~/types/definitions/quote.types';
+import type { SuggestionItems } from '~/types/definitions/header/search.types';
+
+let currencyBriefItems: CurrencyBrief[] = [];
+let marketBriefItems: MarketBrief[] = [];
 
 // Currencies
-let currencyBriefItems: CurrencyBrief[] = [];
 
 const fetchCurrencyBriefItems = async (baseUrl: string) => {
 	try {
@@ -125,6 +128,33 @@ const addCurrencyToMarketsL16 = async (markets: MarketL16[], quoteId: number, ba
 	return result;
 };
 
+const addCurrencyToMarketStates = async (baseUrl: string, markets: MarketState[]) => {
+	if (!currencyBriefItems.length) {
+		await fetchCurrencyBriefItems(baseUrl);
+	}
+
+	if (!marketBriefItems.length) {
+		await fetchMarketBriefItems(baseUrl);
+	}
+
+	const quoteItems = await fetchQuoteItems(111, baseUrl);
+
+	const result = await Promise.all(markets.map(async (market) => {
+		const currency = await findCurrencyById(market.cid, baseUrl);
+		const marketItem = await findMarketById(market.id, baseUrl);
+		const quote = await quoteItems.find((quote) => quote.id === marketItem?.cqId);
+		return {
+			...market,
+			currency,
+			market: marketItem,
+			quote,
+			mSymbol: `${currency?.cSymbol}${quote?.cSymbol}`,
+		};
+	}));
+
+	return result;
+};
+
 // Quotes
 const fetchQuoteItems = async (marketTypeId: number, baseUrl: string) => {
 	try {
@@ -188,10 +218,131 @@ const fetchTagItems = async (languageId: number, baseUrl: string) => {
 	}
 };
 
+// Markets
+const fetchMarketBriefItems = async (baseUrl: string) => {
+	try {
+		const cachedItems = await loadFromCache<MarketBrief[]>(CACHE_KEY_MARKET_BRIEF_ITEMS);
+
+		if (cachedItems && cachedItems.length > 0) {
+			marketBriefItems = cachedItems;
+
+			return marketBriefItems;
+		}
+		else {
+			const response = await fetch(`${baseUrl}v1/market/routine/brief_list`);
+			const { result } = await response.json();
+
+			await saveToCache(CACHE_KEY_MARKET_BRIEF_ITEMS, result);
+
+			marketBriefItems = result;
+			return marketBriefItems;
+		}
+	}
+	catch (error) {
+		console.error('Fetch error:', error);
+		throw error;
+	}
+};
+
+const findMarketById = async (id: number, baseUrl: string): Promise<MarketBrief | null> => {
+	if (!marketBriefItems.length) {
+		await fetchMarketBriefItems(baseUrl);
+	}
+
+	let start = 0;
+	let end = marketBriefItems.length - 1;
+
+	while (start <= end) {
+		const mid = Math.floor((start + end) / 2);
+		const currentItem = marketBriefItems[mid];
+
+		if (currentItem.id === id) {
+			return currentItem;
+		}
+		else if (currentItem.id < id) {
+			start = mid + 1;
+		}
+		else {
+			end = mid - 1;
+		}
+	}
+
+	return null;
+};
+
+const searchMarkets = async (
+	baseUrl: string,
+	search: string,
+	count?: number,
+): Promise<MarketBrief[] | []> => {
+	if (!currencyBriefItems.length) {
+		await fetchCurrencyBriefItems(baseUrl);
+	}
+
+	if (!marketBriefItems.length) {
+		await fetchMarketBriefItems(baseUrl);
+	}
+
+	const searchLower = search.toLowerCase();
+
+	const filteredMarkets = marketBriefItems
+		.filter((market) => market.mSymbol.toLowerCase().includes(searchLower))
+		.map((market) => ({
+			...market,
+			currency: currencyBriefItems.find((currency) => currency.id === market.cbId) || null,
+		}));
+
+	const filteredCurrencies = currencyBriefItems
+		.filter(
+			(currency) =>
+				currency.cName.toLowerCase().includes(searchLower)
+				|| currency.cSymbol.toLowerCase().includes(searchLower),
+		)
+		.flatMap((currency) =>
+			marketBriefItems
+				.filter((market) => market.cbId === currency.id)
+				.map((market) => ({
+					...market,
+					currency,
+				})),
+		);
+
+	const uniqueResultsMap = new Map<number, MarketBrief>();
+	[...filteredMarkets, ...filteredCurrencies].forEach((item) => {
+		uniqueResultsMap.set(item.id, item);
+	});
+
+	const uniqueResults = Array.from(uniqueResultsMap.values());
+
+	return count ? uniqueResults.slice(0, count) : uniqueResults;
+};
+
+// Other
+const SearchSuggestionItems = async (baseUrl: string, query: string): Promise<SuggestionItems> => {
+	if (!currencyBriefItems.length) {
+		await fetchCurrencyBriefItems(baseUrl);
+	}
+
+	if (!marketBriefItems.length) {
+		await fetchMarketBriefItems(baseUrl);
+	}
+
+	const suggestionItems: SuggestionItems = {
+		currencies: [],
+		markets: [],
+	};
+	suggestionItems.currencies = await searchCurrencies(query, 3, baseUrl) || [];
+
+	suggestionItems.markets = await searchMarkets(baseUrl, query, 6);
+
+	return suggestionItems;
+};
+
 Comlink.expose({
 	// Currencies
 	addCurrencyToMarkets,
 	addCurrencyToMarketsL16,
+	addCurrencyToMarketStates,
 	fetchCurrencyBriefItems,
 	findCurrencyById,
 	findCurrencyBycSymbol,
@@ -200,4 +351,10 @@ Comlink.expose({
 	fetchQuoteItems,
 	// Tags
 	fetchTagItems,
+	// Markets
+	fetchMarketBriefItems,
+	findMarketById,
+	searchMarkets,
+	// Other
+	SearchSuggestionItems,
 });

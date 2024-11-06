@@ -41,7 +41,7 @@
 				<div
 					class="hidden md:flex justify-between"
 				>
-					<div v-if="mostProfitableMarketsPending === 'pending'">
+					<div v-if="mostProfitableMarketsLoading">
 						<MarketStateSkeleton />
 					</div>
 					<TopMarketState
@@ -50,7 +50,7 @@
 						:items="mostProfitableMarkets ?? []"
 					/>
 
-					<div v-if="hottestMarketsPending === 'pending'">
+					<div v-if="hottestMarketsLoading">
 						<MarketStateSkeleton />
 					</div>
 					<TopMarketState
@@ -59,7 +59,7 @@
 						:items="hottestMarkets ?? []"
 					/>
 
-					<div v-if="latestMarketsPending === 'pending'">
+					<div v-if="latestMarketsLoading">
 						<MarketStateSkeleton />
 					</div>
 					<TopMarketState
@@ -125,45 +125,69 @@ import TopMarketState from '~/components/pages/Market/TopMarketState.vue';
 import IconSearch from '~/assets/svg-icons/menu/search.svg';
 import MarketTable from '~/components/pages/Market/MarketTable.vue';
 import { marketRepository } from '~/repositories/market.repository';
-import { Language } from '~/utils/enums/language.enum';
 import MarketStateSkeleton from '~/components/pages/Market/MarketStateSkeleton.vue';
+import type { MarketState } from '~/types/definitions/market.types';
+import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 
 const { $api } = useNuxtApp();
 const marketRepo = marketRepository($api);
 
+const worker = useBaseWorker();
+
 const searchQuery = ref('');
 
-const { useCachedCurrencyBriefList, useCachedMarketBriefList } = useCachedData();
+const mostProfitableMarkets = ref<MarketState[]>([]);
+const mostProfitableMarketsLoading = ref<boolean>(false);
+const getMostProfitableMarkets = async () => {
+	try {
+		mostProfitableMarketsLoading.value = true;
+		const { result } = await marketRepo.getMostProfitableMarkets({ rowCount: '3' });
 
-const { data: cachedCurrencyBriefList } = await useCachedCurrencyBriefList({ languageId: Language.PERSIAN });
-const { data: cachedMarketBriefList } = await useCachedMarketBriefList();
+		mostProfitableMarkets.value = await worker.addCurrencyToMarketStates(useEnv('apiBaseUrl'), result.rows);
+		mostProfitableMarketsLoading.value = false;
+	}
+	catch (error: unknown) {
+		console.log(error);
+	}
+};
 
-const currencyBriefList = cachedCurrencyBriefList.value ?? [];
-const marketBriefList = cachedMarketBriefList.value ?? [];
+const hottestMarkets = ref<MarketState[]>([]);
+const hottestMarketsLoading = ref<boolean>(false);
+const getHottestMarkets = async () => {
+	try {
+		hottestMarketsLoading.value = true;
+		const { result } = await marketRepo.getHottestMarkets({ rowCount: '3' });
 
-const { data: mostProfitableMarkets, status: mostProfitableMarketsPending } = useAsyncData(
-	'mostProfitableMarkets',
-	async () => {
-		const response = await marketRepo.getMostProfitableMarkets({ rowCount: 3 });
-		return useProcessMarketData(response.result.rows, marketBriefList, currencyBriefList);
-	},
-);
+		hottestMarkets.value = await worker.addCurrencyToMarketStates(useEnv('apiBaseUrl'), result.rows);
+		hottestMarketsLoading.value = false;
+	}
+	catch (error: unknown) {
+		console.log(error);
+	}
+};
 
-const { data: hottestMarkets, status: hottestMarketsPending } = useAsyncData(
-	'hottestMarkets',
-	async () => {
-		const response = await marketRepo.getHottestMarkets({ rowCount: 3 });
-		return useProcessMarketData(response.result.rows, marketBriefList, currencyBriefList);
-	},
-);
+const latestMarkets = ref<MarketState[]>([]);
+const latestMarketsLoading = ref<boolean>(false);
+const getLatestMarkets = async () => {
+	try {
+		latestMarketsLoading.value = true;
+		const { result } = await marketRepo.getLatestMarkets({ rowCount: '3' });
 
-const { data: latestMarkets, status: latestMarketsPending } = useAsyncData(
-	'latestMarkets',
-	async () => {
-		const response = await marketRepo.getLatestMarkets({ rowCount: 3 });
-		return useProcessMarketData(response.result.rows, marketBriefList, currencyBriefList);
-	},
-);
+		latestMarkets.value = await worker.addCurrencyToMarketStates(useEnv('apiBaseUrl'), result.rows);
+		latestMarketsLoading.value = false;
+	}
+	catch (error: unknown) {
+		console.log(error);
+	}
+};
+
+onMounted(async () => {
+	Promise.all([
+		getMostProfitableMarkets(),
+		getHottestMarkets(),
+		getLatestMarkets(),
+	]);
+});
 
 const items = [
 	{

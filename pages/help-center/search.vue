@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
 	<div>
 		<section>
@@ -33,94 +34,97 @@
 			</UContainer>
 		</section>
 		<section>
-			<div class="grid grid-cols-12 border-t border-primary-gray-light dark:border-primary-gray-dark">
-				<div class="col-span-12 md:col-span-4 p-2 border-l border-primary-gray-light dark:border-primary-gray-dark">
-					<div class="w-full">
-						<SearchCrypto
-							id="searchMenu"
-							v-model="searchMenu"
-							type="text"
-							input-class="text-right"
-							label="search"
-							placeholder=""
-							icon="heroicons:magnifying-glass"
+			<UContainer>
+				<div class="grid grid-cols-12 border-t border-primary-gray-light dark:border-primary-gray-dark">
+					<div class="col-span-12 md:col-span-4 p-2 border-l border-primary-gray-light dark:border-primary-gray-dark">
+						<div class="w-full">
+							<SearchCrypto
+								id="searchMenu"
+								v-model="searchMenu"
+								type="text"
+								input-class="text-right"
+								label="search"
+								placeholder=""
+								icon="heroicons:magnifying-glass"
+							/>
+						</div>
+						<TreeNode
+							v-for="(item, index) in filteredTreeList"
+							:key="index"
+							:node="item"
 						/>
 					</div>
-					<TreeNode
-						v-for="(item, index) in filteredTreeList"
-						:key="index"
-						:node="item"
-					/>
-				</div>
-				<div
-					class="col-span-12 md:col-span-8 p-4"
-				>
-					<div class="">
-						<h2
-							class="text-right text-subtle-text-light dark:text-subtle-text-dark text-sm font-normal mb-4"
-						>
-							{{ $t('searchResultsFor') }}: <span class="text-2xl font-bold text-white dark:text-white">«{{ searchQuery }}» </span>{{ useNumber(totalCount) }} {{ $t('result') }}
-						</h2>
-						<div
-							v-if="loading"
-							class="text-center"
-						>
-							{{ $t('isLoading') }}
-						</div>
-						<div v-else>
+					<div
+						class="col-span-12 md:col-span-8 p-4"
+					>
+						<div class="">
+							<h2
+								class="text-right text-subtle-text-light dark:text-subtle-text-dark text-sm font-normal mb-4"
+							>
+								{{ $t('searchResultsFor') }}: <span class="text-2xl font-bold text-white dark:text-white">«{{ searchQuery }}» </span>{{ useNumber(totalCount) }} {{ $t('result') }}
+							</h2>
 							<div
-								v-if="searchItem.length === 0"
+								v-if="loading"
 								class="text-center"
 							>
-								<p>{{ $t('noResultsFound') }}</p>
+								{{ $t('isLoading') }}
 							</div>
-							<div
-								v-for="item in searchItem"
-								:key="item.id"
-								class="border-b border-primary-gray-light dark:border-primary-gray-dark mb-4 pb-4"
-							>
-								<h3 class=" text-xl font-bold">
-									{{ item.info.header }}
-								</h3>
-								<p
-									class="my-2 text-sm font-normal"
-									v-html="sanitizedHtml(item.info.content)"
-								/>
-								<div class="flex flex-wrap mt-2">
-									<span
-										v-for="(tag, index) in item.tags"
-										:key="index"
-										class="border border-primary-gray-light dark:border-primary-gray-dark text-subtle-text-light dark:text-subtle-text-dark text-xs font-normal px-2 py-1 rounded-full mr-2 mb-2"
-									>
-										{{ tag.value }}
-									</span>
+							<div v-else>
+								<div
+									v-if="searchItem.length === 0"
+									class="text-center"
+								>
+									<p>{{ $t('noResultsFound') }}</p>
 								</div>
-							</div>
-							<div class="flex justify-center py-4">
-								<UPagination
-									:model-value="Number(paramsSearch.pageNumber)"
-									:page-count="20"
-									:total="totalCount"
-									:max="6"
-									size="xl"
-									ul-class="flex space-x-2 bg-blue-500 border-none"
-									li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500 px-3"
-									button-class-base="flex items-center justify-center w-full h-full transition-colors duration-200"
-									button-class-inactive="bg-green-700 hover:bg-gray-600"
-									button-class-active="bg-blue-500"
-									class="my-14"
-									@update:model-value="onPageChange"
-								/>
+								<div
+									v-for="item in searchItem"
+									:key="item.id"
+									class="border-b border-primary-gray-light dark:border-primary-gray-dark mb-4 pb-4"
+								>
+									<h3 class=" text-xl font-bold">
+										{{ item.info.header }}
+									</h3>
+									<p
+										class="my-2 text-sm font-normal"
+										v-html="sanitizedHtml(item.info.content)"
+									/>
+									<div class="flex flex-wrap mt-2">
+										<span
+											v-for="(tag, index) in item.tags"
+											:key="index"
+											class="border border-primary-gray-light dark:border-primary-gray-dark text-subtle-text-light dark:text-subtle-text-dark text-xs font-normal px-2 py-1 rounded-full mr-2 mb-2"
+										>
+											{{ tag.value }}
+										</span>
+									</div>
+								</div>
+								<div class="flex justify-center py-4">
+									<UPagination
+										:model-value="Number(paramsSearch.pageNumber)"
+										:page-count="20"
+										:total="totalCount"
+										:max="6"
+										size="xl"
+										ul-class="flex space-x-2 bg-blue-500 border-none"
+										li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500 px-3"
+										button-class-base="flex items-center justify-center w-full h-full transition-colors duration-200"
+										button-class-inactive="bg-green-700 hover:bg-gray-600"
+										button-class-active="bg-blue-500"
+										class="my-14"
+										@update:model-value="onPageChange"
+									/>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			</UContainer>
 		</section>
 	</div>
 </template>
 
 <script setup lang="ts">
+import { useNumber } from '~/composables/useNumber';
 import TreeNode from '~/components/pages/Site/Support/TreeNode.vue';
 import { helpRepository } from '~/repositories/help.repository';
 import SearchCrypto from '~/components/forms/SearchCrypto.vue';
@@ -192,7 +196,7 @@ const fetchSearchResults = async () => {
 	try {
 		const response = await helpRepo.getSearchList(paramsSearch.value);
 		searchItem.value = response.result.rows;
-		totalCount.value = response.result.totalCount; // فرض کنیم که totalCount از سرور می‌آید
+		totalCount.value = response.result.totalCount;
 	}
 	catch (error) {
 		console.error('Error fetching search results:', error);
@@ -214,7 +218,7 @@ const filteredTreeList = computed(() => {
 	if (!searchMenu.value) return TreeList.value;
 	return TreeList.value
 		.map((item) => filterNode(item, searchMenu.value))
-		.filter((item) => item !== null); // فقط آیتم‌های غیر null را باز می‌گرداند
+		.filter((item) => item !== null);
 });
 
 function filterNode(node: TreeItem, searchText: string): TreeItem | null {

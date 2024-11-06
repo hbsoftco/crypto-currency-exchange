@@ -84,8 +84,8 @@
 import IconSearch from '~/assets/svg-icons/menu/search.svg';
 import IconArrowLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
-import type { CurrencyBriefItem, MarketBriefItem } from '~/types/response/brief-list.types';
-import { useMarketWorker } from '~/workers/market-worker/market-worker-wrapper';
+import type { MarketBrief } from '~/types/definitions/market.types';
+import type { CurrencyBrief } from '~/types/definitions/currency.types';
 
 const CurrencyItem = defineAsyncComponent(() => import('~/components/layouts/Default/Header/Search/CurrencyItem.vue'));
 const MarketItem = defineAsyncComponent(() => import('~/components/layouts/Default/Header/Search/MarketItem.vue'));
@@ -96,14 +96,10 @@ const showAdditionalBox = ref<boolean>(false);
 const search = ref<string>('');
 const container = ref<HTMLElement | null>(null);
 
-const currenciesItems = ref<CurrencyBriefItem[]>([]);
-const marketsItems = ref<MarketBriefItem[]>([]);
+const currenciesItems = ref<CurrencyBrief[]>([]);
+const marketsItems = ref<MarketBrief[]>([]);
 
-const currencyWorker = useBaseWorker();
-await currencyWorker.fetchCurrencyBriefItems(useEnv('apiBaseUrl'));
-
-const marketWorker = useMarketWorker();
-await marketWorker.fetchMarketBriefItems();
+const worker = useBaseWorker();
 
 const handleFocus = () => {
 	isFocused.value = true;
@@ -112,14 +108,20 @@ const handleFocus = () => {
 
 const handleInput = async (event: Event) => {
 	const input = event.target as HTMLInputElement;
-	showBox.value = !input.value.length;
+	const inputValue = input.value;
 
-	currenciesItems.value = await currencyWorker.searchCurrencies(search.value, 3, useEnv('apiBaseUrl'));
-	marketsItems.value = await marketWorker.searchMarkets(search.value, 3);
+	showBox.value = inputValue.length === 0;
+	showAdditionalBox.value = inputValue.length > 0;
 
-	console.log('marketsItems --------', marketsItems.value);
-
-	showAdditionalBox.value = input.value.length > 0;
+	if (inputValue) {
+		const { currencies, markets } = await worker.SearchSuggestionItems(useEnv('apiBaseUrl'), inputValue);
+		currenciesItems.value = currencies;
+		marketsItems.value = markets;
+	}
+	else {
+		currenciesItems.value = [];
+		marketsItems.value = [];
+	}
 };
 
 // Event listener to detect clicks outside of the container

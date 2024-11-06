@@ -16,19 +16,19 @@
 			>
 				<div
 					class="flex justify-start w-28 text-left items-center cursor-pointer"
-					@click="router.push(`/spot/${splitMarket(market?.marketBriefItem?.mSymbol)}`)"
+					@click="router.push(`/spot/${splitMarket(market?.mSymbol)}`)"
 				>
 					<img
-						:src="`https://api-bitland.site/media/currency/${market?.marketBriefItem?.currencyBriefItem?.cSymbol}.png`"
-						:alt="market?.marketBriefItem?.currencyBriefItem?.cName"
+						:src="`https://api-bitland.site/media/currency/${market?.currency?.cSymbol}.png`"
+						:alt="market?.currency?.cName"
 						class="w-5 h-5 rounded-full"
 						format="webp"
 						densities="x1"
 					>
 					<div class="text-sm font-normal mr-1">
-						<span>{{ market?.marketBriefItem?.currencyBriefItem?.cSymbol }}</span>
+						<span>{{ market?.currency?.cSymbol }}</span>
 						<span class="mx-0.5">/</span>
-						<span>{{ market.marketBriefItem?.quoteItem?.cSymbol }}</span>
+						<span>{{ market?.quote?.cSymbol }}</span>
 					</div>
 				</div>
 				<div class="w-28 text-left">
@@ -48,8 +48,8 @@
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
+import type { MarketState } from '~/types/definitions/market.types';
 import { priceFormat } from '~/utils/price-format';
-import type { MarketState } from '~/types/response/market.types';
 import { splitMarket } from '~/utils/split-market';
 
 interface Props {

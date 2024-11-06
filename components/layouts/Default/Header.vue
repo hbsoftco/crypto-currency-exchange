@@ -118,10 +118,8 @@
 </template>
 
 <script setup lang="ts">
-import SidebarSettingAction from '../Trade/SidebarSettingAction.vue';
-
-import Search from './Header/Search/index.vue';
-
+const SidebarSettingAction = defineAsyncComponent(() => import('~/components/layouts/Trade/SidebarSettingAction.vue'));
+const Search = defineAsyncComponent(() => import('~/components/layouts/Default/Header/Search/index.vue'));
 const UserLogin = defineAsyncComponent(() => import('~/components/layouts/Default/Header/UserLogin/index.vue'));
 const Download = defineAsyncComponent(() => import('~/components/layouts/Default/Header/Download.vue'));
 const Setting = defineAsyncComponent(() => import('~/components/layouts/Default/Header/Setting.vue'));

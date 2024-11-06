@@ -34,40 +34,42 @@
 			</UContainer>
 		</section>
 		<section>
-			<div class="grid grid-cols-12 border-t border-primary-gray-light dark:border-primary-gray-dark">
-				<div class="col-span-12 md:col-span-4 p-2 border-l border-primary-gray-light dark:border-primary-gray-dark">
-					<div class="w-full">
-						<SearchCrypto
-							id="searchMenu"
-							v-model="searchMenu"
-							type="text"
-							input-class="text-right"
-							label="search"
-							placeholder=""
-							icon="heroicons:magnifying-glass"
+			<UContainer>
+				<div class="grid grid-cols-12 border-t border-primary-gray-light dark:border-primary-gray-dark">
+					<div class="col-span-12 md:col-span-4 p-2 border-l border-primary-gray-light dark:border-primary-gray-dark">
+						<div class="w-full">
+							<SearchCrypto
+								id="searchMenu"
+								v-model="searchMenu"
+								type="text"
+								input-class="text-right"
+								label="search"
+								placeholder=""
+								icon="heroicons:magnifying-glass"
+							/>
+						</div>
+						<TreeNode
+							v-for="(item, index) in filteredTreeList"
+							:key="index"
+							:node="item"
 						/>
 					</div>
-					<TreeNode
-						v-for="(item, index) in filteredTreeList"
-						:key="index"
-						:node="item"
-					/>
-				</div>
-				<div
-					v-if="FAQItems && FAQItems.info.length > 0"
-					class="col-span-12 md:col-span-8 p-4"
-				>
-					<div class="pt-4 pb-10">
-						<h2 class="text-4xl font-black">
-							{{ FAQItems.info[0].header }}
-						</h2>
+					<div
+						v-if="FAQItems && FAQItems.info.length > 0"
+						class="col-span-12 md:col-span-8 p-4"
+					>
+						<div class="pt-4 pb-10">
+							<h2 class="text-4xl font-black">
+								{{ FAQItems.info[0].header }}
+							</h2>
+						</div>
+						<p
+							class="content my-2"
+							v-html="sanitizedHtml(FAQItems.info[0].content)"
+						/>
 					</div>
-					<p
-						class="content my-2"
-						v-html="sanitizedHtml(FAQItems.info[0].content)"
-					/>
 				</div>
-			</div>
+			</UContainer>
 		</section>
 	</div>
 </template>

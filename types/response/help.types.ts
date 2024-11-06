@@ -152,7 +152,7 @@ type SearchItem = {
 	mediaId: number;
 	mediaUrl: string;
 	tags: ApiTag[];
-	info: ApiInfo[];
+	info: ApiInfo;
 };
 
 type GetSearchListResponse = {

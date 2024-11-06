@@ -2,7 +2,7 @@
 	<div class="flex justify-between items-center">
 		<div class="flex">
 			<img
-				:src="`https://api-bitland.site/media/currency/${market?.currencyBriefItem?.cSymbol}.png`"
+				:src="`https://api-bitland.site/media/currency/${market?.currency?.cSymbol}.png`"
 				alt="bitcoin Logo"
 				class="w-5 h-5 ml-1"
 			>
@@ -18,10 +18,10 @@
 </template>
 
 <script setup lang="ts">
-import type { MarketBriefItem } from '~/types/response/brief-list.types';
+import type { MarketBrief } from '~/types/definitions/market.types';
 
 interface PropsDefinition {
-	market: MarketBriefItem;
+	market: MarketBrief;
 }
 
 defineProps<PropsDefinition>();

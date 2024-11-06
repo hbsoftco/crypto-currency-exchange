@@ -1,21 +1,5 @@
 import type { CurrencyBriefItem, MarketBriefItem } from './brief-list.types';
 
-type MarketStateResponse = {
-	statusCode: number;
-	result: {
-		totalCount: number;
-		rows: MarketState[];
-	};
-};
-
-type MarketState = {
-	id: number;
-	indexPrice: string;
-	priceChangePercIn24H: string;
-	marketTypeName: string;
-	marketBriefItem: MarketBriefItem | null;
-};
-
 type MarketsResponse = {
 	statusCode: number;
 	result: {
@@ -118,8 +102,6 @@ type MarketListResponse = {
 };
 
 export type {
-	MarketStateResponse,
-	MarketState,
 	Market,
 	MarketItem,
 	MarketDetailItem,
