@@ -51,11 +51,10 @@
 					<div
 						v-for="market of marketsItems"
 						:key="market.id"
-						class="my-4"
+						class="my-1 py-2 hover:bg-primary-gray-light hover:dark:bg-primary-gray-dark rounded-sm px-1"
+						@click="handleSelection"
 					>
-						<MarketItem
-							:market="market"
-						/>
+						<MarketItem :market="market" />
 					</div>
 					<UButton
 						to="/markets"
@@ -73,6 +72,7 @@
 						:key="currency.id"
 						:currency="currency"
 						class="mt-1"
+						@click="handleSelection"
 					/>
 				</div>
 			</div>
@@ -142,4 +142,10 @@ onBeforeUnmount(() => {
 });
 
 // let searchTimeout: ReturnType<typeof setTimeout> | null = null;
+
+const handleSelection = () => {
+	showAdditionalBox.value = false;
+	search.value = '';
+	isFocused.value = false;
+};
 </script>

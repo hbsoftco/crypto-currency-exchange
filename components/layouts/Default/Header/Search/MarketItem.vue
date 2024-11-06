@@ -1,5 +1,8 @@
 <template>
-	<div class="flex justify-between items-center">
+	<ULink
+		:to="`/coins/${market?.currency?.cSymbol}`"
+		class="flex justify-between items-center"
+	>
 		<div class="flex">
 			<img
 				:src="`https://api-bitland.site/media/currency/${market?.currency?.cSymbol}.png`"
@@ -14,7 +17,7 @@
 		<div>
 			<span class="text-sm font-normal text-accent-green">+0%</span>
 		</div>
-	</div>
+	</ULink>
 </template>
 
 <script setup lang="ts">
