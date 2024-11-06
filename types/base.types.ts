@@ -81,11 +81,6 @@ type GetUserTraderCommissionListParams = {
 	marketType: string;
 };
 
-type GetMarketListByCategoryParams = {
-	rowCount: string;
-	marketTypeId: string;
-};
-
 type KeyValue = {
 	key: string;
 	value: string;
@@ -377,7 +372,6 @@ export type {
 	GetUserTraderCommissionListParams,
 	GetMarketStatusParams,
 	getTradesListParams,
-	GetMarketListByCategoryParams,
 	GetAssetListParams,
 	GetExposedListParams,
 	KeyValue,

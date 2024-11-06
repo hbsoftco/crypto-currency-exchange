@@ -6,7 +6,7 @@
 				class="text-sm font-bold text-right mb-2"
 				dir="rtl"
 			>
-				{{ item.tag }}
+				{{ tag }}
 			</h3>
 			<div class="flex items-center space-x-1">
 				<div
@@ -29,7 +29,7 @@
 			dir="rtl"
 		>
 			<li
-				v-for="(currency, index) in item.markets"
+				v-for="(market, index) in markets"
 				:key="index"
 				dir="ltr"
 				class="flex justify-between items-center py-1"
@@ -38,17 +38,17 @@
 					classes="text-sm font-normal"
 					:show-percent="true"
 					pl="pl-2"
-					:change="parseFloat(String(currency.priceChangePercIn24H))"
+					:change="parseFloat(String(market.priceChangePercIn24H))"
 					:icon="false"
 				/>
 				<ULink
 					class="flex justify-start"
-					:to="`/spot/${splitMarket(currency.currencyDetails?.cSymbol+'USDT')}`"
+					:to="`/spot/${splitMarket(market.mSymbol)}`"
 				>
-					<span class="text-sm font-normal mx-2">{{ currency.currencyDetails?.cSymbol }} USDT</span>
+					<span class="text-sm font-normal mx-2">{{ market.mSymbol }}</span>
 					<img
-						:src="`https://api-bitland.site/media/currency/${currency.currencyDetails?.cSymbol}.png`"
-						:alt="currency.currencyDetails?.cName"
+						:src="`https://api-bitland.site/media/currency/${market.currency?.cSymbol}.png`"
+						:alt="market.currency?.cName"
 						class="w-5 h-5 rounded-full"
 						format="webp"
 						densities="x1"
@@ -61,24 +61,25 @@
 
 <script setup lang="ts">
 import { splitMarket } from '~/utils/split-market';
-import type { MarketCurrencyCategoryItem } from '~/types/response/market.types';
+import type { MarketL51Item } from '~/types/definitions/market.types';
 
 interface PropsDefinition {
-	item: MarketCurrencyCategoryItem;
+	markets: MarketL51Item[];
+	tag: string;
 }
 
 const props = defineProps<PropsDefinition>();
 
 const numberPositive = computed(() => {
-	return props.item.markets.filter((market) => parseFloat(market.priceChangePercIn24H) > 2).length;
+	return props.markets.filter((market) => parseFloat(market.priceChangePercIn24H) > 2).length;
 });
 
 const numberNegative = computed(() => {
-	return props.item.markets.filter((market) => parseFloat(market.priceChangePercIn24H) < -2).length;
+	return props.markets.filter((market) => parseFloat(market.priceChangePercIn24H) < -2).length;
 });
 
 const numberNeutral = computed(() => {
-	return props.item.markets.filter((market) => {
+	return props.markets.filter((market) => {
 		const change = parseFloat(market.priceChangePercIn24H);
 		return change > -2 && change < 2;
 	}).length;

@@ -4,6 +4,7 @@
 		class="relative"
 	>
 		<UCarousel
+			ref="carouselRef"
 			v-slot="{ item }"
 			:items="items"
 			:ui="{
@@ -29,9 +30,10 @@
 			class="rounded-lg overflow-hidden pb-10"
 		>
 			<div class="px-0 md:px-4 mb-2 w-full md:w-auto">
-				<CurrencyCategory
+				<MarketCategory
 					:key="item.id"
-					:item="item"
+					:tag="item.tag"
+					:markets="item.markets"
 				/>
 			</div>
 		</UCarousel>
@@ -39,13 +41,26 @@
 </template>
 
 <script setup lang="ts">
-import CurrencyCategory from './CurrencyCategory.vue';
-
-import type { MarketCurrencyCategoryItem } from '~/types/response/market.types';
+import MarketCategory from '~/components/pages/Market/Statistics/MarketCategory.vue';
+import type { MarketL51 } from '~/types/definitions/market.types';
 
 interface PropsDefinition {
-	items: MarketCurrencyCategoryItem[];
+	items: MarketL51[];
 }
 
 defineProps<PropsDefinition>();
+
+const carouselRef = ref();
+
+onMounted(() => {
+	setInterval(() => {
+		if (!carouselRef.value) return;
+
+		if (carouselRef.value.page === carouselRef.value.pages) {
+			return carouselRef.value.select(0);
+		}
+
+		carouselRef.value.next();
+	}, 3000);
+});
 </script>

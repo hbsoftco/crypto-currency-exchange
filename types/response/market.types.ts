@@ -33,20 +33,6 @@ type PriceChangeState = {
 	priceChangeRange: string;
 };
 
-type MarketCurrencyCategoriesResponse = {
-	statusCode: number;
-	result: {
-		totalCount: number;
-		rows: MarketCurrencyCategoryItem[];
-	};
-};
-
-type MarketCurrencyCategoryItem = {
-	id: number;
-	tag: string;
-	markets: MarketItem[];
-};
-
 type MarketItem = {
 	id: number;
 	cid: number;
@@ -61,28 +47,6 @@ type NeutralMarketItem = {
 	itemStyle: {
 		color: string;
 	};
-};
-
-type MarketListByCategoryResponse = {
-	statusCode: number;
-	result: {
-		totalCount: number;
-		rows: MarketCategoryInfo[];
-	};
-};
-
-type MarketCategoryInfo = {
-	category: string;
-	info: MarketInfoItem[];
-};
-
-type MarketInfoItem = {
-	id: number;
-	cid: number;
-	indexPrice: string;
-	priceChangePercIn24H: string;
-	valueOfTradesIn24H: string;
-	currencyDetails: CurrencyBriefItem | null;
 };
 
 type MarketDetailItem = {
@@ -109,10 +73,5 @@ export type {
 	MarketStatisticsChartsResponse,
 	PriceChangeState,
 	NeutralMarketItem,
-	MarketCurrencyCategoriesResponse,
-	MarketCurrencyCategoryItem,
-	MarketListByCategoryResponse,
-	MarketInfoItem,
-	MarketCategoryInfo,
 	MarketListResponse,
 };

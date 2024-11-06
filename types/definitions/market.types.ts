@@ -20,6 +20,19 @@ type MarketBrief = {
 	currency?: CurrencyBrief | null;
 };
 
+type MarketsResponse = {
+	statusCode: number;
+	result: {
+		totalCount: number;
+		rows:
+			MarketL16[] |
+			MarketL21[] |
+			MarketL51[] |
+			MarketL47[] |
+			MarketL31[];
+	};
+};
+
 type MarketsL21Params = {
 	sortMode?: string;
 	currencyQuoteId?: string;
@@ -46,14 +59,6 @@ type MarketsParams = {
 	searchStatement?: string;
 	pageNumber?: string;
 	pageSize?: string;
-};
-
-type MarketsResponse = {
-	statusCode: number;
-	result: {
-		totalCount: number;
-		rows: MarketL16[] | MarketL21[] | MarketL31[];
-	};
 };
 
 type MarketL16 = {
@@ -106,6 +111,45 @@ type MarketL31 = {
 	quote?: Quote | null;
 };
 
+type MarketL51 = {
+	id: number;
+	tag: string;
+	markets: MarketL51Item[];
+};
+
+type MarketL51Item = {
+	id: number;
+	cid: number;
+	mSymbol?: string;
+	indexPrice: string;
+	priceChangePercIn24H: string;
+	currency: CurrencyBrief | null;
+	market: MarketBrief | null;
+	quote?: Quote | null;
+};
+
+type MarketsL47Params = {
+	rowCount: string;
+	marketTypeId: string;
+};
+
+type MarketL47 = {
+	category: string;
+	info: MarketL47Item[];
+};
+
+type MarketL47Item = {
+	id: number;
+	cid: number;
+	indexPrice: string;
+	priceChangePercIn24H: string;
+	valueOfTradesIn24H: string;
+	mSymbol?: string;
+	currency: CurrencyBrief | null;
+	market: MarketBrief | null;
+	quote?: Quote | null;
+};
+
 export type {
 	MarketBrief,
 	MarketL21,
@@ -117,4 +161,9 @@ export type {
 	MarketStateResponse,
 	MarketState,
 	MarketL31,
+	MarketL51,
+	MarketL51Item,
+	MarketsL47Params,
+	MarketL47,
+	MarketL47Item,
 };

@@ -1,8 +1,10 @@
 <template>
-	<UContainer>
-		<div v-if="chartsDataLoading === 'pending'">
+	<UContainer v-if="marketsL51Loading || marketsL47Loading">
+		<div>
 			<UiLogoLoading />
 		</div>
+	</UContainer>
+	<UContainer v-else>
 		<div v-if="chartsDataLoading === 'success'">
 			<div class="mb-4 mt-8">
 				<UiTitleWithBack :title="$t('marketStatistics')" />
@@ -46,39 +48,96 @@
 			</div>
 		</div>
 
-		<div class="mb-10">
-			<h3 class="text-base font-bold">
-				{{ $t("currencyCategories") }}
-			</h3>
+		<div v-if="marketsL51.length">
+			<div class="mb-10">
+				<h3 class="text-base font-bold">
+					{{ $t("currencyCategories") }}
+				</h3>
+			</div>
+			<div class="mb-18">
+				<MarketCategorySlider :items="marketsL51" />
+			</div>
 		</div>
-		<div
-			v-if="marketCurrencyCategoriesLoading === 'success'"
-			class="mb-18"
-		>
-			<CurrencyCategorySlider :items="marketCurrencyCategories ?? []" />
-		</div>
+		<!-- Currency Categories -->
 
 		<div class="flex flex-wrap justify-around">
 			<ChartMarketState
-				v-for="(item, index) in marketListByCategory"
+				v-for="(item, index) in marketsL47"
 				:key="index"
 				:item="item"
 			/>
 		</div>
+		<!-- Bellow tables and its charts -->
 	</UContainer>
 </template>
 
 <script setup lang="ts">
-import CurrencyCategorySlider from '~/components/pages/Market/Statistics/CurrencyCategorySlider.vue';
+import MarketCategorySlider from '~/components/pages/Market/Statistics/MarketCategorySlider.vue';
 import ChartMarketState from '~/components/pages/Market/Statistics/ChartMarketState.vue';
 import { useNumber } from '~/composables/useNumber';
 import { marketRepository } from '~/repositories/market.repository';
-import type { MarketCurrencyCategoriesResponse, MarketListByCategoryResponse, NeutralMarketItem, PriceChangeState } from '~/types/response/market.types';
-import { Language } from '~/utils/enums/language.enum';
 import { MarketType } from '~/utils/enums/market.enum';
+import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
+import type { MarketL47, MarketL51, MarketsL47Params } from '~/types/definitions/market.types';
+import type {
+	NeutralMarketItem,
+	PriceChangeState } from '~/types/response/market.types';
 
 const { $api } = useNuxtApp();
 const marketRepo = marketRepository($api);
+
+const worker = useBaseWorker();
+
+const marketsL51 = ref<MarketL51[]>([]);
+const marketsL51Loading = ref<boolean>(false);
+const getMarketListL51 = async () => {
+	try {
+		marketsL51Loading.value = true;
+		const { result } = await marketRepo.getMarketListL51();
+		marketsL51.value = await worker.addCurrencyToMarketsL51(
+			useEnv('apiBaseUrl'),
+			result.rows as MarketL51[],
+		);
+
+		marketsL51Loading.value = false;
+	}
+	catch (error: unknown) {
+		console.log(error);
+	}
+};
+// Currency Categories
+
+const marketsL47Params = ref<MarketsL47Params>({
+	marketTypeId: String(MarketType.SPOT),
+	rowCount: '10',
+});
+const marketsL47 = ref<MarketL47[]>([]);
+const marketsL47Loading = ref<boolean>(false);
+const getMarketListL47 = async () => {
+	try {
+		marketsL47Loading.value = true;
+		const { result } = await marketRepo.getMarketListL47(marketsL47Params.value);
+		marketsL47.value = await worker.addCurrencyToMarketsL47(
+			useEnv('apiBaseUrl'),
+			result.rows as MarketL47[],
+		);
+
+		marketsL47Loading.value = false;
+	}
+	catch (error: unknown) {
+		console.log(error);
+	}
+};
+// Bellow tables and its charts
+
+onMounted(async () => {
+	await Promise.all([
+		getMarketListL51(),
+		getMarketListL47(),
+	]);
+});
+
+/// //////////////////////////////////////////////////////// // OLD
 
 const { data: chartsData, status: chartsDataLoading } = useAsyncData(
 	'marketStatisticsChartsData',
@@ -87,67 +146,6 @@ const { data: chartsData, status: chartsDataLoading } = useAsyncData(
 		return response;
 	},
 );
-
-const { useCachedCurrencyBriefList } = useCachedData();
-
-const { data: cachedCurrencyBriefList } = await useCachedCurrencyBriefList({ languageId: Language.PERSIAN });
-
-const currencyBriefList = cachedCurrencyBriefList.value ?? [];
-
-const { data: marketCurrencyCategories, status: marketCurrencyCategoriesLoading } = useAsyncData(
-	'marketCurrencyCategories',
-	async () => {
-		const response: MarketCurrencyCategoriesResponse = await marketRepo.getMarketCurrencyCategories();
-
-		const processedMarketCategories = response.result.rows.map((category) => {
-			const updatedMarkets = category.markets.map((market) => {
-				const currencyItem = currencyBriefList.find((item) => item.id === market.cid) || null;
-
-				return {
-					...market,
-					currencyDetails: currencyItem,
-				};
-			});
-
-			return {
-				...category,
-				markets: updatedMarkets,
-			};
-		});
-
-		return processedMarketCategories;
-	},
-);
-
-const { data: marketListByCategory, status: marketListByCategoryLoading } = useAsyncData(
-	'marketListByCategory',
-	async () => {
-		const response: MarketListByCategoryResponse = await marketRepo.getMarketListByCategory({
-			marketTypeId: String(MarketType.SPOT),
-			rowCount: '10',
-		});
-
-		const processedMarketList = response.result.rows.map((category) => {
-			const updatedMarkets = category.info.map((market) => {
-				const currencyItem = currencyBriefList.find((item) => item.id === market.cid) || null;
-
-				return {
-					...market,
-					currencyDetails: currencyItem,
-				};
-			});
-
-			return {
-				...category,
-				info: updatedMarkets,
-			};
-		});
-		return processedMarketList;
-	},
-);
-
-console.log('marketListByCategory', marketListByCategory.value);
-console.log(marketListByCategoryLoading.value);
 
 const positiveRanges: [string, string][] = [
 	['> 10%', '> +10.0%'],

@@ -3,7 +3,7 @@ import * as Comlink from 'comlink';
 import { loadFromCache } from '~/utils/indexeddb';
 import { CACHE_KEY_CURRENCY_BRIEF_ITEMS, CACHE_KEY_MARKET_BRIEF_ITEMS, CACHE_KEY_QUOTE_ITEMS, CACHE_KEY_TAG_ITEMS } from '~/utils/constants/common';
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
-import type { MarketBrief, MarketL16, MarketL21, MarketState } from '~/types/definitions/market.types';
+import type { MarketBrief, MarketL16, MarketL21, MarketL47, MarketL51, MarketState } from '~/types/definitions/market.types';
 import type { Quote } from '~/types/definitions/quote.types';
 import type { SuggestionItems } from '~/types/definitions/header/search.types';
 import type { Tag } from '~/types/definitions/tag.types';
@@ -12,7 +12,6 @@ let currencyBriefItems: CurrencyBrief[] = [];
 let marketBriefItems: MarketBrief[] = [];
 
 // Currencies
-
 const fetchCurrencyBriefItems = async (baseUrl: string) => {
 	try {
 		const cachedItems = await loadFromCache<CurrencyBrief[]>(CACHE_KEY_CURRENCY_BRIEF_ITEMS);
@@ -150,6 +149,72 @@ const addCurrencyToMarketStates = async (baseUrl: string, markets: MarketState[]
 			market: marketItem,
 			quote,
 			mSymbol: `${currency?.cSymbol}${quote?.cSymbol}`,
+		};
+	}));
+
+	return result;
+};
+
+const addCurrencyToMarketsL47 = async (baseUrl: string, markets: MarketL47[]) => {
+	if (!currencyBriefItems.length) {
+		await fetchCurrencyBriefItems(baseUrl);
+	}
+
+	if (!marketBriefItems.length) {
+		await fetchMarketBriefItems(baseUrl);
+	}
+
+	const quoteItems = await fetchQuoteItems(111, baseUrl);
+
+	const result = await Promise.all(markets.map(async (category) => {
+		const marketsWithDetails = await Promise.all(category.info.map(async (market) => {
+			const currency = await findCurrencyById(market.cid, baseUrl);
+			const marketItem = await findMarketById(market.id, baseUrl);
+			const quote = quoteItems.find((quote) => quote.id === marketItem?.cqId);
+			return {
+				...market,
+				currency,
+				market: marketItem,
+				quote,
+				mSymbol: `${currency?.cSymbol}${quote?.cSymbol}`,
+			};
+		}));
+		return {
+			...category,
+			info: marketsWithDetails,
+		};
+	}));
+
+	return result;
+};
+
+const addCurrencyToMarketsL51 = async (baseUrl: string, markets: MarketL51[]) => {
+	if (!currencyBriefItems.length) {
+		await fetchCurrencyBriefItems(baseUrl);
+	}
+
+	if (!marketBriefItems.length) {
+		await fetchMarketBriefItems(baseUrl);
+	}
+
+	const quoteItems = await fetchQuoteItems(111, baseUrl);
+
+	const result = await Promise.all(markets.map(async (tag) => {
+		const marketsWithDetails = await Promise.all(tag.markets.map(async (market) => {
+			const currency = await findCurrencyById(market.cid, baseUrl);
+			const marketItem = await findMarketById(market.id, baseUrl);
+			const quote = quoteItems.find((quote) => quote.id === marketItem?.cqId);
+			return {
+				...market,
+				currency,
+				market: marketItem,
+				quote,
+				mSymbol: `${currency?.cSymbol}${quote?.cSymbol}`,
+			};
+		}));
+		return {
+			...tag,
+			markets: marketsWithDetails,
 		};
 	}));
 
@@ -349,6 +414,8 @@ Comlink.expose({
 	// Currencies
 	addCurrencyToMarkets,
 	addCurrencyToMarketsL16,
+	addCurrencyToMarketsL51,
+	addCurrencyToMarketsL47,
 	addCurrencyToMarketStates,
 	fetchCurrencyBriefItems,
 	findCurrencyById,

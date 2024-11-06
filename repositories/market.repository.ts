@@ -1,6 +1,5 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { GetMarketListByCategoryParams } from '~/types/base.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import type { FavoriteMarketDto } from '~/types/dto/market.dto';
 import type { CommonResponse } from '~/types/response/common.types';
@@ -9,10 +8,9 @@ import type {
 	MarketsResponse,
 	MarketsParams,
 	MarketStateParams,
-	MarketStateResponse } from '~/types/definitions/market.types';
+	MarketStateResponse,
+	MarketsL47Params } from '~/types/definitions/market.types';
 import type {
-	MarketCurrencyCategoriesResponse,
-	MarketListByCategoryResponse,
 	MarketListResponse,
 	MarketStatisticsChartsResponse } from '~/types/response/market.types';
 
@@ -24,12 +22,12 @@ type MarketRepository = {
 	getLatestMarkets: (params: MarketStateParams) => Promise<MarketStateResponse>;
 	getMostVoluminous: (params: MarketStateParams) => Promise<MarketStateResponse>;
 	getMarketListL31: (params: MarketsParams) => Promise<MarketsResponse>;
+	getMarketListL51: () => Promise<MarketsResponse>;
+	getMarketListL47: (params: MarketsL47Params) => Promise<MarketsResponse>;
 
 	getMarkets: (params: MarketsParams) => Promise<MarketsResponse>;
 	getMarketStatisticsCharts: () => Promise<MarketStatisticsChartsResponse>;
-	getMarketCurrencyCategories: () => Promise<MarketCurrencyCategoriesResponse>;
-	getMarketListByCategory: (params: GetMarketListByCategoryParams) => Promise<MarketListByCategoryResponse>;
-	getMarketList: (params: GetMarketListByCategoryParams) => Promise<MarketListResponse>;
+	getMarketList: (params: MarketsL47Params) => Promise<MarketListResponse>;
 	likeMarket: (dto: FavoriteMarketDto) => Promise<CommonResponse>;
 	dislikeMarket: (dto: FavoriteMarketDto) => Promise<CommonResponse>;
 };
@@ -146,6 +144,31 @@ export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Mar
 
 		return response;
 	},
+	async getMarketListL51(): Promise<MarketsResponse> {
+		const url = '/v1/market/routine/l51_f';
+		const response = await fetch<MarketsResponse>(`${url}`, {
+			noAuth: true,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getMarketListL47(params: MarketsL47Params): Promise<MarketsResponse> {
+		const query = new URLSearchParams();
+		Object.entries(params).forEach(([key, value]) => {
+			if (value !== undefined && value !== null && value.toString().trim() !== '') {
+				query.append(key, value);
+			}
+		});
+
+		const url = '/v1/market/routine/l47_f';
+		const response = await fetch<MarketStateResponse>(`${url}?${query.toString()}`, {
+			noAuth: true,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
 
 	async getMarkets(
 		params: MarketsParams): Promise<MarketsResponse> {
@@ -175,26 +198,7 @@ export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Mar
 
 		return response;
 	},
-	async getMarketCurrencyCategories(): Promise<MarketCurrencyCategoriesResponse> {
-		const url = '/v1/market/routine/l51_f';
-		const response = await fetch<MarketCurrencyCategoriesResponse>(`${url}`, {
-			noAuth: true,
-			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getMarketListByCategory({ rowCount, marketTypeId }: GetMarketListByCategoryParams): Promise<MarketListByCategoryResponse> {
-		const query = new URLSearchParams({ rowCount, marketTypeId });
-		const url = '/v1/market/routine/l47_f';
-		const response = await fetch<MarketListByCategoryResponse>(`${url}?${query.toString()}`, {
-			noAuth: true,
-			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getMarketList({ rowCount, marketTypeId }: GetMarketListByCategoryParams): Promise<MarketListResponse> {
+	async getMarketList({ rowCount, marketTypeId }: MarketsL47Params): Promise<MarketListResponse> {
 		const query = new URLSearchParams({ rowCount, marketTypeId });
 		const url = '/v1/market/routine/l46_f';
 		const response = await fetch<MarketListResponse>(`${url}?${query.toString()}`, {
