@@ -10,6 +10,14 @@
 				class="w-5 h-5 ml-1"
 			>
 			<span class="text-sm font-normal">{{ market.mSymbol }}</span>
+			<span
+				v-if="market.typeId === MarketType.SPOT"
+				class="text-xs font-normal mr-2"
+			> ({{ $t('spot') }})</span>
+			<span
+				v-else-if="market.typeId === MarketType.FUTURES"
+				class="text-xs font-normal mr-2"
+			> ({{ $t('futures') }})</span>
 		</div>
 		<div>
 			<span class="text-sm font-normal">0</span>
@@ -22,6 +30,7 @@
 
 <script setup lang="ts">
 import type { MarketBrief } from '~/types/definitions/market.types';
+import { MarketType } from '~/utils/enums/market.enum';
 
 interface PropsDefinition {
 	market: MarketBrief;

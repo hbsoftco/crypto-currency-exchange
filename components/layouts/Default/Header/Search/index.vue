@@ -49,6 +49,12 @@
 						</div>
 					</div>
 					<div
+						v-if="marketsItems.length === 0"
+						class="text-center text-sm text-gray-500 dark:text-gray-400 py-4"
+					>
+						{{ $t("notFoundMessage") }}
+					</div>
+					<div
 						v-for="market of marketsItems"
 						:key="market.id"
 						class="my-1 py-2 px-3 hover:bg-primary-gray-light hover:dark:bg-primary-gray-dark rounded duration-200 transition-all"
@@ -57,6 +63,7 @@
 						<MarketItem :market="market" />
 					</div>
 					<UButton
+						v-if="marketsItems.length > 0"
 						to="/markets"
 						class="flex justify-center w-full my-4 text-primary-yellow-light dark:text-primary-yellow-dark text-base hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-yellow"
 					>
@@ -67,6 +74,12 @@
 					<p class="text-sm font-bold mb-2">
 						{{ $t("currencyInformation") }}
 					</p>
+					<div
+						v-if="currenciesItems.length === 0"
+						class="text-center text-sm text-gray-500 dark:text-gray-400 py-4"
+					>
+						{{ $t("notFoundMessage") }}
+					</div>
 					<CurrencyItem
 						v-for="currency of currenciesItems"
 						:key="currency.id"
@@ -130,6 +143,7 @@ const handleClickOutside = (event: MouseEvent) => {
 		showBox.value = false;
 		showAdditionalBox.value = false;
 		isFocused.value = false;
+		search.value = '';
 	}
 };
 
