@@ -114,6 +114,9 @@
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
 import IconCopy from '~/assets/svg-icons/menu/copy.svg';
+import { userRepository } from '~/repositories/user.repository';
+import type { ApiList } from '~/types/response/user.types';
+import type { getApiListParams } from '~/types/base.types';
 
 definePageMeta({
 	layout: 'account',
@@ -125,6 +128,36 @@ const rows = ref([
 	{ id: 3, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
 	{ id: 4, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
 ]);
-</script>
 
-<style scoped></style>
+const { $api } = useNuxtApp();
+const userRepo = userRepository($api);
+const apiListLoading = ref<boolean>(false);
+const apiListItem = ref<ApiList[]>();
+
+const params = ref<getApiListParams>({
+	srchKey: '',
+	from: '',
+	to: '',
+	pageNumber: '1',
+	pageSize: '20',
+});
+
+const getApiList = async () => {
+	try {
+		apiListLoading.value = true;
+		const { result } = await userRepo.getApiList(params.value);
+		apiListItem.value = result.rows;
+		apiListLoading.value = false;
+	}
+	catch (error) {
+		apiListLoading.value = false;
+		console.log(error);
+	}
+};
+
+console.log('apiListItem**************************************', apiListItem);
+
+onMounted(async () => {
+	await getApiList();
+});
+</script>

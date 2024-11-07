@@ -140,7 +140,7 @@ const loadHelpData = async (itemId: string) => {
 		paramsData.value.id = String(itemId);
 		const loadData = await helpRepo.getHelpData(paramsData.value);
 		FAQItems.value = loadData.result;
-		console.log('loadData------------*********************************', FAQItems);
+		// console.log('loadData------------*********************************', FAQItems);
 	}
 	catch (error) {
 		console.log(error);
