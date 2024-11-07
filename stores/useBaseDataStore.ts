@@ -15,7 +15,7 @@ import { userTraderRepository } from '~/repositories/trader.repository';
 import type { GetUserTraderCommissionListParams } from '~/types/base.types';
 import { CACHE_KEY_COUNTRY_ITEMS, CACHE_KEY_CURRENCY_BRIEF_ITEMS, CACHE_KEY_MARKET_BRIEF_ITEMS, CACHE_KEY_QUOTE_ITEMS, CACHE_KEY_TAG_ITEMS } from '~/utils/constants/common';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
-import { useMarketWorker } from '~/workers/market-worker/market-worker-wrapper';
+// import { useMarketWorker } from '~/workers/market-worker/market-worker-wrapper';
 import { loadFromCache, saveToCache } from '~/utils/indexeddb';
 import type { CountryItem } from '~/types/response/common.types';
 import { userRepository } from '~/repositories/user.repository';
@@ -304,15 +304,15 @@ export const useBaseDataStore = defineStore('baseData', () => {
 	};
 
 	const findMarketById = async (id: number): Promise<MarketBriefItem | null> => {
-		const worker = useMarketWorker();
-		const result = await worker.findMarketById(id);
-		return result;
+		// const worker = useMarketWorker();
+		// const result = await worker.findMarketById(id);
+		// return result;
 	};
 
 	const findMarketBymSymbol = async (mSymbol: string): Promise<MarketBriefItem | null> => {
-		const worker = useMarketWorker();
-		const result = await worker.findMarketBymSymbol(mSymbol);
-		return result;
+		// const worker = useMarketWorker();
+		// const result = await worker.findMarketBymSymbol(mSymbol);
+		// return result;
 	};
 
 	const bigIcons = ref<IconItem[]>([]);

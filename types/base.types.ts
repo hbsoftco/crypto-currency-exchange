@@ -31,15 +31,6 @@ type getTradesListParams = {
 	pageSize?: string;
 };
 
-type GetKlineParams = {
-	timeFrom?: string;
-	timeTo?: string;
-	candleCount?: string;
-	timeFrameType?: string;
-	symbol?: string;
-	marketId?: string;
-};
-
 type SpotDataParams = {
 	symbol?: string;
 	marketId?: string;
@@ -358,7 +349,6 @@ type getApiParams = {
 export type {
 	GetReferralBestListParams,
 	GetRewardExposedParams,
-	GetKlineParams,
 	SpotDataParams,
 	GetPinParams,
 	GetRootListParams,

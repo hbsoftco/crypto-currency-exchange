@@ -28,6 +28,7 @@
 								:price-change-perc60d="currencyInfo.priceChangePerc60d"
 								:price-change-perc90d="currencyInfo.priceChangePerc90d"
 								:symbol="cSymbol"
+								:markets="markets"
 								class="hidden md:block"
 							/>
 							<!-- Chart -->
@@ -149,7 +150,7 @@ import { currencyRepository } from '~/repositories/currency.repository';
 import { marketRepository } from '~/repositories/market.repository';
 import { Language } from '~/utils/enums/language.enum';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
-import type { MarketState } from '~/types/definitions/market.types';
+import type { MarketBrief, MarketState } from '~/types/definitions/market.types';
 import type { Currency, CurrencyBrief, CurrencyInfoParams } from '~/types/definitions/currency.types';
 
 const { $api } = useNuxtApp();
@@ -225,19 +226,21 @@ const params = ref<CurrencyInfoParams>({
 	id: '',
 	languageId: String(Language.ENGLISH),
 });
+const currency = ref<CurrencyBrief | null>(null);
+const markets = ref<MarketBrief[] | []>([]);
 const currencyInfo = ref<Currency>();
 const currencyInfoLoading = ref<boolean>(false);
 const getCurrencyInfo = async () => {
 	try {
 		currencyInfoLoading.value = true;
-		const currency: CurrencyBrief | null = await worker.findCurrencyBycSymbol(cSymbol, useEnv('apiBaseUrl'));
-		if (currency) {
-			params.value.id = String(currency.id);
+		currency.value = await worker.findCurrencyBycSymbol(cSymbol, useEnv('apiBaseUrl'));
+		if (currency.value) {
+			markets.value = await worker.findMarketsByCurrencyId(useEnv('apiBaseUrl'), currency.value.id);
+			params.value.id = String(currency.value.id);
 		}
 		const { result } = await currencyRepo.getCurrencyInfo(params.value);
 		currencyInfo.value = result;
-		currencyInfo.value.currency = currency;
-
+		currencyInfo.value.currency = currency.value;
 		currencyInfoLoading.value = false;
 	}
 	catch (error: unknown) {

@@ -342,6 +342,16 @@ const findMarketById = async (id: number, baseUrl: string): Promise<MarketBrief 
 	return null;
 };
 
+const findMarketsByCurrencyId = async (baseUrl: string, cid: number): Promise<MarketBrief[] | []> => {
+	if (!marketBriefItems.length) {
+		await fetchMarketBriefItems(baseUrl);
+	}
+
+	const filteredMarkets = marketBriefItems.filter((market) => (market.cbId === cid));
+
+	return filteredMarkets;
+};
+
 const searchMarkets = async (
 	baseUrl: string,
 	search: string,
@@ -427,6 +437,7 @@ Comlink.expose({
 	fetchTagItems,
 	// Markets
 	fetchMarketBriefItems,
+	findMarketsByCurrencyId,
 	findMarketById,
 	searchMarkets,
 	// Other

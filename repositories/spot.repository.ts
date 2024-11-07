@@ -1,32 +1,34 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { GetKlineParams, GetTradeListParams, GetOrderListParams, SpotDataParams } from '~/types/base.types';
+import type { GetTradeListParams, GetOrderListParams, SpotDataParams } from '~/types/base.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
-import type { GetKlineResponse, GetOrderListResponse, GetSpotDataResponse, GetTradeListResponse } from '~/types/response/spot.types';
+import type { KLineParams, KLineResponse } from '~/types/definitions/spot.types';
+import type { GetOrderListResponse, GetSpotDataResponse, GetTradeListResponse } from '~/types/response/spot.types';
 
 type SpotRepository = {
-	getKline: (params: GetKlineParams) => Promise<GetKlineResponse>;
+	getKLine: (params: KLineParams) => Promise<KLineResponse>;
+
 	getSpotData: (params: SpotDataParams) => Promise<GetSpotDataResponse>;
 	getTradeList: (params: GetTradeListParams) => Promise<GetTradeListResponse>;
 	getOrderList: (params: GetOrderListParams) => Promise<GetOrderListResponse>;
 };
 
 export const spotRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SpotRepository => ({
-	async getKline(params: GetKlineParams): Promise<GetKlineResponse> {
+	async getKLine(params: KLineParams): Promise<KLineResponse> {
 		const query = new URLSearchParams(
 			Object.entries(params)
 				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
 		);
 
 		const url = '/v1/spot/routine/kline';
-		const response = await fetch<GetKlineResponse>(`${url}?${query.toString()}`, {
+		const response = await fetch<KLineResponse>(`${url}?${query.toString()}`, {
 			noAuth: true,
 			apiName: url,
-			queryParams: params,
 		} as CustomNitroFetchOptions);
 
 		return response;
 	},
+
 	async getSpotData(params: SpotDataParams): Promise<GetSpotDataResponse> {
 		const query = new URLSearchParams();
 		Object.entries(params).forEach(([key, value]) => {

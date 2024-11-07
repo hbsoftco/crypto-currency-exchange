@@ -1,8 +1,3 @@
-type GetKlineResponse = {
-	statusCode: number;
-	result: string[];
-};
-
 type BidAsk = {
 	p: string;
 	v: string;
@@ -166,7 +161,6 @@ export type {
 	Ticker,
 	LatestTrade,
 	GetSpotDataResponse,
-	GetKlineResponse,
 	Trade,
 	GetTradeListResponse,
 	Order,

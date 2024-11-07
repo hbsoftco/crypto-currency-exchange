@@ -2,10 +2,10 @@
 	<div>
 		<div>
 			<div
-				v-if="loading"
-				class="h-80 w-full flex justify-center items-center"
+				v-if="kLineLoading"
+				class="h-80 w-full pt-40 flex justify-center items-center"
 			>
-				<span>{{ $t('isLoading') }} ...</span>
+				<UiLogoLoading />
 			</div>
 			<div
 				v-else
@@ -46,6 +46,7 @@
 				<VChart
 					:option="chartOptions"
 					class="w-full h-full"
+					dir="ltr"
 				/>
 			</div>
 		</div>
@@ -76,14 +77,14 @@
 
 <script setup lang="ts">
 import { bigNumber } from '~/utils/big-number';
-import { useSpot } from '~/composables/spot/useSpot';
 import { useNumber } from '~/composables/useNumber';
-// import type { Quote } from '~/types/definitions/quote.types';
-// import { MarketType } from '~/utils/enums/market.enum';
 import { priceFormat } from '~/utils/price-format';
-// import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
+import type { MarketBrief } from '~/types/definitions/market.types';
+import { spotRepository } from '~/repositories/spot.repository';
+import type { KLineParams } from '~/types/definitions/spot.types';
 
 interface PropsDefinition {
+	markets: MarketBrief[];
 	symbol: string;
 	price: string;
 	priceChangePerc7d: string;
@@ -95,46 +96,22 @@ interface PropsDefinition {
 
 const props = defineProps<PropsDefinition>();
 
-// const worker = useBaseWorker();
-// const selectedCurrency = ref<Quote[]>();
+const { $api } = useNuxtApp();
+const spotRepo = spotRepository($api);
 
-// const selectedCurrency = ref<Quote[]>();
-
-onMounted(async () => {
-	await getMarketId();
-	await fetchChartKline();
-});
-
-const selectedCurrency = ref<'TMN' | 'USDT'>('TMN');
-
-//////
-const baseDataStore = useBaseDataStore();
-await baseDataStore.fetchMarketBriefItems();
-
-const { loading, getChartKline } = useSpot();
-
-const changeMarket = async (quote: 'TMN' | 'USDT') => {
-	selectedCurrency.value = quote;
-
-	await getMarketId();
-	await fetchChartKline();
-};
-
-const options = [
+interface ChartOption {
+	header_option: string;
+	timeFrameType: string;
+	timeTo: string;
+	timeFrom: string;
+}
+const options = ref<ChartOption[]>([
 	{ header_option: '24h', timeFrameType: '5min', timeTo: 'TOMORROW', timeFrom: '24HOURS_AGO' },
 	{ header_option: '1w', timeFrameType: '1hour', timeTo: 'TOMORROW', timeFrom: '1WEEK_AGO' },
 	{ header_option: '1m', timeFrameType: '4hour', timeTo: 'TOMORROW', timeFrom: '1MONTH_AGO' },
 	{ header_option: '3m', timeFrameType: '1day', timeTo: 'TOMORROW', timeFrom: '3MONTHS_AGO' },
 	{ header_option: '1y', timeFrameType: '1day', timeTo: 'TOMORROW', timeFrom: '1YEAR_AGO' },
-];
-
-const getMarketId = async (): Promise<number | null> => {
-	const marketItem = await baseDataStore.findMarketBymSymbol(`${props.symbol}${selectedCurrency.value}`);
-	if (marketItem) {
-		params.value.marketId = String(marketItem.id);
-	}
-	return marketItem ? marketItem.id : null;
-};
+]);
 
 const getEpochTime = (timeFrame: string): number => {
 	const now = new Date();
@@ -156,26 +133,37 @@ const getEpochTime = (timeFrame: string): number => {
 	}
 };
 
-const updateChart = async (option: { header_option: string; timeFrameType: string; timeTo: string; timeFrom: string }) => {
-	selectedOption.value = option;
-	params.value.timeFrom = String(getEpochTime(option.timeFrom));
-	params.value.timeTo = String(getEpochTime(option.timeTo));
-	params.value.timeFrameType = option.timeFrameType;
-	await fetchChartKline();
-};
-
-const selectedOption = ref(options[1]);
-
 const chartData = ref<number[]>([]);
 const xAxisData = ref<string[]>([]);
 
-const params = ref({
+const params = ref<KLineParams>({
 	timeFrom: String(getEpochTime('1WEEK_AGO')),
 	timeTo: String(getEpochTime('TOMORROW')),
 	candleCount: '1000',
 	timeFrameType: '1hour',
 	marketId: '',
 });
+
+const selectedCurrency = ref<'TMN' | 'USDT'>('TMN');
+
+const findMarketId = (quote: 'TMN' | 'USDT') => {
+	const res = props.markets.find((market) => (
+		market.mSymbol.toLowerCase().includes(quote.toLowerCase())
+		&& market.typeId === 111),
+	);
+
+	if (res) {
+		params.value.marketId = String(res.id);
+	}
+};
+
+const changeMarket = async (quote: 'TMN' | 'USDT') => {
+	await findMarketId(quote);
+
+	selectedCurrency.value = quote;
+
+	await getChartKline();
+};
 
 const processChartData = (data: any[]) => {
 	const timestamps = data.map((item) => String(Number(item[0])));
@@ -185,17 +173,40 @@ const processChartData = (data: any[]) => {
 	return { timestamps, values };
 };
 
-const fetchChartKline = async () => {
+const updateChart = async (option: ChartOption) => {
+	selectedOption.value = option;
+	params.value.timeFrom = String(getEpochTime(option.timeFrom));
+	params.value.timeTo = String(getEpochTime(option.timeTo));
+	params.value.timeFrameType = option.timeFrameType;
+	await getChartKline();
+};
+
+const kLines = ref<string[]>([]);
+const kLineLoading = ref<boolean>(false);
+const getChartKline = async () => {
 	try {
-		const { result } = await getChartKline(params.value);
+		kLineLoading.value = true;
+		const { result } = await spotRepo.getKLine(params.value);
+		kLines.value = result;
+
 		const { timestamps, values } = processChartData(result);
 		chartData.value = values;
 		xAxisData.value = timestamps;
+
+		kLineLoading.value = false;
 	}
 	catch (error) {
-		console.error('Error fetching trades:', error);
+		console.log(error);
+		kLineLoading.value = false;
 	}
 };
+
+onMounted(async () => {
+	findMarketId(selectedCurrency.value);
+	await getChartKline();
+});
+
+const selectedOption = ref(options.value[1]);
 
 const chartOptions = computed(() => ({
 	grid: {
@@ -262,21 +273,23 @@ const chartOptions = computed(() => ({
 			formatter: (value: number) => {
 				return bigNumber(value);
 			},
-			// formatter: (value: any) => `<span class="font-dana">${value}</span>`,
-			// color: '#aaa',
-			// rich: {
-			// 	fontStyle: {
-			// 		fontFamily: 'Dana',
-			// 	},
-			// },
 		},
+		min: () => {
+			const minPrice = Math.min(...chartData.value);
+			return minPrice - (minPrice * 0.02);
+		},
+		// max: () => {
+		// 	const maxPrice = Math.max(...chartData.value);
+		// 	return maxPrice + (maxPrice * 0.02);
+		// },
 	},
 	series: [
 		{
 			data: chartData.value,
 			type: 'line',
-			step: 'end',
-			name: 'Fake Data',
+			// step: 'end',
+			smooth: true,
+			name: 'Market',
 			lineStyle: {
 				color: '#FFA500',
 				width: 2,
