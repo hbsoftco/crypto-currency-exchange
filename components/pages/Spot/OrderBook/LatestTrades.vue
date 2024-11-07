@@ -53,7 +53,7 @@
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
-import { timeFormatter } from '~/utils/timeFormatter';
+import { timeFormatter } from '~/utils/time-formatter';
 
 const spotStore = useSpotStore();
 </script>

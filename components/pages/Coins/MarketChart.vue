@@ -46,7 +46,6 @@
 				<VChart
 					:option="chartOptions"
 					class="w-full h-full"
-					dir="ltr"
 				/>
 			</div>
 		</div>
@@ -77,6 +76,7 @@
 
 <script setup lang="ts">
 import { bigNumber } from '~/utils/big-number';
+import { formatDateToPersian } from '~/utils/format-date-to-persian';
 import { useNumber } from '~/composables/useNumber';
 import { priceFormat } from '~/utils/price-format';
 import type { MarketBrief } from '~/types/definitions/market.types';
@@ -112,6 +112,7 @@ const options = ref<ChartOption[]>([
 	{ header_option: '3m', timeFrameType: '1day', timeTo: 'TOMORROW', timeFrom: '3MONTHS_AGO' },
 	{ header_option: '1y', timeFrameType: '1day', timeTo: 'TOMORROW', timeFrom: '1YEAR_AGO' },
 ]);
+const selectedOption = ref(options.value[1]);
 
 const getEpochTime = (timeFrame: string): number => {
 	const now = new Date();
@@ -136,14 +137,6 @@ const getEpochTime = (timeFrame: string): number => {
 const chartData = ref<number[]>([]);
 const xAxisData = ref<string[]>([]);
 
-const params = ref<KLineParams>({
-	timeFrom: String(getEpochTime('1WEEK_AGO')),
-	timeTo: String(getEpochTime('TOMORROW')),
-	candleCount: '1000',
-	timeFrameType: '1hour',
-	marketId: '',
-});
-
 const selectedCurrency = ref<'TMN' | 'USDT'>('TMN');
 
 const findMarketId = (quote: 'TMN' | 'USDT') => {
@@ -167,8 +160,6 @@ const changeMarket = async (quote: 'TMN' | 'USDT') => {
 
 const processChartData = (data: any[]) => {
 	const timestamps = data.map((item) => String(Number(item[0])));
-	console.log('timestamps', timestamps);
-
 	const values = data.map((item) => Number(item[2]));
 	return { timestamps, values };
 };
@@ -181,6 +172,17 @@ const updateChart = async (option: ChartOption) => {
 	await getChartKline();
 };
 
+const TMNkLines = ref<string[]>([]);
+const USDTkLines = ref<string[]>([]);
+
+const params = ref<KLineParams>({
+	timeFrom: String(getEpochTime('1WEEK_AGO')),
+	timeTo: String(getEpochTime('TOMORROW')),
+	candleCount: '1000',
+	timeFrameType: '1hour',
+	marketId: '',
+});
+
 const kLines = ref<string[]>([]);
 const kLineLoading = ref<boolean>(false);
 const getChartKline = async () => {
@@ -192,6 +194,37 @@ const getChartKline = async () => {
 		const { timestamps, values } = processChartData(result);
 		chartData.value = values;
 		xAxisData.value = timestamps;
+
+		if (selectedCurrency.value === 'TMN') {
+			TMNkLines.value = kLines.value;
+
+			const market = props.markets.find((market) => (
+				market.mSymbol.toLowerCase().includes('usdt')
+				&& market.typeId === 111),
+			);
+
+			const tempParams: KLineParams = {
+				...params.value,
+				marketId: String(market?.id),
+			};
+			const { result } = await spotRepo.getKLine(tempParams);
+			USDTkLines.value = result;
+		}
+		else {
+			USDTkLines.value = kLines.value;
+
+			const market = props.markets.find((market) => (
+				market.mSymbol.toLowerCase().includes('tmn')
+				&& market.typeId === 111),
+			);
+
+			const tempParams: KLineParams = {
+				...params.value,
+				marketId: String(market?.id),
+			};
+			const { result } = await spotRepo.getKLine(tempParams);
+			TMNkLines.value = result;
+		}
 
 		kLineLoading.value = false;
 	}
@@ -206,9 +239,167 @@ onMounted(async () => {
 	await getChartKline();
 });
 
-const selectedOption = ref(options.value[1]);
+const timeFormat = (value: string | number) => {
+	const time = selectedOption.value.header_option;
+	const data = Number(value);
+
+	let result = '';
+
+	if (time === '24h') {
+		result = timeFormatter(data, false);
+	}
+	else if (time === '1w') {
+		result = timeFormatter(data, false, true);
+	}
+	else if (time === '3m') {
+		result = timeFormatter(data, false, true);
+	}
+	else if (time === '1y') {
+		result = timeFormatter(data, false, true);
+	}
+	else if (time === '1m') {
+		result = timeFormatter(data, false, true);
+	}
+
+	return useNumber(result);
+};
+
+const tooltipShowPersianDate = (value: string | number) => {
+	const time = selectedOption.value.header_option;
+	const data = Number(value);
+
+	let result = '';
+
+	if (time === '24h') {
+		result = formatDateToPersian(data);
+	}
+	else if (time === '1w') {
+		result = formatDateToPersian(data);
+	}
+	else if (time === '3m') {
+		result = formatDateToPersian(data);
+	}
+	else if (time === '1y') {
+		result = formatDateToPersian(data);
+	}
+	else if (time === '1m') {
+		result = formatDateToPersian(data);
+	}
+
+	return useNumber(result);
+};
+
+const tooltipTimeFormat = (value: string | number) => {
+	const time = selectedOption.value.header_option;
+	const data = Number(value);
+
+	let result = formatDate(data, 'full');
+
+	if (time === '3m') {
+		result = formatDate(data, 'year-month-day');
+	}
+	else	if (time === '1y') {
+		result = formatDate(data, 'year-month-day');
+	}
+
+	return useNumber(result);
+};
+
+const tooltipShowToman = (value: string | number, axisValue: string | number) => {
+	try {
+		const priceType = selectedCurrency.value;
+
+		if (priceType === 'TMN') {
+			return useNumber(priceFormat(value));
+		}
+		else {
+			const data: any = TMNkLines.value.find((item) => item[0] === String(axisValue));
+			if (data) {
+				return useNumber(priceFormat(data[2]));
+			}
+			return useNumber(0);
+		}
+	}
+	catch (error) {
+		console.log(error);
+	}
+};
+
+const tooltipShowDollar = (value: string | number, axisValue: string | number) => {
+	try {
+		const priceType = selectedCurrency.value;
+
+		if (priceType === 'USDT') {
+			return useNumber(priceFormat(value));
+		}
+		else {
+			const data: any = USDTkLines.value.find((item) => item[0] === String(axisValue));
+			if (data) {
+				return useNumber(priceFormat(data[2]));
+			}
+			return useNumber(0);
+		}
+	}
+	catch (error) {
+		console.log(error);
+	}
+};
+
+interface AxisParams {
+	componentType: string;
+	componentSubType: string;
+	componentIndex: number;
+	seriesType: string;
+	seriesIndex: number;
+	seriesId: string;
+	seriesName: string;
+	name: string;
+	dataIndex: number;
+	data: number;
+	value: number;
+	color: string;
+	dimensionNames: string[];
+	encode: {
+		x: number[];
+		y: number[];
+	};
+	$vars: string[];
+	axisDim: string;
+	axisIndex: number;
+	axisType: string;
+	axisId: string;
+	axisValue: string;
+	axisValueLabel: string;
+	marker: string;
+};
 
 const chartOptions = computed(() => ({
+	tooltip: {
+		trigger: 'axis',
+		formatter: function (params: AxisParams[]) {
+			return `<div class="text-black pb-1">
+						<div>
+							<span class='text-black text-xs font-dana'>${tooltipShowPersianDate	(params[0].axisValue)}</span>
+							<span class='text-black text-xs font-dana'>|</span>
+							<strong class='text-black text-xs font-dana'>
+								${tooltipTimeFormat(params[0].axisValue)}
+							</strong>
+						</div>
+						<div>
+							<span class="inline-block w-1.5 h-1.5 rounded-full bg-white dark:bg-black"></span>
+							<span class='text-black text-xs font-dana'>${useT('priceInDollar')}:</span>
+							<strong class='text-black text-xs font-dana'>${tooltipShowDollar(params[0].value, params[0].axisValue)}</strong>
+							<strong class='text-black text-xs font-dana'>$</strong>:
+						</div>
+						<div>
+							<span class="inline-block w-1.5 h-1.5 rounded-full bg-white dark:bg-black"></span>
+							<span class='text-black text-xs font-dana'>${useT('priceInToman')}:</span>:
+							<strong class='text-black text-xs font-dana'>${tooltipShowToman(params[0].value, params[0].axisValue)}</strong>
+							<strong class='text-black text-xs font-dana'>${useT('toman')}</strong>:
+						</div>
+					</div>`;
+		},
+	},
 	grid: {
 		left: '3%',
 		right: '4%',
@@ -217,6 +408,7 @@ const chartOptions = computed(() => ({
 		containLabel: true,
 	},
 	xAxis: {
+		inverse: true,
 		type: 'category',
 		data: xAxisData.value,
 		boundaryGap: false,
@@ -226,24 +418,16 @@ const chartOptions = computed(() => ({
 			},
 		},
 		axisLabel: {
-			rich: {
-				value: {
-					fontFamily: 'dana',
-					fontSize: 16,
-					color: '#aaa',
-					fontWeight: 'bold',
-				},
-			},
+			fontFamily: 'dana',
 			formatter: (value: number) => {
-				return getEpochTime(String(value));
+				return `${useNumber(timeFormat(value))}`;
 			},
-			// formatter: (value: any) => `<span class="font-dana">${value}</span>`,
-			// color: '#aaa',
-			// rich: {
-			// 	fontStyle: {
-			// 		fontFamily: 'Dana',
-			// 	},
-			// },
+		},
+		splitLine: {
+			lineStyle: {
+				color: '#333',
+				type: 'dashed',
+			},
 		},
 	},
 	yAxis: {
@@ -262,16 +446,9 @@ const chartOptions = computed(() => ({
 			},
 		},
 		axisLabel: {
-			rich: {
-				value: {
-					fontFamily: 'dana',
-					fontSize: 16,
-					color: '#aaa',
-					fontWeight: 'bold',
-				},
-			},
+			fontFamily: 'dana',
 			formatter: (value: number) => {
-				return bigNumber(value);
+				return useNumber(String(bigNumber(value)));
 			},
 		},
 		min: () => {
@@ -287,7 +464,32 @@ const chartOptions = computed(() => ({
 		{
 			data: chartData.value,
 			type: 'line',
-			// step: 'end',
+			markPoint: {
+				data: [
+					{
+						type: 'max',
+						name: 'Highest',
+						symbol: 'circle',
+						symbolSize: 50,
+						value: '3232323',
+						label: {
+							show: true,
+							formatter: '{c}',
+						},
+					},
+					{
+						type: 'min',
+						name: 'Lowest',
+						symbol: 'circle',
+						symbolSize: 50,
+						value: '3232323',
+						label: {
+							show: true,
+							formatter: '{c}',
+						},
+					},
+				],
+			},
 			smooth: true,
 			name: 'Market',
 			lineStyle: {
