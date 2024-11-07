@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-hover-light dark:bg-hover-dark rounded-lg shadow-lg p-4 mb-4 w-[16.625rem] select-none">
+	<div class="bg-hover-light dark:bg-hover-dark rounded-lg shadow-lg p-4 mb-4 w-[16.625rem] select-none ">
 		<!-- Header with Status Bar -->
 		<div class="mb-2">
 			<h3
@@ -32,7 +32,7 @@
 				v-for="(market, index) in markets"
 				:key="index"
 				dir="ltr"
-				class="flex justify-between items-center py-1"
+				class="flex justify-between items-center py-1 pr-1 ml-1 hover:bg-primary-gray-light hover:dark:bg-primary-gray-dark rounded duration-200 transition-all"
 			>
 				<UiChangePrice
 					classes="text-sm font-normal"

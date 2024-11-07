@@ -26,10 +26,12 @@
 				<tr
 					v-for="(market, index) in item.info"
 					:key="index"
-					:class="[index % 2 === 0 ? 'bg-background-light dark:bg-background-dark' : 'bg-hover2-light dark:bg-hover2-dark']"
+					:class="[index % 2 === 0 ? 'bg-background-light dark:bg-background-dark  hover:bg-primary-gray-light hover:dark:bg-primary-gray-dark rounded duration-200 transition-all ' : 'bg-hover2-light dark:bg-hover2-dark  hover:bg-primary-gray-light hover:dark:bg-primary-gray-dark rounded duration-200 transition-all']"
 					class="pb-1"
 				>
-					<td>{{ useNumber(index+1) }}</td>
+					<td class="pr-1">
+						{{ useNumber(index+1) }}
+					</td>
 					<td class="text-xs font-normal py-2 ">
 						<ULink
 							class="flex justify-start items-center"
