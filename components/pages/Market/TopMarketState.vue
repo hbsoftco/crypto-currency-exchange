@@ -12,7 +12,7 @@
 			<li
 				v-for="market in items"
 				:key="`${title}-${market.id}`"
-				class="flex justify-between items-center my-4"
+				class="flex justify-between items-center my-4 pr-1 hover:bg-primary-gray-light hover:dark:bg-primary-gray-dark rounded duration-200 transition-all"
 			>
 				<div
 					class="flex justify-start w-28 text-left items-center cursor-pointer"
