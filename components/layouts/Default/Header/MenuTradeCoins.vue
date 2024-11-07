@@ -1,7 +1,13 @@
 <template>
 	<div dir="rtl">
-		<div class="mb-2">
-			<MenuTradeFilters :type="type" />
+		<div
+			v-if="!headerMenuStore.initFilterLoading"
+			class="mb-2"
+		>
+			<UiTagSlide
+				:tags="headerMenuStore.tagItems"
+				@tag-selected="setTag"
+			/>
 		</div>
 		<div
 			v-if="!headerMenuStore.spotMarketItems.length"
@@ -16,7 +22,7 @@
 			<div
 				v-for="(market, index) in headerMenuStore.spotMarketItems"
 				:key="index"
-				class="mx-1 my-1 py-1 cursor-pointer border-b last:border-none border-b-primary-gray-light dark:border-b-primary-gray-dark  hover:bg-primary-gray-light hover:dark:bg-primary-gray-dark duration-200 transition-all"
+				class="mx-1 my-1 py-1 cursor-pointer border-b last:border-none border-b-primary-gray-light dark:border-b-primary-gray-dark rounded hover:bg-primary-gray-light hover:dark:bg-primary-gray-dark duration-200 transition-all"
 			>
 				<ULink
 					to="/fast-trade"
@@ -66,17 +72,30 @@
 </template>
 
 <script setup lang="ts">
-import MenuTradeFilters from './MenuTradeFilters.vue';
+// import MenuTradeFilters from './MenuTradeFilters.vue';
 
 import { splitMarket } from '~/utils/split-market';
 import ChangePrice from '~/components/ui/ChangePrice.vue';
+import type { Tag } from '~/types/definitions/tag.types';
 
 interface Props {
 	type: 'spot' | 'fast-trade';
 	quote: 'TMN' | 'USDT';
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const headerMenuStore = useHeaderMenuStore();
+
+const setTag = async (tag: Tag) => {
+	console.log(tag);
+	if (props.type === 'spot') {
+		headerMenuStore.spotParams.tagTypeId = String(tag.id);
+		await headerMenuStore.getInitMarkets('spot');
+	}
+	else {
+		headerMenuStore.fastTradeParams.tagTypeId = String(tag.id);
+		await headerMenuStore.getInitMarkets('fast-trade');
+	}
+};
 </script>

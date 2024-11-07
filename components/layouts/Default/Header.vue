@@ -118,6 +118,8 @@
 </template>
 
 <script setup lang="ts">
+import { MarketType } from '~/utils/enums/market.enum';
+
 const SidebarSettingAction = defineAsyncComponent(() => import('~/components/layouts/Trade/SidebarSettingAction.vue'));
 const Search = defineAsyncComponent(() => import('~/components/layouts/Default/Header/Search/index.vue'));
 const UserLogin = defineAsyncComponent(() => import('~/components/layouts/Default/Header/UserLogin/index.vue'));
@@ -128,8 +130,8 @@ const Transaction = defineAsyncComponent(() => import('~/components/layouts/Defa
 const Futures = defineAsyncComponent(() => import('~/components/layouts/Default/Header/Futures.vue'));
 
 const settingsStore = useSpotSettingsStore();
-
 const headerMenuStore = useHeaderMenuStore();
+
 const isFixed = ref(false);
 const shouldTranslate = ref(true);
 
@@ -146,10 +148,13 @@ const handleScroll = () => {
 	}
 };
 
-onMounted(() => {
+onMounted(async () => {
 	window.addEventListener('scroll', handleScroll);
-	headerMenuStore.getInitMarkets();
-	headerMenuStore.getInitFuturesMarkets();
+	await Promise.all([
+		headerMenuStore.initFilterItems(MarketType.SPOT),
+		headerMenuStore.getInitMarkets(),
+		headerMenuStore.getInitFuturesMarkets(),
+	]);
 });
 
 onUnmounted(() => {

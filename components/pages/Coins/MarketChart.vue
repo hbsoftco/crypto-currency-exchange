@@ -391,12 +391,16 @@ const chartOptions = computed(() => ({
 							<strong class='text-black text-xs font-dana'>${tooltipShowDollar(params[0].value, params[0].axisValue)}</strong>
 							<strong class='text-black text-xs font-dana'>$</strong>:
 						</div>
-						<div>
-							<span class="inline-block w-1.5 h-1.5 rounded-full bg-white dark:bg-black"></span>
-							<span class='text-black text-xs font-dana'>${useT('priceInToman')}:</span>:
-							<strong class='text-black text-xs font-dana'>${tooltipShowToman(params[0].value, params[0].axisValue)}</strong>
-							<strong class='text-black text-xs font-dana'>${useT('toman')}</strong>:
-						</div>
+						${tooltipShowToman(params[0].value, params[0].axisValue) !== '0'
+						? `
+							<div>
+								<span class="inline-block w-1.5 h-1.5 rounded-full bg-white dark:bg-black"></span>
+								<span class='text-black text-xs font-dana'>${useT('priceInToman')}:</span>:
+								<strong class='text-black text-xs font-dana'>${tooltipShowToman(params[0].value, params[0].axisValue)}</strong>
+								<strong class='text-black text-xs font-dana'>${useT('toman')}</strong>:
+							</div>
+							`
+						: ``}
 					</div>`;
 		},
 	},

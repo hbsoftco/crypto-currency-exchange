@@ -1,9 +1,9 @@
 <template>
 	<div dir="rtl">
 		<div class="mb-2">
-			<MenuTradeFilters
-				:type="'spot'"
-				@selected-tag="selectedTag"
+			<UiTagSlide
+				:tags="headerMenuStore.tagItems"
+				@tag-selected="setTag"
 			/>
 		</div>
 		<div
@@ -70,10 +70,9 @@
 </template>
 
 <script setup lang="ts">
-import MenuTradeFilters from './MenuTradeFilters.vue';
-
 // import { splitMarket } from '~/utils/split-market';
 import ChangePrice from '~/components/ui/ChangePrice.vue';
+import type { Tag } from '~/types/definitions/tag.types';
 
 interface Props {
 	type: 'futures';
@@ -84,13 +83,8 @@ defineProps<Props>();
 
 const headerMenuStore = useHeaderMenuStore();
 
-interface EmitDefinition {
-	(event: 'selectedTag', value: number): void;
-}
-
-const emit = defineEmits<EmitDefinition>();
-
-const selectedTag = (event: number) => {
-	emit('selectedTag', event);
+const setTag = async (tag: Tag) => {
+	headerMenuStore.futuresParams.tagTypeId = String(tag.id);
+	await headerMenuStore.getInitMarkets('spot');
 };
 </script>

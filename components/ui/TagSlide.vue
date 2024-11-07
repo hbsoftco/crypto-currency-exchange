@@ -7,7 +7,7 @@
 			<UCarousel
 				ref="carouselRef"
 				v-slot="{ item }"
-				:items="tagItems"
+				:items="tags"
 				:ui="{
 					item: 'basis-full md:basis-1/3 lg:basis-1/4 xl:basis-1/6 snap-center md:snap-start',
 					default: {
@@ -33,7 +33,7 @@
 				class="w-full mx-auto"
 			>
 				<span
-					class="mx-0 h-7 text-xs cursor-pointer px-1.5 py-1 pt-1.5 font-medium rounded transition-colors select-none text-nowrap"
+					class="mx-0 h-7 min-w-16 text-center text-xs cursor-pointer px-1.5 py-1 pt-1.5 font-medium rounded transition-colors select-none text-nowrap"
 					:class="
 						selectedTagItem === item
 							? 'bg-primary text-text-light dark:text-text-dark '
@@ -52,32 +52,18 @@
 import { useNumber } from '~/composables/useNumber';
 import type { Tag } from '~/types/response/tag.types';
 
-interface Props {
-	type: 'spot' | 'fast-trade';
+interface PropsDefinition {
+	tags: Tag[];
 }
 
-const props = defineProps<Props>();
+const props = defineProps<PropsDefinition>();
 
-const headerMenuStore = useHeaderMenuStore();
-const baseDataStore = useBaseDataStore();
-const tagItems = computed(() => baseDataStore.tagItems);
+const emit = defineEmits(['tag-selected']);
 
-const selectedTagItem = ref();
+const selectedTagItem = ref<Tag>(props.tags[0]);
 
-const selectTagItem = async (item: Tag) => {
+const selectTagItem = (item: Tag) => {
 	selectedTagItem.value = item;
-
-	if (props.type === 'spot') {
-		headerMenuStore.spotParams.tagTypeId = String(item.id);
-		await headerMenuStore.getInitMarkets('spot');
-	}
-	else {
-		headerMenuStore.fastTradeParams.tagTypeId = String(item.id);
-		await headerMenuStore.getInitMarkets('fast-trade');
-	}
+	emit('tag-selected', item);
 };
-
-onMounted(() => {
-	selectedTagItem.value = tagItems.value[0];
-});
 </script>

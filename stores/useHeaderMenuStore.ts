@@ -1,5 +1,8 @@
 import { marketRepository } from '~/repositories/market.repository';
 import type { MarketL16 } from '~/types/definitions/market.types';
+import type { Quote } from '~/types/definitions/quote.types';
+import type { Tag } from '~/types/definitions/tag.types';
+import { Language } from '~/utils/enums/language.enum';
 import { MarketType } from '~/utils/enums/market.enum';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 
@@ -7,7 +10,7 @@ export const useHeaderMenuStore = defineStore('headerMenu', () => {
 	const { $api } = useNuxtApp();
 	const marketRepo = marketRepository($api);
 
-	const currencyWorker = useBaseWorker();
+	const worker = useBaseWorker();
 
 	const fastTradeMarketItems = ref<MarketL16[]>([]);
 	const spotMarketItems = ref<MarketL16[]>([]);
@@ -56,7 +59,11 @@ export const useHeaderMenuStore = defineStore('headerMenu', () => {
 			}
 
 			const { result } = await marketRepo.getMarketListL16(params.value);
-			const items = await currencyWorker.addCurrencyToMarketsL16(result.rows, Number(params.value.currencyQuoteId), useEnv('apiBaseUrl'), MarketType.SPOT);
+			const items = await worker.addCurrencyToMarketsL16(
+				result.rows as MarketL16[],
+				Number(params.value.currencyQuoteId),
+				useEnv('apiBaseUrl'), MarketType.SPOT,
+			);
 
 			if (items.length) {
 				fastTradeMarketItems.value = items;
@@ -70,12 +77,17 @@ export const useHeaderMenuStore = defineStore('headerMenu', () => {
 			initMarketsLoading.value = false;
 		}
 	};
+
 	const getInitFuturesMarkets = async () => {
 		try {
 			initMarketsLoading.value = true;
 
 			const { result } = await marketRepo.getMarketListL16(futuresParams.value);
-			const items = await currencyWorker.addCurrencyToMarketsL16(result.rows, Number(futuresParams.value.currencyQuoteId), useEnv('apiBaseUrl'), MarketType.SPOT);
+			const items = await worker.addCurrencyToMarketsL16(
+				result.rows as MarketL16[],
+				Number(futuresParams.value.currencyQuoteId),
+				useEnv('apiBaseUrl'), MarketType.SPOT,
+			);
 
 			if (items.length) {
 				fastTradeMarketItems.value = items;
@@ -89,6 +101,21 @@ export const useHeaderMenuStore = defineStore('headerMenu', () => {
 			initMarketsLoading.value = false;
 		}
 	};
+
+	const initFilterLoading = ref<boolean>(false);
+	const quoteItems = ref<Quote[]>([]);
+	const tagItems = ref<Tag[]>([]);
+	const initFilterItems = async (marketTypeId: number) => {
+		initFilterLoading.value = true;
+		if (!quoteItems.value.length) {
+			quoteItems.value = await worker.fetchQuoteItems(marketTypeId, useEnv('apiBaseUrl'));
+		}
+		if (!tagItems.value.length) {
+			tagItems.value = await worker.fetchTagItems(Language.PERSIAN, useEnv('apiBaseUrl'));
+		}
+		initFilterLoading.value = false;
+	};
+
 	return {
 		fastTradeParams,
 		fastTradeMarketItems,
@@ -98,5 +125,9 @@ export const useHeaderMenuStore = defineStore('headerMenu', () => {
 		getInitFuturesMarkets,
 		futuresMarketItems,
 		futuresParams,
+		initFilterItems,
+		initFilterLoading,
+		quoteItems,
+		tagItems,
 	};
 });
