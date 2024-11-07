@@ -173,9 +173,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRouter } from 'vue-router'; // Import useRouter
-
 import SearchCrypto from '~/components/forms/SearchCrypto.vue';
 import IconInstagram from '~/assets/svg-icons/social/instagram.svg';
 import IconTelegram from '~/assets/svg-icons/social/telegram.svg';
@@ -188,7 +185,7 @@ import type { RootList, ShortList } from '~/types/response/help.types';
 import ImageCover from '~/components/pages/ImageCover.vue';
 
 const searchInput = ref('');
-const router = useRouter(); // Initialize router
+const router = useRouter();
 
 const { $api } = useNuxtApp();
 const helpRepo = helpRepository($api);

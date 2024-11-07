@@ -1042,6 +1042,8 @@ const persian = {
 	bilandHelpCenter: 'مرکز راهنمایی بیت لند',
 	searchResultsFor: 'نتایج جستجو برای',
 	result: 'نتیجه',
+	lastUpdate: 'آخرین به روز رسانی',
+	update: 'تازه سازی',
 };
 
 export default persian;

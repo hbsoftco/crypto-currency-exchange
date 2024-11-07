@@ -33,29 +33,24 @@
 		<section>
 			<UContainer>
 				<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-					<div
+					<ULink
 						v-for="(item, index) in buyList"
 						:key="index"
+						:to="`help-buy/${item.id}`"
 						class="flex justify-between items-center py-4 border-b border-primary-gray-light dark:border-primary-gray-dark"
 					>
-						<NuxtLink
-							class="flex justify-between"
-							:to="`/help-buy/${item.id}`"
-							:buy="item"
-						>
-							<div class="flex items-center">
-								<img
-									:src="`https://api-bitland.site/media/currency/${item.currency?.cSymbol}.png`"
-									:alt="item.currency?.cName"
-									class="w-6 h-6 rounded-full ml-2"
-								>
-								<span class="text-sm font-bold ml-1">{{ item.info?.header }}</span>
-							</div>
-							<div>
-								<IconArrowLeft class="text-base" />
-							</div>
-						</NuxtLink>
-					</div>
+						<div class="flex items-center">
+							<img
+								:src="`https://api-bitland.site/media/currency/${item.currency?.cSymbol}.png`"
+								:alt="item.currency?.cName"
+								class="w-6 h-6 rounded-full ml-2"
+							>
+							<span class="text-sm font-bold ml-1">{{ item.info?.header }}</span>
+						</div>
+						<div>
+							<IconArrowLeft class="text-base" />
+						</div>
+					</ULink>
 				</div>
 				<div class="flex justify-center py-4">
 					<UPagination

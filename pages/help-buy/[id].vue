@@ -120,9 +120,10 @@
 						class="w-6 h-6 rounded-full ml-2"
 					/>
 					<span class="text-sm font-bold ml-1">{{ item.info?.header }}</span> -->
-					<p class="text-base">
-						{{ buy.info?.content }}
-					</p>
+					<!-- <p
+						class="text-base"
+						v-html="sanitizedHtml(buy.info?.content)"
+					/> -->
 				</div>
 			</UContainer>
 		</section>
@@ -133,9 +134,14 @@
 import IconAnchor from '~/assets/svg-icons/spot/anchor.svg';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
 import type { BuyItem } from '~/types/response/help.types';
+import { sanitizedHtml } from '~/utils/html-sanitizer';
+
+const route = useRoute();
+const id = String(route.params.id);
 
 const props = defineProps<{ buy: BuyItem }>();
 console.log('props----------------------------', props.buy);
+console.log('id*************', id);
 
 const steps = [
 	{ label: ' دانلود اپلیکیشن بیت لند ', completed: true, current: false },
