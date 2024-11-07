@@ -68,11 +68,6 @@ type GetTagListParams = {
 	tagType?: string;
 };
 
-type GetCurrencyParams = {
-	id: string;
-	languageId: string;
-};
-
 type GetMarketStatusParams = {
 	rowCount: number;
 };
@@ -368,7 +363,6 @@ export type {
 	GetPinParams,
 	GetRootListParams,
 	GetLanguageParams,
-	GetCurrencyParams,
 	GetUserTraderCommissionListParams,
 	GetMarketStatusParams,
 	getTradesListParams,

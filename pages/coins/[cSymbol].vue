@@ -1,50 +1,50 @@
 <template>
 	<div class="mt-24">
-		<UContainer v-if="currencyDetailLoading">
+		<UContainer v-if="currencyInfoLoading">
 			<UiLogoLoading />
 		</UContainer>
-		<UContainer v-if="!currencyDetailLoading && currencyDetail">
+		<UContainer v-if="!currencyInfoLoading && currencyInfo">
 			<div class="grid grid-cols-12 gap-4">
 				<div class="col-span-8">
 					<div class="flex items-center">
 						<img
-							:src="`https://api-bitland.site/media/currency/${currency?.cSymbol}.png`"
-							:alt="currency?.cName"
+							:src="`https://api-bitland.site/media/currency/${currencyInfo.currency?.cSymbol}.png`"
+							:alt="currencyInfo.currency?.cName"
 							class="w-10 h-10 rounded-full"
 							format="webp"
 						>
 						<h1 class="text-base md:text-xl font-bold mr-4">
-							{{ currency?.cName }} ({{ currency?.cSymbol }})
+							{{ currencyInfo.currency?.cName }} ({{ currencyInfo.currency?.cSymbol }})
 						</h1>
 					</div>
 					<div class="block mb-24">
 						<div>
 							<MarketChart
-								v-if="currency"
-								:price="currencyDetail.price"
-								:price-change-perc7d="currencyDetail.priceChangePerc7d"
-								:price-change-perc24h="currencyDetail.priceChangePerc24h"
-								:price-change-perc30d="currencyDetail.priceChangePerc30d"
-								:price-change-perc60d="currencyDetail.priceChangePerc60d"
-								:price-change-perc90d="currencyDetail.priceChangePerc90d"
+								v-if="currencyInfo.currency"
+								:price="currencyInfo.price"
+								:price-change-perc7d="currencyInfo.priceChangePerc7d"
+								:price-change-perc24h="currencyInfo.priceChangePerc24h"
+								:price-change-perc30d="currencyInfo.priceChangePerc30d"
+								:price-change-perc60d="currencyInfo.priceChangePerc60d"
+								:price-change-perc90d="currencyInfo.priceChangePerc90d"
 								:symbol="cSymbol"
 								class="hidden md:block"
 							/>
 							<!-- Chart -->
 
-							<Headline :headline="currencyDetail?.headline || null" />
+							<Headline :headline="currencyInfo?.headline || null" />
 							<!-- Headline -->
 
-							<PricePerformanceTable :currency="currencyDetail" />
+							<PricePerformanceTable :currency="currencyInfo" />
 							<!-- table -->
 
-							<PriceInformation :currency-detail="currencyDetail" />
+							<PriceInformation :currency-detail="currencyInfo" />
 							<!-- priceInformation -->
 
-							<GlobalMarketInformation :currency-detail="currencyDetail" />
+							<GlobalMarketInformation :currency-detail="currencyInfo" />
 							<!-- globalMarketInformation -->
 
-							<CurrencyDescription :currency-detail="currencyDetail" />
+							<CurrencyDescription :currency-detail="currencyInfo" />
 							<!-- Description -->
 
 							<section>
@@ -53,8 +53,8 @@
 										{{ $t("FAQ") }}
 									</h1>
 									<FAQItems
-										v-if="currencyDetail?.faqList.length"
-										:items="currencyDetail?.faqList"
+										v-if="currencyInfo?.faqList.length"
+										:items="currencyInfo?.faqList"
 										:direction="false"
 									/>
 								</div>
@@ -135,24 +135,22 @@
 </template>
 
 <script setup lang="ts">
-import MarketChart from '~/components/pages/Coins/MarketChart.vue';
+import SidebarMarketStateSkeleton from '~/components/pages/Coins/SidebarMarketStateSkeleton.vue';
+import GlobalMarketInformation from '~/components/pages/Coins/GlobalMarketInformation.vue';
+import PricePerformanceTable from '~/components/pages/Coins/PricePerformanceTable.vue';
+import CurrencyDescription from '~/components/pages/Coins/CurrencyDescription.vue';
 import SidebarMarketState from '~/components/pages/Coins/SidebarMarketState.vue';
-import FAQItems from '~/components/ui/FAQItems.vue';
+import PriceInformation from '~/components/pages/Coins/PriceInformation.vue';
+import MarketChart from '~/components/pages/Coins/MarketChart.vue';
+import Headline from '~/components/pages/Coins/Headline.vue';
 import Calculator from '~/components/ui/Calculator.vue';
+import FAQItems from '~/components/ui/FAQItems.vue';
 import { currencyRepository } from '~/repositories/currency.repository';
 import { marketRepository } from '~/repositories/market.repository';
 import { Language } from '~/utils/enums/language.enum';
-import type { GetCurrencyParams } from '~/types/base.types';
-import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
-import Headline from '~/components/pages/Coins/Headline.vue';
-import PricePerformanceTable from '~/components/pages/Coins/PricePerformanceTable.vue';
-import type { Currency } from '~/types/response/currency.types';
-import PriceInformation from '~/components/pages/Coins/PriceInformation.vue';
-import GlobalMarketInformation from '~/components/pages/Coins/GlobalMarketInformation.vue';
-import CurrencyDescription from '~/components/pages/Coins/CurrencyDescription.vue';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 import type { MarketState } from '~/types/definitions/market.types';
-import SidebarMarketStateSkeleton from '~/components/pages/Coins/SidebarMarketStateSkeleton.vue';
+import type { Currency, CurrencyBrief, CurrencyInfoParams } from '~/types/definitions/currency.types';
 
 const { $api } = useNuxtApp();
 const currencyRepo = currencyRepository($api);
@@ -223,46 +221,37 @@ const getMostVoluminousMarkets = async () => {
 	}
 };
 
+const params = ref<CurrencyInfoParams>({
+	id: '',
+	languageId: String(Language.ENGLISH),
+});
+const currencyInfo = ref<Currency>();
+const currencyInfoLoading = ref<boolean>(false);
+const getCurrencyInfo = async () => {
+	try {
+		currencyInfoLoading.value = true;
+		const currency: CurrencyBrief | null = await worker.findCurrencyBycSymbol(cSymbol, useEnv('apiBaseUrl'));
+		if (currency) {
+			params.value.id = String(currency.id);
+		}
+		const { result } = await currencyRepo.getCurrencyInfo(params.value);
+		currencyInfo.value = result;
+		currencyInfo.value.currency = currency;
+
+		currencyInfoLoading.value = false;
+	}
+	catch (error: unknown) {
+		console.log(error);
+	}
+};
+
 onMounted(async () => {
 	await Promise.all([
-		getCurrencyDetail(),
 		getMostProfitableMarkets(),
 		getMostVoluminousMarkets(),
 		getHottestMarkets(),
 		getLatestMarkets(),
+		getCurrencyInfo(),
 	]);
 });
-/// /// Old
-
-const baseDataStore = useBaseDataStore();
-await baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
-
-const currencyDetail = ref<Currency>();
-const currency = ref<CurrencyBriefItem | null>();
-
-const params = ref<GetCurrencyParams>({
-	id: '',
-	languageId: String(Language.ENGLISH),
-});
-const currencyDetailLoading = ref<boolean>(false);
-const getCurrencyDetail = async () => {
-	try {
-		currencyDetailLoading.value = true;
-
-		currency.value = await baseDataStore.findCurrencyBycSymbol(cSymbol);
-		if (currency.value) {
-			params.value.id = String(currency.value.id);
-		}
-
-		const { result } = await currencyRepo.getCurrencyDetail(params.value);
-		currencyDetail.value = result;
-
-		currencyDetailLoading.value = false;
-	}
-	catch (error) {
-		console.log(error);
-
-		currencyDetailLoading.value = false;
-	}
-};
 </script>
