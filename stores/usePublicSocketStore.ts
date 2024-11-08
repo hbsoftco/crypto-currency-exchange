@@ -12,25 +12,40 @@ export const usePublicSocketStore = defineStore('publicSocket', () => {
 
 	const { messages, connect, sendMessage } = usePublicWebSocket();
 
-	const refreshSocketRequest = async (marketIds: string, page: 'main' | 'markets' = 'main') => {
+	const refreshSocketRequest = async (marketIds: string, page: 'main' | 'markets' | 'market-detail' = 'main') => {
 		await connect();
-
 		console.log(page);
 
 		const fixedIds = fixedMarkets.value.map((market) => market.id);
 		const combinedMarketIds = `${marketIds},${fixedIds.join(',')}`;
 
 		if (oldMarketIdParams.value) {
-			sendMessage(createSubscriptionData(
-				SocketId.SPOT_TICKER,
-				'UNSUBSCRIBE',
-				PublicTopic.SPOT_TICKER,
-				oldMarketIdParams.value,
-			));
+			console.log('from unsub if');
+
+			unSubscribe();
 		}
 
 		oldMarketIdParams.value = combinedMarketIds;
 		marketIdParams.value = combinedMarketIds;
+
+		subscribe();
+	};
+
+	const unSubscribe = async () => {
+		await connect();
+		console.log('i come from store unSubscribe');
+
+		sendMessage(createSubscriptionData(
+			SocketId.SPOT_TICKER,
+			'UNSUBSCRIBE',
+			PublicTopic.SPOT_TICKER,
+			oldMarketIdParams.value,
+		));
+	};
+
+	const subscribe = async () => {
+		await connect();
+		console.log('i come from store subscribe');
 
 		sendMessage(createSubscriptionData(
 			SocketId.SPOT_TICKER,
@@ -38,6 +53,20 @@ export const usePublicSocketStore = defineStore('publicSocket', () => {
 			PublicTopic.SPOT_TICKER,
 			marketIdParams.value,
 		));
+	};
+
+	const appendMarketsId = (marketIds: string) => {
+		if (marketIdParams.value) {
+			oldMarketIdParams.value = marketIdParams.value;
+			unSubscribe();
+
+			marketIdParams.value = `${marketIdParams.value},${marketIds}`;
+		}
+		else {
+			marketIdParams.value = marketIds;
+		}
+
+		subscribe();
 	};
 
 	watch(messages, (newMessages) => {
@@ -53,6 +82,8 @@ export const usePublicSocketStore = defineStore('publicSocket', () => {
 	return {
 		refreshSocketRequest,
 		findMarketDataById,
+		appendMarketsId,
+		unSubscribe,
 
 		latestMarketData,
 	};

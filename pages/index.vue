@@ -126,6 +126,8 @@ const { $mobileDetect, $api } = useNuxtApp();
 
 const decorationRepo = decorationRepository($api);
 
+const publicSocketStore = usePublicSocketStore();
+
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
 
@@ -159,5 +161,9 @@ const fetchPinItems = async () => {
 onMounted(async () => {
 	isMobile.value = !!mobileDetect.mobile();
 	await fetchPinItems();
+});
+
+onUnmounted(() => {
+	publicSocketStore.unSubscribe();
 });
 </script>

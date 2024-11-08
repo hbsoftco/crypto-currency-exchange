@@ -157,11 +157,14 @@ const { $api } = useNuxtApp();
 const currencyRepo = currencyRepository($api);
 const marketRepo = marketRepository($api);
 
+const publicSocketStore = usePublicSocketStore();
+
 const worker = useBaseWorker();
 
 const route = useRoute();
 const cSymbol = String(route.params.cSymbol);
 
+// const mostProfitableMarketIdParams = ref<string>('');
 const mostProfitableMarkets = ref<MarketState[]>([]);
 const mostProfitableMarketsLoading = ref<boolean>(false);
 const getMostProfitableMarkets = async () => {
@@ -170,6 +173,10 @@ const getMostProfitableMarkets = async () => {
 		const { result } = await marketRepo.getMostProfitableMarkets({ rowCount: '4' });
 
 		mostProfitableMarkets.value = await worker.addCurrencyToMarketStates(useEnv('apiBaseUrl'), result.rows);
+
+		// mostProfitableMarketIdParams.value = mostProfitableMarkets.value.map((item) => item.id).join(',');
+		// publicSocketStore.refreshSocketRequest(mostProfitableMarketIdParams.value, 'market-detail');
+
 		mostProfitableMarketsLoading.value = false;
 	}
 	catch (error: unknown) {
@@ -177,6 +184,7 @@ const getMostProfitableMarkets = async () => {
 	}
 };
 
+// const hottestMarketIdParams = ref<string>('');
 const hottestMarkets = ref<MarketState[]>([]);
 const hottestMarketsLoading = ref<boolean>(false);
 const getHottestMarkets = async () => {
@@ -185,6 +193,10 @@ const getHottestMarkets = async () => {
 		const { result } = await marketRepo.getHottestMarkets({ rowCount: '4' });
 
 		hottestMarkets.value = await worker.addCurrencyToMarketStates(useEnv('apiBaseUrl'), result.rows);
+
+		// hottestMarketIdParams.value = hottestMarkets.value.map((item) => item.id).join(',');
+		// publicSocketStore.refreshSocketRequest(hottestMarketIdParams.value, 'market-detail');
+
 		hottestMarketsLoading.value = false;
 	}
 	catch (error: unknown) {
@@ -192,6 +204,7 @@ const getHottestMarkets = async () => {
 	}
 };
 
+// const latestMarketIdParams = ref<string>('');
 const latestMarkets = ref<MarketState[]>([]);
 const latestMarketsLoading = ref<boolean>(false);
 const getLatestMarkets = async () => {
@@ -200,6 +213,10 @@ const getLatestMarkets = async () => {
 		const { result } = await marketRepo.getLatestMarkets({ rowCount: '4' });
 
 		latestMarkets.value = await worker.addCurrencyToMarketStates(useEnv('apiBaseUrl'), result.rows);
+
+		// latestMarketIdParams.value = latestMarkets.value.map((item) => item.id).join(',');
+		// publicSocketStore.refreshSocketRequest(latestMarketIdParams.value, 'market-detail');
+
 		latestMarketsLoading.value = false;
 	}
 	catch (error: unknown) {
@@ -207,6 +224,7 @@ const getLatestMarkets = async () => {
 	}
 };
 
+// const mostVoluminousMarketIdParams = ref<string>('');
 const mostVoluminousMarkets = ref<MarketState[]>([]);
 const mostVoluminousMarketsLoading = ref<boolean>(false);
 const getMostVoluminousMarkets = async () => {
@@ -215,6 +233,10 @@ const getMostVoluminousMarkets = async () => {
 		const { result } = await marketRepo.getMostVoluminous({ rowCount: '4' });
 
 		mostVoluminousMarkets.value = await worker.addCurrencyToMarketStates(useEnv('apiBaseUrl'), result.rows);
+
+		// mostVoluminousMarketIdParams.value = mostVoluminousMarkets.value.map((item) => item.id).join(',');
+		// publicSocketStore.refreshSocketRequest(mostVoluminousMarketIdParams.value, 'market-detail');
+
 		mostVoluminousMarketsLoading.value = false;
 	}
 	catch (error: unknown) {
@@ -239,6 +261,10 @@ const getCurrencyInfo = async () => {
 			params.value.id = String(currency.value.id);
 		}
 		const { result } = await currencyRepo.getCurrencyInfo(params.value);
+
+		const findMarket = await worker.searchMarkets(useEnv('apiBaseUrl'), `${currency.value?.cSymbol}USDT`, 1);
+		publicSocketStore.appendMarketsId(String(findMarket[0].id));
+
 		currencyInfo.value = result;
 		currencyInfo.value.currency = currency.value;
 		currencyInfoLoading.value = false;

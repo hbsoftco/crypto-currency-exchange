@@ -148,7 +148,7 @@ const getMarketListL31 = async () => {
 		totalCount.value = result.totalCount;
 
 		marketIdParams.value = markets.value.map((item) => item.id).join(',');
-		publicSocketStore.refreshSocketRequest(marketIdParams.value, 'main');
+		publicSocketStore.refreshSocketRequest(marketIdParams.value, 'markets');
 
 		marketsLoading.value = false;
 	}
