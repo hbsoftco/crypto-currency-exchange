@@ -1,5 +1,6 @@
 <template>
 	<div
+		v-if="!sliderLoading"
 		dir="ltr"
 		class="relative top-4 md:-top-14"
 	>
@@ -32,15 +33,38 @@
 </template>
 
 <script setup lang="ts">
-const baseDataStore = useBaseDataStore();
+import { decorationRepository } from '~/repositories/decoration.repository';
+import type { SliderItem } from '~/types/definitions/decoration.types';
+import { Language } from '~/utils/enums/language.enum';
 
-await baseDataStore.fetchSlides();
+const { $api } = useNuxtApp();
+const decorationRepo = decorationRepository($api);
 
-const slides = baseDataStore.slides;
+const slides = ref<SliderItem[]>([]);
+const sliderLoading = ref<boolean>(false);
+const fetchSlides = async () => {
+	sliderLoading.value = true;
+
+	try {
+		const { result } = await decorationRepo.getCardList({ languageId: String(Language.PERSIAN), group: 'Home_Slider' });
+		if (result.rows.length) {
+			slides.value = result.rows.map((slide) => ({
+				mediaUrl: slide.mediaUrl,
+				header: slide.info[0]?.header || '',
+			}));
+		}
+	}
+	catch (error) {
+		console.log(error);
+	}
+	finally {
+		sliderLoading.value = false;
+	}
+};
 
 const carouselRef = ref();
 
-onMounted(() => {
+onMounted(async () => {
 	setInterval(() => {
 		if (!carouselRef.value) return;
 
@@ -50,5 +74,7 @@ onMounted(() => {
 
 		carouselRef.value.next();
 	}, 3000);
+
+	await fetchSlides();
 });
 </script>

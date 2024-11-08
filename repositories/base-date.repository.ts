@@ -1,9 +1,8 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { GetLanguageParams, GetPinParams, GetTagListParams } from '~/types/base.types';
+import type { GetLanguageParams, GetTagListParams } from '~/types/base.types';
 import type { MarketBriefListResponse, CurrencyBriefListResponse } from '~/types/response/brief-list.types';
 import type { IconResponse } from '~/types/response/icon.types';
-import type { PinListResponse } from '~/types/response/pin-list.types';
 import type { GetQuoteParams, QuoteListResponse } from '~/types/response/quote-list.types';
 import type { TagResponse } from '~/types/response/tag.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
@@ -11,7 +10,6 @@ import type { TagMenuResponse } from '~/types/response/tag-menu.types';
 
 type BaseDateRepository = {
 	getTagList: (params: GetLanguageParams) => Promise<TagResponse>;
-	getPinList: (params: GetPinParams) => Promise<PinListResponse>;
 	getQuoteList: (params: GetQuoteParams) => Promise<QuoteListResponse>;
 	getMarketBriefList: () => Promise<MarketBriefListResponse>;
 	getCurrencyBriefList: (params: GetLanguageParams) => Promise<CurrencyBriefListResponse>;
@@ -28,13 +26,6 @@ export const baseDateRepository = (
 		const query = new URLSearchParams({ languageId: languageId.toString() });
 		return fetch<TagResponse>(
       `/v1/currency/routine/tag_list?${query.toString()}`,
-      { noAuth: true } as CustomNitroFetchOptions,
-		);
-	},
-	async getPinList({ languageId, group = '' }: GetPinParams): Promise<PinListResponse> {
-		const query = new URLSearchParams({ languageId: languageId.toString(), group });
-		return fetch<PinListResponse>(
-      `/v1/routine/decoration/pin_list?${query.toString()}`,
       { noAuth: true } as CustomNitroFetchOptions,
 		);
 	},

@@ -5,7 +5,7 @@
 	>
 		<UCarousel
 			v-slot="{ item }"
-			:items="tags"
+			:items="marketsPageStore.tagItems"
 			:ui="{ item: 'snap-start' }"
 			:prev-button="{
 				variant: 'link',
@@ -21,7 +21,7 @@
 			class="w-full mx-auto"
 		>
 			<div
-				class="mx-0 min-w-24 text-xs cursor-pointer px-2 py-2 font-medium rounded transition-colors select-none"
+				class="mx-0 min-w-20 text-xs cursor-pointer px-1 py-2 font-medium rounded transition-colors select-none"
 				:class="
 					selectedItem === item
 						? 'bg-primary text-text-light dark:text-text-dark '
@@ -37,20 +37,14 @@
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
-import type { Tag } from '~/types/response/tag.types';
+import type { Tag } from '~/types/definitions/tag.types';
 
-const emit = defineEmits(['tag-selected']);
+const marketsPageStore = useMarketsPageStore();
 
-const baseDataStore = useBaseDataStore();
-
-await baseDataStore.fetchTagItems();
-
-const tags = baseDataStore.tagItems;
-
-const selectedItem = ref(tags[0]);
+const selectedItem = ref(marketsPageStore.tagItems[0]);
 
 const selectItem = (item: Tag) => {
 	selectedItem.value = item;
-	emit('tag-selected', item.id);
+	marketsPageStore.tradingMarketsParams.tagTypeId = String(item.id);
 };
 </script>

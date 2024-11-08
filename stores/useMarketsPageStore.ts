@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 
+import type { MarketsL21Params } from '~/types/definitions/market.types';
 import type { Quote } from '~/types/definitions/quote.types';
 import type { Tag } from '~/types/definitions/tag.types';
 import { MarketType, SortMode } from '~/utils/enums/market.enum';
@@ -7,6 +8,13 @@ import { MarketType, SortMode } from '~/utils/enums/market.enum';
 export const useMarketsPageStore = defineStore('marketsPage', () => {
 	const quoteItems = ref<Quote[]>([]);
 	const tagItems = ref<Tag[]>([]);
+
+	const tradingMarketsParams = ref<MarketsL21Params>({
+		sortMode: String(SortMode.BY_MARKET_CAPS),
+		currencyQuoteId: '1',
+		marketTypeId: String(MarketType.SPOT),
+		tagTypeId: '',
+	});
 
 	const params = ref({
 		sortMode: String(SortMode.BY_MARKET_CAPS),
@@ -64,6 +72,7 @@ export const useMarketsPageStore = defineStore('marketsPage', () => {
 		};
 
 		params.value.sortMode = String(selectedValue);
+		tradingMarketsParams.value.sortMode = String(selectedValue);
 	};
 
 	const quoteOptions = ref<any>([]);
@@ -83,6 +92,7 @@ export const useMarketsPageStore = defineStore('marketsPage', () => {
 		selectedQuote.value = { label: quote.cName };
 
 		params.value.currencyQuoteId = String(quote.id);
+		tradingMarketsParams.value.currencyQuoteId = String(quote.id);
 	};
 
 	return {
@@ -95,5 +105,7 @@ export const useMarketsPageStore = defineStore('marketsPage', () => {
 		selectedQuote,
 		quoteOptions,
 		initQuoteOptions,
+		//
+		tradingMarketsParams,
 	};
 });

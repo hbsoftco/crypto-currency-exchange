@@ -26,7 +26,11 @@
 
 		<section>
 			<UContainer>
-				<Info class="hidden md:block" />
+				<PinTextDown
+					v-if="!pinLoading && pinDown"
+					:pin="pinDown"
+					class="hidden md:block"
+				/>
 				<TopSlider />
 			</UContainer>
 		</section>
@@ -99,30 +103,61 @@
 </template>
 
 <script setup lang="ts">
-import Info from '~/components/pages/Site/MainPage/Info.vue';
+import PinTextDown from '~/components/pages/MainPage/PinTextDown.vue';
 import QuickMenuMobile from '~/components/pages/Site/MainPage/QuickMenuMobile.vue';
 import TopSlider from '~/components/pages/MainPage/TopSlider.vue';
+import type { Pin } from '~/types/definitions/decoration.types';
+import { decorationRepository } from '~/repositories/decoration.repository';
+import { Language } from '~/utils/enums/language.enum';
 
 const ImageCover = defineAsyncComponent(() => import('~/components/pages/ImageCover.vue'));
 const ImageCoverLogin = defineAsyncComponent(() => import('~/components/pages/ImageCoverLogin.vue'));
 const TopBannerLogin = defineAsyncComponent(() => import('~/components/pages/MainPage/TopBannerLogin.vue'));
 const TopBanner = defineAsyncComponent(() => import('~/components/pages/MainPage/TopBanner.vue'));
 const ActiveAward = defineAsyncComponent(() => import('~/components/pages/MainPage/ActiveAward.vue'));
-const TradingMarkets = defineAsyncComponent(() => import('~/components/pages/MainPage/TradingMarkets.vue'));
+const TradingMarkets = defineAsyncComponent(() => import('~/components/pages/MainPage/TradingMarkets/index.vue'));
 const WhyBitland = defineAsyncComponent(() => import('~/components/pages/MainPage/WhyBitland.vue'));
 const DownloadApp = defineAsyncComponent(() => import('~/components/common/DownloadApp.vue'));
 const AlwaysBitland = defineAsyncComponent(() => import('~/components/pages/MainPage/AlwaysBitland.vue'));
 const Prize = defineAsyncComponent(() => import('~/components/pages/MainPage/Prize.vue'));
 const NewCurrencies = defineAsyncComponent(() => import('~/components/pages/MainPage/NewCurrencies/index.vue'));
 
-const { $mobileDetect } = useNuxtApp();
+const { $mobileDetect, $api } = useNuxtApp();
+
+const decorationRepo = decorationRepository($api);
+
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
 
 const authStore = useAuthStore();
 
-onMounted(() => {
+const pinUp = ref<Pin>();
+const pinDown = ref<Pin>();
+const pinItems = ref<Pin[]>([]);
+const pinLoading = ref<boolean>(false);
+const fetchPinItems = async () => {
+	if (pinLoading.value) return;
+	pinLoading.value = true;
+
+	try {
+		const { result } = await decorationRepo.getPinList({ languageId: String(Language.PERSIAN), group: 'Home_Pinbar' });
+		if (result?.rows) {
+			pinItems.value = result.rows;
+
+			pinDown.value = pinItems.value.find((pin) => pin.tag === 'down');
+			pinUp.value = pinItems.value.find((pin) => pin.tag === 'up');
+		}
+	}
+	catch (error) {
+		console.log(error);
+	}
+	finally {
+		pinLoading.value = false;
+	}
+};
+
+onMounted(async () => {
 	isMobile.value = !!mobileDetect.mobile();
-	// authStore.loadAuthData();
+	await fetchPinItems();
 });
 </script>

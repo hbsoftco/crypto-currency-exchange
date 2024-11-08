@@ -1,10 +1,6 @@
 <template>
 	<div class="mt-8">
-		<MarketTableHeader
-			@filter-change="updateFilter"
-			@currency-change="updateCurrency"
-			@tag-change="updateTag"
-		/>
+		<MarketTableHeader />
 
 		<div class="p-0 pt-2 md:pt-0 mt-4">
 			<table
@@ -110,7 +106,6 @@
 <script setup lang="ts">
 import MarketTableRow from '~/components/pages/Market/MarketTableRow.vue';
 import MarketTableHeader from '~/components/pages/Market/MarketTableHeader.vue';
-import type { SortMode } from '~/utils/enums/market.enum';
 import { MarketType } from '~/utils/enums/market.enum';
 import { marketRepository } from '~/repositories/market.repository';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
@@ -179,17 +174,5 @@ watch(() => props.searchQuery, (newQuery) => {
 
 const onPageChange = async (newPage: number) => {
 	marketsPageStore.params.pageNumber = String(newPage);
-};
-
-const updateFilter = async (selectedValue: SortMode) => {
-	marketsPageStore.params.sortMode = String(selectedValue);
-};
-
-const updateTag = async (selectedValue: string) => {
-	marketsPageStore.params.tagTypeId = selectedValue;
-};
-
-const updateCurrency = async (selectedId: string) => {
-	marketsPageStore.params.currencyQuoteId = selectedId;
 };
 </script>

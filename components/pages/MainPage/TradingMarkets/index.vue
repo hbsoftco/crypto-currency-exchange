@@ -1,10 +1,6 @@
 <template>
 	<div class="pt-20 pb-4 md:pb-20">
-		<TradingMarketsHeader
-			@filter-change="updateFilter"
-			@currency-change="updateCurrency"
-			@tag-change="updateTag"
-		/>
+		<MarketsHeader v-if="!initFilterLoading" />
 
 		<div class="p-0 md:p-4 pt-2 md:pt-0">
 			<table
@@ -62,7 +58,7 @@
 						</tr>
 					</template>
 
-					<TradingMarketRow
+					<TradingMarketsRow
 						v-for="(row, index) in markets || []"
 						v-else
 						:key="row.id || index"
@@ -81,38 +77,38 @@
 </template>
 
 <script setup lang="ts">
-import TradingMarketsHeader from '~/components/pages/MainPage/TradingMarketsHeader.vue';
-import TradingMarketRow from '~/components/pages/MainPage/TradingMarketRow.vue';
-import { MarketType, SortMode } from '~/utils/enums/market.enum';
+import MarketsHeader from '~/components/pages/MainPage/TradingMarkets/MarketsHeader.vue';
+import TradingMarketsRow from '~/components/pages/MainPage/TradingMarkets/MarketsRow.vue';
+import { MarketType } from '~/utils/enums/market.enum';
 import type { MarketL21 } from '~/types/definitions/market.types';
 import { marketRepository } from '~/repositories/market.repository';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
+import { Language } from '~/utils/enums/language.enum';
 
 const { $api } = useNuxtApp();
 const marketRepo = marketRepository($api);
 
 const publicSocketStore = usePublicSocketStore();
+const marketsPageStore = useMarketsPageStore();
 
 const worker = useBaseWorker();
 
-const params = ref({
-	sortMode: String(SortMode.BY_MARKET_CAPS),
-	currencyQuoteId: '1',
-	marketTypeId: String(MarketType.SPOT),
-	tagTypeId: '',
-});
 const marketIdParams = ref<string>('');
 
 const markets = ref<MarketL21[]>([]);
 const marketsLoading = ref<boolean>(false);
 const getMarketListL21 = async () => {
 	try {
+		if (marketsPageStore.tradingMarketsParams.tagTypeId === '0') {
+			marketsPageStore.tradingMarketsParams.tagTypeId = '';
+		}
+
 		marketsLoading.value = true;
-		const { result } = await marketRepo.getMarketListL21(params.value);
+		const { result } = await marketRepo.getMarketListL21(marketsPageStore.tradingMarketsParams);
 
 		markets.value = await worker.addCurrencyToMarkets(
 			result.rows as MarketL21[],
-			Number(params.value.currencyQuoteId),
+			Number(marketsPageStore.tradingMarketsParams.currencyQuoteId),
 			useEnv('apiBaseUrl'),
 			MarketType.SPOT,
 		);
@@ -127,22 +123,26 @@ const getMarketListL21 = async () => {
 	}
 };
 
+const initFilterLoading = ref<boolean>(false);
+const initFilterItems = async (marketTypeId: number) => {
+	initFilterLoading.value = true;
+	marketsPageStore.quoteItems = await worker.fetchQuoteItems(marketTypeId, useEnv('apiBaseUrl'));
+	marketsPageStore.tagItems = await worker.fetchTagItems(Language.PERSIAN, useEnv('apiBaseUrl'));
+
+	marketsPageStore.initQuoteOptions();
+	initFilterLoading.value = false;
+};
+
+watch(() => marketsPageStore.tradingMarketsParams, async () => {
+	await getMarketListL21();
+}, { deep: true });
+
 onMounted(async () => {
-	await getMarketListL21();
+	marketsPageStore.tradingMarketsParams.tagTypeId = '';
+
+	await Promise.all([
+		initFilterItems(MarketType.SPOT),
+		getMarketListL21(),
+	]);
 });
-
-const updateFilter = async (selectedValue: SortMode) => {
-	params.value.sortMode = String(selectedValue);
-	await getMarketListL21();
-};
-
-const updateTag = async (selectedValue: SortMode) => {
-	params.value.tagTypeId = String(selectedValue);
-	await getMarketListL21();
-};
-
-const updateCurrency = async (selectedId: string) => {
-	params.value.currencyQuoteId = selectedId;
-	await getMarketListL21();
-};
 </script>
