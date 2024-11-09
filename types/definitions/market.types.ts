@@ -123,8 +123,8 @@ type MarketL51Item = {
 	mSymbol?: string;
 	indexPrice: string;
 	priceChangePercIn24H: string;
-	currency: CurrencyBrief | null;
-	market: MarketBrief | null;
+	currency?: CurrencyBrief | null;
+	market?: MarketBrief | null;
 	quote?: Quote | null;
 };
 

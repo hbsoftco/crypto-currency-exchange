@@ -1,6 +1,6 @@
 <template>
 	<div
-		:class="[containerClass, pl]"
+		:class="[containerClass, pl, size]"
 		class="flex justify-start items-center"
 		dir="ltr"
 	>
@@ -11,8 +11,8 @@
 			class="w-4 h-4 hidden md:block"
 		/>
 		<span
-			:class="textClass"
-			class="text-sm md:text-base font-medium py-1 ml-2"
+			:class="[textClass, size]"
+			class="font-medium py-1 ml-2"
 		>{{ useNumber(formattedChange) }}</span>
 	</div>
 </template>
@@ -26,11 +26,13 @@ interface PropsDefinition {
 	change: number;
 	icon?: boolean;
 	pl?: string;
+	size?: string;
 }
 
 const props = withDefaults(defineProps<PropsDefinition>(), {
 	icon: true,
 	pl: 'pl-4 md:pl-8',
+	size: 'text-sm md:text-base',
 });
 
 const iconComponent = computed(() => {

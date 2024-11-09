@@ -57,10 +57,12 @@
 					<div
 						v-for="market of marketsItems"
 						:key="market.id"
-						class="my-1 py-2 px-3 hover:bg-primary-gray-light hover:dark:bg-primary-gray-dark rounded duration-200 transition-all"
 						@click="handleSelection"
 					>
-						<MarketItem :market="market" />
+						<MarketItem
+							:market="market"
+							:socket-data="publicSocketStore.findMarketDataById(market.id)"
+						/>
 					</div>
 					<UButton
 						v-if="marketsItems.length > 0"
@@ -114,6 +116,10 @@ const marketsItems = ref<MarketBrief[]>([]);
 
 const worker = useBaseWorker();
 
+const publicSocketStore = usePublicSocketStore();
+
+const socketMarketIds = ref<number[]>([]);
+
 const handleFocus = () => {
 	isFocused.value = true;
 	showBox.value = true;
@@ -130,6 +136,13 @@ const handleInput = async (event: Event) => {
 		const { currencies, markets } = await worker.SearchSuggestionItems(useEnv('apiBaseUrl'), inputValue);
 		currenciesItems.value = currencies;
 		marketsItems.value = markets;
+
+		if (socketMarketIds.value.length) {
+			await publicSocketStore.removeMarketIds(socketMarketIds.value);
+		}
+
+		socketMarketIds.value = marketsItems.value.map((item) => item.id);
+		await publicSocketStore.addMarketIds(socketMarketIds.value);
 	}
 	else {
 		currenciesItems.value = [];
