@@ -1,6 +1,6 @@
 import * as Comlink from 'comlink';
 
-import { loadFromCache } from '~/utils/indexeddb';
+import { loadFromCache, saveToCache } from '~/utils/indexeddb';
 import { CACHE_KEY_CURRENCY_BRIEF_ITEMS, CACHE_KEY_MARKET_BRIEF_ITEMS, CACHE_KEY_QUOTE_ITEMS, CACHE_KEY_TAG_ITEMS } from '~/utils/constants/common';
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
 import type { MarketBrief, MarketL16, MarketL21, MarketL47, MarketL51, MarketState } from '~/types/definitions/market.types';
