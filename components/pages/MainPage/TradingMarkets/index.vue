@@ -93,8 +93,7 @@ const marketsPageStore = useMarketsPageStore();
 
 const worker = useBaseWorker();
 
-const marketIdParams = ref<string>('');
-
+const socketMarketIds = ref<number[]>([]);
 const markets = ref<MarketL21[]>([]);
 const marketsLoading = ref<boolean>(false);
 const getMarketListL21 = async () => {
@@ -113,8 +112,12 @@ const getMarketListL21 = async () => {
 			MarketType.SPOT,
 		);
 
-		marketIdParams.value = markets.value.map((item) => item.id).join(',');
-		publicSocketStore.refreshSocketRequest(marketIdParams.value, 'main');
+		if (socketMarketIds.value.length) {
+			await publicSocketStore.removeMarketIds(socketMarketIds.value);
+		}
+
+		socketMarketIds.value = markets.value.map((item) => item.id);
+		await publicSocketStore.addMarketIds(socketMarketIds.value);
 
 		marketsLoading.value = false;
 	}
@@ -144,5 +147,9 @@ onMounted(async () => {
 		initFilterItems(MarketType.SPOT),
 		getMarketListL21(),
 	]);
+});
+
+onUnmounted(async () => {
+	await publicSocketStore.unSubscribe();
 });
 </script>

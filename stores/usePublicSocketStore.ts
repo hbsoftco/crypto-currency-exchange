@@ -2,71 +2,81 @@ import type { SocketSpotData, SocketSpotTickerMessage } from '~/types/socket.typ
 import { PublicTopic, SocketId } from '~/utils/enums/socket.enum';
 
 export const usePublicSocketStore = defineStore('publicSocket', () => {
-	const marketIdParams = ref<string>('');
-	const oldMarketIdParams = ref<string>('');
+	const activeMarketIds = ref<Set<number>>(new Set());
 	const latestMarketData = ref<SocketSpotTickerMessage[]>([]);
-	const fixedMarkets = ref([
-		{ market: 'BTC_USDT', id: 3 },
-		{ market: 'USDT_TMN', id: 1795 },
-	]);
 
 	const { messages, connect, sendMessage } = usePublicWebSocket();
 
-	const refreshSocketRequest = async (marketIds: string, page: 'main' | 'markets' | 'market-detail' = 'main') => {
-		await connect();
-		console.log(page);
+	const addMarketIds = async (marketIds: number[]) => {
+		if (activeMarketIds.value.size > 0) {
+			sendMessage(createSubscriptionData(
+				SocketId.SPOT_TICKER,
+				'UNSUBSCRIBE',
+				PublicTopic.SPOT_TICKER,
+				Array.from(activeMarketIds.value).join(','),
+			));
+		}
+		marketIds.forEach((id) => activeMarketIds.value.add(id));
 
-		const fixedIds = fixedMarkets.value.map((market) => market.id);
-		const combinedMarketIds = `${marketIds},${fixedIds.join(',')}`;
+		// Add USDT_TMN market id
+		activeMarketIds.value.add(1795);
 
-		if (oldMarketIdParams.value) {
-			console.log('from unsub if');
+		const ids = Array.from(activeMarketIds.value).join(',');
 
-			unSubscribe();
+		if (ids) {
+			await connect();
+
+			sendMessage(createSubscriptionData(
+				SocketId.SPOT_TICKER,
+				'SUBSCRIBE',
+				PublicTopic.SPOT_TICKER,
+				ids,
+			));
 		}
 
-		oldMarketIdParams.value = combinedMarketIds;
-		marketIdParams.value = combinedMarketIds;
+		console.log('addMarketIds ids=========================>', ids);
+	};
 
-		subscribe();
+	const removeMarketIds = async (marketIds: number[]) => {
+		if (activeMarketIds.value.size > 0) {
+			sendMessage(createSubscriptionData(
+				SocketId.SPOT_TICKER,
+				'UNSUBSCRIBE',
+				PublicTopic.SPOT_TICKER,
+				Array.from(activeMarketIds.value).join(','),
+			));
+		}
+
+		marketIds.forEach((id) => activeMarketIds.value.delete(id));
+
+		// Add USDT_TMN market id
+		activeMarketIds.value.add(1795);
+
+		const ids = Array.from(activeMarketIds.value).join(',');
+		if (ids) {
+			await connect();
+
+			sendMessage(createSubscriptionData(
+				SocketId.SPOT_TICKER,
+				'SUBSCRIBE',
+				PublicTopic.SPOT_TICKER,
+				ids,
+			));
+		}
+
+		console.log('removeMarketIds ids=========================>', ids);
 	};
 
 	const unSubscribe = async () => {
-		await connect();
-		console.log('i come from store unSubscribe');
-
-		sendMessage(createSubscriptionData(
-			SocketId.SPOT_TICKER,
-			'UNSUBSCRIBE',
-			PublicTopic.SPOT_TICKER,
-			oldMarketIdParams.value,
-		));
-	};
-
-	const subscribe = async () => {
-		await connect();
-		console.log('i come from store subscribe');
-
-		sendMessage(createSubscriptionData(
-			SocketId.SPOT_TICKER,
-			'SUBSCRIBE',
-			PublicTopic.SPOT_TICKER,
-			marketIdParams.value,
-		));
-	};
-
-	const appendMarketsId = (marketIds: string) => {
-		if (marketIdParams.value) {
-			oldMarketIdParams.value = marketIdParams.value;
-			unSubscribe();
-
-			marketIdParams.value = `${marketIdParams.value},${marketIds}`;
+		if (activeMarketIds.value.size > 0) {
+			sendMessage(createSubscriptionData(
+				SocketId.SPOT_TICKER,
+				'UNSUBSCRIBE',
+				PublicTopic.SPOT_TICKER,
+				Array.from(activeMarketIds.value).join(','),
+			));
 		}
-		else {
-			marketIdParams.value = marketIds;
-		}
-
-		subscribe();
+		activeMarketIds.value = new Set();
 	};
 
 	watch(messages, (newMessages) => {
@@ -80,9 +90,10 @@ export const usePublicSocketStore = defineStore('publicSocket', () => {
 	};
 
 	return {
-		refreshSocketRequest,
 		findMarketDataById,
-		appendMarketsId,
+
+		addMarketIds,
+		removeMarketIds,
 		unSubscribe,
 
 		latestMarketData,

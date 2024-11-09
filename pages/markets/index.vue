@@ -141,6 +141,7 @@ const { $api } = useNuxtApp();
 const marketRepo = marketRepository($api);
 
 const marketsPageStore = useMarketsPageStore();
+const publicSocketStore = usePublicSocketStore();
 
 const worker = useBaseWorker();
 
@@ -166,6 +167,8 @@ watch(search, (newValue) => {
 
 let searchTimeout: ReturnType<typeof setTimeout> | null = null;
 
+const socketMarketIds = ref<number[]>([]);
+
 const mostProfitableMarkets = ref<MarketState[]>([]);
 const mostProfitableMarketsLoading = ref<boolean>(false);
 const getMostProfitableMarkets = async () => {
@@ -174,6 +177,12 @@ const getMostProfitableMarkets = async () => {
 		const { result } = await marketRepo.getMostProfitableMarkets({ rowCount: '3' });
 
 		mostProfitableMarkets.value = await worker.addCurrencyToMarketStates(useEnv('apiBaseUrl'), result.rows);
+
+		socketMarketIds.value = [
+			...socketMarketIds.value,
+			...mostProfitableMarkets.value.map((item) => item.id),
+		];
+
 		mostProfitableMarketsLoading.value = false;
 	}
 	catch (error: unknown) {
@@ -189,6 +198,12 @@ const getHottestMarkets = async () => {
 		const { result } = await marketRepo.getHottestMarkets({ rowCount: '3' });
 
 		hottestMarkets.value = await worker.addCurrencyToMarketStates(useEnv('apiBaseUrl'), result.rows);
+
+		socketMarketIds.value = [
+			...socketMarketIds.value,
+			...hottestMarkets.value.map((item) => item.id),
+		];
+
 		hottestMarketsLoading.value = false;
 	}
 	catch (error: unknown) {
@@ -204,6 +219,12 @@ const getLatestMarkets = async () => {
 		const { result } = await marketRepo.getLatestMarkets({ rowCount: '3' });
 
 		latestMarkets.value = await worker.addCurrencyToMarketStates(useEnv('apiBaseUrl'), result.rows);
+
+		socketMarketIds.value = [
+			...socketMarketIds.value,
+			...latestMarkets.value.map((item) => item.id),
+		];
+
 		latestMarketsLoading.value = false;
 	}
 	catch (error: unknown) {
@@ -228,6 +249,12 @@ onMounted(async () => {
 		getHottestMarkets(),
 		getLatestMarkets(),
 	]);
+
+	await publicSocketStore.addMarketIds(socketMarketIds.value);
+});
+
+onUnmounted(async () => {
+	await publicSocketStore.unSubscribe();
 });
 
 const items = [

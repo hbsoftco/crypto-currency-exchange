@@ -127,7 +127,7 @@ const props = defineProps<PropsDefinition>();
 
 const totalCount = ref(0);
 
-const marketIdParams = ref<string>('');
+const socketMarketIds = ref<number[]>([]);
 
 const markets = ref<MarketL31[]>([]);
 const marketsLoading = ref<boolean>(false);
@@ -147,8 +147,11 @@ const getMarketListL31 = async () => {
 
 		totalCount.value = result.totalCount;
 
-		marketIdParams.value = markets.value.map((item) => item.id).join(',');
-		publicSocketStore.refreshSocketRequest(marketIdParams.value, 'markets');
+		if (socketMarketIds.value.length) {
+			await publicSocketStore.removeMarketIds(socketMarketIds.value);
+		}
+		socketMarketIds.value = markets.value.map((item) => item.id);
+		await publicSocketStore.addMarketIds(socketMarketIds.value);
 
 		marketsLoading.value = false;
 	}

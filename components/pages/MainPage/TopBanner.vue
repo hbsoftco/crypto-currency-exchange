@@ -70,7 +70,6 @@ const isDark = computed({
 });
 
 const publicSocketStore = usePublicSocketStore();
-publicSocketStore.refreshSocketRequest('1795');
 
 const tetter = computed(() => {
 	const result = publicSocketStore.findMarketDataById(1795);

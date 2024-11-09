@@ -4,6 +4,10 @@
 			<li
 				v-for="market in markets"
 				:key="`market-state-${market.id}`"
+				:class="{
+					[bgClass]: changedItems[market.id],
+					'hover:bg-primary-gray-light hover:dark:bg-primary-gray-dark': !changedItems[market.id],
+				}"
 				class="flex justify-between items-center px-2 py-3 hover:bg-primary-gray-light hover:dark:bg-primary-gray-dark rounded duration-200 transition-all"
 			>
 				<ULink
@@ -47,5 +51,64 @@ interface Props {
 	markets: MarketState[];
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+const publicSocketStore = usePublicSocketStore();
+
+const localItems = ref<MarketState[]>([...props.markets]);
+
+const changedItems = ref<{ [key: string]: boolean }>({});
+const prevData = ref<{ [key: string]: { indexPrice: number; priceChangePercIn24H: number } }>({});
+const bgClass = ref<string>('');
+
+watch(
+	() => publicSocketStore.latestMarketData,
+	(newData) => {
+		if (newData) {
+			newData.forEach((updatedMarket) => {
+				const marketId = updatedMarket.data.mi;
+				const index = localItems.value.findIndex((item) => item.id === marketId);
+
+				if (index !== -1) {
+					const newIndexPrice = parseFloat(updatedMarket.data.i);
+					const newPriceChangePercIn24H = parseFloat(updatedMarket.data.p);
+
+					const prevIndexPrice = prevData.value[marketId]?.indexPrice;
+					const prevPriceChangePercIn24H = prevData.value[marketId]?.priceChangePercIn24H;
+
+					if (
+						newIndexPrice !== prevIndexPrice
+						|| newPriceChangePercIn24H !== prevPriceChangePercIn24H
+					) {
+						changedItems.value[marketId] = true;
+
+						if (newIndexPrice > prevIndexPrice) {
+							bgClass.value = 'bg-[#c8ffc8] dark:bg-[#13241f]';
+						}
+						else {
+							bgClass.value = 'bg-[#ffc8c8] dark:bg-[#2b181c]';
+						}
+
+						setTimeout(() => {
+							changedItems.value[marketId] = false;
+							bgClass.value = '';
+						}, 500);
+
+						localItems.value[index] = {
+							...localItems.value[index],
+							indexPrice: String(newIndexPrice),
+							priceChangePercIn24H: String(newPriceChangePercIn24H),
+						};
+
+						prevData.value[marketId] = {
+							indexPrice: newIndexPrice,
+							priceChangePercIn24H: newPriceChangePercIn24H,
+						};
+					}
+				}
+			});
+		}
+	},
+	{ deep: true },
+);
 </script>

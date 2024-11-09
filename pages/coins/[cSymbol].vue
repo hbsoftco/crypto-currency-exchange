@@ -164,7 +164,8 @@ const worker = useBaseWorker();
 const route = useRoute();
 const cSymbol = String(route.params.cSymbol);
 
-// const mostProfitableMarketIdParams = ref<string>('');
+const socketMarketIds = ref<number[]>([]);
+
 const mostProfitableMarkets = ref<MarketState[]>([]);
 const mostProfitableMarketsLoading = ref<boolean>(false);
 const getMostProfitableMarkets = async () => {
@@ -174,8 +175,10 @@ const getMostProfitableMarkets = async () => {
 
 		mostProfitableMarkets.value = await worker.addCurrencyToMarketStates(useEnv('apiBaseUrl'), result.rows);
 
-		// mostProfitableMarketIdParams.value = mostProfitableMarkets.value.map((item) => item.id).join(',');
-		// publicSocketStore.refreshSocketRequest(mostProfitableMarketIdParams.value, 'market-detail');
+		socketMarketIds.value = [
+			...socketMarketIds.value,
+			...mostProfitableMarkets.value.map((item) => item.id),
+		];
 
 		mostProfitableMarketsLoading.value = false;
 	}
@@ -184,7 +187,6 @@ const getMostProfitableMarkets = async () => {
 	}
 };
 
-// const hottestMarketIdParams = ref<string>('');
 const hottestMarkets = ref<MarketState[]>([]);
 const hottestMarketsLoading = ref<boolean>(false);
 const getHottestMarkets = async () => {
@@ -194,8 +196,10 @@ const getHottestMarkets = async () => {
 
 		hottestMarkets.value = await worker.addCurrencyToMarketStates(useEnv('apiBaseUrl'), result.rows);
 
-		// hottestMarketIdParams.value = hottestMarkets.value.map((item) => item.id).join(',');
-		// publicSocketStore.refreshSocketRequest(hottestMarketIdParams.value, 'market-detail');
+		socketMarketIds.value = [
+			...socketMarketIds.value,
+			...hottestMarkets.value.map((item) => item.id),
+		];
 
 		hottestMarketsLoading.value = false;
 	}
@@ -204,7 +208,6 @@ const getHottestMarkets = async () => {
 	}
 };
 
-// const latestMarketIdParams = ref<string>('');
 const latestMarkets = ref<MarketState[]>([]);
 const latestMarketsLoading = ref<boolean>(false);
 const getLatestMarkets = async () => {
@@ -214,8 +217,10 @@ const getLatestMarkets = async () => {
 
 		latestMarkets.value = await worker.addCurrencyToMarketStates(useEnv('apiBaseUrl'), result.rows);
 
-		// latestMarketIdParams.value = latestMarkets.value.map((item) => item.id).join(',');
-		// publicSocketStore.refreshSocketRequest(latestMarketIdParams.value, 'market-detail');
+		socketMarketIds.value = [
+			...socketMarketIds.value,
+			...latestMarkets.value.map((item) => item.id),
+		];
 
 		latestMarketsLoading.value = false;
 	}
@@ -224,7 +229,6 @@ const getLatestMarkets = async () => {
 	}
 };
 
-// const mostVoluminousMarketIdParams = ref<string>('');
 const mostVoluminousMarkets = ref<MarketState[]>([]);
 const mostVoluminousMarketsLoading = ref<boolean>(false);
 const getMostVoluminousMarkets = async () => {
@@ -234,8 +238,10 @@ const getMostVoluminousMarkets = async () => {
 
 		mostVoluminousMarkets.value = await worker.addCurrencyToMarketStates(useEnv('apiBaseUrl'), result.rows);
 
-		// mostVoluminousMarketIdParams.value = mostVoluminousMarkets.value.map((item) => item.id).join(',');
-		// publicSocketStore.refreshSocketRequest(mostVoluminousMarketIdParams.value, 'market-detail');
+		socketMarketIds.value = [
+			...socketMarketIds.value,
+			...mostVoluminousMarkets.value.map((item) => item.id),
+		];
 
 		mostVoluminousMarketsLoading.value = false;
 	}
@@ -262,8 +268,8 @@ const getCurrencyInfo = async () => {
 		}
 		const { result } = await currencyRepo.getCurrencyInfo(params.value);
 
-		const findMarket = await worker.searchMarkets(useEnv('apiBaseUrl'), `${currency.value?.cSymbol}USDT`, 1);
-		publicSocketStore.appendMarketsId(String(findMarket[0].id));
+		const findMarket = await worker.searchMarkets(useEnv('apiBaseUrl'), `${currency.value?.cSymbol}USDT`, 3);
+		publicSocketStore.addMarketIds([findMarket[0].id]);
 
 		currencyInfo.value = result;
 		currencyInfo.value.currency = currency.value;
@@ -282,5 +288,11 @@ onMounted(async () => {
 		getLatestMarkets(),
 		getCurrencyInfo(),
 	]);
+
+	await publicSocketStore.addMarketIds(socketMarketIds.value);
+});
+
+onUnmounted(async () => {
+	await publicSocketStore.unSubscribe();
 });
 </script>
