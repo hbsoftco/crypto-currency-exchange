@@ -347,6 +347,10 @@ type getApiParams = {
 	apiKey: string;
 };
 
+type GetCurrencyParams = {
+	languageId: string;
+	id: string;
+};
 export type {
 	GetReferralBestListParams,
 	GetRewardExposedParams,
@@ -397,4 +401,5 @@ export type {
 	getTypeListParams,
 	getApiListParams,
 	getApiParams,
+	GetCurrencyParams,
 };

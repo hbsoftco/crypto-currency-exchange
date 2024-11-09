@@ -77,12 +77,12 @@
 <script setup lang="ts">
 import TreeNode from '~/components/pages/Site/Support/TreeNode.vue';
 import { helpRepository } from '~/repositories/help.repository';
-import type { GetCurrencyParams, GetRootListParams } from '~/types/base.types';
 import SearchCrypto from '~/components/forms/SearchCrypto.vue';
 import { Language } from '~/utils/enums/language.enum';
 import type { FaqItem } from '~/types/response/help.types';
 import { sanitizedHtml } from '~/utils/html-sanitizer';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
+import type { GetCurrencyParams, GetRootListParams } from '~/types/base.types';
 
 const route = useRoute();
 const id = String(route.params.id);
