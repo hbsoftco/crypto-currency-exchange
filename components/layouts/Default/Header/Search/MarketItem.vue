@@ -22,10 +22,16 @@
 		</div>
 		<div class="flex justify-end items-center">
 			<div class="min-w-16 text-left">
-				<span class="text-sm md:text-sm font-medium">{{ useNumber(priceFormat(localRow.indexPrice)) }}</span>
+				<span v-if="localRow.indexPrice === '0'">-</span>
+				<span
+					v-else
+					class="text-sm md:text-sm font-medium"
+				>{{ useNumber(priceFormat(localRow.indexPrice)) }}</span>
 			</div>
-			<div class="min-w-20">
+			<div class="min-w-20 text-center">
+				<span v-if="localRow.priceChangePercIn24H === '0'">-</span>
 				<ChangeIndicator
+					v-else
 					:change="parseFloat(localRow.priceChangePercIn24H)"
 					pl="pl-0"
 					size="text-sm"

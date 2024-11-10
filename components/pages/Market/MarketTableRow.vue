@@ -62,6 +62,7 @@
 		<td class="text-base font-medium px-2 md:px-10 text-left">
 			<UiChangeIndicator
 				pl="pl-0"
+				size="text-sm"
 				:change="parseFloat(priceFormat(localRow.priceChangePercIn24H))"
 				:icon="true"
 			/>
