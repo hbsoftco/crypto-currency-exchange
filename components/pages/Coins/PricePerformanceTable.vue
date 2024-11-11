@@ -34,17 +34,17 @@
 							:show-percent="false"
 							pre-text="$"
 							pl="pl-0"
-							:change="parseFloat(String(currency?.priceChangePerc24h))"
+							:change="parseFloat(String(localCurrency?.priceChangePerc24h))"
 							:icon="false"
 						/>
 					</td>
 					<td class=" py-1.5">
 						<UiChangePrice
-							v-if="currency?.price"
+							v-if="localCurrency?.price"
 							classes="text-sm font-normal"
 							:show-percent="false"
 							pl="pl-0"
-							:change="changePrice(currency?.price, currency?.priceChangePerc24h)"
+							:change="changePrice(localCurrency?.price, localCurrency?.priceChangePerc24h)"
 							:icon="false"
 						/>
 					</td>
@@ -62,17 +62,17 @@
 							:show-percent="false"
 							pre-text="$"
 							pl="pl-0"
-							:change="parseFloat(String(currency?.priceChangePerc30d))"
+							:change="parseFloat(String(localCurrency?.priceChangePerc30d))"
 							:icon="false"
 						/>
 					</td>
 					<td class=" py-1.5">
 						<UiChangePrice
-							v-if="currency?.price"
+							v-if="localCurrency?.price"
 							classes="text-sm font-normal"
 							:show-percent="false"
 							pl="pl-0"
-							:change="changePrice(currency?.price, currency?.priceChangePerc30d)"
+							:change="changePrice(localCurrency?.price, localCurrency?.priceChangePerc30d)"
 							:icon="false"
 						/>
 					</td>
@@ -90,17 +90,17 @@
 							:show-percent="false"
 							pre-text="$"
 							pl="pl-0"
-							:change="parseFloat(String(currency?.priceChangePerc60d))"
+							:change="parseFloat(String(localCurrency?.priceChangePerc60d))"
 							:icon="false"
 						/>
 					</td>
 					<td class=" py-1.5">
 						<UiChangePrice
-							v-if="currency?.price"
+							v-if="localCurrency?.price"
 							classes="text-sm font-normal"
 							:show-percent="false"
 							pl="pl-0"
-							:change="changePrice(currency?.price, currency?.priceChangePerc60d)"
+							:change="changePrice(localCurrency?.price, localCurrency?.priceChangePerc60d)"
 							:icon="false"
 						/>
 					</td>
@@ -116,17 +116,17 @@
 							:show-percent="false"
 							pre-text="$"
 							pl="pl-0"
-							:change="parseFloat(String(currency?.priceChangePerc90d))"
+							:change="parseFloat(String(localCurrency?.priceChangePerc90d))"
 							:icon="false"
 						/>
 					</td>
 					<td class=" py-1.5">
 						<UiChangePrice
-							v-if="currency?.price"
+							v-if="localCurrency?.price"
 							classes="text-sm font-normal"
 							:show-percent="false"
 							pl="pl-0"
-							:change="changePrice(currency?.price, currency?.priceChangePerc90d)"
+							:change="changePrice(localCurrency?.price, localCurrency?.priceChangePerc90d)"
 							:icon="false"
 						/>
 					</td>
@@ -139,15 +139,34 @@
 </template>
 
 <script setup lang="ts">
-import type { Currency } from '~/types/response/currency.types';
+import type { Currency } from '~/types/definitions/currency.types';
+import type { SocketSpotData } from '~/types/socket.types';
 
 interface PropsDefinition {
-	currency: Currency | null;
+	currency: Currency;
+	socketData: SocketSpotData | null;
+	tickSize: string;
 }
 
-defineProps<PropsDefinition>();
+const props = defineProps<PropsDefinition>();
+
+const localCurrency = ref(props.currency);
+
+watch(() => props.socketData, (newData) => {
+	if (newData) {
+		const newIndexPrice = newData.i;
+
+		localCurrency.value.price = newIndexPrice;
+	}
+});
 
 const changePrice = (price: string | number, priceChangePercent: string | number) => {
-	return (parseFloat(String(price)) * parseFloat(String(priceChangePercent)));
+	const rawValue = (parseFloat(String(price)) * parseFloat(String(priceChangePercent))) / 100;
+
+	const decimalPlaces = props.tickSize.includes('.')
+		? props.tickSize.split('.')[1].length
+		: 0;
+
+	return Number(rawValue.toFixed(decimalPlaces));
 };
 </script>

@@ -17,14 +17,15 @@
 						class="mr-14"
 					>
 						<span
+							:class="priceClass"
 							class="text-base font-bold text-subtle-text-light dark:text-subtle-text-dark"
-						>${{ useNumber(priceFormat(price)) }}</span>
-						<span class="text-sm font-normal text-accent-green mx-1">
+						>${{ useNumber(priceFormat(localPrice)) }}</span>
+						<span class="text-sm font-normal mx-1">
 							<UiChangePrice
 								classes="text-sm font-normal"
 								:show-percent="true"
 								pl="pl-0.5"
-								:change="parseFloat(String(priceChangePerc7d))"
+								:change="parseFloat(String(localPriceChangePerc24h))"
 								:icon="false"
 							/>
 						</span>
@@ -82,6 +83,7 @@ import { priceFormat } from '~/utils/price-format';
 import type { MarketBrief } from '~/types/definitions/market.types';
 import { spotRepository } from '~/repositories/spot.repository';
 import type { KLineParams } from '~/types/definitions/spot.types';
+import type { SocketSpotData } from '~/types/socket.types';
 
 interface PropsDefinition {
 	markets: MarketBrief[];
@@ -92,12 +94,40 @@ interface PropsDefinition {
 	priceChangePerc30d: string;
 	priceChangePerc60d: string;
 	priceChangePerc90d: string;
+	socketData: SocketSpotData | null;
 }
 
 const props = defineProps<PropsDefinition>();
 
 const { $api } = useNuxtApp();
 const spotRepo = spotRepository($api);
+
+const localPrice = ref(props.price);
+const localPriceChangePerc24h = ref(props.priceChangePerc24h);
+
+const textClass = ref('');
+
+watch(() => props.socketData, (newData) => {
+	if (newData) {
+		const newIndexPrice = newData.i;
+
+		if (newIndexPrice > localPrice.value) {
+			textClass.value = 'text-[#c8ffc8] dark:text-[#13241f]';
+		}
+		else {
+			textClass.value = 'text-[#ffc8c8] dark:text-[#2b181c]';
+		}
+
+		localPrice.value = newIndexPrice;
+		localPriceChangePerc24h.value = newData.p;
+
+		setTimeout(() => {
+			textClass.value = '';
+		}, 500);
+	}
+});
+
+const priceClass = computed(() => `${textClass.value} transition duration-500`);
 
 interface ChartOption {
 	header_option: string;

@@ -6,7 +6,7 @@
 				<div class="block md:flex justify-between items-center py-5">
 					<div>
 						<h1 class="text-4xl font-black">
-							{{ $t('bilandHelpCenter') }}
+							{{ $t('bitlandHelpCenter') }}
 						</h1>
 						<div
 							class="flex items-center my-4"
@@ -16,7 +16,7 @@
 							>
 
 								<span class="mx-1 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
-									{{ $t('bilandHelpCenter') }}
+									{{ $t('bitlandHelpCenter') }}
 								</span>
 							</ULink>
 							<IconArrowLeft class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark" />

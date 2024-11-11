@@ -20,13 +20,14 @@
 					<div class="block mb-24">
 						<div>
 							<MarketChart
-								v-if="currencyInfo.currency"
+								v-if="currencyInfo.currency && currentMarket?.id"
 								:price="currencyInfo.price"
 								:price-change-perc7d="currencyInfo.priceChangePerc7d"
 								:price-change-perc24h="currencyInfo.priceChangePerc24h"
 								:price-change-perc30d="currencyInfo.priceChangePerc30d"
 								:price-change-perc60d="currencyInfo.priceChangePerc60d"
 								:price-change-perc90d="currencyInfo.priceChangePerc90d"
+								:socket-data="publicSocketStore.findMarketDataById(currentMarket?.id)"
 								:symbol="cSymbol"
 								:markets="markets"
 								class="hidden md:block"
@@ -36,7 +37,12 @@
 							<Headline :headline="currencyInfo?.headline || null" />
 							<!-- Headline -->
 
-							<PricePerformanceTable :currency="currencyInfo" />
+							<PricePerformanceTable
+								v-if="currentMarket?.id"
+								:currency="currencyInfo"
+								:tick-size="currentMarket.tickSize"
+								:socket-data="publicSocketStore.findMarketDataById(currentMarket?.id)"
+							/>
 							<!-- table -->
 
 							<PriceInformation :currency-detail="currencyInfo" />
@@ -250,6 +256,7 @@ const getMostVoluminousMarkets = async () => {
 	}
 };
 
+const currentMarket = ref<MarketBrief>();
 const params = ref<CurrencyInfoParams>({
 	id: '',
 	languageId: String(Language.ENGLISH),
@@ -268,7 +275,10 @@ const getCurrencyInfo = async () => {
 		}
 		const { result } = await currencyRepo.getCurrencyInfo(params.value);
 
-		const findMarket = await worker.searchMarkets(useEnv('apiBaseUrl'), `${currency.value?.cSymbol}USDT`, 3);
+		const findMarket = await worker.searchMarkets(useEnv('apiBaseUrl'), `${currency.value?.cSymbol}USDT`, 1);
+		currentMarket.value = findMarket[0];
+		console.log(currentMarket.value);
+
 		publicSocketStore.addMarketIds([findMarket[0].id]);
 
 		currencyInfo.value = result;

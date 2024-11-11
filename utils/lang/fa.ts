@@ -1039,7 +1039,7 @@ const persian = {
 	joinBitland: 'به بیت‌لند ملحق شوید !',
 	learnMoreAboutCoinData: 'درباره داده‌های سکه و روند قیمت بیشتر بدانید',
 	changeTo: 'تبدیل به',
-	bilandHelpCenter: 'مرکز راهنمایی بیت لند',
+	bitlandHelpCenter: 'مرکز راهنمایی بیت لند',
 	searchResultsFor: 'نتایج جستجو برای',
 	result: 'نتیجه',
 	lastUpdate: 'آخرین به روز رسانی',

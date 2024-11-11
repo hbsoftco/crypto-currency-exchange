@@ -2,7 +2,7 @@
 	<div class="w-full">
 		<ul>
 			<li
-				v-for="market in markets"
+				v-for="market in localMarkets"
 				:key="`market-state-${market.id}`"
 				:class="{
 					[bgClass]: changedItems[market.id],
@@ -55,7 +55,7 @@ const props = defineProps<Props>();
 
 const publicSocketStore = usePublicSocketStore();
 
-const localItems = ref<MarketState[]>([...props.markets]);
+const localMarkets = ref<MarketState[]>([...props.markets]);
 
 const changedItems = ref<{ [key: string]: boolean }>({});
 const prevData = ref<{ [key: string]: { indexPrice: number; priceChangePercIn24H: number } }>({});
@@ -67,7 +67,7 @@ watch(
 		if (newData) {
 			newData.forEach((updatedMarket) => {
 				const marketId = updatedMarket.data.mi;
-				const index = localItems.value.findIndex((item) => item.id === marketId);
+				const index = localMarkets.value.findIndex((item) => item.id === marketId);
 
 				if (index !== -1) {
 					const newIndexPrice = parseFloat(updatedMarket.data.i);
@@ -94,8 +94,8 @@ watch(
 							bgClass.value = '';
 						}, 500);
 
-						localItems.value[index] = {
-							...localItems.value[index],
+						localMarkets.value[index] = {
+							...localMarkets.value[index],
 							indexPrice: String(newIndexPrice),
 							priceChangePercIn24H: String(newPriceChangePercIn24H),
 						};
