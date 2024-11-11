@@ -24,13 +24,12 @@
 				:key="index"
 				class="mx-1 my-1 py-1 cursor-pointer border-b last:border-none border-b-primary-gray-light dark:border-b-primary-gray-dark rounded hover:bg-primary-gray-light hover:dark:bg-primary-gray-dark duration-200 transition-all"
 			>
-				<ULink
-					to="/fast-trade"
+				<div
 					class="flex justify-between"
 				>
 					<ULink
 						class="flex items-center justify-start"
-						:to="`/spot/${splitMarket(market?.currency?.cSymbol + quote)}`"
+						:to="type==='spot' ? `/spot/${splitMarket(market?.currency?.cSymbol + quote)}`: checkPathLink('/fast-trade', false)"
 					>
 						<img
 							:src="`https://api-bitland.site/media/currency/${market?.currency?.cSymbol}.png`"
@@ -65,7 +64,7 @@
 							:icon="false"
 						/>
 					</div>
-				</ULink>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -84,7 +83,7 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-
+const { checkPathLink } = useLinkManager();
 const headerMenuStore = useHeaderMenuStore();
 
 const setTag = async (tag: Tag) => {

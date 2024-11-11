@@ -74,7 +74,7 @@ const { checkPathLink } = useLinkManager();
 const menuItems = ref([
 	{
 		name: 'quickTrade',
-		type: 'spot',
+		type: 'fast-trade',
 		description: 'buyingSellingSpot',
 		ignore: true,
 		hover: false,
@@ -83,7 +83,7 @@ const menuItems = ref([
 	},
 	{
 		name: 'professionalDeal',
-		type: 'fast-trade',
+		type: 'spot',
 		description: 'buyingSellingSpot',
 		ignore: true,
 		hover: false,
