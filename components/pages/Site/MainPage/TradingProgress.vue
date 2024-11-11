@@ -2,7 +2,7 @@
 	<div class="mt-28">
 		<div class="grid grid-cols-3 w-full pl-4">
 			<div
-				class="relative w-full h-24 -pr-10 border-t-2 border-primary-yellow-light dark:border-primary-yellow-dark"
+				class="relative w-full h-6 -pr-10 border-t-2 border-primary-yellow-light dark:border-primary-yellow-dark"
 			>
 				<div
 					class="absolute -top-10 -left-5 z-10"
@@ -114,11 +114,12 @@
 		</div>
 		<div
 			v-if="isSignInVisible"
-			class="my-12 text-center"
+			class="my-1 text-center"
 		>
 			<p>برای انجام معاملات و استفاده از امکانات بیت‌لند نیاز است حساب کاربری تان را تکمیل کنید . </p>
 			<div class="flex justify-center">
 				<UButton
+					to="/account/authentication/level-one"
 					class="flex justify-center w-[18.8rem] my-4 text-primary-yellow-light dark:text-primary-yellow-dark text-base hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-yellow"
 				>
 					<span class="text-base font-extrabold">{{
@@ -129,11 +130,12 @@
 		</div>
 		<div
 			v-if="isDepositVisible"
-			class="my-12 text-center"
+			class="my-1 text-center"
 		>
 			<p>با اولین واریز خودت می تونی یه جایزه از بیت‌لند بگیری پس وقتتوتلف نکن و شروع کن. </p>
 			<div class="flex justify-center">
 				<UButton
+					to="/wallet/deposit"
 					class="flex justify-center w-[18.8rem] my-4 text-primary-yellow-light dark:text-primary-yellow-dark text-base hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-yellow"
 				>
 					<span class="text-base font-extrabold">{{
@@ -144,11 +146,12 @@
 		</div>
 		<div
 			v-if="isTransactionVisible"
-			class="my-12 text-center"
+			class="my-1 text-center"
 		>
 			<p>هم می تونی معامله کنی هم از بیت‌لند به خاطر اولین معامله جایزه بگیری فقط یادت باشه این فرصت محدوده!</p>
 			<div class="flex justify-center">
 				<UButton
+					to="/fast-trade"
 					class="flex justify-center w-[18.8rem] my-4 text-primary-yellow-light dark:text-primary-yellow-dark text-base hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-yellow"
 				>
 					<span class="text-base font-extrabold">{{
@@ -170,13 +173,19 @@ const isTransactionVisible = ref(false);
 
 const toggleSignIn = () => {
 	isSignInVisible.value = !isSignInVisible.value;
+	isDepositVisible.value = false;
+	isTransactionVisible.value = false;
 };
 
 const toggleDeposit = () => {
 	isDepositVisible.value = !isDepositVisible.value;
+	isSignInVisible.value = false;
+	isTransactionVisible.value = false;
 };
 
 const toggleTransaction = () => {
 	isTransactionVisible.value = !isTransactionVisible.value;
+	isSignInVisible.value = false;
+	isDepositVisible.value = false;
 };
 </script>

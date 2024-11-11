@@ -1044,6 +1044,7 @@ const persian = {
 	result: 'نتیجه',
 	lastUpdate: 'آخرین به روز رسانی',
 	update: 'تازه سازی',
+	howBuyCurrency: 'چطور ارز بخریم',
 };
 
 export default persian;
