@@ -1,9 +1,18 @@
 <template>
 	<div class="">
-		<IconUser
-			class="text-2xl cursor-pointer"
-			@click="open = true"
-		/>
+		<div v-if="!authStore.isLoggedIn">
+			<IconUser
+				class="text-2xl cursor-pointer"
+				@click="open = true"
+			/>
+		</div>
+		<div v-else>
+			<IconUserFill
+				class="text-2xl cursor-pointer text-primary-yellow-light dark:text-primary-yellow-dark"
+				@click="open = true"
+			/>
+		</div>
+
 		<div
 			v-if="open"
 			class="fixed inset-0 bg-black bg-opacity-50 z-30"
@@ -11,7 +20,7 @@
 		/>
 		<div
 			v-if="open"
-			class="fixed top-0 right-0 w-full h-full bg-background-light dark:bg-background-dark z-40 px-4 transform transition-transform duration-300 ease-in-out overflow-y-scroll"
+			class="fixed top-0 right-0 w-full h-full bg-background-light dark:bg-background-dark z-50 px-4 transform transition-transform duration-300 ease-in-out overflow-y-scroll"
 			:class="open ? 'translate-x-0' : 'translate-x-full'"
 		>
 			<div class="flex justify-between items-center py-4">
@@ -43,17 +52,17 @@
 					<IconAccount class="ml-2 text-subtle-text-light dark:text-subtle-text-dark  text-xl" />
 					<span class="text-sm font-semibold">لطفا وارد حساب خود شوید یا ثبت نام کنید.</span>
 				</div>
-				<div class="flex justify-between items-center mt-6 pb-6 w-full">
+				<div class="grid grid-cols-2 gap-4 mt-6 pb-6">
 					<UButton
 						size="lg"
-						class="text-base font-medium px-16 py-2 text-center bg-transparent-light dark:bg-transparency-dark text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark hover:text-text-light hover:dark:text-text-light "
+						class="text-base font-medium px-2 py-2 flex justify-center bg-transparent-light dark:bg-transparency-dark text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark hover:text-text-light hover:dark:text-text-light "
 						to="/auth/login"
 					>
 						{{ $t("login") }}
 					</UButton>
 					<UButton
 						size="lg"
-						class="text-base font-medium px-16 py-2 text-center "
+						class="text-base font-medium px-2 py-2 flex justify-center"
 						to="/auth/sign-up"
 					>
 						{{ $t("signup") }}
@@ -64,7 +73,7 @@
 						class="border-b border-primary-gray-light dark:border-primary-gray-dark"
 					>
 						<ULink
-							to=""
+							to="/account/settings"
 							class="flex justify-between items-center w-full py-2.5"
 						>
 							<div class="flex justify-start items-center">
@@ -84,7 +93,7 @@
 						class="border-b border-primary-gray-light dark:border-primary-gray-dark"
 					>
 						<ULink
-							to=""
+							to="/help-center"
 							class="flex justify-between items-center w-full py-2.5"
 						>
 							<div class="flex justify-start items-center">
@@ -124,7 +133,7 @@
 						class="border-b border-primary-gray-light dark:border-primary-gray-dark"
 					>
 						<ULink
-							to=""
+							to="/live-chat"
 							class="flex justify-between items-center w-full py-2.5"
 						>
 							<div class="flex justify-start items-center">
@@ -144,7 +153,7 @@
 						class="border-b border-primary-gray-light dark:border-primary-gray-dark"
 					>
 						<ULink
-							to=""
+							to="/app"
 							class="flex justify-between items-center w-full py-2.5"
 						>
 							<div class="flex justify-start items-center">
@@ -162,268 +171,273 @@
 			</div>
 			<div v-else>
 				<div>
-					<div class="flex items-center mb-2">
+					<div
+						v-if="getValueByKey(authStore.getCurrentUser, 'EMAIL')"
+						class="flex items-center mb-2"
+					>
 						<IconMessage class="text-2xl ml-2 dark:text-subtle-text-50" />
-						<span class="text-xs font-bold">ashoja89@gmail.com</span>
+						<span class="text-xs font-bold mr-1">
+							{{ authStore.currentUserLoading ? '...': getValueByKey(authStore.getCurrentUser, 'EMAIL') }}
+						</span>
+					</div>
+					<div
+						v-if="getValueByKey(authStore.getCurrentUser, 'MOBILE')"
+						class="flex items-center mb-2"
+					>
+						<UIcon
+							name="i-heroicons-phone"
+							class="w-6 h-6 ml-2 dark:text-subtle-text-50"
+						/>
+						<span
+							class="text-xs font-bold mr-1"
+							dir="ltr"
+						>
+							{{ authStore.currentUserLoading ? '...': getValueByKey(authStore.getCurrentUser, 'MOBILE') }}
+						</span>
 					</div>
 					<div class="flex items-center">
-						<IconAuthentication
-							class="text-2xl ml-2 dark:text-subtle-text-50"
-						/>
+						<IconAuthentication class="text-2xl ml-2 dark:text-subtle-text-50" />
 						<span
 							id="copy-text"
 							ref="textRef"
-							class="text-xs font-bold ml-1"
-						>65555910</span>
+							class="text-xs font-bold mx-1"
+						>
+							{{ authStore.currentUserLoading ? '...': useNumber(String(getValueByKey(authStore.getCurrentUser, 'UID'))) }}
+						</span>
 						<IconCopy
 							class="cursor-pointer"
 							@click="copyText"
 						/>
 					</div>
 				</div>
-				<ULink to="#">
-					<div
-						class="flex justify-between items-center p-2 my-3 rounded bg-primary-yellow-light dark:bg-primary-yellow-dark"
-					>
-						<div class="flex items-center">
-							<div class="w-6 h-6 rounded p-1 bg-black ml-2">
+				<div class="grid grid-cols-2 gap-1">
+					<ULink to="/account/rewards">
+						<div
+							class="flex justify-between items-center h-14 p-1 my-3 rounded bg-transparent-light dark:bg-transparency-dark text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark hover:text-text-light hover:dark:text-text-light"
+						>
+							<img
+								src="/images/gift.png"
+								alt="gift"
+								class="w-4 h-4"
+							>
+							<div class="block">
+								<span
+									class="text-sm font-bold text-black dark:text-white"
+								>{{ $t("awards") }}</span>
+
+								<p class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
+									{{ $t('getNow') }}
+								</p>
+							</div>
+							<div
+								class="w-5 h-5 bg-primary-yellow-light dark:bg-primary-yellow-dark rounded-full text-center flex justify-center items-center"
+							>
+								<span class="text-xs">{{ useNumber('0') }}</span>
+							</div>
+						</div>
+					</ULink>
+					<ULink to="/account/over-view/special-club">
+						<div
+							class="flex items-center h-14 p-1 my-3 rounded bg-primary-yellow-light dark:bg-primary-yellow-dark"
+						>
+							<div class="w-4 h-4 rounded bg-black ml-1 flex justify-center items-center">
 								<IconCrown
-									class="text-primary-yellow-light dark:text-primary-yellow-dark"
+									class=" text-sm text-primary-yellow-light dark:text-primary-yellow-dark"
 								/>
 							</div>
-							<span
-								class="text-sm font-bold text-black dark:text-text-dark"
-							>{{ $t("requestVIPAccount") }}</span>
+
+							<div class="block">
+								<span
+									class="text-xs font-bold text-black dark:text-black"
+								>{{ $t("requestVIPAccount") }}</span>
+
+								<p class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
+									{{ $t('actNow') }}
+								</p>
+							</div>
 						</div>
-						<IconArrowLeft class="text-hover-dark dark:text-hover-dark" />
-					</div>
-				</ULink>
+					</ULink>
+				</div>
 				<ul class="flex flex-col">
-					<li
-						class="border-b border-primary-gray-light dark:border-primary-gray-dark"
-					>
+					<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 						<ULink
-							to=""
+							to="/account"
 							class="flex justify-between items-center w-full py-2.5"
 						>
 							<div class="flex justify-start items-center">
 								<div class="ml-2">
-									<IconUser
-										class="text-base dark: text-subtle-text-light dark:text-subtle-text-50"
-									/>
+									<IconUser class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
 								</div>
 								<p class="mb-0 text-xs font-bold">
-									{{ $t("showAccount") }}
+									{{ $t('showAccount') }}
 								</p>
 							</div>
 						</ULink>
 					</li>
 					<!-- showAccount -->
-					<li
-						class="border-b border-primary-gray-light dark:border-primary-gray-dark mt-0"
-					>
+					<li class="border-b border-primary-gray-light dark:border-primary-gray-dark mt-0">
 						<ULink
-							to=""
+							to="/account/authentication"
 							class="flex justify-between items-center w-full py-1.5"
 						>
 							<div class="flex justify-start items-center">
 								<div class="ml-2">
-									<IconAuthentication
-										class="text-base dark: text-subtle-text-light dark:text-subtle-text-50"
-									/>
+									<IconAuthentication class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
 								</div>
 								<p class="mb-0 text-xs font-bold">
-									{{ $t("authentication") }}
+									{{ $t('authentication') }}
 								</p>
 							</div>
 							<div>
-								<span
-									class="text-primary-yellow-light dark:text-primary-yellow-dark rounded-sm p-0.5 px-1 border border-background-light dark:border-background-50 text-[0.625rem]"
-								>سطح ۲</span>
+								<span class="text-primary-yellow-light dark:text-primary-yellow-dark rounded-sm p-0.5 px-1 border border-background-light dark:border-background-50 text-[0.625rem]">
+									{{ `${$t('level')} ${useNumber(String(getValueByKey(authStore.getCurrentUser, 'KYC_LVL_ID')?getValueByKey(authStore.getCurrentUser, 'KYC_LVL_ID'): 0))}` }}
+								</span>
 							</div>
 						</ULink>
 					</li>
 					<!-- authentication -->
-					<li
-						class="border-b border-primary-gray-light dark:border-primary-gray-dark"
-					>
+					<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 						<ULink
-							to=""
+							to="/account/security"
 							class="flex justify-between items-center w-full py-2.5"
 						>
 							<div class="flex justify-start items-center">
 								<div class="ml-2">
-									<IconSecurity
-										class="text-base dark: text-subtle-text-light dark:text-subtle-text-50"
-									/>
+									<IconSecurity class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
 								</div>
 								<p class="mb-0 text-xs font-bold">
-									{{ $t("security") }}
+									{{ $t('security') }}
 								</p>
 							</div>
 						</ULink>
 					</li>
 					<!-- security -->
-					<li
-						class="border-b border-primary-gray-light dark:border-primary-gray-dark"
-					>
+					<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 						<ULink
-							to=""
+							to="/account/fees"
 							class="flex justify-between items-center w-full py-2.5"
 						>
 							<div class="flex justify-start items-center">
 								<div class="ml-2">
-									<IconFees
-										class="text-base dark: text-subtle-text-light dark:text-subtle-text-50"
-									/>
+									<IconFees class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
 								</div>
 								<p class="mb-0 text-xs font-bold">
-									{{ $t("fees") }}
+									{{ $t('fees') }}
 								</p>
 							</div>
 						</ULink>
 					</li>
 					<!-- fees -->
-					<li
-						class="border-b border-primary-gray-light dark:border-primary-gray-dark mt-0"
-					>
+					<li class="border-b border-primary-gray-light dark:border-primary-gray-dark mt-0">
 						<ULink
-							to=""
+							to="/account/user-level"
 							class="flex justify-between items-center w-full py-1.5"
 						>
 							<div class="flex justify-start items-center">
 								<div class="ml-2">
-									<IconUserLevel
-										class="text-base dark: text-subtle-text-light dark:text-subtle-text-50"
-									/>
+									<IconUserLevel class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
 								</div>
 								<p class="mb-0 text-xs font-bold">
-									{{ $t("userLevel") }}
+									{{ $t('userLevel') }}
 								</p>
 							</div>
 							<div>
-								<span
-									class="text-primary-yellow-light dark:text-primary-yellow-dark rounded-sm p-0.5 px-1 border border-background-light dark:border-background-50 text-[0.625rem]"
-								>نهنگ گوژ پشت</span>
+								<span class="text-primary-yellow-light dark:text-primary-yellow-dark rounded-sm p-0.5 px-1 border border-background-light dark:border-background-50 text-[0.625rem]">{{ useNumber(String(getValueByKey(authStore.getCurrentUser, 'TRD_LVL_NAME'))) }}</span>
 							</div>
 						</ULink>
 					</li>
 					<!-- userLevel -->
-					<li
-						class="border-b border-primary-gray-light dark:border-primary-gray-dark"
-					>
+					<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 						<ULink
-							to=""
+							to="/account/manage-api"
 							class="flex justify-between items-center w-full py-2.5"
 						>
 							<div class="flex justify-start items-center">
 								<div class="ml-2">
-									<IconManageAPI
-										class="text-base dark: text-subtle-text-light dark:text-subtle-text-50"
-									/>
+									<IconManageAPI class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
 								</div>
 								<p class="mb-0 text-xs font-bold">
-									{{ $t("manageAPI") }}
+									{{ $t('manageAPI') }}
 								</p>
 							</div>
 						</ULink>
 					</li>
 					<!-- manageAPI -->
-					<li
-						class="border-b border-primary-gray-light dark:border-primary-gray-dark"
-					>
+					<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 						<ULink
-							to="/referral"
+							to="/account/invite-friends"
 							class="flex justify-between items-center w-full py-2.5"
 						>
 							<div class="flex justify-start items-center">
 								<div class="ml-2">
-									<IconInviteFriends
-										class="text-base dark: text-subtle-text-light dark:text-subtle-text-50"
-									/>
+									<IconInviteFriends class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
 								</div>
 								<p class="mb-0 text-xs font-bold">
-									{{ $t("inviteFriends") }}
+									{{ $t('inviteFriends') }}
 								</p>
 							</div>
 						</ULink>
 					</li>
 					<!-- inviteFriends -->
-					<li
-						class="border-b border-primary-gray-light dark:border-primary-gray-dark"
-					>
+					<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 						<ULink
-							to=""
+							to="/account/rewards"
 							class="flex justify-between items-center w-full py-2.5"
 						>
 							<div class="flex justify-start items-center">
 								<div class="ml-2">
-									<IconAwards
-										class="text-base dark: text-subtle-text-light dark:text-subtle-text-50"
-									/>
+									<IconAwards class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
 								</div>
 								<p class="mb-0 text-xs font-bold">
-									{{ $t("awards") }}
+									{{ $t('awards') }}
 								</p>
 							</div>
 						</ULink>
 					</li>
 					<!-- awards -->
-					<li
-						class="border-b border-primary-gray-light dark:border-primary-gray-dark"
-					>
+					<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 						<ULink
-							to=""
+							to="/account/top-users"
 							class="flex justify-between items-center w-full py-2.5"
 						>
 							<div class="flex justify-start items-center">
 								<div class="ml-2">
-									<IconTopUsers
-										class="text-base dark: text-subtle-text-light dark:text-subtle-text-50"
-									/>
+									<IconTopUsers class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
 								</div>
 								<p class="mb-0 text-xs font-bold">
-									{{ $t("topUsers") }}
+									{{ $t('topUsers') }}
 								</p>
 							</div>
 						</ULink>
 					</li>
 					<!-- topUsers -->
-					<li
-						class="border-b border-primary-gray-light dark:border-primary-gray-dark"
-					>
+					<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 						<ULink
-							to=""
+							to="/account/settings"
 							class="flex justify-between items-center w-full py-2.5"
 						>
 							<div class="flex justify-start items-center">
 								<div class="ml-2">
-									<IconSetting
-										class="text-base dark: text-subtle-text-light dark:text-subtle-text-50"
-									/>
+									<IconSetting class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
 								</div>
 								<p class="mb-0 text-xs font-bold">
-									{{ $t("setting") }}
+									{{ $t('setting') }}
 								</p>
 							</div>
 						</ULink>
 					</li>
 					<!-- setting -->
-					<li
-						class="border-b border-primary-gray-light dark:border-primary-gray-dark"
-					>
+					<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 						<ULink
-							to=""
+							to="/account/white-list"
 							class="flex justify-between items-center w-full py-2.5"
 						>
 							<div class="flex justify-start items-center">
 								<div class="ml-2">
-									<IconWhiteList
-										class="text-base dark: text-subtle-text-light dark:text-subtle-text-50"
-									/>
+									<IconWhiteList class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
 								</div>
 								<p class="mb-0 text-xs font-bold">
-									{{ $t("whiteList") }}
+									{{ $t('whiteList') }}
 								</p>
 							</div>
 						</ULink>
@@ -440,7 +454,7 @@
 									<IconExit class="text-base dark: text-accent-red" />
 								</div>
 								<p class="mb-0 text-xs font-bold">
-									{{ $t("exit") }}
+									{{ $t('exit') }}
 								</p>
 							</div>
 						</ULink>
@@ -478,7 +492,6 @@ import IconAuthentication from '~/assets/svg-icons/menu/authentication.svg';
 import IconMessage from '~/assets/svg-icons/menu/message.svg';
 import IconCopy from '~/assets/svg-icons/menu/copy.svg';
 import IconCrown from '~/assets/svg-icons/menu/crown.svg';
-import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
 import IconSecurity from '~/assets/svg-icons/menu/security.svg';
 import IconFees from '~/assets/svg-icons/menu/quick-menu/fees.svg';
 import IconUserLevel from '~/assets/svg-icons/menu/quick-menu/user-level.svg';
@@ -498,6 +511,8 @@ import IconLinkedin from '~/assets/svg-icons/social/linkedin.svg';
 import IconInstagram from '~/assets/svg-icons/social/instagram.svg';
 import IconWhatsapp from '~/assets/svg-icons/social/whatsapp.svg';
 import IconTelegram from '~/assets/svg-icons/social/telegram.svg';
+import { getValueByKey } from '~/utils/find-value-by-key';
+import { useNumber } from '~/composables/useNumber';
 
 const authStore = useAuthStore();
 

@@ -1045,6 +1045,20 @@ const persian = {
 	lastUpdate: 'آخرین به روز رسانی',
 	update: 'تازه سازی',
 	howBuyCurrency: 'چطور ارز بخریم',
+	getNow: 'اکنون دریافت کنید',
+	possibleCurrencies: 'ارزهای ممکن',
+	cryptoDeposit: 'واریز کریپتو',
+	cryptoWithdraw: 'برداشت کریپتو',
+	sendToUser: 'ارسال به کاربر',
+	statistics: 'آمار',
+	confirmBitland: 'تاییدیه بیت لند',
+	setting2FA: 'تنظیم 2FA',
+	changeMobile: 'تغییر شماره موبایل',
+	authorizedAddresses: 'آدرس های مجاز',
+	contactMe: 'مخاطبین من',
+	profile: 'پروفایل',
+	helpBuy: 'راهنمای خرید',
+	actNow: 'اکنون افدام کنید.',
 };
 
 export default persian;

@@ -5,7 +5,7 @@
 				class="relative w-full h-6 -pr-10 border-t-2 border-primary-yellow-light dark:border-primary-yellow-dark"
 			>
 				<div
-					class="absolute -top-10 -left-5 z-10"
+					class="absolute -top-10 -left-5 z-[1]"
 					@click="toggleSignIn"
 				>
 					<div class="flex flex-col items-center w-full">
@@ -41,7 +41,7 @@
 				class="relative w-full border-t-2 border-secondary-gray-light dark:border-secondary-gray-dark"
 			>
 				<div
-					class="absolute -top-10 -left-5 z-10"
+					class="absolute -top-10 -left-5 z-[1]"
 
 					@click="toggleDeposit"
 				>
@@ -78,7 +78,7 @@
 				class="relative w-full border-t-2 border-secondary-gray-light dark:border-secondary-gray-dark"
 			>
 				<div
-					class="absolute -top-10 -left-5 z-10"
+					class="absolute -top-10 -left-5 z-[1]"
 
 					@click="toggleTransaction"
 				>
@@ -114,13 +114,14 @@
 		</div>
 		<div
 			v-if="isSignInVisible"
-			class="my-1 text-center"
+			class="my-2 bg-primary-gray-light dark:bg-primary-gray-dark p-2"
 		>
-			<p>برای انجام معاملات و استفاده از امکانات بیت‌لند نیاز است حساب کاربری تان را تکمیل کنید . </p>
+			<p class="text-sm font-medium">برای انجام معاملات و استفاده از امکانات بیت‌لند نیاز است حساب کاربری تان را تکمیل کنید . </p>
 			<div class="flex justify-center">
 				<UButton
+					block
 					to="/account/authentication/level-one"
-					class="flex justify-center w-[18.8rem] my-4 text-primary-yellow-light dark:text-primary-yellow-dark text-base hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-yellow"
+					class="flex justify-center my-4 text-primary-yellow-light dark:text-primary-yellow-dark text-base hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-yellow"
 				>
 					<span class="text-base font-extrabold">{{
 						$t("compeleteAccount")
@@ -130,13 +131,14 @@
 		</div>
 		<div
 			v-if="isDepositVisible"
-			class="my-1 text-center"
+			class="my-2 bg-primary-gray-light dark:bg-primary-gray-dark p-2"
 		>
-			<p>با اولین واریز خودت می تونی یه جایزه از بیت‌لند بگیری پس وقتتوتلف نکن و شروع کن. </p>
+			<p class="text-sm font-medium">با اولین واریز خودت می تونی یه جایزه از بیت‌لند بگیری پس وقتتوتلف نکن و شروع کن. </p>
 			<div class="flex justify-center">
 				<UButton
+					block
 					to="/wallet/deposit"
-					class="flex justify-center w-[18.8rem] my-4 text-primary-yellow-light dark:text-primary-yellow-dark text-base hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-yellow"
+					class="flex justify-center my-4 text-primary-yellow-light dark:text-primary-yellow-dark text-base hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-yellow"
 				>
 					<span class="text-base font-extrabold">{{
 						$t("deposit")
@@ -146,13 +148,14 @@
 		</div>
 		<div
 			v-if="isTransactionVisible"
-			class="my-1 text-center"
+			class="my-2 bg-primary-gray-light dark:bg-primary-gray-dark p-2"
 		>
-			<p>هم می تونی معامله کنی هم از بیت‌لند به خاطر اولین معامله جایزه بگیری فقط یادت باشه این فرصت محدوده!</p>
+			<p class="text-sm font-medium">هم می تونی معامله کنی هم از بیت‌لند به خاطر اولین معامله جایزه بگیری فقط یادت باشه این فرصت محدوده!</p>
 			<div class="flex justify-center">
 				<UButton
+					block
 					to="/fast-trade"
-					class="flex justify-center w-[18.8rem] my-4 text-primary-yellow-light dark:text-primary-yellow-dark text-base hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-yellow"
+					class="flex justify-center my-4 text-primary-yellow-light dark:text-primary-yellow-dark text-base hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-yellow"
 				>
 					<span class="text-base font-extrabold">{{
 						$t("transaction")
