@@ -21,9 +21,15 @@
 			</div>
 		</td>
 		<td>
-			<ChangeIndicator :change="parseFloat(localRow.priceChangePercIn24H)" />
+			<ChangeIndicator
+				:change="parseFloat(localRow.priceChangePercIn24H)"
+				:icon="false"
+			/>
 		</td>
-		<td class="py-2 hidden md:block">
+		<td
+			v-if="!isMobile"
+			class="py-2 hidden md:block"
+		>
 			<div class="flex justify-center items-center max-w-40 m-auto">
 				<WeeklyChart
 					v-if="localRow.sparklineChart.length"
@@ -51,6 +57,11 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+
+const { $mobileDetect } = useNuxtApp();
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
+
 const localRow = ref({ ...props.row });
 const bgClass = ref('');
 
@@ -79,4 +90,8 @@ watch(() => props.socketData, (newData) => {
 });
 
 const rowClass = computed(() => `${bgClass.value} transition duration-500`);
+
+onMounted(async () => {
+	isMobile.value = !!mobileDetect.mobile();
+});
 </script>

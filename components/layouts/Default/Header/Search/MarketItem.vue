@@ -4,7 +4,7 @@
 		class="flex justify-between w-full items-center my-1 px-1 py-1 hover:bg-primary-gray-light hover:dark:bg-primary-gray-dark rounded duration-200 transition-all"
 		:class="rowClass"
 	>
-		<div class="flex">
+		<div class="flex max-w-40 truncate md:max-w-none">
 			<img
 				:src="`https://api-bitland.site/media/currency/${market?.currency?.cSymbol}.png`"
 				alt="bitcoin Logo"
@@ -34,6 +34,7 @@
 					v-else
 					:change="parseFloat(localRow.priceChangePercIn24H)"
 					pl="pl-0"
+					:icon="false"
 					size="text-sm"
 				/>
 			</div>

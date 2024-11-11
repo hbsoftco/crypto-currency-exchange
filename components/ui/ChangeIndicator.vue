@@ -1,7 +1,7 @@
 <template>
 	<div
 		:class="[containerClass, pl, size]"
-		class="flex justify-start items-center"
+		class="flex justify-center md:justify-start items-center max-w-16 m-auto md:max-w-none"
 		dir="ltr"
 	>
 		<component
@@ -12,7 +12,7 @@
 		/>
 		<span
 			:class="[textClass, size]"
-			class="font-medium py-1 px-1 md:px-0 ml-0 md:ml-2"
+			class="font-medium py-1 px-1 md:px-0 m-0 md:ml-2"
 		>{{ useNumber(formattedChange) }}</span>
 	</div>
 </template>

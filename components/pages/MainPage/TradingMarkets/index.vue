@@ -35,22 +35,25 @@
 										:ui="{ rounded: 'rounded-full' }"
 									/>
 									<div class="space-y-2">
-										<USkeleton class="h-4 w-28" />
-										<USkeleton class="h-4 w-24" />
+										<USkeleton class="h-4 w-14 md:w-28" />
+										<USkeleton class="h-4 w-14 md:w-24" />
 									</div>
 								</div>
 							</td>
 							<td class="text-left">
 								<div class="flex justify-end pl-8">
-									<USkeleton class="h-4 w-24" />
+									<USkeleton class="h-4 w-14 md:w-24" />
 								</div>
 							</td>
 							<td>
 								<div class="flex justify-end pl-8">
-									<USkeleton class="h-4 w-20" />
+									<USkeleton class="h-4 w-12 md:w-20" />
 								</div>
 							</td>
-							<td>
+							<td
+								v-if="!isMobile"
+								class="hidden md:block"
+							>
 								<div class="flex justify-center pl-8">
 									<USkeleton class="h-4 w-36" />
 								</div>
@@ -85,11 +88,14 @@ import { marketRepository } from '~/repositories/market.repository';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 import { Language } from '~/utils/enums/language.enum';
 
-const { $api } = useNuxtApp();
+const { $mobileDetect, $api } = useNuxtApp();
 const marketRepo = marketRepository($api);
 
 const publicSocketStore = usePublicSocketStore();
 const marketsPageStore = useMarketsPageStore();
+
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
 
 const worker = useBaseWorker();
 
@@ -141,6 +147,9 @@ watch(() => marketsPageStore.tradingMarketsParams, async () => {
 }, { deep: true });
 
 onMounted(async () => {
+	isMobile.value = !!mobileDetect.mobile();
+	console.log(isMobile.value);
+
 	marketsPageStore.tradingMarketsParams.tagTypeId = '';
 
 	await Promise.all([
