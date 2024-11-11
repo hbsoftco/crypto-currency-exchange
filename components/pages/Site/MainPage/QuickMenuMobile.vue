@@ -1,11 +1,16 @@
 <template>
 	<div>
-		<div class="grid grid-cols-2 mt-10">
+		<MoreQuickMenuMobile
+			v-if="showDetail"
+			@close="closeDetail"
+		/>
+		<div class="grid grid-cols-2 gap-4 mt-10">
 			<UButton
+				to="/wallet/deposit"
 				size="lg"
 				class="flex justify-center bg-hover2-light dark:bg-hover2-dark px-0 md:px-9"
 			>
-				<span class="text-sm font-medium text-dark dark:text-white">{{
+				<span class="text-sm font-medium text-black dark:text-white">{{
 					$t("cryptocurrencyDeposit")
 				}}</span>
 				<img
@@ -15,10 +20,11 @@
 				>
 			</UButton>
 			<UButton
+				to="/wallet/deposit-toman"
 				size="lg"
 				class="flex justify-center bg-hover2-light dark:bg-hover2-dark px-0 md:px-9"
 			>
-				<span class="text-sm font-medium text-dark dark:text-white">{{
+				<span class="text-sm font-medium text-black dark:text-white">{{
 					$t("depositToman")
 				}}</span>
 				<img
@@ -30,7 +36,7 @@
 		</div>
 		<div class="grid grid-cols-3 mt-6">
 			<ULink
-				to=""
+				to="/account/fees"
 				class="flex flex-col justify-center items-center  mb-4"
 			>
 				<img
@@ -41,7 +47,7 @@
 				<span class="text-sm">{{ $t('fees') }}</span>
 			</ULink>
 			<ULink
-				to=""
+				to="/account/invite-friends"
 				class="flex flex-col justify-center items-center  mb-4"
 			>
 				<img
@@ -52,7 +58,7 @@
 				<span class="text-sm">{{ $t('inviteFriends') }}</span>
 			</ULink>
 			<ULink
-				to=""
+				to="/fast-trade"
 				class="flex flex-col justify-center items-center  mb-4"
 			>
 				<img
@@ -63,7 +69,7 @@
 				<span class="text-sm">{{ $t('quickTrade') }}</span>
 			</ULink>
 			<ULink
-				to=""
+				to="/help-buy"
 				class="flex flex-col justify-center items-center  mb-4"
 			>
 				<img
@@ -71,10 +77,10 @@
 					alt="blog"
 					class="w-6 h-6 mb-2"
 				>
-				<span class="text-sm">{{ $t('blog') }}</span>
+				<span class="text-sm">{{ $t('howBuyCurrency') }}</span>
 			</ULink>
 			<ULink
-				to=""
+				to="/help-center"
 				class="flex flex-col justify-center items-center  mb-4"
 			>
 				<img
@@ -85,8 +91,8 @@
 				<span class="text-sm">{{ $t('guid') }}</span>
 			</ULink>
 			<ULink
-				to=""
 				class="flex flex-col justify-center items-center mb-4"
+				@click.prevent="openDetail"
 			>
 				<img
 					src="/images/svg/quick-access-mobile/more.svg"
@@ -100,8 +106,15 @@
 </template>
 
 <script setup lang="ts">
+import MoreQuickMenuMobile from './MoreQuickMenuMobile.vue';
+
+const showDetail = ref(false);
+
+const openDetail = () => {
+	showDetail.value = true;
+};
+
+const closeDetail = () => {
+	showDetail.value = false;
+};
 </script>
-
-<style scoped>
-
-</style>

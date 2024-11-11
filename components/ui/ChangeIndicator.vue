@@ -12,7 +12,7 @@
 		/>
 		<span
 			:class="[textClass, size]"
-			class="font-medium py-1 ml-2"
+			class="font-medium py-1 px-1 md:px-0 ml-0 md:ml-2"
 		>{{ useNumber(formattedChange) }}</span>
 	</div>
 </template>
@@ -31,7 +31,7 @@ interface PropsDefinition {
 
 const props = withDefaults(defineProps<PropsDefinition>(), {
 	icon: true,
-	pl: 'pl-4 md:pl-8',
+	pl: 'pl-1 md:pl-8',
 	size: 'text-sm md:text-base',
 });
 
