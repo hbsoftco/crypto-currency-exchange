@@ -85,20 +85,6 @@ type GetTradeListParams = {
 	pageSize: string;
 };
 
-type GetOrderListParams = {
-	marketId: string;
-	symbol: string;
-	orderSide?: string;
-	orderType?: string;
-	assetType: string;
-	searchMode?: string;
-	uniqueTag?: string;
-	from?: string;
-	to?: string;
-	pageNumber: string;
-	pageSize?: string;
-};
-
 type GetDepositParams = {
 	type?: string;
 	currencyId: string;

@@ -313,7 +313,7 @@ const fetchTagItems = async (languageId: number, baseUrl: string) => {
 };
 
 // Markets
-const fetchMarketBriefItems = async (baseUrl: string) => {
+const fetchMarketBriefItems = async (baseUrl: string): Promise<MarketBrief[] | []> => {
 	try {
 		const cachedItems = await loadFromCache<MarketBrief[]>(CACHE_KEY_MARKET_BRIEF_ITEMS);
 

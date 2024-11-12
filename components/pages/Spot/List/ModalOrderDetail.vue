@@ -3,22 +3,23 @@
 		<UModal
 			v-model="isOpen"
 			fullscreen
+			class="top-0"
 		>
 			<div
-				class="h-full flex flex-col items-center justify-center overflow-y-scroll"
+				class="h-full flex flex-col items-center justify-start overflow-auto"
 			>
 				<div
-					class=" w-full md:w-[40rem] flex flex-col justify-center items-center text-center rounded-md bg-background-light dark:bg-background-dark px-1 md:px-14 py-6 md:py-8"
+					class=" w-full md:w-[40rem] rounded-md bg-background-light dark:bg-background-dark px-1 md:px-4 py-6 md:py-8"
 				>
-					<div class="flex md:hidden justify-between py-3 items-center ">
+					<div class="block md:hidden my-1">
 						<UiTitleWithBack
 							:title="$t('orderDetails')"
 							:back-btn="true"
 						/>
 					</div>
-					<span class="text-xl font-bold hidden md:block">{{ $t('orderDetails') }}</span>
+					<span class="text-xl font-bold hidden md:block text-center">{{ $t('orderDetails') }}</span>
 					<section>
-						<div class="flex justify-between px-1 md:px-16 my-4">
+						<div class="grid grid-cols-2 gap-4 my-4 pb-4 px-8 border-b-primary-gray-light dark:border-b-primary-gray-dark border-b">
 							<div class="flex">
 								<img
 									src="/images/delete/bitcoin.png"
@@ -26,8 +27,8 @@
 									class="w-16 h-16"
 								>
 								<div class="mr-2">
-									<span class="text-base font-bold">BabyDoge</span>
-									<div class="mt-1 px-2 py-1 text-accent-red bg-[#33181D] rounded-md">
+									<span class="text-base font-bold ">{{ order?.mSymbol }}</span>
+									<div class="mt-1 px-2 py-1 text-accent-red dark:text-accent-red bg-[#33181D] rounded-md text-center">
 										{{ $t('sell') }}
 									</div>
 								</div>
@@ -160,7 +161,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="flex justify-start py-1 border-b border-primary-gray-light dark:border-primary-gray-dark">
+						<!-- <div class="flex justify-start py-1 border-b border-primary-gray-light dark:border-primary-gray-dark">
 							<span class="text-sm font-bold ">{{ $t('secondTransaction') }}</span>
 						</div>
 						<div class="mb-4 grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -206,7 +207,7 @@
 									<span class="text-sm font-bold">{{ useNumber('۲۳۷۵۸ TMN') }}</span>
 								</div>
 							</div>
-						</div>
+						</div> -->
 					</section>
 				</div>
 				<div class="mt-6">
@@ -231,6 +232,15 @@ import IconCoin from '~/assets/svg-icons/spot/coin.svg';
 import IconSalary from '~/assets/svg-icons/spot/salary.svg';
 import IconDate from '~/assets/svg-icons/menu/quick-menu/transaction-history.svg';
 import { useNumber } from '~/composables/useNumber';
+import type { Order } from '~/types/definitions/spot.types';
+
+interface PropsDefinition {
+	order: Order;
+}
+
+defineProps<PropsDefinition>();
+
+// console.log('//////////****//////////////////', props);
 
 const isOpen = ref(true);
 interface EmitDefinition {

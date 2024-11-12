@@ -24,7 +24,7 @@ interface BaseWorker {
 	// Tags
 	fetchTagItems: (languageId: number, baseUrl: string) => Promise<Tag[]>;
 	// Markets
-	fetchMarketBriefItems: (baseUrl: string) => Promise<void>;
+	fetchMarketBriefItems: (baseUrl: string) => Promise<MarketBrief[] | []>;
 	findMarketById: (id: number, baseUrl: string) => Promise<MarketBrief | null>;
 	findMarketsByCurrencyId: (baseUrl: string, cid: number) => Promise<MarketBrief[] | []>;
 	searchMarkets: (baseUrl: string, search: string, count?: number) => Promise<MarketBrief[] | []>;

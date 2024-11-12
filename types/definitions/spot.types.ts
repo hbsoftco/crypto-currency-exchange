@@ -25,12 +25,66 @@ type TradeListParams = {
 	pageSize: string;
 };
 
+type OrderListParams = {
+	marketId: string;
+	symbol: string;
+	orderSide?: string;
+	orderType?: string;
+	assetType: string;
+	searchMode?: string;
+	uniqueTag?: string;
+	from?: string;
+	to?: string;
+	pageNumber: string;
+	pageSize?: string;
+};
+
 type SpotResponse = {
 	statusCode: number;
 	result: {
 		totalCount: number;
-		rows: Trade[];
+		rows: Trade[] |
+		Order[];
 	};
+};
+
+type Order = {
+	oid: number;
+	mid: number;
+	mSymbol: string;
+	uid: number;
+	apiKey: string;
+	assetTypeId: number;
+	assetTypeName: string;
+	rejectReasonId: number;
+	rejectReasonName: string;
+	sideId: number;
+	sideName: string;
+	orderTypeId: number;
+	orderTypeName: string;
+	orderStateId: number;
+	orderStateName: string;
+	tif: string;
+	stp: string;
+	maxLifespan: number;
+	userUniqueTag: string;
+	isHiddenInBook: boolean;
+	regMarketPrice: string;
+	reqQnt: string;
+	reqQot: string;
+	limitPrice: string;
+	triggerPriceGTE: string;
+	triggerPriceLTE: string;
+	dealPrice: string;
+	filledQot: string;
+	filledQnt: string;
+	filledPerc: number;
+	regTime: string;
+	triggerTime: string;
+	fillTime: string;
+	cancelTime: string;
+	tradesDetails: string;
+	description: string;
 };
 
 type Trade = {
@@ -84,10 +138,21 @@ type Trade = {
 	tradeValueInUsd: number;
 };
 
+type OrderFiltersType = {
+	symbol: string;
+	orderSide: string;
+	orderType: string;
+	from: string;
+	to: string;
+};
+
 export type {
 	KLineParams,
 	KLineResponse,
 	TradeListParams,
 	SpotResponse,
 	Trade,
+	OrderListParams,
+	Order,
+	OrderFiltersType,
 };

@@ -1,8 +1,9 @@
 <template>
 	<div>
-		<ModalOrder
-			v-if="showModalOrder"
-			@close="closeModalOrder"
+		<ModalOrderDetail
+			v-if="showModalOrderDetail && order"
+			:order="order"
+			@close="closeModalOrderDetail"
 		/>
 		<FilterSearch @filters="applyFilter" />
 		<div class="h-auto overflow-y-scroll">
@@ -52,54 +53,54 @@
 				</thead>
 				<tbody>
 					<tr
-						v-for="(item, index) in ordersList"
+						v-for="(order, index) in orderList"
 						:key="index"
 						:class="[index % 2 === 0 ? 'bg-background-light dark:bg-background-dark' : 'bg-hover2-light dark:bg-hover2-dark']"
 						class="pb-1"
 					>
 						<td class="text-xs font-normal py-1">
-							<span>{{ item.mSymbol }}</span>
+							<span>{{ order.mSymbol }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ $t(item.orderTypeName) }}</span>
+							<span>{{ $t(order.orderTypeName) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ $t(item.sideName) }}</span>
+							<span>{{ $t(order.sideName) }}</span>
 						</td>
 						<td
 							class="text-xs font-normal py-1"
-							:class="{ 'text-primary-yellow-light dark:text-primary-yellow-dark': item.orderStateName === 'ReadyToFill' }"
+							:class="{ 'text-primary-yellow-light dark:text-primary-yellow-dark': order.orderStateName === 'ReadyToFill' }"
 						>
-							<span>{{ $t(item.orderStateName) }}</span>
+							<span>{{ $t(order.orderStateName) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.reqQot) }}</span>
+							<span>{{ useNumber(order.reqQot) }}</span>
 						</td>
 						<!-- <td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.average) }}</span>
+							<span>{{ useNumber(order.average) }}</span>
 						</td> -->
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.filledQnt) }}</span>
+							<span>{{ useNumber(order.filledQnt) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.filledQot) }}</span>
+							<span>{{ useNumber(order.filledQot) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.reqQnt) }}</span>
+							<span>{{ useNumber(order.reqQnt) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.dealPrice) }}</span>
+							<span>{{ useNumber(order.dealPrice) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(formatDateToIran(item.regTime)) }}</span>
+							<span>{{ useNumber(formatDateToIran(order.regTime)) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.oid) }}</span>
+							<span>{{ useNumber(order.oid) }}</span>
 						</td>
 						<td class="flex text-xs font-normal py-1">
 							<IconInfo
 								class="text-base cursor-pointer"
-								@click.prevent="openModalOrder"
+								@click.prevent="openModalOrderDetail(order)"
 							/>
 						</td>
 					</tr>
@@ -130,16 +131,19 @@ import { formatDateToIran } from '~/utils/persian-date';
 import FilterSearch from '~/components/pages/Spot/List/FilterSearch.vue';
 import IconInfo from '~/assets/svg-icons/info.svg';
 import { useNumber } from '~/composables/useNumber';
-import ModalOrder from '~/components/pages/Spot/List/ModalDetailOrder.vue';
-import { useSpot } from '~/composables/spot/useSpot';
 import { SearchMode } from '~/utils/enums/order.enum';
-import type { Order, OrderFiltersType } from '~/types/response/spot.types';
+import type { Order } from '~/types/response/spot.types';
+import { spotRepository } from '~/repositories/spot.repository';
+import type { OrderFiltersType, OrderListParams } from '~/types/definitions/spot.types';
+import ModalOrderDetail from './ModalOrderDetail.vue';
 
-const { getOrderList } = useSpot();
+const { $api } = useNuxtApp();
+const spotRepo = spotRepository($api);
 
 const totalCount = ref(0);
+const order = ref<Order>();
 
-const params = ref({
+const params = ref<OrderListParams>({
 	marketId: '',
 	symbol: 'FETUSDT',
 	orderSide: '',
@@ -152,17 +156,19 @@ const params = ref({
 	pageNumber: '1',
 	pageSize: '20',
 });
-
-const ordersList = ref<Order[]>();
-
-const fetchOrderList = async () => {
+const orderList = ref<Order[]>([]);
+const orderListLoading = ref<boolean>(false);
+const getOrderList = async () => {
 	try {
-		const { result } = await getOrderList(params.value);
-		totalCount.value = result.totalCount;
-		ordersList.value = result.rows;
+		orderListLoading.value = true;
+		const { result } = await spotRepo.getOrderList(params.value);
+		orderList.value = result.rows as Order[];
+
+		orderListLoading.value = false;
 	}
 	catch (error) {
-		console.error('Error fetching trades:', error);
+		console.log(error);
+		orderListLoading.value = false;
 	}
 };
 
@@ -173,24 +179,26 @@ const applyFilter = async (event: OrderFiltersType) => {
 	params.value.orderSide = event.orderSide;
 	params.value.symbol = event.symbol;
 
-	await fetchOrderList();
-};
-onMounted(async () => {
-	await fetchOrderList();
-});
-
-const showModalOrder = ref(false);
-
-const openModalOrder = () => {
-	showModalOrder.value = true;
+	await getOrderList();
 };
 
-const closeModalOrder = () => {
-	showModalOrder.value = false;
+const showModalOrderDetail = ref(false);
+const openModalOrderDetail = (item: Order) => {
+	order.value = item;
+	console.log(order.value);
+	console.log(item);
+	showModalOrderDetail.value = true;
+};
+const closeModalOrderDetail = () => {
+	showModalOrderDetail.value = false;
 };
 
 const onPageChange = async (newPage: number) => {
 	params.value.pageNumber = String(newPage);
-	await fetchOrderList();
+	await getOrderList();
 };
+
+onMounted(async () => {
+	await getOrderList();
+});
 </script>

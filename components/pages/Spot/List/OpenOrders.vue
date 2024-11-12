@@ -1,8 +1,9 @@
 <template>
 	<div>
-		<ModalOrder
-			v-if="showModalOrder"
-			@close="closeModalOrder"
+		<ModalOrderDetail
+			v-if="showModalOrderDetail && order"
+			:order="order"
+			@close="closeModalOrderDetail"
 		/>
 		<FilterSearch @filters="applyFilter" />
 		<div class="h-auto overflow-y-scroll">
@@ -46,7 +47,7 @@
 				</thead>
 				<tbody>
 					<tr
-						v-for="(item, index) in ordersList"
+						v-for="(item, index) in orderList"
 						:key="index"
 						:class="[index % 2 === 0 ? 'bg-background-light dark:bg-background-dark' : 'bg-hover2-light dark:bg-hover2-dark']"
 						class="pb-1"
@@ -90,7 +91,7 @@
 						<td class="flex text-xs font-normal py-1">
 							<IconInfo
 								class="text-base"
-								@click.prevent="openModalOrder"
+								@click.prevent="openModalOrderDetail(item)"
 							/>
 						</td>
 					</tr>
@@ -121,19 +122,18 @@ import { formatDateToIran } from '~/utils/persian-date';
 import FilterSearch from '~/components/pages/Spot/List/FilterSearch.vue';
 import IconInfo from '~/assets/svg-icons/info.svg';
 import { useNumber } from '~/composables/useNumber';
-import ModalOrder from '~/components/pages/Spot/List/ModalDetailOrder.vue';
-import { useSpot } from '~/composables/spot/useSpot';
+import ModalOrderDetail from '~/components/pages/Spot/List/ModalOrderDetail.vue';
 import { SearchMode } from '~/utils/enums/order.enum';
-import type { Order, OrderFiltersType } from '~/types/response/spot.types';
+import { spotRepository } from '~/repositories/spot.repository';
+import type { Order, OrderFiltersType, OrderListParams } from '~/types/definitions/spot.types';
 
-const { getOrderList } = useSpot();
+const { $api } = useNuxtApp();
+const spotRepo = spotRepository($api);
 
-const remainingQuantity = (reqQnt: string, filledQnt: string): number => {
-	return parseFloat(reqQnt) - parseFloat(filledQnt);
-};
 const totalCount = ref(0);
+const order = ref<Order>();
 
-const params = ref({
+const params = ref<OrderListParams>({
 	marketId: '',
 	symbol: 'FETUSDT',
 	orderSide: '',
@@ -146,18 +146,24 @@ const params = ref({
 	pageNumber: '1',
 	pageSize: '20',
 });
-
-const ordersList = ref<Order[]>();
-
-const fetchOrderList = async () => {
+const orderList = ref<Order[]>([]);
+const orderListLoading = ref<boolean>(false);
+const getOrderList = async () => {
 	try {
-		const { result } = await getOrderList(params.value);
-		totalCount.value = result.totalCount;
-		ordersList.value = result.rows;
+		orderListLoading.value = true;
+		const { result } = await spotRepo.getOrderList(params.value);
+		orderList.value = result.rows as Order[];
+
+		orderListLoading.value = false;
 	}
 	catch (error) {
-		console.error('Error fetching trades:', error);
+		console.log(error);
+		orderListLoading.value = false;
 	}
+};
+
+const remainingQuantity = (reqQnt: string, filledQnt: string): number => {
+	return parseFloat(reqQnt) - parseFloat(filledQnt);
 };
 
 const applyFilter = async (event: OrderFiltersType) => {
@@ -167,25 +173,26 @@ const applyFilter = async (event: OrderFiltersType) => {
 	params.value.orderSide = event.orderSide;
 	params.value.symbol = event.symbol;
 
-	await fetchOrderList();
+	await getOrderList();
 };
 
-onMounted(async () => {
-	await fetchOrderList();
-});
-
-const showModalOrder = ref(false);
-
-const openModalOrder = () => {
-	showModalOrder.value = true;
+const showModalOrderDetail = ref(false);
+const openModalOrderDetail = (item: Order) => {
+	order.value = item;
+	console.log(order.value);
+	console.log(item);
+	showModalOrderDetail.value = true;
 };
-
-const closeModalOrder = () => {
-	showModalOrder.value = false;
+const closeModalOrderDetail = () => {
+	showModalOrderDetail.value = false;
 };
 
 const onPageChange = async (newPage: number) => {
 	params.value.pageNumber = String(newPage);
-	await fetchOrderList();
+	await getOrderList();
 };
+
+onMounted(async () => {
+	await getOrderList();
+});
 </script>

@@ -1,19 +1,45 @@
+import { content } from '../../.nuxt/types/tailwind.config';
 <template>
 	<div>
 		<UContainer>
-			<section class="py-8 border-b border-primary-gray-light dark:border-primary-gray-dark">
-				<div>
+			<section class="py-4 md:py-8 border-none md:border-b border-primary-gray-light dark:border-primary-gray-dark">
+				<div class="hidden md:block">
 					<h1 class="text-xl font-bold">
 						{{ $t('listOrdersTransactions') }}
 					</h1>
 				</div>
+				<div class="block md:hidden">
+					<UiTitleWithBack
+						:title="$t('listOrdersTransactions')"
+						:back-btn="true"
+					/>
+				</div>
 			</section>
 			<section>
+				<div
+					v-if="isMobile"
+					class="my-1"
+				>
+					<USelectMenu
+						v-model="selectedTab"
+						:options="items"
+						option-attribute="label"
+						:ui="{
+							background: '',
+							color: {
+								white: {
+									outline: ' bg-hover-light dark:bg-hover-dark',
+								},
+							},
+						}"
+					/>
+				</div>
 				<UTabs
+					v-if="!isMobile"
 					:items="items"
 					:ui="{
 						container: 'mt-6 md:mt-0',
-						base: ' w-full',
+						base: 'w-full',
 						list: {
 							padding: 'pt-4',
 							tab: {
@@ -29,10 +55,12 @@
 						<span
 							class="truncate"
 							:class="[selected && 'text-primary-yellow-light dark:text-primary-yellow-dark']"
-						>{{ $t(item.label) }}</span>
+						>
+							{{ item.label }}
+						</span>
 					</template>
 					<template #item="{ item }">
-						<div class=" px-2">
+						<div class="px-2">
 							<div v-if="item.key === 'openOrders'">
 								<OpenOrders v-if="item.key === 'openOrders'" />
 							</div>
@@ -45,6 +73,21 @@
 						</div>
 					</template>
 				</UTabs>
+
+				<div
+					v-if="isMobile"
+					class="px-2"
+				>
+					<div v-if="selectedTab.key === 'openOrders'">
+						<OpenOrders />
+					</div>
+					<div v-if="selectedTab.key === 'orderHistory'">
+						<OrderHistory />
+					</div>
+					<div v-if="selectedTab.key === 'transactionHistory'">
+						<TransactionHistory />
+					</div>
+				</div>
 			</section>
 		</UContainer>
 	</div>
@@ -61,21 +104,31 @@ const TransactionHistory = defineAsyncComponent(() =>
 	import('~/components/pages/Spot/List/TransactionHistory.vue'),
 );
 
-const items = [
+interface TabItem {
+	key: string;
+	label: string;
+	content: string;
+}
+
+const items = ref<TabItem[]>([
 	{
 		key: 'openOrders',
-		label: 'openOrders',
+		label: useT('openOrders'),
 		content: 'This is the content shown for Tab1',
 	},
 	{
 		key: 'orderHistory',
-		label: 'orderHistory',
+		label: useT('orderHistory'),
 		content: 'And, this is the content for Tab2',
 	},
 	{
 		key: 'transactionHistory',
-		label: 'transactionHistory',
+		label: useT('transactionHistory'),
 		content: 'And, this is the content for Tab2',
 	},
-];
+]);
+
+const selectedTab = ref<TabItem>(items.value[0]);
+
+const isMobile = computed(() => window.innerWidth < 768);
 </script>

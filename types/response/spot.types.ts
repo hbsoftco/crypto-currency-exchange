@@ -138,14 +138,6 @@ type Order = {
 	description: string;
 };
 
-type OrderFiltersType = {
-	symbol: string;
-	orderSide: string;
-	orderType: string;
-	from: string;
-	to: string;
-};
-
 type GetOrderListResponse = {
 	statusCode: number;
 	result: {
@@ -154,7 +146,6 @@ type GetOrderListResponse = {
 	};
 };
 export type {
-	OrderFiltersType,
 	Spot,
 	BidAsk,
 	Depth,

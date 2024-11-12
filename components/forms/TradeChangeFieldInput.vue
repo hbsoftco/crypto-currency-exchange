@@ -136,7 +136,6 @@ interface EmitDefinition {
 const emit = defineEmits<EmitDefinition>();
 
 const currencyWorker = useBaseWorker();
-await currencyWorker.fetchCurrencyBriefItems(useEnv('apiBaseUrl'));
 
 const internalSelectedCurrency = ref(props.selectedSymbol || '');
 const internalValue = ref(props.modelValue || '');

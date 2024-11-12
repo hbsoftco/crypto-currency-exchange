@@ -116,7 +116,7 @@
 import { formatDateToIran } from '~/utils/persian-date';
 import IconInfo from '~/assets/svg-icons/info.svg';
 import { useNumber } from '~/composables/useNumber';
-import ModalOrder from '~/components/pages/Spot/List/ModalDetailOrder.vue';
+import ModalOrder from '~/components/pages/Spot/List/ModalOrderDetail.vue';
 import { useSpot } from '~/composables/spot/useSpot';
 import { SearchMode } from '~/utils/enums/order.enum';
 import type { Order } from '~/types/response/spot.types';

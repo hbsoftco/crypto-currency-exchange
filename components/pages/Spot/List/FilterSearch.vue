@@ -148,24 +148,27 @@
 
 <script setup lang="ts">
 import type { KeyValue } from '~/types/base.types';
+import type { MarketBrief } from '~/types/definitions/market.types';
+import type { OrderFiltersType } from '~/types/definitions/spot.types';
 import type { MarketBriefItem } from '~/types/response/brief-list.types';
-import type { OrderFiltersType } from '~/types/response/spot.types';
 import { OrderType, OrderSide } from '~/utils/enums/order.enum';
+import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 
 interface EmitDefinition {
 	(event: 'filters', filters: OrderFiltersType): void;
 }
-
 const emit = defineEmits<EmitDefinition>();
 
-const filteredMarkets = ref<MarketBriefItem[]>();
+const worker = useBaseWorker();
+
+const filteredMarkets = ref<MarketBrief[]>([]);
 const toDate = ref();
 const fromDate = ref();
 const selected = ref<MarketBriefItem>();
 
 const loading = ref(false);
 
-const baseDataStore = useBaseDataStore();
+// const baseDataStore = useBaseDataStore();
 
 const marketMap = new Map<number, MarketBriefItem>();
 
@@ -187,13 +190,16 @@ const search = (q: string) => {
 };
 
 onMounted(async () => {
-	await baseDataStore.fetchMarketBriefItems();
+	filteredMarkets.value = await worker.fetchMarketBriefItems(useEnv('apiBaseUrl'));
+	console.log(filteredMarkets.value.length);
 
-	baseDataStore.marketBriefItems.forEach((market) => {
-		marketMap.set(market.id, market);
-	});
+	// await baseDataStore.fetchMarketBriefItems();
 
-	filteredMarkets.value = baseDataStore.marketBriefItems.slice(0, 200);
+	// baseDataStore.marketBriefItems.forEach((market) => {
+	// 	marketMap.set(market.id, market);
+	// });
+
+	// filteredMarkets.value = baseDataStore.marketBriefItems.slice(0, 200);
 });
 
 const orderTypeItems = ref<KeyValue[]>([
