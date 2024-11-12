@@ -3,11 +3,11 @@
 		<div class="ml-6 my-1 w-44">
 			<USelectMenu
 				v-model="selected"
-				:loading="loading"
+				:loading="searchLoading"
 				:searchable-placeholder="`${$t('search')}...`"
 				:searchable="search"
 				by="mSymbol"
-				:options="filteredMarkets"
+				:options="markets"
 				:placeholder="$t('market')"
 				trailing
 				:ui="{
@@ -147,10 +147,9 @@
 </template>
 
 <script setup lang="ts">
-import type { KeyValue } from '~/types/base.types';
+import type { KeyValue } from '~/types/definitions/common.types';
 import type { MarketBrief } from '~/types/definitions/market.types';
 import type { OrderFiltersType } from '~/types/definitions/spot.types';
-import type { MarketBriefItem } from '~/types/response/brief-list.types';
 import { OrderType, OrderSide } from '~/utils/enums/order.enum';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 
@@ -161,46 +160,25 @@ const emit = defineEmits<EmitDefinition>();
 
 const worker = useBaseWorker();
 
-const filteredMarkets = ref<MarketBrief[]>([]);
-const toDate = ref();
-const fromDate = ref();
-const selected = ref<MarketBriefItem>();
+const markets = ref<MarketBrief[]>([]);
+const selected = ref<MarketBrief>();
 
-const loading = ref(false);
-
-// const baseDataStore = useBaseDataStore();
-
-const marketMap = new Map<number, MarketBriefItem>();
-
-const search = (q: string) => {
-	loading.value = true;
+const searchLoading = ref<boolean>(false);
+const search = async (q: string) => {
+	searchLoading.value = true;
 
 	if (!q) {
-		filteredMarkets.value = Array.from(marketMap.values()).slice(0, 200);
+		markets.value = await worker.searchMarkets(useEnv('apiBaseUrl'), '', 400);
 	}
 	else {
-		const results = Array.from(marketMap.values()).filter((market) =>
-			market.mSymbol.toLowerCase().includes(q.toLowerCase()),
-		);
-
-		filteredMarkets.value = results;
+		markets.value = await worker.searchMarkets(useEnv('apiBaseUrl'), q.toLowerCase(), 400);
 	}
-	loading.value = false;
-	return filteredMarkets.value;
+	searchLoading.value = false;
+	return markets.value;
 };
 
-onMounted(async () => {
-	filteredMarkets.value = await worker.fetchMarketBriefItems(useEnv('apiBaseUrl'));
-	console.log(filteredMarkets.value.length);
-
-	// await baseDataStore.fetchMarketBriefItems();
-
-	// baseDataStore.marketBriefItems.forEach((market) => {
-	// 	marketMap.set(market.id, market);
-	// });
-
-	// filteredMarkets.value = baseDataStore.marketBriefItems.slice(0, 200);
-});
+const toDate = ref();
+const fromDate = ref();
 
 const orderTypeItems = ref<KeyValue[]>([
 	{
@@ -248,7 +226,7 @@ const applyFilters = () => {
 		to: toDate.value,
 		orderSide: orderSideFilter.value ? orderSideFilter.value.key : '',
 		orderType: orderTypeFilter.value ? orderTypeFilter.value.key : '',
-		symbol: 'BTCUSDT',
+		symbol: selected.value?.mSymbol ? selected.value?.mSymbol : '',
 	});
 };
 </script>

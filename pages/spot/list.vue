@@ -94,15 +94,9 @@ import { content } from '../../.nuxt/types/tailwind.config';
 </template>
 
 <script setup lang="ts">
-const OpenOrders = defineAsyncComponent(() =>
-	import('~/components/pages/Spot/List/OpenOrders.vue'),
-);
-const OrderHistory = defineAsyncComponent(() =>
-	import('~/components/pages/Spot/List/OrderHistory.vue'),
-);
-const TransactionHistory = defineAsyncComponent(() =>
-	import('~/components/pages/Spot/List/TransactionHistory.vue'),
-);
+const OpenOrders = defineAsyncComponent(() => import('~/components/pages/Spot/List/OpenOrders.vue'));
+const OrderHistory = defineAsyncComponent(() =>	import('~/components/pages/Spot/List/OrderHistory.vue'));
+const TransactionHistory = defineAsyncComponent(() => import('~/components/pages/Spot/List/TransactionHistory.vue'));
 
 interface TabItem {
 	key: string;

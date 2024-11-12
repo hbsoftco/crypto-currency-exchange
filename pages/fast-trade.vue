@@ -214,6 +214,7 @@ const firstSelectedCurrency = ref<CurrencyBrief>();
 const getFirstSelectedCurrency = async (newCurrency: CurrencyBrief) => {
 	firstSelectedCurrency.value = newCurrency;
 };
+
 const secondSelectedCurrency = ref<CurrencyBrief>();
 const getSecondSelectedCurrency = async (newCurrency: CurrencyBrief) => {
 	secondSelectedCurrency.value = newCurrency;

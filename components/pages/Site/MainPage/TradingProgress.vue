@@ -116,7 +116,9 @@
 			v-if="isSignInVisible"
 			class="my-2 bg-primary-gray-light dark:bg-primary-gray-dark p-2"
 		>
-			<p class="text-sm font-medium">برای انجام معاملات و استفاده از امکانات بیت‌لند نیاز است حساب کاربری تان را تکمیل کنید . </p>
+			<p class="text-sm font-medium">
+				برای انجام معاملات و استفاده از امکانات بیت‌لند نیاز است حساب کاربری تان را تکمیل کنید .
+			</p>
 			<div class="flex justify-center">
 				<UButton
 					block
@@ -133,7 +135,9 @@
 			v-if="isDepositVisible"
 			class="my-2 bg-primary-gray-light dark:bg-primary-gray-dark p-2"
 		>
-			<p class="text-sm font-medium">با اولین واریز خودت می تونی یه جایزه از بیت‌لند بگیری پس وقتتوتلف نکن و شروع کن. </p>
+			<p class="text-sm font-medium">
+				با اولین واریز خودت می تونی یه جایزه از بیت‌لند بگیری پس وقتتوتلف نکن و شروع کن.
+			</p>
 			<div class="flex justify-center">
 				<UButton
 					block
@@ -150,7 +154,9 @@
 			v-if="isTransactionVisible"
 			class="my-2 bg-primary-gray-light dark:bg-primary-gray-dark p-2"
 		>
-			<p class="text-sm font-medium">هم می تونی معامله کنی هم از بیت‌لند به خاطر اولین معامله جایزه بگیری فقط یادت باشه این فرصت محدوده!</p>
+			<p class="text-sm font-medium">
+				هم می تونی معامله کنی هم از بیت‌لند به خاطر اولین معامله جایزه بگیری فقط یادت باشه این فرصت محدوده!
+			</p>
 			<div class="flex justify-center">
 				<UButton
 					block

@@ -5,7 +5,7 @@
 			:order="order"
 			@close="closeModalOrderDetail"
 		/>
-		<FilterSearch @filters="applyFilter" />
+		<FilterOptions @filters="applyFilter" />
 		<div class="h-auto overflow-y-scroll">
 			<table class="min-w-full p-6 text-right">
 				<thead>
@@ -119,7 +119,7 @@
 
 <script setup lang="ts">
 import { formatDateToIran } from '~/utils/persian-date';
-import FilterSearch from '~/components/pages/Spot/List/FilterSearch.vue';
+import FilterOptions from '~/components/pages/Spot/List/FilterOptions.vue';
 import IconInfo from '~/assets/svg-icons/info.svg';
 import { useNumber } from '~/composables/useNumber';
 import ModalOrderDetail from '~/components/pages/Spot/List/ModalOrderDetail.vue';

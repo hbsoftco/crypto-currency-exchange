@@ -115,7 +115,7 @@
 
 <script setup lang="ts">
 import { formatDateToIran } from '~/utils/persian-date';
-import FilterSearch from '~/components/pages/Spot/List/FilterSearch.vue';
+import FilterSearch from '~/components/pages/Spot/List/FilterOptions.vue';
 import IconInfo from '~/assets/svg-icons/info.svg';
 import { useNumber } from '~/composables/useNumber';
 import ModalTransaction from '~/components/pages/Spot/List/ModalTransaction.vue';
