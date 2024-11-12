@@ -1059,6 +1059,22 @@ const persian = {
 	profile: 'پروفایل',
 	helpBuy: 'راهنمای خرید',
 	actNow: 'اکنون افدام کنید.',
+	orderID: 'آیدی سفارش',
+	typeTIF: 'نوع TIF',
+	requestedAmount: 'مقدار درخواستی',
+	requestedValue: 'ارزش درخواستی',
+	stopPriceDate: 'ایست قیمت زمان',
+	fillingTime: 'زمان پرشدن',
+	tradeID: 'آیدی معامله',
+	tradePrice: 'قیمت معامله',
+	tradeDate: 'زمان معامله',
+	dollarValueTrade: 'ارزش دلاری معامله',
+	expense: 'خرج',
+	income: 'عایدی',
+	discountPercentage: 'درصد تخفیف',
+	reasonDiscount: 'علت تخفیف',
+	finalFee: 'کارمزد نهایی',
+	rawFee: 'کارمزد خام',
 };
 
 export default persian;

@@ -135,7 +135,7 @@ import { SearchMode } from '~/utils/enums/order.enum';
 import type { Order } from '~/types/response/spot.types';
 import { spotRepository } from '~/repositories/spot.repository';
 import type { OrderFiltersType, OrderListParams } from '~/types/definitions/spot.types';
-import ModalOrderDetail from './ModalOrderDetail.vue';
+import ModalOrderDetail from '~/components/pages/Spot/List/ModalOrderDetail.vue';
 
 const { $api } = useNuxtApp();
 const spotRepo = spotRepository($api);
