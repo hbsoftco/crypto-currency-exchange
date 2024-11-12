@@ -7,13 +7,13 @@
 			<div class="absolute right-2 top-4">
 				<USelectMenu
 					v-model="selected"
+					v-model:selectedCurrency="internalSelectedCurrency"
 					variant="none"
 					:ui="{ select: 'cursor-pointer' }"
-					:loading="loading"
+					:loading="searchLoading"
 					:searchable-placeholder="`${$t('search')}...`"
 					:searchable="search"
 					:options="filteredCurrencies"
-					trailing
 					dir="rtl"
 				>
 					<template #option="{ option }">
@@ -24,20 +24,42 @@
 					</template>
 
 					<template #label>
-						<div class="flex justify-between items-start">
+						<div
+							v-if="currenciesLoading"
+							class="flex justify-between items-center"
+						>
+							<div class="ml-1.5 mt-1">
+								<USkeleton
+									class="w-6 h-6 ml-1 bg-primary-gray-light dark:bg-primary-gray-dark"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</div>
+							<div class="flex flex-col items-start min-w-20">
+								<div>
+									<USkeleton class="h-2.5 w-10 bg-primary-gray-light dark:bg-primary-gray-dark" />
+								</div>
+								<div>
+									<USkeleton class="h-2.5 w-8 mt-1.5 bg-primary-gray-light dark:bg-primary-gray-dark" />
+								</div>
+							</div>
+						</div>
+						<div
+							v-else
+							class="flex justify-between items-start"
+						>
 							<div class="ml-1.5 mt-1">
 								<img
-									:src="`https://api-bitland.site/media/currency/${selected.cSymbol}.png`"
-									:alt="selected.cSymbol"
+									:src="`https://api-bitland.site/media/currency/${selected?.cSymbol}.png`"
+									:alt="selected?.cSymbol"
 									class="w-6 h-6 rounded-full"
 								>
 							</div>
 							<div class="flex flex-col items-start min-w-20">
 								<div>
-									<span class="font-bold text-xs">{{ selected.cName }}</span>
+									<span class="font-bold text-xs">{{ selected?.cName }}</span>
 								</div>
 								<div>
-									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ selected.cSymbol }}</span>
+									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ selected?.cSymbol }}</span>
 								</div>
 							</div>
 						</div>
@@ -85,7 +107,7 @@
 </template>
 
 <script setup lang="ts">
-import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
+import type { CurrencyBrief } from '~/types/definitions/currency.types';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 
 interface Props {
@@ -101,36 +123,47 @@ interface Props {
 	labelClass?: string;
 	icon?: string;
 	errorMessage?: string;
-	currencies: CurrencyBriefItem[];
-	defaultSelected?: CurrencyBriefItem;
+	selectedSymbol: string;
+	defaultSelected?: CurrencyBrief;
 }
+const props = defineProps<Props>();
 
 interface EmitDefinition {
 	(event: 'update:modelValue', value: unknown): void;
-	(event: 'item-selected', value: CurrencyBriefItem): void;
+	(event: 'update:selectedSymbol', value: string): void;
+	(event: 'item-selected', value: CurrencyBrief): void;
 }
-
-const props = defineProps<Props>();
 const emit = defineEmits<EmitDefinition>();
 
 const currencyWorker = useBaseWorker();
 await currencyWorker.fetchCurrencyBriefItems(useEnv('apiBaseUrl'));
 
+const internalSelectedCurrency = ref(props.selectedSymbol || '');
 const internalValue = ref(props.modelValue || '');
-const loading = ref(false);
-const selected = ref<CurrencyBriefItem>(props.currencies[0]);
-const filteredCurrencies = ref<CurrencyBriefItem[]>(props.currencies);
+const filteredCurrencies = ref<CurrencyBrief[]>();
+const selected = ref<CurrencyBrief>();
 
-onMounted(async () => {
+const currenciesLoading = ref<boolean>(true);
+const initCurrencies = async () => {
+	currenciesLoading.value = true;
 	filteredCurrencies.value = await currencyWorker.searchCurrencies('', 400, useEnv('apiBaseUrl'));
 
-	if (props.defaultSelected) {
-		selected.value = props.defaultSelected;
+	if (props.selectedSymbol) {
+		const currentCurrency = await currencyWorker.searchCurrencies(props.selectedSymbol, 1, useEnv('apiBaseUrl'));
+		filteredCurrencies.value.push(currentCurrency[0]);
+		selected.value = currentCurrency[0];
 	}
+
+	currenciesLoading.value = false;
+};
+
+onMounted(async () => {
+	await initCurrencies();
 });
 
+const searchLoading = ref<boolean>(false);
 const search = async (q: string) => {
-	loading.value = true;
+	searchLoading.value = true;
 
 	if (!q) {
 		filteredCurrencies.value = await currencyWorker.searchCurrencies('', 400, useEnv('apiBaseUrl'));
@@ -138,7 +171,13 @@ const search = async (q: string) => {
 	else {
 		filteredCurrencies.value = await currencyWorker.searchCurrencies(q.toLowerCase(), 200, useEnv('apiBaseUrl'));
 	}
-	loading.value = false;
+
+	if (props.selectedSymbol) {
+		const currentCurrency = await currencyWorker.searchCurrencies(props.selectedSymbol, 1, useEnv('apiBaseUrl'));
+		filteredCurrencies.value.push(currentCurrency[0]);
+		selected.value = currentCurrency[0];
+	}
+	searchLoading.value = false;
 	return filteredCurrencies.value;
 };
 
@@ -146,12 +185,19 @@ watch(() => props.modelValue, (newValue) => {
 	internalValue.value = newValue || '';
 });
 
+watch(() => props.selectedSymbol, async () => {
+	await initCurrencies();
+});
+
 watch(internalValue, (newValue) => {
 	emit('update:modelValue', newValue);
 });
 
-watch(selected, (newValue) => {
-	emit('item-selected', newValue);
+watch(selected, (newCurrency) => {
+	if (newCurrency) {
+		emit('item-selected', newCurrency);
+		emit('update:selectedSymbol', newCurrency.cSymbol);
+	}
 });
 
 const onInput = (event: Event) => {

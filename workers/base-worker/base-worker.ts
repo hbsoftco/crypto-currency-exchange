@@ -1,18 +1,24 @@
 import * as Comlink from 'comlink';
 
 import { loadFromCache, saveToCache } from '~/utils/indexeddb';
-import { CACHE_KEY_CURRENCY_BRIEF_ITEMS, CACHE_KEY_MARKET_BRIEF_ITEMS, CACHE_KEY_QUOTE_ITEMS, CACHE_KEY_TAG_ITEMS } from '~/utils/constants/common';
+import {
+	CACHE_KEY_CURRENCY_BRIEF_ITEMS,
+	CACHE_KEY_MARKET_BRIEF_ITEMS,
+	CACHE_KEY_QUOTE_ITEMS,
+	CACHE_KEY_TAG_ITEMS,
+} from '~/utils/constants/common';
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
 import type { MarketBrief, MarketL16, MarketL21, MarketL47, MarketL51, MarketState } from '~/types/definitions/market.types';
 import type { Quote } from '~/types/definitions/quote.types';
 import type { SuggestionItems } from '~/types/definitions/header/search.types';
 import type { Tag } from '~/types/definitions/tag.types';
+import type { Asset } from '~/types/definitions/asset.types';
 
 let currencyBriefItems: CurrencyBrief[] = [];
 let marketBriefItems: MarketBrief[] = [];
 
 // Currencies
-const fetchCurrencyBriefItems = async (baseUrl: string) => {
+const fetchCurrencyBriefItems = async (baseUrl: string): Promise<CurrencyBrief[] | []> => {
 	try {
 		const cachedItems = await loadFromCache<CurrencyBrief[]>(CACHE_KEY_CURRENCY_BRIEF_ITEMS);
 
@@ -149,6 +155,22 @@ const addCurrencyToMarketStates = async (baseUrl: string, markets: MarketState[]
 			market: marketItem,
 			quote,
 			mSymbol: `${currency?.cSymbol}${quote?.cSymbol}`,
+		};
+	}));
+
+	return result;
+};
+
+const addCurrencyToAsset = async (baseUrl: string, assets: Asset[]) => {
+	if (!currencyBriefItems.length) {
+		await fetchCurrencyBriefItems(baseUrl);
+	}
+
+	const result = await Promise.all(assets.map(async (asset) => {
+		const currency = await findCurrencyById(asset.currencyId, baseUrl);
+		return {
+			...asset,
+			currency,
 		};
 	}));
 
@@ -423,6 +445,7 @@ const SearchSuggestionItems = async (baseUrl: string, query: string): Promise<Su
 Comlink.expose({
 	// Currencies
 	addCurrencyToMarkets,
+	addCurrencyToAsset,
 	addCurrencyToMarketsL16,
 	addCurrencyToMarketsL51,
 	addCurrencyToMarketsL47,

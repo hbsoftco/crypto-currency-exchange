@@ -20,7 +20,7 @@
 										<span
 											class="mr-1 text-xs font-normal text-left"
 											dir="ltr"
-										>{{ useNumber(`${0} ${coinTradeOne?.cSymbol}`) }}</span>
+										>{{ useNumber(`${0} ${firstSelectedSymbol}`) }}</span>
 									</div>
 									<UButton
 										class="mr-2 text-primary-yellow-light hover:bg-hover-light dark:hover:bg-hover-dark dark:text-primary-yellow-dark bg-hover-light dark:bg-hover-dark text-xs font-bold"
@@ -31,21 +31,23 @@
 								</div>
 							</div>
 							<TradeChangeFieldInput
-								id="tradeOne"
-								v-model="tradeOne"
+								id="firstCurrency"
+								v-model:modelValue="firstCurrencyPrice"
+								v-model:selectedSymbol="firstSelectedSymbol"
 								type="text"
 								input-class="text-left"
 								:label="``"
-								:currencies="currencies"
 								placeholder=""
 								icon=""
 								dir="rtl"
-								:default-selected="currencies[2]"
-								@item-selected="onTradeOneChange"
+								@item-selected="getFirstSelectedCurrency"
 							/>
 						</div>
 						<div class="absolute top-[6.5rem] z-[1] mx-auto flex justify-center w-full">
-							<ULink class="flex justify-center items-center rounded-full w-16 h-16 bg-primary-yellow-light dark:bg-primary-yellow-dark border-4 border-background-light dark:border-background-dark">
+							<ULink
+								class="flex justify-center items-center rounded-full w-16 h-16 bg-primary-yellow-light dark:bg-primary-yellow-dark border-4 border-background-light dark:border-background-dark"
+								@click="replacementMarket"
+							>
 								<IconChange class="text-black text-4xl" />
 							</ULink>
 						</div>
@@ -54,18 +56,17 @@
 								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('to') }}</span>
 							</div>
 							<TradeChangeFieldInput
-								id="tradeTwo"
-								v-model="tradeTwo"
+								id="secondCurrency"
+								v-model:modelValue="secondCurrencyPrice"
+								v-model:selectedSymbol="secondSelectedSymbol"
 								type="text"
 								:readonly="true"
 								input-class="text-left"
 								:label="``"
-								:currencies="currencies"
 								placeholder=""
 								icon=""
 								dir="rtl"
-								:default-selected="currencies[1]"
-								@item-selected="onTradeTwoChange"
+								@item-selected="getSecondSelectedCurrency"
 							/>
 						</div>
 					</div>
@@ -76,7 +77,7 @@
 						<div class="bg-secondary-gray-light dark:bg-secondary-gray-dark w-full h-[0.063rem]" />
 						<div class="flex justify-between items-center text-xs font-normal">
 							<div class="ml-1 flex text-nowrap">
-								{{ `1 ${firstCurrency}` }}
+								{{ `1 ${firstSelectedSymbol}` }}
 							</div>
 							<div
 								class="mx-1"
@@ -85,7 +86,7 @@
 								≈
 							</div>
 							<div class="mr-1 flex text-nowrap">
-								{{ `${getCoinPrice} ${feeCurrencySymbol}` }}
+								<!-- {{ `${getCoinPrice} ${feeCurrencySymbol}` }} -->
 							</div>
 						</div>
 						<span
@@ -145,7 +146,7 @@
 			{{ tradeOne }}
 			{{ tradeTwo }}
 			<pre dir="ltr">
-				{{ parsedMessages }}
+				<!-- {{ parsedMessages }} -->
 			</pre>
 
 			<RecentTrades />
@@ -159,24 +160,169 @@ import ConfirmOrderModal from '~/components/pages/FastTrade/ConfirmOrderModal.vu
 import TradeChangeFieldInput from '~/components/forms/TradeChangeFieldInput.vue';
 import IconChange from '~/assets/svg-icons/trade/change.svg';
 import RecentTrades from '~/components/pages/FastTrade/RecentTrades.vue';
-import { useFastTrade } from '~/composables/trade/useFastTrade';
-import { Language } from '~/utils/enums/language.enum';
+// import { useFastTrade } from '~/composables/trade/useFastTrade';
+// import { Language } from '~/utils/enums/language.enum';
 import type { Trade } from '~/types/response/trade.types';
 import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
-import { PublicTopic, SocketId } from '~/utils/enums/socket.enum';
+// import { PublicTopic, SocketId } from '~/utils/enums/socket.enum';
 import type { Commission } from '~/types/response/trader.types';
+import { assetRepository } from '~/repositories/asset.repository';
+import type { Asset, AssetListParams } from '~/types/definitions/asset.types';
+import { AssetType, BoxMode, MiniAssetMode } from '~/utils/enums/asset.enum';
+import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
+import { spotRepository } from '~/repositories/spot.repository';
+import type { TradeListParams } from '~/types/definitions/spot.types';
+import { CACHE_KEY_COMMISSION_LIST } from '~/utils/constants/common';
+import { userRepository } from '~/repositories/user.repository';
 import { MarketType } from '~/utils/enums/market.enum';
+import type { CurrencyBrief } from '~/types/definitions/currency.types';
 
 definePageMeta({
 	layout: 'trade',
 });
 
+const { $api } = useNuxtApp();
+const assetRepo = assetRepository($api);
+const spotRepo = spotRepository($api);
+const userRepo = userRepository($api);
+
+const worker = useBaseWorker();
+
+const route = useRoute();
+const mSymbol = String(route.query.market);
+const [currency, quote] = mSymbol.split('_');
+
+const firstCurrencyPrice = ref('');
+const secondCurrencyPrice = ref('');
+const firstSelectedSymbol = ref('btc');
+const secondSelectedSymbol = ref('usdt');
+
+watch(
+	() => route.query.market,
+	(newMarket, oldMarket) => {
+		if (newMarket !== oldMarket) {
+			if (newMarket) {
+				const [currency, quote] = String(newMarket).split('_');
+				firstSelectedSymbol.value = currency;
+				secondSelectedSymbol.value = quote;
+			}
+		}
+	},
+);
+
+const firstSelectedCurrency = ref<CurrencyBrief>();
+const getFirstSelectedCurrency = async (newCurrency: CurrencyBrief) => {
+	firstSelectedCurrency.value = newCurrency;
+};
+const secondSelectedCurrency = ref<CurrencyBrief>();
+const getSecondSelectedCurrency = async (newCurrency: CurrencyBrief) => {
+	secondSelectedCurrency.value = newCurrency;
+};
+
+const replacementMarket = () => {
+	[firstSelectedSymbol.value, secondSelectedSymbol.value] = [secondSelectedSymbol.value, firstSelectedSymbol.value];
+};
+
+// Get Asset List
+const assetListParams = ref<AssetListParams>({
+	pageSize: '1000',
+	assetType: useEnv('assetType'),
+	boxMode: String(BoxMode.Spot),
+	miniAssetMode: String(MiniAssetMode.NoMiniAsset),
+	// currencyIDs: currencies,
+});
+const assetList = ref<Asset[]>([]);
+const assetListLoading = ref<boolean>(false);
+const getAssetList = async () => {
+	try {
+		assetListLoading.value = true;
+		const { result } = await assetRepo.getAssetList(assetListParams.value);
+
+		assetList.value = await worker.addCurrencyToAsset(useEnv('apiBaseUrl'), result.rows);
+		console.log('assetList =======>', assetList.value);
+
+		assetListLoading.value = false;
+	}
+	catch (error) {
+		console.log(error);
+		assetListLoading.value = false;
+	}
+};
+
+// Get Trade List
+const tradeListParams = ref<TradeListParams>({
+	assetType: AssetType.Testnet,
+	from: '',
+	to: '',
+	marketId: '',
+	orderSide: '',
+	orderType: '',
+	symbol: '',
+	uniqueTag: '',
+	pageSize: '5',
+	pageNumber: '1',
+});
+const tradeList = ref<Trade[]>([]);
+const tradeListLoading = ref<boolean>(false);
+const getTradeList = async () => {
+	tradeListLoading.value = true;
+	try {
+		const { result } = await spotRepo.getTradeList(tradeListParams.value);
+		tradeList.value = result.rows;
+		tradeListLoading.value = false;
+	}
+	catch (error) {
+		console.log(error);
+		assetListLoading.value = false;
+	}
+};
+
+// Get Commission List
+const commissionList = ref<Commission[]>([]);
+const commissionListLoading = ref<boolean>(false);
+const getCommissionList = async () => {
+	try {
+		commissionListLoading.value = true;
+
+		const cachedItems = await loadFromCache<Commission[]>(CACHE_KEY_COMMISSION_LIST);
+
+		if (cachedItems && cachedItems.length > 0) {
+			commissionList.value = cachedItems;
+		}
+		else {
+			const { result } = await userRepo.getTraderCommissionList({ marketType: String(MarketType.SPOT) });
+
+			await saveToCache(CACHE_KEY_COMMISSION_LIST, result.rows);
+
+			commissionList.value = result.rows;
+		}
+		commissionListLoading.value = false;
+
+		console.log('commissionList ======>', commissionList.value);
+	}
+	catch (error) {
+		console.error(error);
+		commissionListLoading.value = false;
+	}
+};
+
+onMounted(async () => {
+	if (currency && quote) {
+		firstSelectedSymbol.value = currency;
+		secondSelectedSymbol.value = quote;
+	}
+
+	await getAssetList();
+	await getTradeList();
+	await getCommissionList();
+});
+
+// Old Method
+
 const tradeOne = ref('');
 const tradeTwo = ref('');
 const errorOne = ref('');
 const errorTwo = ref('');
-
-const commissions = ref<Commission[]>();
 
 const coinTradeOne = ref<CurrencyBriefItem>();
 const coinTradeTwo = ref<CurrencyBriefItem>();
@@ -184,78 +330,44 @@ const coinTradeTwo = ref<CurrencyBriefItem>();
 // const firstCurrency = ref<CurrencyBriefItem>();
 // const secondCurrency = ref<CurrencyBriefItem>();
 
-const baseDataStore = useBaseDataStore();
-const assetStore = useAssetStore();
+// const { exchangeMessages, connect, socket, sendMessage } = usePublicWebSocket();
 
-await baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
-const currencies = baseDataStore.currencyBriefItems;
+// const parsedMessages = computed(() => {
+// 	return exchangeMessages.value.map((msg) => {
+// 		try {
+// 			return msg;
+// 		}
+// 		catch (error) {
+// 			console.error('Error parsing message:', error);
+// 			return null;
+// 		}
+// 	}).filter((item) => item !== null);
+// });
 
-const { getTradesList } = useFastTrade();
+// const firstCurrency = computed(() => {
+// 	if (!coinTradeOne.value || !coinTradeTwo.value) {
+// 		return null;
+// 	}
 
-const params = ref({
-	marketId: '',
-	symbol: '',
-	orderSide: '',
-	orderType: '',
-	assetType: useEnv('assetType'),
-	uniqueTag: '',
-	from: '',
-	to: '',
-	pageNumber: '1',
-	pageSize: '5',
-});
+// 	const isCoinOneUSDT = coinTradeOne.value.cSymbol === 'USDT';
+// 	const isCoinTwoUSDT = coinTradeTwo.value.cSymbol === 'USDT';
+// 	const isCoinOneTMN = coinTradeOne.value.cSymbol === 'TMN';
+// 	const isCoinTwoTMN = coinTradeTwo.value.cSymbol === 'TMN';
 
-const recentTradesList = ref<Trade[]>([]);
+// 	if ((isCoinOneUSDT && isCoinTwoTMN) || (isCoinOneTMN && isCoinTwoUSDT)) {
+// 		return 'USDT';
+// 	}
 
-const fetchTrades = async () => {
-	try {
-		const result = await getTradesList(params.value);
-		recentTradesList.value = result.result.rows;
-		// console.log('fetchTrades', recentTradesList.value);
-	}
-	catch (error) {
-		console.error('Error fetching trades:', error);
-	}
-};
+// 	if (isCoinOneUSDT || isCoinOneTMN) {
+// 		return !isCoinTwoTMN ? coinTradeTwo.value.cSymbol : null;
+// 	}
 
-const { exchangeMessages, connect, socket, sendMessage } = usePublicWebSocket();
+// 	if (isCoinTwoUSDT || isCoinTwoTMN) {
+// 		return !isCoinOneTMN ? coinTradeOne.value.cSymbol : null;
+// 	}
 
-const parsedMessages = computed(() => {
-	return exchangeMessages.value.map((msg) => {
-		try {
-			return msg;
-		}
-		catch (error) {
-			console.error('Error parsing message:', error);
-			return null;
-		}
-	}).filter((item) => item !== null);
-});
-
-const firstCurrency = computed(() => {
-	if (!coinTradeOne.value || !coinTradeTwo.value) {
-		return null;
-	}
-
-	const isCoinOneUSDT = coinTradeOne.value.cSymbol === 'USDT';
-	const isCoinTwoUSDT = coinTradeTwo.value.cSymbol === 'USDT';
-	const isCoinOneTMN = coinTradeOne.value.cSymbol === 'TMN';
-	const isCoinTwoTMN = coinTradeTwo.value.cSymbol === 'TMN';
-
-	if ((isCoinOneUSDT && isCoinTwoTMN) || (isCoinOneTMN && isCoinTwoUSDT)) {
-		return 'USDT';
-	}
-
-	if (isCoinOneUSDT || isCoinOneTMN) {
-		return !isCoinTwoTMN ? coinTradeTwo.value.cSymbol : null;
-	}
-
-	if (isCoinTwoUSDT || isCoinTwoTMN) {
-		return !isCoinOneTMN ? coinTradeOne.value.cSymbol : null;
-	}
-
-	return coinTradeOne.value.cSymbol || coinTradeTwo.value.cSymbol;
-});
+// 	return coinTradeOne.value.cSymbol || coinTradeTwo.value.cSymbol;
+// });
 
 const feeCurrencySymbol = computed(() => {
 	if (coinTradeTwo.value?.cSymbol === 'USDT' || coinTradeTwo.value?.cSymbol === 'TMN') {
@@ -273,7 +385,7 @@ const marketParams = computed(() => {
 
 watch(marketParams, async (newMarketParams, oldMarketParams) => {
 	if (newMarketParams !== oldMarketParams && newMarketParams && oldMarketParams) {
-		await subSocket(newMarketParams);
+		// await subSocket(newMarketParams);
 	}
 });
 
@@ -287,71 +399,61 @@ const shouldShowNewSection = computed(() => {
 	return false;
 });
 
-const getCoinPrice = computed(() => {
-	const markets = splitSymbols(marketParams.value);
+// const getCoinPrice = computed(() => {
+// 	const markets = splitSymbols(marketParams.value);
 
-	const message = exchangeMessages.value.find((item) => {
-		return item.data.ms === markets[0];
-	});
+// 	const message = exchangeMessages.value.find((item) => {
+// 		return item.data.ms === markets[0];
+// 	});
 
-	return message ? message?.data.i : 0;
-});
+// 	return message ? message?.data.i : 0;
+// });
 
-onMounted(async () => {
-	await connect();
-	await subSocket(marketParams.value, false);
+// onMounted(async () => {
+// 	await connect();
+// 	await subSocket(marketParams.value, false);
 
-	await assetStore.fetchAssetList();
-	await assetStore.connectToSocket();
+// 	await assetStore.fetchAssetList();
+// 	await assetStore.connectToSocket();
 
-	console.log(await assetStore.assetList);
+// 	console.log(await assetStore.assetList);
 
-	await fetchTrades();
+// 	await fetchTrades();
 
-	await baseDataStore.fetchUserTraderCommissionList({ marketType: String(MarketType.SPOT) });
-	commissions.value = await baseDataStore.userTraderCommissionList;
+// 	await baseDataStore.fetchUserTraderCommissionList({ marketType: String(MarketType.SPOT) });
+// 	commissions.value = await baseDataStore.userTraderCommissionList;
 
-	console.log(commissions.value);
-});
+// 	console.log(commissions.value);
+// });
 
 onBeforeUnmount(async () => {
-	await unSubSocket(marketParams.value);
+	// await unSubSocket(marketParams.value);
 });
 
-const subSocket = async (marketParams: string | null, firstLoad: boolean = true) => {
-	if (marketParams) {
-		if (firstLoad) {
-			await unSubSocket(marketParams);
-		}
-		sendMessage(createSubscriptionData(
-			SocketId.SPOT_TICKER_EXCHANGE,
-			'SUBSCRIBE',
-			PublicTopic.SPOT_TICKER,
-			marketParams,
-		));
-	}
-};
+// const subSocket = async (marketParams: string | null, firstLoad: boolean = true) => {
+// 	if (marketParams) {
+// 		if (firstLoad) {
+// 			await unSubSocket(marketParams);
+// 		}
+// 		sendMessage(createSubscriptionData(
+// 			SocketId.SPOT_TICKER_EXCHANGE,
+// 			'SUBSCRIBE',
+// 			PublicTopic.SPOT_TICKER,
+// 			marketParams,
+// 		));
+// 	}
+// };
 
-const unSubSocket = (marketParams: string | null) => {
-	if (socket.value && marketParams) {
-		sendMessage(createSubscriptionData(
-			SocketId.SPOT_TICKER_EXCHANGE,
-			'UNSUBSCRIBE',
-			PublicTopic.SPOT_TICKER,
-			marketParams,
-		));
-	}
-};
-
-const onTradeOneChange = async (newValue: CurrencyBriefItem) => {
-	coinTradeOne.value = newValue;
-	// console.log('coinTradeOne', coinTradeOne.value);
-};
-
-const onTradeTwoChange = async (newValue: CurrencyBriefItem) => {
-	coinTradeTwo.value = newValue;
-	console.log('coinTradeTwo', coinTradeTwo.value);
-};
+// const unSubSocket = (marketParams: string | null) => {
+// 	if (socket.value && marketParams) {
+// 		sendMessage(createSubscriptionData(
+// 			SocketId.SPOT_TICKER_EXCHANGE,
+// 			'UNSUBSCRIBE',
+// 			PublicTopic.SPOT_TICKER,
+// 			marketParams,
+// 		));
+// 	}
+// };
 
 const checkTradeOneValue = () => {
 	if (coinTradeOne.value && tradeOne.value !== '') {

@@ -1,5 +1,6 @@
 import * as Comlink from 'comlink';
 
+import type { Asset } from '~/types/definitions/asset.types';
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
 import type { SuggestionItems } from '~/types/definitions/header/search.types';
 import type { MarketBrief, MarketL16, MarketL21, MarketL47, MarketL51, MarketState } from '~/types/definitions/market.types';
@@ -13,7 +14,8 @@ interface BaseWorker {
 	addCurrencyToMarketsL51: (baseUrl: string, markets: | MarketL51[]) => Promise<MarketL51[]>;
 	addCurrencyToMarketsL47: (baseUrl: string, markets: | MarketL47[]) => Promise<MarketL47[]>;
 	addCurrencyToMarketStates: (baseUrl: string, markets: | MarketState[]) => Promise<MarketState[]>;
-	fetchCurrencyBriefItems: (baseUrl: string) => Promise<void>;
+	addCurrencyToAsset: (baseUrl: string, assets: | Asset[]) => Promise<Asset[]>;
+	fetchCurrencyBriefItems: (baseUrl: string) => Promise<CurrencyBrief[] | []>;
 	findCurrencyById: (id: number, baseUrl: string) => Promise<CurrencyBrief | null>;
 	findCurrencyBycSymbol: (mSymbol: string, baseUrl: string) => Promise<CurrencyBrief | null>;
 	searchCurrencies: (search: string, count: number, baseUrl: string) => Promise<CurrencyBrief[] | []>;
@@ -28,6 +30,7 @@ interface BaseWorker {
 	searchMarkets: (baseUrl: string, search: string, count?: number) => Promise<MarketBrief[] | []>;
 	// Other
 	SearchSuggestionItems: (baseUrl: string, query: string) => Promise<SuggestionItems>;
+	fetchCommissionList: (baseUrl: string, marketType: number) => Promise<void>;
 }
 
 export const useBaseWorker = () => {

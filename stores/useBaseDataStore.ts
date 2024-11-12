@@ -321,7 +321,7 @@ export const useBaseDataStore = defineStore('baseData', () => {
 		try {
 			const userTraderRepo = userTraderRepository($api);
 
-			const response = await userTraderRepo.getUserTraderCommissionList(params);
+			const response = await userTraderRepo.getUTraderCommissionList(params);
 			if (response) {
 				userTraderCommissionList.value = response.result.rows;
 				isUserTraderCommissionFetched.value = true;

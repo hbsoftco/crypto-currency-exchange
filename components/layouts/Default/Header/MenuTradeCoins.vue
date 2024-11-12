@@ -29,7 +29,7 @@
 				>
 					<ULink
 						class="flex items-center justify-start"
-						:to="type==='spot' ? `/spot/${splitMarket(market?.currency?.cSymbol + quote)}`: checkPathLink('/fast-trade', false)"
+						:to="type==='spot' ? `/spot/${splitMarket(market?.currency?.cSymbol + quote)}`: checkPathLink(`/fast-trade?market=${splitMarket(market?.currency?.cSymbol + quote)}`, false)"
 					>
 						<img
 							:src="`https://api-bitland.site/media/currency/${market?.currency?.cSymbol}.png`"

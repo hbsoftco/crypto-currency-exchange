@@ -1,15 +1,19 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { GetTradeListParams, GetOrderListParams, SpotDataParams } from '~/types/base.types';
+import type { GetOrderListParams, SpotDataParams } from '~/types/base.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
-import type { KLineParams, KLineResponse } from '~/types/definitions/spot.types';
-import type { GetOrderListResponse, GetSpotDataResponse, GetTradeListResponse } from '~/types/response/spot.types';
+import type { GetOrderListResponse, GetSpotDataResponse } from '~/types/response/spot.types';
+import type {
+	KLineParams,
+	KLineResponse,
+	SpotResponse,
+	TradeListParams } from '~/types/definitions/spot.types';
 
 type SpotRepository = {
 	getKLine: (params: KLineParams) => Promise<KLineResponse>;
+	getTradeList: (params: TradeListParams) => Promise<SpotResponse>;
 
 	getSpotData: (params: SpotDataParams) => Promise<GetSpotDataResponse>;
-	getTradeList: (params: GetTradeListParams) => Promise<GetTradeListResponse>;
 	getOrderList: (params: GetOrderListParams) => Promise<GetOrderListResponse>;
 };
 
@@ -24,6 +28,22 @@ export const spotRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SpotR
 		const response = await fetch<KLineResponse>(`${url}?${query.toString()}`, {
 			noAuth: true,
 			apiName: url,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getTradeList(params: TradeListParams): Promise<SpotResponse> {
+		const query = new URLSearchParams();
+		Object.entries(params).forEach(([key, value]) => {
+			if (value !== undefined && value !== null && value.toString().trim() !== '') {
+				query.append(key, value);
+			}
+		});
+
+		const url = 'v1/spot/trade/list';
+		const response = await fetch<SpotResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
 		} as CustomNitroFetchOptions);
 
 		return response;
@@ -47,24 +67,7 @@ export const spotRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SpotR
 
 		return response;
 	},
-	async getTradeList(params: GetTradeListParams): Promise<GetTradeListResponse> {
-		const query = new URLSearchParams();
-		Object.entries(params).forEach(([key, value]) => {
-			if (value !== undefined && value !== null && value.toString().trim() !== '') {
-				query.append(key, value);
-			}
-		});
 
-		const url = 'v1/spot/trade/list';
-		const response = await fetch<GetTradeListResponse>(`${url}?${query.toString()}`, {
-			noAuth: false,
-			apiName: url,
-			queryParams: params,
-			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
 	async getOrderList(params: GetOrderListParams): Promise<GetOrderListResponse> {
 		const query = new URLSearchParams();
 		Object.entries(params).forEach(([key, value]) => {

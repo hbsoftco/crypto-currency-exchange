@@ -1,11 +1,17 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { GetAssetBoxParams, GetAssetListParams, GetAssetTotalParams, GetInternalReceiveParams, GetMiscellaneousListParams, GetPanelListParams, GetRecentListParams } from '~/types/base.types';
+import type { GetAssetBoxParams, GetAssetTotalParams, GetInternalReceiveParams, GetMiscellaneousListParams, GetPanelListParams, GetRecentListParams } from '~/types/base.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import type { GetAssetListResponse, GetAssetTotalResponse, GetBoxRes, GetInternalReceiveListResponse, GetMiscellaneousListResponse, GetPortfolioRes, GetRecentListRes } from '~/types/response/asset.types';
+import type {
+	AssetListParams,
+	AssetResponse,
+
+} from '~/types/definitions/asset.types';
 
 type AssetRepository = {
-	getAssetList: (params: GetAssetListParams) => Promise<GetAssetListResponse>;
+	getAssetList: (params: AssetListParams) => Promise<AssetResponse>;
+	//
 	getInternalReceiveList: (params: GetInternalReceiveParams) => Promise<GetInternalReceiveListResponse>;
 	getMiscellaneousList: (params: GetMiscellaneousListParams) => Promise<GetMiscellaneousListResponse>;
 	getAssetTotal: (params: GetAssetTotalParams) => Promise<GetAssetTotalResponse>;
@@ -15,7 +21,7 @@ type AssetRepository = {
 };
 
 export const assetRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AssetRepository => ({
-	async getAssetList(params: GetAssetListParams): Promise<GetAssetListResponse> {
+	async getAssetList(params: AssetListParams): Promise<AssetResponse> {
 		const query = new URLSearchParams(
 			Object.entries(params)
 				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
@@ -24,13 +30,12 @@ export const assetRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Asse
 		const url = '/v1/asset/box/asset_list';
 		const response = await fetch<GetAssetListResponse>(`${url}?${query.toString()}`, {
 			noAuth: false,
-			apiName: url,
-			queryParams: params,
 			method: 'GET',
 		} as CustomNitroFetchOptions);
 
 		return response;
 	},
+	//
 	async getInternalReceiveList(params: GetInternalReceiveParams): Promise<GetInternalReceiveListResponse> {
 		const query = new URLSearchParams(
 			Object.entries(params)

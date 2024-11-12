@@ -185,11 +185,11 @@ const getWithdrawCoinList = async () => {
 
 const userTraderCommissionListLoading = ref<boolean>(false);
 const userTraderCommission = ref<Commission[]>();
-const getUserTraderCommissionList = async () => {
+const getTraderCommissionList = async () => {
 	try {
 		userTraderCommissionListLoading.value = true;
 
-		const { result } = await userRepo.getUserTraderCommissionList({ marketType: String(MarketType.SPOT) });
+		const { result } = await userRepo.getTraderCommissionList({ marketType: String(MarketType.SPOT) });
 
 		userTraderCommission.value = result.rows;
 		console.log('userTraderCommission.value', userTraderCommission.value);
@@ -207,7 +207,7 @@ onMounted(async () => {
 		getTraderBrief(),
 		getDepositCoinList(),
 		getWithdrawCoinList(),
-		getUserTraderCommissionList(),
+		getTraderCommissionList(),
 	]);
 });
 

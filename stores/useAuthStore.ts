@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import { authRepository } from '~/repositories/auth.repository';
 import { userRepository } from '~/repositories/user.repository';
 import type { KeyValue } from '~/types/base.types';
-import { CACHE_KEY_CURRENT_USER } from '~/utils/constants/common';
+import { CACHE_KEY_COMMISSION_LIST, CACHE_KEY_CURRENT_USER } from '~/utils/constants/common';
 import { removeFromCache } from '~/utils/indexeddb';
 
 export const useAuthStore = defineStore('auth', () => {
@@ -56,6 +56,7 @@ export const useAuthStore = defineStore('auth', () => {
 		stopRefreshInterval();
 
 		removeFromCache(CACHE_KEY_CURRENT_USER);
+		removeFromCache(CACHE_KEY_COMMISSION_LIST);
 
 		currentUser.value = [];
 
