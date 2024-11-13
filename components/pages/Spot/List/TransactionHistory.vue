@@ -5,7 +5,10 @@
 			:trade-item="tradeItem"
 			@close="closeModalTransactionDetail"
 		/>
-		<FilterOptions @filters="applyFilter" />
+		<FilterOptions
+			class="hidden md:block"
+			@filters="applyFilter"
+		/>
 		<div class="h-auto overflow-y-scroll">
 			<table class="min-w-full p-6 text-right">
 				<thead>
@@ -162,7 +165,7 @@
 						<td class="flex text-xs font-normal py-1">
 							<IconInfo
 								class="text-base cursor-pointer"
-								@click.prevent="openModalTransactionDetail"
+								@click="openModalTransactionDetail(trade)"
 							/>
 						</td>
 					</tr>
@@ -205,7 +208,7 @@ const tradeItem = ref<Trade>();
 
 const params = ref<TradeListParams>({
 	marketId: '',
-	symbol: 'FETUSDT',
+	symbol: '',
 	orderSide: '',
 	orderType: '',
 	assetType: useEnv('assetType'),
@@ -234,11 +237,11 @@ const getTradeList = async () => {
 };
 
 const applyFilter = async (event: OrderFiltersType) => {
+	params.value.symbol = event.symbol;
 	params.value.from = event.from;
 	params.value.to = event.to;
 	params.value.orderType = event.orderType;
 	params.value.orderSide = event.orderSide;
-	params.value.symbol = event.symbol;
 
 	await getTradeList();
 };
