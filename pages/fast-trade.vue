@@ -6,17 +6,23 @@
 		/>
 		<UContainer>
 			<section class="my-12">
-				<div class="mx-auto text-center rounded-md bg-hover-light dark:bg-hover-dark py-8 px-1 md:px-10 w-full md:w-[34.188rem]">
+				<div
+					class="mx-auto text-center rounded-md bg-hover-light dark:bg-hover-dark py-8 px-1 md:px-10 w-full md:w-[34.188rem]"
+				>
 					<h1 class="text-2xl font-bold">
-						{{ $t('conversion') }}
+						{{ $t("conversion") }}
 					</h1>
 					<div class="my-4 relative">
 						<div>
 							<div class="w-full flex justify-between items-center">
-								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('from') }}</span>
+								<span
+									class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark"
+								>{{ $t("from") }}</span>
 								<div class="flex items-center">
 									<div>
-										<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('inventory') }}:</span>
+										<span
+											class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark"
+										>{{ $t("inventory") }}:</span>
 										<span
 											class="mr-1 text-xs font-normal text-left"
 											dir="ltr"
@@ -26,7 +32,7 @@
 										class="mr-2 text-primary-yellow-light hover:bg-hover-light dark:hover:bg-hover-dark dark:text-primary-yellow-dark bg-hover-light dark:bg-hover-dark text-xs font-bold"
 										to=""
 									>
-										{{ $t('all') }}
+										{{ $t("all") }}
 									</UButton>
 								</div>
 							</div>
@@ -43,7 +49,9 @@
 								@item-selected="getFirstSelectedCurrency"
 							/>
 						</div>
-						<div class="absolute top-[6.5rem] z-[1] mx-auto flex justify-center w-full">
+						<div
+							class="absolute top-[6.5rem] z-[1] mx-auto flex justify-center w-full"
+						>
 							<ULink
 								class="flex justify-center items-center rounded-full w-16 h-16 bg-primary-yellow-light dark:bg-primary-yellow-dark border-4 border-background-light dark:border-background-dark"
 								@click="replacementMarket"
@@ -53,7 +61,9 @@
 						</div>
 						<div>
 							<div class="w-full flex justify-between">
-								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('to') }}</span>
+								<span
+									class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark"
+								>{{ $t("to") }}</span>
 							</div>
 							<TradeChangeFieldInput
 								id="secondCurrency"
@@ -74,7 +84,9 @@
 						class="flex justify-between items-center my-4"
 						dir="ltr"
 					>
-						<div class="bg-secondary-gray-light dark:bg-secondary-gray-dark w-full h-[0.063rem]" />
+						<div
+							class="bg-secondary-gray-light dark:bg-secondary-gray-dark w-full h-[0.063rem]"
+						/>
 						<div class="flex justify-between items-center text-xs font-normal">
 							<div class="ml-1 flex text-nowrap">
 								{{ `1 ${firstSelectedSymbol}` }}
@@ -110,10 +122,12 @@
 								{{ `0 ${feeCurrencySymbol}` }}
 							</div>
 						</div>
-						<div class="bg-secondary-gray-light dark:bg-secondary-gray-dark w-full h-[0.063rem]" />
+						<div
+							class="bg-secondary-gray-light dark:bg-secondary-gray-dark w-full h-[0.063rem]"
+						/>
 					</div>
 					<div class="flex justify-between py-2">
-						<span>{{ $t('fee') }}</span>
+						<span>{{ $t("fee") }}</span>
 						<div class="flex">
 							<span
 								class="text-sm font-normal mr-2"
@@ -124,7 +138,7 @@
 						</div>
 					</div>
 					<div class="flex justify-between my-4 py-2">
-						<span>{{ $t('receivable') }}</span>
+						<span>{{ $t("receivable") }}</span>
 						<div class="flex">
 							<span
 								class="text-sm font-normal mr-2"
@@ -135,20 +149,13 @@
 						</div>
 					</div>
 					<UButton
-						class="text-base font-medium px-12 text-black py-3 w-full flex justify-center "
+						class="text-base font-medium px-12 text-black py-3 w-full flex justify-center"
 						@click="openConfirmOne"
 					>
 						{{ $t("confirm") }}
 					</UButton>
 				</div>
 			</section>
-
-			{{ tradeOne }}
-			{{ tradeTwo }}
-			<pre dir="ltr">
-				<!-- {{ parsedMessages }} -->
-			</pre>
-
 			<RecentTrades />
 		</UContainer>
 	</div>
@@ -160,11 +167,8 @@ import ConfirmOrderModal from '~/components/pages/FastTrade/ConfirmOrderModal.vu
 import TradeChangeFieldInput from '~/components/forms/TradeChangeFieldInput.vue';
 import IconChange from '~/assets/svg-icons/trade/change.svg';
 import RecentTrades from '~/components/pages/FastTrade/RecentTrades.vue';
-// import { useFastTrade } from '~/composables/trade/useFastTrade';
-// import { Language } from '~/utils/enums/language.enum';
 import type { Trade } from '~/types/response/trade.types';
 import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
-// import { PublicTopic, SocketId } from '~/utils/enums/socket.enum';
 import type { Commission } from '~/types/response/trader.types';
 import { assetRepository } from '~/repositories/asset.repository';
 import type { Asset, AssetListParams } from '~/types/definitions/asset.types';
@@ -176,6 +180,7 @@ import { CACHE_KEY_COMMISSION_LIST } from '~/utils/constants/common';
 import { userRepository } from '~/repositories/user.repository';
 import { MarketType } from '~/utils/enums/market.enum';
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
+import type { Quote } from '~/types/definitions/quote.types';
 
 definePageMeta({
 	layout: 'trade',
@@ -185,6 +190,9 @@ const { $api } = useNuxtApp();
 const assetRepo = assetRepository($api);
 const spotRepo = spotRepository($api);
 const userRepo = userRepository($api);
+
+const publicSocketStore = usePublicSocketStore();
+const authStore = useAuthStore();
 
 const worker = useBaseWorker();
 
@@ -197,18 +205,7 @@ const secondCurrencyPrice = ref('');
 const firstSelectedSymbol = ref('btc');
 const secondSelectedSymbol = ref('usdt');
 
-watch(
-	() => route.query.market,
-	(newMarket, oldMarket) => {
-		if (newMarket !== oldMarket) {
-			if (newMarket) {
-				const [currency, quote] = String(newMarket).split('_');
-				firstSelectedSymbol.value = currency;
-				secondSelectedSymbol.value = quote;
-			}
-		}
-	},
-);
+// const socketMarketIds = ref<number[]>([]);
 
 const firstSelectedCurrency = ref<CurrencyBrief>();
 const getFirstSelectedCurrency = async (newCurrency: CurrencyBrief) => {
@@ -221,7 +218,10 @@ const getSecondSelectedCurrency = async (newCurrency: CurrencyBrief) => {
 };
 
 const replacementMarket = () => {
-	[firstSelectedSymbol.value, secondSelectedSymbol.value] = [secondSelectedSymbol.value, firstSelectedSymbol.value];
+	[firstSelectedSymbol.value, secondSelectedSymbol.value] = [
+		secondSelectedSymbol.value,
+		firstSelectedSymbol.value,
+	];
 };
 
 // Get Asset List
@@ -239,7 +239,10 @@ const getAssetList = async () => {
 		assetListLoading.value = true;
 		const { result } = await assetRepo.getAssetList(assetListParams.value);
 
-		assetList.value = await worker.addCurrencyToAsset(useEnv('apiBaseUrl'), result.rows);
+		assetList.value = await worker.addCurrencyToAsset(
+			useEnv('apiBaseUrl'),
+			result.rows,
+		);
 		console.log('assetList =======>', assetList.value);
 
 		assetListLoading.value = false;
@@ -269,7 +272,7 @@ const getTradeList = async () => {
 	tradeListLoading.value = true;
 	try {
 		const { result } = await spotRepo.getTradeList(tradeListParams.value);
-		tradeList.value = result.rows;
+		tradeList.value = result.rows as Trade[];
 		tradeListLoading.value = false;
 	}
 	catch (error) {
@@ -279,19 +282,24 @@ const getTradeList = async () => {
 };
 
 // Get Commission List
+// const commission = ref<Commission>();
 const commissionList = ref<Commission[]>([]);
 const commissionListLoading = ref<boolean>(false);
 const getCommissionList = async () => {
 	try {
 		commissionListLoading.value = true;
 
-		const cachedItems = await loadFromCache<Commission[]>(CACHE_KEY_COMMISSION_LIST);
+		const cachedItems = await loadFromCache<Commission[]>(
+			CACHE_KEY_COMMISSION_LIST,
+		);
 
 		if (cachedItems && cachedItems.length > 0) {
 			commissionList.value = cachedItems;
 		}
 		else {
-			const { result } = await userRepo.getTraderCommissionList({ marketType: String(MarketType.SPOT) });
+			const { result } = await userRepo.getTraderCommissionList({
+				marketType: String(MarketType.SPOT),
+			});
 
 			await saveToCache(CACHE_KEY_COMMISSION_LIST, result.rows);
 
@@ -307,71 +315,160 @@ const getCommissionList = async () => {
 	}
 };
 
+const levelIndicator = ref<string>();
+const marketTypeId = ref<number>(MarketType.SPOT);
+const quoteItems = ref<Quote[]>();
+// const currencyQuoteId = ref<number>();
+// type: 'BUY' | 'SELL';
+// isQuote: boolean;
+// markets?: string[];
+// marketIds?: string[];
+// //
+
+interface TradeOption {
+	base?: {
+		currency: CurrencyBrief;
+		qAvailable: string;
+		received: string;
+	};
+	quote?: {
+		currency: CurrencyBrief;
+		qAvailable: string;
+		location: 'TOP' | 'BOTTOM';
+		received: string;
+	};
+}
+
+const tradeItems = ref<TradeOption[]>([]);
+
+watch(
+	() => route.query.market,
+	(newMarket, oldMarket) => {
+		if (newMarket !== oldMarket) {
+			if (newMarket) {
+				const [currency, quote] = String(newMarket).split('_');
+				firstSelectedSymbol.value = currency;
+				secondSelectedSymbol.value = quote;
+			}
+		}
+	},
+);
+
+watch(
+	[firstSelectedSymbol, secondSelectedSymbol],
+	([newFirst, newSecond]) => {
+		if (!quoteItems.value || !firstSelectedCurrency.value || !secondSelectedCurrency.value) return;
+
+		tradeItems.value = [];
+		const foundFirstCurrency = quoteItems.value.find(
+			(item) => item.cSymbol.toLowerCase() === newFirst.toLowerCase(),
+		);
+		const foundSecondCurrency = quoteItems.value.find(
+			(item) => item.cSymbol.toLowerCase() === newSecond.toLowerCase(),
+		);
+		// Buy Crypto - Top quote Bottom currency
+		if (foundFirstCurrency && !foundSecondCurrency) {
+			tradeItems.value = [{
+				quote: {
+					currency: firstSelectedCurrency.value,
+					location: 'TOP',
+					qAvailable: '',
+					received: '',
+				},
+				base: {
+					currency: secondSelectedCurrency.value,
+					qAvailable: '',
+					received: '',
+				},
+			}];
+		}
+		// Sell Crypto - Top currency Bottom quote
+		else if (!foundFirstCurrency && foundSecondCurrency) {
+			tradeItems.value = [{
+				quote: {
+					currency: secondSelectedCurrency.value,
+					location: 'BOTTOM',
+					qAvailable: '',
+					received: '',
+				},
+				base: {
+					currency: firstSelectedCurrency.value,
+					qAvailable: '',
+					received: '',
+				},
+			}];
+		}
+		// Two trade state
+		else if (!foundFirstCurrency && !foundSecondCurrency) {
+			tradeItems.value = [
+				{
+					quote: {
+						currency: '',
+						location: 'BOTTOM',
+						qAvailable: '',
+						received: '',
+					},
+					base: {
+						currency: firstSelectedCurrency.value,
+						qAvailable: '',
+						received: '',
+					},
+				},
+				{
+					quote: {
+						currency: '',
+						location: 'BOTTOM',
+						qAvailable: '',
+						received: '',
+					},
+					base: {
+						currency: secondSelectedCurrency.value,
+						qAvailable: '',
+						received: '',
+					},
+				},
+			];
+		}
+
+		console.log('trade.value', tradeItems.value);
+
+		// agar fild balayi quote bud bere dakhel quote
+		// agar payini ham quote bud payini base bashe USDT un yeki beshe quote
+	},
+);
+
 onMounted(async () => {
 	if (currency && quote) {
 		firstSelectedSymbol.value = currency;
 		secondSelectedSymbol.value = quote;
 	}
 
+	await authStore.fetchCurrentUser();
+	levelIndicator.value = authStore.getUserLevelIndicator || '0';
+	quoteItems.value = await worker.fetchQuoteItems(
+		marketTypeId.value,
+		useEnv('apiBaseUrl'),
+	);
+
 	await getAssetList();
 	await getTradeList();
 	await getCommissionList();
 });
 
-// Old Method
+onBeforeUnmount(async () => {
+	await publicSocketStore.unSubscribe();
+});
 
-const tradeOne = ref('');
-const tradeTwo = ref('');
-const errorOne = ref('');
-const errorTwo = ref('');
+// Old Method
 
 const coinTradeOne = ref<CurrencyBriefItem>();
 const coinTradeTwo = ref<CurrencyBriefItem>();
 
-// const firstCurrency = ref<CurrencyBriefItem>();
-// const secondCurrency = ref<CurrencyBriefItem>();
-
-// const { exchangeMessages, connect, socket, sendMessage } = usePublicWebSocket();
-
-// const parsedMessages = computed(() => {
-// 	return exchangeMessages.value.map((msg) => {
-// 		try {
-// 			return msg;
-// 		}
-// 		catch (error) {
-// 			console.error('Error parsing message:', error);
-// 			return null;
-// 		}
-// 	}).filter((item) => item !== null);
-// });
-
-// const firstCurrency = computed(() => {
-// 	if (!coinTradeOne.value || !coinTradeTwo.value) {
-// 		return null;
-// 	}
-
-// 	const isCoinOneUSDT = coinTradeOne.value.cSymbol === 'USDT';
-// 	const isCoinTwoUSDT = coinTradeTwo.value.cSymbol === 'USDT';
-// 	const isCoinOneTMN = coinTradeOne.value.cSymbol === 'TMN';
-// 	const isCoinTwoTMN = coinTradeTwo.value.cSymbol === 'TMN';
-
-// 	if ((isCoinOneUSDT && isCoinTwoTMN) || (isCoinOneTMN && isCoinTwoUSDT)) {
-// 		return 'USDT';
-// 	}
-
-// 	if (isCoinOneUSDT || isCoinOneTMN) {
-// 		return !isCoinTwoTMN ? coinTradeTwo.value.cSymbol : null;
-// 	}
-
-// 	if (isCoinTwoUSDT || isCoinTwoTMN) {
-// 		return !isCoinOneTMN ? coinTradeOne.value.cSymbol : null;
-// 	}
-
-// 	return coinTradeOne.value.cSymbol || coinTradeTwo.value.cSymbol;
-// });
-
 const feeCurrencySymbol = computed(() => {
-	if (coinTradeTwo.value?.cSymbol === 'USDT' || coinTradeTwo.value?.cSymbol === 'TMN') {
+	if (
+		coinTradeTwo.value?.cSymbol === 'USDT'
+		|| coinTradeTwo.value?.cSymbol === 'TMN'
+	) {
 		return coinTradeTwo.value?.cSymbol;
 	}
 	return 'USDT';
@@ -379,13 +476,20 @@ const feeCurrencySymbol = computed(() => {
 
 const marketParams = computed(() => {
 	if (coinTradeOne.value?.cSymbol && coinTradeTwo.value?.cSymbol) {
-		return getFormattedPairs(coinTradeOne.value.cSymbol, coinTradeTwo.value.cSymbol);
+		return getFormattedPairs(
+			coinTradeOne.value.cSymbol,
+			coinTradeTwo.value.cSymbol,
+		);
 	}
 	return null;
 });
 
 watch(marketParams, async (newMarketParams, oldMarketParams) => {
-	if (newMarketParams !== oldMarketParams && newMarketParams && oldMarketParams) {
+	if (
+		newMarketParams !== oldMarketParams
+		&& newMarketParams
+		&& oldMarketParams
+	) {
 		// await subSocket(newMarketParams);
 	}
 });
@@ -394,7 +498,12 @@ const shouldShowNewSection = computed(() => {
 	const currencyOne = coinTradeOne.value?.cSymbol;
 	const currencyTwo = coinTradeTwo.value?.cSymbol;
 
-	if (currencyOne !== 'TMN' && currencyOne !== 'USDT' && currencyTwo !== 'TMN' && currencyTwo !== 'USDT') {
+	if (
+		currencyOne !== 'TMN'
+		&& currencyOne !== 'USDT'
+		&& currencyTwo !== 'TMN'
+		&& currencyTwo !== 'USDT'
+	) {
 		return true;
 	}
 	return false;
@@ -427,10 +536,6 @@ const shouldShowNewSection = computed(() => {
 // 	console.log(commissions.value);
 // });
 
-onBeforeUnmount(async () => {
-	// await unSubSocket(marketParams.value);
-});
-
 // const subSocket = async (marketParams: string | null, firstLoad: boolean = true) => {
 // 	if (marketParams) {
 // 		if (firstLoad) {
@@ -456,47 +561,47 @@ onBeforeUnmount(async () => {
 // 	}
 // };
 
-const checkTradeOneValue = () => {
-	if (coinTradeOne.value && tradeOne.value !== '') {
-		const tradeValue = parseFloat(tradeOne.value);
-		const unit = parseFloat(coinTradeOne.value?.unit || '0');
+// const checkTradeOneValue = () => {
+// 	if (coinTradeOne.value && tradeOne.value !== '') {
+// 		const tradeValue = parseFloat(tradeOne.value);
+// 		const unit = parseFloat(coinTradeOne.value?.unit || '0');
 
-		if (tradeOne.value.length >= (coinTradeOne.value?.unit.length || 0)) {
-			if (tradeValue < unit) {
-				errorOne.value = `مقدار وارد شده نمی‌تواند کمتر از ${unit} باشد.`;
+// 		if (tradeOne.value.length >= (coinTradeOne.value?.unit.length || 0)) {
+// 			if (tradeValue < unit) {
+// 				errorOne.value = `مقدار وارد شده نمی‌تواند کمتر از ${unit} باشد.`;
 
-				tradeOne.value = coinTradeOne.value?.unit || '';
+// 				tradeOne.value = coinTradeOne.value?.unit || '';
 
-				nextTick(() => {
-					tradeOne.value = coinTradeOne.value?.unit || '';
-				});
-			}
-			else {
-				errorOne.value = '';
-			}
-		}
-		else {
-			errorOne.value = '';
-		}
-	}
-};
+// 				nextTick(() => {
+// 					tradeOne.value = coinTradeOne.value?.unit || '';
+// 				});
+// 			}
+// 			else {
+// 				errorOne.value = '';
+// 			}
+// 		}
+// 		else {
+// 			errorOne.value = '';
+// 		}
+// 	}
+// };
 
-const checkTradeTwoValue = () => {
-	if (coinTradeTwo.value && tradeTwo.value !== '') {
-		const tradeValue = parseFloat(tradeTwo.value);
-		const unit = parseFloat(coinTradeTwo.value.unit);
+// const checkTradeTwoValue = () => {
+// 	if (coinTradeTwo.value && tradeTwo.value !== '') {
+// 		const tradeValue = parseFloat(tradeTwo.value);
+// 		const unit = parseFloat(coinTradeTwo.value.unit);
 
-		if (tradeValue > unit) {
-			errorTwo.value = `مقدار وارد شده نمی‌تواند کمتر از ${unit} باشد.`;
-		}
-		else {
-			errorTwo.value = '';
-		}
-	}
-};
+// 		if (tradeValue > unit) {
+// 			errorTwo.value = `مقدار وارد شده نمی‌تواند کمتر از ${unit} باشد.`;
+// 		}
+// 		else {
+// 			errorTwo.value = '';
+// 		}
+// 	}
+// };
 
-watch(tradeOne, checkTradeOneValue);
-watch(tradeTwo, checkTradeTwoValue);
+// watch(tradeOne, checkTradeOneValue);
+// watch(tradeTwo, checkTradeTwoValue);
 
 const confirmOne = ref(false);
 

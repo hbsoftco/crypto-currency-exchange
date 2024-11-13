@@ -153,6 +153,7 @@ export const useAuthStore = defineStore('auth', () => {
 	};
 
 	const getCurrentUser = computed(() => currentUser.value);
+	const getUserLevelIndicator = computed(() => getValueByKey(currentUser.value, 'TRD_LVL_ID'));
 
 	const isLoggedIn = computed(() => authStatus.value);
 
@@ -196,6 +197,7 @@ export const useAuthStore = defineStore('auth', () => {
 		fetchCurrentUser,
 		currentUserLoading,
 		getCurrentUser,
+		getUserLevelIndicator,
 		currentUser,
 	};
 });
