@@ -19,91 +19,135 @@
 					</div>
 					<span class="text-xl font-bold hidden md:block text-center">{{ $t('orderDetails') }}</span>
 					<section>
-						<div class="grid grid-cols-2 gap-4 my-4 pb-4 px-8 border-b-primary-gray-light dark:border-b-primary-gray-dark border-b">
+						<div class="grid grid-cols-2 gap-4 my-4 pb-4 px-4 md:px-8 border-b-primary-gray-light dark:border-b-primary-gray-dark border-b">
 							<div class="flex">
 								<img
-									src="/images/delete/bitcoin.png"
-									alt="bitcoin"
-									class="w-16 h-16"
+									:src="`https://api-bitland.site/media/currency/${findSymbol}.png`"
+									alt="coin"
+									class="w-14 md:w-16 h-14 md:h-16"
+									format="webp"
+									densities="x1"
 								>
 								<div class="mr-2">
 									<span class="text-base font-bold ">{{ order?.mSymbol }}</span>
 									<div class="mt-1 px-2 py-1 text-accent-red dark:text-accent-red bg-[#33181D] rounded-md text-center">
-										{{ $t('sell') }}
+										{{ $t(order?.sideName) }}
 									</div>
 								</div>
 							</div>
 							<div class="flex flex-col text-left">
-								<span class="text-sm font-medium">{{ useNumber('۰۲/۰۳/۲۴ - ۲۳:۴۵:۵۸') }}</span>
+								<span class="text-sm font-medium">{{ useNumber(formatDateToIranTime(order.regTime)) }}</span>
 								<span class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark">{{ $t('date') }}</span>
 							</div>
 						</div>
 					</section>
 
 					<section>
-						<div class="mb-12 grid grid-cols-2 md:grid-cols-3 gap-4">
-							<div class="flex m-2">
+						<div class="grid grid-cols-2 md:grid-cols-3 gap-4 px-2 md:px-0">
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
 								<IconType class="text-2xl" />
 								<div class="mr-2 flex flex-col text-right">
-									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('type') }}:</span>
-									<span class="text-sm font-bold">بازار</span>
+									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('orderID') }}:</span>
+									<span class="text-sm font-bold">{{ $t(order.orderTypeName) }}</span>
 								</div>
 							</div>
-							<div class="flex m-2">
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
 								<IconAnchor class="text-2xl" />
 								<div class="mr-2 flex flex-col text-right">
-									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('amount') }}:</span>
-									<span class="text-sm font-bold">{{ useNumber('۳۷۳۸۳۵۳۸۴۶۸۴') }}</span>
+									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('apiKey') }}:</span>
+									<span class="text-sm font-bold">{{ useNumber(order.dealPrice) }}</span>
 								</div>
 							</div>
-							<div class="flex m-2">
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
 								<IconCoin class="text-2xl" />
 								<div class="mr-2 flex flex-col text-right">
-									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('value') }}:</span>
-									<span class="text-sm font-bold">{{ useNumber('۳۸۶۳۸۵ USDT') }}</span>
+									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('orderType') }}:</span>
+									<span class="text-sm font-bold">{{ useNumber(order.reqQot) }}</span>
 								</div>
 							</div>
-							<div class="flex m-2">
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
 								<IconSalary class="text-2xl" />
 								<div class="mr-2 flex flex-col text-right">
-									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('stopPrice') }}:</span>
+									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('status') }}:</span>
 									<span class="text-sm font-bold">{{ useNumber('00') }}</span>
 								</div>
 							</div>
-							<div class="flex m-2">
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
 								<IconSalary class="text-2xl" />
 								<div class="mr-2 flex flex-col text-right">
-									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('unitPrice') }}:</span>
+									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('registerTime') }}:</span>
 									<span class="text-sm font-bold">{{ useNumber('00') }}</span>
 								</div>
 							</div>
-							<div class="flex m-2">
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
 								<IconSalary class="text-2xl" />
 								<div class="mr-2 flex flex-col text-right">
-									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('marketPrice') }}:</span>
+									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('typeTIF') }}:</span>
 									<span class="text-sm font-bold">{{ useNumber('۳۴۵۶۳۸۵۶۸') }}</span>
 								</div>
 							</div>
-							<div class="flex m-2">
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
 								<IconRecepie class="text-2xl" />
 								<div class="mr-2 flex flex-col text-right">
-									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('totalAmount') }}:</span>
+									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('requestedAmount') }}:</span>
 									<span class="text-sm font-bold">{{ $t('۳۷۸۶۳۶۳۶') }}</span>
 								</div>
 							</div>
-							<div class="flex m-2">
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
 								<IconAnalytics class="text-2xl" />
 								<div class="mr-2 flex flex-col text-right">
-									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('amountFilled') }}:</span>
-									<span class="text-sm font-bold">{{ useNumber('۳۶۴۶۴۳۶۳') }}</span>
+									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('requestedValue') }}:</span>
+									<span class="text-sm font-bold">{{ useNumber(order.filledQot) }}</span>
 								</div>
 							</div>
-							<div class="flex m-2">
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
 								<IconCategory class="text-2xl" />
 								<div class="mr-2 flex flex-col text-right">
-									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('status') }}:</span>
-									<span class="text-sm font-bold">{{ useNumber('۱۰۰٪  پرشده') }}</span>
+									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('limitPrice') }}:</span>
+									<span class="text-sm font-bold">{{ $t(order.orderStateName) }}</span>
 								</div>
+							</div>
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
+								<IconCategory class="text-2xl" />
+								<div class="mr-2 flex flex-col text-right">
+									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('stopPrice') }}:</span>
+									<span class="text-sm font-bold">{{ $t(order.orderStateName) }}</span>
+								</div>
+							</div>
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
+								<IconCategory class="text-2xl" />
+								<div class="mr-2 flex flex-col text-right">
+									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('amountFilled') }}:</span>
+									<span class="text-sm font-bold">{{ $t(order.orderStateName) }}</span>
+								</div>
+							</div>
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
+								<IconCategory class="text-2xl" />
+								<div class="mr-2 flex flex-col text-right">
+									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('filledValue') }}:</span>
+									<span class="text-sm font-bold">{{ $t(order.orderStateName) }}</span>
+								</div>
+							</div>
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
+								<IconCategory class="text-2xl" />
+								<div class="mr-2 flex flex-col text-right">
+									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('stopPriceDate') }}:</span>
+									<span class="text-sm font-bold">{{ $t(order.orderStateName) }}</span>
+								</div>
+							</div>
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
+								<IconCategory class="text-2xl" />
+								<div class="mr-2 flex flex-col text-right">
+									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('fillingTime') }}:</span>
+									<span class="text-sm font-bold">{{ $t(order.orderStateName) }}</span>
+								</div>
+							</div>
+						</div>
+						<div class="mt-3 mb-10 px-2 md:px-0 flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
+							<IconCategory class="text-2xl" />
+							<div class="mr-2 flex flex-col text-right">
+								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('description') }}:</span>
+								<span class="text-sm font-bold">{{ $t(order.orderStateName) }}</span>
 							</div>
 						</div>
 					</section>
@@ -117,46 +161,74 @@
 						<div class="flex justify-start py-1 border-b border-primary-gray-light dark:border-primary-gray-dark">
 							<span class="text-sm font-bold ">{{ $t('firstTransaction') }}</span>
 						</div>
-						<div class="mb-4 grid grid-cols-2 md:grid-cols-3 gap-4">
-							<div class="flex m-2">
+						<div class="my-4 px-2 md:px-0 grid grid-cols-2 md:grid-cols-3 gap-4">
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
 								<IconDate class="text-2xl" />
 								<div class="mr-2 flex flex-col text-right">
-									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('date') }}:</span>
+									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('tradeID') }}:</span>
 									<span class="text-sm font-bold">{{ useNumber(' ۰۲/۰۳/۲۴ - ۲۳:۴۵:۵۸') }}</span>
 								</div>
 							</div>
-							<div class="flex m-2">
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
 								<IconSalary class="text-2xl" />
 								<div class="mr-2 flex flex-col text-right">
-									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('marketPrice') }}:</span>
+									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('tradePrice') }}:</span>
 									<span class="text-sm font-bold">{{ useNumber('۳۵۶۸۹۳۵۶') }}</span>
 								</div>
 							</div>
-							<div class="flex m-2">
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
 								<IconCoin class="text-2xl" />
 								<div class="mr-2 flex flex-col text-right">
-									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('fee') }}:</span>
+									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('tradeDate') }}:</span>
 									<span class="text-sm font-bold">{{ useNumber('۳۸۶۳۸۵ USDT') }}</span>
 								</div>
 							</div>
-							<div class="flex m-2">
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
 								<IconCategory class="text-2xl" />
 								<div class="mr-2 flex flex-col text-right">
-									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('status') }}:</span>
+									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('dollarValueTrade') }}:</span>
 									<span class="text-sm font-bold">پایان یافته</span>
 								</div>
 							</div>
-							<div class="flex m-2">
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
 								<IconAnchor class="text-2xl" />
 								<div class="mr-2 flex flex-col text-right">
-									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('amount') }}:</span>
+									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('expense') }}:</span>
 									<span class="text-sm font-bold">{{ useNumber('۲۳۲۳۸۴۶۳۲۸۶۳۲۸۳۸۲۴') }}</span>
 								</div>
 							</div>
-							<div class="flex m-2">
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
 								<IconRecepie class="text-2xl" />
 								<div class="mr-2 flex flex-col text-right">
-									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('totalAmount') }}:</span>
+									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('income') }}:</span>
+									<span class="text-sm font-bold">{{ useNumber('۲۳۷۵۸ TMN') }}</span>
+								</div>
+							</div>
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
+								<IconAnchor class="text-2xl" />
+								<div class="mr-2 flex flex-col text-right">
+									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('rawFee') }}:</span>
+									<span class="text-sm font-bold">{{ useNumber('۲۳۲۳۸۴۶۳۲۸۶۳۲۸۳۸۲۴') }}</span>
+								</div>
+							</div>
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
+								<IconRecepie class="text-2xl" />
+								<div class="mr-2 flex flex-col text-right">
+									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('finalFee') }}:</span>
+									<span class="text-sm font-bold">{{ useNumber('۲۳۷۵۸ TMN') }}</span>
+								</div>
+							</div>
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
+								<IconAnchor class="text-2xl" />
+								<div class="mr-2 flex flex-col text-right">
+									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('reasonDiscount') }}:</span>
+									<span class="text-sm font-bold">{{ useNumber('۲۳۲۳۸۴۶۳۲۸۶۳۲۸۳۸۲۴') }}</span>
+								</div>
+							</div>
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
+								<IconRecepie class="text-2xl" />
+								<div class="mr-2 flex flex-col text-right">
+									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('discountPercentage') }}:</span>
 									<span class="text-sm font-bold">{{ useNumber('۲۳۷۵۸ TMN') }}</span>
 								</div>
 							</div>
@@ -165,42 +237,48 @@
 							<span class="text-sm font-bold ">{{ $t('secondTransaction') }}</span>
 						</div>
 						<div class="mb-4 grid grid-cols-2 md:grid-cols-3 gap-4">
-							<div class="flex m-2">
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
+
 								<IconDate class="text-2xl" />
 								<div class="mr-2 flex flex-col text-right">
 									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('date') }}:</span>
 									<span class="text-sm font-bold">{{ useNumber(' ۰۲/۰۳/۲۴ - ۲۳:۴۵:۵۸') }}</span>
 								</div>
 							</div>
-							<div class="flex m-2">
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
+
 								<IconSalary class="text-2xl" />
 								<div class="mr-2 flex flex-col text-right">
 									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('marketPrice') }}:</span>
 									<span class="text-sm font-bold">{{ useNumber('۳۵۶۸۹۳۵۶') }}</span>
 								</div>
 							</div>
-							<div class="flex m-2">
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
+
 								<IconCoin class="text-2xl" />
 								<div class="mr-2 flex flex-col text-right">
 									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('fee') }}:</span>
 									<span class="text-sm font-bold">{{ useNumber('۳۸۶۳۸۵ USDT') }}</span>
 								</div>
 							</div>
-							<div class="flex m-2">
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
+
 								<IconCategory class="text-2xl" />
 								<div class="mr-2 flex flex-col text-right">
 									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('status') }}:</span>
 									<span class="text-sm font-bold">پایان یافته</span>
 								</div>
 							</div>
-							<div class="flex m-2">
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
+
 								<IconAnchor class="text-2xl" />
 								<div class="mr-2 flex flex-col text-right">
 									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('amount') }}:</span>
 									<span class="text-sm font-bold">{{ useNumber('۲۳۲۳۸۴۶۳۲۸۶۳۲۸۳۸۲۴') }}</span>
 								</div>
 							</div>
-							<div class="flex m-2">
+							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
+
 								<IconRecepie class="text-2xl" />
 								<div class="mr-2 flex flex-col text-right">
 									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('totalAmount') }}:</span>
@@ -233,14 +311,14 @@ import IconSalary from '~/assets/svg-icons/spot/salary.svg';
 import IconDate from '~/assets/svg-icons/menu/quick-menu/transaction-history.svg';
 import { useNumber } from '~/composables/useNumber';
 import type { Order } from '~/types/definitions/spot.types';
+import { formatDateToIranTime } from '~/utils/date-time';
+import { splitMarket } from '~/utils/split-market';
 
 interface PropsDefinition {
 	order: Order;
 }
 
-defineProps<PropsDefinition>();
-
-// console.log('//////////****//////////////////', props);
+const props = defineProps<PropsDefinition>();
 
 const isOpen = ref(true);
 interface EmitDefinition {
@@ -248,6 +326,15 @@ interface EmitDefinition {
 }
 
 const emit = defineEmits<EmitDefinition>();
+
+const findSymbol = computed(() => {
+	const market = splitMarket(props.order.mSymbol);
+	if (market) {
+		const [currency] = market.split('_');
+		return currency;
+	}
+	return null;
+});
 
 const closeModal = async (value: boolean) => {
 	emit('close', value);
