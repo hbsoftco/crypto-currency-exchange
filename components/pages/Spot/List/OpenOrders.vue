@@ -171,6 +171,9 @@
 					</tr>
 				</tbody>
 			</table>
+			<template v-if="!orderList.length && !orderListLoading">
+				<UiNothingToShow />
+			</template>
 		</div>
 		<div class="flex justify-center py-4">
 			<UPagination

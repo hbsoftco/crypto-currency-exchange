@@ -166,7 +166,7 @@ const persian = {
 	dollarMarketFee: 'کارمزد بازار دلاری',
 	tomanMarketFee: 'کارمزد بازار تومان',
 	getYourReward: 'جایزتو بگیر',
-	compeleteAccount: 'تکمیل حساب کاربری',
+	completeAccount: 'تکمیل حساب کاربری',
 	cryptocurrencyDeposit: 'واریز رمز ارز',
 	currenciesWayBitland: 'ارزهای در راه بیت‌لند',
 	marketStatisticalInformation: 'اطلاعات آماری بازار',
