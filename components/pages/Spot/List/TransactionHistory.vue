@@ -1,10 +1,11 @@
 <template>
 	<div>
-		<ModalTransaction
-			v-if="showModalTransaction"
-			@close="closeModalTransaction"
+		<ModalTransactionDetail
+			v-if="showModalTransactionDetail && tradeItem"
+			:trade-item="tradeItem"
+			@close="closeModalTransactionDetail"
 		/>
-		<FilterSearch @filters="applyFilter" />
+		<FilterOptions @filters="applyFilter" />
 		<div class="h-auto overflow-y-scroll">
 			<table class="min-w-full p-6 text-right">
 				<thead>
@@ -45,49 +46,123 @@
 					</tr>
 				</thead>
 				<tbody>
+					<template v-if="tradesListLoading">
+						<tr
+							v-for="n in 10"
+							:key="n"
+						>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+						</tr>
+					</template>
 					<tr
-						v-for="(item, index) in tradesList"
+						v-for="(trade, index) in tradesList"
+						v-else
 						:key="index"
 						:class="[index % 2 === 0 ? 'bg-background-light dark:bg-background-dark' : 'bg-hover2-light dark:bg-hover2-dark']"
 						class="pb-1"
 					>
 						<td class="text-xs font-normal py-1">
-							<span>{{ item.mSymbol }}</span>
+							<span>{{ trade.mSymbol }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ $t(item.orderTypeName) }}</span>
+							<span>{{ $t(trade.orderTypeName) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ $t(item.sideName) }}</span>
+							<span>{{ $t(trade.sideName) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.reqQot) }}</span>
+							<span>{{ useNumber(trade.reqQot) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.dealPrice) }}</span>
+							<span>{{ useNumber(trade.dealPrice) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.filledQnt) }}</span>
+							<span>{{ useNumber(trade.filledQnt) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(formatDateToIran(item.regTime)) }}</span>
+							<span>{{ useNumber(formatDateToIran(trade.regTime)) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.tid) }}</span>
+							<span>{{ useNumber(trade.tid) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.oid) }}</span>
+							<span>{{ useNumber(trade.oid) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
 							<div class="flex">
-								<span class="ml-1 text-[0.7rem] text-secondary-gray-light dark:text-secondary-gray-dark line-through">{{ useNumber(item.feeRawQot) }}</span>
-								<span>{{ useNumber(item.feeRawQot) }}</span>
+								<span class="ml-1 text-[0.7rem] text-secondary-gray-light dark:text-secondary-gray-dark line-through">{{ useNumber(trade.feeRawQot) }}</span>
+								<span>{{ useNumber(trade.feeRawQot) }}</span>
 							</div>
 						</td>
 						<td class="flex text-xs font-normal py-1">
 							<IconInfo
 								class="text-base cursor-pointer"
-								@click.prevent="openModalTransaction"
+								@click.prevent="openModalTransactionDetail"
 							/>
 						</td>
 					</tr>
@@ -102,8 +177,8 @@
 				:max="6"
 				size="xl"
 				ul-class="flex space-x-2 bg-blue-500 border-none"
-				li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500 px-3"
-				button-class-base="flex items-center justify-center w-full h-full transition-colors duration-200"
+				li-class="flex trades-center justify-center w-8 h-8 rounded-full text-white bg-blue-500 px-3"
+				button-class-base="flex trades-center justify-center w-full h-full transition-colors duration-200"
 				button-class-inactive="bg-green-700 hover:bg-gray-600"
 				button-class-active="bg-blue-500"
 				class="my-14"
@@ -115,18 +190,20 @@
 
 <script setup lang="ts">
 import { formatDateToIran } from '~/utils/persian-date';
-import FilterSearch from '~/components/pages/Spot/List/FilterOptions.vue';
+import FilterOptions from '~/components/pages/Spot/List/FilterOptions.vue';
 import IconInfo from '~/assets/svg-icons/info.svg';
 import { useNumber } from '~/composables/useNumber';
-import ModalTransaction from '~/components/pages/Spot/List/ModalTransaction.vue';
-import { useSpot } from '~/composables/spot/useSpot';
-import type { Trade, OrderFiltersType } from '~/types/response/spot.types';
+import ModalTransactionDetail from '~/components/pages/Spot/List/ModalTransactionDetail.vue';
+import { spotRepository } from '~/repositories/spot.repository';
+import type { OrderFiltersType, Trade, TradeListParams } from '~/types/definitions/spot.types';
 
-const { getTradeList } = useSpot();
+const { $api } = useNuxtApp();
+const spotRepo = spotRepository($api);
 
 const totalCount = ref(0);
+const tradeItem = ref<Trade>();
 
-const params = ref({
+const params = ref<TradeListParams>({
 	marketId: '',
 	symbol: 'FETUSDT',
 	orderSide: '',
@@ -140,15 +217,19 @@ const params = ref({
 });
 
 const tradesList = ref<Trade[]>();
-
-const fetchTradeList = async () => {
+const tradesListLoading = ref<boolean>(false);
+const getTradeList = async () => {
 	try {
-		const { result } = await getTradeList(params.value);
+		tradesListLoading.value = true;
+		const { result } = await spotRepo.getTradeList(params.value);
+		tradesList.value = result.rows as Trade[];
 		totalCount.value = result.totalCount;
-		tradesList.value = result.rows;
+
+		tradesListLoading.value = false;
 	}
 	catch (error) {
 		console.error('Error fetching trades:', error);
+		tradesListLoading.value = false;
 	}
 };
 
@@ -159,25 +240,25 @@ const applyFilter = async (event: OrderFiltersType) => {
 	params.value.orderSide = event.orderSide;
 	params.value.symbol = event.symbol;
 
-	await fetchTradeList();
+	await getTradeList();
 };
 
-onMounted(async () => {
-	await fetchTradeList();
-});
-
-const showModalTransaction = ref(false);
-
-const openModalTransaction = () => {
-	showModalTransaction.value = true;
+const showModalTransactionDetail = ref(false);
+const openModalTransactionDetail = (item: Trade) => {
+	tradeItem.value = item;
+	showModalTransactionDetail.value = true;
 };
 
-const closeModalTransaction = () => {
-	showModalTransaction.value = false;
+const closeModalTransactionDetail = () => {
+	showModalTransactionDetail.value = false;
 };
 
 const onPageChange = async (newPage: number) => {
 	params.value.pageNumber = String(newPage);
-	await fetchTradeList();
+	await getTradeList();
 };
+
+onMounted(async () => {
+	await getTradeList();
+});
 </script>

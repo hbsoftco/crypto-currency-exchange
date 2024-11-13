@@ -92,7 +92,7 @@
 import { formatDateToIran } from '~/utils/persian-date';
 import IconInfo from '~/assets/svg-icons/info.svg';
 import { useNumber } from '~/composables/useNumber';
-import ModalTransaction from '~/components/pages/Spot/List/ModalTransaction.vue';
+import ModalTransaction from '~/components/pages/Spot/List/ModalTransactionDetail.vue';
 import { useSpot } from '~/composables/spot/useSpot';
 import type { Trade } from '~/types/response/spot.types';
 

@@ -1,8 +1,8 @@
 <template>
 	<div>
 		<ModalOrderDetail
-			v-if="showModalOrderDetail && order"
-			:order="order"
+			v-if="showModalOrderDetail && orderItem"
+			:order-item="orderItem"
 			@close="closeModalOrderDetail"
 		/>
 		<FilterOptions @filters="applyFilter" />
@@ -46,52 +46,126 @@
 					</tr>
 				</thead>
 				<tbody>
+					<template v-if="orderListLoading">
+						<tr
+							v-for="n in 10"
+							:key="n"
+						>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+						</tr>
+					</template>
 					<tr
-						v-for="(item, index) in orderList"
+						v-for="(order, index) in orderList"
+						v-else
 						:key="index"
 						:class="[index % 2 === 0 ? 'bg-background-light dark:bg-background-dark' : 'bg-hover2-light dark:bg-hover2-dark']"
 						class="pb-1"
 					>
 						<td class="text-xs font-normal py-1">
-							<span>{{ item.mSymbol }}</span>
+							<span>{{ order.mSymbol }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ $t(item.orderTypeName) }}</span>
+							<span>{{ $t(order.orderTypeName) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ $t(item.sideName) }}</span>
+							<span>{{ $t(order.sideName) }}</span>
 						</td>
 						<td
 							class="text-xs font-normal py-1"
-							:class="{ 'text-primary-yellow-light dark:text-primary-yellow-dark': item.orderStateName === 'ReadyToFill' }"
+							:class="{ 'text-primary-yellow-light dark:text-primary-yellow-dark': order.orderStateName === 'ReadyToFill' }"
 						>
-							<span>{{ $t(item.orderStateName) }}</span>
+							<span>{{ $t(order.orderStateName) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.reqQot) }}</span>
+							<span>{{ useNumber(order.reqQot) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.filledQot) }}</span>
+							<span>{{ useNumber(order.filledQot) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.dealPrice) }}</span>
+							<span>{{ useNumber(order.dealPrice) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.filledQnt) }}</span>
+							<span>{{ useNumber(order.filledQnt) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(remainingQuantity(item.reqQnt, item.filledQnt)) }}</span>
+							<span>{{ useNumber(remainingQuantity(order.reqQnt, order.filledQnt)) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(formatDateToIran(item.regTime)) }}</span>
+							<span>{{ useNumber(formatDateToIran(order.regTime)) }}</span>
 						</td>
 						<!-- <td class="text-xs font-normal py-1">
-							<span>{{ useNumber(item.tid) }}</span>
+							<span>{{ useNumber(order.tid) }}</span>
 						</td> -->
 						<td class="flex text-xs font-normal py-1">
 							<IconInfo
 								class="text-base"
-								@click.prevent="openModalOrderDetail(item)"
+								@click.prevent="openModalOrderDetail(order)"
 							/>
 						</td>
 					</tr>
@@ -131,7 +205,7 @@ const { $api } = useNuxtApp();
 const spotRepo = spotRepository($api);
 
 const totalCount = ref(0);
-const order = ref<Order>();
+const orderItem = ref<Order>();
 
 const params = ref<OrderListParams>({
 	marketId: '',
@@ -178,9 +252,7 @@ const applyFilter = async (event: OrderFiltersType) => {
 
 const showModalOrderDetail = ref(false);
 const openModalOrderDetail = (item: Order) => {
-	order.value = item;
-	console.log(order.value);
-	console.log(item);
+	orderItem.value = item;
 	showModalOrderDetail.value = true;
 };
 const closeModalOrderDetail = () => {

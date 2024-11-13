@@ -27,15 +27,21 @@
 				</template>
 
 				<template #label>
-					<div class="flex justify-between items-start">
+					<div
+						v-if="selected"
+						class="flex justify-between items-start"
+					>
 						<div class="flex flex-col items-start min-w-20 h-5">
 							<div>
 								<span class="font-bold text-xs">{{ selected?.mSymbol }}</span>
 							</div>
 						</div>
 					</div>
+					<span
+						v-else
+						class="text-gray-400"
+					>{{ $t('market') }}</span>
 				</template>
-
 				<template #option-empty="{ query }">
 					<q>{{ query }}</q> {{ $t('notFound') }}
 				</template>
@@ -88,7 +94,7 @@
 				color="white"
 				variant="outline"
 				:placeholder="$t('fromDate')"
-				readonly
+				:readonly="isMobile"
 				class="cursor-pointer"
 				:ui="{
 					background: '',
@@ -101,6 +107,7 @@
 			/>
 
 			<DatePicker
+				v-if="isMobile"
 				v-model="fromDate"
 				color="#FFC107"
 				simple
@@ -116,7 +123,7 @@
 				color="white"
 				variant="outline"
 				:placeholder="$t('toDate')"
-				readonly
+				:readonly="isMobile"
 				class="cursor-pointer"
 				:ui="{
 					background: '',
@@ -129,6 +136,7 @@
 			/>
 
 			<DatePicker
+				v-if="isMobile"
 				v-model="toDate"
 				display-format="jYYYY/jMM/jDD"
 				color="#FFC107"
@@ -153,6 +161,8 @@ import type { OrderFiltersType } from '~/types/definitions/spot.types';
 import { OrderType, OrderSide } from '~/utils/enums/order.enum';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 
+const { $mobileDetect } = useNuxtApp();
+
 interface EmitDefinition {
 	(event: 'filters', filters: OrderFiltersType): void;
 }
@@ -162,6 +172,9 @@ const worker = useBaseWorker();
 
 const markets = ref<MarketBrief[]>([]);
 const selected = ref<MarketBrief>();
+
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
 
 const searchLoading = ref<boolean>(false);
 const search = async (q: string) => {
@@ -229,4 +242,8 @@ const applyFilters = () => {
 		symbol: selected.value?.mSymbol ? selected.value?.mSymbol : '',
 	});
 };
+
+onMounted(async () => {
+	isMobile.value = !!mobileDetect.mobile();
+});
 </script>

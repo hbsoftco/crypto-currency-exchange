@@ -1,11 +1,11 @@
 <template>
 	<div>
 		<ModalOrderDetail
-			v-if="showModalOrderDetail && order"
-			:order="order"
+			v-if="showModalOrderDetail && orderItem"
+			:order-item="orderItem"
 			@close="closeModalOrderDetail"
 		/>
-		<FilterSearch @filters="applyFilter" />
+		<FilterOptions @filters="applyFilter" />
 		<div class="h-auto overflow-y-scroll">
 			<table class="min-w-full p-6 text-right">
 				<thead>
@@ -52,8 +52,88 @@
 					</tr>
 				</thead>
 				<tbody>
+					<template v-if="orderListLoading">
+						<tr
+							v-for="n in 10"
+							:key="n"
+						>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+							<td class="py-1">
+								<USkeleton
+									class="h-3 w-10 mx-1 my-1.5"
+									:ui="{ rounded: 'rounded-full' }"
+								/>
+							</td>
+						</tr>
+					</template>
 					<tr
 						v-for="(order, index) in orderList"
+						v-else
 						:key="index"
 						:class="[index % 2 === 0 ? 'bg-background-light dark:bg-background-dark' : 'bg-hover2-light dark:bg-hover2-dark']"
 						class="pb-1"
@@ -128,7 +208,7 @@
 
 <script setup lang="ts">
 import { formatDateToIran } from '~/utils/persian-date';
-import FilterSearch from '~/components/pages/Spot/List/FilterOptions.vue';
+import FilterOptions from '~/components/pages/Spot/List/FilterOptions.vue';
 import IconInfo from '~/assets/svg-icons/info.svg';
 import { useNumber } from '~/composables/useNumber';
 import { SearchMode } from '~/utils/enums/order.enum';
@@ -141,7 +221,7 @@ const { $api } = useNuxtApp();
 const spotRepo = spotRepository($api);
 
 const totalCount = ref(0);
-const order = ref<Order>();
+const orderItem = ref<Order>();
 
 const params = ref<OrderListParams>({
 	marketId: '',
@@ -163,6 +243,7 @@ const getOrderList = async () => {
 		orderListLoading.value = true;
 		const { result } = await spotRepo.getOrderList(params.value);
 		orderList.value = result.rows as Order[];
+		totalCount.value = result.totalCount;
 
 		orderListLoading.value = false;
 	}
@@ -184,9 +265,7 @@ const applyFilter = async (event: OrderFiltersType) => {
 
 const showModalOrderDetail = ref(false);
 const openModalOrderDetail = (item: Order) => {
-	order.value = item;
-	console.log(order.value);
-	console.log(item);
+	orderItem.value = item;
 	showModalOrderDetail.value = true;
 };
 const closeModalOrderDetail = () => {
