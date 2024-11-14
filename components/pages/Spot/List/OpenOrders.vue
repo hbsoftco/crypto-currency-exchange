@@ -5,8 +5,11 @@
 			:order-item="orderItem"
 			@close="closeModalOrderDetail"
 		/>
-		<FilterOptions @filters="applyFilter" />
-		<div class="h-auto overflow-y-scroll">
+		<FilterOptions
+			class="hidden md:block"
+			@filters="applyFilter"
+		/>
+		<div class="h-auto overflow-y-scroll hidden md:block">
 			<table class="min-w-full p-6 text-right">
 				<thead>
 					<tr class="py-4 text-subtle-text-light dark:text-subtle-text-dark bg-primary-gray-light dark:bg-primary-gray-dark">
@@ -165,7 +168,7 @@
 						<td class="flex text-xs font-normal py-1">
 							<IconInfo
 								class="text-base"
-								@click.prevent="openModalOrderDetail(order)"
+								@click="openModalOrderDetail(order)"
 							/>
 						</td>
 					</tr>
@@ -174,6 +177,109 @@
 			<template v-if="!orderList.length && !orderListLoading">
 				<UiNothingToShow />
 			</template>
+		</div>
+		<div class="block md:hidden">
+			<template v-if="orderListLoading">
+				<div
+					v-for="n in 10"
+					:key="n"
+				>
+					<div class="flex justify-between pt-1">
+						<USkeleton
+							class="h-3 w-full mx-1 my-1.5"
+							:ui="{ rounded: 'rounded-full' }"
+						/>
+						<USkeleton
+							class="h-3 w-full mx-1 my-1.5"
+							:ui="{ rounded: 'rounded-full' }"
+						/>
+					</div>
+					<div class="grid grid-cols-2 gap-2">
+						<div>
+							<USkeleton
+								class="h-6 w-full mx-1 my-1.5"
+								:ui="{ rounded: 'rounded-full' }"
+							/>
+						</div>
+						<div>
+							<USkeleton
+								class="h-6 w-full mx-1 my-1.5"
+								:ui="{ rounded: 'rounded-full' }"
+							/>
+						</div>
+						<div>
+							<USkeleton
+								class="h-6 w-full mx-1 my-1.5"
+								:ui="{ rounded: 'rounded-full' }"
+							/>
+						</div>
+						<div>
+							<USkeleton
+								class="h-6 w-full mx-1 my-1.5"
+								:ui="{ rounded: 'rounded-full' }"
+							/>
+						</div>
+					</div>
+				</div>
+			</template>
+			<div
+				v-for="(order, index) in orderList"
+				v-else
+				:key="index"
+				class="bg-hover-light dark:bg-hover-dark rounded-md py-1 px-2 my-2 "
+			>
+				<div class="flex justify-between pt-1">
+					<div>
+						<span class="text-sm font-normal">{{ $t(order.orderStateName) }}</span>
+					</div>
+					<div>
+						<span class="text-sm font-bold">{{ order.mSymbol }}</span>
+					</div>
+				</div>
+				<div class="grid grid-cols-2 gap-1 my-2">
+					<div class="bg-hover2-light dark:bg-hover2-dark flex flex-col justify-center items-center py-2 px-2">
+						<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
+							{{ $t('type') }}
+						</span>
+						<span class="text-sm font-bold">
+							{{ $t(order.orderTypeName) }}
+						</span>
+					</div>
+					<div class="bg-hover2-light dark:bg-hover2-dark flex flex-col justify-center items-center py-2 px-2">
+						<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
+							{{ $t('direction') }}
+						</span>
+						<span
+							v-if="order.sideName === 'Sell'"
+							class="text-sm font-bold text-accent-red dark:text-accent-red"
+						>
+							{{ $t(order.sideName) }}
+						</span>
+						<span
+							v-if="order.sideName === 'Buy'"
+							class="text-sm font-bold text-accent-green dark:text-accent-green"
+						>
+							{{ $t(order.sideName) }}
+						</span>
+					</div>
+					<div class="bg-hover2-light dark:bg-hover2-dark flex flex-col justify-center items-center py-2 px-2">
+						<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
+							{{ $t('value') }}
+						</span>
+						<span class="text-sm font-bold">
+							{{ useNumber(order.reqQot) }}
+						</span>
+					</div>
+					<div class="bg-hover2-light dark:bg-hover2-dark flex flex-col justify-center items-center py-2 px-2">
+						<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
+							{{ $t('price') }}
+						</span>
+						<span class="text-sm font-bold">
+							{{ useNumber(order.dealPrice) }}
+						</span>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="flex justify-center py-4">
 			<UPagination

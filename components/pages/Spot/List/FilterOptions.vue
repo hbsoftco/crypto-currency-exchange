@@ -1,6 +1,15 @@
 <template>
-	<div class="block md:flex items-center my-2">
-		<div class="ml-6 my-1 w-44">
+	<div class="block md:flex items-center my-2 mx-4 md:mx-0">
+		<div class="block md:hidden mb-4">
+			<div class="flex items-center">
+				<IconArrowRight
+					class="text-lg cursor-pointer"
+					@click="closeModal(false)"
+				/>
+				<span class="text-base font-bold mr-1">{{ $t('orderDetails') }}</span>
+			</div>
+		</div>
+		<div class="ml-6 my-1 w-full md:w-44">
 			<USelectMenu
 				v-model="selected"
 				:loading="searchLoading"
@@ -21,7 +30,7 @@
 			>
 				<template #option="{ option }">
 					<div class="flex flex-col justify-start items-start">
-						<span class="font-semibold pb-1">{{ option.mSymbol }}</span>
+						<span class="pb-1">{{ option.mSymbol }}</span>
 						<!-- <span class="text-xs text-gray-500">{{ option.mSymbol }}</span> -->
 					</div>
 				</template>
@@ -33,7 +42,7 @@
 					>
 						<div class="flex flex-col items-start min-w-20 h-5">
 							<div>
-								<span class="font-bold text-xs">{{ selected?.mSymbol }}</span>
+								<span class="text-xs">{{ selected?.mSymbol }}</span>
 							</div>
 						</div>
 					</div>
@@ -53,7 +62,7 @@
 		</div>
 		<!-- Market -->
 
-		<div class="ml-6 my-1 w-44">
+		<div class="ml-6 my-1 w-full md:w-44">
 			<USelectMenu
 				v-model="orderTypeFilter"
 				:options="orderTypeItems"
@@ -71,7 +80,7 @@
 		</div>
 		<!-- Order Type -->
 
-		<div class="ml-6 my-1 w-44">
+		<div class="ml-6 my-1 w-full md:w-44">
 			<USelectMenu
 				v-model="orderSideFilter"
 				:options="OrderSideItem"
@@ -87,7 +96,7 @@
 				}"
 			/>
 		</div>
-		<div class="ml-6 my-1 w-44">
+		<div class="ml-6 my-1 w-full md:w-44">
 			<UInput
 				id="fromDate"
 				v-model="fromDate"
@@ -116,7 +125,7 @@
 				element="fromDate"
 			/>
 		</div>
-		<div class="ml-6 my-1 w-44">
+		<div class="ml-6 my-1 w-full md:w-44">
 			<UInput
 				id="toDate"
 				v-model="toDate"
@@ -146,7 +155,7 @@
 			/>
 		</div>
 		<UButton
-			class="flex justify-center px-8 text-sm font-normal text-black dark:text-white hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-gray-light dark:border-primary-gray-dark"
+			class="flex justify-center w-full md:w-auto px-8 text-sm font-normal text-black dark:text-white hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-gray-light dark:border-primary-gray-dark"
 			@click="applyFilters"
 		>
 			{{ $t("search") }}
@@ -155,6 +164,7 @@
 </template>
 
 <script setup lang="ts">
+import IconArrowRight from '~/assets/svg-icons/menu/arrow-right.svg';
 import type { KeyValue } from '~/types/definitions/common.types';
 import type { MarketBrief } from '~/types/definitions/market.types';
 import type { OrderFiltersType } from '~/types/definitions/spot.types';
@@ -165,6 +175,8 @@ const { $mobileDetect } = useNuxtApp();
 
 interface EmitDefinition {
 	(event: 'filters', filters: OrderFiltersType): void;
+	(event: 'close', value: boolean): void;
+
 }
 const emit = defineEmits<EmitDefinition>();
 
@@ -241,6 +253,10 @@ const applyFilters = () => {
 		orderType: orderTypeFilter.value ? orderTypeFilter.value.key : '',
 		symbol: selected.value?.mSymbol ? selected.value?.mSymbol : '',
 	});
+};
+
+const closeModal = async (value: boolean) => {
+	emit('close', value);
 };
 
 onMounted(async () => {
