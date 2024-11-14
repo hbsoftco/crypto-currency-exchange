@@ -84,7 +84,7 @@
 				<input
 					v-model="internalValue"
 					placeholder="0.00"
-					type="text"
+					:type="type"
 					:readonly="readonly"
 					dir="ltr"
 					class="outline-none text-left p-1 bg-transparent z-10"

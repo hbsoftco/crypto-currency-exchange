@@ -43,7 +43,7 @@
 								v-model:modelValue="firstCurrencyPrice"
 								v-model:selectedSymbol="firstSelectedSymbol"
 								:ignore-currency="secondSelectedSymbol"
-								type="text"
+								type="number"
 								input-class="text-left"
 								:label="``"
 								placeholder=""
@@ -74,7 +74,7 @@
 								v-model:modelValue="secondCurrencyPrice"
 								v-model:selectedSymbol="secondSelectedSymbol"
 								:ignore-currency="firstSelectedSymbol"
-								type="text"
+								type="number"
 								:readonly="true"
 								input-class="text-left"
 								:label="``"
@@ -92,41 +92,32 @@
 						<div
 							class="bg-secondary-gray-light dark:bg-secondary-gray-dark w-full h-[0.063rem]"
 						/>
-						<div class="flex justify-between items-center text-xs font-normal">
-							<div class="ml-1 flex text-nowrap">
-								{{ `1 ${firstSelectedSymbol}` }}
-							</div>
-							<div
-								class="mx-1"
-								dir="ltr"
-							>
-								≈
-							</div>
-							<div class="mr-1 flex text-nowrap">
-								<!-- {{ `${getCoinPrice} ${feeCurrencySymbol}` }} -->
-							</div>
-						</div>
-						<!-- v-if="shouldShowNewSection" -->
-						<span
-							class="mx-1"
-						>|</span>
-						<!-- v-if="shouldShowNewSection" -->
-						<div
-							class="flex justify-between items-center text-xs font-normal"
+						<template
+							v-for="(trade, index) in tradeItems"
+							:key="trade.market.id"
 						>
-							<div class="ml-1 flex text-nowrap">
-								<!-- {{ `0 ${coinTradeTwo?.cSymbol}` }} -->
+							<div class="flex justify-between items-center text-xs font-normal">
+								<div class="ml-1 flex text-nowrap">
+									{{ `1 ${trade.base.currency.cSymbol}` }}
+								</div>
+								<div
+									class="mx-1"
+									dir="ltr"
+								>
+									≈
+								</div>
+								<div class="mr-1 flex text-nowrap">
+									{{ `${useNumber(priceFormat(trade.market.price))} ${trade.quote.currency.cSymbol}` }}
+								</div>
 							</div>
-							<div
+							<span
+								v-if="tradeItems.length > 1 && index < tradeItems.length - 1"
 								class="mx-1"
-								dir="ltr"
 							>
-								≈
-							</div>
-							<div class="mr-1 flex text-nowrap">
-								<!-- {{ `0 ${feeCurrencySymbol}` }} -->
-							</div>
-						</div>
+								|
+							</span>
+						</template>
+
 						<div
 							class="bg-secondary-gray-light dark:bg-secondary-gray-dark w-full h-[0.063rem]"
 						/>
@@ -211,7 +202,7 @@ const secondCurrencyPrice = ref('');
 const firstSelectedSymbol = ref('');
 const secondSelectedSymbol = ref('');
 
-// const socketMarketIds = ref<number[]>([]);
+const socketMarketIds = ref<number[]>([]);
 
 const firstSelectedCurrency = ref<CurrencyBrief>();
 const getFirstSelectedCurrency = async (newCurrency: CurrencyBrief) => {
@@ -237,7 +228,6 @@ const assetListParams = ref<AssetListParams>({
 	assetType: useEnv('assetType'),
 	boxMode: String(BoxMode.Spot),
 	miniAssetMode: String(MiniAssetMode.NoMiniAsset),
-	// currencyIDs: currencies,
 });
 const assetList = ref<Asset[]>([]);
 const assetListLoading = ref<boolean>(false);
@@ -250,7 +240,6 @@ const getAssetList = async () => {
 			useEnv('apiBaseUrl'),
 			result.rows,
 		);
-		console.log('assetList =======>', assetList.value);
 
 		assetListLoading.value = false;
 	}
@@ -345,11 +334,11 @@ watch(
 interface TradeOption {
 	type?: 'BUY' | 'SELL';
 	takerFee?: string;
-	market?: {
+	market: {
 		id: number;
 		symbol: string;
 		tickSize: string;
-		price?: number;
+		price: number;
 	};
 	base: {
 		currency: CurrencyBrief;
@@ -388,7 +377,11 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 	const foundSecondCurrency = quoteItems.value.find(
 		(item) => item.cSymbol.toLowerCase() === _secondCurrency.toLowerCase(),
 	);
-		// Buy Crypto - Top quote Bottom currency
+
+	firstSelectedCurrency.value = (await worker.searchCurrencies(firstSelectedSymbol.value, 1, useEnv('apiBaseUrl')))[0] ?? null;
+	secondSelectedCurrency.value = (await worker.searchCurrencies(secondSelectedSymbol.value, 1, useEnv('apiBaseUrl')))[0] ?? null;
+
+	// Buy Crypto - Top quote Bottom currency
 	if (foundFirstCurrency && !foundSecondCurrency) {
 		const mSymbol = `${secondSelectedSymbol.value}${firstSelectedSymbol.value}`;
 		const marketItem: MarketBrief = (await worker.searchMarkets(useEnv('apiBaseUrl'), mSymbol, 1))[0];
@@ -399,6 +392,7 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 				id: marketItem.id,
 				symbol: marketItem.mSymbol,
 				tickSize: marketItem.tickSize,
+				price: 0,
 			},
 			quote: {
 				currency: firstSelectedCurrency.value,
@@ -424,6 +418,7 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 				id: marketItem.id,
 				symbol: marketItem.mSymbol,
 				tickSize: marketItem.tickSize,
+				price: 0,
 			},
 			quote: {
 				currency: secondSelectedCurrency.value,
@@ -456,6 +451,7 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 					id: marketSell.id,
 					symbol: marketSell.mSymbol,
 					tickSize: marketSell.tickSize,
+					price: 0,
 				},
 				quote: {
 					currency: quote.currency,
@@ -475,6 +471,7 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 					id: marketBuy.id,
 					symbol: marketBuy.mSymbol,
 					tickSize: marketBuy.tickSize,
+					price: 0,
 				},
 				quote: {
 					currency: quote.currency,
@@ -495,9 +492,6 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 		const mSymbol = `USDTTMN`;
 		const marketItem: MarketBrief = (await worker.searchMarkets(useEnv('apiBaseUrl'), mSymbol, 1))[0];
 
-		firstSelectedCurrency.value = (await worker.searchCurrencies(firstSelectedSymbol.value, 1, useEnv('apiBaseUrl')))[0] ?? null;
-		secondSelectedCurrency.value = (await worker.searchCurrencies(secondSelectedSymbol.value, 1, useEnv('apiBaseUrl')))[0] ?? null;
-
 		if (firstSelectedSymbol.value === 'TMN') {
 			tradeItems.value = [{
 				type: 'BUY',
@@ -505,6 +499,7 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 					id: marketItem.id,
 					symbol: marketItem.mSymbol,
 					tickSize: marketItem.tickSize,
+					price: 0,
 				},
 				quote: {
 					currency: firstSelectedCurrency.value,
@@ -526,6 +521,7 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 					id: marketItem.id,
 					symbol: marketItem.mSymbol,
 					tickSize: marketItem.tickSize,
+					price: 0,
 				},
 				quote: {
 					currency: secondSelectedCurrency.value,
@@ -541,6 +537,8 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 			}];
 		}
 	}
+
+	socketMarketIds.value = [];
 
 	// Finding taker fee and assets
 	tradeItems.value.forEach((item, index) => {
@@ -565,12 +563,34 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 		else {
 			tradeItems.value[index].quote.qAvailable = '0';
 		}
+
+		// Get marketIds
+		socketMarketIds.value.push(item.market.id);
 	});
 
-	// Finding assets
+	// Get price by socket
+	await publicSocketStore.unSubscribe();
+	await publicSocketStore.addMarketIds(socketMarketIds.value);
 
 	console.log('--------------------------------------->trade.value', tradeItems.value);
 };
+
+watch(
+	() => publicSocketStore.latestMarketData,
+	(newData) => {
+		if (newData) {
+			newData.forEach((updatedMarket) => {
+				const marketId = updatedMarket.data.mi;
+				tradeItems.value.forEach((item, index) => {
+					if (tradeItems.value[index].market.id === marketId) {
+						tradeItems.value[index].market.price = Number(updatedMarket.data.i);
+					}
+				});
+			});
+		}
+	},
+	{ deep: true },
+);
 
 onMounted(async () => {
 	await nextTick();

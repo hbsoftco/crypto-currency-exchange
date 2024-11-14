@@ -1,8 +1,8 @@
 <template>
 	<div>
-		<ModalFilterSearch
-			v-if="showModalFilterSearch"
-			@close="closeModalFilterSearch"
+		<ModalFilterOption
+			v-if="showModalFilterOption"
+			@close="closeModalFilterOption"
 		/>
 		<UContainer>
 			<section class="py-4 md:py-8 border-none md:border-b border-primary-gray-light dark:border-primary-gray-dark">
@@ -41,7 +41,7 @@
 					<div class="mr-2">
 						<IconFilter
 							class="text-3xl text-subtle-text-light dark:text-subtle-text-dark"
-							@click="openModalFilterSearch"
+							@click="openModalFilterOption"
 						/>
 					</div>
 				</div>
@@ -106,7 +106,7 @@
 
 <script setup lang="ts">
 import IconFilter from '~/assets/svg-icons/spot/filter.svg';
-import ModalFilterSearch from '~/components/pages/Spot/List/ModalFilterSearch.vue';
+import ModalFilterOption from '~/components/pages/Spot/List/ModalFilterOption.vue';
 
 const OpenOrders = defineAsyncComponent(() => import('~/components/pages/Spot/List/OpenOrders.vue'));
 const OrderHistory = defineAsyncComponent(() =>	import('~/components/pages/Spot/List/OrderHistory.vue'));
@@ -140,11 +140,11 @@ const selectedTab = ref<TabItem>(items.value[0]);
 
 const isMobile = computed(() => window.innerWidth < 768);
 
-const showModalFilterSearch = ref(false);
-const openModalFilterSearch = () => {
-	showModalFilterSearch.value = true;
+const showModalFilterOption = ref(false);
+const openModalFilterOption = () => {
+	showModalFilterOption.value = true;
 };
-const closeModalFilterSearch = () => {
-	showModalFilterSearch.value = false;
+const closeModalFilterOption = () => {
+	showModalFilterOption.value = false;
 };
 </script>
