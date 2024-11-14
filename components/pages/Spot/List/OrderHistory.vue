@@ -239,6 +239,7 @@
 				v-else
 				:key="index"
 				class="bg-hover-light dark:bg-hover-dark rounded-md py-1 px-2 my-2 "
+				@click="openModalOrderDetail(order)"
 			>
 				<div class="flex justify-between pt-1">
 					<div>

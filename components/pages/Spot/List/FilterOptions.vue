@@ -1,6 +1,6 @@
 <template>
 	<div class="block md:flex items-center my-2 mx-4 md:mx-0">
-		<div class="block md:hidden mb-4">
+		<div class="block md:hidden my-4">
 			<div class="flex items-center">
 				<IconArrowRight
 					class="text-lg cursor-pointer"
@@ -9,7 +9,14 @@
 				<span class="text-base font-bold mr-1">{{ $t('orderDetails') }}</span>
 			</div>
 		</div>
-		<div class="ml-6 my-1 w-full md:w-44">
+		<div class="flex md:hidden justify-end items-center mt-8">
+			<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('removeFilter') }}</span>
+			<IconDelete
+				class="text-base text-subtle-text-light dark:text-subtle-text-dark"
+				@click="resetFilters"
+			/>
+		</div>
+		<div class="ml-6 my-4 md:my-1 w-full md:w-44">
 			<USelectMenu
 				v-model="selected"
 				:loading="searchLoading"
@@ -62,7 +69,7 @@
 		</div>
 		<!-- Market -->
 
-		<div class="ml-6 my-1 w-full md:w-44">
+		<div class="ml-6 my-4 md:my-1 w-full md:w-44">
 			<USelectMenu
 				v-model="orderTypeFilter"
 				:options="orderTypeItems"
@@ -80,7 +87,7 @@
 		</div>
 		<!-- Order Type -->
 
-		<div class="ml-6 my-1 w-full md:w-44">
+		<div class="ml-6 my-4 md:my-1 w-full md:w-44">
 			<USelectMenu
 				v-model="orderSideFilter"
 				:options="OrderSideItem"
@@ -96,7 +103,8 @@
 				}"
 			/>
 		</div>
-		<div class="ml-6 my-1 w-full md:w-44">
+
+		<div class="ml-6 my-4 md:my-1 w-full md:w-44">
 			<UInput
 				id="fromDate"
 				v-model="fromDate"
@@ -125,7 +133,8 @@
 				element="fromDate"
 			/>
 		</div>
-		<div class="ml-6 my-1 w-full md:w-44">
+
+		<div class="ml-6 my-4 md:my-1 w-full md:w-44">
 			<UInput
 				id="toDate"
 				v-model="toDate"
@@ -154,6 +163,7 @@
 				element="toDate"
 			/>
 		</div>
+
 		<UButton
 			class="flex justify-center w-full md:w-auto px-8 text-sm font-normal text-black dark:text-white hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-gray-light dark:border-primary-gray-dark"
 			@click="applyFilters"
@@ -170,6 +180,7 @@ import type { MarketBrief } from '~/types/definitions/market.types';
 import type { OrderFiltersType } from '~/types/definitions/spot.types';
 import { OrderType, OrderSide } from '~/utils/enums/order.enum';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
+import IconDelete from '~/assets/svg-icons/profile/Delete.svg';
 
 const { $mobileDetect } = useNuxtApp();
 
@@ -253,6 +264,14 @@ const applyFilters = () => {
 		orderType: orderTypeFilter.value ? orderTypeFilter.value.key : '',
 		symbol: selected.value?.mSymbol ? selected.value?.mSymbol : '',
 	});
+};
+
+const resetFilters = () => {
+	selected.value = undefined;
+	orderTypeFilter.value = undefined;
+	orderSideFilter.value = undefined;
+	fromDate.value = undefined;
+	toDate.value = undefined;
 };
 
 const closeModal = async (value: boolean) => {

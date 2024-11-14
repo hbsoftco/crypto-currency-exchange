@@ -1063,7 +1063,7 @@ const persian = {
 	typeTIF: 'نوع TIF',
 	requestedAmount: 'مقدار درخواستی',
 	requestedValue: 'ارزش درخواستی',
-	stopPriceDate: 'ایست قیمت زمان',
+	stopPriceDate: 'زمان ایست قیمت',
 	fillingTime: 'زمان پرشدن',
 	tradeID: 'آیدی معامله',
 	tradePrice: 'قیمت معامله',
@@ -1075,6 +1075,7 @@ const persian = {
 	reasonDiscount: 'علت تخفیف',
 	finalFee: 'کارمزد نهایی',
 	rawFee: 'کارمزد خام',
+	removeFilter: 'حذف فیلتر ',
 };
 
 export default persian;
