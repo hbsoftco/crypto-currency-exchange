@@ -1,4 +1,3 @@
-import { content } from '../../.nuxt/types/tailwind.config';
 <template>
 	<div>
 		<ModalFilterSearch
@@ -145,7 +144,7 @@ const showModalFilterSearch = ref(false);
 const openModalFilterSearch = () => {
 	showModalFilterSearch.value = true;
 };
-const closeModalFilterSearch = () => {	
+const closeModalFilterSearch = () => {
 	showModalFilterSearch.value = false;
 };
 </script>

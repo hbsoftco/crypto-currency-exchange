@@ -139,6 +139,7 @@ type Trade = {
 };
 
 type OrderFiltersType = {
+	marketId?: string;
 	symbol: string;
 	orderSide: string;
 	orderType: string;

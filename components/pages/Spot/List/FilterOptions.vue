@@ -31,7 +31,6 @@
 				<template #option="{ option }">
 					<div class="flex flex-col justify-start items-start">
 						<span class="pb-1">{{ option.mSymbol }}</span>
-						<!-- <span class="text-xs text-gray-500">{{ option.mSymbol }}</span> -->
 					</div>
 				</template>
 
@@ -252,6 +251,7 @@ const applyFilters = () => {
 		orderSide: orderSideFilter.value ? orderSideFilter.value.key : '',
 		orderType: orderTypeFilter.value ? orderTypeFilter.value.key : '',
 		symbol: selected.value?.mSymbol ? selected.value?.mSymbol : '',
+		marketId: selected.value?.id ? String(selected.value?.id) : '',
 	});
 };
 

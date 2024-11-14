@@ -245,6 +245,14 @@
 						<span class="text-sm font-normal">{{ $t(order.orderStateName) }}</span>
 					</div>
 					<div>
+						{{ findSymbol(order.mSymbol, 'quote') }}
+						<img
+							:src="`https://api-bitland.site/media/currency/${findSymbol(order.mSymbol, 'currency')}.png`"
+							alt="coin"
+							class="w-14 md:w-16 h-14 md:h-16"
+							format="webp"
+							densities="x1"
+						>
 						<span class="text-sm font-bold">{{ order.mSymbol }}</span>
 					</div>
 				</div>
@@ -317,6 +325,7 @@ import { formatDateToIran } from '~/utils/persian-date';
 import FilterOptions from '~/components/pages/Spot/List/FilterOptions.vue';
 import IconInfo from '~/assets/svg-icons/info.svg';
 import { useNumber } from '~/composables/useNumber';
+import { splitMarket } from '~/utils/split-market';
 import { SearchMode } from '~/utils/enums/order.enum';
 import type { Order } from '~/types/response/spot.types';
 import { spotRepository } from '~/repositories/spot.repository';
@@ -331,7 +340,7 @@ const orderItem = ref<Order>();
 
 const params = ref<OrderListParams>({
 	marketId: '',
-	symbol: 'FETUSDT',
+	symbol: '',
 	orderSide: '',
 	orderType: '',
 	assetType: useEnv('assetType'),
@@ -359,12 +368,28 @@ const getOrderList = async () => {
 	}
 };
 
+const findSymbol = (mSymbol: string, type: 'quote' | 'currency') => {
+	const market = splitMarket(mSymbol);
+	if (market) {
+		const [currency, quote] = market.split('_');
+
+		if (type === 'quote') {
+			return quote;
+		}
+		else {
+			return currency;
+		}
+	}
+	return null;
+};
+
 const applyFilter = async (event: OrderFiltersType) => {
 	params.value.from = event.from;
 	params.value.to = event.to;
 	params.value.orderType = event.orderType;
 	params.value.orderSide = event.orderSide;
 	params.value.symbol = event.symbol;
+	params.value.marketId = event.marketId ? event.marketId : '';
 
 	await getOrderList();
 };

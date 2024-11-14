@@ -1,8 +1,8 @@
 <template>
 	<div class="relative mb-3">
 		<div
-			:class="['mt-3 h-20 block cursor-text appearance-none focus:outline-none focus:ring-0 px-2.5 pl-10 pb-2.5 pt-3 w-full text-sm text-text-dark dark:text-text-light bg-secondary-gray-light dark:bg-secondary-gray-dark rounded-lg border peer',
-				errorMessage ? 'border-accent-red focus:border-accent-red' : 'border-gray-600 focus:border-primary-yellow-light dark:focus:border-primary-yellow-dark']"
+			:class="['mt-3 h-20 block cursor-text appearance-none focus:outline-none focus:ring-0 px-2.5 pl-10 pb-2.5 pt-3 w-full text-sm text-text-dark dark:text-text-light bg-primary-gray-light dark:bg-primary-gray-dark rounded-lg border peer',
+				errorMessage ? 'border-accent-red focus:border-accent-red' : 'border-primary-gray-light dark:border-primary-gray-dark focus:border-primary-yellow-light dark:focus:border-primary-yellow-dark']"
 		>
 			<div class="absolute right-2 top-4">
 				<USelectMenu
