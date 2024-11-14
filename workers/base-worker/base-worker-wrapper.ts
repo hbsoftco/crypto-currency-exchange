@@ -18,7 +18,8 @@ interface BaseWorker {
 	fetchCurrencyBriefItems: (baseUrl: string) => Promise<CurrencyBrief[] | []>;
 	findCurrencyById: (id: number, baseUrl: string) => Promise<CurrencyBrief | null>;
 	findCurrencyBycSymbol: (mSymbol: string, baseUrl: string) => Promise<CurrencyBrief | null>;
-	searchCurrencies: (search: string, count: number, baseUrl: string) => Promise<CurrencyBrief[] | []>;
+	searchCurrencies: (search: string, count: number, baseUrl: string, ignore?: string) => Promise<CurrencyBrief[] | []>;
+	getReadyCurrencyWithIndex: (baseUrl: string, currencies: CurrencyBrief[], currency: string) => Promise<{ updatedCurrencies: CurrencyBrief[]; index: number } | null>;
 	// Quotes
 	fetchQuoteItems: (marketTypeId: number, baseUrl: string) => Promise<Quote[]>;
 	// Tags

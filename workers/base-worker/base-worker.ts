@@ -79,18 +79,52 @@ const findCurrencyBycSymbol = async (cSymbol: string, baseUrl: string): Promise<
 	return currency || null;
 };
 
-const searchCurrencies = async (search: string, count: number, baseUrl: string): Promise<CurrencyBrief[] | null> => {
+const searchCurrencies = async (
+	search: string,
+	count: number,
+	baseUrl: string,
+	ignore?: string,
+): Promise<CurrencyBrief[] | null> => {
 	if (!currencyBriefItems.length) {
 		await fetchCurrencyBriefItems(baseUrl);
 	}
 
 	const filteredCurrencies = currencyBriefItems.filter(
 		(currency) =>
-			currency.cName.toLowerCase().includes(search.toLowerCase())
-			|| currency.cSymbol.toLowerCase().includes(search.toLowerCase()),
+			(currency.cName.toLowerCase().includes(search.toLowerCase())
+			|| currency.cSymbol.toLowerCase().includes(search.toLowerCase()))
+			&& currency.cSymbol !== ignore,
 	);
 
 	return filteredCurrencies.length > 0 ? filteredCurrencies.slice(0, count) : [];
+};
+
+const getReadyCurrencyWithIndex = async (baseUrl: string, currencies: CurrencyBrief[], _currency: string): Promise<{ updatedCurrencies: CurrencyBrief[]; index: number } | null> => {
+	if (!currencyBriefItems.length) {
+		await fetchCurrencyBriefItems(baseUrl);
+	}
+
+	const findCurrency = currencyBriefItems.find(
+		(currency) =>
+			currency.cName.toLowerCase().includes(_currency.toLowerCase())
+			|| currency.cSymbol.toLowerCase().includes(_currency.toLowerCase()),
+	);
+
+	if (!findCurrency) {
+		return null;
+	}
+
+	const existingIndex = currencies.findIndex(
+		(currency) => currency.cSymbol === findCurrency.cSymbol && currency.cName === findCurrency.cName,
+	);
+
+	if (existingIndex === -1) {
+		currencies.unshift(findCurrency);
+		return { updatedCurrencies: currencies, index: 0 };
+	}
+	else {
+		return { updatedCurrencies: currencies, index: existingIndex };
+	}
 };
 
 const addCurrencyToMarkets = async (markets: MarketL21[], quoteId: number, baseUrl: string, marketTypeId: number) => {
@@ -267,6 +301,7 @@ const fetchQuoteItems = async (marketTypeId: number, baseUrl: string) => {
 				...quote,
 				cName: currency?.cName,
 				cSymbol: currency?.cSymbol,
+				currency,
 			};
 		}));
 
@@ -454,6 +489,7 @@ Comlink.expose({
 	findCurrencyById,
 	findCurrencyBycSymbol,
 	searchCurrencies,
+	getReadyCurrencyWithIndex,
 	// Quotes
 	fetchQuoteItems,
 	// Tags

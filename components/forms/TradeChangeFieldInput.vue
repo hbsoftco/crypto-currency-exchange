@@ -6,6 +6,7 @@
 		>
 			<div class="absolute right-2 top-4">
 				<USelectMenu
+					:key="props.ignoreCurrency"
 					v-model="selected"
 					v-model:selectedCurrency="internalSelectedCurrency"
 					variant="none"
@@ -16,6 +17,7 @@
 					:options="filteredCurrencies"
 					dir="rtl"
 				>
+					<!-- @change="changeCurrency" -->
 					<template #option="{ option }">
 						<div class="flex flex-col justify-start items-start">
 							<span class="font-semibold pb-1">{{ option.cName }}</span>
@@ -47,7 +49,10 @@
 							v-else
 							class="flex justify-between items-start"
 						>
-							<div class="ml-1.5 mt-1">
+							<div
+								v-if="selected?.cSymbol"
+								class="ml-1.5 mt-1"
+							>
 								<img
 									:src="`https://api-bitland.site/media/currency/${selected?.cSymbol}.png`"
 									:alt="selected?.cSymbol"
@@ -113,6 +118,7 @@ import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 interface Props {
 	id: string;
 	modelValue: string | null;
+	selectedSymbol: string;
 	type?: string;
 	label: string;
 	placeholder?: string;
@@ -123,7 +129,7 @@ interface Props {
 	labelClass?: string;
 	icon?: string;
 	errorMessage?: string;
-	selectedSymbol: string;
+	ignoreCurrency: string;
 	defaultSelected?: CurrencyBrief;
 }
 const props = defineProps<Props>();
@@ -145,14 +151,7 @@ const selected = ref<CurrencyBrief>();
 const currenciesLoading = ref<boolean>(true);
 const initCurrencies = async () => {
 	currenciesLoading.value = true;
-	filteredCurrencies.value = await currencyWorker.searchCurrencies('', 400, useEnv('apiBaseUrl'));
-
-	if (props.selectedSymbol) {
-		const currentCurrency = await currencyWorker.searchCurrencies(props.selectedSymbol, 1, useEnv('apiBaseUrl'));
-		filteredCurrencies.value.push(currentCurrency[0]);
-		selected.value = currentCurrency[0];
-	}
-
+	filteredCurrencies.value = await currencyWorker.searchCurrencies('', 400, useEnv('apiBaseUrl'), props.ignoreCurrency);
 	currenciesLoading.value = false;
 };
 
@@ -164,21 +163,30 @@ const searchLoading = ref<boolean>(false);
 const search = async (q: string) => {
 	searchLoading.value = true;
 
+	let inputs: CurrencyBrief[] = [];
 	if (!q) {
-		filteredCurrencies.value = await currencyWorker.searchCurrencies('', 400, useEnv('apiBaseUrl'));
+		inputs = await currencyWorker.searchCurrencies('', 400, useEnv('apiBaseUrl'), props.ignoreCurrency);
 	}
 	else {
-		filteredCurrencies.value = await currencyWorker.searchCurrencies(q.toLowerCase(), 200, useEnv('apiBaseUrl'));
+		inputs = await currencyWorker.searchCurrencies(q.toLowerCase(), 200, useEnv('apiBaseUrl'), props.ignoreCurrency);
 	}
 
 	if (props.selectedSymbol) {
-		const currentCurrency = await currencyWorker.searchCurrencies(props.selectedSymbol, 1, useEnv('apiBaseUrl'));
-		filteredCurrencies.value.push(currentCurrency[0]);
-		selected.value = currentCurrency[0];
+		const result = await currencyWorker.getReadyCurrencyWithIndex(useEnv('apiBaseUrl'), inputs, props.selectedSymbol);
+
+		if (result) {
+			filteredCurrencies.value = result.updatedCurrencies;
+			selected.value = filteredCurrencies.value[result.index];
+		}
 	}
+
 	searchLoading.value = false;
-	return filteredCurrencies.value;
+	return filteredCurrencies.value || [];
 };
+
+watch(() => props.ignoreCurrency, async () => {
+	await initCurrencies();
+}, { deep: true });
 
 watch(() => props.modelValue, (newValue) => {
 	internalValue.value = newValue || '';
