@@ -102,9 +102,9 @@
 						</td>
 					</tr>
 					<tr
-						v-for="row in rows"
+						v-for="row in tradeList"
 						v-else
-						:key="row.id"
+						:key="row.tid"
 						class="py-2"
 					>
 						<td class=" text-xs font-normal py-2">
@@ -114,8 +114,10 @@
 									alt="bitcoin"
 									class="w-4 h-4 ml-2"
 								>
-								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ row.from }}</span>
-								{{ useNumber(row.count) }}
+								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
+									{{ row.discountId }}
+								</span>
+								{{ useNumber(row.apiKey) }}
 							</div>
 						</td>
 						<td class="text-xs font-normal py-2">
@@ -125,8 +127,10 @@
 									alt="bitcoin"
 									class="w-4 h-4 ml-2"
 								>
-								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ row.to }}</span>
-								{{ useNumber(row.count) }}
+								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
+									{{ row.apiKey }}
+								</span>
+								{{ useNumber(row.apiKey) }}
 							</div>
 						</td>
 					</tr>
@@ -139,6 +143,44 @@
 <script setup lang="ts">
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
 import { useNumber } from '~/composables/useNumber';
+import { spotRepository } from '~/repositories/spot.repository';
+import type { Trade, TradeListParams } from '~/types/definitions/spot.types';
+import { AssetType } from '~/utils/enums/asset.enum';
 
+const { $api } = useNuxtApp();
+const spotRepo = spotRepository($api);
+
+// Get Trade List
+const tradeListParams = ref<TradeListParams>({
+	assetType: AssetType.Testnet,
+	from: '',
+	to: '',
+	marketId: '',
+	orderSide: '',
+	orderType: '',
+	symbol: '',
+	uniqueTag: '',
+	pageSize: '5',
+	pageNumber: '1',
+});
+const tradeList = ref<Trade[]>([]);
+const tradeListLoading = ref<boolean>(false);
+const getTradeList = async () => {
+	tradeListLoading.value = true;
+	try {
+		const { result } = await spotRepo.getTradeList(tradeListParams.value);
+		tradeList.value = result.rows as Trade[];
+		tradeListLoading.value = false;
+	}
+	catch (error) {
+		console.log(error);
+		tradeListLoading.value = false;
+	}
+};
+
+onMounted(async () => {
+	await nextTick();
+	await getTradeList();
+});
 const rows = ref<any>([]);
 </script>

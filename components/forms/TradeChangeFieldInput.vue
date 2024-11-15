@@ -83,6 +83,7 @@
 			<div class="absolute left-2 cursor-pointer">
 				<input
 					v-model="internalValue"
+					step=".01"
 					placeholder="0.00"
 					:type="type"
 					:readonly="readonly"

@@ -4,7 +4,7 @@
 			v-if="confirmOne"
 			@close="closeConfirmOne"
 		/>
-		<UContainer v-if="tradeListLoading && commissionListLoading && assetListLoading">
+		<UContainer v-if="commissionListLoading && assetListLoading">
 			<UiLogoLoading />
 		</UContainer>
 		<UContainer v-else>
@@ -138,7 +138,7 @@
 								class="text-sm font-normal mr-2"
 								dir="ltr"
 							>
-								<!-- {{ useNumber(`0 ${coinTradeTwo?.cSymbol}`) }} -->
+								{{ finalReceived }} {{ secondSelectedSymbol }}
 							</span>
 						</div>
 					</div>
@@ -162,20 +162,18 @@ import ConfirmOrderModal from '~/components/pages/FastTrade/ConfirmOrderModal.vu
 import TradeChangeFieldInput from '~/components/forms/TradeChangeFieldInput.vue';
 import IconChange from '~/assets/svg-icons/trade/change.svg';
 import RecentTrades from '~/components/pages/FastTrade/RecentTrades.vue';
-import type { Trade } from '~/types/response/trade.types';
-import type { Commission } from '~/types/response/trader.types';
-import { assetRepository } from '~/repositories/asset.repository';
-import type { Asset, AssetListParams } from '~/types/definitions/asset.types';
-import { AssetType, BoxMode, MiniAssetMode } from '~/utils/enums/asset.enum';
+import { BoxMode, MiniAssetMode } from '~/utils/enums/asset.enum';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
-import { spotRepository } from '~/repositories/spot.repository';
-import type { TradeListParams } from '~/types/definitions/spot.types';
 import { CACHE_KEY_COMMISSION_LIST } from '~/utils/constants/common';
-import { userRepository } from '~/repositories/user.repository';
 import { MarketType } from '~/utils/enums/market.enum';
+import type { Asset, AssetListParams } from '~/types/definitions/asset.types';
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
-import type { Quote } from '~/types/definitions/quote.types';
 import type { MarketBrief } from '~/types/definitions/market.types';
+import type { Commission } from '~/types/definitions/user.types';
+import type { Quote } from '~/types/definitions/quote.types';
+import { spotRepository } from '~/repositories/spot.repository';
+import { userRepository } from '~/repositories/user.repository';
+import { assetRepository } from '~/repositories/asset.repository';
 
 definePageMeta({
 	layout: 'trade',
@@ -183,8 +181,8 @@ definePageMeta({
 
 const { $api } = useNuxtApp();
 const assetRepo = assetRepository($api);
-const spotRepo = spotRepository($api);
 const userRepo = userRepository($api);
+const spotRepo = spotRepository($api);
 
 const publicSocketStore = usePublicSocketStore();
 const authStore = useAuthStore();
@@ -250,34 +248,6 @@ const getAssetList = async () => {
 	}
 };
 
-// Get Trade List
-const tradeListParams = ref<TradeListParams>({
-	assetType: AssetType.Testnet,
-	from: '',
-	to: '',
-	marketId: '',
-	orderSide: '',
-	orderType: '',
-	symbol: '',
-	uniqueTag: '',
-	pageSize: '5',
-	pageNumber: '1',
-});
-const tradeList = ref<Trade[]>([]);
-const tradeListLoading = ref<boolean>(false);
-const getTradeList = async () => {
-	tradeListLoading.value = true;
-	try {
-		const { result } = await spotRepo.getTradeList(tradeListParams.value);
-		tradeList.value = result.rows as Trade[];
-		tradeListLoading.value = false;
-	}
-	catch (error) {
-		console.log(error);
-		assetListLoading.value = false;
-	}
-};
-
 // Get Commission List
 const commissionList = ref<Commission[]>([]);
 const commissionListLoading = ref<boolean>(false);
@@ -309,6 +279,11 @@ const getCommissionList = async () => {
 		commissionListLoading.value = false;
 	}
 };
+
+const submitOrderLoading = ref<boolean>(false);
+const createOrder = () => {
+
+}
 
 const levelIndicator = ref<string>();
 const quoteItems = ref<Quote[]>();
@@ -565,11 +540,7 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 
 	// Finding taker fee and assets
 	tradeItems.value.forEach((item, index) => {
-		// get taker
-		console.log('get taker ------------>', item.quote);
 		const commission = findCommission(item.quote.currency.id);
-		console.log('get taker ------------>', commission);
-
 		if (commission) {
 			tradeItems.value[index].takerFee = commission.taker;
 		}
@@ -612,6 +583,18 @@ const tradeFee = computed(() => {
 	return fee;
 });
 
+const finalReceived = computed(() => {
+	let received = '';
+	if (tradeItems.value.length > 1) {
+
+		// fee = `${useNumber(priceFormat(tradeItems.value.map((x) => x.fee).reduce((sum, fee) => sum + fee, 0).toString()))} USDT`;
+	}
+	else if (tradeItems.value.length === 1) {
+		received = useNumber(priceFormat(tradeItems.value[0].quote.value - tradeItems.value[0].fee));
+	}
+	return received;
+});
+
 const formatByTickSize = (value: number, tickSize: string) => {
 	const decimalPlaces = Math.max(tickSize.toString().split('.')[1]?.length || 0, 5);
 	return Number(value.toFixed(decimalPlaces));
@@ -638,6 +621,8 @@ watch(
 					tradeItems.value[0].base.value = formatByTickSize(balanceBase, tickSize);
 					secondCurrencyBalance.value = tradeItems.value[0].base.value;
 				}
+
+				tradeItems.value[0].fee = (tradeItems.value[0].quote.value * Number(tradeItems.value[0].takerFee)) / 100;
 			}
 			else if (tradeItems.value.length === 2) {
 				// Top calculation
@@ -647,18 +632,29 @@ watch(
 				const topBalancePrice = (tradeItems.value[0].base.value * topMarketPrice);
 				tradeItems.value[0].quote.value = formatByTickSize(topBalancePrice, topTickSize);
 
+				tradeItems.value[0].fee = (tradeItems.value[0].quote.value * Number(tradeItems.value[0].takerFee)) / 100;
+
+				// Bottom calculation
 				const bottomTickSize = tradeItems.value[1].market.tickSize;
 				const bottomMarketPrice = tradeItems.value[1].market.price;
 				tradeItems.value[1].quote.value = tradeItems.value[0].quote.value;
 				const bottomBalanceBase = tradeItems.value[1].quote.value / bottomMarketPrice;
 				tradeItems.value[1].base.value = formatByTickSize(bottomBalanceBase, bottomTickSize);
 				secondCurrencyBalance.value = tradeItems.value[1].base.value;
+
+				tradeItems.value[1].fee = (tradeItems.value[1].quote.value * Number(tradeItems.value[1].takerFee)) / 100;
 			}
 
 			console.log('final 111111111111111', tradeItems.value);
 		}
 		else {
 			secondCurrencyBalance.value = 0;
+
+			tradeItems.value.forEach((item, index) => {
+				tradeItems.value[index].fee = 0;
+				tradeItems.value[index].base.value = 0;
+				tradeItems.value[index].quote.value = 0;
+			});
 		}
 	},
 	{ deep: true },
@@ -703,8 +699,6 @@ onMounted(async () => {
 	secondSelectedCurrency.value = (await worker.searchCurrencies(secondSelectedSymbol.value, 1, useEnv('apiBaseUrl')))[0] ?? null;
 
 	await getReadyTrade(firstSelectedSymbol.value, secondSelectedSymbol.value);
-
-	await getTradeList();
 });
 
 onBeforeUnmount(async () => {

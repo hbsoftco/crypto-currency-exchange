@@ -147,6 +147,22 @@ type OrderFiltersType = {
 	to: string;
 };
 
+type StoreOrderMarketDto = {
+	marketId: number;
+	assetType: string;
+	orderSide: string;
+	userUniqueTag: string | null;
+	reqByQnt: string | null;
+};
+
+type StoreOrderInstantDto = {
+	marketId: number;
+	assetType: string;
+	orderSide: string;
+	userUniqueTag: string | null;
+	reqByQot: string | null;
+};
+
 export type {
 	KLineParams,
 	KLineResponse,
@@ -156,4 +172,6 @@ export type {
 	OrderListParams,
 	Order,
 	OrderFiltersType,
+	StoreOrderMarketDto,
+	StoreOrderInstantDto,
 };
