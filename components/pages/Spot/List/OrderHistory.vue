@@ -156,8 +156,11 @@
 						>
 							<span>{{ $t(order.orderStateName) }}</span>
 						</td>
-						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(order.reqQot) }}</span>
+						<td
+							class="text-xs font-normal py-1"
+							dir="ltr"
+						>
+							<span>{{ useNumber(priceFormat(order.reqQot)) }}  {{ findSymbol(order.mSymbol, 'quote') }}</span>
 						</td>
 						<!-- <td class="text-xs font-normal py-1">
 							<span>{{ useNumber(order.average) }}</span>
@@ -165,14 +168,23 @@
 						<td class="text-xs font-normal py-1">
 							<span>{{ useNumber(order.filledQnt) }}</span>
 						</td>
-						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(order.filledQot) }}</span>
+						<td
+							class="text-xs font-normal py-1"
+							dir="ltr"
+						>
+							<span>{{ useNumber(priceFormat(order.filledQot)) }} {{ findSymbol(order.mSymbol, 'quote') }}</span>
 						</td>
-						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(order.reqQnt) }}</span>
+						<td
+							class="text-xs font-normal py-1"
+							dir="ltr"
+						>
+							<span>{{ useNumber(priceFormat(order.reqQnt)) }} {{ findSymbol(order.mSymbol, 'quote') }}</span>
 						</td>
-						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(order.dealPrice) }}</span>
+						<td
+							class="text-xs font-normal py-1"
+							dir="ltr"
+						>
+							<span>{{ useNumber(priceFormat(order.dealPrice)) }} {{ findSymbol(order.mSymbol, 'quote') }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
 							<span>{{ useNumber(formatDateToIran(order.regTime)) }}</span>
@@ -189,43 +201,47 @@
 					</tr>
 				</tbody>
 			</table>
+			<template v-if="!orderList.length && !orderListLoading">
+				<UiNothingToShow />
+			</template>
 		</div>
 		<div class="block md:hidden">
 			<template v-if="orderListLoading">
 				<div
 					v-for="n in 10"
 					:key="n"
+					class="bg-hover-light dark:bg-hover-dark rounded-md py-1 my-2 px-2"
 				>
 					<div class="flex justify-between pt-1">
 						<USkeleton
-							class="h-3 w-full mx-1 my-1.5"
+							class="h-6 w-20 mx-1 my-1.5"
 							:ui="{ rounded: 'rounded-full' }"
 						/>
 						<USkeleton
-							class="h-3 w-full mx-1 my-1.5"
+							class="h-6 w-20 mx-1 my-1.5"
 							:ui="{ rounded: 'rounded-full' }"
 						/>
 					</div>
 					<div class="grid grid-cols-2 gap-2">
-						<div>
+						<div class="flex justify-center">
 							<USkeleton
 								class="h-6 w-full mx-1 my-1.5"
 								:ui="{ rounded: 'rounded-full' }"
 							/>
 						</div>
-						<div>
+						<div class="flex justify-center">
 							<USkeleton
 								class="h-6 w-full mx-1 my-1.5"
 								:ui="{ rounded: 'rounded-full' }"
 							/>
 						</div>
-						<div>
+						<div class="flex justify-center">
 							<USkeleton
 								class="h-6 w-full mx-1 my-1.5"
 								:ui="{ rounded: 'rounded-full' }"
 							/>
 						</div>
-						<div>
+						<div class="flex justify-center">
 							<USkeleton
 								class="h-6 w-full mx-1 my-1.5"
 								:ui="{ rounded: 'rounded-full' }"
@@ -238,27 +254,27 @@
 				v-for="(order, index) in orderList"
 				v-else
 				:key="index"
-				class="bg-hover-light dark:bg-hover-dark rounded-md py-1 px-2 my-2 "
+				class="bg-hover-light dark:bg-hover-dark rounded-md py-1 my-2 px-2"
 				@click="openModalOrderDetail(order)"
 			>
 				<div class="flex justify-between pt-1">
 					<div>
 						<span class="text-sm font-normal">{{ $t(order.orderStateName) }}</span>
 					</div>
-					<div>
-						{{ findSymbol(order.mSymbol, 'quote') }}
+					<div
+						class="flex items-center"
+						dir="ltr"
+					>
 						<img
 							:src="`https://api-bitland.site/media/currency/${findSymbol(order.mSymbol, 'currency')}.png`"
 							alt="coin"
-							class="w-14 md:w-16 h-14 md:h-16"
-							format="webp"
-							densities="x1"
+							class="w-4 h-4"
 						>
-						<span class="text-sm font-bold">{{ order.mSymbol }}</span>
+						<span class="text-sm font-bold mx-1">{{ order.mSymbol }}</span>
 					</div>
 				</div>
 				<div class="grid grid-cols-2 gap-1 my-2">
-					<div class="bg-hover2-light dark:bg-hover2-dark flex flex-col justify-center items-center py-2 px-2">
+					<div class="bg-hover2-light dark:bg-hover2-dark flex flex-col justify-center items-center py-2 px-1">
 						<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
 							{{ $t('type') }}
 						</span>
@@ -266,7 +282,7 @@
 							{{ $t(order.orderTypeName) }}
 						</span>
 					</div>
-					<div class="bg-hover2-light dark:bg-hover2-dark flex flex-col justify-center items-center py-2 px-2">
+					<div class="bg-hover2-light dark:bg-hover2-dark flex flex-col justify-center items-center py-2 px-1">
 						<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
 							{{ $t('direction') }}
 						</span>
@@ -283,24 +299,30 @@
 							{{ $t(order.sideName) }}
 						</span>
 					</div>
-					<div class="bg-hover2-light dark:bg-hover2-dark flex flex-col justify-center items-center py-2 px-2">
+					<div class="bg-hover2-light dark:bg-hover2-dark flex flex-col justify-center items-center py-2 px-1">
 						<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
-							{{ $t('value') }}
+							{{ $t('amount') }}
 						</span>
-						<span class="text-sm font-bold">
-							{{ useNumber(order.reqQot) }}
+						<span
+							class="text-sm font-bold"
+							dir="ltr"
+						>
+							{{ useNumber(priceFormat(order.reqQot)) }} {{ findSymbol(order.mSymbol, 'quote') }}
 						</span>
 					</div>
-					<div class="bg-hover2-light dark:bg-hover2-dark flex flex-col justify-center items-center py-2 px-2">
+					<div class="bg-hover2-light dark:bg-hover2-dark flex flex-col justify-center items-center py-2 px-1">
 						<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
 							{{ $t('price') }}
 						</span>
 						<span class="text-sm font-bold">
-							{{ useNumber(order.dealPrice) }}
+							{{ useNumber(priceFormat(order.dealPrice)) }}
 						</span>
 					</div>
 				</div>
 			</div>
+			<template v-if="!orderList.length && !orderListLoading">
+				<UiNothingToShow />
+			</template>
 		</div>
 		<div class="flex justify-center py-4">
 			<UPagination
@@ -332,6 +354,13 @@ import type { Order } from '~/types/response/spot.types';
 import { spotRepository } from '~/repositories/spot.repository';
 import type { OrderFiltersType, OrderListParams } from '~/types/definitions/spot.types';
 import ModalOrderDetail from '~/components/pages/Spot/List/ModalOrderDetail.vue';
+import { priceFormat } from '~/utils/price-format';
+
+type PropsDefinition = {
+	filterParams?: OrderFiltersType;
+};
+
+const props = defineProps<PropsDefinition>();
 
 const { $api } = useNuxtApp();
 const spotRepo = spotRepository($api);
@@ -394,6 +423,19 @@ const applyFilter = async (event: OrderFiltersType) => {
 
 	await getOrderList();
 };
+
+watch(() => props.filterParams, async (newFilters) => {
+	if (!props.filterParams || !newFilters) return;
+
+	params.value.from = newFilters.from;
+	params.value.to = newFilters.to;
+	params.value.orderType = newFilters.orderType;
+	params.value.orderSide = newFilters.orderSide;
+	params.value.symbol = newFilters.symbol;
+	params.value.marketId = newFilters.marketId ? newFilters.marketId : '';
+
+	await getOrderList();
+}, { deep: true });
 
 const showModalOrderDetail = ref(false);
 const openModalOrderDetail = (item: Order) => {
