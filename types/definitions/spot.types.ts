@@ -163,6 +163,10 @@ type StoreOrderInstantDto = {
 	reqByQot: string | null;
 };
 
+type DeleteOpenOrderDto = {
+	id: number;
+};
+
 export type {
 	KLineParams,
 	KLineResponse,
@@ -174,4 +178,5 @@ export type {
 	OrderFiltersType,
 	StoreOrderMarketDto,
 	StoreOrderInstantDto,
+	DeleteOpenOrderDto,
 };

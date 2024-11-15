@@ -22,7 +22,7 @@
 			<section>
 				<div
 					v-if="isMobile"
-					class="fixed grid grid-cols-12 gap-2 mx-1 py-4 w-full bg-background-light dark:bg-background-dark"
+					class="fixed top-10 grid grid-cols-12 gap-2 py-4 w-full bg-background-light dark:bg-background-dark"
 				>
 					<div class="col-span-9">
 						<USelectMenu
@@ -88,7 +88,7 @@
 
 				<div
 					v-if="isMobile"
-					class="mt-4"
+					class="mt-12"
 				>
 					<div v-if="selectedTab.key === 'openOrders'">
 						<OpenOrders :filter-params="params" />

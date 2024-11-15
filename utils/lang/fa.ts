@@ -1076,6 +1076,9 @@ const persian = {
 	finalFee: 'کارمزد نهایی',
 	rawFee: 'کارمزد خام',
 	removeFilter: 'حذف فیلتر ',
+	deleteOrder: 'حذف سفارش',
+	deleteOrderSuccessfully: 'حذف سفارش با موفقیت انجام شد',
+	deleteOrderDescription: 'آیا شما از حذف سفارش مطمين هستید؟',
 };
 
 export default persian;

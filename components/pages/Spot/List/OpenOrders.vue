@@ -173,6 +173,7 @@
 								/>
 								<IconDelete
 									class="text-base text-accent-red dark:text-accent-red cursor-pointer"
+									@click="openDeleteModal(Number(order.oid))"
 								/>
 							</div>
 						</td>
@@ -233,12 +234,12 @@
 				v-else
 				:key="index"
 				class="bg-hover-light dark:bg-hover-dark rounded-md py-1 my-2 px-2"
-				@click="openModalOrderDetail(order)"
 			>
 				<div class="flex justify-between pt-1">
 					<div class="flex items-center">
 						<IconDelete
-							class="text-base text-accent-red dark:text-accent-red"
+							class="text-xl text-accent-red dark:text-accent-red cursor-pointer"
+							@click="openDeleteModal(Number(order.oid))"
 						/>
 						<span class="text-sm font-normal">{{ $t(order.orderStateName) }}</span>
 					</div>
@@ -254,7 +255,10 @@
 						<span class="text-sm font-bold mx-1">{{ order.mSymbol }}</span>
 					</div>
 				</div>
-				<div class="grid grid-cols-2 gap-1 my-2">
+				<div
+					class="grid grid-cols-2 gap-1 my-2"
+					@click="openModalOrderDetail(order)"
+				>
 					<div class="bg-hover2-light dark:bg-hover2-dark flex flex-col justify-center items-center py-2 px-1">
 						<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
 							{{ $t('type') }}
@@ -342,8 +346,10 @@ type PropsDefinition = {
 
 const props = defineProps<PropsDefinition>();
 
-const { $api } = useNuxtApp();
+const { $api, $swal } = useNuxtApp();
 const spotRepo = spotRepository($api);
+
+const toast = useToast();
 
 const totalCount = ref(0);
 const orderItem = ref<Order>();
@@ -374,6 +380,41 @@ const getOrderList = async () => {
 	catch (error) {
 		console.log(error);
 		orderListLoading.value = false;
+	}
+};
+
+const deleteOrderListLoading = ref<boolean>(false);
+const openDeleteModal = async (id: number) => {
+	const confirmation = await $swal.fire({
+		title: useT('deleteOrder'),
+		text: useT('deleteOrderDescription'),
+		icon: 'warning',
+		showCancelButton: true,
+		confirmButtonText: useT('yesDoIt'),
+		cancelButtonText: useT('cancel'),
+	});
+
+	if (confirmation.isConfirmed) {
+		deleteOrderListLoading.value = true;
+
+		try {
+			await spotRepo.deleteOpenOrder({ id: id });
+
+			toast.add({
+				title: useT('deleteOrder'),
+				description: useT('deleteOrderSuccessfully'),
+				timeout: 5000,
+				color: 'green',
+			});
+
+			await getOrderList();
+
+			deleteOrderListLoading.value = false;
+		}
+		catch (error) {
+			deleteOrderListLoading.value = false;
+			console.error('Error deleting notification:', error);
+		}
 	}
 };
 
@@ -425,6 +466,7 @@ const openModalOrderDetail = (item: Order) => {
 	orderItem.value = item;
 	showModalOrderDetail.value = true;
 };
+
 const closeModalOrderDetail = () => {
 	showModalOrderDetail.value = false;
 };

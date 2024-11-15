@@ -4,6 +4,7 @@ import type { SpotDataParams } from '~/types/base.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import type { GetSpotDataResponse } from '~/types/response/spot.types';
 import type {
+	DeleteOpenOrderDto,
 	KLineParams,
 	KLineResponse,
 	OrderListParams,
@@ -19,6 +20,7 @@ type SpotRepository = {
 	getOrderList: (params: OrderListParams) => Promise<SpotResponse>;
 	storeOrderMarket: (dto: StoreOrderMarketDto) => Promise<CommonResponse>;
 	storeOrderInstant: (dto: StoreOrderInstantDto) => Promise<CommonResponse>;
+	deleteOpenOrder: (dto: DeleteOpenOrderDto) => Promise<CommonResponse>;
 
 	getSpotData: (params: SpotDataParams) => Promise<GetSpotDataResponse>;
 };
@@ -82,6 +84,16 @@ export const spotRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SpotR
 	},
 	async storeOrderInstant(dto: StoreOrderInstantDto): Promise<CommonResponse> {
 		const url = `/v1/spot/order/instant`;
+		const response = await fetch<CommonResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async deleteOpenOrder(dto: DeleteOpenOrderDto): Promise<CommonResponse> {
+		const url = `/v1/spot/order/cancel`;
 		const response = await fetch<CommonResponse>(`${url}`, {
 			noAuth: false,
 			method: 'POST',
