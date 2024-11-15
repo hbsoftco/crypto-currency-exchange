@@ -9,7 +9,7 @@
 			class="hidden md:block"
 			@filters="applyFilter"
 		/>
-		<div class="h-auto overflow-y-scroll">
+		<div class="h-auto overflow-y-scroll hidden md:block">
 			<table class="min-w-full p-6 text-right">
 				<thead>
 					<tr class="py-4 text-subtle-text-light dark:text-subtle-text-dark bg-primary-gray-light dark:bg-primary-gray-dark">
@@ -139,13 +139,13 @@
 							<span>{{ $t(trade.sideName) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(trade.reqQot) }}</span>
+							<span dir="ltr">{{ useNumber(priceFormat(trade.reqQot)) }} {{ findSymbol(trade.mSymbol, 'quote') }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(trade.dealPrice) }}</span>
+							<span dir="ltr">{{ useNumber(priceFormat(trade.dealPrice)) }} {{ findSymbol(trade.mSymbol, 'quote') }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(trade.filledQnt) }}</span>
+							<span dir="ltr">{{ useNumber(priceFormat(trade.filledQnt)) }} {{ findSymbol(trade.mSymbol, 'quote') }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
 							<span>{{ useNumber(formatDateToIran(trade.regTime)) }}</span>
@@ -158,8 +158,11 @@
 						</td>
 						<td class="text-xs font-normal py-1">
 							<div class="flex">
-								<span class="ml-1 text-[0.7rem] text-secondary-gray-light dark:text-secondary-gray-dark line-through">{{ useNumber(trade.feeRawQot) }}</span>
-								<span>{{ useNumber(trade.feeRawQot) }}</span>
+								<span
+									dir="ltr"
+									class="ml-1 text-[0.7rem] text-secondary-gray-light dark:text-secondary-gray-dark line-through"
+								>{{ useNumber(trade.feeRawQot) }}  {{ findSymbol(trade.mSymbol, 'quote') }}</span>
+								<span dir="ltr">{{ useNumber(trade.feeRawQot) }}  {{ findSymbol(trade.mSymbol, 'quote') }}</span>
 							</div>
 						</td>
 						<td class="flex text-xs font-normal py-1">
@@ -171,6 +174,104 @@
 					</tr>
 				</tbody>
 			</table>
+			<template v-if="!tradesList.length && !tradesListLoading">
+				<UiNothingToShow />
+			</template>
+		</div>
+		<div class="block md:hidden">
+			<template v-if="tradesListLoading">
+				<div
+					v-for="n in 10"
+					:key="n"
+					class="bg-hover-light dark:bg-hover-dark rounded-md py-1 my-2 px-2"
+				>
+					<div class="grid grid-cols-2 gap-2">
+						<div class="flex justify-center">
+							<USkeleton
+								class="h-6 w-full mx-1 my-1.5"
+								:ui="{ rounded: 'rounded-full' }"
+							/>
+						</div>
+						<div class="flex justify-center">
+							<USkeleton
+								class="h-6 w-full mx-1 my-1.5"
+								:ui="{ rounded: 'rounded-full' }"
+							/>
+						</div>
+						<div class="flex justify-center">
+							<USkeleton
+								class="h-6 w-full mx-1 my-1.5"
+								:ui="{ rounded: 'rounded-full' }"
+							/>
+						</div>
+						<div class="flex justify-center">
+							<USkeleton
+								class="h-6 w-full mx-1 my-1.5"
+								:ui="{ rounded: 'rounded-full' }"
+							/>
+						</div>
+					</div>
+				</div>
+			</template>
+			<div
+				v-for="(trade, index) in tradesList"
+				v-else
+				:key="index"
+				class="bg-hover-light dark:bg-hover-dark rounded-md py-1 my-2 px-2"
+				@click="openModalTransactionDetail(trade)"
+			>
+				<div class="flex justify-between my-2">
+					<div class="flex items-center px-1">
+						<span class="text-xs font-bold text-subtle-text-light dark:text-subtle-text-dark ml-1">
+							{{ $t('direction') }}:
+						</span>
+						<span
+							v-if="trade.sideName === 'Sell'"
+							class="text-sm font-bold text-accent-red dark:text-accent-red"
+						>
+							{{ $t(trade.sideName) }}
+						</span>
+						<span
+							v-if="trade.sideName === 'Buy'"
+							class="text-sm font-bold text-accent-green dark:text-accent-green"
+						>
+							{{ $t(trade.sideName) }}
+						</span>
+					</div>
+					<div class="flex justify-end items-center px-1">
+						<span class="text-sm font-bold text-black dark:text-white">
+							{{ trade.mSymbol }}
+						</span>
+					</div>
+				</div>
+				<div class="flex justify-between mb-2">
+					<div class="flex items-center px-1">
+						<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark ml-1">
+							{{ $t('amount') }}:
+						</span>
+						<span
+							class="text-xs font-bold"
+							dir="ltr"
+						>
+							{{ useNumber(priceFormat(trade.reqQot)) }} {{ findSymbol(trade.mSymbol, 'quote') }}
+						</span>
+					</div>
+					<div class="flex items-center px-1">
+						<div
+							class="flex"
+							dir="ltr"
+						>
+							<span class="text-xs font-bold">{{ useNumber(priceFormat(trade.feeRawQot)) }} {{ findSymbol(trade.mSymbol, 'quote') }} </span>
+						</div>
+						<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark mr-1">
+							{{ $t('fee') }}
+						</span>
+					</div>
+				</div>
+			</div>
+			<template v-if="!tradesList.length && !tradesListLoading">
+				<UiNothingToShow />
+			</template>
 		</div>
 		<div class="flex justify-center py-4">
 			<UPagination
@@ -199,6 +300,13 @@ import { useNumber } from '~/composables/useNumber';
 import ModalTransactionDetail from '~/components/pages/Spot/List/ModalTransactionDetail.vue';
 import { spotRepository } from '~/repositories/spot.repository';
 import type { OrderFiltersType, Trade, TradeListParams } from '~/types/definitions/spot.types';
+import { priceFormat } from '~/utils/price-format';
+
+type PropsDefinition = {
+	filterParams?: OrderFiltersType;
+};
+
+const props = defineProps<PropsDefinition>();
 
 const { $api } = useNuxtApp();
 const spotRepo = spotRepository($api);
@@ -219,7 +327,7 @@ const params = ref<TradeListParams>({
 	pageSize: '20',
 });
 
-const tradesList = ref<Trade[]>();
+const tradesList = ref<Trade[]>([]);
 const tradesListLoading = ref<boolean>(false);
 const getTradeList = async () => {
 	try {
@@ -242,8 +350,37 @@ const applyFilter = async (event: OrderFiltersType) => {
 	params.value.to = event.to;
 	params.value.orderType = event.orderType;
 	params.value.orderSide = event.orderSide;
+	params.value.marketId = event.marketId ? event.marketId : '';
 
 	await getTradeList();
+};
+
+watch(() => props.filterParams, async (newFilters) => {
+	if (!props.filterParams || !newFilters) return;
+
+	params.value.from = newFilters.from;
+	params.value.to = newFilters.to;
+	params.value.orderType = newFilters.orderType;
+	params.value.orderSide = newFilters.orderSide;
+	params.value.symbol = newFilters.symbol;
+	params.value.marketId = newFilters.marketId ? newFilters.marketId : '';
+
+	await getTradeList();
+}, { deep: true });
+
+const findSymbol = (mSymbol: string, type: 'quote' | 'currency') => {
+	const market = splitMarket(mSymbol);
+	if (market) {
+		const [currency, quote] = market.split('_');
+
+		if (type === 'quote') {
+			return quote;
+		}
+		else {
+			return currency;
+		}
+	}
+	return null;
 };
 
 const showModalTransactionDetail = ref(false);

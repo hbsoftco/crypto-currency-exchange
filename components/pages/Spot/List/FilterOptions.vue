@@ -264,6 +264,7 @@ const applyFilters = () => {
 		symbol: selected.value?.mSymbol ? selected.value?.mSymbol : '',
 		marketId: selected.value?.id ? String(selected.value?.id) : '',
 	});
+	emit('close', false);
 };
 
 const resetFilters = () => {

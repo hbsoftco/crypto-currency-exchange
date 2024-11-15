@@ -3,6 +3,7 @@
 		<ModalFilterOption
 			v-if="showModalFilterOption"
 			@close="closeModalFilterOption"
+			@filters="applyFilter"
 		/>
 		<UContainer>
 			<section class="py-4 md:py-8 border-none md:border-b border-primary-gray-light dark:border-primary-gray-dark">
@@ -21,9 +22,9 @@
 			<section>
 				<div
 					v-if="isMobile"
-					class="flex items-center my-1 w-full"
+					class="fixed grid grid-cols-12 gap-2 mx-1 py-4 w-full bg-background-light dark:bg-background-dark"
 				>
-					<div class="w-full">
+					<div class="col-span-9">
 						<USelectMenu
 							v-model="selectedTab"
 							:options="items"
@@ -38,9 +39,9 @@
 							}"
 						/>
 					</div>
-					<div class="mr-2">
+					<div class="col-span-3">
 						<IconFilter
-							class="text-3xl text-subtle-text-light dark:text-subtle-text-dark"
+							class="text-4xl text-subtle-text-light dark:text-subtle-text-dark"
 							@click="openModalFilterOption"
 						/>
 					</div>
@@ -87,16 +88,16 @@
 
 				<div
 					v-if="isMobile"
-					class="px-2"
+					class="mt-4"
 				>
 					<div v-if="selectedTab.key === 'openOrders'">
-						<OpenOrders />
+						<OpenOrders :filter-params="params" />
 					</div>
 					<div v-if="selectedTab.key === 'orderHistory'">
-						<OrderHistory />
+						<OrderHistory :filter-params="params" />
 					</div>
 					<div v-if="selectedTab.key === 'transactionHistory'">
-						<TransactionHistory />
+						<TransactionHistory :filter-params="params" />
 					</div>
 				</div>
 			</section>
@@ -107,6 +108,7 @@
 <script setup lang="ts">
 import IconFilter from '~/assets/svg-icons/spot/filter.svg';
 import ModalFilterOption from '~/components/pages/Spot/List/ModalFilterOption.vue';
+import type { OrderFiltersType } from '~/types/definitions/spot.types';
 
 const OpenOrders = defineAsyncComponent(() => import('~/components/pages/Spot/List/OpenOrders.vue'));
 const OrderHistory = defineAsyncComponent(() =>	import('~/components/pages/Spot/List/OrderHistory.vue'));
@@ -146,5 +148,23 @@ const openModalFilterOption = () => {
 };
 const closeModalFilterOption = () => {
 	showModalFilterOption.value = false;
+};
+
+const params = ref<OrderFiltersType>({
+	marketId: '',
+	symbol: '',
+	orderSide: '',
+	orderType: '',
+	from: '',
+	to: '',
+});
+
+const applyFilter = async (event: OrderFiltersType) => {
+	params.value.from = event.from;
+	params.value.to = event.to;
+	params.value.orderType = event.orderType;
+	params.value.orderSide = event.orderSide;
+	params.value.symbol = event.symbol;
+	params.value.marketId = event.marketId ? event.marketId : '';
 };
 </script>
