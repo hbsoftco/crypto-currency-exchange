@@ -4,7 +4,10 @@
 			v-if="confirmOne"
 			@close="closeConfirmOne"
 		/>
-		<UContainer>
+		<UContainer v-if="tradeListLoading && commissionListLoading && assetListLoading">
+			<UiLogoLoading />
+		</UContainer>
+		<UContainer v-else>
 			<section class="my-12">
 				<div
 					class="mx-auto text-center rounded-md bg-hover-light dark:bg-hover-dark py-8 px-1 md:px-10 w-full md:w-[34.188rem]"
@@ -15,19 +18,20 @@
 					<div class="my-4 relative">
 						<div>
 							<div class="w-full flex justify-between items-center">
-								<span
-									class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark"
-								>{{ $t("from") }}</span>
+								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{
+									$t("from") }}</span>
 								<div class="flex items-center">
 									<div>
 										<span
 											class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark"
-										>{{ $t("inventory") }}:</span>
+										>{{
+											$t("inventory") }}:</span>
 										<span
 											v-if="tradeItems.length"
 											class="mr-1 text-xs font-normal text-left"
 											dir="ltr"
-										>{{ useNumber(`${priceFormat(tradeItems[0].base.qAvailable)} ${firstSelectedSymbol}`) }}</span>
+										>{{ useNumber(`${priceFormat(tradeItems[0].base.qAvailable)}
+											${firstSelectedSymbol}`) }}</span>
 									</div>
 									<UButton
 										class="mr-2 text-primary-yellow-light hover:bg-hover-light dark:hover:bg-hover-dark dark:text-primary-yellow-dark bg-hover-light dark:bg-hover-dark text-xs font-bold"
@@ -40,7 +44,7 @@
 							<TradeChangeFieldInput
 								v-if="firstSelectedSymbol"
 								id="firstCurrency"
-								v-model:modelValue="firstCurrencyPrice"
+								v-model:modelValue="firstCurrencyBalance"
 								v-model:selectedSymbol="firstSelectedSymbol"
 								:ignore-currency="secondSelectedSymbol"
 								type="number"
@@ -52,9 +56,7 @@
 								@item-selected="getFirstSelectedCurrency"
 							/>
 						</div>
-						<div
-							class="absolute top-[6.5rem] z-[1] mx-auto flex justify-center w-full"
-						>
+						<div class="absolute top-[6.5rem] z-[1] mx-auto flex justify-center w-full">
 							<ULink
 								class="flex justify-center items-center rounded-full w-16 h-16 bg-primary-yellow-light dark:bg-primary-yellow-dark border-4 border-hover-light dark:border-hover-dark"
 								@click="replacementMarket"
@@ -64,14 +66,13 @@
 						</div>
 						<div>
 							<div class="w-full flex justify-between">
-								<span
-									class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark"
-								>{{ $t("to") }}</span>
+								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{
+									$t("to") }}</span>
 							</div>
 							<TradeChangeFieldInput
 								v-if="secondSelectedSymbol"
 								id="secondCurrency"
-								v-model:modelValue="secondCurrencyPrice"
+								v-model:modelValue="secondCurrencyBalance"
 								v-model:selectedSymbol="secondSelectedSymbol"
 								:ignore-currency="firstSelectedSymbol"
 								type="number"
@@ -89,16 +90,14 @@
 						class="flex justify-between items-center my-4"
 						dir="ltr"
 					>
-						<div
-							class="bg-secondary-gray-light dark:bg-secondary-gray-dark w-full h-[0.063rem]"
-						/>
+						<div class="bg-secondary-gray-light dark:bg-secondary-gray-dark w-full h-[0.063rem]" />
 						<template
 							v-for="(trade, index) in tradeItems"
 							:key="trade.market.id"
 						>
 							<div class="flex justify-between items-center text-xs font-normal">
 								<div class="ml-1 flex text-nowrap">
-									{{ `1 ${trade.base.currency.cSymbol}` }}
+									{{ useNumber(`1 ${trade.base.currency.cSymbol}`) }}
 								</div>
 								<div
 									class="mx-1"
@@ -107,7 +106,8 @@
 									≈
 								</div>
 								<div class="mr-1 flex text-nowrap">
-									{{ `${useNumber(priceFormat(trade.market.price))} ${trade.quote.currency.cSymbol}` }}
+									{{ `${useNumber(priceFormat(trade.market.price))} ${trade.quote.currency.cSymbol}`
+									}}
 								</div>
 							</div>
 							<span
@@ -118,9 +118,7 @@
 							</span>
 						</template>
 
-						<div
-							class="bg-secondary-gray-light dark:bg-secondary-gray-dark w-full h-[0.063rem]"
-						/>
+						<div class="bg-secondary-gray-light dark:bg-secondary-gray-dark w-full h-[0.063rem]" />
 					</div>
 					<div class="flex justify-between py-2">
 						<span>{{ $t("fee") }}</span>
@@ -129,7 +127,7 @@
 								class="text-sm font-normal mr-2"
 								dir="ltr"
 							>
-								<!-- {{ useNumber(`0 ${feeCurrencySymbol}`) }} -->
+								{{ tradeFee }}
 							</span>
 						</div>
 					</div>
@@ -197,8 +195,8 @@ const route = useRoute();
 const mSymbol = String(route.query.market);
 const [currency, quote] = mSymbol.split('_');
 
-const firstCurrencyPrice = ref('');
-const secondCurrencyPrice = ref('');
+const firstCurrencyBalance = ref<number>(0);
+const secondCurrencyBalance = ref<number>(0);
 const firstSelectedSymbol = ref('');
 const secondSelectedSymbol = ref('');
 
@@ -207,7 +205,7 @@ const socketMarketIds = ref<number[]>([]);
 const firstSelectedCurrency = ref<CurrencyBrief>();
 const getFirstSelectedCurrency = async (newCurrency: CurrencyBrief) => {
 	firstSelectedCurrency.value = newCurrency;
-	firstCurrencyPrice.value = '';
+	firstCurrencyBalance.value = 0;
 };
 
 const secondSelectedCurrency = ref<CurrencyBrief>();
@@ -220,6 +218,9 @@ const replacementMarket = async () => {
 		secondSelectedSymbol.value,
 		firstSelectedSymbol.value,
 	];
+
+	firstCurrencyBalance.value = 0;
+	secondCurrencyBalance.value = 0;
 };
 
 // Get Asset List
@@ -290,6 +291,7 @@ const getCommissionList = async () => {
 
 		if (cachedItems && cachedItems.length > 0) {
 			commissionList.value = cachedItems;
+			console.log('commissionList-------->', commissionList.value);
 		}
 		else {
 			const { result } = await userRepo.getTraderCommissionList({
@@ -334,6 +336,7 @@ watch(
 interface TradeOption {
 	type?: 'BUY' | 'SELL';
 	takerFee?: string;
+	fee: number;
 	market: {
 		id: number;
 		symbol: string;
@@ -344,12 +347,14 @@ interface TradeOption {
 		currency: CurrencyBrief;
 		qAvailable: string;
 		received: string;
+		value: number;
 	};
 	quote: {
 		currency: CurrencyBrief;
 		qAvailable: string;
 		location: 'TOP' | 'BOTTOM';
 		received: string;
+		value: number;
 	};
 }
 
@@ -364,7 +369,7 @@ const findCommission = (currencyQuoteId: number) => {
 };
 
 const setAllBalance = () => {
-	firstCurrencyPrice.value = tradeItems.value[0].base.qAvailable;
+	firstCurrencyBalance.value = Number(tradeItems.value[0].base.qAvailable);
 };
 
 const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) => {
@@ -388,6 +393,7 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 
 		tradeItems.value = [{
 			type: 'BUY',
+			fee: 0,
 			market: {
 				id: marketItem.id,
 				symbol: marketItem.mSymbol,
@@ -399,11 +405,13 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 				location: 'TOP',
 				qAvailable: '',
 				received: '',
+				value: 0,
 			},
 			base: {
 				currency: secondSelectedCurrency.value,
 				qAvailable: '',
 				received: '',
+				value: 0,
 			},
 		}];
 	}
@@ -425,12 +433,15 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 				location: 'BOTTOM',
 				qAvailable: '',
 				received: '',
+				value: 0,
 			},
 			base: {
 				currency: firstSelectedCurrency.value,
 				qAvailable: '',
 				received: '',
+				value: 0,
 			},
+			fee: 0,
 		}];
 	}
 	// Two trade state
@@ -458,12 +469,15 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 					location: 'BOTTOM',
 					qAvailable: '',
 					received: '',
+					value: 0,
 				},
 				base: {
 					currency: firstSelectedCurrency.value,
 					qAvailable: '',
 					received: '',
+					value: 0,
 				},
+				fee: 0,
 			},
 			{
 				type: 'BUY',
@@ -478,12 +492,15 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 					location: 'TOP',
 					qAvailable: '',
 					received: '',
+					value: 0,
 				},
 				base: {
 					currency: secondSelectedCurrency.value,
 					qAvailable: '',
 					received: '',
+					value: 0,
 				},
+				fee: 0,
 			},
 		];
 	}
@@ -506,12 +523,15 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 					location: 'TOP',
 					qAvailable: '',
 					received: '',
+					value: 0,
 				},
 				base: {
 					currency: secondSelectedCurrency.value,
 					qAvailable: '',
 					received: '',
+					value: 0,
 				},
+				fee: 0,
 			}];
 		}
 		else if (firstSelectedSymbol.value === 'USDT') {
@@ -528,12 +548,15 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 					location: 'BOTTOM',
 					qAvailable: '',
 					received: '',
+					value: 0,
 				},
 				base: {
 					currency: firstSelectedCurrency.value,
 					qAvailable: '',
 					received: '',
+					value: 0,
 				},
+				fee: 0,
 			}];
 		}
 	}
@@ -543,7 +566,10 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 	// Finding taker fee and assets
 	tradeItems.value.forEach((item, index) => {
 		// get taker
+		console.log('get taker ------------>', item.quote);
 		const commission = findCommission(item.quote.currency.id);
+		console.log('get taker ------------>', commission);
+
 		if (commission) {
 			tradeItems.value[index].takerFee = commission.taker;
 		}
@@ -574,6 +600,69 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 
 	console.log('--------------------------------------->trade.value', tradeItems.value);
 };
+
+const tradeFee = computed(() => {
+	let fee = '';
+	if (tradeItems.value.length > 1) {
+		fee = `${useNumber(priceFormat(tradeItems.value.map((x) => x.fee).reduce((sum, fee) => sum + fee, 0).toString()))} USDT`;
+	}
+	else if (tradeItems.value.length === 1) {
+		fee = `${useNumber(priceFormat(tradeItems.value.map((x) => x.fee).reduce((sum, fee) => sum + fee, 0).toString()))} ${tradeItems.value[0].quote.currency.cSymbol}`;
+	}
+	return fee;
+});
+
+const formatByTickSize = (value: number, tickSize: string) => {
+	const decimalPlaces = Math.max(tickSize.toString().split('.')[1]?.length || 0, 5);
+	return Number(value.toFixed(decimalPlaces));
+};
+
+watch(
+	() => firstCurrencyBalance.value,
+	(newBalance) => {
+		if (newBalance) {
+			if (tradeItems.value.length === 1) {
+				const tickSize = tradeItems.value[0].market.tickSize;
+				const marketPrice = tradeItems.value[0].market.price;
+
+				// If the quote is below, it means you want to sell coin
+				if (tradeItems.value[0].quote.location === 'BOTTOM') {
+					tradeItems.value[0].base.value = Number(newBalance);
+					const balancePrice = (tradeItems.value[0].base.value * marketPrice);
+					tradeItems.value[0].quote.value = formatByTickSize(balancePrice, tickSize);
+					secondCurrencyBalance.value = tradeItems.value[0].quote.value;
+				}
+				else if (tradeItems.value[0].quote.location === 'TOP') {
+					tradeItems.value[0].quote.value = Number(newBalance);
+					const balanceBase = tradeItems.value[0].quote.value / marketPrice;
+					tradeItems.value[0].base.value = formatByTickSize(balanceBase, tickSize);
+					secondCurrencyBalance.value = tradeItems.value[0].base.value;
+				}
+			}
+			else if (tradeItems.value.length === 2) {
+				// Top calculation
+				const topTickSize = tradeItems.value[0].market.tickSize;
+				const topMarketPrice = tradeItems.value[0].market.price;
+				tradeItems.value[0].base.value = Number(newBalance);
+				const topBalancePrice = (tradeItems.value[0].base.value * topMarketPrice);
+				tradeItems.value[0].quote.value = formatByTickSize(topBalancePrice, topTickSize);
+
+				const bottomTickSize = tradeItems.value[1].market.tickSize;
+				const bottomMarketPrice = tradeItems.value[1].market.price;
+				tradeItems.value[1].quote.value = tradeItems.value[0].quote.value;
+				const bottomBalanceBase = tradeItems.value[1].quote.value / bottomMarketPrice;
+				tradeItems.value[1].base.value = formatByTickSize(bottomBalanceBase, bottomTickSize);
+				secondCurrencyBalance.value = tradeItems.value[1].base.value;
+			}
+
+			console.log('final 111111111111111', tradeItems.value);
+		}
+		else {
+			secondCurrencyBalance.value = 0;
+		}
+	},
+	{ deep: true },
+);
 
 watch(
 	() => publicSocketStore.latestMarketData,
@@ -621,100 +710,6 @@ onMounted(async () => {
 onBeforeUnmount(async () => {
 	await publicSocketStore.unSubscribe();
 });
-
-// const getCoinPrice = computed(() => {
-// 	const markets = splitSymbols(marketParams.value);
-
-// 	const message = exchangeMessages.value.find((item) => {
-// 		return item.data.ms === markets[0];
-// 	});
-
-// 	return message ? message?.data.i : 0;
-// });
-
-// onMounted(async () => {
-// 	await connect();
-// 	await subSocket(marketParams.value, false);
-
-// 	await assetStore.fetchAssetList();
-// 	await assetStore.connectToSocket();
-
-// 	console.log(await assetStore.assetList);
-
-// 	await fetchTrades();
-
-// 	await baseDataStore.fetchUserTraderCommissionList({ marketType: String(MarketType.SPOT) });
-// 	commissions.value = await baseDataStore.userTraderCommissionList;
-
-// 	console.log(commissions.value);
-// });
-
-// const subSocket = async (marketParams: string | null, firstLoad: boolean = true) => {
-// 	if (marketParams) {
-// 		if (firstLoad) {
-// 			await unSubSocket(marketParams);
-// 		}
-// 		sendMessage(createSubscriptionData(
-// 			SocketId.SPOT_TICKER_EXCHANGE,
-// 			'SUBSCRIBE',
-// 			PublicTopic.SPOT_TICKER,
-// 			marketParams,
-// 		));
-// 	}
-// };
-
-// const unSubSocket = (marketParams: string | null) => {
-// 	if (socket.value && marketParams) {
-// 		sendMessage(createSubscriptionData(
-// 			SocketId.SPOT_TICKER_EXCHANGE,
-// 			'UNSUBSCRIBE',
-// 			PublicTopic.SPOT_TICKER,
-// 			marketParams,
-// 		));
-// 	}
-// };
-
-// const checkTradeOneValue = () => {
-// 	if (coinTradeOne.value && tradeOne.value !== '') {
-// 		const tradeValue = parseFloat(tradeOne.value);
-// 		const unit = parseFloat(coinTradeOne.value?.unit || '0');
-
-// 		if (tradeOne.value.length >= (coinTradeOne.value?.unit.length || 0)) {
-// 			if (tradeValue < unit) {
-// 				errorOne.value = `مقدار وارد شده نمی‌تواند کمتر از ${unit} باشد.`;
-
-// 				tradeOne.value = coinTradeOne.value?.unit || '';
-
-// 				nextTick(() => {
-// 					tradeOne.value = coinTradeOne.value?.unit || '';
-// 				});
-// 			}
-// 			else {
-// 				errorOne.value = '';
-// 			}
-// 		}
-// 		else {
-// 			errorOne.value = '';
-// 		}
-// 	}
-// };
-
-// const checkTradeTwoValue = () => {
-// 	if (coinTradeTwo.value && tradeTwo.value !== '') {
-// 		const tradeValue = parseFloat(tradeTwo.value);
-// 		const unit = parseFloat(coinTradeTwo.value.unit);
-
-// 		if (tradeValue > unit) {
-// 			errorTwo.value = `مقدار وارد شده نمی‌تواند کمتر از ${unit} باشد.`;
-// 		}
-// 		else {
-// 			errorTwo.value = '';
-// 		}
-// 	}
-// };
-
-// watch(tradeOne, checkTradeOneValue);
-// watch(tradeTwo, checkTradeTwoValue);
 
 const confirmOne = ref(false);
 

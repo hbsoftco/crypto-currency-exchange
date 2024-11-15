@@ -117,7 +117,7 @@ import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 
 interface Props {
 	id: string;
-	modelValue: string | null;
+	modelValue: string | number | null;
 	selectedSymbol: string;
 	type?: string;
 	label: string;
