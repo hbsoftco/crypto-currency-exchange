@@ -142,9 +142,10 @@
 							</span>
 						</div>
 					</div>
+					<!-- @click="openConfirmOne" -->
 					<UButton
 						class="text-base font-medium px-12 text-black py-3 w-full flex justify-center"
-						@click="openConfirmOne"
+						@click="submitOrder"
 					>
 						{{ $t("confirm") }}
 					</UButton>
@@ -162,10 +163,11 @@ import ConfirmOrderModal from '~/components/pages/FastTrade/ConfirmOrderModal.vu
 import TradeChangeFieldInput from '~/components/forms/TradeChangeFieldInput.vue';
 import IconChange from '~/assets/svg-icons/trade/change.svg';
 import RecentTrades from '~/components/pages/FastTrade/RecentTrades.vue';
-import { BoxMode, MiniAssetMode } from '~/utils/enums/asset.enum';
+import { AssetType, BoxMode, MiniAssetMode } from '~/utils/enums/asset.enum';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 import { CACHE_KEY_COMMISSION_LIST } from '~/utils/constants/common';
 import { MarketType } from '~/utils/enums/market.enum';
+import type { StoreOrderInstantDto, StoreOrderMarketDto } from '~/types/definitions/spot.types';
 import type { Asset, AssetListParams } from '~/types/definitions/asset.types';
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
 import type { MarketBrief } from '~/types/definitions/market.types';
@@ -280,10 +282,57 @@ const getCommissionList = async () => {
 	}
 };
 
+const orderInstantParams = ref<StoreOrderInstantDto>({
+	assetType: AssetType.Testnet,
+	marketId: 0,
+	orderSide: '',
+	reqByQot: '0',
+	userUniqueTag: null,
+});
+const orderMarketParams = ref<StoreOrderMarketDto>({
+	assetType: AssetType.Testnet,
+	marketId: 0,
+	orderSide: '',
+	reqByQnt: '0',
+	userUniqueTag: null,
+});
 const submitOrderLoading = ref<boolean>(false);
-const createOrder = () => {
+const submitOrder = async () => {
+	try {
+		if (tradeItems.value.length === 1) {
+			if (tradeItems.value[0].quote.location === 'BOTTOM') {
+				submitOrderLoading.value = true;
+				orderMarketParams.value.marketId = tradeItems.value[0].market.id;
+				orderMarketParams.value.orderSide = tradeItems.value[0].type;
+				orderMarketParams.value.reqByQnt = String(tradeItems.value[0].base.value);
 
-}
+				const { result } = await spotRepo.storeOrderMarket(orderMarketParams.value);
+
+				console.log('storeOrderMarket', result);
+			}
+			else {
+				submitOrderLoading.value = true;
+				orderInstantParams.value.marketId = tradeItems.value[0].market.id;
+				orderInstantParams.value.orderSide = tradeItems.value[0].type;
+				orderInstantParams.value.reqByQot = String(tradeItems.value[0].quote.value);
+
+				const { result } = await spotRepo.storeOrderInstant(orderInstantParams.value);
+
+				console.log('storeOrderInstant', result);
+			}
+		}
+		else if (tradeItems.value.length > 1) {
+			submitOrderLoading.value = true;
+			console.log('two trade');
+		}
+
+		submitOrderLoading.value = false;
+	}
+	catch (error) {
+		console.log(error);
+		submitOrderLoading.value = false;
+	}
+};
 
 const levelIndicator = ref<string>();
 const quoteItems = ref<Quote[]>();
@@ -309,7 +358,7 @@ watch(
 );
 
 interface TradeOption {
-	type?: 'BUY' | 'SELL';
+	type: 'Buy' | 'Sell';
 	takerFee?: string;
 	fee: number;
 	market: {
@@ -367,7 +416,7 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 		const marketItem: MarketBrief = (await worker.searchMarkets(useEnv('apiBaseUrl'), mSymbol, 1))[0];
 
 		tradeItems.value = [{
-			type: 'BUY',
+			type: 'Buy',
 			fee: 0,
 			market: {
 				id: marketItem.id,
@@ -396,7 +445,7 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 		const marketItem: MarketBrief = (await worker.searchMarkets(useEnv('apiBaseUrl'), mSymbol, 1))[0];
 
 		tradeItems.value = [{
-			type: 'SELL',
+			type: 'Sell',
 			market: {
 				id: marketItem.id,
 				symbol: marketItem.mSymbol,
@@ -432,7 +481,7 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 
 		tradeItems.value = [
 			{
-				type: 'SELL',
+				type: 'Sell',
 				market: {
 					id: marketSell.id,
 					symbol: marketSell.mSymbol,
@@ -455,7 +504,7 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 				fee: 0,
 			},
 			{
-				type: 'BUY',
+				type: 'Buy',
 				market: {
 					id: marketBuy.id,
 					symbol: marketBuy.mSymbol,
@@ -486,7 +535,7 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 
 		if (firstSelectedSymbol.value === 'TMN') {
 			tradeItems.value = [{
-				type: 'BUY',
+				type: 'Buy',
 				market: {
 					id: marketItem.id,
 					symbol: marketItem.mSymbol,
@@ -511,7 +560,7 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 		}
 		else if (firstSelectedSymbol.value === 'USDT') {
 			tradeItems.value = [{
-				type: 'SELL',
+				type: 'Sell',
 				market: {
 					id: marketItem.id,
 					symbol: marketItem.mSymbol,
@@ -707,9 +756,9 @@ onBeforeUnmount(async () => {
 
 const confirmOne = ref(false);
 
-const openConfirmOne = () => {
-	confirmOne.value = true;
-};
+// const openConfirmOne = () => {
+// 	confirmOne.value = true;
+// };
 
 const closeConfirmOne = () => {
 	confirmOne.value = false;
