@@ -4,6 +4,8 @@
 			v-model="isOpen"
 			fullscreen
 			class="top-0"
+			:ui="{ background: 'bg-background-light dark:bg-background-dark bg-opacity-100 backdrop-blur-sm dark:bg-opacity-100 dark:backdrop-blur-sm',
+			}"
 		>
 			<FilterOptions
 				@close="closeModal"

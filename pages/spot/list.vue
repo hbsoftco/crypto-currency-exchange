@@ -22,28 +22,30 @@
 			<section>
 				<div
 					v-if="isMobile"
-					class="fixed top-10 grid grid-cols-12 gap-2 py-4 w-full bg-background-light dark:bg-background-dark"
+					class="fixed top-10 left-0 right-0 px-4 w-full"
 				>
-					<div class="col-span-9">
-						<USelectMenu
-							v-model="selectedTab"
-							:options="items"
-							option-attribute="label"
-							:ui="{
-								background: '',
-								color: {
-									white: {
-										outline: ' bg-hover-light dark:bg-hover-dark',
+					<div class="flex items-center py-4 w-full justify-between bg-background-light dark:bg-background-dark">
+						<div class="flex-1">
+							<USelectMenu
+								v-model="selectedTab"
+								:options="items"
+								option-attribute="label"
+								:ui="{
+									background: '',
+									color: {
+										white: {
+											outline: ' bg-hover-light dark:bg-hover-dark',
+										},
 									},
-								},
-							}"
-						/>
-					</div>
-					<div class="col-span-3">
-						<IconFilter
-							class="text-4xl text-subtle-text-light dark:text-subtle-text-dark"
-							@click="openModalFilterOption"
-						/>
+								}"
+							/>
+						</div>
+						<div>
+							<IconFilter
+								class="text-4xl text-subtle-text-light dark:text-subtle-text-dark"
+								@click="openModalFilterOption"
+							/>
+						</div>
 					</div>
 				</div>
 				<UTabs
