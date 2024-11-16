@@ -8,10 +8,17 @@
 		>
 			<div class="flex items-center">
 				<div class="block md:flex items-center text-center">
-					<IconStar
-						class="text-2xl cursor-pointer pl-1 md:pl-0"
-						@click="router.push('/auth/login')"
-					/>
+					<button @click="addFavorite(market.id, market.isFavorite)">
+						<IconStar
+							v-if="!market.isFavorite "
+							aria-label="Toggle Favorite"
+							class="text-lg"
+						/>
+						<IconStarFill
+							v-else
+							class="text-lg text-primary-yellow-light dark:text-primary-yellow-dark"
+						/>
+					</button>
 					<img
 						:src="`https://api-bitland.site/media/currency/${market?.currency?.cSymbol}.png`"
 						:alt="market?.currency?.cName"
@@ -88,10 +95,23 @@ import { useNumber } from '~/composables/useNumber';
 import { priceFormat } from '~/utils/price-format';
 import { formatBigNumber } from '~/utils/format-big-number';
 import IconStar from '~/assets/svg-icons/market/star.svg';
+import IconStarFill from '~/assets/svg-icons/market/fill-star.svg';
 import type { SocketSpotData } from '~/types/socket.types';
 import type { MarketL31 } from '~/types/definitions/market.types';
+import { marketRepository } from '~/repositories/market.repository';
+
+interface EmitDefinition {
+	(event: 'reload'): void;
+}
+
+const emit = defineEmits<EmitDefinition>();
+
+const authStore = useAuthStore();
 
 const router = useRouter();
+
+const { $api } = useNuxtApp();
+const marketRepo = marketRepository($api);
 
 interface Props {
 	market: MarketL31;
@@ -102,6 +122,22 @@ const props = defineProps<Props>();
 const localRow = ref({ ...props.market });
 const bgClass = ref('');
 
+const addFavorite = async (id: number, status: boolean | undefined) => {
+	if (authStore.isLoggedIn) {
+		if (status === true) {
+			console.log(status);
+			await marketRepo.dislikeMarket({ id });
+		}
+		else {
+			console.log(status);
+			await marketRepo.likeMarket({ id });
+		}
+		emit('reload');
+	}
+	else {
+		router.push('/auth/login');
+	}
+};
 watch(() => props.socketData, (newData) => {
 	if (newData) {
 		const newIndexPrice = newData.i;

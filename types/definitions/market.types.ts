@@ -105,6 +105,7 @@ type MarketL31 = {
 	lPriceIn24H: string;
 	valueOfTradesIn24H: string;
 	volumeOfTradesIn24H: string;
+	isFavorite?: boolean;
 	currency: CurrencyBrief | null;
 	indexPrice: string;
 	market: MarketBrief | null;
@@ -162,6 +163,10 @@ type DailyPriceChange = {
 	priceChangeRange: string;
 };
 
+type FavoriteMarketDto = {
+	id: number;
+};
+
 export type {
 	MarketBrief,
 	MarketL21,
@@ -180,4 +185,5 @@ export type {
 	MarketL47Item,
 	MarketDailyPriceChangeResponse,
 	DailyPriceChange,
+	FavoriteMarketDto,
 };

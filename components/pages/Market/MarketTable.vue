@@ -82,6 +82,7 @@
 						:key="index"
 						:socket-data="publicSocketStore.findMarketDataById(item.id)"
 						:market="item"
+						@reload="addFavorite"
 					/>
 				</tbody>
 			</table>
@@ -116,6 +117,7 @@ const marketRepo = marketRepository($api);
 
 const publicSocketStore = usePublicSocketStore();
 const marketsPageStore = useMarketsPageStore();
+const authStore = useAuthStore();
 
 const worker = useBaseWorker();
 
@@ -137,15 +139,24 @@ const getMarketListL31 = async () => {
 			marketsPageStore.params.tagTypeId = '';
 		}
 		marketsLoading.value = true;
-		const { result } = await marketRepo.getMarketListL31(marketsPageStore.params);
-
-		markets.value = await worker.addCurrencyToMarketsL16(
-			result.rows as MarketL31[],
-			Number(marketsPageStore.params.currencyQuoteId),
-			useEnv('apiBaseUrl'), MarketType.SPOT,
-		) as MarketL31[];
-
-		totalCount.value = result.totalCount;
+		if (authStore.isLoggedIn) {
+			const { result } = await marketRepo.getMarketListL31a(marketsPageStore.params);
+			markets.value = await worker.addCurrencyToMarketsL16(
+				result.rows as MarketL31[],
+				Number(marketsPageStore.params.currencyQuoteId),
+				useEnv('apiBaseUrl'), MarketType.SPOT,
+			) as MarketL31[];
+			totalCount.value = result.totalCount;
+		}
+		else {
+			const { result } = await marketRepo.getMarketListL31(marketsPageStore.params);
+			markets.value = await worker.addCurrencyToMarketsL16(
+				result.rows as MarketL31[],
+				Number(marketsPageStore.params.currencyQuoteId),
+				useEnv('apiBaseUrl'), MarketType.SPOT,
+			) as MarketL31[];
+			totalCount.value = result.totalCount;
+		}
 
 		if (socketMarketIds.value.length) {
 			await publicSocketStore.removeMarketIds(socketMarketIds.value);
@@ -166,6 +177,10 @@ onMounted(async () => {
 
 	await getMarketListL31();
 });
+
+const addFavorite = async () => {
+	await getMarketListL31();
+};
 
 watch(() => marketsPageStore.params, async () => {
 	await getMarketListL31();

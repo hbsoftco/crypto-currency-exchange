@@ -1,8 +1,7 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
-import type { FavoriteMarketDto } from '~/types/dto/market.dto';
-import type { CommonResponse } from '~/types/response/common.types';
+import type { CommonResponse } from '~/types/definitions/common.types';
 import type {
 	MarketsL21Params,
 	MarketsResponse,
@@ -10,7 +9,8 @@ import type {
 	MarketStateParams,
 	MarketStateResponse,
 	MarketsL47Params,
-	MarketDailyPriceChangeResponse } from '~/types/definitions/market.types';
+	MarketDailyPriceChangeResponse,
+	FavoriteMarketDto } from '~/types/definitions/market.types';
 import type { MarketListResponse } from '~/types/response/market.types';
 
 type MarketRepository = {
@@ -21,14 +21,15 @@ type MarketRepository = {
 	getLatestMarkets: (params: MarketStateParams) => Promise<MarketStateResponse>;
 	getMostVoluminous: (params: MarketStateParams) => Promise<MarketStateResponse>;
 	getMarketListL31: (params: MarketsParams) => Promise<MarketsResponse>;
+	getMarketListL31a: (params: MarketsParams) => Promise<MarketsResponse>;
 	getMarketListL51: () => Promise<MarketsResponse>;
 	getMarketListL47: (params: MarketsL47Params) => Promise<MarketsResponse>;
 	getMarketDailyPriceChange: () => Promise<MarketDailyPriceChangeResponse>;
+	likeMarket: (dto: FavoriteMarketDto) => Promise<CommonResponse>;
+	dislikeMarket: (dto: FavoriteMarketDto) => Promise<CommonResponse>;
 
 	getMarkets: (params: MarketsParams) => Promise<MarketsResponse>;
 	getMarketList: (params: MarketsL47Params) => Promise<MarketListResponse>;
-	likeMarket: (dto: FavoriteMarketDto) => Promise<CommonResponse>;
-	dislikeMarket: (dto: FavoriteMarketDto) => Promise<CommonResponse>;
 };
 
 export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): MarketRepository => ({
@@ -143,6 +144,23 @@ export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Mar
 
 		return response;
 	},
+	async getMarketListL31a(
+		params: MarketsParams): Promise<MarketsResponse> {
+		const query = new URLSearchParams();
+		Object.entries(params).forEach(([key, value]) => {
+			if (value !== undefined && value !== null && value.toString().trim() !== '') {
+				query.append(key, value);
+			}
+		});
+
+		const url = '/v1/market/routine/l31_a';
+		const response = await fetch<MarketsResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
 	async getMarketListL51(): Promise<MarketsResponse> {
 		const url = '/v1/market/routine/l51_f';
 		const response = await fetch<MarketsResponse>(`${url}`, {
@@ -177,6 +195,26 @@ export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Mar
 
 		return response;
 	},
+	async likeMarket(dto: FavoriteMarketDto): Promise<CommonResponse> {
+		const url = '/v1/user/market/like';
+		const response = await fetch<CommonResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async dislikeMarket(dto: FavoriteMarketDto): Promise<CommonResponse> {
+		const url = '/v1/user/market/dislike';
+		const response = await fetch<CommonResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
 
 	async getMarkets(
 		params: MarketsParams): Promise<MarketsResponse> {
@@ -203,26 +241,6 @@ export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Mar
 		const response = await fetch<MarketListResponse>(`${url}?${query.toString()}`, {
 			noAuth: true,
 			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async likeMarket(dto: FavoriteMarketDto): Promise<CommonResponse> {
-		const url = '/v1/user/market/like';
-		const response = await fetch<CommonResponse>(`${url}`, {
-			noAuth: false,
-			method: 'POST',
-			body: dto,
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async dislikeMarket(dto: FavoriteMarketDto): Promise<CommonResponse> {
-		const url = '/v1/user/market/like';
-		const response = await fetch<CommonResponse>(`${url}`, {
-			noAuth: false,
-			method: 'POST',
-			body: dto,
 		} as CustomNitroFetchOptions);
 
 		return response;

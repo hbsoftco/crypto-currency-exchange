@@ -126,8 +126,7 @@
 						v-for="(order, index) in orderList"
 						v-else
 						:key="index"
-						:class="[index % 2 === 0 ? 'bg-background-light dark:bg-background-dark' : 'bg-hover2-light dark:bg-hover2-dark']"
-						class="pb-1"
+						class="pb-1 odd:bg-hover2-light dark:odd:bg-hover2-dark even:bg-background-light dark:even:bg-background-dark"
 					>
 						<td class="text-xs font-normal py-1">
 							<span>{{ order.mSymbol }}</span>

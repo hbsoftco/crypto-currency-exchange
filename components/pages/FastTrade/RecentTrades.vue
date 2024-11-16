@@ -31,7 +31,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr v-if="rows.length === 0">
+					<tr v-if="tradeList.length === 0">
 						<td
 							colspan="8"
 							class="text-center py-4 text-sm text-gray-500"
@@ -40,35 +40,42 @@
 						</td>
 					</tr>
 					<tr
-						v-for="row in rows"
+						v-for="trade in tradeList"
 						v-else
-						:key="row.id"
-						:class="[row.id % 2 === 0 ? 'bg-background-light dark:bg-background-dark' : 'bg-hover2-light dark:bg-hover2-dark']"
-						class="text-center text-subtle-text-light dark:text-subtle-text-dark py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark last:border-none"
+						:key="trade.tid"
+						class="odd:bg-hover2-light dark:odd:bg-hover2-dark even:bg-background-light dark:even:bg-background-dark text-center text-subtle-text-light dark:text-subtle-text-dark py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark last:border-none"
 					>
-						<td class="text-xs font-normal py-2">
-							{{ row.from }}
+						<td
+							class="text-xs font-normal py-2 flex items-center justify-center"
+							dir="ltr"
+						>
+							{{ useNumber(priceFormat(trade.filledQot)) }}
+							{{ findSymbol(trade.mSymbol, 'quote') }}
 						</td>
 						<td class="text-xs font-normal py-2">
-							{{ useNumber(row.count) }}
+							{{ useNumber(trade.reqQot) }}
+						</td>
+						<td
+							class="text-xs font-normal py-2 flex items-center justify-center"
+							dir="ltr"
+						>
+							{{ useNumber(priceFormat(trade.achievedApplied)) }}
+							{{ findSymbol(trade.mSymbol, 'quote') }}
 						</td>
 						<td class="text-xs font-normal py-2">
-							{{ row.to }}
+							{{ trade.achievedApplied }}
 						</td>
 						<td class="text-xs font-normal py-2">
-							{{ row.turnedInto }}
+							{{ useNumber(trade.spentApplied) }}
 						</td>
 						<td class="text-xs font-normal py-2">
-							{{ useNumber(row.amount) }}
+							{{ useNumber(priceFormat(trade.dealPrice)) }}
 						</td>
 						<td class="text-xs font-normal py-2">
-							{{ useNumber(row.conversionRate) }}
+							{{ useNumber(formatDateToIranTime(trade.fillTime)) }}
 						</td>
 						<td class="text-xs font-normal py-2">
-							{{ useNumber(row.date) }}
-						</td>
-						<td class="text-xs font-normal py-2">
-							{{ row.status }}
+							{{ $t(trade.orderStateName) }}
 						</td>
 					</tr>
 				</tbody>
@@ -77,7 +84,10 @@
 
 		<section class="block md:hidden">
 			<div class="flex justify-end items-center my-1">
-				<ULink class="flex">
+				<ULink
+					class="flex"
+					to="spot/list"
+				>
 					<span class="text-xs font-bold ml-1">{{ $t('moreDetail') }}</span><IconArrowLeft class="text-xs" />
 				</ULink>
 			</div>
@@ -93,7 +103,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr v-if="rows.length === 0">
+					<tr v-if="tradeList.length === 0">
 						<td
 							colspan="2"
 							class="text-center py-4 text-sm text-gray-500"
@@ -102,22 +112,25 @@
 						</td>
 					</tr>
 					<tr
-						v-for="row in tradeList"
+						v-for="trade in tradeList"
 						v-else
-						:key="row.tid"
+						:key="trade.tid"
 						class="py-2"
 					>
 						<td class=" text-xs font-normal py-2">
-							<div class="flex">
+							<div class="flex items-center">
 								<img
-									src="/images/delete/bitcoin.png"
+									:src="`https://api-bitland.site/media/currency/${findSymbol(trade.mSymbol, 'currency')}.png`"
 									alt="bitcoin"
 									class="w-4 h-4 ml-2"
 								>
-								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
-									{{ row.discountId }}
+								<span
+									class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark"
+									dir="ltr"
+								>
+									{{ useNumber(priceFormat(trade.filledQot)) }}
+									{{ findSymbol(trade.mSymbol, 'quote') }}
 								</span>
-								{{ useNumber(row.apiKey) }}
 							</div>
 						</td>
 						<td class="text-xs font-normal py-2">
@@ -127,10 +140,13 @@
 									alt="bitcoin"
 									class="w-4 h-4 ml-2"
 								>
-								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
-									{{ row.apiKey }}
+								<span
+									class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark"
+									dir="ltr"
+								>
+									{{ useNumber(priceFormat(trade.achievedApplied)) }}
+									{{ findSymbol(trade.mSymbol, 'quote') }}
 								</span>
-								{{ useNumber(row.apiKey) }}
 							</div>
 						</td>
 					</tr>
@@ -146,6 +162,8 @@ import { useNumber } from '~/composables/useNumber';
 import { spotRepository } from '~/repositories/spot.repository';
 import type { Trade, TradeListParams } from '~/types/definitions/spot.types';
 import { AssetType } from '~/utils/enums/asset.enum';
+import { priceFormat } from '~/utils/price-format';
+import { formatDateToIranTime } from '~/utils/date-time';
 
 const { $api } = useNuxtApp();
 const spotRepo = spotRepository($api);
@@ -178,9 +196,24 @@ const getTradeList = async () => {
 	}
 };
 
+const findSymbol = (mSymbol: string, type: 'quote' | 'currency') => {
+	const market = splitMarket(mSymbol);
+	if (market) {
+		const [currency, quote] = market.split('_');
+
+		if (type === 'quote') {
+			return quote;
+		}
+		else {
+			return currency;
+		}
+	}
+	return null;
+};
+
 onMounted(async () => {
 	await nextTick();
 	await getTradeList();
+	console.log('getTradeList***********************', tradeList);
 });
-const rows = ref<any>([]);
 </script>
