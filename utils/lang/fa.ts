@@ -285,6 +285,8 @@ const persian = {
 	bitcoin: 'بیتکوین',
 	tradingVolumeLast90Days: 'حجم معاملات( 90 روز اخیر )',
 	makerTaker: 'میکر/تیکر',
+	taker: 'تیکر',
+	maker: 'میکر',
 	maximumWithdrawal: 'حداکثر برداشت',
 	tomansDepositFee: 'کارمزد واریز تومان',
 	bitlandDoesNotCharge: 'بیت لند بابت واریز تومان از طریق درگاه بانکی هیچ هزینه ای از شما دریافت نمی کند.',
@@ -1079,6 +1081,13 @@ const persian = {
 	deleteOrder: 'حذف سفارش',
 	deleteOrderSuccessfully: 'حذف سفارش با موفقیت انجام شد',
 	deleteOrderDescription: 'آیا شما از حذف سفارش مطمين هستید؟',
+	bitlandOpportunity: 'با معامله در بیت‌لند، در جهانی از فرصت‌ها به موفقیت خود برسید!',
+	helpInfo: 'اینجا میتوانید در مورد قسمت‌های مختلف راهنمایی دریافت کنید و مشکلاتتان را با ما در میان بگذارید.',
+	referralEarnings: 'شما در بیت‌لند میتوانید به عنوان یکی از اعضای بیت‌لند با دعوت دوستانتان کسب درآمد داشته باشید!',
+	rewardsOffer: 'ما در مراحل مختلفی که با ما هستید براتون جایزه‌های ارزنده‌ای در نظر گرفتیم!',
+	marketFee: 'کارمزد بازار',
+	TMN_m: 'تومانی',
+	USDT_m: 'دلاری',
 };
 
 export default persian;

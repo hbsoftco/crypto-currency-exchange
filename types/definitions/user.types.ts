@@ -6,8 +6,25 @@ type UserResponse = {
 	statusCode: number;
 	result: {
 		totalCount: number;
-		rows: Commission[];
+		rows: Commission[] | UserLevel[];
 	};
+};
+
+type UserLevel = {
+	levelId: number;
+	levelName: string;
+	imgLogoUrl: string;
+	imgBenefitsUrl: string;
+	discount: string;
+	fullDesc: string;
+	condition: string;
+	header: string;
+	prize: string;
+	withdraw: string;
+	tradeByUsdMin: number;
+	tradeByUsdMax: number;
+	tradePeriodByDay: number;
+	indicator: number;
 };
 
 type Commission = {
@@ -28,4 +45,5 @@ export type {
 	TraderCommissionListParams,
 	UserResponse,
 	Commission,
+	UserLevel,
 };

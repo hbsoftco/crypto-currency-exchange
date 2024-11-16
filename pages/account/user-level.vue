@@ -246,9 +246,9 @@ import Chart from '~/components/pages/Site/Account/Chart.vue';
 import IconArrowLeftActive from '~/assets/svg-icons/profile/arrow-left-active.svg';
 import IconClose from '~/assets/svg-icons/close.svg';
 import { userRepository } from '~/repositories/user.repository';
-import type { LevelRow } from '~/types/response/user.types';
 import type { GetTraderBriefParams } from '~/types/base.types';
 import type { TraderBriefItem } from '~/types/response/trader.types';
+import type { UserLevel } from '~/types/definitions/user.types';
 
 const selectedButton = ref('ninety');
 definePageMeta({
@@ -281,12 +281,12 @@ const getTraderBrief = async () => {
 };
 
 const levelListLoading = ref<boolean>(false);
-const levelList = ref<LevelRow[]>();
+const levelList = ref<UserLevel[]>();
 const getLevelList = async () => {
 	try {
 		levelListLoading.value = true;
-		const { result } = await userRepo.getLevelDate();
-		levelList.value = result.rows;
+		const { result } = await userRepo.getLevelsList();
+		levelList.value = result.rows as UserLevel[];
 		levelListLoading.value = false;
 	}
 	catch (error) {

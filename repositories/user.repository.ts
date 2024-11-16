@@ -7,7 +7,6 @@ import type { GetActivitiesListRes, GetAddressListRes, GetApiListRes, GetApiRes,
 	GetDevLinkGenerateRes,
 	GetHolderLevelListRes,
 	GetHolderRes,
-	GetLevelsDataRes,
 	GetRewardReceivedListResponse,
 	GetStateTradeRes,
 	ReferralBriefResponse,
@@ -66,6 +65,8 @@ import type {
 
 type UserRepository = {
 	getTraderCommissionList: (params: TraderCommissionListParams) => Promise<UserResponse>;
+	getLevelsList: () => Promise<UserResponse>;
+
 	//
 	getCurrentUser: () => Promise<ProfileResponse>;
 	generate2Fa: () => Promise<TwoStepLoginResponse>;
@@ -90,7 +91,6 @@ type UserRepository = {
 	getTraderBestList: (params: GetTraderBestListParams) => Promise<GetTraderBestListResponse>;
 	getTraderBrief: (params: GetTraderBriefParams) => Promise<GetTraderBriefResponse>;
 	getTraderState: (params: GetTraderBriefParams) => Promise<GetStateTradeRes>;
-	getLevelDate: () => Promise<GetLevelsDataRes>;
 	getInvitation: (params: GetInvitationParams) => Promise<GetInvitationListRes>;
 	getCommissionReceived: (params: GetCommissionReceivedListParams) => Promise<GetCommissionRes>;
 	uploadAvatar: (dto: UploadAvatarDto) => Promise<CommonResponse>;
@@ -129,6 +129,15 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 		const response = await fetch<UserResponse>(`${url}?${query.toString()}`, {
 			noAuth: false,
 			apiName: url,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getLevelsList(): Promise<UserResponse> {
+		const url = '/v1/user/trader/levels_list';
+		const response = await fetch<UserResponse>(`${url}`, {
+			noAuth: false,
+			method: 'GET',
 		} as CustomNitroFetchOptions);
 
 		return response;
@@ -441,15 +450,6 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 		const response = await fetch<GetStateTradeRes>(`${url}?${query.toString()}`, {
 			noAuth: false,
 			apiName: url,
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getLevelDate(): Promise<GetLevelsDataRes> {
-		const url = '/v1/user/trader/levels_list';
-		const response = await fetch<GetLevelsDataRes>(`${url}`, {
-			noAuth: false,
-			method: 'GET',
 		} as CustomNitroFetchOptions);
 
 		return response;

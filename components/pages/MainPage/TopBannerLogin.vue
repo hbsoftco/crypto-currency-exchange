@@ -7,20 +7,23 @@
 		</h1>
 		<div class="flex mt-6">
 			<img
-				:src="traderBriefItem?.level.logoUrl"
-				alt="fish"
+				:src="authStore.userLevel?.imgLogoUrl"
+				alt="user-level"
 				class="w-6 h-6 ml-2"
 			>
-			<span class="ml-1">{{ $t("yourLevel") }}: </span><span>{{ profileStore.profileLoading ? '...': getValueByKey(profileStore.userProfile, 'TRD_LVL_NAME') }}</span>
+			<span class="ml-1 font-bold">{{ $t("yourLevel") }}: </span>
+			<span class="font-bold">{{ authStore.userLevel?.header }}</span>
 		</div>
 		<div
 			class="my-6 flex flex-col text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
 		>
-			<div class="mb-4">
-				<span>{{ $t("dollarMarketFee") }}،</span><span>  میکر: ۰.۲% تیکر: ۰.۴%</span>
-			</div>
-			<div>
-				<span>{{ $t("tomanMarketFee") }}،</span><span>  میکر: ۰.۲% تیکر: ۰.۴%</span>
+			<div
+				v-for="fee in fees"
+				:key="fee.quote"
+				class="mb-4"
+			>
+				<span class="ml-1">{{ `${$t("marketFee")} ${$t(fee.quote+'_m')}` }}،</span>
+				<span>{{ $t('maker') }}: {{ useNumber(`${fee.commission.maker}%`) }} {{ $t('taker') }}: {{ useNumber(`${fee.commission.taker}%`) }}</span>
 			</div>
 		</div>
 		<ULink
@@ -55,11 +58,6 @@
 			>
 				<IconPlayStore class="text-3xl mx-7 m1-2" />
 			</ULink>
-			<!-- <ULink
-				class="flex items-center bg-transparency-light dark:bg-transparency-dark opacity-70 mx-1 px-8 py-2 rounded"
-			>
-				<IconApple class="text-3xl mx-7 m1-2" />
-			</ULink> -->
 		</div>
 		<ul class="flex bg-transparency-light dark:bg-transparency-dark opacity-90 mt-8 py-2 rounded-md">
 			<li
@@ -76,8 +74,7 @@
 					}}</span>
 				</div>
 				<p class="text-xs font-normal ml-2 mt-2 text-text-dark dark:text-text-light">
-					ما در مراحل مختلفی که با ما هستید براتون جایزه های ارزنده ای در نظر
-					گرفتیم!
+					{{ $t('rewardsOffer') }}
 				</p>
 			</li>
 			<li
@@ -94,7 +91,7 @@
 					}}</span>
 				</div>
 				<p class="text-xs font-normal ml-2 mt-2 text-text-dark dark:text-text-light">
-					شما در بیت‌لند میتوانید به عنوان یکی از اعضای بیت‌لند با دعوت دوستانتان کسب درآمد داشته باشید!
+					{{ $t('referralEarnings') }}
 				</p>
 			</li>
 			<li
@@ -111,7 +108,7 @@
 					}}</span>
 				</div>
 				<p class="text-xs font-normal ml-2 mt-2 text-text-dark dark:text-text-light">
-					اینجا میتوانید در مورد قسمت های مختلف راهنمایی دریافت کنید و مشکلاتتان را با ما در میان بگذارید.
+					{{ $t('helpInfo') }}
 				</p>
 			</li>
 			<li
@@ -128,7 +125,7 @@
 					}}</span>
 				</div>
 				<p class="text-xs font-normal ml-2 mt-2 text-text-dark dark:text-text-light">
-					با معامله در بیت‌لند، در جهانی از فرصت‌ ها به موفقیت خود برسید!
+					{{ $t('bitlandOpportunity') }}
 				</p>
 			</li>
 		</ul>
@@ -136,54 +133,91 @@
 </template>
 
 <script setup lang="ts">
-import { getValueByKey } from '~/utils/find-value-by-key';
+import { useNumber } from '~/composables/useNumber';
 import IconLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';
 import IconQR from '~/assets/svg-icons/qr-code.svg';
 import IconPlayStore from '~/assets/svg-icons/play-store.svg';
-// import type { TraderBriefItem } from '~/types/response/trader.types';
 import { userRepository } from '~/repositories/user.repository';
-import type { GetTraderBriefParams } from '~/types/base.types';
-import type { TraderBriefItem } from '~/types/response/trader.types';
-// import IconApple from '~/assets/svg-icons/apple.svg';
-
-const profileStore = useProfileStore();
+import { CACHE_KEY_COMMISSION_LIST } from '~/utils/constants/common';
+import type { Commission } from '~/types/definitions/user.types';
+import { MarketType } from '~/utils/enums/market.enum';
+import type { Quote } from '~/types/definitions/quote.types';
+import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 
 const { $api } = useNuxtApp();
 const userRepo = userRepository($api);
 
-const traderBriefParams = ref<GetTraderBriefParams>({
-	assetType: useEnv('assetType'),
-	id: '1',
-});
-const traderBriefItemLoading = ref<boolean>(false);
-const traderBriefItem = ref<TraderBriefItem>();
-const getTraderBrief = async () => {
+const worker = useBaseWorker();
+
+const authStore = useAuthStore();
+
+const quoteItems = ref<Quote[]>();
+
+interface Fee {
+	quote: string;
+	commission: Commission;
+}
+const fees = ref<Fee[]>([]);
+
+const commissionList = ref<Commission[]>([]);
+const commissionListLoading = ref<boolean>(false);
+const getCommissionList = async () => {
 	try {
-		traderBriefItemLoading.value = true;
+		commissionListLoading.value = true;
 
-		const { result } = await userRepo.getTraderBrief(traderBriefParams.value);
+		const cachedItems = await loadFromCache<Commission[]>(
+			CACHE_KEY_COMMISSION_LIST,
+		);
 
-		traderBriefItem.value = result;
-		traderBriefItemLoading.value = true;
+		if (cachedItems && cachedItems.length > 0) {
+			commissionList.value = cachedItems;
+		}
+		else {
+			const { result } = await userRepo.getTraderCommissionList({
+				marketType: String(MarketType.SPOT),
+			});
+
+			await saveToCache(CACHE_KEY_COMMISSION_LIST, result.rows);
+
+			commissionList.value = result.rows as Commission[];
+		}
+		commissionListLoading.value = false;
 	}
 	catch (error) {
-		traderBriefItemLoading.value = true;
-		console.log(error);
+		console.error(error);
+		commissionListLoading.value = false;
 	}
 };
 
-// const findIndicator = (indicator: number) => {
-// 	if (traderBriefItem.value?.level.indicator === indicator) {
-// 		return (traderBriefItem.value?.level.indicator === indicator);
-// 	}
-
-// 	return false;
-// };
-// console.log('traderBriefItem', traderBriefItem);
+const findCommission = (currencyQuoteId: number) => {
+	return commissionList.value.find((commission) =>
+		commission.levelIndicator === Number(authStore.getUserLevelIndicator || '0')
+		&& commission.currencyQuoteId === currencyQuoteId
+		&& commission.marketTypeId === MarketType.SPOT,
+	);
+};
 
 onMounted(async () => {
+	quoteItems.value = await worker.fetchQuoteItems(
+		MarketType.SPOT,
+		useEnv('apiBaseUrl'),
+	);
+
 	await Promise.all([
-		getTraderBrief,
+		authStore.fetchCurrentUser(),
+		getCommissionList(),
 	]);
+
+	quoteItems.value.forEach((level) => {
+		const commission = findCommission(level.id);
+		if (commission) {
+			const fee: Fee = {
+				quote: level.cSymbol,
+				commission,
+			};
+
+			fees.value.push(fee);
+		}
+	});
 });
 </script>

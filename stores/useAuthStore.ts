@@ -3,7 +3,8 @@ import { defineStore } from 'pinia';
 import { authRepository } from '~/repositories/auth.repository';
 import { userRepository } from '~/repositories/user.repository';
 import type { KeyValue } from '~/types/base.types';
-import { CACHE_KEY_COMMISSION_LIST, CACHE_KEY_CURRENT_USER } from '~/utils/constants/common';
+import type { UserLevel } from '~/types/definitions/user.types';
+import { CACHE_KEY_COMMISSION_LIST, CACHE_KEY_CURRENT_USER, CACHE_KEY_USER_LEVELS } from '~/utils/constants/common';
 import { removeFromCache } from '~/utils/indexeddb';
 
 export const useAuthStore = defineStore('auth', () => {
@@ -117,6 +118,38 @@ export const useAuthStore = defineStore('auth', () => {
 		}
 	};
 
+	const levelsListLoading = ref<boolean>(false);
+	const levelsList = ref<UserLevel[]>();
+	const levelsListFetched = ref(false);
+	const getLevelsList = async () => {
+		try {
+			if (levelsListLoading.value && levelsListFetched.value) return;
+
+			const cachedData: UserLevel[] = await loadFromCache(CACHE_KEY_USER_LEVELS) || [];
+
+			if (cachedData.length) {
+				levelsList.value = cachedData;
+				levelsListFetched.value = true;
+				return;
+			}
+
+			const { $api } = useNuxtApp();
+			const userRepo = userRepository($api);
+
+			const response = await userRepo.getLevelsList();
+			levelsList.value = response.result.rows as UserLevel[];
+			levelsListFetched.value = true;
+
+			await saveToCache(CACHE_KEY_USER_LEVELS, response.result.rows);
+		}
+		catch (error) {
+			console.log(error);
+		}
+		finally {
+			levelsListLoading.value = false;
+		}
+	};
+
 	const currentUser = ref<KeyValue[]>([]);
 	const currentUserFetched = ref(false);
 	const currentUserLoading = ref<boolean>(false);
@@ -130,7 +163,11 @@ export const useAuthStore = defineStore('auth', () => {
 				const cachedData: KeyValue[] = await loadFromCache(CACHE_KEY_CURRENT_USER) || [];
 				if (cachedData.length) {
 					currentUser.value = cachedData;
+
 					currentUserFetched.value = true;
+
+					await getLevelsList();
+
 					return;
 				}
 			}
@@ -143,6 +180,8 @@ export const useAuthStore = defineStore('auth', () => {
 			currentUserFetched.value = true;
 
 			await saveToCache(CACHE_KEY_CURRENT_USER, response.result);
+
+			await getLevelsList();
 		}
 		catch (err) {
 			console.error('Error fetching profile:', err);
@@ -156,6 +195,8 @@ export const useAuthStore = defineStore('auth', () => {
 	const getUserLevelIndicator = computed(() => getValueByKey(currentUser.value, 'TRD_LVL_ID'));
 
 	const isLoggedIn = computed(() => authStatus.value);
+
+	const userLevel = computed(() => levelsList.value?.find((level) => level.indicator === Number(getUserLevelIndicator.value)));
 
 	let refreshInterval: NodeJS.Timeout | undefined | null;
 
@@ -199,5 +240,6 @@ export const useAuthStore = defineStore('auth', () => {
 		getCurrentUser,
 		getUserLevelIndicator,
 		currentUser,
+		userLevel,
 	};
 });

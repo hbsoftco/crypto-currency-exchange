@@ -272,7 +272,7 @@ const getCommissionList = async () => {
 
 			await saveToCache(CACHE_KEY_COMMISSION_LIST, result.rows);
 
-			commissionList.value = result.rows;
+			commissionList.value = result.rows as Commission[];
 		}
 		commissionListLoading.value = false;
 	}

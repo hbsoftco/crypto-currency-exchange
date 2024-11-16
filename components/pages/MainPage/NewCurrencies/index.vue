@@ -99,6 +99,8 @@ const getMarketListL21 = async () => {
 			useEnv('apiBaseUrl'), MarketType.SPOT,
 		);
 
+		console.log(markets.value.length);
+
 		marketsLoading.value = false;
 	}
 	catch (error: unknown) {
