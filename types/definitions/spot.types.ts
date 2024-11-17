@@ -1,3 +1,5 @@
+import type { CurrencyBrief } from './currency.types';
+
 type KLineParams = {
 	timeFrom?: string;
 	timeTo?: string;
@@ -147,6 +149,31 @@ type OrderFiltersType = {
 	to: string;
 };
 
+type TradeOption = {
+	type: 'Buy' | 'Sell';
+	takerFee?: string;
+	fee: number;
+	market: {
+		id: number;
+		symbol: string;
+		tickSize: string;
+		price: number;
+	};
+	base: {
+		currency: CurrencyBrief;
+		qAvailable: string;
+		received: string;
+		value: number;
+	};
+	quote: {
+		currency: CurrencyBrief;
+		qAvailable: string;
+		location: 'TOP' | 'BOTTOM';
+		received: string;
+		value: number;
+	};
+};
+
 type StoreOrderMarketDto = {
 	marketId: number;
 	assetType: string;
@@ -179,4 +206,5 @@ export type {
 	StoreOrderMarketDto,
 	StoreOrderInstantDto,
 	DeleteOpenOrderDto,
+	TradeOption,
 };

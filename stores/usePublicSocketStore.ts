@@ -33,8 +33,6 @@ export const usePublicSocketStore = defineStore('publicSocket', () => {
 				ids,
 			));
 		}
-
-		console.log('addMarketIds ids=========================>', ids);
 	};
 
 	const removeMarketIds = async (marketIds: number[]) => {

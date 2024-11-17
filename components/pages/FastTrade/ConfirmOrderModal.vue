@@ -21,49 +21,66 @@
 							/>
 						</div>
 					</div>
+					<!-- Modal Title -->
 					<h4
 						class="text-center text-2xl font-bold my-2 md:my-0"
 					>
 						{{ $t("orderConfirmation") }}
 					</h4>
-					<div class="w-full my-4">
-						<div class="pb-3 w-full flex justify-between">
-							<span class="text-base font-bold">{{ $t('firstTransaction') }}</span>
-						</div>
-						<div class="pb-3 w-full flex justify-between">
-							<span class="text-sm font-normal">{{ $t('marketPrice') }}:</span>
-							<div class="text-sm font-bold">
-								<span>{{ useNumber('۱') }}</span>BTC~<span>{{ useNumber('۲۶۰۰۰') }}</span>USDT
+					<div
+						v-for="(trade, index) in trades"
+						:key="index"
+						class="w-full"
+					>
+						<div class="w-full my-4">
+							<div class="pb-3 w-full flex justify-between">
+								<span class="text-base font-bold">{{ index === 0 ? $t('firstTransaction') : $t('secondTransaction') }}</span>
 							</div>
-						</div>
-						<div class="pb-3 w-full flex justify-between">
-							<span class="text-sm font-normal">{{ $t('currency') }}:</span>
-							<div class="text-sm font-bold">
-								<span>{{ useNumber('۱') }}</span>BTC
+							<div class="pb-3 w-full flex justify-between">
+								<span class="text-sm font-normal">{{ $t('marketPrice') }}:</span>
+								<div class="text-sm font-bold">
+									<span>{{ useNumber('1') }}</span>
+									<span>{{ trade.base.currency.cSymbol }}</span>
+									<span class="mx-0.5">~</span>
+									<span>{{ useNumber(priceFormat(trade.market.price)) }}</span>
+									<span class="mx-0.5">{{ trade.quote.currency.cSymbol }}</span>
+								</div>
 							</div>
-						</div>
-						<div class="pb-3 w-full flex justify-between">
-							<span class="text-sm font-normal">{{ $t('receivedCurrency') }}:</span>
-							<div class="text-sm font-bold">
-								<span>{{ useNumber('۲۶۰۰۰') }}</span>USDT
+							<div class="pb-3 w-full flex justify-between">
+								<span class="text-sm font-normal">{{ $t('currency') }}:</span>
+								<div class="text-sm font-bold">
+									<span>{{ useNumber(trade.base.value) }}</span>
+									<span class="mx-0.5">{{ trade.base.currency.cSymbol }}</span>
+								</div>
 							</div>
-						</div>
-						<div class="pb-3 w-full flex justify-between">
-							<span class="text-sm font-normal">{{ $t('direction') }}:</span>
-							<div class="text-sm font-bold ">
-								<span class="text-accent-green">{{ $t('buy') }}</span>
+							<div class="pb-3 w-full flex justify-between">
+								<span class="text-sm font-normal">{{ $t('receivedCurrency') }}:</span>
+								<div class="text-sm font-bold">
+									<span>{{ useNumber(priceFormat(trade.quote.value)) }}</span>
+									<span class="mx-0.5">{{ trade.quote.currency.cSymbol }}</span>
+								</div>
 							</div>
-						</div>
-						<div class="pb-3 w-full flex justify-between">
-							<span class="text-sm font-normal">{{ $t('fee') }}:</span>
-							<div class="text-sm font-bold">
-								<span>{{ useNumber('۲۶') }}</span>USDT
+							<div class="pb-3 w-full flex justify-between">
+								<span class="text-sm font-normal">{{ $t('direction') }}:</span>
+								<div class="text-sm font-bold ">
+									<span :class="trade.type === 'Sell' ? 'text-accent-red': 'text-accent-green'">
+										{{ $t(trade.type) }}
+									</span>
+								</div>
+							</div>
+							<div class="pb-3 w-full flex justify-between">
+								<span class="text-sm font-normal">{{ $t('fee') }}:</span>
+								<div class="text-sm font-bold">
+									<span>{{ useNumber(priceFormat(trade.fee)) }}</span>
+									<span class="mx-0.5">{{ trade.quote.currency.cSymbol }}</span>
+								</div>
 							</div>
 						</div>
 						<div class="pb-3 w-full flex justify-between">
 							<span class="text-sm font-normal">{{ $t('finalReceipt') }}:</span>
 							<div class="text-sm font-bold">
-								<span>{{ useNumber('۰.۹۹') }}</span>BTC
+								<span>{{ useNumber(priceFormat(finalReceived)) }}</span>
+								<span class="mx-0.5">{{ trade.quote.currency.cSymbol }}</span>
 							</div>
 						</div>
 					</div>
@@ -90,17 +107,25 @@
 
 <script setup lang="ts">
 import IconClose from '~/assets/svg-icons/close.svg';
+import { priceFormat } from '~/utils/price-format';
 import { useNumber } from '~/composables/useNumber';
+import type { TradeOption } from '~/types/definitions/spot.types';
+
+interface PropsDefinition {
+	trades: TradeOption[];
+	finalReceived: string;
+}
+defineProps<PropsDefinition>();
+
+interface EmitDefinition {
+	(event: 'close', value: boolean): void;
+}
+const emit = defineEmits<EmitDefinition>();
 
 const selected = ref(true);
 const translatedLabel = useT('doNotDisplayAnymore');
 
 const isOpen = ref(true);
-interface EmitDefinition {
-	(event: 'close', value: boolean): void;
-}
-
-const emit = defineEmits<EmitDefinition>();
 
 const closeModal = async (value: boolean) => {
 	emit('close', value);

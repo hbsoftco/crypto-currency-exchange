@@ -2,6 +2,8 @@
 	<div>
 		<ConfirmOrderModal
 			v-if="confirmOne"
+			:trades="tradeItems"
+			:final-received="finalReceived"
 			@close="closeConfirmOne"
 		/>
 		<UContainer v-if="commissionListLoading && assetListLoading">
@@ -30,7 +32,7 @@
 											v-if="tradeItems.length"
 											class="mr-1 text-xs font-normal text-left"
 											dir="ltr"
-										>{{ useNumber(`${priceFormat(tradeItems[0].base.qAvailable)}
+										>{{ useNumber(`${priceFormat(balance)}
 											${firstSelectedSymbol}`) }}</span>
 									</div>
 									<UButton
@@ -47,18 +49,20 @@
 								v-model:modelValue="firstCurrencyBalance"
 								v-model:selectedSymbol="firstSelectedSymbol"
 								:ignore-currency="secondSelectedSymbol"
-								type="number"
+								type="text"
 								input-class="text-left"
 								:label="``"
 								placeholder=""
 								icon=""
+								:show-text="false"
 								dir="rtl"
+								:error-message="firstCurrencyBalanceErrorMessage"
 								@item-selected="getFirstSelectedCurrency"
 							/>
 						</div>
-						<div class="absolute top-[6.5rem] z-[1] mx-auto flex justify-center w-full">
+						<div class="absolute top-[6.5rem] -ml-6 z-[1] mx-auto flex justify-center w-full">
 							<ULink
-								class="flex justify-center items-center rounded-full w-16 h-16 bg-primary-yellow-light dark:bg-primary-yellow-dark border-4 border-hover-light dark:border-hover-dark"
+								class="flex justify-center items-center rounded-full w-16 h-16 bg-primary-yellow-light dark:bg-primary-yellow-dark border-2 border-hover-light dark:border-hover-dark"
 								@click="replacementMarket"
 							>
 								<IconChange class="text-black text-4xl" />
@@ -81,6 +85,7 @@
 								:label="``"
 								placeholder=""
 								icon=""
+								:show-text="true"
 								dir="rtl"
 								@item-selected="getSecondSelectedCurrency"
 							/>
@@ -142,9 +147,10 @@
 							</span>
 						</div>
 					</div>
-					<!-- @click="openConfirmOne" -->
 					<UButton
-						class="text-base font-medium px-12 text-black py-3 w-full flex justify-center"
+						class="text-base font-medium text-white dark:text-black py-3"
+						block
+						:disabled="submitButton"
 						@click="submitOrder"
 					>
 						{{ $t("confirm") }}
@@ -159,7 +165,6 @@
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
 import { priceFormat } from '~/utils/price-format';
-import ConfirmOrderModal from '~/components/pages/FastTrade/ConfirmOrderModal.vue';
 import TradeChangeFieldInput from '~/components/forms/TradeChangeFieldInput.vue';
 import IconChange from '~/assets/svg-icons/trade/change.svg';
 import RecentTrades from '~/components/pages/FastTrade/RecentTrades.vue';
@@ -167,7 +172,7 @@ import { AssetType, BoxMode, MiniAssetMode } from '~/utils/enums/asset.enum';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 import { CACHE_KEY_COMMISSION_LIST } from '~/utils/constants/common';
 import { MarketType } from '~/utils/enums/market.enum';
-import type { StoreOrderInstantDto, StoreOrderMarketDto } from '~/types/definitions/spot.types';
+import type { StoreOrderInstantDto, StoreOrderMarketDto, TradeOption } from '~/types/definitions/spot.types';
 import type { Asset, AssetListParams } from '~/types/definitions/asset.types';
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
 import type { MarketBrief } from '~/types/definitions/market.types';
@@ -176,6 +181,8 @@ import type { Quote } from '~/types/definitions/quote.types';
 import { spotRepository } from '~/repositories/spot.repository';
 import { userRepository } from '~/repositories/user.repository';
 import { assetRepository } from '~/repositories/asset.repository';
+
+const ConfirmOrderModal = defineAsyncComponent(() => import('~/components/pages/FastTrade/ConfirmOrderModal.vue'));
 
 definePageMeta({
 	layout: 'trade',
@@ -195,17 +202,21 @@ const route = useRoute();
 const mSymbol = String(route.query.market);
 const [currency, quote] = mSymbol.split('_');
 
-const firstCurrencyBalance = ref<number>(0);
-const secondCurrencyBalance = ref<number>(0);
+const firstCurrencyBalanceErrorMessage = ref<string>('');
+
+const firstCurrencyBalance = ref<string>('');
+const secondCurrencyBalance = ref<string>('');
 const firstSelectedSymbol = ref('');
 const secondSelectedSymbol = ref('');
+
+const submitButton = ref<boolean>(true);
 
 const socketMarketIds = ref<number[]>([]);
 
 const firstSelectedCurrency = ref<CurrencyBrief>();
 const getFirstSelectedCurrency = async (newCurrency: CurrencyBrief) => {
 	firstSelectedCurrency.value = newCurrency;
-	firstCurrencyBalance.value = 0;
+	firstCurrencyBalance.value = '';
 };
 
 const secondSelectedCurrency = ref<CurrencyBrief>();
@@ -219,8 +230,8 @@ const replacementMarket = async () => {
 		firstSelectedSymbol.value,
 	];
 
-	firstCurrencyBalance.value = 0;
-	secondCurrencyBalance.value = 0;
+	firstCurrencyBalance.value = '';
+	secondCurrencyBalance.value = '';
 };
 
 // Get Asset List
@@ -228,7 +239,7 @@ const assetListParams = ref<AssetListParams>({
 	pageSize: '1000',
 	assetType: useEnv('assetType'),
 	boxMode: String(BoxMode.Spot),
-	miniAssetMode: String(MiniAssetMode.NoMiniAsset),
+	miniAssetMode: String(MiniAssetMode.Any),
 });
 const assetList = ref<Asset[]>([]);
 const assetListLoading = ref<boolean>(false);
@@ -241,6 +252,8 @@ const getAssetList = async () => {
 			useEnv('apiBaseUrl'),
 			result.rows,
 		);
+
+		console.log(assetList.value);
 
 		assetListLoading.value = false;
 	}
@@ -263,7 +276,6 @@ const getCommissionList = async () => {
 
 		if (cachedItems && cachedItems.length > 0) {
 			commissionList.value = cachedItems;
-			console.log('commissionList-------->', commissionList.value);
 		}
 		else {
 			const { result } = await userRepo.getTraderCommissionList({
@@ -299,6 +311,8 @@ const orderMarketParams = ref<StoreOrderMarketDto>({
 const submitOrderLoading = ref<boolean>(false);
 const submitOrder = async () => {
 	try {
+		openConfirmOne();
+		return;
 		if (tradeItems.value.length === 1) {
 			if (tradeItems.value[0].quote.location === 'BOTTOM') {
 				submitOrderLoading.value = true;
@@ -357,31 +371,6 @@ watch(
 	},
 );
 
-interface TradeOption {
-	type: 'Buy' | 'Sell';
-	takerFee?: string;
-	fee: number;
-	market: {
-		id: number;
-		symbol: string;
-		tickSize: string;
-		price: number;
-	};
-	base: {
-		currency: CurrencyBrief;
-		qAvailable: string;
-		received: string;
-		value: number;
-	};
-	quote: {
-		currency: CurrencyBrief;
-		qAvailable: string;
-		location: 'TOP' | 'BOTTOM';
-		received: string;
-		value: number;
-	};
-}
-
 const tradeItems = ref<TradeOption[]>([]);
 
 const findCommission = (currencyQuoteId: number) => {
@@ -393,7 +382,7 @@ const findCommission = (currencyQuoteId: number) => {
 };
 
 const setAllBalance = () => {
-	firstCurrencyBalance.value = Number(tradeItems.value[0].base.qAvailable);
+	firstCurrencyBalance.value = balance.value;
 };
 
 const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) => {
@@ -414,6 +403,7 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 	if (foundFirstCurrency && !foundSecondCurrency) {
 		const mSymbol = `${secondSelectedSymbol.value}${firstSelectedSymbol.value}`;
 		const marketItem: MarketBrief = (await worker.searchMarkets(useEnv('apiBaseUrl'), mSymbol, 1))[0];
+		console.log('---------------->marketItem', marketItem);
 
 		tradeItems.value = [{
 			type: 'Buy',
@@ -443,6 +433,7 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 	else if (!foundFirstCurrency && foundSecondCurrency) {
 		const mSymbol = `${firstSelectedSymbol.value}${secondSelectedSymbol.value}`;
 		const marketItem: MarketBrief = (await worker.searchMarkets(useEnv('apiBaseUrl'), mSymbol, 1))[0];
+		console.log('---------------->marketItem', marketItem);
 
 		tradeItems.value = [{
 			type: 'Sell',
@@ -621,13 +612,39 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 	console.log('--------------------------------------->trade.value', tradeItems.value);
 };
 
+const balance = computed(() => {
+	let result = '0';
+	if (tradeItems.value.length > 1) {
+		result = '0';
+	}
+	else if (tradeItems.value.length === 1) {
+		if (tradeItems.value[0].quote.location === 'BOTTOM') {
+			result = tradeItems.value[0].base.qAvailable;
+		}
+		else {
+			result = tradeItems.value[0].quote.qAvailable;
+		}
+	}
+	return result;
+});
+
 const tradeFee = computed(() => {
 	let fee = '';
 	if (tradeItems.value.length > 1) {
-		fee = `${useNumber(priceFormat(tradeItems.value.map((x) => x.fee).reduce((sum, fee) => sum + fee, 0).toString()))} USDT`;
+		fee = `${useNumber(
+			priceFormat(
+			formatByDecimal(
+			Number(tradeItems.value.map((x) => x.fee).reduce((sum, fee) => sum + fee, 0).toString()), tradeItems.value[0].quote.currency.unit),
+		),
+	)} USDT`;
 	}
 	else if (tradeItems.value.length === 1) {
-		fee = `${useNumber(priceFormat(tradeItems.value.map((x) => x.fee).reduce((sum, fee) => sum + fee, 0).toString()))} ${tradeItems.value[0].quote.currency.cSymbol}`;
+		fee = `${useNumber(
+			priceFormat(
+				formatByDecimal(
+					Number(tradeItems.value.map((x) => x.fee).reduce((sum, fee) => sum + fee, 0).toString()), tradeItems.value[0].quote.currency.unit),
+				),
+			)} ${tradeItems.value[0].quote.currency.cSymbol}`;
 	}
 	return fee;
 });
@@ -644,8 +661,11 @@ const finalReceived = computed(() => {
 	return received;
 });
 
-const formatByTickSize = (value: number, tickSize: string) => {
-	const decimalPlaces = Math.max(tickSize.toString().split('.')[1]?.length || 0, 5);
+const formatByDecimal = (value: number, decimal: string) => {
+	const decimalPlaces = Math.max(decimal.toString().split('.')[1]?.length);
+	console.log('value', value);
+	console.log('decimal', decimal);
+
 	return Number(value.toFixed(decimalPlaces));
 };
 
@@ -654,50 +674,55 @@ watch(
 	(newBalance) => {
 		if (newBalance) {
 			if (tradeItems.value.length === 1) {
-				const tickSize = tradeItems.value[0].market.tickSize;
+				// const tickSize = tradeItems.value[0].market.tickSize;
 				const marketPrice = tradeItems.value[0].market.price;
 
 				// If the quote is below, it means you want to sell coin
 				if (tradeItems.value[0].quote.location === 'BOTTOM') {
 					tradeItems.value[0].base.value = Number(newBalance);
 					const balancePrice = (tradeItems.value[0].base.value * marketPrice);
-					tradeItems.value[0].quote.value = formatByTickSize(balancePrice, tickSize);
-					secondCurrencyBalance.value = tradeItems.value[0].quote.value;
+					tradeItems.value[0].quote.value = formatByDecimal(balancePrice, tradeItems.value[0].quote.currency.unit);
+					secondCurrencyBalance.value = String(tradeItems.value[0].quote.value);
 				}
 				else if (tradeItems.value[0].quote.location === 'TOP') {
 					tradeItems.value[0].quote.value = Number(newBalance);
 					const balanceBase = tradeItems.value[0].quote.value / marketPrice;
-					tradeItems.value[0].base.value = formatByTickSize(balanceBase, tickSize);
-					secondCurrencyBalance.value = tradeItems.value[0].base.value;
+					tradeItems.value[0].base.value = formatByDecimal(balanceBase, tradeItems.value[0].base.currency.unit);
+					secondCurrencyBalance.value = String(tradeItems.value[0].base.value);
 				}
 
 				tradeItems.value[0].fee = (tradeItems.value[0].quote.value * Number(tradeItems.value[0].takerFee)) / 100;
 			}
 			else if (tradeItems.value.length === 2) {
 				// Top calculation
-				const topTickSize = tradeItems.value[0].market.tickSize;
+				// const topTickSize = tradeItems.value[0].market.tickSize;
 				const topMarketPrice = tradeItems.value[0].market.price;
 				tradeItems.value[0].base.value = Number(newBalance);
 				const topBalancePrice = (tradeItems.value[0].base.value * topMarketPrice);
-				tradeItems.value[0].quote.value = formatByTickSize(topBalancePrice, topTickSize);
+				tradeItems.value[0].quote.value = formatByDecimal(topBalancePrice, tradeItems.value[0].quote.currency.unit);
 
 				tradeItems.value[0].fee = (tradeItems.value[0].quote.value * Number(tradeItems.value[0].takerFee)) / 100;
 
 				// Bottom calculation
-				const bottomTickSize = tradeItems.value[1].market.tickSize;
+				// const bottomTickSize = tradeItems.value[1].market.tickSize;
 				const bottomMarketPrice = tradeItems.value[1].market.price;
 				tradeItems.value[1].quote.value = tradeItems.value[0].quote.value;
 				const bottomBalanceBase = tradeItems.value[1].quote.value / bottomMarketPrice;
-				tradeItems.value[1].base.value = formatByTickSize(bottomBalanceBase, bottomTickSize);
-				secondCurrencyBalance.value = tradeItems.value[1].base.value;
+				tradeItems.value[1].base.value = formatByDecimal(bottomBalanceBase, tradeItems.value[1].base.currency.unit);
+				secondCurrencyBalance.value = String(tradeItems.value[1].base.value);
 
 				tradeItems.value[1].fee = (tradeItems.value[1].quote.value * Number(tradeItems.value[1].takerFee)) / 100;
 			}
 
 			console.log('final 111111111111111', tradeItems.value);
+			// Check balance and input value
+			if (firstCurrencyBalance.value > balance.value) {
+				firstCurrencyBalanceErrorMessage.value = useT('paymentExceedsBalance');
+			}
 		}
 		else {
-			secondCurrencyBalance.value = 0;
+			secondCurrencyBalance.value = '';
+			firstCurrencyBalanceErrorMessage.value = '';
 
 			tradeItems.value.forEach((item, index) => {
 				tradeItems.value[index].fee = 0;
@@ -756,9 +781,9 @@ onBeforeUnmount(async () => {
 
 const confirmOne = ref(false);
 
-// const openConfirmOne = () => {
-// 	confirmOne.value = true;
-// };
+const openConfirmOne = () => {
+	confirmOne.value = true;
+};
 
 const closeConfirmOne = () => {
 	confirmOne.value = false;

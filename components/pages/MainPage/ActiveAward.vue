@@ -27,14 +27,13 @@
 					گرفتی ؟
 				</h1>
 				<p class="text-sm font-medium text-black dark:text-white mt-2">
-					بیت به شما جایزه داده حالا شما میتوانید با کلیک روی دکمه زیر جایزه
-					خودتان را دریافت کنید!
+					{{ $t('claimReward') }}
 				</p>
 				<UButton
 					size="lg"
 					variant="ghost"
 					to="/account/rewards"
-					class="px-8 mt-6 font-bold text-sm text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark hover:bg-primary-yellow-light hover:dark:bg-primary-yellow-dark hover:text-white hover:dark:text-white"
+					class="px-8 mt-6 font-bold text-sm text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark hover:bg-primary-yellow-light hover:dark:bg-primary-yellow-dark hover:text-white hover:dark:text-background-dark"
 				>
 					{{ $t('receiveAward') }}
 				</UButton>

@@ -71,7 +71,6 @@ export const useAuthStore = defineStore('auth', () => {
 			const result = getAuthCredentials();
 			if (result) {
 				const { otc, password, userId, userSecretKey } = result;
-				console.log('I am form generateToken', otc, password, userId, userSecretKey);
 				if (otc && password && userId && userSecretKey) {
 					const systemTime = Date.now().toString();
 					const signature = md5WithUtf16LE(password + otc + systemTime).toUpperCase();

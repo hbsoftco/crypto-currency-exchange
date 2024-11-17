@@ -214,6 +214,5 @@ const findSymbol = (mSymbol: string, type: 'quote' | 'currency') => {
 onMounted(async () => {
 	await nextTick();
 	await getTradeList();
-	console.log('getTradeList***********************', tradeList);
 });
 </script>

@@ -1088,6 +1088,8 @@ const persian = {
 	marketFee: 'کارمزد بازار',
 	TMN_m: 'تومانی',
 	USDT_m: 'دلاری',
+	claimReward: 'بیت به شما جایزه داده، حالا شما میتوانید با کلیک روی دکمه زیر جایزه خودتان را دریافت کنید!',
+	paymentExceedsBalance: 'پرداختی نباید بیشتر از موجودی باشد!',
 };
 
 export default persian;

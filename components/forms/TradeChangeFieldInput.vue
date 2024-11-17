@@ -2,7 +2,7 @@
 	<div class="relative mb-3">
 		<div
 			:class="['mt-3 h-20 block cursor-text appearance-none focus:outline-none focus:ring-0 px-2.5 pl-10 pb-2.5 pt-3 w-full text-sm text-text-dark dark:text-text-light bg-primary-gray-light dark:bg-primary-gray-dark rounded-lg border peer',
-				errorMessage ? 'border-accent-red focus:border-accent-red' : 'border-primary-gray-light dark:border-primary-gray-dark focus:border-primary-yellow-light dark:focus:border-primary-yellow-dark']"
+				errorMessage ? 'border-accent-red focus:border-accent-red' : 'border-primary-gray-light dark:border-primary-gray-dark']"
 		>
 			<div class="absolute right-2 top-4">
 				<USelectMenu
@@ -82,6 +82,7 @@
 
 			<div class="absolute left-2 cursor-pointer">
 				<input
+					v-if="!showText"
 					v-model="internalValue"
 					step=".01"
 					placeholder="0.00"
@@ -91,6 +92,12 @@
 					class="outline-none text-left p-1 bg-transparent z-10"
 					@input="onInput"
 				>
+				<div
+					v-else
+					class="outline-none text-left p-1 bg-transparent z-10"
+				>
+					{{ useNumber(priceFormat(internalValue)) }}
+				</div>
 			</div>
 
 			<label
@@ -115,9 +122,12 @@
 <script setup lang="ts">
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
+import { useNumber } from '~/composables/useNumber';
+import { priceFormat } from '~/utils/price-format';
 
 interface Props {
 	id: string;
+	showText: boolean;
 	modelValue: string | number | null;
 	selectedSymbol: string;
 	type?: string;
