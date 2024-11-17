@@ -3,31 +3,34 @@
 		<section class="hidden md:block h-auto max-h-60 overflow-y-auto rounded-t-md">
 			<table class="min-w-full p-6 text-right">
 				<thead>
-					<tr class="text-center pb-2 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark bg-secondary-gray-light dark:bg-secondary-gray-dark text-subtle-text-light dark:text-subtle-text-dark">
-						<th class="pb-2 text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
+					<tr class="pb-2 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark bg-secondary-gray-light dark:bg-secondary-gray-dark text-subtle-text-light dark:text-subtle-text-dark">
+						<th class="pb-2 px-2 text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
 							{{ $t('from') }}
 						</th>
-						<th class="py-2 text-xs font-normal">
+						<!-- <th class="py-2 text-xs font-normal">
 							{{ $t('count') }}
-						</th>
-						<th class="py-2 text-xs font-normal">
+						</th> -->
+						<th class="py-2 px-2 text-xs font-normal">
 							{{ $t('to') }}
 						</th>
-						<th class="py-2 text-xs font-normal">
+						<!-- <th class="py-2 px-2 text-xs font-normal">
 							{{ $t('turnedInto') }}
 						</th>
-						<th class="py-2 text-xs font-normal">
+						<th class="py-2 px-2 text-xs font-normal">
 							{{ $t('amount') }}
+						</th> -->
+						<th class="py-2 px-2 text-xs font-normal">
+							{{ $t('price') }}
 						</th>
-						<th class="py-2 text-xs font-normal">
-							{{ $t('conversionRate') }}
+						<th class="py-2 px-2 text-xs font-normal">
+							{{ $t('fee') }}
 						</th>
-						<th class="py-2 text-xs font-normal">
+						<th class="py-2 px-2 text-xs font-normal">
 							{{ $t('date') }}
 						</th>
-						<th class="py-2 text-xs font-normal">
+						<!-- <th class="py-2 px-2 text-xs font-normal">
 							{{ $t('status') }}
-						</th>
+						</th> -->
 					</tr>
 				</thead>
 				<tbody>
@@ -43,40 +46,149 @@
 						v-for="trade in tradeList"
 						v-else
 						:key="trade.tid"
-						class="odd:bg-hover2-light dark:odd:bg-hover2-dark even:bg-background-light dark:even:bg-background-dark text-center text-subtle-text-light dark:text-subtle-text-dark py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark last:border-none"
+						class="odd:bg-hover2-light dark:odd:bg-hover2-dark even:bg-background-light dark:even:bg-background-dark text-subtle-text-light dark:text-subtle-text-dark py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark last:border-none"
 					>
 						<td
-							class="text-xs font-normal py-2 flex items-center justify-center"
-							dir="ltr"
+							class="text-xs font-normal py-2"
 						>
-							{{ useNumber(priceFormat(trade.filledQot)) }}
-							{{ findSymbol(trade.mSymbol, 'quote') }}
+							<div class="flex items-center">
+								<img
+									:src="`https://api-bitland.site/media/currency/${findSymbol(trade.mSymbol, 'currency')}.png`"
+									:alt="trade?.mSymbol"
+									class="w-4 h-4 rounded-full mx-1"
+								>
+								<span
+									v-if="trade.sideId===1"
+									dir="ltr"
+								>
+									{{ useNumber(priceFormat(trade.spentRaw)) }}
+									{{ findSymbol(trade.mSymbol, 'quote') }}
+								</span>
+								<span
+									v-if="trade.sideId===2"
+									dir="ltr"
+								>
+									{{ useNumber(priceFormat(trade.spentRaw)) }}
+									{{ findSymbol(trade.mSymbol, 'currency') }}
+								</span>
+							</div>
 						</td>
-						<td class="text-xs font-normal py-2">
+						<!-- <td class="text-xs font-normal py-2">
 							{{ useNumber(trade.reqQot) }}
-						</td>
+						</td> -->
 						<td
-							class="text-xs font-normal py-2 flex items-center justify-center"
-							dir="ltr"
+							class="text-xs font-normal py-2"
 						>
-							{{ useNumber(priceFormat(trade.achievedApplied)) }}
-							{{ findSymbol(trade.mSymbol, 'quote') }}
+							<div class="flex items-center">
+								<img
+									:src="`https://api-bitland.site/media/currency/${findSymbol(trade.mSymbol, 'currency')}.png`"
+									:alt="trade?.mSymbol"
+									class="w-4 h-4 rounded-full mx-1"
+								>
+								<span
+									v-if="trade.sideId===1"
+									dir="ltr"
+								>
+									{{ useNumber(priceFormat(trade.achievedApplied)) }}
+									{{ findSymbol(trade.mSymbol, 'currency') }}
+								</span>
+								<span
+									v-if="trade.sideId===2"
+									dir="ltr"
+								>
+									{{ useNumber(priceFormat(trade.achievedApplied)) }}
+									{{ findSymbol(trade.mSymbol, 'quote') }}
+								</span>
+							</div>
 						</td>
-						<td class="text-xs font-normal py-2">
-							{{ trade.achievedApplied }}
+						<!-- <td class="text-xs font-normal py-2">
+							<span class=" flex items-center">
+								<img
+									:src="`https://api-bitland.site/media/currency/${findSymbol(trade.mSymbol, 'currency')}.png`"
+									:alt="trade?.mSymbol"
+									class="w-4 h-4 rounded-full mx-1"
+								>
+								{{ trade.mSymbol }}
+							</span>
 						</td>
 						<td class="text-xs font-normal py-2">
 							{{ useNumber(trade.spentApplied) }}
+						</td> -->
+						<td class="text-xs font-normal py-2 cursor-pointer">
+							<UPopover mode="hover">
+								<template
+									#panel
+								>
+									<div class="p-3">
+										<span class="p-1">{{ $t('market') }}: {{ trade.mSymbol }}</span>
+									</div>
+								</template>
+								<span dir="ltr">
+									{{ useNumber(priceFormat(trade.dealPrice)) }}
+									{{ findSymbol(trade.mSymbol, 'quote') }}
+								</span>
+							</UPopover>
 						</td>
-						<td class="text-xs font-normal py-2">
-							{{ useNumber(priceFormat(trade.dealPrice)) }}
+						<td class="text-xs font-normal py-2 cursor-pointer">
+							<UPopover mode="hover">
+								<template
+									#panel
+								>
+									<div class="p-3">
+										<div v-if="trade.discountId>0">
+											<div class="pb-0.5">
+												{{ $t('rawFeePercentage') }}: {{ useNumber(trade.feeRawPerc) }}
+											</div>
+											<div class="pb-0.5">
+												{{ $t('rawFeeAmount') }}: {{ useNumber(trade.feeRawQot) }}
+											</div>
+											<div class="pb-0.5">
+												{{ $t('discountPercentage') }}: {{ useNumber(trade.discountPerc) }}
+											</div>
+											<div class="pb-0.5">
+												{{ $t('reasonDiscount') }}: {{ trade.discountName }}
+											</div>
+											<div class="pb-0.5">
+												{{ $t('finalFeePercentage') }}: {{ useNumber(trade.feeAppliedPerc) }}
+											</div>
+											<div class="pb-0.5">
+												{{ $t('finalFeeAmount') }}: {{ useNumber(trade.feeAppliedQot) }}
+											</div>
+										</div>
+										<div v-if="trade.discountId===0">
+											<div class="pb-0.5">
+												{{ $t('feePercentage') }}: {{ useNumber(trade.feeRawPerc) }}
+											</div>
+											<div class="pb-0.5">
+												{{ $t('feeAmount') }}: {{ useNumber(trade.feeRawQot) }}
+											</div>
+										</div>
+									</div>
+								</template>
+								<span
+									dir="ltr"
+									class="ml-1 text-[0.7rem] text-primary-gray-dark  dark:text-primary-gray-light line-through"
+								>
+									{{ useNumber(trade.feeRawQot) }}
+									{{ findSymbol(trade.mSymbol, 'quote') }}
+								</span>
+								<span
+									dir="ltr"
+									class="text-xs font-normal"
+								>
+									{{ useNumber(trade.feeAppliedQot) }}
+									{{ findSymbol(trade.mSymbol, 'quote') }}
+								</span>
+							</UPopover>
 						</td>
-						<td class="text-xs font-normal py-2">
-							{{ useNumber(formatDateToIranTime(trade.fillTime)) }}
+						<td class="text-xs font-normal text-black dark:text-white py-2">
+							<span>
+								{{ useNumber(formatDateToIranTime(trade.regTime)) }}
+							</span>
 						</td>
-						<td class="text-xs font-normal py-2">
+						<!-- <td class="text-xs font-normal py-2">
 							{{ $t(trade.orderStateName) }}
-						</td>
+						</td> -->
 					</tr>
 				</tbody>
 			</table>
@@ -117,31 +229,49 @@
 						:key="trade.tid"
 						class="py-2"
 					>
-						<td class=" text-xs font-normal py-2">
+						<td
+							class="text-xs font-normal py-2"
+						>
 							<div class="flex items-center">
 								<img
 									:src="`https://api-bitland.site/media/currency/${findSymbol(trade.mSymbol, 'currency')}.png`"
-									alt="bitcoin"
-									class="w-4 h-4 ml-2"
+									:alt="trade?.mSymbol"
+									class="w-4 h-4 rounded-full mx-1"
 								>
 								<span
-									class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark"
+									v-if="trade.sideId===1"
 									dir="ltr"
 								>
-									{{ useNumber(priceFormat(trade.filledQot)) }}
+									{{ useNumber(priceFormat(trade.spentRaw)) }}
 									{{ findSymbol(trade.mSymbol, 'quote') }}
+								</span>
+								<span
+									v-if="trade.sideId===2"
+									dir="ltr"
+								>
+									{{ useNumber(priceFormat(trade.spentRaw)) }}
+									{{ findSymbol(trade.mSymbol, 'currency') }}
 								</span>
 							</div>
 						</td>
-						<td class="text-xs font-normal py-2">
-							<div class="flex">
+						<td
+							class="text-xs font-normal py-2"
+						>
+							<div class="flex items-center">
 								<img
-									src="/images/delete/bitcoin.png"
-									alt="bitcoin"
-									class="w-4 h-4 ml-2"
+									:src="`https://api-bitland.site/media/currency/${findSymbol(trade.mSymbol, 'currency')}.png`"
+									:alt="trade?.mSymbol"
+									class="w-4 h-4 rounded-full mx-1"
 								>
 								<span
-									class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark"
+									v-if="trade.sideId===1"
+									dir="ltr"
+								>
+									{{ useNumber(priceFormat(trade.achievedApplied)) }}
+									{{ findSymbol(trade.mSymbol, 'currency') }}
+								</span>
+								<span
+									v-if="trade.sideId===2"
 									dir="ltr"
 								>
 									{{ useNumber(priceFormat(trade.achievedApplied)) }}

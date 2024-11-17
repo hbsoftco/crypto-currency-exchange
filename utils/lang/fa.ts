@@ -1090,6 +1090,10 @@ const persian = {
 	USDT_m: 'دلاری',
 	claimReward: 'بیت به شما جایزه داده، حالا شما میتوانید با کلیک روی دکمه زیر جایزه خودتان را دریافت کنید!',
 	paymentExceedsBalance: 'پرداختی نباید بیشتر از موجودی باشد!',
+	rawFeePercentage: 'درصد کارمزد بدون تخفیف',
+	rawFeeAmount: 'مبلغ کارمزد بدون تخفیف',
+	finalFeePercentage: 'درصد کارمزد بعد از تخفیف',
+	finalFeeAmount: 'مبلغ کارمزد بعد از تخفیف',
 };
 
 export default persian;
