@@ -15,6 +15,7 @@ import type { MarketListResponse } from '~/types/response/market.types';
 
 type MarketRepository = {
 	getMarketListL21: (params: MarketsL21Params) => Promise<MarketsResponse>;
+	getMarketListL11: (params: MarketsL21Params) => Promise<MarketsResponse>;
 	getMarketListL16: (params: MarketsParams) => Promise<MarketsResponse>;
 	getMostProfitableMarkets: (params: MarketStateParams) => Promise<MarketStateResponse>;
 	getHottestMarkets: (params: MarketStateParams) => Promise<MarketStateResponse>;
@@ -33,6 +34,19 @@ type MarketRepository = {
 };
 
 export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): MarketRepository => ({
+	async getMarketListL11(params: MarketsL21Params): Promise<MarketsResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+		const url = '/v1/market/routine/l11_f';
+		const response = fetch<MarketsResponse>(`${url}?${query.toString()}`, {
+			noAuth: true,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
 	async getMarketListL21(params: MarketsL21Params): Promise<MarketsResponse> {
 		const query = new URLSearchParams(
 			Object.entries(params)

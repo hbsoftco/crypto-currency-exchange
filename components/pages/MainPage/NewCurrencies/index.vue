@@ -5,7 +5,7 @@
 		</h3>
 
 		<div
-			v-if="markets?.length"
+			v-if="firstHalf?.length"
 			class="currency-row overflow-hidden"
 		>
 			<div
@@ -13,45 +13,46 @@
 				dir="ltr"
 			>
 				<Currency
-					v-for="(item, index) in [...markets]"
+					v-for="(item, index) in firstHalf"
 					:key="`top-${index}`"
 					:market="item"
 					:data="item"
 				/>
 				<Currency
-					v-for="(item, index) in [...markets]"
+					v-for="(item, index) in firstHalf"
 					:key="`top-duplicate-${index}`"
 					:market="item"
 					:data="item"
 				/>
 				<Currency
-					v-for="(item, index) in [...markets]"
-					:key="`top2-duplicate-${index}`"
+					v-for="(item, index) in firstHalf"
+					:key="`top-extra-${index}`"
 					:market="item"
 					:data="item"
 				/>
 			</div>
 		</div>
+
 		<div
-			v-if="markets?.length"
+			v-if="secondHalf?.length"
 			class="currency-row overflow-hidden mt-4"
 		>
 			<div class="flex gap-4 animate-move-right">
 				<Currency
-					v-for="(item, index) in [...markets]"
+					v-for="(item, index) in secondHalf"
 					:key="`bottom-${index}`"
 					:market="item"
 					:data="item"
 				/>
 				<Currency
-					v-for="(item, index) in [...markets]"
+					v-for="(item, index) in secondHalf"
 					:key="`bottom-duplicate-${index}`"
 					:market="item"
 					:data="item"
 				/>
 				<Currency
-					v-for="(item, index) in [...markets]"
-					:key="`bottom2-duplicate-${index}`"
+					v-for="(item, index) in secondHalf"
+					:key="`bottom-extra-${index}`"
 					:market="item"
 					:data="item"
 				/>
@@ -87,16 +88,20 @@ const params = ref({
 });
 
 const markets = ref<MarketL21[]>([]);
+const firstHalf = computed(() => markets.value.slice(0, Math.ceil(markets.value.length / 2)));
+const secondHalf = computed(() => markets.value.slice(Math.ceil(markets.value.length / 2)));
+
 const marketsLoading = ref<boolean>(false);
-const getMarketListL21 = async () => {
+const getMarketListL11 = async () => {
 	try {
 		marketsLoading.value = true;
-		const { result } = await marketRepo.getMarketListL21(params.value);
+		const { result } = await marketRepo.getMarketListL11(params.value);
 
 		markets.value = await currencyWorker.addCurrencyToMarkets(
 			result.rows as MarketL21[],
 			Number(params.value.currencyQuoteId),
-			useEnv('apiBaseUrl'), MarketType.SPOT,
+			useEnv('apiBaseUrl'),
+			MarketType.SPOT,
 		);
 
 		console.log(markets.value.length);
@@ -109,7 +114,7 @@ const getMarketListL21 = async () => {
 };
 
 onMounted(async () => {
-	await getMarketListL21();
+	await getMarketListL11();
 });
 </script>
 
