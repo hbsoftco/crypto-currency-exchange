@@ -17,7 +17,6 @@
 					:options="filteredCurrencies"
 					dir="rtl"
 				>
-					<!-- @change="changeCurrency" -->
 					<template #option="{ option }">
 						<div class="flex flex-col justify-start items-start">
 							<span class="font-semibold pb-1">{{ option.cName }}</span>
