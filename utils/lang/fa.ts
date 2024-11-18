@@ -461,7 +461,7 @@ const persian = {
 	date: 'زمان',
 	status: 'وضعیت',
 	orderConfirmation: 'تایید سفارش',
-	currency: 'ارز پزداختی',
+	paymentCurrency: 'ارز پرداختی',
 	receivedCurrency: 'ارز دریافتی',
 	direction: 'جهت',
 	finalReceipt: 'دریافت نهایی',

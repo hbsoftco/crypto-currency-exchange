@@ -179,7 +179,7 @@ type StoreOrderMarketDto = {
 	assetType: string;
 	orderSide: string;
 	userUniqueTag: string | null;
-	reqByQnt: string | null;
+	reqByQnt: string;
 };
 
 type StoreOrderInstantDto = {
@@ -187,7 +187,14 @@ type StoreOrderInstantDto = {
 	assetType: string;
 	orderSide: string;
 	userUniqueTag: string | null;
-	reqByQot: string | null;
+	reqByQot: string;
+};
+
+type StoreCoinToCoinDto = {
+	srcCurrencyId: number;
+	desCurrencyId: number;
+	assetType: string;
+	srcQnt: string;
 };
 
 type DeleteOpenOrderDto = {
@@ -205,6 +212,7 @@ export type {
 	OrderFiltersType,
 	StoreOrderMarketDto,
 	StoreOrderInstantDto,
+	StoreCoinToCoinDto,
 	DeleteOpenOrderDto,
 	TradeOption,
 };

@@ -47,14 +47,14 @@
 								</div>
 							</div>
 							<div class="pb-3 w-full flex justify-between">
-								<span class="text-sm font-normal">{{ $t('currency') }}:</span>
+								<span class="text-sm font-normal">{{ trade.quote.location === "BOTTOM" ? $t('paymentCurrency') : $t('receivedCurrency') }}:</span>
 								<div class="text-sm font-bold">
 									<span>{{ useNumber(trade.base.value) }}</span>
 									<span class="mx-0.5">{{ trade.base.currency.cSymbol }}</span>
 								</div>
 							</div>
 							<div class="pb-3 w-full flex justify-between">
-								<span class="text-sm font-normal">{{ $t('receivedCurrency') }}:</span>
+								<span class="text-sm font-normal">{{ trade.quote.location === "TOP" ? $t('paymentCurrency') : $t('receivedCurrency') }}:</span>
 								<div class="text-sm font-bold">
 									<span>{{ useNumber(priceFormat(trade.quote.value)) }}</span>
 									<span class="mx-0.5">{{ trade.quote.currency.cSymbol }}</span>
@@ -71,17 +71,17 @@
 							<div class="pb-3 w-full flex justify-between">
 								<span class="text-sm font-normal">{{ $t('fee') }}:</span>
 								<div class="text-sm font-bold">
-									<span>{{ useNumber(priceFormat(trade.fee)) }}</span>
+									<span>{{ useNumber(priceFormat(formatByDecimal(trade.fee, trade.quote.currency.unit))) }}</span>
 									<span class="mx-0.5">{{ trade.quote.currency.cSymbol }}</span>
 								</div>
 							</div>
 						</div>
-						<div class="pb-3 w-full flex justify-between">
-							<span class="text-sm font-normal">{{ $t('finalReceipt') }}:</span>
-							<div class="text-sm font-bold">
-								<span>{{ useNumber(priceFormat(finalReceived)) }}</span>
-								<span class="mx-0.5">{{ trade.quote.currency.cSymbol }}</span>
-							</div>
+					</div>
+					<div class="pb-3 w-full flex justify-between">
+						<span class="text-sm font-normal">{{ $t('finalReceipt') }}:</span>
+						<div class="text-sm font-bold">
+							<span>{{ useNumber(priceFormat(finalReceived)) }}</span>
+							<span class="mx-0.5">{{ receiveCoin }}</span>
 						</div>
 					</div>
 					<div class="flex justify-start w-full">
@@ -92,6 +92,7 @@
 					</div>
 					<UButton
 						class="text-base font-medium px-12 text-black py-3 w-full flex justify-center my-4"
+						@click="submit"
 					>
 						{{ $t("confirm") }}
 					</UButton>
@@ -106,6 +107,7 @@
 </template>
 
 <script setup lang="ts">
+import { formatByDecimal } from '~/utils/format-by-decimal';
 import IconClose from '~/assets/svg-icons/close.svg';
 import { priceFormat } from '~/utils/price-format';
 import { useNumber } from '~/composables/useNumber';
@@ -114,11 +116,13 @@ import type { TradeOption } from '~/types/definitions/spot.types';
 interface PropsDefinition {
 	trades: TradeOption[];
 	finalReceived: string;
+	receiveCoin: string;
 }
 defineProps<PropsDefinition>();
 
 interface EmitDefinition {
 	(event: 'close', value: boolean): void;
+	(event: 'submit'): void;
 }
 const emit = defineEmits<EmitDefinition>();
 
@@ -126,6 +130,11 @@ const selected = ref(true);
 const translatedLabel = useT('doNotDisplayAnymore');
 
 const isOpen = ref(true);
+
+const submit = () => {
+	emit('submit');
+	closeModal(true);
+};
 
 const closeModal = async (value: boolean) => {
 	emit('close', value);

@@ -4,6 +4,8 @@
 			v-if="confirmOne"
 			:trades="tradeItems"
 			:final-received="finalReceived"
+			:receive-coin="secondSelectedSymbol"
+			@submit="finalSubmit"
 			@close="closeConfirmOne"
 		/>
 		<UContainer v-if="commissionListLoading && assetListLoading">
@@ -132,7 +134,7 @@
 								class="text-sm font-normal mr-2"
 								dir="ltr"
 							>
-								{{ tradeFee }}
+								{{ tradeFee.value }} {{ tradeFee.quote }}
 							</span>
 						</div>
 					</div>
@@ -147,10 +149,12 @@
 							</span>
 						</div>
 					</div>
+					<!-- :disabled="submitButton" -->
 					<UButton
 						class="text-base font-medium text-white dark:text-black py-3"
 						block
-						:disabled="submitButton"
+						:loading="submitOrderLoading"
+						:disabled="submitOrderLoading"
 						@click="submitOrder"
 					>
 						{{ $t("confirm") }}
@@ -165,6 +169,7 @@
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
 import { priceFormat } from '~/utils/price-format';
+import { formatByDecimal } from '~/utils/format-by-decimal';
 import TradeChangeFieldInput from '~/components/forms/TradeChangeFieldInput.vue';
 import IconChange from '~/assets/svg-icons/trade/change.svg';
 import RecentTrades from '~/components/pages/FastTrade/RecentTrades.vue';
@@ -172,7 +177,7 @@ import { AssetType, BoxMode, MiniAssetMode } from '~/utils/enums/asset.enum';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 import { CACHE_KEY_COMMISSION_LIST } from '~/utils/constants/common';
 import { MarketType } from '~/utils/enums/market.enum';
-import type { StoreOrderInstantDto, StoreOrderMarketDto, TradeOption } from '~/types/definitions/spot.types';
+import type { StoreCoinToCoinDto, StoreOrderInstantDto, StoreOrderMarketDto, TradeOption } from '~/types/definitions/spot.types';
 import type { Asset, AssetListParams } from '~/types/definitions/asset.types';
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
 import type { MarketBrief } from '~/types/definitions/market.types';
@@ -199,6 +204,8 @@ const authStore = useAuthStore();
 const worker = useBaseWorker();
 
 const route = useRoute();
+const toast = useToast();
+
 const mSymbol = String(route.query.market);
 const [currency, quote] = mSymbol.split('_');
 
@@ -209,7 +216,7 @@ const secondCurrencyBalance = ref<string>('');
 const firstSelectedSymbol = ref('');
 const secondSelectedSymbol = ref('');
 
-const submitButton = ref<boolean>(true);
+// const submitButton = ref<boolean>(true);
 
 const socketMarketIds = ref<number[]>([]);
 
@@ -252,9 +259,6 @@ const getAssetList = async () => {
 			useEnv('apiBaseUrl'),
 			result.rows,
 		);
-
-		console.log(assetList.value);
-
 		assetListLoading.value = false;
 	}
 	catch (error) {
@@ -294,6 +298,10 @@ const getCommissionList = async () => {
 	}
 };
 
+const submitOrder = () => {
+	openConfirmOne();
+};
+
 const orderInstantParams = ref<StoreOrderInstantDto>({
 	assetType: AssetType.Testnet,
 	marketId: 0,
@@ -301,6 +309,7 @@ const orderInstantParams = ref<StoreOrderInstantDto>({
 	reqByQot: '0',
 	userUniqueTag: null,
 });
+
 const orderMarketParams = ref<StoreOrderMarketDto>({
 	assetType: AssetType.Testnet,
 	marketId: 0,
@@ -308,14 +317,21 @@ const orderMarketParams = ref<StoreOrderMarketDto>({
 	reqByQnt: '0',
 	userUniqueTag: null,
 });
+
+const coinToCoinParams = ref<StoreCoinToCoinDto>({
+	assetType: AssetType.Testnet,
+	srcQnt: '0',
+	desCurrencyId: 0,
+	srcCurrencyId: 0,
+});
+
 const submitOrderLoading = ref<boolean>(false);
-const submitOrder = async () => {
+const finalSubmit = async () => {
 	try {
-		openConfirmOne();
-		return;
+		submitOrderLoading.value = true;
+
 		if (tradeItems.value.length === 1) {
 			if (tradeItems.value[0].quote.location === 'BOTTOM') {
-				submitOrderLoading.value = true;
 				orderMarketParams.value.marketId = tradeItems.value[0].market.id;
 				orderMarketParams.value.orderSide = tradeItems.value[0].type;
 				orderMarketParams.value.reqByQnt = String(tradeItems.value[0].base.value);
@@ -325,7 +341,6 @@ const submitOrder = async () => {
 				console.log('storeOrderMarket', result);
 			}
 			else {
-				submitOrderLoading.value = true;
 				orderInstantParams.value.marketId = tradeItems.value[0].market.id;
 				orderInstantParams.value.orderSide = tradeItems.value[0].type;
 				orderInstantParams.value.reqByQot = String(tradeItems.value[0].quote.value);
@@ -336,9 +351,23 @@ const submitOrder = async () => {
 			}
 		}
 		else if (tradeItems.value.length > 1) {
-			submitOrderLoading.value = true;
-			console.log('two trade');
+			coinToCoinParams.value.srcQnt = String(tradeItems.value[0].base.value);
+			coinToCoinParams.value.srcCurrencyId = tradeItems.value[0].base.currency.id;
+			coinToCoinParams.value.desCurrencyId = tradeItems.value[1].base.currency.id;
+
+			const { result } = await spotRepo.storeCoinToCoin(coinToCoinParams.value);
+			console.log('storeCoinToCoin', result);
 		}
+
+		toast.add({
+			title: useT('quickTrade'),
+			description: useT('operationSuccess'),
+			timeout: 5000,
+			color: 'green',
+		});
+
+		firstCurrencyBalance.value = '';
+		await getAssetList();
 
 		submitOrderLoading.value = false;
 	}
@@ -383,6 +412,7 @@ const findCommission = (currencyQuoteId: number) => {
 
 const setAllBalance = () => {
 	firstCurrencyBalance.value = balance.value;
+	firstCurrencyBalanceErrorMessage.value = '';
 };
 
 const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) => {
@@ -403,7 +433,6 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 	if (foundFirstCurrency && !foundSecondCurrency) {
 		const mSymbol = `${secondSelectedSymbol.value}${firstSelectedSymbol.value}`;
 		const marketItem: MarketBrief = (await worker.searchMarkets(useEnv('apiBaseUrl'), mSymbol, 1))[0];
-		console.log('---------------->marketItem', marketItem);
 
 		tradeItems.value = [{
 			type: 'Buy',
@@ -433,7 +462,6 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 	else if (!foundFirstCurrency && foundSecondCurrency) {
 		const mSymbol = `${firstSelectedSymbol.value}${secondSelectedSymbol.value}`;
 		const marketItem: MarketBrief = (await worker.searchMarkets(useEnv('apiBaseUrl'), mSymbol, 1))[0];
-		console.log('---------------->marketItem', marketItem);
 
 		tradeItems.value = [{
 			type: 'Sell',
@@ -608,14 +636,12 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 	// Get price by socket
 	await publicSocketStore.unSubscribe();
 	await publicSocketStore.addMarketIds(socketMarketIds.value);
-
-	console.log('--------------------------------------->trade.value', tradeItems.value);
 };
 
 const balance = computed(() => {
 	let result = '0';
 	if (tradeItems.value.length > 1) {
-		result = '0';
+		result = tradeItems.value[0].base.qAvailable;
 	}
 	else if (tradeItems.value.length === 1) {
 		if (tradeItems.value[0].quote.location === 'BOTTOM') {
@@ -629,22 +655,27 @@ const balance = computed(() => {
 });
 
 const tradeFee = computed(() => {
-	let fee = '';
+	const fee = {
+		value: '',
+		quote: '',
+	};
 	if (tradeItems.value.length > 1) {
-		fee = `${useNumber(
+		fee.value = `${useNumber(
 			priceFormat(
 			formatByDecimal(
 			Number(tradeItems.value.map((x) => x.fee).reduce((sum, fee) => sum + fee, 0).toString()), tradeItems.value[0].quote.currency.unit),
-		),
-	)} USDT`;
+		))}`;
+
+		fee.quote = 'USDT';
 	}
 	else if (tradeItems.value.length === 1) {
-		fee = `${useNumber(
+		fee.value = `${useNumber(
 			priceFormat(
 				formatByDecimal(
 					Number(tradeItems.value.map((x) => x.fee).reduce((sum, fee) => sum + fee, 0).toString()), tradeItems.value[0].quote.currency.unit),
 				),
-			)} ${tradeItems.value[0].quote.currency.cSymbol}`;
+			)}`;
+		fee.quote = tradeItems.value[0].quote.currency.cSymbol;
 	}
 	return fee;
 });
@@ -652,73 +683,82 @@ const tradeFee = computed(() => {
 const finalReceived = computed(() => {
 	let received = '';
 	if (tradeItems.value.length > 1) {
-
-		// fee = `${useNumber(priceFormat(tradeItems.value.map((x) => x.fee).reduce((sum, fee) => sum + fee, 0).toString()))} USDT`;
+		const calc = ((tradeItems.value[0].quote.value - Number(tradeFee.value.value)) / tradeItems.value[1].market.price);
+		const unit = tradeItems.value[1].base.currency.unit;
+		received = useNumber(priceFormat(formatByDecimal(calc, unit)));
 	}
 	else if (tradeItems.value.length === 1) {
-		received = useNumber(priceFormat(tradeItems.value[0].quote.value - tradeItems.value[0].fee));
+		if (tradeItems.value[0].quote.location === 'BOTTOM') {
+			received = useNumber(
+				priceFormat(formatByDecimal(
+					tradeItems.value[0].quote.value - tradeItems.value[0].fee,
+					tradeItems.value[0].quote.currency.unit)),
+			);
+		}
+		else {
+			received = useNumber(
+				priceFormat(formatByDecimal(
+					tradeItems.value[0].base.value - (tradeItems.value[0].fee / tradeItems.value[0].market.price),
+					tradeItems.value[0].base.currency.unit)),
+			);
+		}
 	}
 	return received;
 });
 
-const formatByDecimal = (value: number, decimal: string) => {
-	const decimalPlaces = Math.max(decimal.toString().split('.')[1]?.length);
-	console.log('value', value);
-	console.log('decimal', decimal);
+const fieldDataCalculation = (input: string) => {
+	if (tradeItems.value.length === 1) {
+		const marketPrice = tradeItems.value[0].market.price;
 
-	return Number(value.toFixed(decimalPlaces));
+		// If the quote is below, it means you want to sell coin
+		if (tradeItems.value[0].quote.location === 'BOTTOM') {
+			tradeItems.value[0].base.value = Number(input);
+			const balancePrice = (tradeItems.value[0].base.value * marketPrice);
+			tradeItems.value[0].quote.value = formatByDecimal(balancePrice, tradeItems.value[0].quote.currency.unit);
+			secondCurrencyBalance.value = String(tradeItems.value[0].quote.value);
+		}
+		else if (tradeItems.value[0].quote.location === 'TOP') {
+			tradeItems.value[0].quote.value = Number(input);
+			const balanceBase = tradeItems.value[0].quote.value / marketPrice;
+			tradeItems.value[0].base.value = formatByDecimal(balanceBase, tradeItems.value[0].base.currency.unit);
+			secondCurrencyBalance.value = String(tradeItems.value[0].base.value);
+		}
+
+		tradeItems.value[0].fee = (tradeItems.value[0].quote.value * Number(tradeItems.value[0].takerFee)) / 100;
+	}
+	else if (tradeItems.value.length === 2) {
+		// Top calculation
+		const topMarketPrice = tradeItems.value[0].market.price;
+		tradeItems.value[0].base.value = Number(input);
+		const topBalancePrice = (tradeItems.value[0].base.value * topMarketPrice);
+		tradeItems.value[0].quote.value = formatByDecimal(topBalancePrice, tradeItems.value[0].quote.currency.unit);
+
+		tradeItems.value[0].fee = (tradeItems.value[0].quote.value * Number(tradeItems.value[0].takerFee)) / 100;
+
+		// Bottom calculation
+		const bottomMarketPrice = tradeItems.value[1].market.price;
+		tradeItems.value[1].quote.value = tradeItems.value[0].quote.value;
+		const bottomBalanceBase = tradeItems.value[1].quote.value / bottomMarketPrice;
+		tradeItems.value[1].base.value = formatByDecimal(bottomBalanceBase, tradeItems.value[1].base.currency.unit);
+		secondCurrencyBalance.value = String(tradeItems.value[1].base.value);
+
+		tradeItems.value[1].fee = (tradeItems.value[1].quote.value * Number(tradeItems.value[1].takerFee)) / 100;
+	}
+
+	// Check balance and input value
+	if (Number(firstCurrencyBalance.value) > Number(balance.value)) {
+		firstCurrencyBalanceErrorMessage.value = useT('paymentExceedsBalance');
+	}
+	else {
+		firstCurrencyBalanceErrorMessage.value = '';
+	}
 };
 
 watch(
 	() => firstCurrencyBalance.value,
 	(newBalance) => {
 		if (newBalance) {
-			if (tradeItems.value.length === 1) {
-				// const tickSize = tradeItems.value[0].market.tickSize;
-				const marketPrice = tradeItems.value[0].market.price;
-
-				// If the quote is below, it means you want to sell coin
-				if (tradeItems.value[0].quote.location === 'BOTTOM') {
-					tradeItems.value[0].base.value = Number(newBalance);
-					const balancePrice = (tradeItems.value[0].base.value * marketPrice);
-					tradeItems.value[0].quote.value = formatByDecimal(balancePrice, tradeItems.value[0].quote.currency.unit);
-					secondCurrencyBalance.value = String(tradeItems.value[0].quote.value);
-				}
-				else if (tradeItems.value[0].quote.location === 'TOP') {
-					tradeItems.value[0].quote.value = Number(newBalance);
-					const balanceBase = tradeItems.value[0].quote.value / marketPrice;
-					tradeItems.value[0].base.value = formatByDecimal(balanceBase, tradeItems.value[0].base.currency.unit);
-					secondCurrencyBalance.value = String(tradeItems.value[0].base.value);
-				}
-
-				tradeItems.value[0].fee = (tradeItems.value[0].quote.value * Number(tradeItems.value[0].takerFee)) / 100;
-			}
-			else if (tradeItems.value.length === 2) {
-				// Top calculation
-				// const topTickSize = tradeItems.value[0].market.tickSize;
-				const topMarketPrice = tradeItems.value[0].market.price;
-				tradeItems.value[0].base.value = Number(newBalance);
-				const topBalancePrice = (tradeItems.value[0].base.value * topMarketPrice);
-				tradeItems.value[0].quote.value = formatByDecimal(topBalancePrice, tradeItems.value[0].quote.currency.unit);
-
-				tradeItems.value[0].fee = (tradeItems.value[0].quote.value * Number(tradeItems.value[0].takerFee)) / 100;
-
-				// Bottom calculation
-				// const bottomTickSize = tradeItems.value[1].market.tickSize;
-				const bottomMarketPrice = tradeItems.value[1].market.price;
-				tradeItems.value[1].quote.value = tradeItems.value[0].quote.value;
-				const bottomBalanceBase = tradeItems.value[1].quote.value / bottomMarketPrice;
-				tradeItems.value[1].base.value = formatByDecimal(bottomBalanceBase, tradeItems.value[1].base.currency.unit);
-				secondCurrencyBalance.value = String(tradeItems.value[1].base.value);
-
-				tradeItems.value[1].fee = (tradeItems.value[1].quote.value * Number(tradeItems.value[1].takerFee)) / 100;
-			}
-
-			console.log('final 111111111111111', tradeItems.value);
-			// Check balance and input value
-			if (firstCurrencyBalance.value > balance.value) {
-				firstCurrencyBalanceErrorMessage.value = useT('paymentExceedsBalance');
-			}
+			fieldDataCalculation(newBalance);
 		}
 		else {
 			secondCurrencyBalance.value = '';
@@ -746,6 +786,9 @@ watch(
 					}
 				});
 			});
+
+			// Check calculation again
+			fieldDataCalculation(firstCurrencyBalance.value);
 		}
 	},
 	{ deep: true },

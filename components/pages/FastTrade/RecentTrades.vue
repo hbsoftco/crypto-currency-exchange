@@ -7,18 +7,9 @@
 						<th class="pb-2 px-2 text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
 							{{ $t('from') }}
 						</th>
-						<!-- <th class="py-2 text-xs font-normal">
-							{{ $t('count') }}
-						</th> -->
 						<th class="py-2 px-2 text-xs font-normal">
 							{{ $t('to') }}
 						</th>
-						<!-- <th class="py-2 px-2 text-xs font-normal">
-							{{ $t('turnedInto') }}
-						</th>
-						<th class="py-2 px-2 text-xs font-normal">
-							{{ $t('amount') }}
-						</th> -->
 						<th class="py-2 px-2 text-xs font-normal">
 							{{ $t('price') }}
 						</th>
@@ -28,9 +19,6 @@
 						<th class="py-2 px-2 text-xs font-normal">
 							{{ $t('date') }}
 						</th>
-						<!-- <th class="py-2 px-2 text-xs font-normal">
-							{{ $t('status') }}
-						</th> -->
 					</tr>
 				</thead>
 				<tbody>
@@ -53,7 +41,7 @@
 						>
 							<div class="flex items-center">
 								<img
-									:src="`https://api-bitland.site/media/currency/${findSymbol(trade.mSymbol, 'currency')}.png`"
+									:src="`https://api-bitland.site/media/currency/${trade.sideId===1 ? findSymbol(trade.mSymbol, 'quote') : findSymbol(trade.mSymbol, 'currency')}.png`"
 									:alt="trade?.mSymbol"
 									class="w-4 h-4 rounded-full mx-1"
 								>
@@ -73,15 +61,12 @@
 								</span>
 							</div>
 						</td>
-						<!-- <td class="text-xs font-normal py-2">
-							{{ useNumber(trade.reqQot) }}
-						</td> -->
 						<td
 							class="text-xs font-normal py-2"
 						>
 							<div class="flex items-center">
 								<img
-									:src="`https://api-bitland.site/media/currency/${findSymbol(trade.mSymbol, 'currency')}.png`"
+									:src="`https://api-bitland.site/media/currency/${trade.sideId===2 ? findSymbol(trade.mSymbol, 'quote') : findSymbol(trade.mSymbol, 'currency')}.png`"
 									:alt="trade?.mSymbol"
 									class="w-4 h-4 rounded-full mx-1"
 								>
@@ -101,19 +86,6 @@
 								</span>
 							</div>
 						</td>
-						<!-- <td class="text-xs font-normal py-2">
-							<span class=" flex items-center">
-								<img
-									:src="`https://api-bitland.site/media/currency/${findSymbol(trade.mSymbol, 'currency')}.png`"
-									:alt="trade?.mSymbol"
-									class="w-4 h-4 rounded-full mx-1"
-								>
-								{{ trade.mSymbol }}
-							</span>
-						</td>
-						<td class="text-xs font-normal py-2">
-							{{ useNumber(trade.spentApplied) }}
-						</td> -->
 						<td class="text-xs font-normal py-2 cursor-pointer">
 							<UPopover mode="hover">
 								<template
@@ -182,13 +154,10 @@
 							</UPopover>
 						</td>
 						<td class="text-xs font-normal text-black dark:text-white py-2">
-							<span>
+							<span dir="ltr">
 								{{ useNumber(formatDateToIranTime(trade.regTime)) }}
 							</span>
 						</td>
-						<!-- <td class="text-xs font-normal py-2">
-							{{ $t(trade.orderStateName) }}
-						</td> -->
 					</tr>
 				</tbody>
 			</table>
@@ -234,7 +203,7 @@
 						>
 							<div class="flex items-center">
 								<img
-									:src="`https://api-bitland.site/media/currency/${findSymbol(trade.mSymbol, 'currency')}.png`"
+									:src="`https://api-bitland.site/media/currency/${trade.sideId===1 ? findSymbol(trade.mSymbol, 'quote') : findSymbol(trade.mSymbol, 'currency')}.png`"
 									:alt="trade?.mSymbol"
 									class="w-4 h-4 rounded-full mx-1"
 								>
@@ -259,7 +228,7 @@
 						>
 							<div class="flex items-center">
 								<img
-									:src="`https://api-bitland.site/media/currency/${findSymbol(trade.mSymbol, 'currency')}.png`"
+									:src="`https://api-bitland.site/media/currency/${trade.sideId===2 ? findSymbol(trade.mSymbol, 'quote') : findSymbol(trade.mSymbol, 'currency')}.png`"
 									:alt="trade?.mSymbol"
 									class="w-4 h-4 rounded-full mx-1"
 								>

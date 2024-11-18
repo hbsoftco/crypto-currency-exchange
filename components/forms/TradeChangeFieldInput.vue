@@ -94,7 +94,7 @@
 				>
 				<div
 					v-else
-					class="outline-none text-left p-1 bg-transparent z-10"
+					class="outline-none text-left p-1 bg-transparent z-10 cursor-text"
 				>
 					{{ useNumber(priceFormat(internalValue)) }}
 				</div>

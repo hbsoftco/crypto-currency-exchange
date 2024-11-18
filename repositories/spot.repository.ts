@@ -9,6 +9,7 @@ import type {
 	KLineResponse,
 	OrderListParams,
 	SpotResponse,
+	StoreCoinToCoinDto,
 	StoreOrderInstantDto,
 	StoreOrderMarketDto,
 	TradeListParams } from '~/types/definitions/spot.types';
@@ -20,6 +21,7 @@ type SpotRepository = {
 	getOrderList: (params: OrderListParams) => Promise<SpotResponse>;
 	storeOrderMarket: (dto: StoreOrderMarketDto) => Promise<CommonResponse>;
 	storeOrderInstant: (dto: StoreOrderInstantDto) => Promise<CommonResponse>;
+	storeCoinToCoin: (dto: StoreCoinToCoinDto) => Promise<CommonResponse>;
 	deleteOpenOrder: (dto: DeleteOpenOrderDto) => Promise<CommonResponse>;
 
 	getSpotData: (params: SpotDataParams) => Promise<GetSpotDataResponse>;
@@ -84,6 +86,16 @@ export const spotRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SpotR
 	},
 	async storeOrderInstant(dto: StoreOrderInstantDto): Promise<CommonResponse> {
 		const url = `/v1/spot/order/instant`;
+		const response = await fetch<CommonResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async storeCoinToCoin(dto: StoreCoinToCoinDto): Promise<CommonResponse> {
+		const url = `/v1/spot/order/coin2coin`;
 		const response = await fetch<CommonResponse>(`${url}`, {
 			noAuth: false,
 			method: 'POST',
