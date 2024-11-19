@@ -8,12 +8,12 @@
 			<CurrencySlider />
 		</section>
 		<section>
-			<MarketTable />
+			<!-- <MarketTable /> -->
 		</section>
 	</UContainer>
 </template>
 
 <script setup lang="ts">
 import CurrencySlider from '~/components/pages/Market/Upcoming/CurrencySlider.vue';
-import MarketTable from '~/components/pages/Market/Upcoming/MarketTable.vue';
+// import MarketTable from '~/components/pages/Market/Upcoming/MarketTable.vue';
 </script>

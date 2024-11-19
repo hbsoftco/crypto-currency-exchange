@@ -80,6 +80,7 @@ const menuItems = ref([
 		hover: false,
 		subItems: [{ name: 'Sub-item 1' }, { name: 'Sub-item 2' }],
 		timeout: null,
+		deley: false,
 	},
 	{
 		name: 'professionalDeal',
@@ -89,6 +90,7 @@ const menuItems = ref([
 		hover: false,
 		subItems: [{ name: 'Sub-item 3' }, { name: 'Sub-item 4' }],
 		timeout: null,
+		deley: true,
 	},
 	{
 		name: 'listOrdersTransactions',
@@ -97,6 +99,8 @@ const menuItems = ref([
 		hover: false,
 		link: '/spot/list',
 		timeout: null,
+		deley: false,
+
 	},
 	{
 		name: 'trialTransaction',
@@ -105,17 +109,28 @@ const menuItems = ref([
 		hover: false,
 		link: '/spot/list',
 		timeout: null,
+		deley: false,
 	},
 ]);
 
 const showSubmenu = (index) => {
+	if (menuItems.value[1].hover && index === 0) {
+		menuItems.value[1].hover = false;
+		clearTimeout(menuItems.value[1].timeout);
+	}
+
 	clearTimeout(menuItems.value[index].timeout);
 	menuItems.value[index].hover = true;
 };
 
 const delayedHideSubmenu = (index) => {
-	menuItems.value[index].timeout = setTimeout(() => {
+	if (menuItems.value[index].deley) {
+		menuItems.value[index].timeout = setTimeout(() => {
+			menuItems.value[index].hover = false;
+		}, 500);
+	}
+	else {
 		menuItems.value[index].hover = false;
-	}, 500);
+	}
 };
 </script>

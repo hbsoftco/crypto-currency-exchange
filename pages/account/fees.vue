@@ -191,7 +191,7 @@ const getTraderCommissionList = async () => {
 
 		const { result } = await userRepo.getTraderCommissionList({ marketType: String(MarketType.SPOT) });
 
-		userTraderCommission.value = result.rows;
+		userTraderCommission.value = result.rows as Commission[];
 		console.log('userTraderCommission.value', userTraderCommission.value);
 
 		userTraderCommissionListLoading.value = true;
