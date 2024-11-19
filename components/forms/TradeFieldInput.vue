@@ -5,8 +5,57 @@
 				errorMessage ? 'border-accent-red focus:border-accent-red' : 'border-gray-600  focus:border-primary-yellow-light dark:focus:border-primary-yellow-dark',
 			]"
 		>
-			<div class="absolute left-2 top-2 cursor-pointer">
+			<div
+				class="absolute left-2 top-2"
+				:class="[disableSelection? 'cursor-default': 'cursor-pointer']"
+			>
+				<div
+					v-if="disableSelection"
+					class="relative top-1 left-8"
+				>
+					<div
+						v-if="currenciesLoading"
+						class="flex justify-between items-center"
+					>
+						<div class="ml-1.5 mt-1">
+							<USkeleton
+								class="w-6 h-6 ml-1 bg-primary-gray-light dark:bg-primary-gray-dark"
+								:ui="{ rounded: 'rounded-full' }"
+							/>
+						</div>
+						<div class="flex flex-col items-start min-w-20">
+							<div>
+								<USkeleton class="h-2.5 w-10 bg-primary-gray-light dark:bg-primary-gray-dark" />
+							</div>
+							<div>
+								<USkeleton class="h-2.5 w-8 mt-1.5 bg-primary-gray-light dark:bg-primary-gray-dark" />
+							</div>
+						</div>
+					</div>
+					<div
+						v-else
+						class="flex justify-start items-center mt-1"
+					>
+						<div
+							v-if="selected?.cSymbol"
+							class="ml-1.5 mr-6"
+						>
+							<img
+								:src="`https://api-bitland.site/media/currency/${selected?.cSymbol}.png`"
+								:alt="selected?.cSymbol"
+								class="w-6 h-6 rounded-full"
+							>
+						</div>
+						<div class="min-w-10 text-right">
+							<div>
+								<span class="text-base mt-1 font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ selected?.cSymbol }}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
 				<USelectMenu
+					v-else
 					:key="props.ignoreCurrency"
 					v-model="selected"
 					v-model:selectedCurrency="internalSelectedCurrency"
@@ -16,6 +65,7 @@
 					:searchable-placeholder="`${$t('search')}...`"
 					:searchable="search"
 					:options="filteredCurrencies"
+					:disabled="disableSelection"
 				>
 					<template #option="{ option }">
 						<div class="flex flex-col justify-start items-start">
@@ -50,7 +100,7 @@
 						>
 							<div
 								v-if="selected?.cSymbol"
-								class="ml-1.5"
+								class="ml-1.5 mr-6"
 							>
 								<img
 									:src="`https://api-bitland.site/media/currency/${selected?.cSymbol}.png`"
@@ -58,7 +108,7 @@
 									class="w-6 h-6 rounded-full"
 								>
 							</div>
-							<div class="min-w-20 text-right">
+							<div class="min-w-10 text-right">
 								<div>
 									<span class="text-base mt-1 font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ selected?.cSymbol }}</span>
 								</div>
@@ -76,15 +126,23 @@
 				</USelectMenu>
 			</div>
 
-			<div class="absolute right-2 top-4">
+			<div class="absolute left-32 top-4">
 				<input
+					v-if="!showText"
+					v-model="internalValue"
 					placeholder="0.00"
 					type="text"
-					class="outline-none text-right p-1 bg-transparent z-10"
+					class="outline-none text-left p-1 bg-transparent z-10"
 					dir="ltr"
 					:readonly="readonly"
 					@input="onInput"
 				>
+				<div
+					v-else
+					class="outline-none text-right p-1 bg-transparent z-10 w-full cursor-text"
+				>
+					{{ useNumber(priceFormat(internalValue)) }}
+				</div>
 			</div>
 
 			<label
@@ -107,8 +165,8 @@
 <script setup lang="ts">
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
-// import { useNumber } from '~/composables/useNumber';
-// import { priceFormat } from '~/utils/price-format';
+import { useNumber } from '~/composables/useNumber';
+import { priceFormat } from '~/utils/price-format';
 
 interface Props {
 	id: string;
@@ -121,6 +179,7 @@ interface Props {
 	required?: boolean;
 	readonly?: boolean;
 	disabled?: boolean;
+	disableSelection?: boolean;
 	inputClass?: string;
 	labelClass?: string;
 	icon?: string;
@@ -147,7 +206,17 @@ const selected = ref<CurrencyBrief>();
 const currenciesLoading = ref<boolean>(true);
 const initCurrencies = async () => {
 	currenciesLoading.value = true;
-	filteredCurrencies.value = await currencyWorker.searchCurrencies('', 400, useEnv('apiBaseUrl'), props.ignoreCurrency);
+	const inputs = await currencyWorker.searchCurrencies('', 400, useEnv('apiBaseUrl'), props.ignoreCurrency);
+	filteredCurrencies.value = inputs;
+
+	if (props.disableSelection) {
+		const result = await currencyWorker.getReadyCurrencyWithIndex(useEnv('apiBaseUrl'), inputs, props.selectedSymbol);
+
+		if (result) {
+			filteredCurrencies.value = result.updatedCurrencies;
+			selected.value = filteredCurrencies.value[result.index];
+		}
+	}
 	currenciesLoading.value = false;
 };
 

@@ -16,12 +16,16 @@
 			placeholder=""
 			icon=""
 			:show-text="false"
+			:disable-selection="true"
 			dir="rtl"
 			:error-message="firstCurrencyBalanceErrorMessage"
 			@item-selected="getFirstSelectedCurrency"
 		/>
 		<div class="flex justify-center">
-			<IconChange class="text-2xl text-subtle-text-light dark:text-subtle-text-dark cursor-pointer" @click="replacementMarket" />
+			<IconChange
+				class="text-2xl text-subtle-text-light dark:text-subtle-text-dark cursor-pointer"
+				@click="replacementMarket"
+			/>
 		</div>
 		<TradeFieldInput
 			v-if="secondSelectedSymbol"
@@ -39,10 +43,20 @@
 			dir="rtl"
 			@item-selected="getSecondSelectedCurrency"
 		/>
-		<div class="my-2 mx-1">
-			<span>MX=</span><span> {{ useNumber('2.83') }} </span><span>USD</span>
+		<div
+			v-for="trade in tradeItems"
+			:key="trade.market.id"
+			class="my-2 mx-1"
+		>
+			<span class="mr-0.5">{{ useNumber(1) }}</span>
+			<span>{{ trade.base.currency.cSymbol }}</span>
+			<span class="mx-1">≈</span>
+			<span class="mr-0.5">{{ useNumber(priceFormat(trade.market.price)) }} </span>
+			<span>{{ trade.quote.currency.cSymbol }}</span>
 		</div>
 		<UButton
+			v-if="tradeItems.length"
+			:to="checkPathLink(`/fast-trade?market=${splitMarket(tradeItems[0].base.currency.cSymbol + tradeItems[0].quote.currency.cSymbol)}`, false)"
 			class="flex justify-center w-full h-12 my-4 bg-primary-yellow-light dark:bg-primary-yellow-dark shadow-none border border-primary-yellow"
 		>
 			<span class="text-base font-extrabold">{{ $t('trade') }}</span>
@@ -54,14 +68,21 @@
 import TradeFieldInput from '~/components/forms/TradeFieldInput.vue';
 import IconChange from '~/assets/svg-icons/market/change.svg';
 import { useNumber } from '~/composables/useNumber';
+import { priceFormat } from '~/utils/price-format';
+import { splitMarket } from '~/utils/split-market';
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
 import type { TradeOption } from '~/types/definitions/spot.types';
 import type { Quote } from '~/types/definitions/quote.types';
-import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 import type { MarketBrief } from '~/types/definitions/market.types';
+import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 import { MarketType } from '~/utils/enums/market.enum';
 
+const route = useRoute();
+const cSymbol = String(route.params.cSymbol);
+
 const publicSocketStore = usePublicSocketStore();
+
+const { checkPathLink } = useLinkManager();
 
 const worker = useBaseWorker();
 
@@ -69,7 +90,7 @@ const firstCurrencyBalanceErrorMessage = ref<string>('');
 
 const firstCurrencyBalance = ref<string>('');
 const secondCurrencyBalance = ref<string>('');
-const firstSelectedSymbol = ref('btc');
+const firstSelectedSymbol = ref(cSymbol);
 const secondSelectedSymbol = ref('usdt');
 
 const firstSelectedCurrency = ref<CurrencyBrief>();
@@ -286,10 +307,11 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 		}
 	}
 
-	socketMarketIds.value = [];
+	if (socketMarketIds.value.length) {
+		await publicSocketStore.removeMarketIds(socketMarketIds.value);
+	}
 
-	// Get price by socket
-	// await publicSocketStore.unSubscribe();
+	socketMarketIds.value = tradeItems.value.map((item) => item.market.id);
 	await publicSocketStore.addMarketIds(socketMarketIds.value);
 };
 
@@ -310,8 +332,6 @@ const fieldDataCalculation = (input: string) => {
 			tradeItems.value[0].base.value = formatByDecimal(balanceBase, tradeItems.value[0].base.currency.unit);
 			secondCurrencyBalance.value = String(tradeItems.value[0].base.value);
 		}
-
-		tradeItems.value[0].fee = (tradeItems.value[0].quote.value * Number(tradeItems.value[0].takerFee)) / 100;
 	}
 	else if (tradeItems.value.length === 2) {
 		// Top calculation
@@ -320,26 +340,18 @@ const fieldDataCalculation = (input: string) => {
 		const topBalancePrice = (tradeItems.value[0].base.value * topMarketPrice);
 		tradeItems.value[0].quote.value = formatByDecimal(topBalancePrice, tradeItems.value[0].quote.currency.unit);
 
-		tradeItems.value[0].fee = (tradeItems.value[0].quote.value * Number(tradeItems.value[0].takerFee)) / 100;
-
 		// Bottom calculation
 		const bottomMarketPrice = tradeItems.value[1].market.price;
 		tradeItems.value[1].quote.value = tradeItems.value[0].quote.value;
 		const bottomBalanceBase = tradeItems.value[1].quote.value / bottomMarketPrice;
 		tradeItems.value[1].base.value = formatByDecimal(bottomBalanceBase, tradeItems.value[1].base.currency.unit);
 		secondCurrencyBalance.value = String(tradeItems.value[1].base.value);
-
-		tradeItems.value[1].fee = (tradeItems.value[1].quote.value * Number(tradeItems.value[1].takerFee)) / 100;
 	}
-
-	console.log('========================> tradeItems.value', tradeItems.value);
 };
 
 watch(
 	() => firstCurrencyBalance.value,
 	(newBalance) => {
-		console.log('=====> newBalance', newBalance);
-
 		if (newBalance) {
 			fieldDataCalculation(newBalance);
 		}
@@ -352,6 +364,26 @@ watch(
 				tradeItems.value[index].base.value = 0;
 				tradeItems.value[index].quote.value = 0;
 			});
+		}
+	},
+	{ deep: true },
+);
+
+watch(
+	() => publicSocketStore.latestMarketData,
+	(newData) => {
+		if (newData) {
+			newData.forEach((updatedMarket) => {
+				const marketId = updatedMarket.data.mi;
+				tradeItems.value.forEach((item, index) => {
+					if (tradeItems.value[index].market.id === marketId) {
+						tradeItems.value[index].market.price = Number(updatedMarket.data.i);
+					}
+				});
+			});
+
+			// Check calculation again
+			fieldDataCalculation(firstCurrencyBalance.value);
 		}
 	},
 	{ deep: true },
@@ -374,8 +406,6 @@ onMounted(async () => {
 
 	firstSelectedCurrency.value = (await worker.searchCurrencies(firstSelectedSymbol.value, 1, useEnv('apiBaseUrl')))[0] ?? null;
 	secondSelectedCurrency.value = (await worker.searchCurrencies(secondSelectedSymbol.value, 1, useEnv('apiBaseUrl')))[0] ?? null;
-
-	console.log('(firstSelectedSymbol.value, secondSelectedSymbol.value)', firstSelectedSymbol.value, secondSelectedSymbol.value);
 
 	await getReadyTrade(firstSelectedSymbol.value, secondSelectedSymbol.value);
 });

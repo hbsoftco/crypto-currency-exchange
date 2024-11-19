@@ -69,6 +69,23 @@ const findCurrencyById = async (id: number, baseUrl: string): Promise<CurrencyBr
 	return null;
 };
 
+const findCurrenciesByIds = async (ids: number[], baseUrl: string): Promise<CurrencyBrief[]> => {
+	const results: CurrencyBrief[] = [];
+
+	if (!currencyBriefItems.length) {
+		await fetchCurrencyBriefItems(baseUrl);
+	}
+
+	for (const id of ids) {
+		const currency = await findCurrencyById(id, baseUrl);
+		if (currency) {
+			results.push(currency);
+		}
+	}
+
+	return results;
+};
+
 const findCurrencyBycSymbol = async (cSymbol: string, baseUrl: string): Promise<CurrencyBrief | null> => {
 	if (!currencyBriefItems.length) {
 		await fetchCurrencyBriefItems(baseUrl);
@@ -487,6 +504,7 @@ Comlink.expose({
 	addCurrencyToMarketStates,
 	fetchCurrencyBriefItems,
 	findCurrencyById,
+	findCurrenciesByIds,
 	findCurrencyBycSymbol,
 	searchCurrencies,
 	getReadyCurrencyWithIndex,
