@@ -89,6 +89,8 @@
 
 			<div class="flex justify-center py-4">
 				<UPagination
+					v-if="totalCount && paginationNumbers.showPagination"
+					ref="pagination"
 					:model-value="Number(marketsPageStore.params.pageNumber)"
 					:page-count="20"
 					:total="totalCount"
@@ -111,6 +113,8 @@ import { MarketType } from '~/utils/enums/market.enum';
 import { marketRepository } from '~/repositories/market.repository';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 import type { MarketL31 } from '~/types/definitions/market.types';
+import type { UPagination } from '#build/components';
+import { usePaginationNumbers } from '~/composables/usePaginationNumbers';
 
 const { $api } = useNuxtApp();
 const marketRepo = marketRepository($api);
@@ -121,11 +125,14 @@ const authStore = useAuthStore();
 
 const worker = useBaseWorker();
 
+const paginationNumbers = usePaginationNumbers();
+
 interface PropsDefinition {
 	searchQuery: string;
 }
-
 const props = defineProps<PropsDefinition>();
+
+const pagination = ref<InstanceType<typeof UPagination>>();
 
 const totalCount = ref(0);
 
@@ -165,11 +172,27 @@ const getMarketListL31 = async () => {
 		await publicSocketStore.addMarketIds(socketMarketIds.value);
 
 		marketsLoading.value = false;
+
+		if (pagination.value) {
+			paginationNumbers.applyChangesToLinks(pagination.value);
+		}
 	}
 	catch (error: unknown) {
 		console.log(error);
 	}
 };
+
+watch(() => useChangeNumber().getLanguage(), () => {
+	if (pagination.value) {
+		paginationNumbers.applyChangesToLinks(pagination.value);
+	}
+});
+
+watch(() => marketsPageStore.params.pageNumber, () => {
+	if (pagination.value) {
+		paginationNumbers.applyChangesToLinks(pagination.value);
+	}
+}, { deep: true });
 
 onMounted(async () => {
 	marketsPageStore.params.searchStatement = '';
