@@ -6,6 +6,7 @@
 	>
 		<div class="flex flex-row-reverse items-center">
 			<img
+				v-if="market.currency"
 				:src="`https://api-bitland.site/media/currency/${market?.currency?.cSymbol}.png`"
 				:alt="market?.currency?.cName"
 				class="w-8 h-8 mr-3 rounded-full"

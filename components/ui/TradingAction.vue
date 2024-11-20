@@ -1,6 +1,7 @@
 <template>
 	<div class="flex items-center">
 		<img
+			v-if="market.currency"
 			:src="`https://api-bitland.site/media/currency/${market?.currency?.cSymbol}.png`"
 			:alt="market?.currency?.cName"
 			class="w-4 h-4 md:w-8 md:h-8 rounded-full"
