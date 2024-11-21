@@ -96,9 +96,9 @@
 			</SkipHydration>
 		</section>
 
-		<section>
+		<!-- <section>
 			<PagesSiteMainPageArticleBlog />
-		</section>
+		</section> -->
 	</div>
 </template>
 

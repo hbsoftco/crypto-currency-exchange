@@ -4,6 +4,7 @@
 		class="hover:bg-hover-light hover:rounded-lg dark:hover:bg-hover-dark"
 		@mouseenter="isHovered=true"
 		@mouseleave="isHovered = false"
+		@click="linkJustInMobile()"
 	>
 		<td class="py-2 px-0 md:px-2 flex justify-start items-center space-x-2 max-w-36 w-36 md:max-w-80 md:w-80">
 			<TradingAction
@@ -55,12 +56,13 @@ interface Props {
 	row: MarketL21;
 	socketData: SocketSpotData | null;
 }
-
 const props = defineProps<Props>();
 
 const { $mobileDetect } = useNuxtApp();
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
+
+const router = useRouter();
 
 const localRow = ref({ ...props.row });
 const bgClass = ref('');
@@ -88,6 +90,12 @@ watch(() => props.socketData, (newData) => {
 		}, 500);
 	}
 });
+
+const linkJustInMobile = () => {
+	if (isMobile.value) {
+		router.push(`/coins/${props.row.currency?.cSymbol}`);
+	}
+};
 
 const rowClass = computed(() => `${bgClass.value} transition duration-500`);
 

@@ -15,7 +15,7 @@
 				<span class="text-sm md:text-base text-subtle-text-light dark:text-subtle-text-50">{{ market?.quote?.cName }}</span>
 			</div>
 			<div
-				v-if="!isHovered"
+				v-if="isMobile"
 				class="text-right block pt-1"
 				dir="ltr"
 			>
@@ -24,7 +24,16 @@
 				<span class="text-sm md:text-base text-subtle-text-light dark:text-subtle-text-50">{{ market?.quote?.cSymbol }}</span>
 			</div>
 			<div
-				v-if="isHovered"
+				v-if="!isHovered && !isMobile"
+				class="text-right block pt-1"
+				dir="ltr"
+			>
+				<strong class="text-sm md:text-base text-text-dark dark:text-text-light">{{ market?.currency?.cSymbol }}</strong>
+				<span class="text-sm md:text-base text-subtle-text-light dark:text-subtle-text-50 px-0.5">/</span>
+				<span class="text-sm md:text-base text-subtle-text-light dark:text-subtle-text-50">{{ market?.quote?.cSymbol }}</span>
+			</div>
+			<div
+				v-if="isHovered && !isMobile"
 				class="block"
 			>
 				<UButton
@@ -55,6 +64,14 @@ interface Props {
 	market: MarketL21;
 	isHovered: boolean;
 }
-
 defineProps<Props>();
+
+const { $mobileDetect } = useNuxtApp();
+
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
+
+onMounted(async () => {
+	isMobile.value = !!mobileDetect.mobile();
+});
 </script>

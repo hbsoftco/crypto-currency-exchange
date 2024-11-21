@@ -1094,6 +1094,9 @@ const persian = {
 	rawFeeAmount: 'مبلغ کارمزد بدون تخفیف',
 	finalFeePercentage: 'درصد کارمزد بعد از تخفیف',
 	finalFeeAmount: 'مبلغ کارمزد بعد از تخفیف',
+	changeIn24h: 'تغییر در ۲۴ ساعت گذشته',
+	volumeIn24h: 'حجم معاملات در ۲۴ ساعت گذشته',
+	coin: 'ارز',
 };
 
 export default persian;

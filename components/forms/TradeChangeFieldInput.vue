@@ -11,7 +11,6 @@
 					v-model:selectedCurrency="internalSelectedCurrency"
 					variant="none"
 					:ui="{ select: 'cursor-pointer' }"
-					:loading="searchLoading"
 					:searchable-placeholder="`${$t('search')}...`"
 					:searchable="search"
 					:options="filteredCurrencies"
@@ -84,7 +83,7 @@
 					v-if="!showText"
 					v-model="internalValue"
 					step=".01"
-					placeholder="0.00"
+					:placeholder="useNumber(0.00)"
 					:type="type"
 					:readonly="readonly"
 					dir="ltr"
@@ -146,6 +145,7 @@ const props = defineProps<Props>();
 
 interface EmitDefinition {
 	(event: 'update:modelValue', value: unknown): void;
+	(event: 'input', value: number): void;
 	(event: 'update:selectedSymbol', value: string): void;
 	(event: 'item-selected', value: CurrencyBrief): void;
 }
@@ -208,6 +208,10 @@ watch(() => props.selectedSymbol, async () => {
 
 watch(internalValue, (newValue) => {
 	emit('update:modelValue', newValue);
+	const englishNumber = convertPersianToEnglishNumber(String(newValue));
+	if (englishNumber) {
+		emit('input', englishNumber);
+	}
 });
 
 watch(selected, (newCurrency) => {
@@ -217,7 +221,19 @@ watch(selected, (newCurrency) => {
 	}
 });
 
+const validNumberRegex = /^[\d۰-۹.,]+$/;
+
 const onInput = (event: Event) => {
-	internalValue.value = (event.target as HTMLInputElement).value;
+	const input = event.target as HTMLInputElement;
+	const newValue = input.value;
+
+	const filteredValue = newValue.split('').filter((char) => validNumberRegex.test(char)).join('');
+
+	if (newValue !== filteredValue) {
+		input.value = filteredValue;
+	}
+
+	internalValue.value = filteredValue;
+	emit('update:modelValue', filteredValue);
 };
 </script>

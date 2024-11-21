@@ -61,7 +61,6 @@
 					v-model:selectedCurrency="internalSelectedCurrency"
 					variant="none"
 					:ui="{ select: 'cursor-pointer' }"
-					:loading="searchLoading"
 					:searchable-placeholder="`${$t('search')}...`"
 					:searchable="search"
 					:options="filteredCurrencies"
@@ -130,7 +129,7 @@
 				<input
 					v-if="!showText"
 					v-model="internalValue"
-					placeholder="0.00"
+					:placeholder="useNumber(0.00)"
 					type="text"
 					class="outline-none text-left p-1 bg-transparent z-10"
 					dir="ltr"
@@ -191,6 +190,7 @@ const props = defineProps<Props>();
 
 interface EmitDefinition {
 	(event: 'update:modelValue', value: unknown): void;
+	(event: 'input', value: number): void;
 	(event: 'update:selectedSymbol', value: string): void;
 	(event: 'item-selected', value: CurrencyBrief): void;
 }
@@ -249,6 +249,8 @@ const search = async (q: string) => {
 	return filteredCurrencies.value || [];
 };
 
+const validNumberRegex = /^[\d۰-۹.,]+$/;
+
 watch(() => props.ignoreCurrency, async () => {
 	await initCurrencies();
 }, { deep: true });
@@ -263,6 +265,10 @@ watch(() => props.selectedSymbol, async () => {
 
 watch(internalValue, (newValue) => {
 	emit('update:modelValue', newValue);
+	const englishNumber = convertPersianToEnglishNumber(String(newValue));
+	if (englishNumber) {
+		emit('input', englishNumber);
+	}
 });
 
 watch(selected, (newCurrency) => {
@@ -273,6 +279,16 @@ watch(selected, (newCurrency) => {
 });
 
 const onInput = (event: Event) => {
-	internalValue.value = (event.target as HTMLInputElement).value;
+	const input = event.target as HTMLInputElement;
+	const newValue = input.value;
+
+	const filteredValue = newValue.split('').filter((char) => validNumberRegex.test(char)).join('');
+
+	if (newValue !== filteredValue) {
+		input.value = filteredValue;
+	}
+
+	internalValue.value = filteredValue;
+	emit('update:modelValue', filteredValue);
 };
 </script>

@@ -38,6 +38,7 @@
 							:to="`/spot/${splitMarket(market.mSymbol)}`"
 						>
 							<img
+								v-if="market.currency?.cSymbol"
 								:src="`https://api-bitland.site/media/currency/${market.currency?.cSymbol}.png`"
 								:alt="market.currency?.cName"
 								class="w-5 h-5 rounded-full ml-1"
@@ -49,7 +50,7 @@
 						</ULink>
 					</td>
 					<td class="text-sm font-normal text-left py-2">
-						<span>{{ useNumber(market.indexPrice) }}</span>
+						<span>{{ useNumber(priceFormat(String(market.indexPrice))) }}</span>
 					</td>
 					<td class="text-sm text-left font-normal py-2">
 						<UiChangePrice
@@ -68,6 +69,7 @@
 
 <script setup lang="ts">
 import { splitMarket } from '~/utils/split-market';
+import { priceFormat } from '~/utils/price-format';
 import { useNumber } from '~/composables/useNumber';
 import type { MarketL47 } from '~/types/definitions/market.types';
 
@@ -103,6 +105,7 @@ const pieChartData = computed(() => {
 	return props.item.info.map((market, index) => ({
 		value: parseFloat(market.valueOfTradesIn24H),
 		name: market?.currency?.cSymbol ?? '',
+		market: market,
 		itemStyle: {
 			color: colors[index % colors.length],
 		},
@@ -125,6 +128,40 @@ const doughnutOptions = computed(() => ({
 	},
 	tooltip: {
 		trigger: 'item',
+		formatter: function (params: any) {
+			const isPositive = params.data.market.priceChangePercIn24H > 0;
+			const className = isPositive ? 'text-accent-green' : 'text-accent-red';
+			return `
+			<div class="text-black dark:text-black p-1">
+				<div class="flex justify-between mb-1">
+					<div class="text-black dark:text-black font-dana">${useT('coin')}</div>
+					<div class="text-black dark:text-black font-dana mr-6">
+						${params.data.name}
+					</div>
+				</div>
+				<div class="flex justify-between mb-1">
+					<div class="text-black dark:text-black font-dana">${useT('price')}</div>
+					<div class="text-black dark:text-black flex">
+						<span>USDT</span>
+						<span class="mr-1 font-dana">${useNumber(priceFormat(String(params.data.market.indexPrice)))}</span>
+					</div>
+				</div>
+				<div class="flex justify-between mb-1">
+					<div class="text-black dark:text-black font-dana">${useT('changeIn24h')}</div>
+					<div class="text-black dark:text-black font-dana mr-6" dir="ltr">
+						<span class="${className}">${isPositive ? '+' : ''}${useNumber(params.data.market.priceChangePercIn24H)}</span>
+					</div>
+				</div>
+				<div class="flex justify-between mb-1">
+					<div class="text-black dark:text-black font-dana">${useT('volumeIn24h')}</div>
+					<div class="text-black dark:text-black font-dana mr-6" dir="ltr">
+						<span>${useNumber(formatBigNumber(params.data.market.valueOfTradesIn24H, 3))}</span>
+						<span>USDT</span>
+					</div>
+				</div>
+			</div>
+		`;
+		},
 	},
 	series: [
 		{

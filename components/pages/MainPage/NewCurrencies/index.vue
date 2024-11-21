@@ -18,18 +18,6 @@
 					:market="item"
 					:data="item"
 				/>
-				<Currency
-					v-for="(item, index) in firstHalf"
-					:key="`top-duplicate-${index}`"
-					:market="item"
-					:data="item"
-				/>
-				<Currency
-					v-for="(item, index) in firstHalf"
-					:key="`top-extra-${index}`"
-					:market="item"
-					:data="item"
-				/>
 			</div>
 		</div>
 
@@ -41,18 +29,6 @@
 				<Currency
 					v-for="(item, index) in secondHalf"
 					:key="`bottom-${index}`"
-					:market="item"
-					:data="item"
-				/>
-				<Currency
-					v-for="(item, index) in secondHalf"
-					:key="`bottom-duplicate-${index}`"
-					:market="item"
-					:data="item"
-				/>
-				<Currency
-					v-for="(item, index) in secondHalf"
-					:key="`bottom-extra-${index}`"
 					:market="item"
 					:data="item"
 				/>
@@ -88,8 +64,20 @@ const params = ref({
 });
 
 const markets = ref<MarketL21[]>([]);
-const firstHalf = computed(() => markets.value.slice(0, Math.ceil(markets.value.length / 2)));
-const secondHalf = computed(() => markets.value.slice(Math.ceil(markets.value.length / 2)));
+
+const repeatArray = (array: MarketL21[], times: number): MarketL21[] => {
+	return Array(times).fill(array).flat();
+};
+
+const firstHalf = computed(() => {
+	const half = markets.value.slice(0, Math.ceil(markets.value.length / 2));
+	return repeatArray(half, 10);
+});
+
+const secondHalf = computed(() => {
+	const half = markets.value.slice(Math.ceil(markets.value.length / 2));
+	return repeatArray(half, 10);
+});
 
 const marketsLoading = ref<boolean>(false);
 const getMarketListL11 = async () => {

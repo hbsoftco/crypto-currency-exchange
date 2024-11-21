@@ -16,7 +16,7 @@
 				@click="resetFilters"
 			/>
 		</div>
-		<div class="ml-6 my-4 md:my-1 w-full md:w-44">
+		<div class="ml-6 my-4 md:my-1 w-full md:w-44 relative">
 			<USelectMenu
 				v-model="selected"
 				:loading="searchLoading"
@@ -44,7 +44,7 @@
 				<template #label>
 					<div
 						v-if="selected"
-						class="flex justify-between items-start"
+						class="flex justify-between items-start w-full"
 					>
 						<div class="flex flex-col items-start min-w-20 h-5">
 							<div>
@@ -65,6 +65,16 @@
 					{{ $t('searching') }}
 				</template>
 			</USelectMenu>
+			<span
+				v-if="selected"
+				class="cursor-pointer absolute left-6 top-2"
+				@click="clearMarket()"
+			>
+				<UIcon
+					name="i-heroicons-x-mark-solid"
+					class="w-4 h-4 ml-2 dark:text-subtle-text-50"
+				/>
+			</span>
 		</div>
 		<!-- Market -->
 
@@ -104,23 +114,16 @@
 		</div>
 
 		<div class="ml-6 my-4 md:my-1 w-full md:w-44">
-			<UInput
-				id="fromDate"
+			<input
 				v-model="fromDate"
-				color="white"
-				variant="outline"
+				dir="ltr"
+				type="text"
+				class="rtl-placeholder w-full text-left relative block disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0 form-input rounded-md placeholder-gray-400 dark:placeholder-gray-500 text-sm px-2.5 py-1.5 shadow-sm text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 bg-hover-light dark:bg-hover-dark"
 				:placeholder="$t('fromDate')"
-				:readonly="isMobile"
-				class="cursor-pointer"
-				:ui="{
-					background: '',
-					color: {
-						white: {
-							outline: ' bg-hover-light dark:bg-hover-dark',
-						},
-					},
-				}"
-			/>
+				maxlength="10"
+				@input="handleDateInput('fromDate')"
+				@blur="validateDate('fromDate')"
+			>
 
 			<DatePicker
 				v-if="isMobile"
@@ -134,23 +137,16 @@
 		</div>
 
 		<div class="ml-6 my-4 md:my-1 w-full md:w-44">
-			<UInput
-				id="toDate"
+			<input
 				v-model="toDate"
-				color="white"
-				variant="outline"
+				dir="ltr"
+				type="text"
+				class="rtl-placeholder w-full text-left relative block disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0 form-input rounded-md placeholder-gray-400 dark:placeholder-gray-500 text-sm px-2.5 py-1.5 shadow-sm text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 bg-hover-light dark:bg-hover-dark"
 				:placeholder="$t('toDate')"
-				:readonly="isMobile"
-				class="cursor-pointer"
-				:ui="{
-					background: '',
-					color: {
-						white: {
-							outline: ' bg-hover-light dark:bg-hover-dark',
-						},
-					},
-				}"
-			/>
+				maxlength="10"
+				@input="handleDateInput('toDate')"
+				@blur="validateDate('toDate')"
+			>
 
 			<DatePicker
 				v-if="isMobile"
@@ -213,9 +209,118 @@ const search = async (q: string) => {
 };
 
 const toDate = ref();
+const internalToDate = ref();
 const fromDate = ref();
+const internalFromDate = ref();
+
+const clearMarket = () => {
+	selected.value = undefined;
+	applyFilters();
+};
+
+const handleDateInput = (field: string) => {
+	try {
+		const value = field === 'fromDate' ? fromDate.value : toDate.value;
+
+		let sanitized = value.replace(/[^0-9۰-۹/]/g, '');
+		const normalized = sanitized.replace(/[۰-۹]/g, (c: string) => String.fromCharCode(c.charCodeAt(0) - 1728));
+
+		const isPersian = /[\u0600-\u06FF]/.test(sanitized);
+
+		if (sanitized.length >= 5 && sanitized[4] !== '/') {
+			sanitized = sanitized.slice(0, 4) + '/' + sanitized.slice(4);
+		}
+		if (sanitized.length >= 8) {
+			const firstSlashIndex = sanitized.indexOf('/');
+			const secondSlashIndex = sanitized.indexOf('/', firstSlashIndex + 1);
+
+			if (firstSlashIndex !== -1 && secondSlashIndex !== -1) {
+				const date = sanitized.split('/');
+
+				if (date[1].length === 1) {
+					date[1] = (isPersian ? '۰' : '0') + date[1];
+				}
+				else {
+					let checker = date[1];
+
+					if (isPersian) {
+						checker = convertPersianToEnglishNumber(checker);
+
+						if (checker > 12) {
+							date[1] = '۱۲';
+						}
+					}
+					else {
+						if (checker > 12) {
+							date[1] = '12';
+						}
+					}
+				}
+
+				sanitized = `${date[0]}/${date[1]}/${date[2]}`;
+			}
+			else if (sanitized[7] !== '/') {
+				sanitized = sanitized.slice(0, 7) + '/' + sanitized.slice(7);
+			}
+		}
+
+		if (field === 'fromDate') {
+			fromDate.value = sanitized;
+			internalFromDate.value = normalized;
+		}
+		else {
+			toDate.value = sanitized;
+			internalToDate.value = normalized;
+		}
+	}
+	catch (error) {
+		console.log(error);
+	}
+};
+
+const validateDate = (field: string) => {
+	const value = field === 'fromDate' ? fromDate.value : toDate.value;
+
+	if (!value) return;
+
+	let sanitized = value.replace(/[^0-9۰-۹/]/g, '');
+	sanitized = sanitized.replace(/[۰-۹]/g, (c: string) => String.fromCharCode(c.charCodeAt(0) - 1728));
+
+	const parts = sanitized.split('/');
+	if (parts.length === 3) {
+		const year = parts[0];
+		const month = parts[1];
+		const day = parts[2];
+
+		const dateRegex = /^(?<year>\d{4})\/(?<month>\d{1,2})\/(?<day>\d{1,2})$/;
+		const normalized = `${year}/${month}/${day}`;
+
+		if (dateRegex.test(normalized)) {
+			if (field === 'fromDate') {
+				internalFromDate.value = normalized;
+			}
+			else {
+				internalToDate.value = normalized;
+			}
+			return;
+		}
+	}
+
+	if (field === 'fromDate') {
+		fromDate.value = '';
+		internalFromDate.value = '';
+	}
+	else {
+		toDate.value = '';
+		internalToDate.value = '';
+	}
+};
 
 const orderTypeItems = ref<KeyValue[]>([
+	{
+		key: '',
+		value: useT('all'),
+	},
 	{
 		key: OrderType.MARKET,
 		value: useT(OrderType.MARKET),
@@ -244,6 +349,10 @@ const orderTypeItems = ref<KeyValue[]>([
 
 const OrderSideItem = ref<KeyValue[]>([
 	{
+		key: '',
+		value: useT('all'),
+	},
+	{
 		key: OrderSide.BUY,
 		value: useT(OrderSide.BUY),
 	},
@@ -257,8 +366,8 @@ const orderSideFilter = ref<KeyValue>();
 
 const applyFilters = () => {
 	emit('filters', {
-		from: toDate.value,
-		to: toDate.value,
+		from: internalFromDate.value,
+		to: internalToDate.value,
 		orderSide: orderSideFilter.value ? orderSideFilter.value.key : '',
 		orderType: orderTypeFilter.value ? orderTypeFilter.value.key : '',
 		symbol: selected.value?.mSymbol ? selected.value?.mSymbol : '',

@@ -126,7 +126,7 @@
 <script setup lang="ts">
 import { formatBigNumber } from '~/utils/format-big-number';
 import { useNumber } from '~/composables/useNumber';
-import type { Currency } from '~/types/response/currency.types';
+import type { Currency } from '~/types/definitions/currency.types';
 
 interface PropsDefinition {
 	currencyDetail: Currency | null;

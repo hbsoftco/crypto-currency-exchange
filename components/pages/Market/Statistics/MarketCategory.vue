@@ -28,33 +28,37 @@
 			class="overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900 h-44"
 			dir="rtl"
 		>
-			<li
+			<template
 				v-for="(market, index) in markets"
 				:key="index"
-				dir="ltr"
-				class="flex justify-between items-center py-1 pr-1 ml-1 hover:bg-primary-gray-light hover:dark:bg-primary-gray-dark rounded duration-200 transition-all"
 			>
-				<UiChangePrice
-					classes="text-sm font-normal"
-					:show-percent="true"
-					pl="pl-2"
-					:change="parseFloat(String(market.priceChangePercIn24H))"
-					:icon="false"
-				/>
-				<ULink
-					class="flex justify-start"
-					:to="`/spot/${splitMarket(market.mSymbol)}`"
+				<li
+					v-if="market.currency?.cSymbol"
+					dir="ltr"
+					class="flex justify-between items-center py-1 pr-1 ml-1 hover:bg-primary-gray-light hover:dark:bg-primary-gray-dark rounded duration-200 transition-all"
 				>
-					<span class="text-sm font-normal mx-2">{{ market.mSymbol }}</span>
-					<img
-						:src="`https://api-bitland.site/media/currency/${market.currency?.cSymbol}.png`"
-						:alt="market.currency?.cName"
-						class="w-5 h-5 rounded-full"
-						format="webp"
-						densities="x1"
+					<UiChangePrice
+						classes="text-sm font-normal"
+						:show-percent="true"
+						pl="pl-2"
+						:change="parseFloat(String(market.priceChangePercIn24H))"
+						:icon="false"
+					/>
+					<ULink
+						class="flex justify-start"
+						:to="`/spot/${splitMarket(market.mSymbol)}`"
 					>
-				</ULink>
-			</li>
+						<span class="text-sm font-normal mx-2">{{ market.mSymbol }}</span>
+						<img
+							:src="`https://api-bitland.site/media/currency/${market.currency?.cSymbol}.png`"
+							:alt="market.currency?.cName"
+							class="w-5 h-5 rounded-full"
+							format="webp"
+							densities="x1"
+						>
+					</ULink>
+				</li>
+			</template>
 		</ul>
 	</div>
 </template>

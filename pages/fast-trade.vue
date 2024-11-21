@@ -60,6 +60,7 @@
 								dir="rtl"
 								:error-message="firstCurrencyBalanceErrorMessage"
 								@item-selected="getFirstSelectedCurrency"
+								@input="getFirstCurrencyBalanceInput($event)"
 							/>
 						</div>
 						<div class="absolute top-[6.5rem] -ml-6 z-[1] mx-auto flex justify-center w-full">
@@ -211,12 +212,15 @@ const [currency, quote] = mSymbol.split('_');
 
 const firstCurrencyBalanceErrorMessage = ref<string>('');
 
+const firstCurrencyBalanceInput = ref<number>(0);
 const firstCurrencyBalance = ref<string>('');
 const secondCurrencyBalance = ref<string>('');
 const firstSelectedSymbol = ref('');
 const secondSelectedSymbol = ref('');
 
-// const submitButton = ref<boolean>(true);
+const getFirstCurrencyBalanceInput = (input: number) => {
+	firstCurrencyBalanceInput.value = input;
+};
 
 const socketMarketIds = ref<number[]>([]);
 
@@ -706,7 +710,7 @@ const finalReceived = computed(() => {
 	return received;
 });
 
-const fieldDataCalculation = (input: string) => {
+const fieldDataCalculation = (input: number) => {
 	if (tradeItems.value.length === 1) {
 		const marketPrice = tradeItems.value[0].market.price;
 
@@ -746,7 +750,7 @@ const fieldDataCalculation = (input: string) => {
 	}
 
 	// Check balance and input value
-	if (Number(firstCurrencyBalance.value) > Number(balance.value)) {
+	if (Number(firstCurrencyBalanceInput.value) > Number(balance.value)) {
 		firstCurrencyBalanceErrorMessage.value = useT('paymentExceedsBalance');
 	}
 	else {
@@ -758,7 +762,7 @@ watch(
 	() => firstCurrencyBalance.value,
 	(newBalance) => {
 		if (newBalance) {
-			fieldDataCalculation(newBalance);
+			fieldDataCalculation(firstCurrencyBalanceInput.value);
 		}
 		else {
 			secondCurrencyBalance.value = '';
@@ -788,7 +792,7 @@ watch(
 			});
 
 			// Check calculation again
-			fieldDataCalculation(firstCurrencyBalance.value);
+			fieldDataCalculation(firstCurrencyBalanceInput.value);
 		}
 	},
 	{ deep: true },

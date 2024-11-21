@@ -20,6 +20,7 @@
 			dir="rtl"
 			:error-message="firstCurrencyBalanceErrorMessage"
 			@item-selected="getFirstSelectedCurrency"
+			@input="getFirstCurrencyBalanceInput($event)"
 		/>
 		<div class="flex justify-center">
 			<IconChange
@@ -88,10 +89,15 @@ const worker = useBaseWorker();
 
 const firstCurrencyBalanceErrorMessage = ref<string>('');
 
+const firstCurrencyBalanceInput = ref<number>(0);
 const firstCurrencyBalance = ref<string>('');
 const secondCurrencyBalance = ref<string>('');
 const firstSelectedSymbol = ref(cSymbol);
 const secondSelectedSymbol = ref('usdt');
+
+const getFirstCurrencyBalanceInput = (input: number) => {
+	firstCurrencyBalanceInput.value = input;
+};
 
 const firstSelectedCurrency = ref<CurrencyBrief>();
 const getFirstSelectedCurrency = async (newCurrency: CurrencyBrief) => {
@@ -315,7 +321,7 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 	await publicSocketStore.addMarketIds(socketMarketIds.value);
 };
 
-const fieldDataCalculation = (input: string) => {
+const fieldDataCalculation = (input: number) => {
 	if (tradeItems.value.length === 1) {
 		const marketPrice = tradeItems.value[0].market.price;
 
@@ -353,7 +359,7 @@ watch(
 	() => firstCurrencyBalance.value,
 	(newBalance) => {
 		if (newBalance) {
-			fieldDataCalculation(newBalance);
+			fieldDataCalculation(firstCurrencyBalanceInput.value);
 		}
 		else {
 			secondCurrencyBalance.value = '';
@@ -383,7 +389,7 @@ watch(
 			});
 
 			// Check calculation again
-			fieldDataCalculation(firstCurrencyBalance.value);
+			fieldDataCalculation(firstCurrencyBalanceInput.value);
 		}
 	},
 	{ deep: true },
