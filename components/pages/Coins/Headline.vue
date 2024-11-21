@@ -1,5 +1,5 @@
 <template>
-	<section class="my-12 md:pt-12 md:pb-2">
+	<section class="mt-36 md:mt-12 mb-12 md:pt-12 md:pb-2">
 		<h1 class="text-xl font-bold">
 			{{ $t("liveInstantPriceInformation") }}
 		</h1>

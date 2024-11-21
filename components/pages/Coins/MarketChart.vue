@@ -9,12 +9,12 @@
 			</div>
 			<div
 				v-else
-				class="h-80 w-full"
+				class="h-40 md:h-80 w-full"
 			>
-				<div class="flex justify-between mt-2 mb-7">
+				<div class="flex justify-between flex-col md:flex-row mt-0 md:mt-2 mb-7">
 					<div
 						dir="ltr"
-						class="mr-14"
+						class="mr-14 mb-4 md:mb-0"
 					>
 						<span
 							:class="priceClass"
@@ -22,7 +22,7 @@
 						>${{ useNumber(priceFormat(localPrice)) }}</span>
 						<span class="text-sm font-normal mx-1">
 							<UiChangePrice
-								classes="text-sm font-normal"
+								classes="text-sm font-normal pr-1.5"
 								:show-percent="true"
 								pl="pl-0.5"
 								:change="parseFloat(String(localPriceChangePerc24h))"
@@ -30,7 +30,7 @@
 							/>
 						</span>
 					</div>
-					<ul class="flex">
+					<ul class="flex justify-end">
 						<li
 							v-for="(option, index) in options"
 							:key="index"
@@ -39,7 +39,7 @@
 							@click="updateChart(option)"
 						>
 							<span>
-								{{ option.header_option }}
+								{{ useNumber(option.header_option) }}
 							</span>
 						</li>
 					</ul>
@@ -50,7 +50,7 @@
 				/>
 			</div>
 		</div>
-		<div class="relative top-16">
+		<div class="relative top-28 md:top-16">
 			<ul class="flex justify-center items-center">
 				<li
 					:class="['flex justify-center items-center cursor-pointer ml-4', selectedCurrency === 'TMN' ? 'text-text-dark dark:text-text-light' : 'text-gray-400']"
@@ -487,11 +487,11 @@ const chartOptions = computed(() => ({
 		},
 		min: () => {
 			const minPrice = Math.min(...chartData.value);
-			return minPrice - (minPrice * 0.02);
+			return minPrice - (minPrice * (0.1));
 		},
 		// max: () => {
 		// 	const maxPrice = Math.max(...chartData.value);
-		// 	return maxPrice + (maxPrice * 0.02);
+		// 	return maxPrice + (maxPrice * 0.1);
 		// },
 	},
 	series: [

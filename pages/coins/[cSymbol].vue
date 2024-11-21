@@ -1,11 +1,11 @@
 <template>
-	<div class="mt-24">
+	<div class="mt-20 md:mt-24">
 		<UContainer v-if="currencyInfoLoading">
 			<UiLogoLoading />
 		</UContainer>
 		<UContainer v-if="!currencyInfoLoading && currencyInfo">
 			<div class="grid grid-cols-12 gap-4">
-				<div class="col-span-8">
+				<div class="col-span-12 md:col-span-8">
 					<div class="flex items-center">
 						<img
 							:src="`https://api-bitland.site/media/currency/${currencyInfo.currency?.cSymbol}.png`"
@@ -30,7 +30,6 @@
 								:socket-data="publicSocketStore.findMarketDataById(currentMarket?.id)"
 								:symbol="cSymbol"
 								:markets="markets"
-								class="hidden md:block"
 							/>
 							<!-- Chart -->
 
@@ -70,8 +69,8 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-span-4">
-					<div class="hidden md:block px-3">
+				<div class="col-span-12 md:col-span-4">
+					<div class="px-3">
 						<section>
 							<Calculator />
 						</section>
