@@ -1,6 +1,6 @@
 <template>
 	<div class="mt-8">
-		<MarketTableHeader />
+		<FuturesMarketTableHeader />
 
 		<div class="p-0 pt-2 md:pt-0 mt-4">
 			<table
@@ -108,7 +108,7 @@
 
 <script setup lang="ts">
 import MarketTableRow from '~/components/pages/Market/MarketTableRow.vue';
-import MarketTableHeader from '~/components/pages/Market/MarketTableHeader.vue';
+import FuturesMarketTableHeader from '~/components/pages/Market/FuturesMarketTableHeader.vue';
 import { MarketType } from '~/utils/enums/market.enum';
 import { marketRepository } from '~/repositories/market.repository';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
@@ -160,7 +160,7 @@ const getMarketListL31 = async () => {
 			markets.value = await worker.addCurrencyToMarketsL16(
 				result.rows as MarketL31[],
 				Number(marketsPageStore.futuresMarketsParams.currencyQuoteId),
-				useEnv('apiBaseUrl'), MarketType.SPOT,
+				useEnv('apiBaseUrl'), MarketType.FUTURES,
 			) as MarketL31[];
 			totalCount.value = result.totalCount;
 		}
@@ -169,7 +169,7 @@ const getMarketListL31 = async () => {
 			markets.value = await worker.addCurrencyToMarketsL16(
 				result.rows as MarketL31[],
 				Number(marketsPageStore.futuresMarketsParams.currencyQuoteId),
-				useEnv('apiBaseUrl'), MarketType.SPOT,
+				useEnv('apiBaseUrl'), MarketType.FUTURES,
 			) as MarketL31[];
 			totalCount.value = result.totalCount;
 		}

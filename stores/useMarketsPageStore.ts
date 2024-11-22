@@ -7,7 +7,6 @@ import { MarketType, SortMode } from '~/utils/enums/market.enum';
 
 export const useMarketsPageStore = defineStore('marketsPage', () => {
 	const quoteItems = ref<Quote[]>([]);
-	const futuresQuoteItems = ref<Quote[]>([]);
 	const tagItems = ref<Tag[]>([]);
 
 	const tradingMarketsParams = ref<MarketsL21Params>({
@@ -21,16 +20,6 @@ export const useMarketsPageStore = defineStore('marketsPage', () => {
 		sortMode: String(SortMode.BY_MARKET_CAPS),
 		currencyQuoteId: '1',
 		marketTypeId: String(MarketType.SPOT),
-		tagTypeId: '',
-		searchStatement: '',
-		pageNumber: '1',
-		pageSize: '20',
-	});
-
-	const futuresMarketsParams = ref({
-		sortMode: String(SortMode.BY_MARKET_CAPS),
-		currencyQuoteId: '1',
-		marketTypeId: String(MarketType.FUTURES),
 		tagTypeId: '',
 		searchStatement: '',
 		pageNumber: '1',
@@ -106,6 +95,84 @@ export const useMarketsPageStore = defineStore('marketsPage', () => {
 		tradingMarketsParams.value.currencyQuoteId = String(quote.id);
 	};
 
+	// Futures
+	const futuresQuoteItems = ref<Quote[]>([]);
+	const futuresQuoteOptions = ref<any>([]);
+	const initFuturesQuoteOptions = async () => {
+		futuresQuoteOptions.value = [
+			futuresQuoteItems.value.map((item) => ({
+				id: item.id,
+				label: item.cName,
+				click: () => handleSelectFuturesQuote(item),
+			})),
+		];
+	};
+
+	const futuresMarketsParams = ref({
+		sortMode: String(SortMode.BY_MARKET_CAPS),
+		currencyQuoteId: '3',
+		marketTypeId: String(MarketType.FUTURES),
+		tagTypeId: '',
+		searchStatement: '',
+		pageNumber: '1',
+		pageSize: '20',
+	});
+
+	const futuresSelectedSortModeFilter = ref({
+		label: useT('hottest'),
+		value: SortMode.BY_RECENTLY_CHANGED,
+	});
+
+	const futuresSortModeFilters = [
+		[
+			{
+				label: useT('hottest'),
+				value: SortMode.BY_RECENTLY_CHANGED,
+				click: () => handleFuturesSelectMarketFilter(SortMode.BY_RECENTLY_CHANGED),
+			},
+			{
+				label: useT('mostProfitable'),
+				value: SortMode.BY_MOST_PROFIT,
+				click: () => handleFuturesSelectMarketFilter(SortMode.BY_MOST_PROFIT),
+			},
+			{
+				label: useT('newest'),
+				value: SortMode.BY_NEWEST_COINS,
+				click: () => handleFuturesSelectMarketFilter(SortMode.BY_NEWEST_COINS),
+			},
+			{
+				label: useT('mostVoluminous'),
+				value: SortMode.BY_TRADE_COUNT,
+				click: () => handleFuturesSelectMarketFilter(SortMode.BY_TRADE_COUNT),
+			},
+			{
+				label: useT('myFavorites'),
+				value: SortMode.BY_FAVORITES,
+				click: () => handleFuturesSelectMarketFilter(SortMode.BY_FAVORITES),
+			},
+		],
+	];
+
+	const handleFuturesSelectMarketFilter = (selectedValue: SortMode) => {
+		const selectedFilter = futuresSortModeFilters[0].find(
+			(filter) => filter.value === selectedValue,
+		);
+
+		futuresSelectedSortModeFilter.value = selectedFilter || {
+			label: useT('defaultLabel'),
+			value: SortMode.BY_RECENTLY_CHANGED,
+		};
+
+		futuresMarketsParams.value.sortMode = String(selectedValue);
+	};
+
+	const futuresSelectedQuote = ref({ label: useT('USDT') });
+	const handleSelectFuturesQuote = (quote: Quote) => {
+		futuresSelectedQuote.value = { label: quote.cName };
+
+		futuresMarketsParams.value.currencyQuoteId = String(quote.id);
+	};
+
 	return {
 		params,
 		quoteItems,
@@ -121,5 +188,12 @@ export const useMarketsPageStore = defineStore('marketsPage', () => {
 		// Futures
 		futuresMarketsParams,
 		futuresQuoteItems,
+		futuresQuoteOptions,
+		futuresSelectedQuote,
+		handleSelectFuturesQuote,
+		futuresSortModeFilters,
+		handleFuturesSelectMarketFilter,
+		futuresSelectedSortModeFilter,
+		initFuturesQuoteOptions,
 	};
 });

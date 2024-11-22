@@ -244,6 +244,7 @@ const initFilterItems = async () => {
 	marketsPageStore.futuresQuoteItems = await worker.fetchQuoteItems(MarketType.FUTURES, useEnv('apiBaseUrl'));
 
 	marketsPageStore.initQuoteOptions();
+	marketsPageStore.initFuturesQuoteOptions();
 	initFilterLoading.value = false;
 };
 
