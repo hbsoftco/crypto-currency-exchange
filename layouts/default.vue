@@ -13,7 +13,7 @@
 			v-if="!isMobile"
 			class="hidden md:block"
 		/>
-		<div>
+		<div class="min-h-[calc(100vh-26.4rem)]">
 			<slot />
 		</div>
 		<Footer v-if="!isMobile" />
@@ -28,7 +28,6 @@
 
 <script setup lang="ts">
 import Header from '~/components/layouts/Default/Header.vue';
-import { Language } from '~/utils/enums/language.enum';
 
 const SupportButtons = defineAsyncComponent(() => import('~/components/pages/SupportButtons.vue'));
 const MobileFooter = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/Footer.vue'));
@@ -43,8 +42,4 @@ onMounted(() => {
 	isMobile.value = !!mobileDetect.mobile();
 	console.log('mobileDetect.mobile', isMobile.value);
 });
-
-const baseDataStore = useBaseDataStore();
-baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
-baseDataStore.fetchMarketBriefItems();
 </script>

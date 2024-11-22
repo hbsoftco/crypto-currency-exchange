@@ -145,6 +145,8 @@ const publicSocketStore = usePublicSocketStore();
 
 const worker = useBaseWorker();
 
+const route = useRoute();
+
 const marketTypeId = ref<number>(MarketType.SPOT);
 
 const search = ref<string>('');
@@ -243,6 +245,11 @@ const initFilterItems = async () => {
 };
 
 onMounted(async () => {
+	const query = ref<string | undefined>(route.query.query as string || '');
+
+	if (query.value) {
+		search.value = query.value;
+	}
 	await Promise.all([
 		initFilterItems(),
 		getMostProfitableMarkets(),

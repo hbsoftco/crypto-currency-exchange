@@ -133,14 +133,24 @@ interface PropsDefinition {
 }
 const props = defineProps<PropsDefinition>();
 
+const route = useRoute();
+
 const totalCount = ref(0);
 
 const socketMarketIds = ref<number[]>([]);
+
+const lastParams = ref<Record<string, any>>({});
 
 const markets = ref<MarketL31[]>([]);
 const marketsLoading = ref<boolean>(false);
 const getMarketListL31 = async () => {
 	try {
+		const currentParams = { ...marketsPageStore.params };
+		if (JSON.stringify(currentParams) === JSON.stringify(lastParams.value) || marketsLoading.value) {
+			return;
+		}
+		lastParams.value = { ...currentParams };
+
 		if (marketsPageStore.params.tagTypeId === '0') {
 			marketsPageStore.params.tagTypeId = '';
 		}
@@ -196,6 +206,11 @@ watch(() => marketsPageStore.params.pageNumber, () => {
 onMounted(async () => {
 	marketsPageStore.params.searchStatement = '';
 	marketsPageStore.params.tagTypeId = '';
+
+	const query = ref<string | undefined>(route.query.query as string || '');
+	if (query.value) {
+		marketsPageStore.params.searchStatement = query.value;
+	}
 
 	await getMarketListL31();
 });

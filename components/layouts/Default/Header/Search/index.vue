@@ -66,8 +66,8 @@
 					</div>
 					<UButton
 						v-if="marketsItems.length > 0"
-						to="/markets"
 						class="flex justify-center w-full my-4 text-primary-yellow-light dark:text-primary-yellow-dark text-base hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-yellow"
+						@click="goToMarket()"
 					>
 						{{ $t("showMore") }}
 					</UButton>
@@ -116,6 +116,8 @@ const marketsItems = ref<MarketBrief[]>([]);
 
 const worker = useBaseWorker();
 
+const router = useRouter();
+
 const publicSocketStore = usePublicSocketStore();
 
 const socketMarketIds = ref<number[]>([]);
@@ -148,6 +150,21 @@ const handleInput = async (event: Event) => {
 		currenciesItems.value = [];
 		marketsItems.value = [];
 	}
+};
+
+const goToMarket = () => {
+	if (search.value) {
+		router.push({
+			path: '/markets',
+			query: { query: search.value },
+		});
+	}
+	else {
+		router.push('/markets');
+	}
+
+	showAdditionalBox.value = false;
+	search.value = '';
 };
 
 // Event listener to detect clicks outside of the container
