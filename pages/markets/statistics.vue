@@ -1,73 +1,81 @@
 <template>
 	<UContainer v-if="marketsL51Loading || marketsL47Loading || marketDailyPriceChangeLoading">
 		<div>
-			<UiLogoLoading />
+			<div class="py-20">
+				<ChartMarketStateSkeleton />
+			</div>
+			<div class="pb-20">
+				<MarketCategorySkeleton />
+			</div>
+			<MarketCategorySliderSkeleton />
 		</div>
 	</UContainer>
 	<UContainer v-else>
 		<div>
-			<div class="mb-4 mt-8">
-				<UiTitleWithBack :title="$t('marketStatistics')" />
-			</div>
-			<div
-				class="flex justify-between w-full h-full relative mb-16"
-			>
+			<div>
+				<div class="mb-4 mt-8">
+					<UiTitleWithBack :title="$t('marketStatistics')" />
+				</div>
 				<div
-					v-if="negativeMarketsItems.length > 0"
-					class="w-[50%]"
+					class="flex justify-between w-full h-full relative mb-16"
 				>
-					<VChart
-						:option="positiveMarketBarOptions"
-						class="w-full h-96"
-					/>
-					<div class="text-center text-base font-bold">
-						{{ $t("numberOfRisingMarkets") }}
+					<div
+						v-if="negativeMarketsItems.length > 0"
+						class="w-[50%]"
+					>
+						<VChart
+							:option="positiveMarketBarOptions"
+							class="w-full h-96"
+						/>
+						<div class="text-center text-base font-bold">
+							{{ $t("numberOfRisingMarkets") }}
+						</div>
+					</div>
+					<div
+						v-if="positiveMarketsItems.length > 0"
+						class="w-[50%]"
+					>
+						<VChart
+							:option="negativeMarketBarOptions"
+							class="w-full h-96"
+						/>
+						<div class="text-center text-base font-bold">
+							{{ $t("numberOfDecliningMarkets") }}
+						</div>
+					</div>
+					<div
+						v-if="neutralMarketsItems.length > 0"
+						class="w-80 h-80 absolute left-0 right-0 m-auto top-8"
+					>
+						<VChart
+							:option="neutralPieOptions"
+							class="w-full h-80"
+						/>
 					</div>
 				</div>
-				<div
-					v-if="positiveMarketsItems.length > 0"
-					class="w-[50%]"
-				>
-					<VChart
-						:option="negativeMarketBarOptions"
-						class="w-full h-96"
-					/>
-					<div class="text-center text-base font-bold">
-						{{ $t("numberOfDecliningMarkets") }}
-					</div>
+			</div>
+
+			<div v-if="marketsL51.length">
+				<div class="mb-10">
+					<h3 class="text-base font-bold">
+						{{ $t("currencyCategories") }}
+					</h3>
 				</div>
-				<div
-					v-if="neutralMarketsItems.length > 0"
-					class="w-80 h-80 absolute left-0 right-0 m-auto top-8"
-				>
-					<VChart
-						:option="neutralPieOptions"
-						class="w-full h-80"
-					/>
+				<div class="mb-18">
+					<MarketCategorySlider :items="marketsL51" />
 				</div>
 			</div>
-		</div>
+			<!-- Currency Categories -->
 
-		<div v-if="marketsL51.length">
-			<div class="mb-10">
-				<h3 class="text-base font-bold">
-					{{ $t("currencyCategories") }}
-				</h3>
+			<div class="flex flex-wrap justify-around">
+				<ChartMarketState
+					v-for="(item, index) in marketsL47"
+					:key="index"
+					:item="item"
+				/>
 			</div>
-			<div class="mb-18">
-				<MarketCategorySlider :items="marketsL51" />
-			</div>
+			<!-- Bellow tables and its charts -->
 		</div>
-		<!-- Currency Categories -->
-
-		<div class="flex flex-wrap justify-around">
-			<ChartMarketState
-				v-for="(item, index) in marketsL47"
-				:key="index"
-				:item="item"
-			/>
-		</div>
-		<!-- Bellow tables and its charts -->
 	</UContainer>
 </template>
 
@@ -80,6 +88,9 @@ import { MarketType } from '~/utils/enums/market.enum';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 import type { DailyPriceChange, MarketL47, MarketL51, MarketsL47Params } from '~/types/definitions/market.types';
 import type { NeutralMarketItem } from '~/types/response/market.types';
+import ChartMarketStateSkeleton from '~/components/pages/Market/Statistics/ChartMarketStateSkeleton.vue';
+import MarketCategorySkeleton from '~/components/pages/Market/Statistics/MarketCategorySkeleton.vue';
+import MarketCategorySliderSkeleton from '~/components/pages/Market/Statistics/MarketCategorySliderSkeleton.vue';
 
 const { $api } = useNuxtApp();
 const marketRepo = marketRepository($api);
