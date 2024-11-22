@@ -274,9 +274,14 @@
 		</div>
 		<div class="flex justify-center py-4">
 			<UPagination
+				v-if="totalCount && paginationNumbers.showPagination"
+				ref="pagination"
 				:model-value="Number(params.pageNumber)"
 				:page-count="20"
 				:total="totalCount"
+				:to="(page: number) => ({
+					query: { page },
+				})"
 				:max="6"
 				size="xl"
 				ul-class="flex space-x-2 bg-blue-500 border-none"
@@ -300,6 +305,7 @@ import ModalTransactionDetail from '~/components/pages/Spot/List/ModalTransactio
 import { spotRepository } from '~/repositories/spot.repository';
 import type { OrderFiltersType, Trade, TradeListParams } from '~/types/definitions/spot.types';
 import { priceFormat } from '~/utils/price-format';
+import type { UPagination } from '#build/components';
 
 type PropsDefinition = {
 	filterParams?: OrderFiltersType;
@@ -309,6 +315,9 @@ const props = defineProps<PropsDefinition>();
 
 const { $api } = useNuxtApp();
 const spotRepo = spotRepository($api);
+
+const pagination = ref<InstanceType<typeof UPagination>>();
+const paginationNumbers = usePaginationNumbers();
 
 const totalCount = ref(0);
 const tradeItem = ref<Trade>();
@@ -336,12 +345,28 @@ const getTradeList = async () => {
 		totalCount.value = result.totalCount;
 
 		tradesListLoading.value = false;
+
+		if (pagination.value) {
+			paginationNumbers.applyChangesToLinks(pagination.value);
+		}
 	}
 	catch (error) {
 		console.error('Error fetching trades:', error);
 		tradesListLoading.value = false;
 	}
 };
+
+watch(() => useChangeNumber().getLanguage(), () => {
+	if (pagination.value) {
+		paginationNumbers.applyChangesToLinks(pagination.value);
+	}
+});
+
+watch(() => params.value.pageNumber, () => {
+	if (pagination.value) {
+		paginationNumbers.applyChangesToLinks(pagination.value);
+	}
+}, { deep: true });
 
 const applyFilter = async (event: OrderFiltersType) => {
 	params.value.symbol = event.symbol;
