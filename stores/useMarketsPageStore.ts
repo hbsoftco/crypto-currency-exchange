@@ -7,6 +7,7 @@ import { MarketType, SortMode } from '~/utils/enums/market.enum';
 
 export const useMarketsPageStore = defineStore('marketsPage', () => {
 	const quoteItems = ref<Quote[]>([]);
+	const futuresQuoteItems = ref<Quote[]>([]);
 	const tagItems = ref<Tag[]>([]);
 
 	const tradingMarketsParams = ref<MarketsL21Params>({
@@ -20,6 +21,16 @@ export const useMarketsPageStore = defineStore('marketsPage', () => {
 		sortMode: String(SortMode.BY_MARKET_CAPS),
 		currencyQuoteId: '1',
 		marketTypeId: String(MarketType.SPOT),
+		tagTypeId: '',
+		searchStatement: '',
+		pageNumber: '1',
+		pageSize: '20',
+	});
+
+	const futuresMarketsParams = ref({
+		sortMode: String(SortMode.BY_MARKET_CAPS),
+		currencyQuoteId: '1',
+		marketTypeId: String(MarketType.FUTURES),
 		tagTypeId: '',
 		searchStatement: '',
 		pageNumber: '1',
@@ -107,5 +118,8 @@ export const useMarketsPageStore = defineStore('marketsPage', () => {
 		initQuoteOptions,
 		//
 		tradingMarketsParams,
+		// Futures
+		futuresMarketsParams,
+		futuresQuoteItems,
 	};
 });

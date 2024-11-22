@@ -8,7 +8,13 @@ type CommonResponse = {
 	result: string;
 };
 
+type KeyValueResponse = {
+	statusCode: number;
+	result: KeyValue[];
+};
+
 export type {
 	CommonResponse,
+	KeyValueResponse,
 	KeyValue,
 };

@@ -2,7 +2,7 @@
 <template>
 	<div>
 		<div
-			v-if="notificationStore.getNotificationsLoading"
+			v-if="notificationStore.noticeListLoading"
 			class="text-center"
 		>
 			<IconNotification
@@ -14,7 +14,7 @@
 		</div>
 
 		<div
-			v-if="!notificationStore.getNotificationsLoading"
+			v-if="!notificationStore.noticeListLoading"
 			class="relative group items-center space-x-2"
 		>
 			<div class="relative cursor-pointer">
@@ -47,7 +47,7 @@
 
 								<ULink
 									v-if="unreadMessages.length > 0"
-									@click="readAllNotifications"
+									@click="noticeReadAll"
 								>
 									<span
 										class="mr-1 text-xs font-bold text-primary-yellow-light dark:text-primary-yellow-dark"
@@ -122,25 +122,12 @@ import IconArrowLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';
 import IconMessage from '~/assets/svg-icons/menu/message.svg';
 import { useNumber } from '~/composables/useNumber';
 import { formatDateToIran } from '~/utils/persian-date';
-import { notificationRepository } from '~/repositories/notification.repository';
 
-const { $api, $swal } = useNuxtApp();
-const notificationRepo = notificationRepository($api);
-
-const toast = useToast();
+const { $swal } = useNuxtApp();
 
 const notificationStore = useNotificationStore();
 
-const params = ref({
-	from: '',
-	to: '',
-	typeId: '',
-	pageNumber: '1',
-	pageSize: '20',
-});
-
-const readAllNotificationsLoading = ref<boolean>(false);
-const readAllNotifications = async () => {
+const noticeReadAll = async () => {
 	const confirmation = await $swal.fire({
 		title: useT('readAllNotifications'),
 		text: useT('readAllNotificationsDescription'),
@@ -151,34 +138,17 @@ const readAllNotifications = async () => {
 	});
 
 	if (confirmation.isConfirmed) {
-		readAllNotificationsLoading.value = true;
-
-		try {
-			await notificationRepo.readAllNotifications();
-
-			toast.add({
-				title: useT('readAllNotifications'),
-				description: useT('allNotificationsReadSuccessfully'),
-				timeout: 5000,
-				color: 'green',
-			});
-
-			await notificationStore.getNotifications(params.value);
-
-			readAllNotificationsLoading.value = false;
-		}
-		catch (error) {
-			readAllNotificationsLoading.value = false;
-			console.error('Error deleting notification:', error);
-		}
+		await notificationStore.noticeReadAll();
 	}
 };
 
 onMounted(async () => {
-	await notificationStore.getNotifications(params.value);
+	await Promise.all([
+		notificationStore.fetchNoticeList(),
+	]);
 });
 
-const messageItems = computed(() => notificationStore.notificationList);
+const messageItems = computed(() => notificationStore.getNoticeList);
 
 const unreadMessages = computed(() =>
 	messageItems.value.filter((item) => !item.readTime || item.readTime === '0001-01-01T00:00:00'),

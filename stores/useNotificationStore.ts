@@ -1,73 +1,95 @@
-import { notificationRepository } from '~/repositories/notification.repository';
+import { userRepository } from '~/repositories/user.repository';
 import type { KeyValue } from '~/types/base.types';
-import type { NotificationRequestDto } from '~/types/dto/notification.dto';
-import type { NotificationItem } from '~/types/response/notification.types';
+import type { Notice, NoticeListParams } from '~/types/definitions/user.types';
 
 export const useNotificationStore = defineStore('notification', () => {
-	const notifications = ref<NotificationItem[]>([]);
-	const totalCount = ref<number>(0);
-	const notificationTags = ref<KeyValue[]>([]);
-	const loading = ref(false);
-
 	const { $api } = useNuxtApp();
-	const notificationRepo = notificationRepository($api);
+	const userRepo = userRepository($api);
 
-	const getNotificationsLoading = ref(false);
-	const getNotifications = async (params: NotificationRequestDto) => {
-		getNotificationsLoading.value = true;
+	const toast = useToast();
+
+	const noticeListParams = ref<NoticeListParams>({
+		from: '',
+		to: '',
+		typeId: '',
+		pageNumber: '1',
+		pageSize: '20',
+	});
+	const noticeListLoading = ref<boolean>(false);
+	const noticeList = ref<Notice[]>([]);
+	const noticeListTotalCount = ref<number>(0);
+	const fetchNoticeList = async () => {
 		try {
-			const { result } = await notificationRepo.getNotifications(params);
-			notifications.value = result.rows;
-			totalCount.value = result.totalCount;
+			noticeListLoading.value = true;
+
+			const { result } = await userRepo.getNoticeList(noticeListParams.value);
+			noticeList.value = result.rows as Notice[];
+			noticeListTotalCount.value = result.totalCount;
+
+			noticeListLoading.value = false;
 		}
-		catch (error: unknown) {
-			throw createError({
-				statusCode: 500,
-				statusMessage: `${error}`,
-			});
-		}
-		finally {
-			getNotificationsLoading.value = false;
+		catch (error) {
+			console.log(error);
+			noticeListLoading.value = false;
 		}
 	};
 
-	const getNotificationsTag = async () => {
-		loading.value = true;
+	const getNoticeList = computed<Notice[]>(() => noticeList.value);
+	const getNoticeListTotalCount = computed<number>(() => noticeListTotalCount.value);
+
+	const noticeTypeListLoading = ref<boolean>(false);
+	const noticeTypeList = ref<KeyValue[]>([]);
+	const fetchNoticeTypeList = async () => {
 		try {
-			const { result } = await notificationRepo.getNotificationsTag();
-			notificationTags.value = result;
+			noticeTypeListLoading.value = true;
+
+			const { result } = await userRepo.getNoticeTypeList();
+			noticeTypeList.value = result;
+
+			noticeTypeListLoading.value = false;
 		}
-		catch (error: unknown) {
-			throw createError({
-				statusCode: 500,
-				statusMessage: `${error}`,
-			});
-		}
-		finally {
-			loading.value = false;
+		catch (error) {
+			console.log(error);
+			noticeTypeListLoading.value = false;
 		}
 	};
 
-	const notificationList = computed<NotificationItem[]>(() => {
-		return notifications.value;
-	});
+	const getNoticeTypeList = computed<KeyValue[]>(() => noticeTypeList.value);
 
-	const totalNotifications = computed<number>(() => {
-		return totalCount.value;
-	});
+	const noticeReadAllLoading = ref<boolean>(false);
+	const noticeReadAll = async () => {
+		try {
+			noticeReadAllLoading.value = true;
 
-	const notificationTagsList = computed<KeyValue[]>(() => {
-		return notificationTags.value;
-	});
+			await userRepo.noticeReadAll();
+
+			toast.add({
+				title: useT('readAllNotifications'),
+				description: useT('allNotificationsReadSuccessfully'),
+				timeout: 5000,
+				color: 'green',
+			});
+
+			await fetchNoticeList();
+
+			noticeReadAllLoading.value = false;
+		}
+		catch (error) {
+			console.log(error);
+			noticeReadAllLoading.value = false;
+		}
+	};
 
 	return {
-		getNotifications,
-		getNotificationsLoading,
-
-		getNotificationsTag,
-
-		notificationList,
-		notificationTagsList,
-		totalNotifications,
+		fetchNoticeList,
+		fetchNoticeTypeList,
+		noticeListLoading,
+		noticeTypeListLoading,
+		getNoticeList,
+		getNoticeListTotalCount,
+		getNoticeTypeList,
+		noticeListParams,
+		noticeReadAllLoading,
+		noticeReadAll,
 	};
 });

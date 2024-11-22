@@ -2,7 +2,7 @@
 	<div>
 		<Header class="hidden md:block" />
 		<!-- <LayoutsDefaultMobileHeader class="block md:hidden" /> -->
-		<div>
+		<div class="min-h-[calc(100vh-26.4rem)]">
 			<slot />
 		</div>
 		<LayoutsDefaultFooter />
@@ -14,9 +14,4 @@
 
 <script setup lang="ts">
 import Header from '~/components/layouts/Default/Header.vue';
-import { Language } from '~/utils/enums/language.enum';
-
-const baseDataStore = useBaseDataStore();
-baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
-baseDataStore.fetchMarketBriefItems();
 </script>

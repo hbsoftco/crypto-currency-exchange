@@ -3,6 +3,7 @@ import * as Comlink from 'comlink';
 import { loadFromCache, saveToCache } from '~/utils/indexeddb';
 import {
 	CACHE_KEY_CURRENCY_BRIEF_ITEMS,
+	CACHE_KEY_FUTURES_QUOTE_ITEMS,
 	CACHE_KEY_MARKET_BRIEF_ITEMS,
 	CACHE_KEY_QUOTE_ITEMS,
 	CACHE_KEY_TAG_ITEMS,
@@ -13,6 +14,7 @@ import type { Quote } from '~/types/definitions/quote.types';
 import type { SuggestionItems } from '~/types/definitions/header/search.types';
 import type { Tag } from '~/types/definitions/tag.types';
 import type { Asset } from '~/types/definitions/asset.types';
+import { MarketType } from '~/utils/enums/market.enum';
 
 let currencyBriefItems: CurrencyBrief[] = [];
 let marketBriefItems: MarketBrief[] = [];
@@ -298,7 +300,11 @@ const addCurrencyToMarketsL51 = async (baseUrl: string, markets: MarketL51[]) =>
 const fetchQuoteItems = async (marketTypeId: number, baseUrl: string) => {
 	try {
 		let quoteItems: Quote[] = [];
-		const cachedItems = await loadFromCache<Quote[]>(CACHE_KEY_QUOTE_ITEMS);
+
+		let cachedItems = await loadFromCache<Quote[]>(CACHE_KEY_QUOTE_ITEMS);
+		if (marketTypeId === MarketType.FUTURES) {
+			cachedItems = await loadFromCache<Quote[]>(CACHE_KEY_FUTURES_QUOTE_ITEMS);
+		}
 
 		if (cachedItems && cachedItems.length > 0) {
 			quoteItems = cachedItems;
@@ -307,7 +313,12 @@ const fetchQuoteItems = async (marketTypeId: number, baseUrl: string) => {
 			const response = await fetch(`${baseUrl}v1/market/routine/quote_list?marketTypeId=${marketTypeId}`);
 			const { result } = await response.json();
 
-			await saveToCache(CACHE_KEY_QUOTE_ITEMS, result);
+			if (marketTypeId === MarketType.FUTURES) {
+				await saveToCache(CACHE_KEY_FUTURES_QUOTE_ITEMS, result);
+			}
+			else {
+				await saveToCache(CACHE_KEY_QUOTE_ITEMS, result);
+			}
 
 			quoteItems = result;
 		}

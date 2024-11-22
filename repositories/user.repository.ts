@@ -56,17 +56,23 @@ import type {
 	SetMobileDto,
 	SetPasswordDto,
 	SetPinCodeDto } from '~/types/dto/user.dto';
-import type { CommonResponse, GetCountryListRes, IdentificationRes, KeyValueRes, UploadAvatarDto } from '~/types/response/common.types';
+import type { GetCountryListRes, IdentificationRes, KeyValueRes, UploadAvatarDto } from '~/types/response/common.types';
 import type { GetCommissionRes, GetInvitationListRes } from '~/types/response/referral.types';
 import type { ProfileResponse } from '~/types/response/profile.types';
 import type {
+	NoticeListParams,
 	TraderCommissionListParams,
 	UserResponse } from '~/types/definitions/user.types';
+import type { CommonResponse, KeyValueResponse } from '~/types/definitions/common.types';
 
 type UserRepository = {
 	getTraderCommissionList: (params: TraderCommissionListParams) => Promise<UserResponse>;
 	getLevelsList: () => Promise<UserResponse>;
-
+	// Notice
+	getNoticeList: (params: NoticeListParams) => Promise<UserResponse>;
+	getNoticeTypeList: () => Promise<KeyValueResponse>;
+	noticeReadAll: () => Promise<CommonResponse>;
+	noticeDeleteAll: () => Promise<CommonResponse>;
 	//
 	getCurrentUser: () => Promise<ProfileResponse>;
 	generate2Fa: () => Promise<TwoStepLoginResponse>;
@@ -142,6 +148,47 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
+	// Notice
+	async getNoticeList(params: NoticeListParams): Promise<UserResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = `/v1/user/logs/notice_list`;
+		const result = await fetch<UserResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+		return result;
+	},
+	async getNoticeTypeList(): Promise<KeyValueResponse> {
+		const url = `/v1/user/logs/notice_type_list`;
+		const result = await fetch<KeyValueResponse>(url, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+		return result;
+	},
+	async noticeReadAll(): Promise<CommonResponse> {
+		const url = `/v1/user/logs/notice_read_all`;
+		const response = await fetch<CommonResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async noticeDeleteAll(): Promise<CommonResponse> {
+		const url = `/v1/user/logs/notice_del_all`;
+		const response = await fetch<CommonResponse>(`${url}`, {
+			noAuth: false,
+			method: 'DELETE',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+
 	// Old
 	// Profile
 	async getCurrentUser(): Promise<ProfileResponse> {

@@ -96,7 +96,10 @@
 							v-else-if="item.key === 'marketFutures'"
 							class="space-y-3"
 						>
-							<p>Futures</p>
+							<FuturesMarketTable
+								v-if="!initFilterLoading"
+								:search-query="searchQuery"
+							/>
 						</div>
 					</template>
 				</UTabs>
@@ -130,6 +133,7 @@
 import TopMarketState from '~/components/pages/Market/TopMarketState.vue';
 import IconSearch from '~/assets/svg-icons/menu/search.svg';
 import MarketTable from '~/components/pages/Market/MarketTable.vue';
+import FuturesMarketTable from '~/components/pages/Market/FuturesMarketTable.vue';
 import { marketRepository } from '~/repositories/market.repository';
 import MarketStateSkeleton from '~/components/pages/Market/MarketStateSkeleton.vue';
 import type { MarketState } from '~/types/definitions/market.types';
@@ -146,8 +150,6 @@ const publicSocketStore = usePublicSocketStore();
 const worker = useBaseWorker();
 
 const route = useRoute();
-
-const marketTypeId = ref<number>(MarketType.SPOT);
 
 const search = ref<string>('');
 const searchQuery = ref<string>('');
@@ -237,8 +239,9 @@ const getLatestMarkets = async () => {
 const initFilterLoading = ref<boolean>(false);
 const initFilterItems = async () => {
 	initFilterLoading.value = true;
-	marketsPageStore.quoteItems = await worker.fetchQuoteItems(marketTypeId.value, useEnv('apiBaseUrl'));
+	marketsPageStore.quoteItems = await worker.fetchQuoteItems(MarketType.SPOT, useEnv('apiBaseUrl'));
 	marketsPageStore.tagItems = await worker.fetchTagItems(Language.PERSIAN, useEnv('apiBaseUrl'));
+	marketsPageStore.futuresQuoteItems = await worker.fetchQuoteItems(MarketType.FUTURES, useEnv('apiBaseUrl'));
 
 	marketsPageStore.initQuoteOptions();
 	initFilterLoading.value = false;

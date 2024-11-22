@@ -8,15 +8,15 @@
 				</div>
 				<div class="flex flex-wrap">
 					<div
-						v-for="(item, index) in localNotificationTagsList"
+						v-for="(item, index) in notificationStore.getNoticeTypeList"
 						:key="index"
 						@click="selectTag(item.key)"
 					>
 						<h3
 							class="px-2.5 py-1 m-1 text-nowrap block"
-							:class="['text-sm font-normal rounded-md cursor-pointer',
+							:class="['text-sm font-semibold rounded-md cursor-pointer',
 								isSelected(item.key)
-									? 'bg-primary-yellow-light dark:bg-primary-yellow-dark text-black dark:text-black'
+									? 'bg-primary-yellow-light dark:bg-primary-yellow-dark text-white dark:text-black'
 									: 'text-subtle-text-light dark:text-subtle-text-dark bg-primary-gray-light dark:bg-primary-gray-dark']"
 						>
 							{{ item.value }}
@@ -36,26 +36,19 @@
 							color="red"
 							variant="solid"
 							class="rounded"
-							:loading="deleteAllNotificationsLoading"
-							@click="deleteAllNotifications"
+							:loading="noticeDeleteAllLoading"
+							@click="noticeDeleteAll"
 						>
 							{{ $t('deleteAll') }}
 						</UButton>
-						<!-- <UButton
-							color="primary"
-							variant="solid"
-							class="mx-3 rounded"
-						>
-							{{ $t('readAll') }}
-						</UButton> -->
 					</div>
 				</div>
-				<div v-if="isLoading">
+				<div v-if="notificationStore.noticeListLoading">
 					<UiLogoLoading />
 				</div>
 				<div v-else>
 					<div
-						v-for="(notif, index) in localNotificationList"
+						v-for="(notif, index) in notificationStore.getNoticeList"
 						:key="index"
 					>
 						<div class="py-4 border-t border-primary-gray-light dark:border-primary-gray-dark">
@@ -67,7 +60,7 @@
 									</h5>
 								</div>
 								<div class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
-									<span>{{ useNumber(formatDateToIranTime(notif.regTime)) }}</span>
+									<span dir="ltr">{{ useNumber(formatDateToIranTime(notif.regTime)) }}</span>
 								</div>
 							</div>
 							<div class="py-2 text-sm font-normal">
@@ -82,9 +75,14 @@
 					</div>
 					<div class="flex justify-center py-4">
 						<UPagination
-							:model-value="Number(params.pageNumber)"
+							v-if="notificationStore.getNoticeListTotalCount && paginationNumbers.showPagination"
+							ref="pagination"
+							:to="(page: number) => ({
+								query: { page },
+							})"
+							:model-value="Number(notificationStore.noticeListParams.pageNumber)"
 							:page-count="20"
-							:total="localTotalCount"
+							:total="notificationStore.getNoticeListTotalCount"
 							:max="6"
 							size="xl"
 							ul-class="flex space-x-2 bg-blue-500 border-none"
@@ -107,7 +105,8 @@ import { sanitizedHtml } from '~/utils/html-sanitizer';
 import { formatDateToIranTime } from '~/utils/date-time';
 import IconMessage from '~/assets/svg-icons/menu/message.svg';
 import { useNumber } from '~/composables/useNumber';
-import { notificationRepository } from '~/repositories/notification.repository';
+import { userRepository } from '~/repositories/user.repository';
+import type { UPagination } from '#build/components';
 
 definePageMeta({
 	layout: 'account-single',
@@ -115,38 +114,29 @@ definePageMeta({
 });
 
 const { $api, $swal } = useNuxtApp();
-const notificationRepo = notificationRepository($api);
+const userRepo = userRepository($api);
 
 const toast = useToast();
 
 const notificationStore = useNotificationStore();
 
-const isLoading = ref(false);
+const pagination = ref<InstanceType<typeof UPagination>>();
+const paginationNumbers = usePaginationNumbers();
 
-const params = ref({
-	from: '',
-	to: '',
-	typeId: '',
-	pageNumber: '1',
-	pageSize: '20',
+watch(() => useChangeNumber().getLanguage(), () => {
+	if (pagination.value) {
+		paginationNumbers.applyChangesToLinks(pagination.value);
+	}
 });
 
-const fetchNotifications = async () => {
-	try {
-		isLoading.value = true;
-		await notificationStore.getNotifications(params.value);
-		await notificationStore.getNotificationsTag();
+watch(() => notificationStore.noticeListParams.pageNumber, () => {
+	if (pagination.value) {
+		paginationNumbers.applyChangesToLinks(pagination.value);
 	}
-	catch (error) {
-		console.error('Error fetching trades:', error);
-	}
-	finally {
-		isLoading.value = false;
-	}
-};
+}, { deep: true });
 
-const deleteAllNotificationsLoading = ref<boolean>(false);
-const deleteAllNotifications = async () => {
+const noticeDeleteAllLoading = ref<boolean>(false);
+const noticeDeleteAll = async () => {
 	const confirmation = await $swal.fire({
 		title: useT('deleteAllNotifications'),
 		text: useT('deleteAllNotificationsDescription'),
@@ -157,74 +147,59 @@ const deleteAllNotifications = async () => {
 	});
 
 	if (confirmation.isConfirmed) {
-		deleteAllNotificationsLoading.value = true;
-
 		try {
-			await notificationRepo.deleteAllNotifications();
+			noticeDeleteAllLoading.value = true;
+
+			await userRepo.noticeDeleteAll();
 
 			toast.add({
-				title: useT('deleteAllNotifications'),
-				description: useT('allNotificationsDeletedSuccessfully'),
+				title: useT('readAllNotifications'),
+				description: useT('allNotificationsReadSuccessfully'),
 				timeout: 5000,
 				color: 'green',
 			});
 
-			await fetchNotifications();
-
-			deleteAllNotificationsLoading.value = false;
+			noticeDeleteAllLoading.value = false;
 		}
 		catch (error) {
-			deleteAllNotificationsLoading.value = false;
-			console.error('Error deleting notification:', error);
+			console.log(error);
+			noticeDeleteAllLoading.value = false;
 		}
 	}
 };
-
-const readAllNotificationsLoading = ref<boolean>(false);
-const readAllNotifications = async () => {
-	readAllNotificationsLoading.value = true;
-
-	try {
-		await notificationRepo.readAllNotifications();
-
-		toast.add({
-			title: useT('readAllNotifications'),
-			description: useT('allNotificationsReadSuccessfully'),
-			timeout: 5000,
-			color: 'green',
-		});
-
-		await notificationStore.getNotifications(params.value);
-
-		readAllNotificationsLoading.value = false;
-	}
-	catch (error) {
-		readAllNotificationsLoading.value = false;
-		console.error('Error deleting notification:', error);
-	}
-};
-
-onMounted(async () => {
-	await fetchNotifications();
-	await readAllNotifications();
-});
-
-const localNotificationList = computed(() => notificationStore.notificationList);
-const localNotificationTagsList = computed(() => notificationStore.notificationTagsList);
-const localTotalCount = computed(() => notificationStore.totalNotifications);
 
 const selectedTag = ref<string | null>(null);
 
 const selectTag = async (item: string) => {
 	selectedTag.value = item;
-	params.value.typeId = item;
-	await notificationStore.getNotifications(params.value);
+	notificationStore.noticeListParams.typeId = item;
+	await notificationStore.fetchNoticeList();
+
+	if (pagination.value) {
+		paginationNumbers.applyChangesToLinks(pagination.value);
+	}
 };
 
 const isSelected = (tag: string) => selectedTag.value === tag;
 
 const onPageChange = async (newPage: number) => {
-	params.value.pageNumber = String(newPage);
-	await notificationStore.getNotifications(params.value);
+	notificationStore.noticeListParams.pageNumber = String(newPage);
+	await notificationStore.fetchNoticeList();
+
+	if (pagination.value) {
+		paginationNumbers.applyChangesToLinks(pagination.value);
+	}
 };
+
+onMounted(async () => {
+	await Promise.all([
+		notificationStore.fetchNoticeList(),
+		notificationStore.fetchNoticeTypeList(),
+		notificationStore.noticeReadAll(),
+	]);
+
+	if (pagination.value) {
+		paginationNumbers.applyChangesToLinks(pagination.value);
+	}
+});
 </script>
