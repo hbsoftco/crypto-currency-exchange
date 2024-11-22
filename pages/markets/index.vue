@@ -133,13 +133,14 @@
 import TopMarketState from '~/components/pages/Market/TopMarketState.vue';
 import IconSearch from '~/assets/svg-icons/menu/search.svg';
 import MarketTable from '~/components/pages/Market/MarketTable.vue';
-import FuturesMarketTable from '~/components/pages/Market/FuturesMarketTable.vue';
 import { marketRepository } from '~/repositories/market.repository';
 import MarketStateSkeleton from '~/components/pages/Market/MarketStateSkeleton.vue';
 import type { MarketState } from '~/types/definitions/market.types';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 import { MarketType, SortMode } from '~/utils/enums/market.enum';
 import { Language } from '~/utils/enums/language.enum';
+
+const FuturesMarketTable = defineAsyncComponent(() => import('~/components/pages/Market/FuturesMarketTable.vue'));
 
 const { $api } = useNuxtApp();
 const marketRepo = marketRepository($api);
