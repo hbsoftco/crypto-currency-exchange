@@ -44,18 +44,18 @@
 <script setup lang="ts">
 import { splitMarket } from '~/utils/split-market';
 import { useNumber } from '~/composables/useNumber';
-import type { MarketState } from '~/types/definitions/market.types';
+import type { MarketL47Item } from '~/types/definitions/market.types';
 import { priceFormat } from '~/utils/price-format';
 
 interface Props {
-	markets: MarketState[];
+	markets: MarketL47Item[];
 }
 
 const props = defineProps<Props>();
 
 const publicSocketStore = usePublicSocketStore();
 
-const localMarkets = ref<MarketState[]>([...props.markets]);
+const localMarkets = ref<MarketL47Item[]>([...props.markets]);
 
 const changedItems = ref<{ [key: string]: boolean }>({});
 const prevData = ref<{ [key: string]: { indexPrice: number; priceChangePercIn24H: number } }>({});

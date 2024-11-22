@@ -74,7 +74,28 @@
 						<section>
 							<Calculator />
 						</section>
-						<section v-if="hottestMarketsLoading">
+
+						<template v-if="marketsL47Loading">
+							<section>
+								<SidebarMarketStateSkeleton />
+							</section>
+						</template>
+						<template v-else>
+							<section
+								v-for="category in marketsL47"
+								:key="category.category"
+								class="mt-16 mb-6"
+							>
+								<h4 class="text-xl font-bold mb-6">
+									{{ $t(category.category) }}
+								</h4>
+								<SidebarMarketState
+									:markets="category.info ?? []"
+								/>
+							</section>
+						</template>
+
+						<!-- <section v-if="hottestMarketsLoading">
 							<SidebarMarketStateSkeleton />
 						</section>
 						<section
@@ -132,7 +153,7 @@
 							<SidebarMarketState
 								:markets="latestMarkets ?? []"
 							/>
-						</section>
+						</section> -->
 					</div>
 				</div>
 			</div>
@@ -155,8 +176,9 @@ import { currencyRepository } from '~/repositories/currency.repository';
 import { marketRepository } from '~/repositories/market.repository';
 import { Language } from '~/utils/enums/language.enum';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
-import type { MarketBrief, MarketState } from '~/types/definitions/market.types';
+import type { MarketBrief, MarketL47, MarketsL47Params } from '~/types/definitions/market.types';
 import type { Currency, CurrencyBrief, CurrencyInfoParams } from '~/types/definitions/currency.types';
+import { MarketType } from '~/utils/enums/market.enum';
 
 const { $api } = useNuxtApp();
 const currencyRepo = currencyRepository($api);
@@ -171,84 +193,22 @@ const cSymbol = String(route.params.cSymbol);
 
 const socketMarketIds = ref<number[]>([]);
 
-const mostProfitableMarkets = ref<MarketState[]>([]);
-const mostProfitableMarketsLoading = ref<boolean>(false);
-const getMostProfitableMarkets = async () => {
+const marketsL47Params = ref<MarketsL47Params>({
+	marketTypeId: String(MarketType.SPOT),
+	rowCount: '4',
+});
+const marketsL47 = ref<MarketL47[]>([]);
+const marketsL47Loading = ref<boolean>(false);
+const getMarketListL47 = async () => {
 	try {
-		mostProfitableMarketsLoading.value = true;
-		const { result } = await marketRepo.getMostProfitableMarkets({ rowCount: '4' });
+		marketsL47Loading.value = true;
+		const { result } = await marketRepo.getMarketListL47(marketsL47Params.value);
+		marketsL47.value = await worker.addCurrencyToMarketsL47(
+			useEnv('apiBaseUrl'),
+			result.rows as MarketL47[],
+		);
 
-		mostProfitableMarkets.value = await worker.addCurrencyToMarketStates(useEnv('apiBaseUrl'), result.rows);
-
-		socketMarketIds.value = [
-			...socketMarketIds.value,
-			...mostProfitableMarkets.value.map((item) => item.id),
-		];
-
-		mostProfitableMarketsLoading.value = false;
-	}
-	catch (error: unknown) {
-		console.log(error);
-	}
-};
-
-const hottestMarkets = ref<MarketState[]>([]);
-const hottestMarketsLoading = ref<boolean>(false);
-const getHottestMarkets = async () => {
-	try {
-		hottestMarketsLoading.value = true;
-		const { result } = await marketRepo.getHottestMarkets({ rowCount: '4' });
-
-		hottestMarkets.value = await worker.addCurrencyToMarketStates(useEnv('apiBaseUrl'), result.rows);
-
-		socketMarketIds.value = [
-			...socketMarketIds.value,
-			...hottestMarkets.value.map((item) => item.id),
-		];
-
-		hottestMarketsLoading.value = false;
-	}
-	catch (error: unknown) {
-		console.log(error);
-	}
-};
-
-const latestMarkets = ref<MarketState[]>([]);
-const latestMarketsLoading = ref<boolean>(false);
-const getLatestMarkets = async () => {
-	try {
-		latestMarketsLoading.value = true;
-		const { result } = await marketRepo.getLatestMarkets({ rowCount: '4' });
-
-		latestMarkets.value = await worker.addCurrencyToMarketStates(useEnv('apiBaseUrl'), result.rows);
-
-		socketMarketIds.value = [
-			...socketMarketIds.value,
-			...latestMarkets.value.map((item) => item.id),
-		];
-
-		latestMarketsLoading.value = false;
-	}
-	catch (error: unknown) {
-		console.log(error);
-	}
-};
-
-const mostVoluminousMarkets = ref<MarketState[]>([]);
-const mostVoluminousMarketsLoading = ref<boolean>(false);
-const getMostVoluminousMarkets = async () => {
-	try {
-		mostVoluminousMarketsLoading.value = true;
-		const { result } = await marketRepo.getMostVoluminous({ rowCount: '4' });
-
-		mostVoluminousMarkets.value = await worker.addCurrencyToMarketStates(useEnv('apiBaseUrl'), result.rows);
-
-		socketMarketIds.value = [
-			...socketMarketIds.value,
-			...mostVoluminousMarkets.value.map((item) => item.id),
-		];
-
-		mostVoluminousMarketsLoading.value = false;
+		marketsL47Loading.value = false;
 	}
 	catch (error: unknown) {
 		console.log(error);
@@ -291,11 +251,8 @@ const getCurrencyInfo = async () => {
 
 onMounted(async () => {
 	await Promise.all([
-		getMostProfitableMarkets(),
-		getMostVoluminousMarkets(),
-		getHottestMarkets(),
-		getLatestMarkets(),
 		getCurrencyInfo(),
+		getMarketListL47(),
 	]);
 
 	await publicSocketStore.addMarketIds(socketMarketIds.value);
