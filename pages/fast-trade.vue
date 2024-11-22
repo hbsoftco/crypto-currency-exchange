@@ -192,6 +192,7 @@ const ConfirmOrderModal = defineAsyncComponent(() => import('~/components/pages/
 
 definePageMeta({
 	layout: 'trade',
+	middleware: 'auth',
 });
 
 const { $api } = useNuxtApp();

@@ -18,11 +18,6 @@
 				<div
 					class="w-[75rem] bg-hover-light dark:bg-hover-dark shadow-lg rounded transition-all duration-200"
 				>
-					<div
-						class="text-base font-bold border-b-primary-gray-light dark:border-b-primary-gray-dark border-b mx-4 py-4"
-					>
-						{{ $t("quickAccess") }}
-					</div>
 					<ul class="grid grid-cols-4 gap-2 p-4">
 						<li
 							v-for="(item, index) in menuItems"
@@ -33,10 +28,12 @@
 								:to="item.url"
 								class="flex justify-between"
 							>
-								<component
-									:is="item.icon"
-									class="text-4xl dark:text-subtle-text-50"
-								/>
+								<div class="flex-1">
+									<component
+										:is="item.icon"
+										class="text-4xl dark:text-subtle-text-50"
+									/>
+								</div>
 								<div class="text-base mr-4">
 									<h5 class="font-bold">
 										{{ $t(item.name) }}
@@ -59,17 +56,15 @@
 import IconMenu from '~/assets/svg-icons/menu/menu.svg';
 import IconArrowDown from '~/assets/svg-icons/menu/arrow-down.svg';
 import IconArrowUp from '~/assets/svg-icons/menu/arrow-up.svg';
+import IconNotification from '~/assets/svg-icons/menu/notification.svg';
 import IconCurrencyDeposit from '~/assets/svg-icons/menu/quick-menu/currency-deposit.svg';
-import IconTransactionHistory from '~/assets/svg-icons/menu/quick-menu/transaction-history.svg';
+import IconInviteFriends from '~/assets/svg-icons/menu/invite-friends.svg';
 import IconBankAccounts from '~/assets/svg-icons/menu/quick-menu/bank-accounts.svg';
 import IconTutorial from '~/assets/svg-icons/menu/quick-menu/tutorial.svg';
 import IconWithdrawCurrency from '~/assets/svg-icons/menu/quick-menu/withdraw-currency.svg';
 import IconDepositWithdrawalHistory from '~/assets/svg-icons/menu/quick-menu/deposit-Withdrawal-history.svg';
 import IconCreateAPI from '~/assets/svg-icons/menu/quick-menu/create-API.svg';
-import IconBlog from '~/assets/svg-icons/menu/quick-menu/blog.svg';
 import IconDepositToman from '~/assets/svg-icons/menu/quick-menu/deposit-toman.svg';
-import IconPortfolio from '~/assets/svg-icons/menu/quick-menu/portfolio.svg';
-import IconTopUsers from '~/assets/svg-icons/menu/quick-menu/top-users.svg';
 import IconAwards from '~/assets/svg-icons/menu/quick-menu/awards.svg';
 import IconWithdrawToman from '~/assets/svg-icons/menu/quick-menu/withdraw-toman.svg';
 import IconQuickTrade from '~/assets/svg-icons/menu/quick-menu/quick-trade.svg';
@@ -78,113 +73,112 @@ import IconUserLevel from '~/assets/svg-icons/menu/quick-menu/user-level.svg';
 
 const menuItems = [
 	{
-		name: 'currencyDeposit',
-		description: 'توضیحات توضیحات توضیحات توضیحات',
+		name: 'depositCrypto',
+		description: useT('transferToWallet'),
 		icon: IconCurrencyDeposit,
 		url: '/wallet/deposit',
 	},
 	{
-		name: 'transactionHistory',
-		description: 'توضیحات توضیحات توضیحات توضیحات',
-		icon: IconTransactionHistory,
-		url: '/spot/list',
-
-	},
-	{
-		name: 'bankAccounts',
-		description: 'توضیحات توضیحات توضیحات توضیحات',
-		icon: IconBankAccounts,
-		url: '/wallet/bank-cards',
-
-	},
-	{
-		name: 'tutorial',
-		description: 'توضیحات توضیحات توضیحات توضیحات',
-		icon: IconTutorial,
-		url: '/risk-agreement',
-
-	},
-	{
-		name: 'withdrawCurrency',
-		description: 'توضیحات توضیحات توضیحات توضیحات',
-		icon: IconWithdrawCurrency,
-		url: '/wallet/withdraw',
-
-	},
-	{
-		name: 'depositWithdrawalHistory',
-		description: 'توضیحات توضیحات توضیحات توضیحات',
-		icon: IconDepositWithdrawalHistory,
-		url: '/wallet/history',
-
-	},
-	{
-		name: 'createAPI',
-		description: 'توضیحات توضیحات توضیحات توضیحات',
-		icon: IconCreateAPI,
-		url: '/account/manage-api/new-api',
-
-	},
-	{
-		name: 'blog',
-		description: 'توضیحات توضیحات توضیحات توضیحات',
-		icon: IconBlog,
-		url: '/risk-agreement',
-
-	},
-	{
-		name: 'depositToman',
-		description: 'توضیحات توضیحات توضیحات توضیحات',
-		icon: IconDepositToman,
-		url: '/wallet/deposit-toman',
-
-	},
-	{
-		name: 'portfolio',
-		description: 'توضیحات توضیحات توضیحات توضیحات',
-		icon: IconPortfolio,
-		url: '/wallet/profit-loss',
-
-	},
-	{
-		name: 'topUsers',
-		description: 'توضیحات توضیحات توضیحات توضیحات',
-		icon: IconTopUsers,
-		url: '/account/top-users',
-
-	},
-	{
-		name: 'awards',
-		description: 'توضیحات توضیحات توضیحات توضیحات',
-		icon: IconAwards,
-		url: '/account/rewards',
-
-	},
-	{
-		name: 'withdrawToman',
-		description: 'توضیحات توضیحات توضیحات توضیحات',
-		icon: IconWithdrawToman,
-		url: '/wallet/toman-withdrawal',
-
-	},
-	{
-		name: 'quickTrade',
-		description: 'توضیحات توضیحات توضیحات توضیحات',
-		icon: IconQuickTrade,
-		url: '/fast-trade',
-
-	},
-	{
 		name: 'fees',
-		description: 'توضیحات توضیحات توضیحات توضیحات',
+		description: useT('transactionCosts'),
 		icon: IconFees,
 		url: '/account/fees',
 
 	},
 	{
-		name: 'userLevel',
-		description: 'توضیحات توضیحات توضیحات توضیحات',
+		name: 'quickTrade',
+		description: useT('instantCryptoTrade'),
+		icon: IconQuickTrade,
+		url: '/fast-trade',
+
+	},
+	{
+		name: 'buyCryptoGuide',
+		description: useT('howToBuyCrypto'),
+		icon: IconTutorial,
+		url: '/risk-agreement',
+
+	},
+	{
+		name: 'withdrawCrypto',
+		description: useT('transferToExternalAccount'),
+		icon: IconWithdrawCurrency,
+		url: '/wallet/withdraw',
+
+	},
+	{
+		name: 'banking',
+		description: useT('manageDepositAccounts'),
+		icon: IconBankAccounts,
+		url: '/wallet/bank-cards',
+
+	},
+	{
+		name: 'rewardsBonuses',
+		description: useT('userActivityIncentives'),
+		icon: IconAwards,
+		url: '/account/rewards',
+
+	},
+	{
+		name: 'notifications',
+		description: useT('userActivityIncentives'),
+		icon: IconNotification,
+		url: '/risk-agreement',
+
+	},
+	{
+		name: 'depositToman',
+		description: useT('addRialBalance'),
+		icon: IconDepositToman,
+		url: '/wallet/deposit-toman',
+
+	},
+	{
+		name: 'profitLoss',
+		description: useT('systemAnalysis'),
 		icon: IconUserLevel,
+		url: '/account/user-level',
+
+	},
+	{
+		name: 'depositWithdrawalHistory',
+		description: useT('transactionsDetails'),
+		icon: IconDepositWithdrawalHistory,
+		url: '/wallet/history',
+
+	},
+	{
+		name: 'marketStats',
+		description: useT('marketStatus'),
+		icon: IconUserLevel,
+		url: '/account/user-level',
+	},
+	{
+		name: 'withdrawToman',
+		description: useT('transferToBank'),
+		icon: IconWithdrawToman,
+		url: '/wallet/toman-withdrawal',
+
+	},
+	{
+		name: 'createAPI',
+		description: useT('createAccessKeys'),
+		icon: IconCreateAPI,
+		url: '/account/manage-api/new-api',
+
+	},
+	{
+		name: 'userLevel',
+		description: useT('userLevelDetails'),
+		icon: IconUserLevel,
+		url: '/account/user-level',
+
+	},
+	{
+		name: 'myFriends',
+		description: useT('referralIncomeStatus'),
+		icon: IconInviteFriends,
 		url: '/account/user-level',
 
 	},

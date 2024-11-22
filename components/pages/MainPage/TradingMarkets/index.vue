@@ -11,10 +11,10 @@
 						<th class="py-2 md:py-3 px-2 text-right max-w-36 w-36 md:max-w-80 md:w-80 pr-6 md:pr-14">
 							{{ $t("market") }}
 						</th>
-						<th class="py-2 md:py-3 text-center md:text-center">
+						<th class="py-2 md:py-3 text-center md:text-left">
 							{{ $t("lastPrice") }}
 						</th>
-						<th class="py-2 md:py-3 text-right md:text-center ">
+						<th class="py-2 md:py-3 text-right md:text-left pl-0 md:pl-9">
 							{{ $t("change24h") }}
 						</th>
 						<th class="py-2 md:py-3 hidden md:block">

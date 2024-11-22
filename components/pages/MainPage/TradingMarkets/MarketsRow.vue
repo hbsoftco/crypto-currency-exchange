@@ -16,7 +16,7 @@
 		<td class="py-2">
 			<div
 				dir="rtl"
-				class="text-left pl-1 md:pl-8"
+				class="text-left pl-1 md:pl-0"
 			>
 				<span class="text-sm md:text-base font-medium">{{ useNumber(priceFormat(localRow.indexPrice)) }}</span>
 			</div>
