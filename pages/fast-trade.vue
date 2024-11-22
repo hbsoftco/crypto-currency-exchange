@@ -220,6 +220,8 @@ const firstSelectedSymbol = ref('');
 const secondSelectedSymbol = ref('');
 
 const getFirstCurrencyBalanceInput = (input: number) => {
+	console.log('2222222222222', input);
+
 	firstCurrencyBalanceInput.value = input;
 };
 
@@ -721,12 +723,31 @@ const fieldDataCalculation = (input: number) => {
 			const balancePrice = (tradeItems.value[0].base.value * marketPrice);
 			tradeItems.value[0].quote.value = formatByDecimal(balancePrice, tradeItems.value[0].quote.currency.unit);
 			secondCurrencyBalance.value = String(tradeItems.value[0].quote.value);
+
+			console.log('Number(firstCurrencyBalance.value)', convertPersianToEnglishNumber(firstCurrencyBalance.value));
+			console.log('Number(tradeItems.value[0].base.currency.unit)', Number(tradeItems.value[0].base.currency.unit));
+
+			if ((Number(convertPersianToEnglishNumber(firstCurrencyBalance.value)) === Number(tradeItems.value[0].base.currency.unit)) && firstCurrencyBalanceInput.value) {
+				// firstCurrencyBalanceErrorMessage.value = useT('paymentExceedsBalance');
+				firstCurrencyBalanceErrorMessage.value = '';
+			}
+			else if ((Number(convertPersianToEnglishNumber(firstCurrencyBalance.value)) < Number(tradeItems.value[0].base.currency.unit)) && firstCurrencyBalanceInput.value) {
+				firstCurrencyBalanceErrorMessage.value = 'عدد معتبر نیست';
+			}
+			else {
+				firstCurrencyBalanceErrorMessage.value = '';
+			}
 		}
 		else if (tradeItems.value[0].quote.location === 'TOP') {
 			tradeItems.value[0].quote.value = Number(input);
 			const balanceBase = tradeItems.value[0].quote.value / marketPrice;
 			tradeItems.value[0].base.value = formatByDecimal(balanceBase, tradeItems.value[0].base.currency.unit);
 			secondCurrencyBalance.value = String(tradeItems.value[0].base.value);
+
+			if ((Number(firstCurrencyBalanceInput.value) <= Number(tradeItems.value[0].quote.currency.unit)) && firstCurrencyBalanceInput.value) {
+				// firstCurrencyBalanceErrorMessage.value = useT('paymentExceedsBalance');
+				firstCurrencyBalanceErrorMessage.value = 'عدد معتبر نیست';
+			}
 		}
 
 		tradeItems.value[0].fee = (tradeItems.value[0].quote.value * Number(tradeItems.value[0].takerFee)) / 100;
@@ -750,13 +771,18 @@ const fieldDataCalculation = (input: number) => {
 		tradeItems.value[1].fee = (tradeItems.value[1].quote.value * Number(tradeItems.value[1].takerFee)) / 100;
 	}
 
+	console.log('trading ----------->', tradeItems.value);
+
 	// Check balance and input value
-	if (Number(firstCurrencyBalanceInput.value) > Number(balance.value)) {
-		firstCurrencyBalanceErrorMessage.value = useT('paymentExceedsBalance');
-	}
-	else {
-		firstCurrencyBalanceErrorMessage.value = '';
-	}
+	// if (Number(firstCurrencyBalanceInput.value) > Number(balance.value)) {
+	// 	firstCurrencyBalanceErrorMessage.value = useT('paymentExceedsBalance');
+	// }
+	// else if (Number(firstCurrencyBalanceInput.value) < Number(balance.value)) {
+	// 	//
+	// }
+	// else {
+	// 	firstCurrencyBalanceErrorMessage.value = '';
+	// }
 };
 
 watch(

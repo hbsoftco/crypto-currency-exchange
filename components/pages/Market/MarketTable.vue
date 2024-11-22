@@ -125,14 +125,13 @@ const authStore = useAuthStore();
 
 const worker = useBaseWorker();
 
+const pagination = ref<InstanceType<typeof UPagination>>();
 const paginationNumbers = usePaginationNumbers();
 
 interface PropsDefinition {
 	searchQuery: string;
 }
 const props = defineProps<PropsDefinition>();
-
-const pagination = ref<InstanceType<typeof UPagination>>();
 
 const totalCount = ref(0);
 
