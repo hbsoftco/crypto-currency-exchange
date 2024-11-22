@@ -220,8 +220,6 @@ const firstSelectedSymbol = ref('');
 const secondSelectedSymbol = ref('');
 
 const getFirstCurrencyBalanceInput = (input: number) => {
-	console.log('2222222222222', input);
-
 	firstCurrencyBalanceInput.value = input;
 };
 
@@ -713,7 +711,30 @@ const finalReceived = computed(() => {
 	return received;
 });
 
+const checkTradeInputValidation = (inputBalance: number, inputUnit: number, inputBalanceLength: number, inputUnitLength: number, balance: number) => {
+	if (inputBalanceLength >= inputUnitLength) {
+		if (inputBalance < inputUnit) {
+			firstCurrencyBalanceErrorMessage.value = useT('invalidInputNumber');
+		}
+		else {
+			firstCurrencyBalanceErrorMessage.value = '';
+		}
+	}
+	else {
+		if (inputBalance > balance) {
+			firstCurrencyBalanceErrorMessage.value = useT('paymentExceedsBalance');
+		}
+		else {
+			firstCurrencyBalanceErrorMessage.value = '';
+		}
+	}
+};
+
 const fieldDataCalculation = (input: number) => {
+	const myBalance = Number(balance.value);
+	const inputBalance = convertPersianToEnglishNumber(firstCurrencyBalance.value);
+	const inputBalanceLength = firstCurrencyBalance.value.length;
+
 	if (tradeItems.value.length === 1) {
 		const marketPrice = tradeItems.value[0].market.price;
 
@@ -724,19 +745,10 @@ const fieldDataCalculation = (input: number) => {
 			tradeItems.value[0].quote.value = formatByDecimal(balancePrice, tradeItems.value[0].quote.currency.unit);
 			secondCurrencyBalance.value = String(tradeItems.value[0].quote.value);
 
-			console.log('Number(firstCurrencyBalance.value)', convertPersianToEnglishNumber(firstCurrencyBalance.value));
-			console.log('Number(tradeItems.value[0].base.currency.unit)', Number(tradeItems.value[0].base.currency.unit));
+			const inputUnit = Number(tradeItems.value[0].base.currency.unit);
+			const inputUnitLength = (tradeItems.value[0].base.currency.unit).length;
 
-			if ((Number(convertPersianToEnglishNumber(firstCurrencyBalance.value)) === Number(tradeItems.value[0].base.currency.unit)) && firstCurrencyBalanceInput.value) {
-				// firstCurrencyBalanceErrorMessage.value = useT('paymentExceedsBalance');
-				firstCurrencyBalanceErrorMessage.value = '';
-			}
-			else if ((Number(convertPersianToEnglishNumber(firstCurrencyBalance.value)) < Number(tradeItems.value[0].base.currency.unit)) && firstCurrencyBalanceInput.value) {
-				firstCurrencyBalanceErrorMessage.value = 'عدد معتبر نیست';
-			}
-			else {
-				firstCurrencyBalanceErrorMessage.value = '';
-			}
+			checkTradeInputValidation(inputBalance, inputUnit, inputBalanceLength, inputUnitLength, myBalance);
 		}
 		else if (tradeItems.value[0].quote.location === 'TOP') {
 			tradeItems.value[0].quote.value = Number(input);
@@ -744,10 +756,10 @@ const fieldDataCalculation = (input: number) => {
 			tradeItems.value[0].base.value = formatByDecimal(balanceBase, tradeItems.value[0].base.currency.unit);
 			secondCurrencyBalance.value = String(tradeItems.value[0].base.value);
 
-			if ((Number(firstCurrencyBalanceInput.value) <= Number(tradeItems.value[0].quote.currency.unit)) && firstCurrencyBalanceInput.value) {
-				// firstCurrencyBalanceErrorMessage.value = useT('paymentExceedsBalance');
-				firstCurrencyBalanceErrorMessage.value = 'عدد معتبر نیست';
-			}
+			const inputUnit = Number(tradeItems.value[0].quote.currency.unit);
+			const inputUnitLength = (tradeItems.value[0].quote.currency.unit).length;
+
+			checkTradeInputValidation(inputBalance, inputUnit, inputBalanceLength, inputUnitLength, myBalance);
 		}
 
 		tradeItems.value[0].fee = (tradeItems.value[0].quote.value * Number(tradeItems.value[0].takerFee)) / 100;
@@ -769,20 +781,12 @@ const fieldDataCalculation = (input: number) => {
 		secondCurrencyBalance.value = String(tradeItems.value[1].base.value);
 
 		tradeItems.value[1].fee = (tradeItems.value[1].quote.value * Number(tradeItems.value[1].takerFee)) / 100;
+
+		const inputUnit = Number(tradeItems.value[0].base.currency.unit);
+		const inputUnitLength = (tradeItems.value[0].base.currency.unit).length;
+
+		checkTradeInputValidation(inputBalance, inputUnit, inputBalanceLength, inputUnitLength, myBalance);
 	}
-
-	console.log('trading ----------->', tradeItems.value);
-
-	// Check balance and input value
-	// if (Number(firstCurrencyBalanceInput.value) > Number(balance.value)) {
-	// 	firstCurrencyBalanceErrorMessage.value = useT('paymentExceedsBalance');
-	// }
-	// else if (Number(firstCurrencyBalanceInput.value) < Number(balance.value)) {
-	// 	//
-	// }
-	// else {
-	// 	firstCurrencyBalanceErrorMessage.value = '';
-	// }
 };
 
 watch(

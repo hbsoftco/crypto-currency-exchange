@@ -1124,6 +1124,7 @@ const persian = {
 	announcementDetails: 'جزئیات اعلامیه‌ها و آگهسازی‌ها در صرافی',
 	marketStatus: 'بررسی وضعیت بازار برای تمام ارزهای صرافی',
 	referralIncomeStatus: 'وضعیت درآمدی من از معاملات دوستان معرفی شده',
+	invalidInputNumber: 'عدد ورودی شما معتبر نیست!',
 
 };
 

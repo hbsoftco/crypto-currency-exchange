@@ -321,7 +321,24 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 	await publicSocketStore.addMarketIds(socketMarketIds.value);
 };
 
+const checkTradeInputValidation = (inputBalance: number, inputUnit: number, inputBalanceLength: number, inputUnitLength: number) => {
+	if (inputBalanceLength >= inputUnitLength) {
+		if (inputBalance < inputUnit) {
+			firstCurrencyBalanceErrorMessage.value = useT('invalidInputNumber');
+		}
+		else {
+			firstCurrencyBalanceErrorMessage.value = '';
+		}
+	}
+	else {
+		firstCurrencyBalanceErrorMessage.value = '';
+	}
+};
+
 const fieldDataCalculation = (input: number) => {
+	const inputBalance = convertPersianToEnglishNumber(firstCurrencyBalance.value);
+	const inputBalanceLength = firstCurrencyBalance.value.length;
+
 	if (tradeItems.value.length === 1) {
 		const marketPrice = tradeItems.value[0].market.price;
 
@@ -331,12 +348,22 @@ const fieldDataCalculation = (input: number) => {
 			const balancePrice = (tradeItems.value[0].base.value * marketPrice);
 			tradeItems.value[0].quote.value = formatByDecimal(balancePrice, tradeItems.value[0].quote.currency.unit);
 			secondCurrencyBalance.value = String(tradeItems.value[0].quote.value);
+
+			const inputUnit = Number(tradeItems.value[0].base.currency.unit);
+			const inputUnitLength = (tradeItems.value[0].base.currency.unit).length;
+
+			checkTradeInputValidation(inputBalance, inputUnit, inputBalanceLength, inputUnitLength);
 		}
 		else if (tradeItems.value[0].quote.location === 'TOP') {
 			tradeItems.value[0].quote.value = Number(input);
 			const balanceBase = tradeItems.value[0].quote.value / marketPrice;
 			tradeItems.value[0].base.value = formatByDecimal(balanceBase, tradeItems.value[0].base.currency.unit);
 			secondCurrencyBalance.value = String(tradeItems.value[0].base.value);
+
+			const inputUnit = Number(tradeItems.value[0].quote.currency.unit);
+			const inputUnitLength = (tradeItems.value[0].quote.currency.unit).length;
+
+			checkTradeInputValidation(inputBalance, inputUnit, inputBalanceLength, inputUnitLength);
 		}
 	}
 	else if (tradeItems.value.length === 2) {
@@ -352,6 +379,11 @@ const fieldDataCalculation = (input: number) => {
 		const bottomBalanceBase = tradeItems.value[1].quote.value / bottomMarketPrice;
 		tradeItems.value[1].base.value = formatByDecimal(bottomBalanceBase, tradeItems.value[1].base.currency.unit);
 		secondCurrencyBalance.value = String(tradeItems.value[1].base.value);
+
+		const inputUnit = Number(tradeItems.value[0].base.currency.unit);
+		const inputUnitLength = (tradeItems.value[0].base.currency.unit).length;
+
+		checkTradeInputValidation(inputBalance, inputUnit, inputBalanceLength, inputUnitLength);
 	}
 };
 
