@@ -1,6 +1,7 @@
 export enum PublicTopic {
 	SPOT_TICKER = 'spot@public.ticker.v1',
 	SPOT_SNAPSHOT = 'spot@public.snapshot.v1',
+	FUTURES_TICKER = 'futures@public.ticker.v1',
 	FUTURES_SNAPSHOT = 'futures@public.snapshot.v1',
 }
 
@@ -12,6 +13,7 @@ export enum PrivateTopic {
 
 export enum SocketId {
 	PING = '12',
+	FUTURES_TICKER = '24',
 	SPOT_TICKER = '25',
 	SPOT_TICKER_EXCHANGE = '26',
 	ASSET_LIST = '35',

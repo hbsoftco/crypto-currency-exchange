@@ -3,10 +3,78 @@ import { PublicTopic, SocketId } from '~/utils/enums/socket.enum';
 
 export const usePublicSocketStore = defineStore('publicSocket', () => {
 	const activeMarketIds = ref<Set<number>>(new Set());
+	const activeFuturesMarketIds = ref<Set<number>>(new Set());
 	const latestMarketData = ref<SocketSpotTickerMessage[]>([]);
 
 	const { messages, connect, sendMessage } = usePublicWebSocket();
 
+	// Futures
+	const addFuturesMarketIds = async (marketIds: number[]) => {
+		if (activeFuturesMarketIds.value.size > 0) {
+			sendMessage(createSubscriptionData(
+				SocketId.FUTURES_TICKER,
+				'UNSUBSCRIBE',
+				PublicTopic.FUTURES_TICKER,
+				Array.from(activeFuturesMarketIds.value).join(','),
+			));
+		}
+		marketIds.forEach((id) => activeFuturesMarketIds.value.add(id));
+
+		const ids = Array.from(activeFuturesMarketIds.value).join(',');
+
+		if (ids) {
+			await connect();
+
+			sendMessage(createSubscriptionData(
+				SocketId.FUTURES_TICKER,
+				'SUBSCRIBE',
+				PublicTopic.FUTURES_TICKER,
+				ids,
+			));
+		}
+	};
+
+	const removeFuturesMarketIds = async (marketIds: number[]) => {
+		if (activeFuturesMarketIds.value.size > 0) {
+			sendMessage(createSubscriptionData(
+				SocketId.FUTURES_TICKER,
+				'UNSUBSCRIBE',
+				PublicTopic.FUTURES_TICKER,
+				Array.from(activeFuturesMarketIds.value).join(','),
+			));
+		}
+
+		marketIds.forEach((id) => activeFuturesMarketIds.value.delete(id));
+
+		// Add USDT_TMN market id
+		activeFuturesMarketIds.value.add(1795);
+
+		const ids = Array.from(activeFuturesMarketIds.value).join(',');
+		if (ids) {
+			await connect();
+
+			sendMessage(createSubscriptionData(
+				SocketId.FUTURES_TICKER,
+				'SUBSCRIBE',
+				PublicTopic.FUTURES_TICKER,
+				ids,
+			));
+		}
+	};
+
+	const unSubscribeFutures = async () => {
+		if (activeFuturesMarketIds.value.size > 0) {
+			sendMessage(createSubscriptionData(
+				SocketId.FUTURES_TICKER,
+				'UNSUBSCRIBE',
+				PublicTopic.FUTURES_TICKER,
+				Array.from(activeFuturesMarketIds.value).join(','),
+			));
+		}
+		activeFuturesMarketIds.value = new Set();
+	};
+
+	// Spot
 	const addMarketIds = async (marketIds: number[]) => {
 		if (activeMarketIds.value.size > 0) {
 			sendMessage(createSubscriptionData(
@@ -61,8 +129,6 @@ export const usePublicSocketStore = defineStore('publicSocket', () => {
 				ids,
 			));
 		}
-
-		console.log('removeMarketIds ids=========================>', ids);
 	};
 
 	const unSubscribe = async () => {
@@ -88,12 +154,16 @@ export const usePublicSocketStore = defineStore('publicSocket', () => {
 	};
 
 	return {
-		findMarketDataById,
-
+		// Spot
 		addMarketIds,
 		removeMarketIds,
 		unSubscribe,
-
+		// Futures
+		addFuturesMarketIds,
+		removeFuturesMarketIds,
+		unSubscribeFutures,
+		// Share
+		findMarketDataById,
 		latestMarketData,
 	};
 });

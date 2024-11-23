@@ -26,7 +26,7 @@ export const usePublicWebSocket = () => {
 				if (!pingInterval) {
 					pingInterval = setInterval(() => {
 						const pingData = JSON.stringify({
-							id: '12',
+							id: SocketId.PING,
 							method: 'Ping',
 						});
 						sendMessage(pingData);
@@ -41,10 +41,9 @@ export const usePublicWebSocket = () => {
 
 			socket.value.onmessage = (event) => {
 				const messageData: SocketSpotTickerMessage = JSON.parse(event.data);
-				// console.log('Public Message from server:', messageData);
 
 				if (messageData.statusCode !== 400) {
-					if (messageData.id === SocketId.SPOT_TICKER) {
+					if (messageData.id === SocketId.SPOT_TICKER || messageData.id === SocketId.FUTURES_TICKER) {
 						const mi = messageData.data.mi;
 
 						const existingIndex = messages.value.findIndex((msg) => msg.data.mi === mi);

@@ -101,6 +101,7 @@ import IconArrowLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 import type { MarketBrief } from '~/types/definitions/market.types';
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
+import { MarketType } from '~/utils/enums/market.enum';
 
 const CurrencyItem = defineAsyncComponent(() => import('~/components/layouts/Default/Header/Search/CurrencyItem.vue'));
 const MarketItem = defineAsyncComponent(() => import('~/components/layouts/Default/Header/Search/MarketItem.vue'));
@@ -120,12 +121,13 @@ const router = useRouter();
 
 const publicSocketStore = usePublicSocketStore();
 
-const socketMarketIds = ref<number[]>([]);
-
 const handleFocus = () => {
 	isFocused.value = true;
 	showBox.value = true;
 };
+
+const socketMarketIds = ref<number[]>([]);
+const socketFuturesMarketIds = ref<number[]>([]);
 
 const handleInput = async (event: Event) => {
 	const input = event.target as HTMLInputElement;
@@ -143,8 +145,20 @@ const handleInput = async (event: Event) => {
 			await publicSocketStore.removeMarketIds(socketMarketIds.value);
 		}
 
-		socketMarketIds.value = marketsItems.value.map((item) => item.id);
+		if (socketFuturesMarketIds.value.length) {
+			await publicSocketStore.removeFuturesMarketIds(socketFuturesMarketIds.value);
+		}
+
+		socketMarketIds.value = marketsItems.value
+			.filter((item) => item.typeId === MarketType.SPOT)
+			.map((item) => item.id);
+
+		socketFuturesMarketIds.value = marketsItems.value
+			.filter((item) => item.typeId === MarketType.FUTURES)
+			.map((item) => item.id);
+
 		await publicSocketStore.addMarketIds(socketMarketIds.value);
+		await publicSocketStore.addFuturesMarketIds(socketFuturesMarketIds.value);
 	}
 	else {
 		currenciesItems.value = [];
@@ -184,8 +198,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
 	document.removeEventListener('mousedown', handleClickOutside);
 });
-
-// let searchTimeout: ReturnType<typeof setTimeout> | null = null;
 
 const handleSelection = () => {
 	showAdditionalBox.value = false;
