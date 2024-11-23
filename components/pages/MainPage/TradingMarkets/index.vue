@@ -4,7 +4,7 @@
 
 		<div class="p-0 md:p-4 pt-2 md:pt-0">
 			<table
-				class="min-w-full bg-background-light dark:bg-background-dark text-text-dark dark:text-text-light"
+				class="min-w-full bg-background-light dark:bg-background-dark text-text-dark dark:text-text-light rounded"
 			>
 				<thead>
 					<tr class="text-center font-normal md:font-medium text-sm md:text-base">

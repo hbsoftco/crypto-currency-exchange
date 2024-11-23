@@ -13,7 +13,7 @@
 			v-if="!isMobile"
 			class="hidden md:block"
 		/>
-		<div class="min-h-[calc(100vh-26.4rem)]">
+		<div class="min-h-[calc(100vh-26.4rem)] pb-16 md:pb-0 pt-16 md:pt-0">
 			<slot />
 		</div>
 		<Footer v-if="!isMobile" />

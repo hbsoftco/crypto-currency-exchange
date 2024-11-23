@@ -1,5 +1,5 @@
 <template>
-	<div class="flex items-center">
+	<div class="flex items-center pr-2">
 		<img
 			v-if="market.currency"
 			:src="`https://api-bitland.site/media/currency/${market?.currency?.cSymbol}.png`"

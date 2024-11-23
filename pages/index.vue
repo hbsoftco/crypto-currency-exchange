@@ -105,7 +105,7 @@
 <script setup lang="ts">
 import PinTextDown from '~/components/pages/MainPage/PinTextDown.vue';
 import QuickMenuMobile from '~/components/pages/Site/MainPage/QuickMenuMobile.vue';
-import TradingProgress from '~/components/pages/Site/MainPage/TradingProgress.vue';
+import TradingProgress from '~/components/pages/MainPage/TradingProgress.vue';
 import TopSlider from '~/components/pages/MainPage/TopSlider.vue';
 import type { Pin } from '~/types/definitions/decoration.types';
 import { decorationRepository } from '~/repositories/decoration.repository';
