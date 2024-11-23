@@ -25,26 +25,26 @@
 						<th class="p-1 text-xs font-normal">
 							{{ $t('status') }}
 						</th>
-						<th class="p-1 text-xs font-normal">
-							{{ $t('value') }}
+						<th class="p-1 text-xs font-normal text-left">
+							{{ $t('requestedAmount') }}
 						</th>
-						<th class="p-1 text-xs font-normal">
-							{{ $t('price') }}
+						<th class="p-1 text-xs font-normal text-left">
+							{{ $t('requestedValue') }}
 						</th>
-						<th class="p-1 text-xs font-normal">
-							{{ $t('amount') }}
-						</th>
-						<th class="p-1 text-xs font-normal">
-							{{ $t('filled') }}
+						<th class="p-1 text-xs font-normal text-left">
+							{{ $t('amountFilled') }}
 						</th>
 						<th class="p-1 text-xs font-normal">
 							{{ $t('remaining') }}
 						</th>
-						<th class="p-1 text-xs font-normal">
+						<th class="p-1 text-xs font-normal text-left">
+							{{ $t('tradePrice') }}
+						</th>
+						<th class="p-1 text-xs font-normal pr-4">
 							{{ $t('date') }}
 						</th>
 						<th class="p-1 text-xs font-normal">
-							{{ $t('action') }}
+							{{ $t('detail') }}
 						</th>
 					</tr>
 				</thead>
@@ -126,40 +126,40 @@
 						v-for="(order, index) in orderList"
 						v-else
 						:key="index"
-						class="pb-1 odd:bg-hover2-light dark:odd:bg-hover2-dark even:bg-background-light dark:even:bg-background-dark"
+						class="pb-1 odd:bg-hover2-light dark:odd:bg-hover2-dark even:bg-background-light dark:even:bg-background-dark hover:bg-hover-light dark:hover:bg-hover-dark"
 					>
 						<td class="text-xs font-normal py-1">
 							<span>{{ order.mSymbol }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ $t(order.orderTypeName) }}</span>
+							<span>{{ order.orderTypeName }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ $t(order.sideName) }}</span>
+							<span>{{ order.sideName }}</span>
 						</td>
 						<td
 							class="text-xs font-normal py-1"
 							:class="{ 'text-primary-yellow-light dark:text-primary-yellow-dark': order.orderStateName === 'ReadyToFill' }"
 						>
-							<span>{{ $t(order.orderStateName) }}</span>
+							<span>{{ order.orderStateName }}</span>
 						</td>
-						<td class="text-xs font-normal py-1">
+						<td class="text-xs font-normal py-1 text-left">
+							<span dir="ltr">{{ useNumber(order.reqQnt) }} {{ findSymbol(order.mSymbol, 'quote') }}</span>
+						</td>
+						<td class="text-xs font-normal py-1 text-left">
 							<span dir="ltr">{{ useNumber(order.reqQot) }} {{ findSymbol(order.mSymbol, 'quote') }}</span>
 						</td>
-						<td class="text-xs font-normal py-1">
-							<span dir="ltr">{{ useNumber(order.limitPrice) }} {{ findSymbol(order.mSymbol, 'quote') }}</span>
-						</td>
-						<td class="text-xs font-normal py-1">
-							<span dir="ltr">{{ useNumber(order.dealPrice) }} {{ findSymbol(order.mSymbol, 'quote') }}</span>
-						</td>
-						<td class="text-xs font-normal py-1">
+						<td class="text-xs font-normal py-1 text-left">
 							<span dir="ltr">{{ useNumber(order.filledQnt) }} {{ findSymbol(order.mSymbol, 'currency') }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
 							<span dir="ltr">{{ useNumber(remainingQuantity(order.reqQnt, order.filledQnt)) }} {{ findSymbol(order.mSymbol, 'quote') }}</span>
 						</td>
-						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(formatDateToIran(order.regTime)) }}</span>
+						<td class="text-xs font-normal py-1 text-left">
+							<span dir="ltr">{{ useNumber(order.limitPrice) }} {{ findSymbol(order.mSymbol, 'quote') }}</span>
+						</td>
+						<td class="text-xs font-normal py-1 pr-4">
+							<span dir="ltr">{{ useNumber(formatDateToIranTime(order.regTime)) }}</span>
 						</td>
 						<!-- <td class="text-xs font-normal py-1">
 							<span>{{ useNumber(order.tid) }}</span>
@@ -240,7 +240,7 @@
 							class="text-xl text-accent-red dark:text-accent-red cursor-pointer"
 							@click="openDeleteModal(Number(order.oid))"
 						/>
-						<span class="text-sm font-normal">{{ $t(order.orderStateName) }}</span>
+						<span class="text-sm font-normal">{{ order.orderStateName }}</span>
 					</div>
 					<div
 						class="flex items-center"
@@ -263,7 +263,7 @@
 							{{ $t('type') }}
 						</span>
 						<span class="text-sm font-bold">
-							{{ $t(order.orderTypeName) }}
+							{{ order.orderTypeName }}
 						</span>
 					</div>
 					<div class="bg-hover2-light dark:bg-hover2-dark flex flex-col justify-center items-center py-2 px-1">
@@ -274,13 +274,13 @@
 							v-if="order.sideName === 'Sell'"
 							class="text-sm font-bold text-accent-red dark:text-accent-red"
 						>
-							{{ $t(order.sideName) }}
+							{{ order.sideName }}
 						</span>
 						<span
 							v-if="order.sideName === 'Buy'"
 							class="text-sm font-bold text-accent-green dark:text-accent-green"
 						>
-							{{ $t(order.sideName) }}
+							{{ order.sideName }}
 						</span>
 					</div>
 					<div class="bg-hover2-light dark:bg-hover2-dark flex flex-col justify-center items-center py-2 px-1">
@@ -333,7 +333,7 @@
 </template>
 
 <script setup lang="ts">
-import { formatDateToIran } from '~/utils/persian-date';
+import { formatDateToIranTime } from '~/utils/date-time';
 import FilterOptions from '~/components/pages/Spot/List/FilterOptions.vue';
 import IconInfo from '~/assets/svg-icons/info.svg';
 import { useNumber } from '~/composables/useNumber';

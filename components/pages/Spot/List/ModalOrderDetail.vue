@@ -80,7 +80,10 @@
 								<IconTimeReg class="text-2xl text-subtle-text-light dark:text-subtle-text-dark" />
 								<div class="mr-2 flex flex-col text-right">
 									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('registerTime') }}:</span>
-									<span class="text-sm font-bold">{{ useNumber(formatDateToIranTime(orderItem.regTime)) }}</span>
+									<span
+										v-if="orderItem.regTime"
+										class="text-sm font-bold"
+									>{{ useNumber(formatDateToIranTime(orderItem.regTime)) }}</span>
 								</div>
 							</div>
 							<div class="flex bg-hover-light md:bg-transparent dark:bg-hover-dark md:dark:bg-transparent p-2 md:p-0 shadow-md md:shadow-none rounded-md md:rounded-none">
@@ -143,7 +146,10 @@
 								<IconTimeFill class="text-2xl text-subtle-text-light dark:text-subtle-text-dark" />
 								<div class="mr-2 flex flex-col text-right">
 									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('fillingTime') }}:</span>
-									<span class="text-sm font-bold">{{ useNumber(formatDateToIranTime(orderItem.fillTime)) }}</span>
+									<span
+										v-if="orderItem.fillTime"
+										class="text-sm font-bold"
+									>{{ useNumber(formatDateToIranTime(orderItem.fillTime)) }}</span>
 								</div>
 							</div>
 						</div>

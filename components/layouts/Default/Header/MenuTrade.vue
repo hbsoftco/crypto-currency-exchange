@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-primary-gray-light dark:bg-hover2-50">
+	<div class="bg-hover2-light dark:bg-hover2-50">
 		<UTabs
 			:items="quoteItems"
 			dir="ltr"

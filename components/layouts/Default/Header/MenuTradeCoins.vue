@@ -22,7 +22,7 @@
 			<div
 				v-for="(market, index) in headerMenuStore.spotMarketItems"
 				:key="index"
-				class="mx-1 my-1 py-1 cursor-pointer border-b last:border-none border-b-primary-gray-light dark:border-b-primary-gray-dark rounded hover:bg-primary-gray-light hover:dark:bg-primary-gray-dark duration-200 transition-all"
+				class="mx-1 my-1 py-1 cursor-pointer border-b last:border-none border-b-primary-gray-light dark:border-b-primary-gray-dark rounded hover:bg-hover-light dark:hover:bg-hover-dark duration-200 transition-all"
 			>
 				<div
 					class="flex justify-between"

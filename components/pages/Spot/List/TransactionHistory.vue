@@ -14,6 +14,9 @@
 				<thead>
 					<tr class="py-4 text-subtle-text-light dark:text-subtle-text-dark bg-primary-gray-light dark:bg-primary-gray-dark">
 						<th class="p-1 text-xs font-normal">
+							{{ $t('orderNumber') }}
+						</th>
+						<th class="p-1 text-xs font-normal">
 							{{ $t('market') }}
 						</th>
 						<th class="p-1 text-xs font-normal">
@@ -22,29 +25,26 @@
 						<th class="p-1 text-xs font-normal">
 							{{ $t('direction') }}
 						</th>
-						<th class="p-1 text-xs font-normal">
-							{{ $t('value') }}
-						</th>
-						<th class="p-1 text-xs font-normal">
-							{{ $t('price') }}
-						</th>
-						<th class="p-1 text-xs font-normal">
+						<th class="p-1 text-xs font-normal text-left">
 							{{ $t('amountFilled') }}
 						</th>
-						<th class="p-1 text-xs font-normal">
-							{{ $t('date') }}
+						<th class="p-1 text-xs font-normal text-left">
+							{{ $t('filledValue') }}
 						</th>
 						<th class="p-1 text-xs font-normal">
 							{{ $t('transactionNumber') }}
 						</th>
 						<th class="p-1 text-xs font-normal">
-							{{ $t('orderNumber') }}
-						</th>
-						<th class="p-1 text-xs font-normal">
 							{{ $t('fee') }}
 						</th>
+						<th class="p-1 text-xs font-normal text-left">
+							{{ $t('tradePrice') }}
+						</th>
+						<th class="p-1 text-xs font-normal pr-4">
+							{{ $t('date') }}
+						</th>
 						<th class="p-1 text-xs font-normal">
-							{{ $t('action') }}
+							{{ $t('detail') }}
 						</th>
 					</tr>
 				</thead>
@@ -126,34 +126,34 @@
 						v-for="(trade, index) in tradesList"
 						v-else
 						:key="index"
-						class="pb-1 odd:bg-hover2-light dark:odd:bg-hover2-dark even:bg-background-light dark:even:bg-background-dark"
+						class="pb-1 odd:bg-hover2-light dark:odd:bg-hover2-dark even:bg-background-light dark:even:bg-background-dark hover:bg-hover-light dark:hover:bg-hover-dark"
 					>
+						<td class="text-xs font-normal py-1">
+							<span>{{ useNumber(trade.oid) }}</span>
+						</td>
 						<td class="text-xs font-normal py-1">
 							<span>{{ trade.mSymbol }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ $t(trade.orderTypeName) }}</span>
+							<span>{{ trade.orderTypeName }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
-							<span>{{ $t(trade.sideName) }}</span>
+							<span>{{ trade.sideName }}</span>
 						</td>
-						<td class="text-xs font-normal py-1">
-							<span dir="ltr">{{ useNumber(priceFormat(trade.reqQot)) }} {{ findSymbol(trade.mSymbol, 'quote') }}</span>
+						<td class="text-xs font-normal py-1 text-left">
+							<span
+								dir="ltr"
+								class="text-left"
+							>{{ useNumber(priceFormat(trade.filledQnt)) }} {{ findSymbol(trade.mSymbol, 'quote') }}</span>
 						</td>
-						<td class="text-xs font-normal py-1">
-							<span dir="ltr">{{ useNumber(priceFormat(trade.dealPrice)) }} {{ findSymbol(trade.mSymbol, 'quote') }}</span>
-						</td>
-						<td class="text-xs font-normal py-1">
-							<span dir="ltr">{{ useNumber(priceFormat(trade.filledQnt)) }} {{ findSymbol(trade.mSymbol, 'quote') }}</span>
-						</td>
-						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(formatDateToIran(trade.regTime)) }}</span>
+						<td class="text-xs font-normal py-1 text-left">
+							<span
+								dir="ltr"
+								class="text-left"
+							>{{ useNumber(priceFormat(trade.reqQot)) }} {{ findSymbol(trade.mSymbol, 'quote') }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
 							<span>{{ useNumber(trade.tid) }}</span>
-						</td>
-						<td class="text-xs font-normal py-1">
-							<span>{{ useNumber(trade.oid) }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
 							<div class="flex">
@@ -163,6 +163,15 @@
 								>{{ useNumber(trade.feeRawQot) }}  {{ findSymbol(trade.mSymbol, 'quote') }}</span>
 								<span dir="ltr">{{ useNumber(trade.feeRawQot) }}  {{ findSymbol(trade.mSymbol, 'quote') }}</span>
 							</div>
+						</td>
+						<td class="text-xs font-normal py-1 text-left">
+							<span
+								dir="ltr"
+								class="text-left"
+							>{{ useNumber(priceFormat(trade.dealPrice)) }} {{ findSymbol(trade.mSymbol, 'quote') }}</span>
+						</td>
+						<td class="text-xs font-normal py-1 pr-4">
+							<span dir="ltr">{{ useNumber(formatDateToIranTime(trade.regTime)) }}</span>
 						</td>
 						<td class="flex text-xs font-normal py-1">
 							<IconInfo
@@ -228,13 +237,13 @@
 							v-if="trade.sideName === 'Sell'"
 							class="text-sm font-bold text-accent-red dark:text-accent-red"
 						>
-							{{ $t(trade.sideName) }}
+							{{ trade.sideName }}
 						</span>
 						<span
 							v-if="trade.sideName === 'Buy'"
 							class="text-sm font-bold text-accent-green dark:text-accent-green"
 						>
-							{{ $t(trade.sideName) }}
+							{{ trade.sideName }}
 						</span>
 					</div>
 					<div class="flex justify-end items-center px-1">
@@ -297,7 +306,7 @@
 </template>
 
 <script setup lang="ts">
-import { formatDateToIran } from '~/utils/persian-date';
+import { formatDateToIranTime } from '~/utils/date-time';
 import FilterOptions from '~/components/pages/Spot/List/FilterOptions.vue';
 import IconInfo from '~/assets/svg-icons/info.svg';
 import { useNumber } from '~/composables/useNumber';
