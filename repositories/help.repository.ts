@@ -1,25 +1,27 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { GetCurrencyParams, GetFAQListParams, GetHowBuyListParams, getMiniRoutineParams, GetReasonListParams, GetRootListParams, GetSubjectLiveChatParams } from '~/types/base.types';
+import type { GetFAQListParams, GetHowBuyListParams, getMiniRoutineParams, GetReasonListParams, GetSubjectLiveChatParams } from '~/types/base.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
+import type { BaseLangGroupParams } from '~/types/definitions/common.types';
 import type { GetMiniRoutineRes, KeyValueRes } from '~/types/response/common.types';
-import type { GetFaqRes, GetHowToBuyListResponse, GetLiveChatListResponse, GetRootListResponse, GetSearchListResponse, GetShortListResponse, GetTreeListRes } from '~/types/response/help.types';
+import type { GetHowToBuyListResponse, GetLiveChatListResponse, GetRootListResponse, GetSearchListResponse, GetShortListResponse, GetTreeListRes } from '~/types/response/help.types';
 
 type HelpRepository = {
-	getRootList: (params: GetRootListParams) => Promise<GetRootListResponse>;
-	getShortList: (params: GetRootListParams) => Promise<GetShortListResponse>;
+	// OLD
+	getRootList: (params: BaseLangGroupParams) => Promise<GetRootListResponse>;
+	getShortList: (params: BaseLangGroupParams) => Promise<GetShortListResponse>;
 	getBuyList: (params: GetHowBuyListParams) => Promise<GetHowToBuyListResponse>;
 	getFAQList: (params: GetFAQListParams) => Promise<GetLiveChatListResponse>;
 	getSubjectList: (params: GetSubjectLiveChatParams) => Promise<GetLiveChatListResponse>;
-	getHelpData: (params: GetCurrencyParams) => Promise<GetFaqRes>;
 	getReasonList: (params: GetReasonListParams) => Promise<KeyValueRes>;
 	getMiniRoutine: (params: getMiniRoutineParams) => Promise<GetMiniRoutineRes>;
-	getTreeList: (params: GetRootListParams) => Promise<GetTreeListRes>;
+	getTreeList: (params: BaseLangGroupParams) => Promise<GetTreeListRes>;
 	getSearchList: (params: GetFAQListParams) => Promise<GetSearchListResponse>;
 };
 
 export const helpRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): HelpRepository => ({
-	async getRootList(params: GetRootListParams): Promise<GetRootListResponse> {
+	// OLD
+	async getRootList(params: BaseLangGroupParams): Promise<GetRootListResponse> {
 		const query = new URLSearchParams(
 			Object.entries(params)
 				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
@@ -34,7 +36,7 @@ export const helpRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): HelpR
 
 		return response;
 	},
-	async getShortList(params: GetRootListParams): Promise<GetShortListResponse> {
+	async getShortList(params: BaseLangGroupParams): Promise<GetShortListResponse> {
 		const query = new URLSearchParams(
 			Object.entries(params)
 				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
@@ -94,21 +96,6 @@ export const helpRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): HelpR
 
 		return response;
 	},
-	async getHelpData(params: GetCurrencyParams): Promise<GetFaqRes> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-
-		const url = '/v1/routine/help/get';
-		const response = await fetch<GetFaqRes>(`${url}?${query.toString()}`, {
-			noAuth: true,
-			apiName: url,
-			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
 	async getReasonList(params: GetReasonListParams): Promise<KeyValueRes> {
 		const query = new URLSearchParams(
 			Object.entries(params)
@@ -139,7 +126,7 @@ export const helpRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): HelpR
 
 		return response;
 	},
-	async getTreeList(params: GetRootListParams): Promise<GetTreeListRes> {
+	async getTreeList(params: BaseLangGroupParams): Promise<GetTreeListRes> {
 		const query = new URLSearchParams(
 			Object.entries(params)
 				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),

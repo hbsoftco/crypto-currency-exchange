@@ -92,8 +92,6 @@ const getMarketListL11 = async () => {
 			MarketType.SPOT,
 		);
 
-		console.log(markets.value.length);
-
 		marketsLoading.value = false;
 	}
 	catch (error: unknown) {

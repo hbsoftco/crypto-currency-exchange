@@ -70,7 +70,7 @@
 			</UContainer>
 		</section>
 
-		<section>
+		<section v-if="!isMobile">
 			<SkipHydration>
 				<NewCurrencies />
 			</SkipHydration>

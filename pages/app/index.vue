@@ -1,6 +1,11 @@
 <template>
 	<div>
-		<UContainer>
+		<UContainer v-if="routineHelpLoading">
+			<div class="p-5">
+				<UiLogoLoading />
+			</div>
+		</UContainer>
+		<UContainer v-else>
 			<div class="flex justify-between items-center mt-20 mb-32">
 				<div>
 					<ULink to="/">
@@ -11,16 +16,16 @@
 						>
 					</ULink>
 					<h1 class="mt-11 mb-6 text-2xl font-bold">
-						{{ helpData?.info[0].header }}
+						{{ routineHelp?.info.header }}
 					</h1>
 					<p class="text-xl font-bold">
-						{{ helpData?.info[0].content }}
+						{{ routineHelp?.info.content }}
 					</p>
 					<div class="block md:flex items-center mt-11 mb-16">
 						<span class="text-xl font-bold">{{ $t('suggestDownloadApp') }}</span>
 						<div class="flex justify-center mx-10 my-4">
 							<vue-qrcode
-								:value="link"
+								value="https://play.google.com/store/apps/details?id=io.bitland"
 								:size="200"
 								:level="'H'"
 								:background="'#ffffff'"
@@ -71,33 +76,34 @@
 </template>
 
 <script setup lang="ts">
-import { helpRepository } from '~/repositories/help.repository';
-import type { FaqItem } from '~/types/response/help.types';
+import { routineRepository } from '~/repositories/routine.repository';
+import type { BaseLangIdParams } from '~/types/definitions/common.types';
+import type { Routine } from '~/types/definitions/routine.types';
 import { Language } from '~/utils/enums/language.enum';
 
 const { $api } = useNuxtApp();
-const helpRepo = helpRepository($api);
+const routineRepo = routineRepository($api);
 
-const helpDataLoading = ref<boolean>(false);
-const helpData = ref<FaqItem>();
-const link = ref<string>('https://play.google.com/store/apps/details?id=io.bitland');
-
-const getHelpData = async () => {
+const routineHelpParams = ref<BaseLangIdParams>(
+	{ languageId: String(Language.PERSIAN),
+		id: '6' },
+);
+const routineHelp = ref<Routine>();
+const routineHelpLoading = ref<boolean>(false);
+const getRoutineHelp = async () => {
 	try {
-		helpDataLoading.value = true;
-
-		const { result } = await helpRepo.getHelpData({ languageId: String(Language.PERSIAN), id: '6' });
-		helpData.value = result;
-
-		helpDataLoading.value = false;
+		routineHelpLoading.value = true;
+		const { result } = await routineRepo.getRoutineHelp(routineHelpParams.value);
+		routineHelp.value = result;
+		routineHelpLoading.value = false;
 	}
 	catch (error) {
-		helpDataLoading.value = false;
 		console.log(error);
+		routineHelpLoading.value = false;
 	}
 };
 
 onMounted(async () => {
-	await getHelpData();
+	await getRoutineHelp();
 });
 </script>

@@ -148,7 +148,6 @@ watch(() => marketsPageStore.tradingMarketsParams, async () => {
 
 onMounted(async () => {
 	isMobile.value = !!mobileDetect.mobile();
-	console.log(isMobile.value);
 
 	marketsPageStore.tradingMarketsParams.tagTypeId = '';
 

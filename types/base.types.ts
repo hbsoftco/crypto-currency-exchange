@@ -353,7 +353,6 @@ export type {
 	GetTagListParams,
 	GetStaffParams,
 	GetTradeListParams,
-	GetOrderListParams,
 	GetDepositParams,
 	GetTraderBestListParams,
 	GetInternalReceiveParams,

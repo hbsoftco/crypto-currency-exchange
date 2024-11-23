@@ -29,51 +29,52 @@
 				<div class="col-span-12 md:col-span-7 mt-0 md:mt-4">
 					<div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 						<template v-if="!footerStore.footerLoading">
-							<div
-								v-for="section in footerStore.footerLinkSection || []"
+							<template
+								v-for="(section, index) in footerStore.footerLinkSection || []"
 								:key="section.id"
 							>
-								<span class="text-subtle-text-light dark:text-subtle-text-dark text-sm font-bold">
-									{{ section?.title }}
-								</span>
-
-								<div class="mt-2">
-									<div>
-										<div
-											v-for="(link, index) in section.links"
-											:key="index"
-											class="text-sm font-medium pb-2"
+								<div v-if="footerItems.length && index === 3">
+									<h5
+										class="text-subtle-text-light dark:text-subtle-text-dark text-sm font-bold mb-4"
+									>
+										{{ $t('followUs') }}
+									</h5>
+									<div class="grid grid-cols-4 gap-2">
+										<ULink
+											v-for="(subItem, subIndex) in footerItems[0].subItems"
+											:key="subIndex"
+											:to="subItem.url"
+											target="_blank"
+											class="w-8 h-8"
 										>
-											<ULink
-												:to="link.url"
-												target="_blank"
+											<component :is="subItem.name" />
+										</ULink>
+									</div>
+								</div>
+								<div>
+									<span class="text-subtle-text-light dark:text-subtle-text-dark text-sm font-bold">
+										{{ section?.title }}
+									</span>
+
+									<div class="mt-2">
+										<div>
+											<div
+												v-for="(link, index) in section.links"
+												:key="index"
+												class="text-sm font-medium pb-2"
 											>
-												{{ link.info[0]?.title }}
-											</ULink>
+												<ULink
+													:to="link.url"
+													target="_blank"
+												>
+													{{ link.info[0]?.title }}
+												</ULink>
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
+							</template>
 						</template>
-
-						<div v-if="footerItems.length">
-							<h5
-								class="text-subtle-text-light dark:text-subtle-text-dark text-sm font-bold mb-4"
-							>
-								{{ $t('followUs') }}
-							</h5>
-							<div class="grid grid-cols-4 gap-2">
-								<ULink
-									v-for="(subItem, subIndex) in footerItems[0].subItems"
-									:key="subIndex"
-									:to="subItem.url"
-									target="_blank"
-									class="w-8 h-8"
-								>
-									<component :is="subItem.name" />
-								</ULink>
-							</div>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -93,14 +94,6 @@ import IconInstagram from '~/assets/svg-icons/social/instagram.svg';
 import IconTelegram from '~/assets/svg-icons/social/telegram.svg';
 import IconTwitter from '~/assets/svg-icons/social/twitter.svg';
 import IconWhatsapp from '~/assets/svg-icons/social/whatsapp.svg';
-// import IconGoogle from '~/assets/svg-icons/social/google.svg';
-// import IconLinkedin from '~/assets/svg-icons/social/linkedin.svg';
-// import IconMessenger from '~/assets/svg-icons/social/messenger.svg';
-// import IconMicrosoftTeam from '~/assets/svg-icons/social/microsoft-team.svg';
-// import IconTwitch from '~/assets/svg-icons/social/twitch.svg';
-// import IconViber from '~/assets/svg-icons/social/viber.svg';
-// import IconWechat from '~/assets/svg-icons/social/wechat.svg';
-// import IconYoutube from '~/assets/svg-icons/social/youtube.svg';
 
 const footerStore = useFooterStore();
 
@@ -114,14 +107,6 @@ const footerItems = [
 			{ name: IconTelegram, url: 'https://t.me/bitlandio' },
 			{ name: IconTwitter, url: 'https://x.com/bitlandio' },
 			{ name: IconWhatsapp, url: 'https://wa.me/+989026031145' },
-			// { name: IconGoogle, url: '#' },
-			// { name: IconLinkedin, url: '#' },
-			// { name: IconMessenger, url: '#' },
-			// { name: IconMicrosoftTeam, url: '#' },
-			// { name: IconTwitch, url: '#' },
-			// { name: IconViber, url: '#' },
-			// { name: IconWechat, url: '#' },
-			// { name: IconYoutube, url: '#' },
 		],
 	},
 ];

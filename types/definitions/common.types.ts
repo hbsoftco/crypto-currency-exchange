@@ -13,8 +13,20 @@ type KeyValueResponse = {
 	result: KeyValue[];
 };
 
+type BaseLangIdParams = {
+	languageId: string;
+	id: string;
+};
+
+type BaseLangGroupParams = {
+	languageId: string;
+	group: string;
+};
+
 export type {
 	CommonResponse,
 	KeyValueResponse,
+	BaseLangIdParams,
+	BaseLangGroupParams,
 	KeyValue,
 };

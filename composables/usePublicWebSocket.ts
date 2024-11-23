@@ -41,7 +41,7 @@ export const usePublicWebSocket = () => {
 
 			socket.value.onmessage = (event) => {
 				const messageData: SocketSpotTickerMessage = JSON.parse(event.data);
-				console.log('Public Message from server:', messageData);
+				// console.log('Public Message from server:', messageData);
 
 				if (messageData.statusCode !== 400) {
 					if (messageData.id === SocketId.SPOT_TICKER) {

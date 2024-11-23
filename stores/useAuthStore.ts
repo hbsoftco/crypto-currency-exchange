@@ -198,8 +198,14 @@ export const useAuthStore = defineStore('auth', () => {
 	const userLevel = computed(() => levelsList.value?.find((level) => level.indicator === Number(getUserLevelIndicator.value)));
 
 	let refreshInterval: NodeJS.Timeout | undefined | null;
+	const firstCallRefreshToken = ref<boolean>(true);
 
 	const startRefreshInterval = () => {
+		if (firstCallRefreshToken.value) {
+			refreshOtc();
+			firstCallRefreshToken.value = false;
+		}
+
 		if (!refreshInterval) {
 			refreshInterval = setInterval(() => {
 				refreshOtc();
