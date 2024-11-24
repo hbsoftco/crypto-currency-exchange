@@ -144,7 +144,7 @@
 							<span>{{ order.orderStateName }}</span>
 						</td>
 						<td class="text-xs font-normal py-1 text-left">
-							<span dir="ltr">{{ useNumber(order.reqQnt) }} {{ findSymbol(order.mSymbol, 'quote') }}</span>
+							<span dir="ltr">{{ useNumber(order.reqQnt) }} {{ findSymbol(order.mSymbol, 'currency') }}</span>
 						</td>
 						<td class="text-xs font-normal py-1 text-left">
 							<span dir="ltr">{{ useNumber(order.reqQot) }} {{ findSymbol(order.mSymbol, 'quote') }}</span>

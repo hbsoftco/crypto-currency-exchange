@@ -163,7 +163,7 @@
 							class="text-xs font-normal py-1 text-left"
 							dir="ltr"
 						>
-							<span class="text-left">{{ useNumber(priceFormat(order.reqQnt)) }} {{ findSymbol(order.mSymbol, 'quote') }}</span>
+							<span class="text-left">{{ useNumber(priceFormat(order.reqQnt)) }} {{ findSymbol(order.mSymbol, 'currency') }}</span>
 						</td>
 						<td
 							class="text-xs font-normal py-1 text-left"
@@ -174,8 +174,11 @@
 						<!-- <td class="text-xs font-normal py-1">
 							<span>{{ useNumber(order.average) }}</span>
 						</td> -->
-						<td class="text-xs font-normal py-1 text-left ">
-							<span class="text-left">{{ useNumber(order.filledQnt) }}</span>
+						<td
+							class="text-xs font-normal py-1 text-left "
+							dir="ltr"
+						>
+							<span class="text-left">{{ useNumber(order.filledQnt) }} {{ findSymbol(order.mSymbol, 'currency') }}</span>
 						</td>
 						<td
 							class="text-xs font-normal py-1 text-left"

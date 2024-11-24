@@ -215,7 +215,6 @@ const internalFromDate = ref();
 
 const clearMarket = () => {
 	selected.value = undefined;
-	applyFilters();
 };
 
 const handleDateInput = (field: string) => {

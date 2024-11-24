@@ -181,8 +181,8 @@ const persian = {
 	liveInstantPriceInformation: 'داده ها و اطلاعات قیمت زنده و لحظه ای',
 	pricePerformanceAgainstDollar: 'عملکرد قیمت نسبت به دلار',
 	course: 'دوره',
-	changeUSD: 'تغییر (USD)',
-	changePercent: 'تغییر (%)',
+	changeUSD: 'مقدار تغییر (USD)',
+	changePercent: 'درصد تغییر (%)',
 	today: 'امروز',
 	from30DaysAgo: 'از ۳۰ روز پیش',
 	from60DaysAgo: 'از ۶۰ روز پیش',
@@ -201,7 +201,7 @@ const persian = {
 	currencyCirculation: 'ارز در گردش',
 	marketDominance: 'تسلط به بازار (%)',
 	marketRank: 'رتبه بازار',
-	maxSupply: 'حداکثر عرصه',
+	maxSupply: 'حداکثر عرضه ',
 	whatBitlandToken: 'توکن بیت‌لند چیست ؟',
 	howBuyBitlandTokens: 'نحوه خرید توکن بیت‌لند',
 	whatBitlandTokenFuturesTrading: 'معاملات فیوچرز توکن بیت‌لند چیست؟',
@@ -274,8 +274,8 @@ const persian = {
 	learnAboutCrypto: 'همه چیز درباره کریپتو بیاموزید. همه سوالات، پاسخ داده شده است.',
 	inviteFriendsToEarn: 'دوستان را برای کسب درآمد به بیت‌لند دعوت کنید.',
 	marketStatistics: 'اطلاعات آماری بازارها',
-	numberOfDecliningMarkets: 'تعداد بازارهای ریزشی',
-	numberOfRisingMarkets: 'تعداد بازارهای افزایشی',
+	numberOfDecliningMarkets: 'بازارهای ریزشی',
+	numberOfRisingMarkets: 'بازارهای افزایشی',
 	currencyCategories: 'دسته‌بندی ارزها',
 	yourFeeLevel: 'سطح کارمزد شما',
 	mostProfitableAssets: 'سود‌ده‌ترین‌ها',
@@ -1128,6 +1128,7 @@ const persian = {
 	firstDepositReward: 'با اولین واریز خودت می‌تونی یه جایزه از بیت‌لند بگیری، پس وقتت رو تلف نکن و شروع کن.',
 	firstTradeReward: 'هم می‌تونی معامله کنی هم از بیت‌لند به خاطر اولین معامله جایزه بگیری، فقط یادت باشه این فرصت محدوده!',
 	completeAccount2: 'برای انجام معاملات و استفاده از امکانات بیت‌لند نیاز است حساب کاربری‌تان را تکمیل کنید.',
+	totalSupply: 'کل عرضه',
 };
 
 export default persian;

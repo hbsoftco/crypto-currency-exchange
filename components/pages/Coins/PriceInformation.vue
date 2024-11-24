@@ -3,8 +3,11 @@
 		<h1 class="text-xl font-bold mb-2 mt-4">
 			{{ $t("priceInformation") }}
 		</h1>
-		<div class="grid grid-cols-2 md:grid-cols-2 gap-4">
-			<div>
+		<div
+			v-if="currencyDetail"
+			class="grid grid-cols-2 md:grid-cols-2 gap-4"
+		>
+			<div v-if="Number(currencyDetail.priceLowIn24h)">
 				<div
 					class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
 				>
@@ -13,13 +16,13 @@
 					>{{ $t("hours24Lowest") }}</span>
 				</div>
 				<div class="text-sm font-normal text-black dark:text-white pt-1">
-					<span class="mr-1">{{ useNumber(String(currencyDetail?.priceLowIn24h)) }} </span>
+					<span class="mr-1">{{ useNumber(priceFormat(String(currencyDetail?.priceLowIn24h))) }} </span>
 					<span>USDT</span>
 				</div>
 			</div>
 			<!-- priceLowIn24h -->
 
-			<div>
+			<div v-if="Number(currencyDetail.priceHighIn24h)">
 				<div
 					class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
 				>
@@ -28,13 +31,13 @@
 					>{{ $t("hours24Highest") }}</span>
 				</div>
 				<div class="text-sm font-normal text-black dark:text-white pt-1">
-					<span class="mr-1">{{ useNumber(String(currencyDetail?.priceHighIn24h)) }} </span>
+					<span class="mr-1">{{ useNumber(priceFormat(String(currencyDetail?.priceHighIn24h))) }} </span>
 					<span>USDT</span>
 				</div>
 			</div>
 			<!-- priceHighIn24h -->
 
-			<div>
+			<div v-if="Number(currencyDetail.ath)">
 				<div
 					class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
 				>
@@ -43,13 +46,13 @@
 					>{{ $t("generalHighest") }}</span>
 				</div>
 				<div class="text-sm font-normal text-black dark:text-white pt-1">
-					<span class="mr-1">{{ useNumber(String(currencyDetail?.ath)) }} </span>
+					<span class="mr-1">{{ useNumber(priceFormat(String(currencyDetail?.ath))) }} </span>
 					<span>USDT</span>
 				</div>
 			</div>
 			<!-- ath -->
 
-			<div>
+			<div v-if="Number(currencyDetail.ath)">
 				<div
 					class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b  pb-0.5"
 				>
@@ -58,7 +61,7 @@
 					>{{ $t("generalLowest") }}</span>
 				</div>
 				<div class="text-sm font-normal text-black dark:text-white pt-1">
-					<span class="mr-1">{{ useNumber(String(currencyDetail?.atl)) }} </span>
+					<span class="mr-1">{{ useNumber(priceFormat(String(currencyDetail?.atl))) }} </span>
 					<span>USDT</span>
 				</div>
 			</div>
@@ -70,6 +73,7 @@
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
 import type { Currency } from '~/types/definitions/currency.types';
+import { priceFormat } from '~/utils/price-format';
 
 interface PropsDefinition {
 	currencyDetail: Currency | null;

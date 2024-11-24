@@ -3,8 +3,8 @@
 		<h1 class="text-xl font-bold mb-2 mt-4">
 			{{ $t("globalMarketInformation") }}
 		</h1>
-		<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-			<div>
+		<div class="grid grid-cols-2 md:grid-cols-2 gap-4">
+			<div v-if="Number(currencyDetail?.marketCap)">
 				<div
 					class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
 				>
@@ -21,12 +21,20 @@
 							class="mr-1"
 						>{{ useNumber(formatBigNumber(currencyDetail?.marketCap, 3)) }}</span>
 						<span>USDT</span>
+						(<UiChangePrice
+							v-if="currencyDetail?.price"
+							classes="text-sm font-normal"
+							:show-percent="true"
+							pl="pl-0"
+							:change="parseFloat(currencyDetail?.priceChangePerc24h)"
+							:icon="false"
+						/>)
 					</span>
 				</div>
 			</div>
 			<!-- marketCap -->
 
-			<div>
+			<div v-if="Number(currencyDetail?.volume24h)">
 				<div
 					class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
 				>
@@ -48,7 +56,7 @@
 			</div>
 			<!-- volume24h -->
 
-			<div>
+			<div v-if="Number(currencyDetail?.circulatingSupply)">
 				<div
 					class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
 				>
@@ -70,7 +78,7 @@
 			</div>
 			<!-- circulatingSupply -->
 
-			<div>
+			<div v-if="Number(currencyDetail?.dominance)">
 				<div
 					class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
 				>
@@ -84,7 +92,7 @@
 			</div>
 			<!-- dominance -->
 
-			<div>
+			<div v-if="Number(currencyDetail?.rank)">
 				<div
 					class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
 				>
@@ -98,7 +106,7 @@
 			</div>
 			<!-- rank -->
 
-			<div>
+			<div v-if="Number(currencyDetail?.maxSupply)">
 				<div
 					class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
 				>
@@ -119,6 +127,28 @@
 				</div>
 			</div>
 			<!-- maxSupply -->
+
+			<div v-if="Number(currencyDetail?.totalSupply)">
+				<div
+					class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
+				>
+					<span
+						class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
+					>{{ $t("totalSupply") }}</span>
+				</div>
+				<div
+					class="text-sm font-normal text-black dark:text-white pt-1"
+				>
+					<span dir="ltr">
+						<span
+							v-if="currencyDetail?.volume24h"
+							class="mr-1"
+						>{{ useNumber(formatBigNumber(currencyDetail?.totalSupply, 3)) }}</span>
+						<span>{{ currencyDetail?.symbol }}</span>
+					</span>
+				</div>
+			</div>
+			<!-- totalSupply -->
 		</div>
 	</section>
 </template>

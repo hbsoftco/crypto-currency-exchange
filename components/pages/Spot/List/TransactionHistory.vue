@@ -144,7 +144,7 @@
 							<span
 								dir="ltr"
 								class="text-left"
-							>{{ useNumber(priceFormat(trade.filledQnt)) }} {{ findSymbol(trade.mSymbol, 'quote') }}</span>
+							>{{ useNumber(priceFormat(trade.filledQnt)) }} {{ findSymbol(trade.mSymbol, 'currency') }}</span>
 						</td>
 						<td class="text-xs font-normal py-1 text-left">
 							<span

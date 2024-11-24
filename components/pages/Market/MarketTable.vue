@@ -12,20 +12,20 @@
 							<span class="hidden md:block">{{ $t("tradingPair") }}</span>
 							<span class="block md:hidden">{{ $t("market") }}</span>
 						</th>
-						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-0 md:px-10">
+						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-0 md:px-10 text-left">
 							<span class="hidden md:block">{{ $t("currentPrice") }}</span>
 							<span class="block md:hidden">{{ $t("lastPrice") }}</span>
 						</th>
-						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-0 md:px-10">
+						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-0 md:px-10 text-left">
 							{{ $t("change24h") }}
 						</th>
-						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-10 md:table-cell hidden">
+						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-10 md:table-cell hidden text-left">
 							{{ $t("roof24h") }}
 						</th>
-						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-10 md:table-cell hidden">
+						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-10 md:table-cell hidden text-left">
 							{{ $t("floor24h") }}
 						</th>
-						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-10 md:table-cell hidden">
+						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-10 md:table-cell hidden text-left">
 							{{ $t("volume24h") }}
 						</th>
 					</tr>

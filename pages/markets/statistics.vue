@@ -49,7 +49,7 @@
 					>
 						<VChart
 							:option="neutralPieOptions"
-							class="w-full h-80"
+							class="w-40 md:w-full h-40 md:h-80"
 						/>
 					</div>
 				</div>

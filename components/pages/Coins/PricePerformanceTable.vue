@@ -30,21 +30,22 @@
 					</td>
 					<td class=" py-1.5">
 						<UiChangePrice
-							classes="text-sm font-normal"
-							:show-percent="false"
-							pre-text="$"
-							pl="pl-0"
-							:change="parseFloat(String(localCurrency?.priceChangePerc24h))"
-							:icon="false"
-						/>
-					</td>
-					<td class=" py-1.5">
-						<UiChangePrice
 							v-if="localCurrency?.price"
 							classes="text-sm font-normal"
 							:show-percent="false"
 							pl="pl-0"
 							:change="changePrice(localCurrency?.price, localCurrency?.priceChangePerc24h)"
+							:icon="false"
+						/>
+					</td>
+
+					<td class=" py-1.5">
+						<UiChangePrice
+							classes="text-sm font-normal"
+							:show-percent="false"
+							pre-text="$"
+							pl="pl-0"
+							:change="parseFloat(String(localCurrency?.priceChangePerc24h))"
 							:icon="false"
 						/>
 					</td>

@@ -149,7 +149,7 @@ const doughnutOptions = computed(() => ({
 				<div class="flex justify-between mb-1">
 					<div class="text-black dark:text-black font-dana">${useT('changeIn24h')}</div>
 					<div class="text-black dark:text-black font-dana mr-6" dir="ltr">
-						<span class="${className}">${isPositive ? '+' : ''}${useNumber(params.data.market.priceChangePercIn24H)}</span>
+						<span class="${className}">${isPositive ? '+' : ''}${useNumber(params.data.market.priceChangePercIn24H)}%</span>
 					</div>
 				</div>
 				<div class="flex justify-between mb-1">
