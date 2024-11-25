@@ -86,13 +86,15 @@
 					/>
 				</tbody>
 			</table>
-
+			<template v-if="!markets.length && !marketsLoading">
+				<UiNothingToShow />
+			</template>
 			<div class="flex justify-center py-4">
 				<UPagination
-					v-if="totalCount && paginationNumbers.showPagination"
+					v-if="totalCount > itemsPerPage && paginationNumbers.showPagination"
 					ref="pagination"
 					:model-value="Number(marketsPageStore.futuresMarketsParams.pageNumber)"
-					:page-count="20"
+					:page-count="Math.ceil(totalCount / itemsPerPage)"
 					:total="totalCount"
 					:to="(page: number) => ({
 						query: { page },
@@ -136,6 +138,7 @@ const props = defineProps<PropsDefinition>();
 const route = useRoute();
 
 const totalCount = ref(0);
+const itemsPerPage = 10;
 
 const socketMarketIds = ref<number[]>([]);
 

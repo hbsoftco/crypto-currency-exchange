@@ -30,8 +30,8 @@ export const useMarketsPageStore = defineStore('marketsPage', () => {
 		[
 			{
 				label: useT('hottest'),
-				value: SortMode.BY_RECENTLY_CHANGED,
-				click: () => handleSelectMarketFilter(SortMode.BY_RECENTLY_CHANGED),
+				value: SortMode.BY_MARKET_CAPS,
+				click: () => handleSelectMarketFilter(SortMode.BY_MARKET_CAPS),
 			},
 			{
 				label: useT('mostProfitable'),
@@ -45,8 +45,8 @@ export const useMarketsPageStore = defineStore('marketsPage', () => {
 			},
 			{
 				label: useT('mostVoluminous'),
-				value: SortMode.BY_TRADE_COUNT,
-				click: () => handleSelectMarketFilter(SortMode.BY_TRADE_COUNT),
+				value: SortMode.BY_VALUE,
+				click: () => handleSelectMarketFilter(SortMode.BY_VALUE),
 			},
 			{
 				label: useT('myFavorites'),
@@ -58,7 +58,7 @@ export const useMarketsPageStore = defineStore('marketsPage', () => {
 
 	const selectedSortModeFilter = ref({
 		label: useT('hottest'),
-		value: SortMode.BY_RECENTLY_CHANGED,
+		value: SortMode.BY_MARKET_CAPS,
 	});
 
 	const handleSelectMarketFilter = (selectedValue: SortMode) => {
@@ -120,15 +120,15 @@ export const useMarketsPageStore = defineStore('marketsPage', () => {
 
 	const futuresSelectedSortModeFilter = ref({
 		label: useT('hottest'),
-		value: SortMode.BY_RECENTLY_CHANGED,
+		value: SortMode.BY_MARKET_CAPS,
 	});
 
 	const futuresSortModeFilters = [
 		[
 			{
 				label: useT('hottest'),
-				value: SortMode.BY_RECENTLY_CHANGED,
-				click: () => handleFuturesSelectMarketFilter(SortMode.BY_RECENTLY_CHANGED),
+				value: SortMode.BY_MARKET_CAPS,
+				click: () => handleFuturesSelectMarketFilter(SortMode.BY_MARKET_CAPS),
 			},
 			{
 				label: useT('mostProfitable'),
@@ -142,8 +142,8 @@ export const useMarketsPageStore = defineStore('marketsPage', () => {
 			},
 			{
 				label: useT('mostVoluminous'),
-				value: SortMode.BY_TRADE_COUNT,
-				click: () => handleFuturesSelectMarketFilter(SortMode.BY_TRADE_COUNT),
+				value: SortMode.BY_VALUE,
+				click: () => handleFuturesSelectMarketFilter(SortMode.BY_VALUE),
 			},
 			{
 				label: useT('myFavorites'),
