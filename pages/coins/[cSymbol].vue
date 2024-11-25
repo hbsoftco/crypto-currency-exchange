@@ -177,7 +177,6 @@ const getCurrencyInfo = async () => {
 
 		const findMarket = await worker.searchMarkets(useEnv('apiBaseUrl'), `${currency.value?.cSymbol}USDT`, 1);
 		currentMarket.value = findMarket[0];
-		console.log(currentMarket.value);
 
 		publicSocketStore.addMarketIds([findMarket[0].id]);
 

@@ -29,7 +29,7 @@ export const helpRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): HelpR
 
 		const url = '/v1/routine/help/root_list';
 		const response = await fetch<GetRootListResponse>(`${url}?${query.toString()}`, {
-			noAuth: false,
+			noAuth: true,
 			apiName: url,
 			method: 'GET',
 		} as CustomNitroFetchOptions);
@@ -44,7 +44,7 @@ export const helpRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): HelpR
 
 		const url = '/v1/routine/help/shortcut_list';
 		const response = await fetch<GetShortListResponse>(`${url}?${query.toString()}`, {
-			noAuth: false,
+			noAuth: true,
 			apiName: url,
 			method: 'GET',
 		} as CustomNitroFetchOptions);

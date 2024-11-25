@@ -45,7 +45,6 @@ import type {
 	IdentificationResendDto,
 	IdentificationSendDto,
 	IdentificationSendNewDto,
-	NickNameSetDto,
 	SetAntiPhishingDto,
 	SetApiAddDto,
 	SetApiEditDto,
@@ -56,25 +55,30 @@ import type {
 	SetMobileDto,
 	SetPasswordDto,
 	SetPinCodeDto } from '~/types/dto/user.dto';
-import type { GetCountryListRes, IdentificationRes, KeyValueRes, UploadAvatarDto } from '~/types/response/common.types';
+import type { GetCountryListRes, IdentificationRes } from '~/types/response/common.types';
 import type { GetCommissionRes, GetInvitationListRes } from '~/types/response/referral.types';
-import type { ProfileResponse } from '~/types/response/profile.types';
 import type {
 	NoticeListParams,
+	SetNicknameDto,
 	TraderCommissionListParams,
+	UploadAvatarDto,
 	UserResponse } from '~/types/definitions/user.types';
 import type { CommonResponse, KeyValueResponse } from '~/types/definitions/common.types';
 
 type UserRepository = {
 	getTraderCommissionList: (params: TraderCommissionListParams) => Promise<UserResponse>;
 	getLevelsList: () => Promise<UserResponse>;
-	// Notice
+	// Logs
 	getNoticeList: (params: NoticeListParams) => Promise<UserResponse>;
 	getNoticeTypeList: () => Promise<KeyValueResponse>;
 	noticeReadAll: () => Promise<CommonResponse>;
 	noticeDeleteAll: () => Promise<CommonResponse>;
-	//
-	getCurrentUser: () => Promise<ProfileResponse>;
+	// Profile
+	setNickname: (dto: SetNicknameDto) => Promise<CommonResponse>;
+	getCurrentUser: () => Promise<KeyValueResponse>;
+	uploadAvatar: (dto: UploadAvatarDto) => Promise<CommonResponse>;
+	// OLD
+
 	generate2Fa: () => Promise<TwoStepLoginResponse>;
 	getProfile: () => Promise<UserProfileResponse>;
 	getCommissionReceivedList: (params: GetCommissionReceivedListParams) => Promise<GetCommissionReceivedList>;
@@ -89,7 +93,6 @@ type UserRepository = {
 	getAddressList: (params: GetAddressListParams) => Promise<GetAddressListRes>;
 	storeAddress: (params: AddressSetDto) => Promise<CommonResponse>;
 	deleteAddress: (params: DeleteAddressListParams) => Promise<CommonResponse>;
-	storeNickName: (params: NickNameSetDto) => Promise<CommonResponse>;
 	storeBankAccAdd: (params: AddCardBankSetDto) => Promise<CommonResponse>;
 	identificationResend: (params: IdentificationResendDto) => Promise<IdentificationRes>;
 	getIdentificationCode: (params: IdentificationSendDto) => Promise<IdentificationRes>;
@@ -99,14 +102,13 @@ type UserRepository = {
 	getTraderState: (params: GetTraderBriefParams) => Promise<GetStateTradeRes>;
 	getInvitation: (params: GetInvitationParams) => Promise<GetInvitationListRes>;
 	getCommissionReceived: (params: GetCommissionReceivedListParams) => Promise<GetCommissionRes>;
-	uploadAvatar: (dto: UploadAvatarDto) => Promise<CommonResponse>;
 	getDeviceList: (params: getDeviceListParams) => Promise<GetDeviceListRes>;
 	deleteAccount: (dto: DeleteAccountDto) => Promise<CommonResponse>;
 	storeSetBasic: (dto: SetBasicDto) => Promise<CommonResponse>;
 	storeSetLive: (dto: SetLiveDto) => Promise<CommonResponse>;
 	getDevLinkGenerate: () => Promise<GetDevLinkGenerateRes>;
 	getActivitiesList: (params: getActivitiesListParams) => Promise<GetActivitiesListRes>;
-	getTypeList: (params: getTypeListParams) => Promise<KeyValueRes>;
+	getTypeList: (params: getTypeListParams) => Promise<KeyValueResponse>;
 	identificationSendNew: (dto: IdentificationSendNewDto) => Promise<IdentificationRes>;
 	setEmail: (dto: SetEmailDto) => Promise<CommonResponse>;
 	storeSetMobile: (dto: SetMobileDto) => Promise<CommonResponse>;
@@ -148,7 +150,7 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
-	// Notice
+	// Logs
 	async getNoticeList(params: NoticeListParams): Promise<UserResponse> {
 		const query = new URLSearchParams(
 			Object.entries(params)
@@ -188,19 +190,39 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
-
-	// Old
 	// Profile
-	async getCurrentUser(): Promise<ProfileResponse> {
-		const url = `/v1/user/profile/get`;
-		const response = await fetch<ProfileResponse>(url, {
+	async setNickname(dto: SetNicknameDto): Promise<CommonResponse> {
+		const url = `/v1/user/profile/set_nickname`;
+		const response = await fetch<CommonResponse>(`${url}`, {
 			noAuth: false,
-			apiName: url,
-			query: {},
+			method: 'POST',
+			body: dto,
 		} as CustomNitroFetchOptions);
 
 		return response;
 	},
+	async getCurrentUser(): Promise<KeyValueResponse> {
+		const url = `/v1/user/profile/get`;
+		const response = await fetch<KeyValueResponse>(url, {
+			noAuth: false,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async uploadAvatar(dto: UploadAvatarDto): Promise<CommonResponse> {
+		const formData = new FormData();
+		formData.append('image', dto.image);
+
+		const url = `/v1/upload/avatar`;
+		const response = await fetch<CommonResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body: formData,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	// Old
 	async generate2Fa(): Promise<TwoStepLoginResponse> {
 		const url = '/v1/user/2fa/generate';
 		const response = await fetch<TwoStepLoginResponse>(`${url}`, {
@@ -404,17 +426,6 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
-	async storeNickName(dto: NickNameSetDto): Promise<CommonResponse> {
-		const url = `/v1/user/profile/set_nickname`;
-		const response = await fetch<CommonResponse>(`${url}`, {
-			noAuth: false,
-			apiName: url,
-			method: 'POST',
-			body: dto,
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
 	async identificationResend(dto: IdentificationResendDto): Promise<IdentificationRes> {
 		const url = `/v1/user/identification/resend`;
 		const response = await fetch<IdentificationRes>(`${url}`, {
@@ -529,20 +540,6 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
-	async uploadAvatar(dto: UploadAvatarDto): Promise<CommonResponse> {
-		const formData = new FormData();
-		formData.append('image', dto.image);
-		// formData.append('usid', dto.usid);
-
-		const url = `/v1/upload/avatar`;
-		const response = await fetch<CommonResponse>(`${url}`, {
-			noAuth: false,
-			method: 'POST',
-			body: formData,
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
 	async getDeviceList(params: getDeviceListParams): Promise<GetDeviceListRes> {
 		const query = new URLSearchParams(
 			Object.entries(params)
@@ -613,13 +610,13 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
-	async getTypeList(params: getTypeListParams): Promise<KeyValueRes> {
+	async getTypeList(params: getTypeListParams): Promise<KeyValueResponse> {
 		const query = new URLSearchParams(
 			Object.entries(params)
 				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
 		);
 		const url = `/v1/routine/common/type_list`;
-		const response = await fetch<KeyValueRes>(`${url}?${query.toString()}`, {
+		const response = await fetch<KeyValueResponse>(`${url}?${query.toString()}`, {
 			noAuth: false,
 			apiName: url,
 			query: {},

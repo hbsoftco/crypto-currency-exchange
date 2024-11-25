@@ -135,7 +135,7 @@ export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthR
 	async initForgetPassword(dto: InitForgetPasswordDto): Promise<InitForgetPasswordResponse> {
 		const url = '/v1/auth/forget_password/init';
 		const response = await fetch<InitForgetPasswordResponse>(`${url}`, {
-			noAuth: false,
+			noAuth: true,
 			apiName: url,
 			method: 'POST',
 			body: dto,
@@ -146,7 +146,7 @@ export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthR
 	async resetForgetPassword(dto: RestForgetPasswordDto): Promise<CommonResponse> {
 		const url = '/v1/auth/forget_password/reset';
 		const response = await fetch<CommonResponse>(`${url}`, {
-			noAuth: false,
+			noAuth: true,
 			apiName: url,
 			method: 'POST',
 			body: dto,
@@ -157,7 +157,7 @@ export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthR
 	async checkForgetPassword(dto: CheckForgetPasswordDto): Promise<CheckForgetPasswordResponse> {
 		const url = '/v1/verification/forget_password_check';
 		const response = await fetch<CheckForgetPasswordResponse>(`${url}`, {
-			noAuth: false,
+			noAuth: true,
 			apiName: url,
 			method: 'POST',
 			body: dto,
@@ -168,7 +168,7 @@ export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthR
 	async resetPassword(dto: RestForgetPasswordDto): Promise<CommonResponse> {
 		const url = '/v1/auth/forget_password/reset';
 		const response = await fetch<CommonResponse>(`${url}`, {
-			noAuth: false,
+			noAuth: true,
 			apiName: url,
 			method: 'POST',
 			body: dto,

@@ -21,10 +21,6 @@ type UploadFileDto = {
 	data: File;
 };
 
-type UploadAvatarDto = {
-	image: File;
-};
-
 type Tip = {
 	key: number;
 	value: string;
@@ -67,7 +63,6 @@ export type {
 	CommonResponse,
 	KeyValueRes,
 	IdentificationRes,
-	UploadAvatarDto,
 	UploadFileDto,
 	GetMiniRoutineRes,
 	MiniRoutine,

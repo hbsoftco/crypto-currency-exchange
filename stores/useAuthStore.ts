@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 
 import { authRepository } from '~/repositories/auth.repository';
 import { userRepository } from '~/repositories/user.repository';
-import type { KeyValue } from '~/types/base.types';
+import type { KeyValue } from '~/types/definitions/common.types';
 import type { UserLevel } from '~/types/definitions/user.types';
 import { CACHE_KEY_COMMISSION_LIST, CACHE_KEY_CURRENT_USER, CACHE_KEY_USER_LEVELS } from '~/utils/constants/common';
 import { removeFromCache } from '~/utils/indexeddb';
@@ -201,15 +201,20 @@ export const useAuthStore = defineStore('auth', () => {
 	const firstCallRefreshToken = ref<boolean>(true);
 
 	const startRefreshInterval = () => {
-		if (firstCallRefreshToken.value) {
-			refreshOtc();
-			firstCallRefreshToken.value = false;
-		}
-
-		if (!refreshInterval) {
-			refreshInterval = setInterval(() => {
+		if (isLoggedIn) {
+			if (firstCallRefreshToken.value) {
 				refreshOtc();
-			}, 20000);
+				firstCallRefreshToken.value = false;
+			}
+
+			if (!refreshInterval) {
+				refreshInterval = setInterval(() => {
+					refreshOtc();
+				}, 20000);
+			}
+		}
+		else {
+			stopRefreshInterval();
 		}
 	};
 

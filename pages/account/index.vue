@@ -1,6 +1,6 @@
 <template>
 	<div
-		v-if="profileStore.profileLoading"
+		v-if="authStore.currentUserLoading"
 		class="p-5"
 	>
 		<UiLogoLoading />
@@ -10,7 +10,7 @@
 		class="py-4 p-5"
 	>
 		<NickNameModal
-			v-if="showDetail"
+			v-if="openModal"
 			@close="closeDetail"
 		/>
 		<div class="flex pb-6 mb-4 border-b border-primary-gray-light dark:border-primary-gray-dark">
@@ -20,16 +20,15 @@
 						class="bg-bg-secondary-gray-light dark:bg-secondary-gray-50 rounded-full mr-1 w-16 h-16 text-center flex justify-center items-center"
 					>
 						<IconUserFill
-							v-if="!getValueByKey(profileStore.userProfile, 'NICKNAME')"
+							v-if="!getValueByKey(authStore.getCurrentUser, 'AVATAR_URL')"
 							class="text-black text-6xl"
 						/>
 						<img
 							v-else
-							:src="getValueByKey(profileStore.userProfile, 'AVATAR_URL') || ''"
+							:src="getValueByKey(authStore.getCurrentUser, 'AVATAR_URL')!"
 							alt="user-avatar"
 							class="w-16 h-16 rounded-full"
 						>
-						<!-- {{ getValueByKey(profileStore.userProfile, 'AVATAR_URL') }} -->
 					</div>
 					<div class="bg-primary-gray-light dark:bg-primary-gray-dark w-6 h-6 p-1 cursor-pointer shadow-sm rounded-full absolute right-0 bottom-0 flex justify-center items-center">
 						<UiDropZone
@@ -50,7 +49,7 @@
 
 			<div class="">
 				<div class="flex justify-start items-center mb-4">
-					<h5>{{ getValueByKey(profileStore.userProfile, 'NICKNAME') || $t('anonymousUser') }}</h5>
+					<h5>{{ getValueByKey(authStore.getCurrentUser, 'NICKNAME') || $t('anonymousUser') }}</h5>
 					<div class="mx-2">
 						<IconPencil
 							class="text-subtle-text-light dark:text-subtle-text-50 text-xl cursor-pointer"
@@ -83,7 +82,7 @@
 								name="i-heroicons-eye-slash"
 								class="w-4 h-4 ml-2 cursor-pointer text-subtle-text-light dark:text-subtle-text-50"
 							/> -->
-							<span>{{ getValueByKey(profileStore.userProfile, 'EMAIL') }}</span>
+							<span>{{ getValueByKey(authStore.getCurrentUser, 'EMAIL') }}</span>
 						</p>
 					</div>
 
@@ -94,9 +93,9 @@
 						<p class="flex justify-start items-center">
 							<IconCopy
 								class="cursor-pointer text-xl text-subtle-text-light dark:text-subtle-text-50"
-								@click="copyText(useNumber(String(getValueByKey(profileStore.userProfile, 'UID'))))"
+								@click="copyText(useNumber(String(getValueByKey(authStore.getCurrentUser, 'UID'))))"
 							/>
-							<span class="mr-2">{{ useNumber(String(getValueByKey(profileStore.userProfile, 'UID'))) }}</span>
+							<span class="mr-2">{{ useNumber(String(getValueByKey(authStore.getCurrentUser, 'UID'))) }}</span>
 						</p>
 					</div>
 
@@ -105,7 +104,7 @@
 							{{ $t('registrationTime') }}
 						</p>
 						<p class="flex justify-start items-center">
-							<span dir="ltr">{{ useNumber(formatDateToIranTime(getValueByKey(profileStore.userProfile, 'REG_TIME')!)) }}</span>
+							<span dir="ltr">{{ useNumber(formatDateToIranTime(getValueByKey(authStore.getCurrentUser, 'REG_TIME')!)) }}</span>
 						</p>
 					</div>
 
@@ -114,7 +113,7 @@
 							{{ $t('lastLogin') }}
 						</p>
 						<p class="flex justify-start items-center">
-							<span dir="ltr">{{ useNumber(formatDateToIranTime(getValueByKey(profileStore.userProfile, 'LATEST_LOGIN_TIME')!)) }}</span>
+							<span dir="ltr">{{ useNumber(formatDateToIranTime(getValueByKey(authStore.getCurrentUser, 'LATEST_LOGIN_TIME')!)) }}</span>
 						</p>
 					</div>
 				</div>
@@ -262,12 +261,22 @@ import { formatDateToIranTime } from '~/utils/date-time';
 import { userRepository } from '~/repositories/user.repository';
 import type { ReferralBriefItem } from '~/types/response/user.types';
 import NickNameModal from '~/components/pages/Site/Account/OverView/NickNameModal.vue';
-import type { UploadAvatarDto } from '~/types/response/common.types';
+import type { UploadAvatarDto } from '~/types/definitions/user.types';
 
 definePageMeta({
 	layout: 'account',
 	middleware: 'auth',
 });
+
+const authStore = useAuthStore();
+
+onMounted(async () => {
+	await authStore.fetchCurrentUser(true);
+	await getReferralBrief();
+	assetTotal.value = await assetStore.getAssetTotal();
+});
+
+// OLD
 
 const { $api } = useNuxtApp();
 const userRepo = userRepository($api);
@@ -349,7 +358,6 @@ const uploadAvatar = async (data: File) => {
 const assetTotal = ref();
 
 onMounted(async () => {
-	await profileStore.fetchProfile();
 	await getReferralBrief();
 	assetTotal.value = await assetStore.getAssetTotal();
 });
@@ -360,13 +368,13 @@ const toggleAssetVisibility = () => {
 	isAssetVisible.value = !isAssetVisible.value;
 };
 
-const showDetail = ref(false);
+const openModal = ref(false);
 
 const openDetail = () => {
-	showDetail.value = true;
+	openModal.value = true;
 };
 
 const closeDetail = () => {
-	showDetail.value = false;
+	openModal.value = false;
 };
 </script>

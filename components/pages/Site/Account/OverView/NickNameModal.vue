@@ -18,7 +18,7 @@
 							<div class="my-8">
 								<FormsFieldInput
 									id="nickName"
-									v-model="nickNameDto.nickName"
+									v-model="setNicknameDto.nickName"
 									type="text"
 									label="nickName"
 									placeholder=""
@@ -31,8 +31,8 @@
 								<UButton
 									size="lg"
 									class="w-full flex justify-center px-2 md:px-9"
-									:loading="submitNickNameLoading"
-									@click="submitNickName"
+									:loading="setNicknameLoading"
+									@click="setNickname"
 								>
 									{{ $t("confirm") }}
 								</UButton>
@@ -57,50 +57,42 @@ import useVuelidate from '@vuelidate/core';
 
 import IconClose from '~/assets/svg-icons/close.svg';
 import { userRepository } from '~/repositories/user.repository';
-import type { NickNameSetDto } from '~/types/dto/user.dto';
-
-const isOpen = ref(true);
+import type { SetNicknameDto } from '~/types/definitions/user.types';
 
 interface EmitDefinition {
 	(event: 'close', value: boolean): void;
 }
-
 const emit = defineEmits<EmitDefinition>();
+
+const { $api } = useNuxtApp();
+const userRepo = userRepository($api);
 
 const closeModal = async (value: boolean) => {
 	emit('close', value);
 };
 
-const { $api } = useNuxtApp();
-const userRepo = userRepository($api);
-
-const profileStore = useProfileStore();
+const authStore = useAuthStore();
 
 const toast = useToast();
 
-const nickNameDto = ref<NickNameSetDto>({
-	nickName: '',
-});
+const isOpen = ref(true);
 
-const nickNameDtoRules = {
-	nickName: { required: validations.required },
-};
-
-const v$ = useVuelidate(nickNameDtoRules, nickNameDto);
-
-const submitNickNameLoading = ref<boolean>(false);
-const submitNickName = async () => {
+const setNicknameDto = ref<SetNicknameDto>({	nickName: '' });
+const setNicknameDtoRules = {	nickName: { required: validations.required } };
+const v$ = useVuelidate(setNicknameDtoRules, setNicknameDto);
+const setNicknameLoading = ref<boolean>(false);
+const setNickname = async () => {
 	try {
 		v$.value.$touch();
 		if (v$.value.$invalid) {
 			return;
 		}
 
-		submitNickNameLoading.value = true;
-		await profileStore.fetchProfile();
+		setNicknameLoading.value = true;
 
-		await userRepo.storeNickName(nickNameDto.value);
-		await profileStore.fetchProfile();
+		await userRepo.setNickname(setNicknameDto.value);
+		await authStore.fetchCurrentUser(true);
+
 		toast.add({
 			title: useT('registerNickname'),
 			description: useT('nickNameRegisteredSuccessfully'),
@@ -111,7 +103,6 @@ const submitNickName = async () => {
 		closeModal(true);
 	}
 	catch (error: any) {
-		console.error('Failed:', error);
 		toast.add({
 			title: useT('registerNickname'),
 			description: error.response._data.message,
@@ -120,7 +111,7 @@ const submitNickName = async () => {
 		});
 	}
 	finally {
-		submitNickNameLoading.value = false;
+		setNicknameLoading.value = false;
 	}
 };
 </script>

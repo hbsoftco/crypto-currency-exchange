@@ -19,10 +19,6 @@ type AddressSetDto = {
 	coldWallet: boolean;
 };
 
-type NickNameSetDto = {
-	nickName: string;
-};
-
 type AddCardBankSetDto = {
 	bankAccountTypeId: number;
 	cardNo: string;
@@ -136,7 +132,6 @@ type SetApiEditDto = {
 export type {
 	ContactSetDto,
 	AddressSetDto,
-	NickNameSetDto,
 	AddCardBankSetDto,
 	IdentificationResendDto,
 	IdentificationSendNewDto,

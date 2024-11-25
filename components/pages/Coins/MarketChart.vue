@@ -196,6 +196,7 @@ const processChartData = (data: any[]) => {
 };
 
 const updateChart = async (option: ChartOption) => {
+	dataCache.value.clear();
 	selectedOption.value = option;
 	params.value.timeFrom = String(getEpochTime(option.timeFrom));
 	params.value.timeTo = String(getEpochTime(option.timeTo));
@@ -214,11 +215,31 @@ const params = ref<KLineParams>({
 	marketId: '',
 });
 
+const dataCache = ref<Map<string, string[]>>(new Map());
+
 const kLines = ref<string[]>([]);
 const kLineLoading = ref<boolean>(false);
 const getChartKline = async () => {
 	try {
 		kLineLoading.value = true;
+		if (dataCache.value.has(selectedCurrency.value)) {
+			if (selectedCurrency.value === 'TMN') {
+				TMNkLines.value = dataCache.value.get('TMN') || [];
+			}
+			else {
+				USDTkLines.value = dataCache.value.get('USDT') || [];
+			}
+
+			const { timestamps, values } = processChartData(selectedCurrency.value === 'TMN'
+				? TMNkLines.value
+				: USDTkLines.value);
+			chartData.value = values;
+			xAxisData.value = timestamps;
+
+			kLineLoading.value = false;
+			return;
+		}
+
 		const { result } = await spotRepo.getKLine(params.value);
 		kLines.value = result;
 
@@ -240,6 +261,9 @@ const getChartKline = async () => {
 			};
 			const { result } = await spotRepo.getKLine(tempParams);
 			USDTkLines.value = result;
+
+			dataCache.value.set('TMN', TMNkLines.value);
+			dataCache.value.set('USDT', USDTkLines.value);
 		}
 		else {
 			USDTkLines.value = kLines.value;
@@ -255,6 +279,9 @@ const getChartKline = async () => {
 			};
 			const { result } = await spotRepo.getKLine(tempParams);
 			TMNkLines.value = result;
+
+			dataCache.value.set('TMN', TMNkLines.value);
+			dataCache.value.set('USDT', USDTkLines.value);
 		}
 
 		kLineLoading.value = false;

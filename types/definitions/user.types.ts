@@ -43,6 +43,7 @@ type Commission = {
 	withdraw: string;
 };
 
+// Logs
 type NoticeListParams = {
 	from?: string;
 	to?: string;
@@ -61,6 +62,15 @@ type Notice = {
 	uid: number;
 };
 
+// Profile
+type SetNicknameDto = {
+	nickName: string;
+};
+
+type UploadAvatarDto = {
+	image: File;
+};
+
 export type {
 	TraderCommissionListParams,
 	UserResponse,
@@ -68,4 +78,7 @@ export type {
 	UserLevel,
 	NoticeListParams,
 	Notice,
+	// Profile
+	SetNicknameDto,
+	UploadAvatarDto,
 };

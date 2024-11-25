@@ -24,7 +24,6 @@
 <script setup lang="ts">
 import Header from '~/components/layouts/Default/Header.vue';
 import ProfileMenu from '~/components/layouts/Account/ProfileMenu.vue';
-import { Language } from '~/utils/enums/language.enum';
 
 interface PropsDefinition {
 	cssClass?: string;
@@ -33,8 +32,4 @@ interface PropsDefinition {
 withDefaults(defineProps<PropsDefinition>(), {
 	cssClass: 'p-5',
 });
-
-const baseDataStore = useBaseDataStore();
-baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
-baseDataStore.fetchMarketBriefItems();
 </script>

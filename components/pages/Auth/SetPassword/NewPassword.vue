@@ -15,7 +15,11 @@
 				placeholder=""
 				icon="i-heroicons-eye"
 				dir="ltr"
-				:error-message="v$.newPassword.$error? $t('fieldIsRequired') : ''"
+				:error-message="
+					v$.newPassword.$error
+						? (v$.newPassword.required.$response ? $t('passwordMustBeComplex') : $t('fieldIsRequired'))
+						: ''
+				"
 			/>
 		</div>
 		<div class="my-8">
@@ -28,7 +32,11 @@
 				placeholder=""
 				icon="i-heroicons-eye"
 				dir="ltr"
-				:error-message="v$.rePassword.$error? $t('fieldIsRequired') : ''"
+				:error-message="
+					v$.rePassword.$error
+						? (v$.rePassword.required.$response ? $t('passwordMustBeComplex') : $t('fieldIsRequired'))
+						: ''
+				"
 			/>
 		</div>
 		<div>
@@ -76,7 +84,7 @@ const submit = async () => {
 		const statusCode = await forgetPasswordStore.resetPassword(dto.value.newPassword);
 
 		if (statusCode === 200) {
-			router.push('/');
+			router.push('/auth/login');
 			forgetPasswordStore.resetAllData();
 		}
 	}
