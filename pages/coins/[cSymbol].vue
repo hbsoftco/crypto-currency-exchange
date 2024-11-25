@@ -28,6 +28,7 @@
 								:price-change-perc60d="currencyInfo.priceChangePerc60d"
 								:price-change-perc90d="currencyInfo.priceChangePerc90d"
 								:socket-data="publicSocketStore.findMarketDataById(currentMarket?.id)"
+								:tick-size="currentMarket.tickSize"
 								:symbol="cSymbol"
 								:markets="markets"
 							/>
@@ -94,66 +95,6 @@
 								/>
 							</section>
 						</template>
-
-						<!-- <section v-if="hottestMarketsLoading">
-							<SidebarMarketStateSkeleton />
-						</section>
-						<section
-							v-else
-							class="mt-16 mb-6"
-						>
-							<h4 class="text-xl font-bold mb-6">
-								{{ $t("hotTopics") }}
-							</h4>
-							<SidebarMarketState
-								:markets="hottestMarkets ?? []"
-							/>
-						</section>
-
-						<section v-if="mostProfitableMarketsLoading">
-							<SidebarMarketStateSkeleton />
-						</section>
-						<section
-							v-else
-							class="mt-16 mb-6"
-						>
-							<h4 class="text-xl font-bold mb-6">
-								{{ $t("mostProfitable") }}
-							</h4>
-							<SidebarMarketState
-								:markets="mostProfitableMarkets ?? []"
-							/>
-						</section>
-
-						<section v-if="mostVoluminousMarketsLoading">
-							<SidebarMarketStateSkeleton />
-						</section>
-						<section
-							v-else
-							class="mt-16 mb-6"
-						>
-							<h4 class="text-xl font-bold mb-6">
-								{{ $t("mostVoluminous") }}
-							</h4>
-							<SidebarMarketState
-								:markets="mostVoluminousMarkets ?? []"
-							/>
-						</section>
-
-						<section v-if="latestMarketsLoading">
-							<SidebarMarketStateSkeleton />
-						</section>
-						<section
-							v-else
-							class="mt-16 mb-6"
-						>
-							<h4 class="text-xl font-bold mb-6">
-								{{ $t("newArrivals") }}
-							</h4>
-							<SidebarMarketState
-								:markets="latestMarkets ?? []"
-							/>
-						</section> -->
 					</div>
 				</div>
 			</div>

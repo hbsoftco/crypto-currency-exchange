@@ -88,6 +88,7 @@ import type { SocketSpotData } from '~/types/socket.types';
 interface PropsDefinition {
 	markets: MarketBrief[];
 	symbol: string;
+	tickSize: string;
 	price: string;
 	priceChangePerc7d: string;
 	priceChangePerc24h: string;
@@ -487,7 +488,7 @@ const chartOptions = computed(() => ({
 		},
 		min: () => {
 			const minPrice = Math.min(...chartData.value);
-			return minPrice - (minPrice * (0.1));
+			return formatByDecimal((minPrice - (minPrice * (0.1)) || 0), props.tickSize);
 		},
 		// max: () => {
 		// 	const maxPrice = Math.max(...chartData.value);

@@ -8,11 +8,11 @@
 					[bgClass]: changedItems[market.id],
 					'hover:bg-primary-gray-light hover:dark:bg-primary-gray-dark': !changedItems[market.id],
 				}"
-				class="flex justify-between items-center px-2 py-3 hover:bg-primary-gray-light hover:dark:bg-primary-gray-dark rounded duration-200 transition-all"
+				class="flex cursor-pointer justify-between items-center px-2 py-3 hover:bg-primary-gray-light hover:dark:bg-primary-gray-dark rounded duration-200 transition-all"
+				@click="router.push(`/spot/${splitMarket(market?.mSymbol)}`)"
 			>
-				<ULink
+				<div
 					class="flex justify-between"
-					:to="`/spot/${splitMarket(market?.mSymbol)}`"
 				>
 					<img
 						:src="`https://api-bitland.site/media/currency/${market?.currency?.cSymbol}.png`"
@@ -24,10 +24,10 @@
 					<div class="flex flex-col mr-2">
 						<span class="text-sm font-normal">{{ market?.mSymbol }}</span>
 						<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
-							{{ market?.currency?.cSymbol }}
+							{{ market?.currency?.cName }}
 						</span>
 					</div>
-				</ULink>
+				</div>
 				<div>
 					<div>
 						<span class="text-sm font-normal mr-1">{{ useNumber(priceFormat(market?.indexPrice)) }}</span>
@@ -52,6 +52,8 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+
+const router = useRouter();
 
 const publicSocketStore = usePublicSocketStore();
 
