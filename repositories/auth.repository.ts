@@ -1,25 +1,21 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { CaptchaResponse } from '~/types/captcha-response.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
-// import type { ForgetPasswordDto } from '~/types/dto/forget-password.dto';
-import type { CaptchaRequestParams } from '~/types/dto/generate-captcha.dto';
 import type { LoginByEmailDto, LoginByMobileDto, LoginByMobileResponse } from '~/types/login.types';
 import type { SignupByEmailDto, SignupByMobileDto } from '~/types/dto/signup.dto';
-import type { ValidateCaptchaDto } from '~/types/dto/validate-captcha.dto';
 import type { CheckCodeDto, ResendVerificationParams, ResendVerificationResponse } from '~/types/verification.types';
 import type { CheckForgetPasswordDto, CheckForgetPasswordResponse, InitForgetPasswordDto, InitForgetPasswordResponse, ResetPasswordDto, RestForgetPasswordDto } from '~/types/forget-password.types';
-import type { ResposneType } from '~/types/response.types';
 import type { CheckOTCResponse, GetSocketListenKeyResponse } from '~/types/response/check-otc.types';
-import type { CommonResponse } from '~/types/response/common.types';
 import type { LoginByEmailResponse } from '~/types/response/login.types';
 import type { SignUpResponse } from '~/types/response/sign-up.types';
 import type { VerificationCheckCodeResponse } from '~/types/response/verification.types';
+import type { AuthResponse, CaptchaGenerateParams, CaptchaGenerateResponse, CaptchaValidateDto } from '~/types/definitions/auth.types';
+import type { CommonResponse } from '~/types/definitions/common.types';
 
 type AuthRepository = {
 	// Captcha
-	generateCaptcha: (data: CaptchaRequestParams) => Promise<CaptchaResponse>;
-	validateCaptcha: (data: ValidateCaptchaDto) => Promise<ResposneType>;
+	generateCaptcha: (params: CaptchaGenerateParams) => Promise<CaptchaGenerateResponse>;
+	validateCaptcha: (dto: CaptchaValidateDto) => Promise<CommonResponse>;
 	// SignUp
 	signupByMobile: (data: SignupByMobileDto) => Promise<SignUpResponse>;
 	signupByEmail: (data: SignupByEmailDto) => Promise<SignUpResponse>;
@@ -42,22 +38,27 @@ type AuthRepository = {
 
 export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthRepository => ({
 	// Captcha
-	async generateCaptcha(data: CaptchaRequestParams): Promise<CaptchaResponse> {
-		const { result } = await fetch<ResposneType>(`/v1/captcha/generate`, {
-			params: {
-				username: data.username,
-				action: data.action,
-				captchaType: data.captchaType,
-			},
+	async generateCaptcha(params: CaptchaGenerateParams): Promise<CaptchaGenerateResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+		const url = '/v1/captcha/generate';
+		const { result } = await fetch<AuthResponse>(`${url}?${query.toString()}`, {
 			noAuth: true,
+			method: 'GET',
 		} as CustomNitroFetchOptions);
-		return result as CaptchaResponse;
+
+		return result as CaptchaGenerateResponse;
 	},
-	async validateCaptcha(data: ValidateCaptchaDto): Promise<ResposneType> {
-		const response = await fetch<ResposneType>(`/v1/captcha/validate`, {
+	async validateCaptcha(dto: CaptchaValidateDto): Promise<CommonResponse> {
+		const url = '/v1/captcha/validate';
+		const response = await fetch<CommonResponse>(`${url}`, {
+			noAuth: true,
 			method: 'POST',
-			body: data,
-		});
+			body: dto,
+		} as CustomNitroFetchOptions);
+
 		return response;
 	},
 	// SignUp

@@ -79,7 +79,6 @@ const submit = async () => {
 			if (forgetPasswordStore.initForgetPasswordIsValid) {
 				forgetPasswordStore.stepState = 'setCode';
 			}
-			// localLoading.value = false;
 		}
 	}
 	catch (error) {
@@ -119,8 +118,6 @@ const handleCaptchaValidation = async (sliderValue: number) => {
 			forgetPasswordStore.stepState = 'setCode';
 		}
 	}
-
-	// localLoading.value = false;
 };
 
 const captchaHasError = ref(false);

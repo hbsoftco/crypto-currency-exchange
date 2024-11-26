@@ -1,7 +1,5 @@
 import { authRepository } from '~/repositories/auth.repository';
-import type { CaptchaResponse } from '~/types/captcha-response.types';
-import type { CaptchaRequestParams } from '~/types/dto/generate-captcha.dto';
-import type { ValidateCaptchaDto } from '~/types/dto/validate-captcha.dto';
+import type { CaptchaGenerateParams, CaptchaGenerateResponse, CaptchaValidateDto } from '~/types/definitions/auth.types';
 
 export const useCaptchaStore = defineStore('captcha', () => {
 	const { $api } = useNuxtApp();
@@ -11,13 +9,13 @@ export const useCaptchaStore = defineStore('captcha', () => {
 	const signupStore = useSignupStore();
 	const loginStore = useLoginStore();
 
-	const captchaInput = ref<CaptchaRequestParams>({
+	const captchaInput = ref<CaptchaGenerateParams>({
 		username: '',
 		action: '',
 		captchaType: 'Slide',
 	});
 
-	const captchaResponse = ref<CaptchaResponse>({
+	const captchaResponse = ref<CaptchaGenerateResponse>({
 		backgroundImage: '',
 		secondaryImage: '',
 		id: '',
@@ -69,7 +67,7 @@ export const useCaptchaStore = defineStore('captcha', () => {
 		}
 	};
 
-	const captchaValidateInput = ref<ValidateCaptchaDto>({
+	const captchaValidateInput = ref<CaptchaValidateDto>({
 		captchaKey: '',
 		points: [
 			{ x: 0 },

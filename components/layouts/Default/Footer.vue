@@ -59,8 +59,8 @@
 									<div class="mt-2">
 										<div>
 											<div
-												v-for="(link, index) in section.links"
-												:key="index"
+												v-for="(link) in section.links"
+												:key="link.id"
 												class="text-sm font-medium pb-2"
 											>
 												<ULink

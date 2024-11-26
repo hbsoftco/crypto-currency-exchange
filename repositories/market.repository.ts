@@ -40,7 +40,7 @@ export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Mar
 				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
 		);
 		const url = '/v1/market/routine/l11_f';
-		const response = fetch<MarketsResponse>(`${url}?${query.toString()}`, {
+		const response = await fetch<MarketsResponse>(`${url}?${query.toString()}`, {
 			noAuth: true,
 			method: 'GET',
 		} as CustomNitroFetchOptions);
@@ -53,7 +53,7 @@ export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Mar
 				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
 		);
 		const url = '/v1/market/routine/l21_f';
-		const response = fetch<MarketsResponse>(`${url}?${query.toString()}`, {
+		const response = await fetch<MarketsResponse>(`${url}?${query.toString()}`, {
 			noAuth: true,
 			method: 'GET',
 		} as CustomNitroFetchOptions);
