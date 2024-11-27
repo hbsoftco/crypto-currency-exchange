@@ -197,7 +197,7 @@ export const useLoginStore = defineStore('login', () => {
 		try {
 			generateQrCodeLoading.value = true;
 			generateQrCodeParams.value.initKey = generateGUID();
-			console.log(generateQrCodeParams.value);
+
 			const { result } = await authRepo.generateQrCode(generateQrCodeParams.value);
 
 			qrCodeInput.value.id = result.lqrcID;
@@ -221,8 +221,6 @@ export const useLoginStore = defineStore('login', () => {
 
 			const { otc, userId, userSecretKey, hashPassword } = result;
 			if (otc && userId && userSecretKey && hashPassword) {
-				console.log(otc, userId, userSecretKey, hashPassword);
-
 				await authStore.setAuthCredentials(otc, userId, userSecretKey);
 				await authStore.setPassword(hashPassword, false);
 

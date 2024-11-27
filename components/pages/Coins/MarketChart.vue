@@ -319,7 +319,7 @@ const timeFormat = (value: string | number) => {
 		result = timeFormatter(data, false, true);
 	}
 
-	return useNumber(result);
+	return result;
 };
 
 const tooltipShowPersianDate = (value: string | number) => {
@@ -482,7 +482,7 @@ const chartOptions = computed(() => ({
 		axisLabel: {
 			fontFamily: 'dana',
 			formatter: (value: number) => {
-				return `${useNumber(timeFormat(value))}`;
+				return `${(timeFormat(value))}`;
 			},
 		},
 		splitLine: {
@@ -510,7 +510,7 @@ const chartOptions = computed(() => ({
 		axisLabel: {
 			fontFamily: 'dana',
 			formatter: (value: number) => {
-				return useNumber(String(bigNumber(value)));
+				return (String(bigNumber(value)));
 			},
 		},
 		min: () => {
