@@ -86,7 +86,7 @@ export const useHeaderMenuStore = defineStore('headerMenu', () => {
 			const items = await worker.addCurrencyToMarketsL16(
 				result.rows as MarketL16[],
 				Number(futuresParams.value.currencyQuoteId),
-				useEnv('apiBaseUrl'), MarketType.SPOT,
+				useEnv('apiBaseUrl'), MarketType.FUTURES,
 			);
 
 			if (items.length) {

@@ -24,7 +24,7 @@
 			<template #item="{ item }">
 				<div class="border-t border-t-primary-gray-light dark:border-t-primary-gray-dark p-2">
 					<div v-if="item.key === 'USDT'">
-						<MenuFutureCoins
+						<MenuFuturesCoins
 							:type="type"
 							:quote="item.key"
 						/>
@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import MenuFutureCoins from './MenuFuturesCoins.vue';
+import MenuFuturesCoins from '~/components/layouts/Default/Header/MenuFuturesCoins.vue';
 
 interface Props {
 	type: 'futures';

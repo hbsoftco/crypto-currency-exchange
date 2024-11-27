@@ -105,6 +105,6 @@ const delayedHideSubmenu = (index) => {
 	menuItems.value[index].timeout = setTimeout(() => {
 		menuItems.value[index].hover = false;
 		menuItems.value[index].timeout = null;
-	}, 500); // تأخیر پنهان‌سازی
+	}, 500);
 };
 </script>

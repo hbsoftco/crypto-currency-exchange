@@ -13,7 +13,7 @@
 				:foreground="'#000000'"
 			/>
 		</div>
-		<h5 class="text-sm">
+		<h5 class="text-sm pt-4">
 			{{ `این کد بعد از ${useNumber(countdown)} ثانیه منقضی می‌شود.` }}
 		</h5>
 	</div>

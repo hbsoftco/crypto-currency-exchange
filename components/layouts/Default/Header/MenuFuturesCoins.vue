@@ -85,6 +85,6 @@ const headerMenuStore = useHeaderMenuStore();
 
 const setTag = async (tag: Tag) => {
 	headerMenuStore.futuresParams.tagTypeId = String(tag.id);
-	await headerMenuStore.getInitMarkets('spot');
+	await headerMenuStore.getInitFuturesMarkets();
 };
 </script>
