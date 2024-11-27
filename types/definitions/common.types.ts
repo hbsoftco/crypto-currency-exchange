@@ -23,10 +23,17 @@ type BaseLangGroupParams = {
 	group: string;
 };
 
+type QrCodeInput = {
+	id: string;
+	type: 'login_qrc' | 'device_link';
+	hash: string;
+};
+
 export type {
 	CommonResponse,
 	KeyValueResponse,
 	BaseLangIdParams,
 	BaseLangGroupParams,
 	KeyValue,
+	QrCodeInput,
 };

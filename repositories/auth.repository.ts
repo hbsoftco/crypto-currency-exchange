@@ -4,12 +4,20 @@ import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options
 import type { LoginByEmailDto, LoginByMobileDto, LoginByMobileResponse } from '~/types/login.types';
 import type { SignupByEmailDto, SignupByMobileDto } from '~/types/dto/signup.dto';
 import type { CheckCodeDto, ResendVerificationParams, ResendVerificationResponse } from '~/types/verification.types';
-import type { CheckForgetPasswordDto, CheckForgetPasswordResponse, InitForgetPasswordDto, InitForgetPasswordResponse, ResetPasswordDto, RestForgetPasswordDto } from '~/types/forget-password.types';
+import type { CheckForgetPasswordDto, InitForgetPasswordDto, InitForgetPasswordResponse, ResetPasswordDto, RestForgetPasswordDto } from '~/types/forget-password.types';
 import type { CheckOTCResponse, GetSocketListenKeyResponse } from '~/types/response/check-otc.types';
 import type { LoginByEmailResponse } from '~/types/response/login.types';
 import type { SignUpResponse } from '~/types/response/sign-up.types';
 import type { VerificationCheckCodeResponse } from '~/types/response/verification.types';
-import type { AuthResponse, CaptchaGenerateParams, CaptchaGenerateResponse, CaptchaValidateDto } from '~/types/definitions/auth.types';
+import type {
+	AuthResponse,
+	CaptchaGenerateParams,
+	CaptchaGenerateResponse,
+	CaptchaValidateDto,
+	CheckQrCodeParams,
+	CheckResponse,
+	QrCodeGenerateParams,
+	QrCodeGenerateResponse } from '~/types/definitions/auth.types';
 import type { CommonResponse } from '~/types/definitions/common.types';
 
 type AuthRepository = {
@@ -32,8 +40,11 @@ type AuthRepository = {
 	// Forget Password
 	initForgetPassword: (dto: InitForgetPasswordDto) => Promise<InitForgetPasswordResponse>;
 	resetForgetPassword: (dto: RestForgetPasswordDto) => Promise<CommonResponse>;
-	checkForgetPassword: (dto: CheckForgetPasswordDto) => Promise<CheckForgetPasswordResponse>;
+	checkForgetPassword: (dto: CheckForgetPasswordDto) => Promise<CheckResponse>;
 	resetPassword: (dto: ResetPasswordDto) => Promise<CommonResponse>;
+	// QrCode
+	generateQrCode: (params: QrCodeGenerateParams) => Promise<QrCodeGenerateResponse>;
+	checkQrCode: (params: CheckQrCodeParams) => Promise<CheckResponse>;
 };
 
 export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthRepository => ({
@@ -155,11 +166,10 @@ export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthR
 
 		return response;
 	},
-	async checkForgetPassword(dto: CheckForgetPasswordDto): Promise<CheckForgetPasswordResponse> {
+	async checkForgetPassword(dto: CheckForgetPasswordDto): Promise<CheckResponse> {
 		const url = '/v1/verification/forget_password_check';
-		const response = await fetch<CheckForgetPasswordResponse>(`${url}`, {
+		const response = await fetch<CheckResponse>(`${url}`, {
 			noAuth: true,
-			apiName: url,
 			method: 'POST',
 			body: dto,
 		} as CustomNitroFetchOptions);
@@ -173,6 +183,35 @@ export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthR
 			apiName: url,
 			method: 'POST',
 			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	// QrCode
+	async generateQrCode(params: QrCodeGenerateParams): Promise<QrCodeGenerateResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/auth/login/by_qrc_generate';
+		const response = await fetch<QrCodeGenerateResponse>(`${url}?${query.toString()}`, {
+			noAuth: true,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async checkQrCode(params: CheckQrCodeParams): Promise<CheckResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/auth/login/by_qrc_check';
+		const response = await fetch<CheckResponse>(`${url}?${query.toString()}`, {
+			noAuth: true,
+			method: 'GET',
 		} as CustomNitroFetchOptions);
 
 		return response;

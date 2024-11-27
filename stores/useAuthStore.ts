@@ -23,8 +23,13 @@ export const useAuthStore = defineStore('auth', () => {
 		authStatus.value = true;
 	};
 
-	const setPassword = (_password: string) => {
-		localStorage.setItem('password', md5WithUtf16LE(_password));
+	const setPassword = (_password: string, withMD5 = true) => {
+		if (withMD5) {
+			localStorage.setItem('password', md5WithUtf16LE(_password));
+		}
+		else {
+			localStorage.setItem('password', _password);
+		}
 	};
 
 	const getAuthCredentials = () => {

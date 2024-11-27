@@ -1,4 +1,6 @@
 import { authRepository } from '~/repositories/auth.repository';
+import type { QrCodeGenerateParams } from '~/types/definitions/auth.types';
+import type { QrCodeInput } from '~/types/definitions/common.types';
 import type { LoginByEmailDto, LoginByMobileDto } from '~/types/login.types';
 import type { CheckCodeDto, ResendVerificationParams } from '~/types/verification.types';
 import { normalizeMobile } from '~/utils/normalize-mobile';
@@ -182,6 +184,66 @@ export const useLoginStore = defineStore('login', () => {
 		}
 	};
 
+	const qrCodeInput = ref<QrCodeInput>({
+		id: '',
+		hash: '',
+		type: 'login_qrc',
+	});
+	const generateQrCodeParams = ref<QrCodeGenerateParams>({
+		initKey: '',
+	});
+	const generateQrCodeLoading = ref<boolean>(false);
+	const generateQrCode = async () => {
+		try {
+			generateQrCodeLoading.value = true;
+			generateQrCodeParams.value.initKey = generateGUID();
+			console.log(generateQrCodeParams.value);
+			const { result } = await authRepo.generateQrCode(generateQrCodeParams.value);
+
+			qrCodeInput.value.id = result.lqrcID;
+			qrCodeInput.value.hash = md5WithUtf16LE(`${(generateQrCodeParams.value.initKey).toUpperCase()}${result.lqrcSecret}`);
+
+			generateQrCodeLoading.value = false;
+		}
+		catch (error: any) {
+			generateQrCodeLoading.value = false;
+			console.log(error);
+		}
+	};
+
+	const getQrCodeInput = computed(() => JSON.stringify(qrCodeInput.value));
+
+	const checkQrCodeLoading = ref<boolean>(false);
+	const checkQrCode = async () => {
+		try {
+			checkQrCodeLoading.value = true;
+			const { result } = await authRepo.checkQrCode({ lqrcId: qrCodeInput.value.id });
+
+			const { otc, userId, userSecretKey, hashPassword } = result;
+			if (otc && userId && userSecretKey && hashPassword) {
+				console.log(otc, userId, userSecretKey, hashPassword);
+
+				await authStore.setAuthCredentials(otc, userId, userSecretKey);
+				await authStore.setPassword(hashPassword, false);
+
+				toast.add({
+					title: useT('login'),
+					description: useT('qrLoginSuccess'),
+					timeout: 5000,
+					color: 'green',
+				});
+			}
+
+			checkQrCodeLoading.value = false;
+
+			return true;
+		}
+		catch (error: any) {
+			checkQrCodeLoading.value = false;
+			console.log(error);
+		}
+	};
+
 	return {
 		// Email
 		loginByEmailDto,
@@ -199,5 +261,11 @@ export const useLoginStore = defineStore('login', () => {
 		loginByMobileLoading,
 		loginByMobile,
 		resetAllData,
+		// QrCode
+		generateQrCodeLoading,
+		generateQrCode,
+		generateQrCodeParams,
+		getQrCodeInput,
+		checkQrCode,
 	};
 });

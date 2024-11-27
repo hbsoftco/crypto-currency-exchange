@@ -18,9 +18,38 @@ type CaptchaGenerateParams = {
 	captchaType: CaptchaType;
 };
 
+type QrCodeGenerateParams = {
+	initKey: string;
+};
+
+type QrCodeGenerateResponse = {
+	statusCode: number;
+	result: QrCodeGenerate;
+};
+
+type QrCodeGenerate = {
+	lqrcID: string;
+	lqrcSecret: string;
+};
+
 type CaptchaValidateDto = {
 	captchaKey: string;
 	points: Point[];
+};
+
+type CheckQrCodeParams = {
+	lqrcId: string;
+};
+
+type CheckResponse = {
+	statusCode: number;
+	result: {
+		userId: number;
+		userSecretKey: number;
+		otc: string;
+		hashPassword?: string;
+		userRegTime: string;
+	};
 };
 
 type Point = {
@@ -34,4 +63,9 @@ export type {
 	CaptchaGenerateResponse,
 	AuthResponse,
 	CaptchaValidateDto,
+	QrCodeGenerateParams,
+	QrCodeGenerate,
+	QrCodeGenerateResponse,
+	CheckQrCodeParams,
+	CheckResponse,
 };
