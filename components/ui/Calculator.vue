@@ -16,7 +16,8 @@
 			placeholder=""
 			icon=""
 			:show-text="false"
-			:disable-selection="true"
+			:disable-selection="disableSelection.topInput"
+			:just-quote="!disableSelection.topInput"
 			dir="rtl"
 			:error-message="firstCurrencyBalanceErrorMessage"
 			@item-selected="getFirstSelectedCurrency"
@@ -40,7 +41,9 @@
 			:label="``"
 			placeholder=""
 			icon=""
+			:just-quote="!disableSelection.bottomInput"
 			:show-text="true"
+			:disable-selection="disableSelection.bottomInput"
 			dir="rtl"
 			@item-selected="getSecondSelectedCurrency"
 		/>
@@ -110,6 +113,11 @@ const getSecondSelectedCurrency = async (newCurrency: CurrencyBrief) => {
 	secondSelectedCurrency.value = newCurrency;
 };
 
+const disableSelection = ref({
+	topInput: true,
+	bottomInput: false,
+});
+
 const replacementMarket = async () => {
 	[firstSelectedSymbol.value, secondSelectedSymbol.value] = [
 		secondSelectedSymbol.value,
@@ -118,6 +126,19 @@ const replacementMarket = async () => {
 
 	firstCurrencyBalance.value = '';
 	secondCurrencyBalance.value = '';
+
+	if (tradeItems.value[0].quote.location === 'TOP') {
+		disableSelection.value = {
+			topInput: true,
+			bottomInput: false,
+		};
+	}
+	else {
+		disableSelection.value = {
+			topInput: false,
+			bottomInput: true,
+		};
+	}
 };
 
 const quoteItems = ref<Quote[]>();
@@ -366,24 +387,9 @@ const fieldDataCalculation = (input: number) => {
 			checkTradeInputValidation(inputBalance, inputUnit, inputBalanceLength, inputUnitLength);
 		}
 	}
-	else if (tradeItems.value.length === 2) {
-		// Top calculation
-		const topMarketPrice = tradeItems.value[0].market.price;
-		tradeItems.value[0].base.value = Number(input);
-		const topBalancePrice = (tradeItems.value[0].base.value * topMarketPrice);
-		tradeItems.value[0].quote.value = formatByDecimal(topBalancePrice, tradeItems.value[0].quote.currency.unit);
 
-		// Bottom calculation
-		const bottomMarketPrice = tradeItems.value[1].market.price;
-		tradeItems.value[1].quote.value = tradeItems.value[0].quote.value;
-		const bottomBalanceBase = tradeItems.value[1].quote.value / bottomMarketPrice;
-		tradeItems.value[1].base.value = formatByDecimal(bottomBalanceBase, tradeItems.value[1].base.currency.unit);
-		secondCurrencyBalance.value = String(tradeItems.value[1].base.value);
-
-		const inputUnit = Number(tradeItems.value[0].base.currency.unit);
-		const inputUnitLength = (tradeItems.value[0].base.currency.unit).length;
-
-		checkTradeInputValidation(inputBalance, inputUnit, inputBalanceLength, inputUnitLength);
+	if (!firstCurrencyBalance.value) {
+		secondCurrencyBalance.value = '0';
 	}
 };
 

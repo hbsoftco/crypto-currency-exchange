@@ -18,8 +18,8 @@ export default defineNuxtPlugin(() => {
 				if (options.noAuth !== false) return;
 
 				await authStore.startRefreshInterval();
-				console.log('options.headers =====>', options.noAuth);
-				console.log('options.headers =====>', options);
+				// console.log('options.headers =====>', options.noAuth);
+				// console.log('options.headers =====>', options);
 
 				options.headers = { ...options.headers };
 				const tokenHeaders = await authStore.generateToken();

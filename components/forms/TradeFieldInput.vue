@@ -166,6 +166,8 @@ import type { CurrencyBrief } from '~/types/definitions/currency.types';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 import { useNumber } from '~/composables/useNumber';
 import { priceFormat } from '~/utils/price-format';
+import { MarketType } from '~/utils/enums/market.enum';
+import type { Quote } from '~/types/definitions/quote.types';
 
 interface Props {
 	id: string;
@@ -179,6 +181,7 @@ interface Props {
 	readonly?: boolean;
 	disabled?: boolean;
 	disableSelection?: boolean;
+	justQuote: boolean;
 	inputClass?: string;
 	labelClass?: string;
 	icon?: string;
@@ -198,6 +201,8 @@ const emit = defineEmits<EmitDefinition>();
 
 const currencyWorker = useBaseWorker();
 
+const quoteItems = ref<Quote[]>();
+
 const internalSelectedCurrency = ref(props.selectedSymbol || '');
 const internalValue = ref(props.modelValue || '');
 const filteredCurrencies = ref<CurrencyBrief[]>();
@@ -206,7 +211,14 @@ const selected = ref<CurrencyBrief>();
 const currenciesLoading = ref<boolean>(true);
 const initCurrencies = async () => {
 	currenciesLoading.value = true;
-	const inputs = await currencyWorker.searchCurrencies('', 400, useEnv('apiBaseUrl'), props.ignoreCurrency);
+	let inputs: CurrencyBrief[] = [];
+	if (props.justQuote) {
+		const ids = quoteItems.value?.map((quote) => quote.id);
+		inputs = await currencyWorker.findCurrenciesByIds(ids || [], useEnv('apiBaseUrl'));
+	}
+	else {
+		inputs = await currencyWorker.searchCurrencies('', 400, useEnv('apiBaseUrl'), props.ignoreCurrency);
+	}
 	filteredCurrencies.value = inputs;
 
 	if (props.disableSelection) {
@@ -230,10 +242,22 @@ const search = async (q: string) => {
 
 	let inputs: CurrencyBrief[] = [];
 	if (!q) {
-		inputs = await currencyWorker.searchCurrencies('', 400, useEnv('apiBaseUrl'), props.ignoreCurrency);
+		if (props.justQuote) {
+			const ids = quoteItems.value?.map((quote) => quote.id);
+			inputs = await currencyWorker.findCurrenciesByIds(ids || [], useEnv('apiBaseUrl'));
+		}
+		else {
+			inputs = await currencyWorker.searchCurrencies('', 400, useEnv('apiBaseUrl'), props.ignoreCurrency);
+		}
 	}
 	else {
-		inputs = await currencyWorker.searchCurrencies(q.toLowerCase(), 200, useEnv('apiBaseUrl'), props.ignoreCurrency);
+		if (props.justQuote) {
+			const ids = quoteItems.value?.map((quote) => quote.id);
+			inputs = await currencyWorker.findCurrenciesByIds(ids || [], useEnv('apiBaseUrl'));
+		}
+		else {
+			inputs = await currencyWorker.searchCurrencies('', 400, useEnv('apiBaseUrl'), props.ignoreCurrency);
+		}
 	}
 
 	if (props.selectedSymbol) {
@@ -291,4 +315,11 @@ const onInput = (event: Event) => {
 	internalValue.value = filteredValue;
 	emit('update:modelValue', filteredValue);
 };
+
+onMounted(async () => {
+	quoteItems.value = await currencyWorker.fetchQuoteItems(
+		MarketType.SPOT,
+		useEnv('apiBaseUrl'),
+	);
+});
 </script>
