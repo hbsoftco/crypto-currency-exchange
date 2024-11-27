@@ -62,8 +62,11 @@
 		</td>
 		<td class="text-sm font-medium px-2 md:px-10 text-left">
 			<span>{{ useNumber(priceFormat(localRow?.indexPrice)) }}</span>
-			<span class="block md:hidden text-sm font-medium text-subtle-text-light dark:text-subtle-text-dark">
-				{{ useNumber(priceFormat(localRow?.indexPrice)) }}
+			<span
+				class="block md:hidden text-sm font-medium text-subtle-text-light dark:text-subtle-text-dark"
+				dir="ltr"
+			>
+				{{ `${useNumber(formatBigNumber(localRow?.indexPrice, 2))}` }}
 			</span>
 		</td>
 		<td class="text-base font-medium px-2 md:px-10 text-left">

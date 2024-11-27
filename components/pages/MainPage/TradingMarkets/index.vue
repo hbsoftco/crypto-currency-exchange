@@ -17,7 +17,10 @@
 						<th class="py-2 md:py-3 text-right md:text-left pl-0 md:pl-9">
 							{{ $t("change24h") }}
 						</th>
-						<th class="py-2 md:py-3 hidden md:block">
+						<th
+							v-if="!isMobile"
+							class="py-2 md:py-3 hidden md:block"
+						>
 							{{ $t("weeklyChart") }}
 						</th>
 					</tr>

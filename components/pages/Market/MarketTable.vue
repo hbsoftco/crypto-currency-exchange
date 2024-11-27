@@ -7,25 +7,40 @@
 				class="min-w-full bg-background-light dark:bg-background-dark text-text-dark dark:text-text-light"
 			>
 				<thead>
-					<tr class="text-center font-normal md:font-medium text-sm md:text-base border-b border-primary-gray-light dark:border-primary-gray-dark">
-						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-0 md:px-10">
-							<span class="hidden md:block">{{ $t("tradingPair") }}</span>
+					<tr class="text-right font-normal md:font-medium text-sm md:text-base border-b border-primary-gray-light dark:border-primary-gray-dark">
+						<th class="pb-3.5 pr-2 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-0 md:px-10">
+							<span
+								v-if="!isMobile"
+								class="hidden md:block"
+							>{{ $t("tradingPair") }}</span>
 							<span class="block md:hidden">{{ $t("market") }}</span>
 						</th>
 						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-0 md:px-10 text-left">
-							<span class="hidden md:block">{{ $t("currentPrice") }}</span>
+							<span
+								v-if="!isMobile"
+								class="hidden md:block"
+							>{{ $t("currentPrice") }}</span>
 							<span class="block md:hidden">{{ $t("lastPrice") }}</span>
 						</th>
 						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-0 md:px-10 text-left">
 							{{ $t("change24h") }}
 						</th>
-						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-10 md:table-cell hidden text-left">
+						<th
+							v-if="!isMobile"
+							class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-10 md:table-cell hidden text-left"
+						>
 							{{ $t("roof24h") }}
 						</th>
-						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-10 md:table-cell hidden text-left">
+						<th
+							v-if="!isMobile"
+							class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-10 md:table-cell hidden text-left"
+						>
 							{{ $t("floor24h") }}
 						</th>
-						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-10 md:table-cell hidden text-left">
+						<th
+							v-if="!isMobile"
+							class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-10 md:table-cell hidden text-left"
+						>
 							{{ $t("volume24h") }}
 						</th>
 					</tr>
@@ -43,32 +58,32 @@
 									:ui="{ rounded: 'rounded-full' }"
 								/>
 								<div class="space-y-2">
-									<USkeleton class="h-4 w-28" />
-									<USkeleton class="h-4 w-24" />
+									<USkeleton class="h-4 w-16 md:w-28" />
+									<USkeleton class="h-4 w-14 md:w-24" />
 								</div>
 							</div>
 						</td>
 						<td class="text-left">
 							<div class="flex justify-end pl-8">
-								<USkeleton class="h-4 w-24" />
+								<USkeleton class="h-4 w-14 md:w-24" />
 							</div>
 						</td>
 						<td>
 							<div class="flex justify-end pl-8">
-								<USkeleton class="h-4 w-20" />
+								<USkeleton class="h-4 w-14 md:w-24" />
 							</div>
 						</td>
-						<td>
+						<td v-if="!isMobile">
 							<div class="flex justify-center pl-8">
 								<USkeleton class="h-4 w-36" />
 							</div>
 						</td>
-						<td>
+						<td v-if="!isMobile">
 							<div class="flex justify-end pl-8">
 								<USkeleton class="h-4 w-20" />
 							</div>
 						</td>
-						<td>
+						<td v-if="!isMobile">
 							<div class="flex justify-center pl-8">
 								<USkeleton class="h-4 w-36" />
 							</div>
@@ -118,7 +133,7 @@ import type { MarketL31 } from '~/types/definitions/market.types';
 import type { UPagination } from '#build/components';
 import { usePaginationNumbers } from '~/composables/usePaginationNumbers';
 
-const { $api } = useNuxtApp();
+const { $mobileDetect, $api } = useNuxtApp();
 const marketRepo = marketRepository($api);
 
 const publicSocketStore = usePublicSocketStore();
@@ -126,6 +141,9 @@ const marketsPageStore = useMarketsPageStore();
 const authStore = useAuthStore();
 
 const worker = useBaseWorker();
+
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
 
 const pagination = ref<InstanceType<typeof UPagination>>();
 const paginationNumbers = usePaginationNumbers();
@@ -207,6 +225,8 @@ watch(() => marketsPageStore.params.pageNumber, () => {
 }, { deep: true });
 
 onMounted(async () => {
+	isMobile.value = !!mobileDetect.mobile();
+
 	marketsPageStore.params.searchStatement = '';
 	marketsPageStore.params.tagTypeId = '';
 

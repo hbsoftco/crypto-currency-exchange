@@ -22,7 +22,7 @@
 					</div>
 					<div class="flex">
 						<img
-							src="/images/svg/market/chart.png"
+							src="/images/svg/market/chart.svg"
 							alt="chart-statistics"
 							class="w-5 h-5"
 						>
@@ -38,9 +38,7 @@
 			</div>
 
 			<div>
-				<div
-					class="hidden md:flex justify-between"
-				>
+				<div class="hidden md:flex justify-between">
 					<div v-if="mostProfitableMarketsLoading">
 						<MarketStateSkeleton />
 					</div>
@@ -74,13 +72,14 @@
 			</div>
 			<!-- Market box -->
 
-			<div class="relative mt-14 md:mt-8">
+			<div class="relative mt-0 md:mt-8">
 				<UTabs :items="items">
 					<template #default="{ item, selected }">
 						<span
 							class="truncate"
 							:class="[selected && 'text-primary-yellow-light dark:text-primary-yellow-dark']"
-						>{{ $t(item.label) }}</span>
+						>{{
+							$t(item.label) }}</span>
 					</template>
 					<template #item="{ item }">
 						<div
@@ -103,7 +102,9 @@
 						</div>
 					</template>
 				</UTabs>
-				<div class="w-72 h-10 hidden md:block absolute left-0 top-0 py-2 px-3 border border-primary-gray-light dark:border-primary-gray-dark rounded-lg">
+				<div
+					class="w-72 h-10 hidden md:block absolute left-0 top-0 py-2 px-3 border border-primary-gray-light dark:border-primary-gray-dark rounded-lg"
+				>
 					<div class="w-full h-full relative">
 						<input
 							v-model="search"
@@ -111,17 +112,19 @@
 							class="outline-none h-full w-full text-sm"
 							:placeholder="$t('searchMarket')"
 						>
-						<IconSearch class="absolute left-1 top-1 text-subtle-text-light dark:text-subtle-text-dark cursor-pointer" />
+						<IconSearch
+							class="absolute left-1 top-1 text-subtle-text-light dark:text-subtle-text-dark cursor-pointer"
+						/>
 					</div>
 				</div>
 				<ULink
-					to=""
+					to="/markets/statistics"
 					class="block absolute left-0 top-0 md:hidden"
 				>
 					<img
-						src="/images/svg/market/chart.png"
+						src="/images/svg/market/chart.svg"
 						alt="chart"
-						class="w-5 h-5 mt-3"
+						class="w-7 h-7 mt-2"
 					>
 				</ULink>
 			</div>
@@ -142,8 +145,11 @@ import { Language } from '~/utils/enums/language.enum';
 
 const FuturesMarketTable = defineAsyncComponent(() => import('~/components/pages/Market/FuturesMarketTable.vue'));
 
-const { $api } = useNuxtApp();
+const { $mobileDetect, $api } = useNuxtApp();
 const marketRepo = marketRepository($api);
+
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
 
 const marketsPageStore = useMarketsPageStore();
 const publicSocketStore = usePublicSocketStore();
@@ -250,6 +256,8 @@ const initFilterItems = async () => {
 };
 
 onMounted(async () => {
+	isMobile.value = !!mobileDetect.mobile();
+
 	const query = ref<string | undefined>(route.query.query as string || '');
 
 	if (query.value) {
@@ -272,12 +280,12 @@ onUnmounted(async () => {
 const items = [
 	{
 		key: 'marketSpot',
-		label: 'marketSpot',
+		label: isMobile.value ? 'marketSpot' : 'spot',
 		content: 'This is the content shown for Tab1',
 	},
 	{
 		key: 'marketFutures',
-		label: 'marketFutures',
+		label: isMobile.value ? 'marketFutures' : 'futures',
 		content: 'And, this is the content for Tab2',
 	},
 ];

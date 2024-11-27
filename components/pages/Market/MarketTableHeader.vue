@@ -27,11 +27,12 @@
 			</div>
 			<div class="col-span-6">
 				<UiTagSlider
+					class="hidden"
 					:tags="marketsPageStore.tagItems"
 					@tag-selected="setTag"
 				/>
 			</div>
-			<div class="col-span-2 pr-8 text-center flex justify-center items-center">
+			<div class="col-span-2 pr-8 px-4 md:px-0 text-center flex justify-center items-center">
 				<UDropdown
 					:items="marketsPageStore.quoteOptions"
 					:popper="{ arrow: true }"
