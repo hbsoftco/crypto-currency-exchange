@@ -122,7 +122,7 @@ const menuItems = [
 	},
 	{
 		name: 'notifications',
-		description: useT('userActivityIncentives'),
+		description: useT('announcementDetails'),
 		icon: IconNotification,
 		url: '/risk-agreement',
 
