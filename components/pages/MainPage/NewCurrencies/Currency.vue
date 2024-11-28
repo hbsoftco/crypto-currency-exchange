@@ -21,7 +21,7 @@
 				dir="ltr"
 			>
 				<span class="text-base font-bold text-left">{{ useNumber(priceFormat(market.indexPrice, ',')) }}</span>
-				<span :class="priceChangeClass">{{ useNumber(market.priceChangePercIn24H) }}</span>
+				<span :class="priceChangeClass">{{ useNumber(market.priceChangePercIn24H) }}%</span>
 			</div>
 			<div class="w-24 h-14 pt-3">
 				<ClientOnly>

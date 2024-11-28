@@ -15,15 +15,33 @@
 			<span class="font-bold">{{ authStore.userLevel?.header }}</span>
 		</div>
 		<div
-			class="my-6 flex flex-col text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
+			class="my-4 flex flex-col text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
 		>
-			<div
+			<!-- <div
 				v-for="fee in fees"
 				:key="fee.quote"
 				class="mb-4"
 			>
 				<span class="ml-1">{{ `${$t("marketFee")} ${$t(fee.quote+'_m')}` }}،</span>
 				<span>{{ $t('maker') }}: {{ useNumber(`${fee.commission.maker}%`) }} {{ $t('taker') }}: {{ useNumber(`${fee.commission.taker}%`) }}</span>
+			</div> -->
+			<div
+				class="mb-3"
+			>
+				<span class="ml-1">{{ `${$t("tomanSpotMarketFee")}` }}،</span>
+				<span>{{ $t('maker') }}: {{ useNumber('10') }}% {{ $t('taker') }}: {{ useNumber('20') }}%</span>
+			</div>
+			<div
+				class="mb-3"
+			>
+				<span class="ml-1">{{ `${$t("dollarSpotMarketFee")}` }}،</span>
+				<span>{{ $t('maker') }}: {{ useNumber('10') }}% {{ $t('taker') }}: {{ useNumber('20') }}%</span>
+			</div>
+			<div
+				class=""
+			>
+				<span class="ml-1">{{ `${$t("dollarFuturesMarketFee")}` }}،</span>
+				<span>{{ $t('maker') }}: {{ useNumber('10') }}% {{ $t('taker') }}: {{ useNumber('20') }}%</span>
 			</div>
 		</div>
 		<ULink
@@ -37,7 +55,7 @@
 				class="text-2xl text-primary-yellow-light dark:text-primary-yellow-dark mr-2"
 			/>
 		</ULink>
-		<div class="flex mt-6">
+		<div class="flex my-3">
 			<UButton
 				to="/wallet/deposit-toman"
 				class="px-20 font-bold text-sm ml-1"
@@ -59,7 +77,7 @@
 				<IconPlayStore class="text-3xl mx-7 m1-2" />
 			</ULink>
 		</div>
-		<ul class="flex bg-transparency-light dark:bg-transparency-dark opacity-90 mt-8 py-2 rounded-md">
+		<ul class="flex bg-transparency-light dark:bg-transparency-dark opacity-90 py-2 rounded-md">
 			<li
 				class="px-4 py-2 border-l border-primary-gray-light dark:border-primary-gray-dark"
 			>

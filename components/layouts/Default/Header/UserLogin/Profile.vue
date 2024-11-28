@@ -67,7 +67,7 @@
 						</div>
 					</ULink>
 					<ul class="flex flex-col">
-						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
+						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark hover:bg-hover2-light dark:hover:bg-hover2-dark">
 							<ULink
 								to="/account"
 								class="flex justify-between items-center w-full py-2.5"
@@ -83,7 +83,7 @@
 							</ULink>
 						</li>
 						<!-- showAccount -->
-						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark mt-0">
+						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark mt-0 hover:bg-hover2-light dark:hover:bg-hover2-dark">
 							<ULink
 								to="/account/authentication"
 								class="flex justify-between items-center w-full py-1.5"
@@ -104,7 +104,7 @@
 							</ULink>
 						</li>
 						<!-- authentication -->
-						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
+						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark hover:bg-hover2-light dark:hover:bg-hover2-dark">
 							<ULink
 								to="/account/security"
 								class="flex justify-between items-center w-full py-2.5"
@@ -120,7 +120,7 @@
 							</ULink>
 						</li>
 						<!-- security -->
-						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
+						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark hover:bg-hover2-light dark:hover:bg-hover2-dark">
 							<ULink
 								to="/account/fees"
 								class="flex justify-between items-center w-full py-2.5"
@@ -136,7 +136,7 @@
 							</ULink>
 						</li>
 						<!-- fees -->
-						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark mt-0">
+						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark mt-0 hover:bg-hover2-light dark:hover:bg-hover2-dark">
 							<ULink
 								to="/account/user-level"
 								class="flex justify-between items-center w-full py-1.5"
@@ -155,7 +155,7 @@
 							</ULink>
 						</li>
 						<!-- userLevel -->
-						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
+						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark hover:bg-hover2-light dark:hover:bg-hover2-dark">
 							<ULink
 								to="/account/manage-api"
 								class="flex justify-between items-center w-full py-2.5"
@@ -171,7 +171,7 @@
 							</ULink>
 						</li>
 						<!-- manageAPI -->
-						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
+						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark hover:bg-hover2-light dark:hover:bg-hover2-dark">
 							<ULink
 								to="/account/invite-friends"
 								class="flex justify-between items-center w-full py-2.5"
@@ -187,7 +187,7 @@
 							</ULink>
 						</li>
 						<!-- inviteFriends -->
-						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
+						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark hover:bg-hover2-light dark:hover:bg-hover2-dark">
 							<ULink
 								to="/account/rewards"
 								class="flex justify-between items-center w-full py-2.5"
@@ -203,7 +203,7 @@
 							</ULink>
 						</li>
 						<!-- awards -->
-						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
+						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark hover:bg-hover2-light dark:hover:bg-hover2-dark">
 							<ULink
 								to="/account/top-users"
 								class="flex justify-between items-center w-full py-2.5"
@@ -219,7 +219,7 @@
 							</ULink>
 						</li>
 						<!-- topUsers -->
-						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
+						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark hover:bg-hover2-light dark:hover:bg-hover2-dark">
 							<ULink
 								to="/account/settings"
 								class="flex justify-between items-center w-full py-2.5"
@@ -235,7 +235,7 @@
 							</ULink>
 						</li>
 						<!-- setting -->
-						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
+						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark hover:bg-hover2-light dark:hover:bg-hover2-dark">
 							<ULink
 								to="/account/white-list"
 								class="flex justify-between items-center w-full py-2.5"
@@ -251,7 +251,7 @@
 							</ULink>
 						</li>
 						<!-- whiteList -->
-						<li class="">
+						<li class=" hover:bg-hover2-light dark:hover:bg-hover2-dark">
 							<ULink
 								to=""
 								class="flex justify-between items-center w-full py-2.5"

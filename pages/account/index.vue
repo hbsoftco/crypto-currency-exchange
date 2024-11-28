@@ -168,10 +168,10 @@
 							class="mb-4 text-sm text-right"
 							dir="ltr"
 						>
-							<span>{{ assetStore.assetTotalLoading ? '...' : (isAssetVisible ? useNumber(assetTotal?.totalOnQ2) : '***') }}</span>
+							<span>{{ assetStore.assetTotalLoading ? '...' : (isAssetVisible ? useNumber(priceFormat(assetTotal?.totalOnQ2)) : '***') }}</span>
 							<span class="ml-1">USD</span>
 							<span class="mx-2">≈</span>
-							<span>{{ assetStore.assetTotalLoading ? '...' : (isAssetVisible ? useNumber(assetTotal?.totalOnQ1) : '***') }}</span>
+							<span>{{ assetStore.assetTotalLoading ? '...' : (isAssetVisible ? useNumber(priceFormat(assetTotal?.totalOnQ1)) : '***') }}</span>
 							<span class="mx-1">{{ $t('toman') }}</span>
 						</p>
 
@@ -262,6 +262,7 @@ import { userRepository } from '~/repositories/user.repository';
 import type { ReferralBriefItem } from '~/types/response/user.types';
 import NickNameModal from '~/components/pages/Site/Account/OverView/NickNameModal.vue';
 import type { UploadAvatarDto } from '~/types/definitions/user.types';
+import { priceFormat } from '~/utils/price-format';
 
 definePageMeta({
 	layout: 'account',

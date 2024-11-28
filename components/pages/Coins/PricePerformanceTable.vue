@@ -33,6 +33,7 @@
 							v-if="localCurrency?.price"
 							classes="text-sm font-normal"
 							:show-percent="false"
+							pre-text="$"
 							pl="pl-0"
 							:change="changePrice(localCurrency?.price, localCurrency?.priceChangePerc24h)"
 							:icon="false"
@@ -42,8 +43,7 @@
 					<td class=" py-1.5">
 						<UiChangePrice
 							classes="text-sm font-normal"
-							:show-percent="false"
-							pre-text="$"
+							:show-percent="true"
 							pl="pl-0"
 							:change="parseFloat(String(localCurrency?.priceChangePerc24h))"
 							:icon="false"
@@ -59,21 +59,21 @@
 					</td>
 					<td class=" py-1.5">
 						<UiChangePrice
+							v-if="localCurrency?.price"
 							classes="text-sm font-normal"
 							:show-percent="false"
 							pre-text="$"
 							pl="pl-0"
-							:change="parseFloat(String(localCurrency?.priceChangePerc30d))"
+							:change="changePrice(localCurrency?.price, localCurrency?.priceChangePerc30d)"
 							:icon="false"
 						/>
 					</td>
 					<td class=" py-1.5">
 						<UiChangePrice
-							v-if="localCurrency?.price"
 							classes="text-sm font-normal"
-							:show-percent="false"
+							:show-percent="true"
 							pl="pl-0"
-							:change="changePrice(localCurrency?.price, localCurrency?.priceChangePerc30d)"
+							:change="parseFloat(String(localCurrency?.priceChangePerc30d))"
 							:icon="false"
 						/>
 					</td>
@@ -87,21 +87,21 @@
 					</td>
 					<td class=" py-1.5">
 						<UiChangePrice
+							v-if="localCurrency?.price"
 							classes="text-sm font-normal"
 							:show-percent="false"
 							pre-text="$"
 							pl="pl-0"
-							:change="parseFloat(String(localCurrency?.priceChangePerc60d))"
+							:change="changePrice(localCurrency?.price, localCurrency?.priceChangePerc60d)"
 							:icon="false"
 						/>
 					</td>
 					<td class=" py-1.5">
 						<UiChangePrice
-							v-if="localCurrency?.price"
 							classes="text-sm font-normal"
-							:show-percent="false"
+							:show-percent="true"
 							pl="pl-0"
-							:change="changePrice(localCurrency?.price, localCurrency?.priceChangePerc60d)"
+							:change="parseFloat(String(localCurrency?.priceChangePerc60d))"
 							:icon="false"
 						/>
 					</td>
@@ -113,21 +113,21 @@
 					</td>
 					<td class=" py-1.5">
 						<UiChangePrice
+							v-if="localCurrency?.price"
 							classes="text-sm font-normal"
 							:show-percent="false"
 							pre-text="$"
 							pl="pl-0"
-							:change="parseFloat(String(localCurrency?.priceChangePerc90d))"
+							:change="changePrice(localCurrency?.price, localCurrency?.priceChangePerc90d)"
 							:icon="false"
 						/>
 					</td>
 					<td class=" py-1.5">
 						<UiChangePrice
-							v-if="localCurrency?.price"
 							classes="text-sm font-normal"
-							:show-percent="false"
+							:show-percent="true"
 							pl="pl-0"
-							:change="changePrice(localCurrency?.price, localCurrency?.priceChangePerc90d)"
+							:change="parseFloat(String(localCurrency?.priceChangePerc90d))"
 							:icon="false"
 						/>
 					</td>

@@ -29,13 +29,19 @@
 								<span
 									class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark ml-2"
 								>{{ $t("toman") }}</span>
-								<span class="text-base font-bold">{{ useNumber(assetTotal?.totalOnQ1) }}</span>
+								<span
+									v-if="assetTotal?.totalOnQ1"
+									class="text-base font-bold"
+								>{{ useNumber(priceFormat(assetTotal?.totalOnQ1)) }}</span>
 							</div>
 							<div class="flex items-center justify-end p-1">
 								<span
 									class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark ml-2"
 								>USD</span>
-								<span class="text-base font-bold ml-2">{{ useNumber(assetTotal?.totalOnQ2) }}</span>
+								<span
+									v-if="assetTotal?.totalOnQ2"
+									class="text-base font-bold ml-2"
+								>{{ useNumber(priceFormat(assetTotal?.totalOnQ2)) }}</span>
 								<span>=</span>
 							</div>
 						</div>
@@ -59,18 +65,18 @@
 								<IconArrowDownRed class="text-accent-red" />
 							</UButton>
 						</div>
-						<ul class="flex flex-col space-y-2">
+						<ul class="flex flex-col">
 							<li
 								v-for="(item, index) in menuItems"
 								:key="index"
-								class="relative flex justify-between hover:bg-hover2-light dark:hover:bg-hover2-dark border-transparent border-b border-b-primary-gray-light dark:border-b-primary-gray-dark last:border-none "
+								class="relative flex justify-between items-center hover:bg-hover2-light dark:hover:bg-hover2-dark border-transparent border-b border-b-primary-gray-light dark:border-b-primary-gray-dark last:border-none "
 							>
 								<div
-									class="flex justify-between items-center w-full mx-3 p-2 "
+									class="flex justify-between items-center w-full mx-1 "
 								>
 									<ULink
 										:to="item.url"
-										class="flex items-center w-full"
+										class="flex items-center w-full py-1.5"
 									>
 										<component
 											:is="item.icon"
@@ -101,6 +107,7 @@ import IconOverView from '~/assets/svg-icons/menu/overview.svg';
 import IconAssets from '~/assets/svg-icons/menu/quick-menu/quick-trade.svg';
 import IconHistory from '~/assets/svg-icons/menu/quick-menu/transaction-history.svg';
 import IconPortfolio from '~/assets/svg-icons/menu/quick-menu/portfolio.svg';
+import { priceFormat } from '~/utils/price-format';
 
 const assetStore = useAssetStore();
 const assetTotal = ref();
