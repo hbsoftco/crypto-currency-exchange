@@ -20,7 +20,7 @@
 				class="flex justify-between flex-col"
 				dir="ltr"
 			>
-				<span class="text-base font-bold text-left">{{ useNumber(priceFormat(market.indexPrice, ',')) }}</span>
+				<span class="text-base font-bold text-left">{{ priceFormat(market.indexPrice, ',') }}</span>
 				<span :class="priceChangeClass">{{ checkNumber(market.priceChangePercIn24H) }}%</span>
 			</div>
 			<div class="w-24 h-14 pt-3">
@@ -37,7 +37,6 @@
 <script setup lang="ts">
 import { priceFormat } from '~/utils/price-format';
 import { splitMarket } from '~/utils/split-market';
-import { useNumber } from '~/composables/useNumber';
 import type { MarketL21 } from '~/types/definitions/market.types';
 
 interface Props {
@@ -54,10 +53,10 @@ const priceChangeClass = computed(() => {
 
 const checkNumber = (number: string) => {
 	if (Number(number) > 0) {
-		return `+${useNumber(number)}`;
+		return `+${number}`;
 	}
 
-	return useNumber(number);
+	return number;
 };
 
 const chartOptions = computed(() => ({

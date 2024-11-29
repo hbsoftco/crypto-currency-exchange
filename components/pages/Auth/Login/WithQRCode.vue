@@ -14,14 +14,12 @@
 			/>
 		</div>
 		<h5 class="text-sm pt-4">
-			{{ `این کد بعد از ${useNumber(countdown)} ثانیه منقضی می‌شود.` }}
+			{{ `این کد بعد از ${countdown} ثانیه منقضی می‌شود.` }}
 		</h5>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
-
 const loginStore = useLoginStore();
 const router = useRouter();
 

@@ -28,7 +28,7 @@
 					v-if="unreadMessages.length > 0"
 					class="absolute -top-1 -right-1 flex items-center justify-center h-4 w-4 text-xs font-bold text-white bg-accent-red rounded-full"
 				>
-					{{ useNumber(unreadMessages.length) }}
+					{{ unreadMessages.length }}
 				</span>
 			</div>
 			<div
@@ -41,7 +41,7 @@
 						>
 							<div class="text-sm font-bold">
 								<ULink to="#">
-									<span>{{ useNumber(unreadMessages.length) }}</span>
+									<span>{{ unreadMessages.length }}</span>
 									<span class="mr-1">{{ $t("newMessage") }}</span>
 								</ULink>
 
@@ -86,11 +86,11 @@
 											<span class="text-sm font-bold">{{ item.noticeHeader }}</span>
 											<p
 												class="text-nowrap truncate text-ellipsis text-sm h-5 my-1 overflow-y-hidden"
-												v-html="sanitizedHtml(useNumber(item.noticeBody))"
+												v-html="sanitizedHtml(item.noticeBody)"
 											/>
 											<span
 												class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-light"
-											>{{ useNumber(formatDateToIran(item.regTime)) }}</span>
+											>{{ formatDateToIran(item.regTime) }}</span>
 										</div>
 									</li>
 								</div>
@@ -120,7 +120,6 @@ import IconNotification from '~/assets/svg-icons/menu/notification.svg';
 import IconNotificationFill from '~/assets/svg-icons/menu/notification-fill.svg';
 import IconArrowLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';
 import IconMessage from '~/assets/svg-icons/menu/message.svg';
-import { useNumber } from '~/composables/useNumber';
 import { formatDateToIran } from '~/utils/persian-date';
 
 const { $swal } = useNuxtApp();

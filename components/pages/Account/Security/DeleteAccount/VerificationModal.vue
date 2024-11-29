@@ -86,7 +86,6 @@
 </template>
 
 <script setup lang="ts">
-// import { useNumber } from '~/composables/useNumber';
 import { getValueByKey } from '~/utils/find-value-by-key';
 import IconClose from '~/assets/svg-icons/close.svg';
 import OtpFieldInput from '~/components/forms/OtpFieldInput.vue';

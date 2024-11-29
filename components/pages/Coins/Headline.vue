@@ -7,14 +7,12 @@
 			class="text-base font-medium mt-4 text-subtle-text-light dark:text-subtle-text-50"
 			dir="ltr"
 		>
-			{{ useNumber(headline) }}
+			{{ headline }}
 		</p>
 	</section>
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
-
 interface PropsDefinition {
 	headline: string | null;
 }

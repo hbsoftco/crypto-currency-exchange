@@ -26,7 +26,7 @@
 				<span
 					v-else
 					class="text-sm md:text-sm font-medium"
-				>{{ useNumber(priceFormat(localRow.indexPrice)) }}</span>
+				>{{ priceFormat(localRow.indexPrice) }}</span>
 			</div>
 			<div class="min-w-20 text-center">
 				<span v-if="localRow.priceChangePercIn24H === '0'">-</span>
@@ -45,7 +45,6 @@
 <script setup lang="ts">
 import type { MarketBrief, MarketL51Item } from '~/types/definitions/market.types';
 import type { SocketSpotData } from '~/types/socket.types';
-import { useNumber } from '~/composables/useNumber';
 import { priceFormat } from '~/utils/price-format';
 import { MarketType } from '~/utils/enums/market.enum';
 import ChangeIndicator from '~/components/ui/ChangeIndicator.vue';

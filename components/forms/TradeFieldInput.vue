@@ -129,7 +129,7 @@
 				<input
 					v-if="!showText"
 					v-model="internalValue"
-					:placeholder="useNumber(0.00)"
+					placeholder="0.00"
 					type="text"
 					class="outline-none text-left p-1 bg-transparent z-10"
 					dir="ltr"
@@ -140,7 +140,7 @@
 					v-else
 					class="outline-none text-right p-1 bg-transparent z-10 w-full cursor-text"
 				>
-					{{ useNumber(priceFormat(internalValue)) }}
+					{{ priceFormat(internalValue) }}
 				</div>
 			</div>
 
@@ -164,7 +164,6 @@
 <script setup lang="ts">
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
-import { useNumber } from '~/composables/useNumber';
 import { priceFormat } from '~/utils/price-format';
 import { MarketType } from '~/utils/enums/market.enum';
 import type { Quote } from '~/types/definitions/quote.types';

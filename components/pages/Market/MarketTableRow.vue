@@ -61,12 +61,12 @@
 			</div>
 		</td>
 		<td class="text-sm font-medium px-2 md:px-10 text-left">
-			<span>{{ useNumber(priceFormat(localRow?.indexPrice)) }}</span>
+			<span>{{ priceFormat(localRow?.indexPrice) }}</span>
 			<span
 				class="block md:hidden text-sm font-medium text-subtle-text-light dark:text-subtle-text-dark"
 				dir="ltr"
 			>
-				{{ `${useNumber(formatBigNumber(localRow?.indexPrice, 2))}` }}
+				{{ `${formatBigNumber(localRow?.indexPrice, 2)}` }}
 			</span>
 		</td>
 		<td class="text-base font-medium px-2 md:px-10 text-left">
@@ -78,23 +78,22 @@
 			/>
 		</td>
 		<td class="text-sm font-normal px-10 md:table-cell hidden text-left">
-			{{ useNumber(priceFormat(localRow?.hPriceIn24H)) }}
+			{{ priceFormat(localRow?.hPriceIn24H) }}
 		</td>
 		<td class="text-sm font-normal px-10 md:table-cell hidden text-left">
-			{{ useNumber(priceFormat(localRow?.lPriceIn24H)) }}
+			{{ priceFormat(localRow?.lPriceIn24H) }}
 		</td>
 		<td
 			class="text-sm font-normal px-10 md:table-cell hidden text-left"
 			dir="ltr"
 		>
-			{{ useNumber(formatBigNumber(localRow?.volumeOfTradesIn24H, 2)) }}
+			{{ formatBigNumber(localRow?.volumeOfTradesIn24H, 2) }}
 		</td>
 	</tr>
 </template>
 
 <script setup lang="ts">
 import { splitMarket } from '~/utils/split-market';
-import { useNumber } from '~/composables/useNumber';
 import { priceFormat } from '~/utils/price-format';
 import { formatBigNumber } from '~/utils/format-big-number';
 import IconStar from '~/assets/svg-icons/market/star.svg';

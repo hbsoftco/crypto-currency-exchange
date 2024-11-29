@@ -16,7 +16,7 @@
 					</p>
 					<div>
 						<span class="leading-loose text-sm font-normal">{{ $t('phoneNumber2') }} :</span>
-						<span class="leading-loose text-sm font-normal">{{ useNumber('02128223131') }}</span>
+						<span class="leading-loose text-sm font-normal">{{ '02128223131' }}</span>
 					</div>
 					<div>
 						<span class="leading-loose text-sm font-normal">{{ $t('emailAddress') }} :</span>
@@ -89,7 +89,6 @@
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
 import IconInstagram from '~/assets/svg-icons/social/instagram.svg';
 import IconTelegram from '~/assets/svg-icons/social/telegram.svg';
 import IconTwitter from '~/assets/svg-icons/social/twitter.svg';

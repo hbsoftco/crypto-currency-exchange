@@ -1,4 +1,3 @@
-import { useNumber } from '../../../../../../composables/useNumber';
 <template>
 	<div class="p-6 w-full md:w-[25.5rem] bg-background-light dark:bg-background-dark rounded-md">
 		<div class="flex">

@@ -23,13 +23,13 @@
 				class="mb-4"
 			>
 				<span class="ml-1">{{ `${$t("marketFee")} ${$t(fee.quote+'_m')}` }}،</span>
-				<span>{{ $t('maker') }}: {{ useNumber(`${fee.commission.maker}%`) }} {{ $t('taker') }}: {{ useNumber(`${fee.commission.taker}%`) }}</span>
+				<span>{{ $t('maker') }}: {{ `${fee.commission.maker}%` }} {{ $t('taker') }}: {{ `${fee.commission.taker}%` }}</span>
 			</div>
 			<div
 				class=""
 			>
 				<span class="ml-1">{{ `${$t("dollarFuturesMarketFee")}` }}،</span>
-				<span>{{ $t('maker') }}: {{ useNumber('10') }}% {{ $t('taker') }}: {{ useNumber('20') }}%</span>
+				<span>{{ $t('maker') }}: {{ '10' }}% {{ $t('taker') }}: {{ '20' }}%</span>
 			</div>
 		</div>
 		<ULink
@@ -139,7 +139,6 @@
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
 import IconLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';
 import IconQR from '~/assets/svg-icons/qr-code.svg';
 import IconPlayStore from '~/assets/svg-icons/play-store.svg';

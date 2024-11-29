@@ -82,7 +82,6 @@
 <script setup lang="ts">
 import MarketCategorySlider from '~/components/pages/Market/Statistics/MarketCategorySlider.vue';
 import ChartMarketState from '~/components/pages/Market/Statistics/ChartMarketState.vue';
-import { useNumber } from '~/composables/useNumber';
 import { marketRepository } from '~/repositories/market.repository';
 import { MarketType } from '~/utils/enums/market.enum';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
@@ -283,12 +282,12 @@ const negativeMarketBarOptions = computed(() => ({
 	yAxis: {
 		type: 'category',
 		data: [
-			useNumber(useT('lessThanMinus10Percent')),
-			useNumber(useT('minus8ToMinus10Percent')),
-			useNumber(useT('minus6ToMinus8Percent')),
-			useNumber(useT('minus4ToMinus6Percent')),
-			useNumber(useT('minus2ToMinus4Percent')),
-			useNumber(useT('greaterThanMinus2Percent')),
+			useT('lessThanMinus10Percent'),
+			useT('minus8ToMinus10Percent'),
+			useT('minus6ToMinus8Percent'),
+			useT('minus4ToMinus6Percent'),
+			useT('minus2ToMinus4Percent'),
+			useT('greaterThanMinus2Percent'),
 		],
 		inverse: true,
 		axisLine: {
@@ -303,7 +302,7 @@ const negativeMarketBarOptions = computed(() => ({
 			fontSize: 14,
 			fontWeight: 'bold',
 			padding: [0, 0, 0, 10],
-			formatter: (value: string) => useNumber(value),
+			formatter: (value: string) => value,
 		},
 	},
 	series: [
@@ -342,12 +341,12 @@ const positiveMarketBarOptions = computed(() => ({
 		position: 'right',
 		type: 'category',
 		data: [
-			useNumber(useT('greaterThanPlus10Percent')),
-			useNumber(useT('plus8ToPlus10Percent')),
-			useNumber(useT('plus6ToPlus8Percent')),
-			useNumber(useT('plus4ToPlus6Percent')),
-			useNumber(useT('plus2ToPlus4Percent')),
-			useNumber(useT('lessThanPlus2Percent')),
+			useT('greaterThanPlus10Percent'),
+			useT('plus8ToPlus10Percent'),
+			useT('plus6ToPlus8Percent'),
+			useT('plus4ToPlus6Percent'),
+			useT('plus2ToPlus4Percent'),
+			useT('lessThanPlus2Percent'),
 		],
 		inverse: true,
 		axisLine: {
@@ -363,7 +362,7 @@ const positiveMarketBarOptions = computed(() => ({
 			fontSize: 14,
 			fontWeight: 'bold',
 			padding: [0, 0, 0, 10],
-			formatter: (value: string) => useNumber(value),
+			formatter: (value: string) => value,
 		},
 	},
 	series: [

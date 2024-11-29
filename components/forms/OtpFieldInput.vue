@@ -27,7 +27,7 @@
 				v-if="localCountdown>0 && countDownState"
 				class="absolute right-5 top-4"
 			>
-				<strong>{{ useNumber(localCountdown) }}</strong>
+				<strong>{{ localCountdown }}</strong>
 				<span> S</span>
 			</div>
 
@@ -69,7 +69,6 @@
 import type VOtpInput from 'vue3-otp-input';
 
 import IconRefresh from '~/assets/svg-icons/refresh.svg';
-import { useNumber } from '~/composables/useNumber';
 
 const otpInput = ref<InstanceType<typeof VOtpInput> | null>(null);
 const localCountdown = ref(0);

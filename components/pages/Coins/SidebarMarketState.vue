@@ -30,7 +30,7 @@
 				</div>
 				<div>
 					<div>
-						<span class="text-sm font-normal mr-1">{{ useNumber(priceFormat(market?.indexPrice)) }}</span>
+						<span class="text-sm font-normal mr-1">{{ priceFormat(market?.indexPrice) }}</span>
 						<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
 							{{ market?.quote?.cSymbol }}
 						</span>
@@ -43,7 +43,6 @@
 
 <script setup lang="ts">
 import { splitMarket } from '~/utils/split-market';
-import { useNumber } from '~/composables/useNumber';
 import type { MarketL47Item } from '~/types/definitions/market.types';
 import { priceFormat } from '~/utils/price-format';
 

@@ -47,7 +47,7 @@
 								ref="textRef"
 								class="text-xs font-bold mx-1"
 							>
-								{{ authStore.currentUserLoading ? '...': useNumber(String(getValueByKey(authStore.getCurrentUser, 'UID'))) }}
+								{{ authStore.currentUserLoading ? '...': String(getValueByKey(authStore.getCurrentUser, 'UID')) }}
 							</span>
 							<IconCopy
 								class="cursor-pointer"
@@ -98,7 +98,7 @@
 								</div>
 								<div>
 									<span class="text-primary-yellow-light dark:text-primary-yellow-dark rounded-sm p-0.5 px-1 border border-background-light dark:border-background-50 text-[0.625rem]">
-										{{ `${$t('level')} ${useNumber(String(getValueByKey(authStore.getCurrentUser, 'KYC_LVL_ID')?getValueByKey(authStore.getCurrentUser, 'KYC_LVL_ID'): 0))}` }}
+										{{ `${$t('level')} ${String(getValueByKey(authStore.getCurrentUser, 'KYC_LVL_ID')?getValueByKey(authStore.getCurrentUser, 'KYC_LVL_ID'): 0)}` }}
 									</span>
 								</div>
 							</ULink>
@@ -150,7 +150,7 @@
 									</p>
 								</div>
 								<div>
-									<span class="text-primary-yellow-light dark:text-primary-yellow-dark rounded-sm p-0.5 px-1 border border-background-light dark:border-background-50 text-[0.625rem]">{{ useNumber(String(getValueByKey(authStore.getCurrentUser, 'TRD_LVL_NAME'))) }}</span>
+									<span class="text-primary-yellow-light dark:text-primary-yellow-dark rounded-sm p-0.5 px-1 border border-background-light dark:border-background-50 text-[0.625rem]">{{ String(getValueByKey(authStore.getCurrentUser, 'TRD_LVL_NAME')) }}</span>
 								</div>
 							</ULink>
 						</li>
@@ -294,7 +294,6 @@ import IconWhiteList from '~/assets/svg-icons/menu/white-list.svg';
 import IconSetting from '~/assets/svg-icons/menu/setting.svg';
 import IconExit from '~/assets/svg-icons/menu/exit.svg';
 import { getValueByKey } from '~/utils/find-value-by-key';
-import { useNumber } from '~/composables/useNumber';
 
 const textRef = ref<HTMLElement | null>(null);
 const authStore = useAuthStore();

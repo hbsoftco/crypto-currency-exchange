@@ -8,7 +8,7 @@
 				:number="true"
 				input-class="text-left"
 				label="phoneNumber"
-				:placeholder="useNumber('09120000000')"
+				placeholder="09120000000"
 				icon="i-heroicons-phone"
 				dir="ltr"
 				:error-message="v$.mobile.$error? $t('fieldIsRequired') : ''"
@@ -88,7 +88,6 @@
 import useVuelidate from '@vuelidate/core';
 
 import { normalizeMobile } from '~/utils/normalize-mobile';
-import { useNumber } from '~/composables/useNumber';
 import SlideCaptcha from '~/components/ui/SlideCaptcha.vue';
 import ReferralFieldInput from '~/components/forms/ReferralFieldInput.vue';
 import { complexPassword } from '~/utils/validation-rules';

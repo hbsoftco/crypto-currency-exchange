@@ -1,4 +1,3 @@
-import { useNumber } from '../../../../../../composables/useNumber';
 <template>
 	<div class="p-6 w-full md:w-[25.5rem] bg-background-light dark:bg-background-dark rounded-md">
 		<div class="flex">
@@ -14,7 +13,7 @@ import { useNumber } from '../../../../../../composables/useNumber';
 		</div>
 		<div class="flex mt-1">
 			<div class="px-2 h-6 flex items-center justify-center border border-accent-red dark:border-accent-red rounded-full">
-				<span class="text-xs text-accent-red dark:text-accent-red">{{ useNumber('1') }}</span>
+				<span class="text-xs text-accent-red dark:text-accent-red">{{ 1 }}</span>
 			</div>
 			<p class="text-sm font-bold text-justify mr-1">
 				{{ $t('consequencesOne') }}
@@ -22,7 +21,7 @@ import { useNumber } from '../../../../../../composables/useNumber';
 		</div>
 		<div class="flex mt-1">
 			<div class="px-2 h-6 flex items-center justify-center border border-accent-red dark:border-accent-red rounded-full">
-				<span class="text-xs text-accent-red dark:text-accent-red">{{ useNumber('2') }}</span>
+				<span class="text-xs text-accent-red dark:text-accent-red">{{ 2 }}</span>
 			</div>
 			<p class="mt-1 text-sm font-bold text-justify mr-1">
 				{{ $t('consequencesTwo') }}
@@ -30,7 +29,7 @@ import { useNumber } from '../../../../../../composables/useNumber';
 		</div>
 		<div class="flex mt-1">
 			<div class="px-2 h-6 flex items-center justify-center border border-accent-red dark:border-accent-red rounded-full">
-				<span class="text-xs text-accent-red dark:text-accent-red">{{ useNumber('3') }}</span>
+				<span class="text-xs text-accent-red dark:text-accent-red">{{ 3 }}</span>
 			</div>
 			<p class="mt-1 text-sm font-bold text-justify mr-1">
 				{{ $t('consequencesThree') }}
@@ -38,7 +37,7 @@ import { useNumber } from '../../../../../../composables/useNumber';
 		</div>
 		<div class="flex mt-1">
 			<div class="px-2 h-6 flex items-center justify-center border border-accent-red dark:border-accent-red rounded-full">
-				<span class="text-xs text-accent-red dark:text-accent-red">{{ useNumber('4') }}</span>
+				<span class="text-xs text-accent-red dark:text-accent-red">{{ 4 }}</span>
 			</div>
 			<p class="mt-1 text-sm font-bold text-justify mr-1">
 				{{ $t('consequencesFour') }}
@@ -70,8 +69,5 @@ import { useNumber } from '../../../../../../composables/useNumber';
 	</div>
 </template>
 
-<script>
-export default {
-
-};
+<script setup lang="ts">
 </script>

@@ -19,7 +19,7 @@
 						<span
 							v-if="currencyDetail?.marketCap"
 							class="mr-1"
-						>{{ useNumber(formatBigNumber(currencyDetail?.marketCap, 3)) }}</span>
+						>{{ formatBigNumber(currencyDetail?.marketCap, 3) }}</span>
 						<span>USDT</span>
 						(<UiChangePrice
 							v-if="currencyDetail?.price"
@@ -49,7 +49,7 @@
 						<span
 							v-if="currencyDetail?.volume24h"
 							class="mr-1"
-						>{{ useNumber(formatBigNumber(currencyDetail?.volume24h, 3)) }}</span>
+						>{{ formatBigNumber(currencyDetail?.volume24h, 3) }}</span>
 						<span>USDT</span>
 					</span>
 				</div>
@@ -71,7 +71,7 @@
 						<span
 							v-if="currencyDetail?.volume24h"
 							class="mr-1"
-						>{{ useNumber(formatBigNumber(currencyDetail?.circulatingSupply, 3)) }}</span>
+						>{{ formatBigNumber(currencyDetail?.circulatingSupply, 3) }}</span>
 						<span>{{ currencyDetail?.symbol }}</span>
 					</span>
 				</div>
@@ -87,7 +87,7 @@
 					>{{ $t("marketDominance") }}</span>
 				</div>
 				<div class="text-sm font-normal text-black dark:text-white pt-1">
-					<span>{{ useNumber(Number(currencyDetail?.dominance)) }} </span>
+					<span>{{ currencyDetail?.dominance }} </span>
 				</div>
 			</div>
 			<!-- dominance -->
@@ -101,7 +101,7 @@
 					>{{ $t("marketRank") }}</span>
 				</div>
 				<div class="text-sm font-normal pt-1">
-					<span>{{ useNumber(Number(currencyDetail?.rank)) }} </span>
+					<span>{{ currencyDetail?.rank }} </span>
 				</div>
 			</div>
 			<!-- rank -->
@@ -121,7 +121,7 @@
 						<span
 							v-if="currencyDetail?.volume24h"
 							class="mr-1"
-						>{{ useNumber(formatBigNumber(currencyDetail?.maxSupply, 3)) }}</span>
+						>{{ formatBigNumber(currencyDetail?.maxSupply, 3) }}</span>
 						<span>{{ currencyDetail?.symbol }}</span>
 					</span>
 				</div>
@@ -143,7 +143,7 @@
 						<span
 							v-if="currencyDetail?.volume24h"
 							class="mr-1"
-						>{{ useNumber(formatBigNumber(currencyDetail?.totalSupply, 3)) }}</span>
+						>{{ formatBigNumber(currencyDetail?.totalSupply, 3) }}</span>
 						<span>{{ currencyDetail?.symbol }}</span>
 					</span>
 				</div>
@@ -155,7 +155,6 @@
 
 <script setup lang="ts">
 import { formatBigNumber } from '~/utils/format-big-number';
-import { useNumber } from '~/composables/useNumber';
 import type { Currency } from '~/types/definitions/currency.types';
 
 interface PropsDefinition {

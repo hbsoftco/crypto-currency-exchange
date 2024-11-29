@@ -49,14 +49,14 @@
 									v-if="trade.sideId===1"
 									dir="ltr"
 								>
-									{{ useNumber(priceFormat(trade.spentRaw)) }}
+									{{ priceFormat(trade.spentRaw) }}
 									{{ findSymbol(trade.mSymbol, 'quote') }}
 								</span>
 								<span
 									v-if="trade.sideId===2"
 									dir="ltr"
 								>
-									{{ useNumber(priceFormat(trade.spentRaw)) }}
+									{{ priceFormat(trade.spentRaw) }}
 									{{ findSymbol(trade.mSymbol, 'currency') }}
 								</span>
 							</div>
@@ -74,14 +74,14 @@
 									v-if="trade.sideId===1"
 									dir="ltr"
 								>
-									{{ useNumber(priceFormat(trade.achievedApplied)) }}
+									{{ priceFormat(trade.achievedApplied) }}
 									{{ findSymbol(trade.mSymbol, 'currency') }}
 								</span>
 								<span
 									v-if="trade.sideId===2"
 									dir="ltr"
 								>
-									{{ useNumber(priceFormat(trade.achievedApplied)) }}
+									{{ priceFormat(trade.achievedApplied) }}
 									{{ findSymbol(trade.mSymbol, 'quote') }}
 								</span>
 							</div>
@@ -96,7 +96,7 @@
 									</div>
 								</template>
 								<span dir="ltr">
-									{{ useNumber(priceFormat(trade.dealPrice)) }}
+									{{ priceFormat(trade.dealPrice) }}
 									{{ findSymbol(trade.mSymbol, 'quote') }}
 								</span>
 							</UPopover>
@@ -109,30 +109,30 @@
 									<div class="p-3">
 										<div v-if="trade.discountId>0">
 											<div class="pb-0.5">
-												{{ $t('rawFeePercentage') }}: {{ useNumber(trade.feeRawPerc) }}
+												{{ $t('rawFeePercentage') }}: {{ trade.feeRawPerc }}
 											</div>
 											<div class="pb-0.5">
-												{{ $t('rawFeeAmount') }}: {{ useNumber(trade.feeRawQot) }}
+												{{ $t('rawFeeAmount') }}: {{ trade.feeRawQot }}
 											</div>
 											<div class="pb-0.5">
-												{{ $t('discountPercentage') }}: {{ useNumber(trade.discountPerc) }}
+												{{ $t('discountPercentage') }}: {{ trade.discountPerc }}
 											</div>
 											<div class="pb-0.5">
 												{{ $t('reasonDiscount') }}: {{ trade.discountName }}
 											</div>
 											<div class="pb-0.5">
-												{{ $t('finalFeePercentage') }}: {{ useNumber(trade.feeAppliedPerc) }}
+												{{ $t('finalFeePercentage') }}: {{ trade.feeAppliedPerc }}
 											</div>
 											<div class="pb-0.5">
-												{{ $t('finalFeeAmount') }}: {{ useNumber(trade.feeAppliedQot) }}
+												{{ $t('finalFeeAmount') }}: {{ trade.feeAppliedQot }}
 											</div>
 										</div>
 										<div v-if="trade.discountId===0">
 											<div class="pb-0.5">
-												{{ $t('feePercentage') }}: {{ useNumber(trade.feeRawPerc) }}
+												{{ $t('feePercentage') }}: {{ trade.feeRawPerc }}
 											</div>
 											<div class="pb-0.5">
-												{{ $t('feeAmount') }}: {{ useNumber(trade.feeRawQot) }}
+												{{ $t('feeAmount') }}: {{ trade.feeRawQot }}
 											</div>
 										</div>
 									</div>
@@ -141,21 +141,21 @@
 									dir="ltr"
 									class="ml-1 text-[0.7rem] text-primary-gray-dark  dark:text-primary-gray-light line-through"
 								>
-									{{ useNumber(trade.feeRawQot) }}
+									{{ trade.feeRawQot }}
 									{{ findSymbol(trade.mSymbol, 'quote') }}
 								</span>
 								<span
 									dir="ltr"
 									class="text-xs font-normal"
 								>
-									{{ useNumber(trade.feeAppliedQot) }}
+									{{ trade.feeAppliedQot }}
 									{{ findSymbol(trade.mSymbol, 'quote') }}
 								</span>
 							</UPopover>
 						</td>
 						<td class="text-xs font-normal text-black dark:text-white py-2">
 							<span dir="ltr">
-								{{ useNumber(formatDateToIranTime(trade.regTime)) }}
+								{{ formatDateToIranTime(trade.regTime) }}
 							</span>
 						</td>
 					</tr>
@@ -211,14 +211,14 @@
 									v-if="trade.sideId===1"
 									dir="ltr"
 								>
-									{{ useNumber(priceFormat(trade.spentRaw)) }}
+									{{ priceFormat(trade.spentRaw) }}
 									{{ findSymbol(trade.mSymbol, 'quote') }}
 								</span>
 								<span
 									v-if="trade.sideId===2"
 									dir="ltr"
 								>
-									{{ useNumber(priceFormat(trade.spentRaw)) }}
+									{{ priceFormat(trade.spentRaw) }}
 									{{ findSymbol(trade.mSymbol, 'currency') }}
 								</span>
 							</div>
@@ -236,14 +236,14 @@
 									v-if="trade.sideId===1"
 									dir="ltr"
 								>
-									{{ useNumber(priceFormat(trade.achievedApplied)) }}
+									{{ priceFormat(trade.achievedApplied) }}
 									{{ findSymbol(trade.mSymbol, 'currency') }}
 								</span>
 								<span
 									v-if="trade.sideId===2"
 									dir="ltr"
 								>
-									{{ useNumber(priceFormat(trade.achievedApplied)) }}
+									{{ priceFormat(trade.achievedApplied) }}
 									{{ findSymbol(trade.mSymbol, 'quote') }}
 								</span>
 							</div>
@@ -257,7 +257,6 @@
 
 <script setup lang="ts">
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
-import { useNumber } from '~/composables/useNumber';
 import { spotRepository } from '~/repositories/spot.repository';
 import type { Trade, TradeListParams } from '~/types/definitions/spot.types';
 import { AssetType } from '~/utils/enums/asset.enum';

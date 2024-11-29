@@ -33,14 +33,13 @@
 				"
 				@click="selectItem(item)"
 			>
-				{{ useNumber(item.tag) }}
+				{{ item.tag }}
 			</div>
 		</UCarousel>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
 import type { Tag } from '~/types/definitions/tag.types';
 
 const marketsPageStore = useMarketsPageStore();

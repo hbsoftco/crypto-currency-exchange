@@ -39,24 +39,24 @@
 							<div class="pb-3 w-full flex justify-between">
 								<span class="text-sm font-normal">{{ $t('marketPrice') }}:</span>
 								<div class="text-sm font-bold">
-									<span>{{ useNumber('1') }}</span>
+									<span>{{ 1 }}</span>
 									<span>{{ trade.base.currency.cSymbol }}</span>
 									<span class="mx-0.5">~</span>
-									<span>{{ useNumber(priceFormat(trade.market.price)) }}</span>
+									<span>{{ priceFormat(trade.market.price) }}</span>
 									<span class="mx-0.5">{{ trade.quote.currency.cSymbol }}</span>
 								</div>
 							</div>
 							<div class="pb-3 w-full flex justify-between">
 								<span class="text-sm font-normal">{{ trade.quote.location === "BOTTOM" ? $t('paymentCurrency') : $t('receivedCurrency') }}:</span>
 								<div class="text-sm font-bold">
-									<span>{{ useNumber(trade.base.value) }}</span>
+									<span>{{ trade.base.value }}</span>
 									<span class="mx-0.5">{{ trade.base.currency.cSymbol }}</span>
 								</div>
 							</div>
 							<div class="pb-3 w-full flex justify-between">
 								<span class="text-sm font-normal">{{ trade.quote.location === "TOP" ? $t('paymentCurrency') : $t('receivedCurrency') }}:</span>
 								<div class="text-sm font-bold">
-									<span>{{ useNumber(priceFormat(trade.quote.value)) }}</span>
+									<span>{{ priceFormat(trade.quote.value) }}</span>
 									<span class="mx-0.5">{{ trade.quote.currency.cSymbol }}</span>
 								</div>
 							</div>
@@ -71,7 +71,7 @@
 							<div class="pb-3 w-full flex justify-between">
 								<span class="text-sm font-normal">{{ $t('fee') }}:</span>
 								<div class="text-sm font-bold">
-									<span>{{ useNumber(priceFormat(formatByDecimal(trade.fee, trade.quote.currency.unit))) }}</span>
+									<span>{{ priceFormat(formatByDecimal(trade.fee, trade.quote.currency.unit)) }}</span>
 									<span class="mx-0.5">{{ trade.quote.currency.cSymbol }}</span>
 								</div>
 							</div>
@@ -80,7 +80,7 @@
 					<div class="pb-3 w-full flex justify-between">
 						<span class="text-sm font-normal">{{ $t('finalReceipt') }}:</span>
 						<div class="text-sm font-bold">
-							<span>{{ useNumber(priceFormat(finalReceived)) }}</span>
+							<span>{{ priceFormat(finalReceived) }}</span>
 							<span class="mx-0.5">{{ receiveCoin }}</span>
 						</div>
 					</div>
@@ -110,7 +110,6 @@
 import { formatByDecimal } from '~/utils/format-by-decimal';
 import IconClose from '~/assets/svg-icons/close.svg';
 import { priceFormat } from '~/utils/price-format';
-import { useNumber } from '~/composables/useNumber';
 import type { TradeOption } from '~/types/definitions/spot.types';
 
 interface PropsDefinition {

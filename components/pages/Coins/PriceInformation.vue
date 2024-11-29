@@ -16,7 +16,7 @@
 					>{{ $t("hours24Lowest") }}</span>
 				</div>
 				<div class="text-sm font-normal text-black dark:text-white pt-1">
-					<span class="mr-1">{{ useNumber(priceFormat(String(currencyDetail?.priceLowIn24h))) }} </span>
+					<span class="mr-1">{{ priceFormat(String(currencyDetail?.priceLowIn24h)) }} </span>
 					<span>USDT</span>
 				</div>
 			</div>
@@ -31,7 +31,7 @@
 					>{{ $t("hours24Highest") }}</span>
 				</div>
 				<div class="text-sm font-normal text-black dark:text-white pt-1">
-					<span class="mr-1">{{ useNumber(priceFormat(String(currencyDetail?.priceHighIn24h))) }} </span>
+					<span class="mr-1">{{ priceFormat(String(currencyDetail?.priceHighIn24h)) }} </span>
 					<span>USDT</span>
 				</div>
 			</div>
@@ -46,7 +46,7 @@
 					>{{ $t("generalHighest") }}</span>
 				</div>
 				<div class="text-sm font-normal text-black dark:text-white pt-1">
-					<span class="mr-1">{{ useNumber(priceFormat(String(currencyDetail?.ath))) }} </span>
+					<span class="mr-1">{{ priceFormat(String(currencyDetail?.ath)) }} </span>
 					<span>USDT</span>
 				</div>
 			</div>
@@ -61,7 +61,7 @@
 					>{{ $t("generalLowest") }}</span>
 				</div>
 				<div class="text-sm font-normal text-black dark:text-white pt-1">
-					<span class="mr-1">{{ useNumber(priceFormat(String(currencyDetail?.atl))) }} </span>
+					<span class="mr-1">{{ priceFormat(String(currencyDetail?.atl)) }} </span>
 					<span>USDT</span>
 				</div>
 			</div>
@@ -71,7 +71,6 @@
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
 import type { Currency } from '~/types/definitions/currency.types';
 import { priceFormat } from '~/utils/price-format';
 
