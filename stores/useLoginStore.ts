@@ -1,5 +1,5 @@
 import { authRepository } from '~/repositories/auth.repository';
-import type { QrCodeGenerateParams } from '~/types/definitions/auth.types';
+import type { LoginTabType, QrCodeGenerateParams } from '~/types/definitions/auth.types';
 import type { QrCodeInput } from '~/types/definitions/common.types';
 import type { LoginByEmailDto, LoginByMobileDto } from '~/types/login.types';
 import type { CheckCodeDto, ResendVerificationParams } from '~/types/verification.types';
@@ -12,6 +12,8 @@ export const useLoginStore = defineStore('login', () => {
 	const authStore = useAuthStore();
 
 	const toast = useToast();
+
+	const selectedTabLoginType = ref<LoginTabType>('phoneNumber');
 
 	const loginByEmailDto = ref<LoginByEmailDto>({
 		captchaKey: '',
@@ -265,5 +267,7 @@ export const useLoginStore = defineStore('login', () => {
 		generateQrCodeParams,
 		getQrCodeInput,
 		checkQrCode,
+		// Share
+		selectedTabLoginType,
 	};
 });

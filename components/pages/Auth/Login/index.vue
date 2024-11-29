@@ -1,6 +1,9 @@
 <template>
 	<Auth title="login">
-		<UTabs :items="items">
+		<UTabs
+			:items="items"
+			@change="onChange"
+		>
 			<template #default="{ item, selected }">
 				<span
 					class="truncate"
@@ -12,19 +15,19 @@
 					v-if="item.key === 'phoneNumber'"
 					class="space-y-3"
 				>
-					<WithMobile />
+					<WithMobile v-if="item.key === 'phoneNumber'" />
 				</div>
 				<div
 					v-else-if="item.key === 'email'"
 					class="space-y-3"
 				>
-					<WithEmail />
+					<WithEmail v-if="item.key === 'email'" />
 				</div>
 				<div
 					v-else-if="item.key === 'qrCode'"
 					class="space-y-3"
 				>
-					<WithQRCode />
+					<WithQRCode v-if="item.key === 'qrCode'" />
 				</div>
 			</template>
 		</UTabs>
@@ -55,11 +58,20 @@
 	</Auth>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Auth from '~/components/pages/Auth/Auth.vue';
-import WithEmail from '~/components/pages/Auth/Login/WithEmail.vue';
-import WithMobile from '~/components/pages/Auth/Login/WithMobile.vue';
-import WithQRCode from '~/components/pages/Auth/Login/WithQRCode.vue';
+import type { LoginTabType } from '~/types/definitions/auth.types';
+
+const WithEmail = defineAsyncComponent(() => import('~/components/pages/Auth/Login/WithEmail.vue'));
+const WithMobile = defineAsyncComponent(() => import('~/components/pages/Auth/Login/WithMobile.vue'));
+const WithQRCode = defineAsyncComponent(() => import('~/components/pages/Auth/Login/WithQRCode.vue'));
+
+const loginStore = useLoginStore();
+
+const onChange = (index: number) => {
+	const item = items[index];
+	loginStore.selectedTabLoginType = item.label as LoginTabType;
+};
 
 const items = [
 	{
@@ -79,5 +91,3 @@ const items = [
 	},
 ];
 </script>
-
-<style></style>

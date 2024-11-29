@@ -31,10 +31,12 @@
 				</UDropdown>
 			</div>
 			<div class="col-span-6 hidden md:block">
-				<MarketsTags
-					:tags="marketsPageStore.tagItems"
-					@tag-selected="setTag"
-				/>
+				<template v-if="marketsPageStore.tagItems.length">
+					<MarketsTags
+						:tags="marketsPageStore.tagItems"
+						@tag-selected="setTag"
+					/>
+				</template>
 			</div>
 			<div class="col-span-2 pr-8 text-center flex justify-center items-center">
 				<UDropdown

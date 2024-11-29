@@ -29,25 +29,35 @@
 						{{ $t("today") }}
 					</td>
 					<td class=" py-1.5">
-						<UiChangePrice
-							v-if="localCurrency?.price"
-							classes="text-sm font-normal"
-							:show-percent="false"
-							pre-text="$"
-							pl="pl-0"
-							:change="changePrice(localCurrency?.price, localCurrency?.priceChangePerc24h)"
-							:icon="false"
-						/>
+						<div
+							class="max-w-28 pl-1 text-left"
+							dir="ltr"
+						>
+							<UiChangePrice
+								v-if="localCurrency?.price"
+								classes="text-sm font-normal"
+								:show-percent="false"
+								pre-text="$"
+								pl="pl-0"
+								:change="changePrice(localCurrency?.price, localCurrency?.priceChangePerc24h)"
+								:icon="false"
+							/>
+						</div>
 					</td>
 
 					<td class=" py-1.5">
-						<UiChangePrice
-							classes="text-sm font-normal"
-							:show-percent="true"
-							pl="pl-0"
-							:change="parseFloat(String(localCurrency?.priceChangePerc24h))"
-							:icon="false"
-						/>
+						<div
+							class="max-w-24 text-left"
+							dir="ltr"
+						>
+							<UiChangePrice
+								classes="text-sm font-normal"
+								:show-percent="true"
+								pl="pl-0"
+								:change="parseFloat(String(localCurrency?.priceChangePerc24h))"
+								:icon="false"
+							/>
+						</div>
 					</td>
 				</tr>
 				<!-- priceChangePerc24h -->
@@ -58,24 +68,34 @@
 						{{ $t("from30DaysAgo") }}
 					</td>
 					<td class=" py-1.5">
-						<UiChangePrice
-							v-if="localCurrency?.price"
-							classes="text-sm font-normal"
-							:show-percent="false"
-							pre-text="$"
-							pl="pl-0"
-							:change="changePrice(localCurrency?.price, localCurrency?.priceChangePerc30d)"
-							:icon="false"
-						/>
+						<div
+							class="max-w-28 pl-1 text-left"
+							dir="ltr"
+						>
+							<UiChangePrice
+								v-if="localCurrency?.price"
+								classes="text-sm font-normal"
+								:show-percent="false"
+								pre-text="$"
+								pl="pl-0"
+								:change="changePrice(localCurrency?.price, localCurrency?.priceChangePerc30d)"
+								:icon="false"
+							/>
+						</div>
 					</td>
 					<td class=" py-1.5">
-						<UiChangePrice
-							classes="text-sm font-normal"
-							:show-percent="true"
-							pl="pl-0"
-							:change="parseFloat(String(localCurrency?.priceChangePerc30d))"
-							:icon="false"
-						/>
+						<div
+							class="max-w-24 text-left"
+							dir="ltr"
+						>
+							<UiChangePrice
+								classes="text-sm font-normal"
+								:show-percent="true"
+								pl="pl-0"
+								:change="parseFloat(String(localCurrency?.priceChangePerc30d))"
+								:icon="false"
+							/>
+						</div>
 					</td>
 				</tr>
 				<!-- priceChangePerc30d -->
@@ -86,24 +106,34 @@
 						{{ $t("from60DaysAgo") }}
 					</td>
 					<td class=" py-1.5">
-						<UiChangePrice
-							v-if="localCurrency?.price"
-							classes="text-sm font-normal"
-							:show-percent="false"
-							pre-text="$"
-							pl="pl-0"
-							:change="changePrice(localCurrency?.price, localCurrency?.priceChangePerc60d)"
-							:icon="false"
-						/>
+						<div
+							class="max-w-28 pl-1 text-left"
+							dir="ltr"
+						>
+							<UiChangePrice
+								v-if="localCurrency?.price"
+								classes="text-sm font-normal"
+								:show-percent="false"
+								pre-text="$"
+								pl="pl-0"
+								:change="changePrice(localCurrency?.price, localCurrency?.priceChangePerc60d)"
+								:icon="false"
+							/>
+						</div>
 					</td>
 					<td class=" py-1.5">
-						<UiChangePrice
-							classes="text-sm font-normal"
-							:show-percent="true"
-							pl="pl-0"
-							:change="parseFloat(String(localCurrency?.priceChangePerc60d))"
-							:icon="false"
-						/>
+						<div
+							class="max-w-24 text-left"
+							dir="ltr"
+						>
+							<UiChangePrice
+								classes="text-sm font-normal"
+								:show-percent="true"
+								pl="pl-0"
+								:change="parseFloat(String(localCurrency?.priceChangePerc60d))"
+								:icon="false"
+							/>
+						</div>
 					</td>
 				</tr>
 				<!-- priceChangePerc60d -->
@@ -112,24 +142,34 @@
 						{{ $t("from90DaysAgo") }}
 					</td>
 					<td class=" py-1.5">
-						<UiChangePrice
-							v-if="localCurrency?.price"
-							classes="text-sm font-normal"
-							:show-percent="false"
-							pre-text="$"
-							pl="pl-0"
-							:change="changePrice(localCurrency?.price, localCurrency?.priceChangePerc90d)"
-							:icon="false"
-						/>
+						<div
+							class="max-w-28 pl-1 text-left"
+							dir="ltr"
+						>
+							<UiChangePrice
+								v-if="localCurrency?.price"
+								classes="text-sm font-normal"
+								:show-percent="false"
+								pre-text="$"
+								pl="pl-0"
+								:change="changePrice(localCurrency?.price, localCurrency?.priceChangePerc90d)"
+								:icon="false"
+							/>
+						</div>
 					</td>
 					<td class=" py-1.5">
-						<UiChangePrice
-							classes="text-sm font-normal"
-							:show-percent="true"
-							pl="pl-0"
-							:change="parseFloat(String(localCurrency?.priceChangePerc90d))"
-							:icon="false"
-						/>
+						<div
+							class="max-w-24 text-left"
+							dir="ltr"
+						>
+							<UiChangePrice
+								classes="text-sm font-normal"
+								:show-percent="true"
+								pl="pl-0"
+								:change="parseFloat(String(localCurrency?.priceChangePerc90d))"
+								:icon="false"
+							/>
+						</div>
 					</td>
 				</tr>
 				<!-- priceChangePerc90d -->

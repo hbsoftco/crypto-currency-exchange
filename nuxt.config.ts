@@ -36,18 +36,25 @@ export default defineNuxtConfig({
 		'nuxt-svgo',
 		'nuxt-echarts',
 		'nuxt-vitalizer',
+		'@nuxtjs/web-vitals',
 	],
 	pwa: {
 		/* PWA options */
 	},
 	vitalizer: {
 		disablePrefetchLinks: true,
+		disablePreloadLinks: true,
 		disableStylesheets: 'entry',
 		delayHydration: {
 			hydrateOnEvents: ['mousemove', 'scroll', 'keydown'],
 			idleCallbackTimeout: 8000,
 			postIdleTimeout: 4000,
 		},
+	},
+	webVitals: {
+		provider: 'log',
+		debug: true,
+		disabled: false,
 	},
 	i18n: {
 		vueI18n: './i18n.config.ts',
@@ -87,4 +94,9 @@ export default defineNuxtConfig({
 		'~/assets/css/style.css',
 	],
 	runtimeConfig: configs,
+	vite: {
+		build: {
+			reportCompressedSize: true,
+		},
+	},
 });

@@ -57,6 +57,8 @@ type Point = {
 	y?: number;
 };
 
+type LoginTabType = 'phoneNumber' | 'email' | 'qrCode';
+
 export type {
 	CaptchaType,
 	CaptchaGenerateParams,
@@ -68,4 +70,5 @@ export type {
 	QrCodeGenerateResponse,
 	CheckQrCodeParams,
 	CheckResponse,
+	LoginTabType,
 };

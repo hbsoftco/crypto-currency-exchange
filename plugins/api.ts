@@ -18,8 +18,6 @@ export default defineNuxtPlugin(() => {
 				if (options.noAuth !== false) return;
 
 				await authStore.startRefreshInterval();
-				// console.log('options.headers =====>', options.noAuth);
-				// console.log('options.headers =====>', options);
 
 				options.headers = { ...options.headers };
 				const tokenHeaders = await authStore.generateToken();
@@ -57,6 +55,11 @@ export default defineNuxtPlugin(() => {
 			}
 			else if (response && response?._data && response?._data?.statusCode === StatusCodes.USER_LOGGED_OUT.fa) {
 				await authStore.clearAuthCredentials();
+			}
+		},
+		async onResponseError({ response }) {
+			if (response && response?._data && response?._data?.statusCode === StatusCodes.OTC_EXPIRED.fa) {
+				//
 			}
 		},
 	});

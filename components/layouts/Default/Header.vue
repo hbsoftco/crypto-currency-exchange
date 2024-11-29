@@ -1,11 +1,7 @@
 <template>
 	<div>
 		<div
-			:class="[
-				'w-full px-14 h-14 bg-primary-gray-light dark:bg-primary-gray-dark shadow-md z-50 transition-transform duration-1000',
-				isFixed ? 'fixed top-0 left-0 translate-y-0' : 'relative',
-				shouldTranslate ? 'translate-y-0' : '-translate-y-full',
-			]"
+			class="w-full px-14 h-14 bg-primary-gray-light dark:bg-primary-gray-dark shadow-md z-50 fixed top-0 left-0 translate-y-0 transition-transform duration-1000"
 		>
 			<div class="flex justify-between items-center h-full">
 				<div class="flex justify-between">
@@ -25,9 +21,7 @@
 							<ULink
 								to="/markets"
 								active-class="text-primary-yellow-light dark:text-primary-yellow-dark"
-								:class="{
-									'text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all': true,
-								}"
+								class="text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all"
 							>
 								<span>
 									{{ $t('market') }}
@@ -44,9 +38,7 @@
 							<ULink
 								to="/account/rewards"
 								active-class="text-primary-yellow-light dark:text-primary-yellow-dark"
-								:class="{
-									'text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all': true,
-								}"
+								class="text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all"
 							>
 								<span>
 									{{ $t('awards') }}
@@ -57,9 +49,7 @@
 							<ULink
 								to="/referral"
 								active-class="text-primary-yellow-light dark:text-primary-yellow-dark"
-								:class="{
-									'text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all': true,
-								}"
+								class="text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all"
 							>
 								<span>
 									{{ $t('inviteFriends') }}
@@ -70,9 +60,7 @@
 							<ULink
 								to="/risk-agreement"
 								active-class="text-primary-yellow-light dark:text-primary-yellow-dark"
-								:class="{
-									'text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all': true,
-								}"
+								class="text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all"
 							>
 								<span>
 									{{ $t('blog') }}
@@ -83,9 +71,7 @@
 							<ULink
 								to="/help-center"
 								active-class="text-primary-yellow-light dark:text-primary-yellow-dark"
-								:class="{
-									'text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all': true,
-								}"
+								class="text-base font-semibold hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark duration-200 transition-all"
 							>
 								<span>
 									{{ $t('guid') }}
@@ -132,33 +118,11 @@ const Futures = defineAsyncComponent(() => import('~/components/layouts/Default/
 const settingsStore = useSpotSettingsStore();
 const headerMenuStore = useHeaderMenuStore();
 
-const isFixed = ref(false);
-const shouldTranslate = ref(true);
-
-const handleScroll = () => {
-	const currentScrollPosition = window.scrollY;
-
-	if (currentScrollPosition > 100) {
-		isFixed.value = true;
-		shouldTranslate.value = true;
-	}
-	else {
-		isFixed.value = false;
-		shouldTranslate.value = true;
-	}
-};
-
 onMounted(async () => {
-	window.addEventListener('scroll', handleScroll);
 	await Promise.all([
 		headerMenuStore.initFilterItems(MarketType.SPOT),
 		headerMenuStore.getInitMarkets(),
 		headerMenuStore.getInitFuturesMarkets(),
 	]);
 });
-
-onUnmounted(() => {
-	window.removeEventListener('scroll', handleScroll);
-});
-// import Notif from '~/components/layouts/Default/Notif.vue';
 </script>

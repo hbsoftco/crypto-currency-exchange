@@ -37,6 +37,12 @@
 					:data="localRow.sparklineChart"
 					:color="chartColor"
 				/>
+				<div
+					v-else
+					class="font-semibold text-gray-300 dark:text-gray-500"
+				>
+					_______________________
+				</div>
 			</div>
 		</td>
 	</tr>

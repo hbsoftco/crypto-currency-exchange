@@ -17,25 +17,13 @@
 		<div
 			class="my-4 flex flex-col text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
 		>
-			<!-- <div
+			<div
 				v-for="fee in fees"
 				:key="fee.quote"
 				class="mb-4"
 			>
 				<span class="ml-1">{{ `${$t("marketFee")} ${$t(fee.quote+'_m')}` }}،</span>
 				<span>{{ $t('maker') }}: {{ useNumber(`${fee.commission.maker}%`) }} {{ $t('taker') }}: {{ useNumber(`${fee.commission.taker}%`) }}</span>
-			</div> -->
-			<div
-				class="mb-3"
-			>
-				<span class="ml-1">{{ `${$t("tomanSpotMarketFee")}` }}،</span>
-				<span>{{ $t('maker') }}: {{ useNumber('10') }}% {{ $t('taker') }}: {{ useNumber('20') }}%</span>
-			</div>
-			<div
-				class="mb-3"
-			>
-				<span class="ml-1">{{ `${$t("dollarSpotMarketFee")}` }}،</span>
-				<span>{{ $t('maker') }}: {{ useNumber('10') }}% {{ $t('taker') }}: {{ useNumber('20') }}%</span>
 			</div>
 			<div
 				class=""

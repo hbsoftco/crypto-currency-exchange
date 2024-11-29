@@ -41,6 +41,7 @@
 				<div class="w-24">
 					<UiChangeIndicator
 						pl="pl-0"
+						size="text-sm"
 						:change="parseFloat(String(market.priceChangePercIn24H))"
 						:icon="false"
 					/>
@@ -52,13 +53,13 @@
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
-import type { MarketState } from '~/types/definitions/market.types';
+import type { MarketL47Item } from '~/types/definitions/market.types';
 import { priceFormat } from '~/utils/price-format';
 import { splitMarket } from '~/utils/split-market';
 
 interface Props {
 	title: string;
-	items: MarketState[];
+	items: MarketL47Item[];
 	sortMode: number;
 }
 
@@ -69,7 +70,7 @@ const publicSocketStore = usePublicSocketStore();
 
 const router = useRouter();
 
-const localItems = ref<MarketState[]>([...props.items]);
+const localItems = ref<MarketL47Item[]>([...props.items]);
 
 const setSortMode = () => {
 	marketsPageStore.handleSelectMarketFilter(props.sortMode);

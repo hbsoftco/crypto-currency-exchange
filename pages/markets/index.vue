@@ -39,7 +39,7 @@
 
 			<div>
 				<div class="hidden md:flex justify-between">
-					<div v-if="mostProfitableMarketsLoading">
+					<div v-if="marketsL47Loading">
 						<MarketStateSkeleton />
 					</div>
 					<TopMarketState
@@ -49,7 +49,7 @@
 						:items="mostProfitableMarkets ?? []"
 					/>
 
-					<div v-if="hottestMarketsLoading">
+					<div v-if="marketsL47Loading">
 						<MarketStateSkeleton />
 					</div>
 					<TopMarketState
@@ -59,7 +59,7 @@
 						:items="hottestMarkets ?? []"
 					/>
 
-					<div v-if="latestMarketsLoading">
+					<div v-if="marketsL47Loading">
 						<MarketStateSkeleton />
 					</div>
 					<TopMarketState
@@ -138,7 +138,7 @@ import IconSearch from '~/assets/svg-icons/menu/search.svg';
 import MarketTable from '~/components/pages/Market/MarketTable.vue';
 import { marketRepository } from '~/repositories/market.repository';
 import MarketStateSkeleton from '~/components/pages/Market/MarketStateSkeleton.vue';
-import type { MarketState } from '~/types/definitions/market.types';
+import type { MarketL47, MarketL47Item, MarketsL47Params } from '~/types/definitions/market.types';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 import { MarketType, SortMode } from '~/utils/enums/market.enum';
 import { Language } from '~/utils/enums/language.enum';
@@ -178,65 +178,41 @@ watch(search, (newValue) => {
 
 let searchTimeout: ReturnType<typeof setTimeout> | null = null;
 
+const mostProfitableMarkets = ref<MarketL47Item[]>([]);
+const hottestMarkets = ref<MarketL47Item[]>([]);
+const latestMarkets = ref<MarketL47Item[]>([]);
+
 const socketMarketIds = ref<number[]>([]);
 
-const mostProfitableMarkets = ref<MarketState[]>([]);
-const mostProfitableMarketsLoading = ref<boolean>(false);
-const getMostProfitableMarkets = async () => {
+const marketsL47Params = ref<MarketsL47Params>({
+	marketTypeId: String(MarketType.SPOT),
+	rowCount: '3',
+});
+const marketsL47 = ref<MarketL47[]>([]);
+const marketsL47Loading = ref<boolean>(false);
+const getMarketListL47 = async () => {
 	try {
-		mostProfitableMarketsLoading.value = true;
-		const { result } = await marketRepo.getMostProfitableMarkets({ rowCount: '3' });
+		marketsL47Loading.value = true;
+		const { result } = await marketRepo.getMarketListL47(marketsL47Params.value);
+		marketsL47.value = await worker.addCurrencyToMarketsL47(
+			useEnv('apiBaseUrl'),
+			result.rows as MarketL47[],
+		);
 
-		mostProfitableMarkets.value = await worker.addCurrencyToMarketStates(useEnv('apiBaseUrl'), result.rows);
+		marketsL47.value.map((category) => {
+			if (category.category === 'MostProfitable') {
+				mostProfitableMarkets.value = category.info;
+			}
+			else if (category.category === 'Hottest') {
+				hottestMarkets.value = category.info;
+			}
+			else if (category.category === 'Newest') {
+				latestMarkets.value = category.info;
+			}
+		});
 
-		socketMarketIds.value = [
-			...socketMarketIds.value,
-			...mostProfitableMarkets.value.map((item) => item.id),
-		];
-
-		mostProfitableMarketsLoading.value = false;
-	}
-	catch (error: unknown) {
-		console.log(error);
-	}
-};
-
-const hottestMarkets = ref<MarketState[]>([]);
-const hottestMarketsLoading = ref<boolean>(false);
-const getHottestMarkets = async () => {
-	try {
-		hottestMarketsLoading.value = true;
-		const { result } = await marketRepo.getHottestMarkets({ rowCount: '3' });
-
-		hottestMarkets.value = await worker.addCurrencyToMarketStates(useEnv('apiBaseUrl'), result.rows);
-
-		socketMarketIds.value = [
-			...socketMarketIds.value,
-			...hottestMarkets.value.map((item) => item.id),
-		];
-
-		hottestMarketsLoading.value = false;
-	}
-	catch (error: unknown) {
-		console.log(error);
-	}
-};
-
-const latestMarkets = ref<MarketState[]>([]);
-const latestMarketsLoading = ref<boolean>(false);
-const getLatestMarkets = async () => {
-	try {
-		latestMarketsLoading.value = true;
-		const { result } = await marketRepo.getLatestMarkets({ rowCount: '3' });
-
-		latestMarkets.value = await worker.addCurrencyToMarketStates(useEnv('apiBaseUrl'), result.rows);
-
-		socketMarketIds.value = [
-			...socketMarketIds.value,
-			...latestMarkets.value.map((item) => item.id),
-		];
-
-		latestMarketsLoading.value = false;
+		console.log(marketsL47.value);
+		marketsL47Loading.value = false;
 	}
 	catch (error: unknown) {
 		console.log(error);
@@ -265,9 +241,7 @@ onMounted(async () => {
 	}
 	await Promise.all([
 		initFilterItems(),
-		getMostProfitableMarkets(),
-		getHottestMarkets(),
-		getLatestMarkets(),
+		getMarketListL47(),
 	]);
 
 	await publicSocketStore.addMarketIds(socketMarketIds.value);

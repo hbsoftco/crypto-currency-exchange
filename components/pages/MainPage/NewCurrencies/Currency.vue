@@ -21,16 +21,14 @@
 				dir="ltr"
 			>
 				<span class="text-base font-bold text-left">{{ useNumber(priceFormat(market.indexPrice, ',')) }}</span>
-				<span :class="priceChangeClass">{{ useNumber(market.priceChangePercIn24H) }}%</span>
+				<span :class="priceChangeClass">{{ checkNumber(market.priceChangePercIn24H) }}%</span>
 			</div>
 			<div class="w-24 h-14 pt-3">
-				<ClientOnly>
-					<VChart
-						v-if="market.sparklineChart.length"
-						:option="chartOptions"
-						class="w-24 h-14"
-					/>
-				</ClientOnly>
+				<VChart
+					v-if="market.sparklineChart.length"
+					:option="chartOptions"
+					class="w-24 h-14"
+				/>
 			</div>
 		</div>
 	</ULink>
@@ -53,6 +51,14 @@ const priceChangeClass = computed(() => {
 		? 'text-base font-medium text-accent-green text-left'
 		: 'text-base font-medium text-accent-red text-left';
 });
+
+const checkNumber = (number: string) => {
+	if (Number(number) > 0) {
+		return `+${useNumber(number)}`;
+	}
+
+	return useNumber(number);
+};
 
 const chartOptions = computed(() => ({
 	grid: {

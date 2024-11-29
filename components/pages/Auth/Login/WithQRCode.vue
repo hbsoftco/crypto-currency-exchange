@@ -60,18 +60,30 @@ const startCheckingQrCode = async () => {
 	}, 2000);
 };
 
-onMounted(async () => {
-	await loginStore.generateQrCode();
-	startCountdown();
-	startCheckingQrCode();
-});
-
-onBeforeUnmount(() => {
+const stopIntervals = () => {
 	if (countdownInterval !== undefined) {
 		clearInterval(countdownInterval);
 	}
 	if (checkQrCodeInterval !== undefined) {
 		clearInterval(checkQrCodeInterval);
 	}
+};
+
+watch(
+	() => loginStore.selectedTabLoginType,
+	(newValue) => {
+		if (newValue === 'qrCode') {
+			loginStore.generateQrCode();
+			startCountdown();
+			startCheckingQrCode();
+		}
+		else {
+			stopIntervals();
+		}
+	},
+);
+
+onBeforeUnmount(() => {
+	stopIntervals();
 });
 </script>
