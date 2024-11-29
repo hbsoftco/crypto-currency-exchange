@@ -73,6 +73,7 @@ watch(
 	() => loginStore.selectedTabLoginType,
 	(newValue) => {
 		if (newValue === 'qrCode') {
+			countdown.value = 60;
 			loginStore.generateQrCode();
 			startCountdown();
 			startCheckingQrCode();

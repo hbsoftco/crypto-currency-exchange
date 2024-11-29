@@ -160,6 +160,7 @@ const route = useRoute();
 
 const search = ref<string>('');
 const searchQuery = ref<string>('');
+let searchTimeout: ReturnType<typeof setTimeout> | null = null;
 
 watch(search, (newValue) => {
 	if (searchTimeout) {
@@ -175,8 +176,6 @@ watch(search, (newValue) => {
 		searchQuery.value = newValue;
 	}
 });
-
-let searchTimeout: ReturnType<typeof setTimeout> | null = null;
 
 const mostProfitableMarkets = ref<MarketL47Item[]>([]);
 const hottestMarkets = ref<MarketL47Item[]>([]);
@@ -211,7 +210,6 @@ const getMarketListL47 = async () => {
 			}
 		});
 
-		console.log(marketsL47.value);
 		marketsL47Loading.value = false;
 	}
 	catch (error: unknown) {
@@ -219,7 +217,7 @@ const getMarketListL47 = async () => {
 	}
 };
 
-const initFilterLoading = ref<boolean>(false);
+const initFilterLoading = ref<boolean>(true);
 const initFilterItems = async () => {
 	initFilterLoading.value = true;
 	marketsPageStore.quoteItems = await worker.fetchQuoteItems(MarketType.SPOT, useEnv('apiBaseUrl'));
@@ -233,6 +231,19 @@ const initFilterItems = async () => {
 
 onMounted(async () => {
 	isMobile.value = !!mobileDetect.mobile();
+
+	items.value = [
+		{
+			key: 'marketSpot',
+			label: !isMobile.value ? 'marketSpot' : 'spot',
+			content: 'This is the content shown for Tab1',
+		},
+		{
+			key: 'marketFutures',
+			label: !isMobile.value ? 'marketFutures' : 'futures',
+			content: 'And, this is the content for Tab2',
+		},
+	];
 
 	const query = ref<string | undefined>(route.query.query as string || '');
 
@@ -251,16 +262,5 @@ onUnmounted(async () => {
 	await publicSocketStore.unSubscribe();
 });
 
-const items = [
-	{
-		key: 'marketSpot',
-		label: isMobile.value ? 'marketSpot' : 'spot',
-		content: 'This is the content shown for Tab1',
-	},
-	{
-		key: 'marketFutures',
-		label: isMobile.value ? 'marketFutures' : 'futures',
-		content: 'And, this is the content for Tab2',
-	},
-];
+const items = ref();
 </script>

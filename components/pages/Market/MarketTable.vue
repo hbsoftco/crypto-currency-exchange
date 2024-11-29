@@ -224,6 +224,8 @@ watch(() => marketsPageStore.params.pageNumber, () => {
 	}
 }, { deep: true });
 
+const isFetched = ref<boolean>(false);
+
 onMounted(async () => {
 	isMobile.value = !!mobileDetect.mobile();
 
@@ -235,7 +237,10 @@ onMounted(async () => {
 		marketsPageStore.params.searchStatement = query.value;
 	}
 
-	await getMarketListL31();
+	if (!isFetched.value) {
+		await getMarketListL31();
+	}
+	isFetched.value = true;
 });
 
 const addFavorite = async () => {

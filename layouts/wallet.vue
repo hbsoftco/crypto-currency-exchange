@@ -4,7 +4,7 @@
 		<!-- <LayoutsDefaultMobileHeader class="block md:hidden" /> -->
 
 		<div class="flex justify-start">
-			<aside class="hidden md:block min-h-[calc(100vh-22.6rem)] w-[16.25rem] p-2 border-l border-primary-gray-light dark:border-primary-gray-dark">
+			<aside class="hidden md:block min-h-[calc(100vh-18rem)] w-[16.25rem] p-2 border-l border-primary-gray-light dark:border-primary-gray-dark">
 				<WalletMenu />
 			</aside>
 			<main class="w-full p-5">

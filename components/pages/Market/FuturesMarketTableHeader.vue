@@ -9,7 +9,7 @@
 			>
 				<span class="text-base font-bold">{{ $t("tradingMarkets") }}</span>
 			</div>
-			<div class="col-span-3 flex justify-center md:justify-start items-center">
+			<div class="col-span-4 md:col-span-3 flex justify-center md:justify-start items-center">
 				<UDropdown
 					:items="marketsPageStore.futuresSortModeFilters"
 					:popper="{ arrow: true }"

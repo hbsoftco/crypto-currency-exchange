@@ -19,7 +19,7 @@
 						<span
 							:class="priceClass"
 							class="text-base font-bold text-subtle-text-light dark:text-subtle-text-dark"
-						>${{ useNumber(priceFormat(localPrice)) }}</span>
+						>${{ priceFormat(localPrice) }}</span>
 						<span class="text-sm font-normal mx-1">
 							<UiChangePrice
 								classes="text-sm font-normal pr-1.5"
@@ -39,7 +39,7 @@
 							@click="updateChart(option)"
 						>
 							<span>
-								{{ useNumber(option.header_option) }}
+								{{ option.header_option }}
 							</span>
 						</li>
 					</ul>
@@ -78,7 +78,6 @@
 <script setup lang="ts">
 import { bigNumber } from '~/utils/big-number';
 import { formatDateToPersian } from '~/utils/format-date-to-persian';
-import { useNumber } from '~/composables/useNumber';
 import { priceFormat } from '~/utils/price-format';
 import type { MarketBrief } from '~/types/definitions/market.types';
 import { spotRepository } from '~/repositories/spot.repository';
@@ -344,7 +343,7 @@ const tooltipShowPersianDate = (value: string | number) => {
 		result = formatDateToPersian(data);
 	}
 
-	return useNumber(result);
+	return result;
 };
 
 const tooltipTimeFormat = (value: string | number) => {
@@ -360,7 +359,7 @@ const tooltipTimeFormat = (value: string | number) => {
 		result = formatDate(data, 'year-month-day');
 	}
 
-	return useNumber(result);
+	return result;
 };
 
 const tooltipShowToman = (value: string | number, axisValue: string | number) => {
@@ -368,14 +367,14 @@ const tooltipShowToman = (value: string | number, axisValue: string | number) =>
 		const priceType = selectedCurrency.value;
 
 		if (priceType === 'TMN') {
-			return useNumber(priceFormat(value));
+			return priceFormat(value);
 		}
 		else {
 			const data: any = TMNkLines.value.find((item) => item[0] === String(axisValue));
 			if (data) {
-				return useNumber(priceFormat(data[2]));
+				return priceFormat(data[2]);
 			}
-			return useNumber(0);
+			return 0;
 		}
 	}
 	catch (error) {
@@ -388,14 +387,14 @@ const tooltipShowDollar = (value: string | number, axisValue: string | number) =
 		const priceType = selectedCurrency.value;
 
 		if (priceType === 'USDT') {
-			return useNumber(priceFormat(value));
+			return priceFormat(value);
 		}
 		else {
 			const data: any = USDTkLines.value.find((item) => item[0] === String(axisValue));
 			if (data) {
-				return useNumber(priceFormat(data[2]));
+				return priceFormat(data[2]);
 			}
-			return useNumber(0);
+			return 0;
 		}
 	}
 	catch (error) {

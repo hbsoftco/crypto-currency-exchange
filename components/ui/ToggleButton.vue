@@ -43,9 +43,21 @@ const direction = ref('rtl');
 const toggleSwitch = () => {
 	isToggled.value = !isToggled.value;
 	setLanguage(isToggled.value ? 'fa' : 'en');
+	applyFontFeature(getLanguage());
+};
+
+const applyFontFeature = (languageCode: string) => {
+	const body = document.body;
+	if (languageCode === 'fa') {
+		body.style.fontFeatureSettings = '"ss03"';
+	}
+	else {
+		body.style.fontFeatureSettings = '';
+	}
 };
 
 onMounted(() => {
 	isToggled.value = getLanguage() === 'fa';
+	applyFontFeature(getLanguage());
 });
 </script>
