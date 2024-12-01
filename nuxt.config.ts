@@ -1,12 +1,12 @@
 import configs from './utils/app-config';
 
+const sw = process.env.SW === 'true';
+
 export default defineNuxtConfig({
 	ssr: false,
 	compatibilityDate: '2024-04-03',
 	devtools: { enabled: true },
 	app: {
-		// pageTransition: { name: 'page', mode: 'out-in' },
-		// layoutTransition: { name: 'layout', mode: 'out-in' },
 		head: {
 			charset: 'utf-8',
 			viewport:
@@ -39,16 +39,49 @@ export default defineNuxtConfig({
 		'@nuxtjs/web-vitals',
 	],
 	pwa: {
+		strategies: sw ? 'injectManifest' : 'generateSW',
+		srcDir: sw ? 'service-worker' : undefined,
+		filename: sw ? 'sw.ts' : undefined,
 		registerType: 'autoUpdate',
 		manifest: {
 			name: 'Bitland',
 			short_name: 'Bitland',
-			description: 'Your description here',
 			theme_color: '#ffffff',
+			icons: [
+				{
+					src: '/images/pwa/pwa-192x192.png',
+					sizes: '192x192',
+					type: 'image/png',
+				},
+				{
+					src: '/images/pwa/pwa-512x512.png',
+					sizes: '512x512',
+					type: 'image/png',
+				},
+				{
+					src: '/images/pwa/pwa-512x512.png',
+					sizes: '512x512',
+					type: 'image/png',
+					purpose: 'any maskable',
+				},
+			],
 		},
-		injectRegister: 'auto',
+		workbox: {
+			globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
+		},
+		injectManifest: {
+			globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
+		},
+		client: {
+			installPrompt: true,
+			periodicSyncForUpdates: 20,
+		},
 		devOptions: {
 			enabled: true,
+			suppressWarnings: true,
+			navigateFallback: '/',
+			navigateFallbackAllowlist: [/^\/$/],
+			type: 'module',
 		},
 	},
 	vitalizer: {
