@@ -22,8 +22,8 @@ export const useMarketsPageStore = defineStore('marketsPage', () => {
 		marketTypeId: String(MarketType.SPOT),
 		tagTypeId: '',
 		searchStatement: '',
-		pageNumber: '1',
-		pageSize: '20',
+		pageNumber: 1,
+		pageSize: 20,
 	});
 
 	const sortModeFilters = [
@@ -114,7 +114,7 @@ export const useMarketsPageStore = defineStore('marketsPage', () => {
 		marketTypeId: String(MarketType.FUTURES),
 		tagTypeId: '',
 		searchStatement: '',
-		pageNumber: '1',
+		pageNumber: 1,
 		pageSize: '20',
 	});
 

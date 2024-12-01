@@ -2,6 +2,7 @@
 	<div class="fixed z-20 bottom-4 space-y-2 top-72 right-8">
 		<div class="mb-6">
 			<button
+				:aria-label="$t('sendTicket')"
 				class="rounded-full shadow-sm w-12 h-12 bg-hover-light dark:bg-hover-dark flex justify-center items-center"
 				@click="router.push(checkPathLink('/ticketing', false))"
 			>
@@ -10,6 +11,7 @@
 		</div>
 		<div>
 			<button
+				:aria-label="$t('guidCenter')"
 				class="rounded-full shadow-sm w-12 h-12 bg-hover-light dark:bg-hover-dark flex justify-center items-center"
 				@click="router.push('/help-center')"
 			>

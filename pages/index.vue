@@ -107,9 +107,9 @@ import PinTextDown from '~/components/pages/MainPage/PinTextDown.vue';
 import QuickMenuMobile from '~/components/pages/Site/MainPage/QuickMenuMobile.vue';
 import TradingProgress from '~/components/pages/MainPage/TradingProgress.vue';
 import TopSlider from '~/components/pages/MainPage/TopSlider.vue';
-import type { Pin } from '~/types/definitions/decoration.types';
-import { decorationRepository } from '~/repositories/decoration.repository';
 import { Language } from '~/utils/enums/language.enum';
+import { systemRepository } from '~/repositories/system.repository';
+import type { Pin } from '~/types/definitions/system.types';
 
 const ImageCover = defineAsyncComponent(() => import('~/components/pages/ImageCover.vue'));
 const ImageCoverLogin = defineAsyncComponent(() => import('~/components/pages/ImageCoverLogin.vue'));
@@ -125,7 +125,7 @@ const NewCurrencies = defineAsyncComponent(() => import('~/components/pages/Main
 
 const { $mobileDetect, $api } = useNuxtApp();
 
-const decorationRepo = decorationRepository($api);
+const systemRepo = systemRepository($api);
 
 const publicSocketStore = usePublicSocketStore();
 
@@ -143,9 +143,12 @@ const fetchPinItems = async () => {
 	pinLoading.value = true;
 
 	try {
-		const { result } = await decorationRepo.getPinList({ languageId: String(Language.PERSIAN), group: 'Home_Pinbar' });
-		if (result?.rows) {
-			pinItems.value = result.rows;
+		const { result } = await systemRepo.getSystemPinList({
+			languageId: String(Language.PERSIAN),
+			group: 'Home_Pinbar',
+		});
+		if (result.rows.length) {
+			pinItems.value = result.rows as Pin[];
 
 			pinDown.value = pinItems.value.find((pin) => pin.tag === 'down');
 			pinUp.value = pinItems.value.find((pin) => pin.tag === 'up');

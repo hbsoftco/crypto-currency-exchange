@@ -39,7 +39,17 @@ export default defineNuxtConfig({
 		'@nuxtjs/web-vitals',
 	],
 	pwa: {
-		/* PWA options */
+		registerType: 'autoUpdate',
+		manifest: {
+			name: 'Bitland',
+			short_name: 'Bitland',
+			description: 'Your description here',
+			theme_color: '#ffffff',
+		},
+		injectRegister: 'auto',
+		devOptions: {
+			enabled: true,
+		},
 	},
 	vitalizer: {
 		disablePrefetchLinks: true,
@@ -97,6 +107,12 @@ export default defineNuxtConfig({
 	vite: {
 		build: {
 			reportCompressedSize: true,
+			cssCodeSplit: false,
+			rollupOptions: {
+				output: {
+					manualChunks: undefined,
+				},
+			},
 		},
 	},
 });

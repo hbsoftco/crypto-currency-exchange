@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import IconInfo from '~/assets/svg-icons/info.svg';
-import type { Pin } from '~/types/definitions/decoration.types';
+import type { Pin } from '~/types/definitions/system.types';
 
 interface PropsDefinition {
 	pin: Pin;

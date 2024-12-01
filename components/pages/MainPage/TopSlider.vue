@@ -33,12 +33,12 @@
 </template>
 
 <script setup lang="ts">
-import { decorationRepository } from '~/repositories/decoration.repository';
-import type { SliderItem } from '~/types/definitions/decoration.types';
+import { systemRepository } from '~/repositories/system.repository';
+import type { Card, SliderItem } from '~/types/definitions/system.types';
 import { Language } from '~/utils/enums/language.enum';
 
 const { $api } = useNuxtApp();
-const decorationRepo = decorationRepository($api);
+const systemRepo = systemRepository($api);
 
 const slides = ref<SliderItem[]>([]);
 const sliderLoading = ref<boolean>(false);
@@ -46,9 +46,13 @@ const fetchSlides = async () => {
 	sliderLoading.value = true;
 
 	try {
-		const { result } = await decorationRepo.getCardList({ languageId: String(Language.PERSIAN), group: 'Home_Slider' });
-		if (result.rows.length) {
-			slides.value = result.rows.map((slide) => ({
+		const { result } = await systemRepo.getSystemCardList({
+			languageId: String(Language.PERSIAN),
+			group: 'Home_Slider',
+		});
+		const slideItems = result.rows as Card[];
+		if (slideItems.length) {
+			slides.value = slideItems.map((slide) => ({
 				mediaUrl: slide.mediaUrl,
 				header: slide.info[0]?.header || '',
 			}));

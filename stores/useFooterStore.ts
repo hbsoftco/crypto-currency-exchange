@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 
-import { decorationRepository } from '~/repositories/decoration.repository';
+import { systemRepository } from '~/repositories/system.repository';
 import type { BaseLangGroupParams } from '~/types/definitions/common.types';
-import type { FooterLinkSection } from '~/types/response/decoration.types';
+import type { FooterLinkSection, LinkListItem } from '~/types/definitions/system.types';
 import { Language } from '~/utils/enums/language.enum';
 
 export const useFooterStore = defineStore('footer', () => {
@@ -20,8 +20,9 @@ export const useFooterStore = defineStore('footer', () => {
 
 		try {
 			const { $api } = useNuxtApp();
-			const decorationRepo = decorationRepository($api);
-			const { result } = await decorationRepo.getLinkList(footerParams.value);
+			const systemRepo = systemRepository($api);
+			const response = await systemRepo.getSystemLinkList(footerParams.value);
+			const result = response.result as LinkListItem;
 			if (result) {
 				const items = await result.sections.map((section) => {
 					return {

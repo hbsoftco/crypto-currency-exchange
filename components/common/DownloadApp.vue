@@ -65,7 +65,7 @@
 					<img
 						src="/images/icon-download-app.webp"
 						alt="platform"
-						class="w-[35.875rem] h-80"
+						class="w-auto h-80"
 					>
 				</div>
 			</div>

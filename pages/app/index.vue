@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<UContainer v-if="routineHelpLoading">
+		<UContainer v-if="systemHelpLoading">
 			<div class="p-5">
 				<UiLogoLoading />
 			</div>
@@ -16,10 +16,10 @@
 						>
 					</ULink>
 					<h1 class="mt-11 mb-6 text-2xl font-bold">
-						{{ routineHelp?.info.header }}
+						{{ systemHelp?.info.header }}
 					</h1>
 					<p class="text-xl font-bold">
-						{{ routineHelp?.info.content }}
+						{{ systemHelp?.info.content }}
 					</p>
 					<div class="block md:flex items-center mt-11 mb-16">
 						<span class="text-xl font-bold">{{ $t('suggestDownloadApp') }}</span>
@@ -63,11 +63,11 @@
 						</ULink>
 					</div>
 				</div>
-				<div class="hidden md:block">
+				<div class="hidden md:block flex-shrink-0">
 					<img
 						src="/images/icon-download-app.webp"
 						alt="platform"
-						class="w-[38.596rem] h-[25.875rem]"
+						class="w-[29rem] h-auto"
 					>
 				</div>
 			</div>
@@ -76,34 +76,34 @@
 </template>
 
 <script setup lang="ts">
-import { routineRepository } from '~/repositories/routine.repository';
+import { systemRepository } from '~/repositories/system.repository';
 import type { BaseLangIdParams } from '~/types/definitions/common.types';
-import type { Routine } from '~/types/definitions/routine.types';
+import type { System } from '~/types/definitions/system.types';
 import { Language } from '~/utils/enums/language.enum';
 
 const { $api } = useNuxtApp();
-const routineRepo = routineRepository($api);
+const systemRepo = systemRepository($api);
 
-const routineHelpParams = ref<BaseLangIdParams>(
+const systemHelpParams = ref<BaseLangIdParams>(
 	{ languageId: String(Language.PERSIAN),
 		id: '6' },
 );
-const routineHelp = ref<Routine>();
-const routineHelpLoading = ref<boolean>(false);
-const getRoutineHelp = async () => {
+const systemHelp = ref<System>();
+const systemHelpLoading = ref<boolean>(false);
+const getSystemHelp = async () => {
 	try {
-		routineHelpLoading.value = true;
-		const { result } = await routineRepo.getRoutineHelp(routineHelpParams.value);
-		routineHelp.value = result;
-		routineHelpLoading.value = false;
+		systemHelpLoading.value = true;
+		const { result } = await systemRepo.getSystemHelp(systemHelpParams.value);
+		systemHelp.value = result as System;
+		systemHelpLoading.value = false;
 	}
 	catch (error) {
 		console.log(error);
-		routineHelpLoading.value = false;
+		systemHelpLoading.value = false;
 	}
 };
 
 onMounted(async () => {
-	await getRoutineHelp();
+	await getSystemHelp();
 });
 </script>

@@ -106,10 +106,9 @@
 			</template>
 			<div class="flex justify-center py-4">
 				<UPagination
-					v-if="totalCount > itemsPerPage && paginationNumbers.showPagination"
-					ref="pagination"
-					:model-value="Number(marketsPageStore.futuresMarketsParams.pageNumber)"
-					:page-count="Math.ceil(totalCount / itemsPerPage)"
+					v-if="totalCount > itemsPerPage"
+					:model-value="marketsPageStore.params.pageNumber"
+					:page-count="marketsPageStore.params.pageNumber"
 					:total="totalCount"
 					:to="(page: number) => ({
 						query: { page },
@@ -131,7 +130,6 @@ import { marketRepository } from '~/repositories/market.repository';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 import type { MarketL31 } from '~/types/definitions/market.types';
 import type { UPagination } from '#build/components';
-import { usePaginationNumbers } from '~/composables/usePaginationNumbers';
 
 const { $mobileDetect, $api } = useNuxtApp();
 const marketRepo = marketRepository($api);
@@ -144,9 +142,6 @@ const worker = useBaseWorker();
 
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
-
-const pagination = ref<InstanceType<typeof UPagination>>();
-const paginationNumbers = usePaginationNumbers();
 
 interface PropsDefinition {
 	searchQuery: string;
@@ -177,7 +172,11 @@ const getMarketListL31 = async () => {
 		}
 		marketsLoading.value = true;
 		if (authStore.isLoggedIn) {
-			const { result } = await marketRepo.getMarketListL31a(marketsPageStore.params);
+			const { result } = await marketRepo.getMarketListL31a({
+				...marketsPageStore.params,
+				pageNumber: String(marketsPageStore.params.pageNumber),
+				pageSize: String(marketsPageStore.params.pageSize),
+			});
 			markets.value = await worker.addCurrencyToMarketsL16(
 				result.rows as MarketL31[],
 				Number(marketsPageStore.params.currencyQuoteId),
@@ -186,7 +185,11 @@ const getMarketListL31 = async () => {
 			totalCount.value = result.totalCount;
 		}
 		else {
-			const { result } = await marketRepo.getMarketListL31(marketsPageStore.params);
+			const { result } = await marketRepo.getMarketListL31({
+				...marketsPageStore.params,
+				pageNumber: String(marketsPageStore.params.pageNumber),
+				pageSize: String(marketsPageStore.params.pageSize),
+			});
 			markets.value = await worker.addCurrencyToMarketsL16(
 				result.rows as MarketL31[],
 				Number(marketsPageStore.params.currencyQuoteId),
@@ -202,27 +205,11 @@ const getMarketListL31 = async () => {
 		await publicSocketStore.addMarketIds(socketMarketIds.value);
 
 		marketsLoading.value = false;
-
-		if (pagination.value) {
-			paginationNumbers.applyChangesToLinks(pagination.value);
-		}
 	}
 	catch (error: unknown) {
 		console.log(error);
 	}
 };
-
-watch(() => useChangeNumber().getLanguage(), () => {
-	if (pagination.value) {
-		paginationNumbers.applyChangesToLinks(pagination.value);
-	}
-});
-
-watch(() => marketsPageStore.params.pageNumber, () => {
-	if (pagination.value) {
-		paginationNumbers.applyChangesToLinks(pagination.value);
-	}
-}, { deep: true });
 
 const isFetched = ref<boolean>(false);
 
@@ -256,6 +243,6 @@ watch(() => props.searchQuery, (newQuery) => {
 });
 
 const onPageChange = async (newPage: number) => {
-	marketsPageStore.params.pageNumber = String(newPage);
+	marketsPageStore.params.pageNumber = newPage;
 };
 </script>
