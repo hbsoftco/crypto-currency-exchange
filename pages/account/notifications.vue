@@ -75,8 +75,6 @@
 					</div>
 					<div class="flex justify-center py-4">
 						<UPagination
-							v-if="notificationStore.getNoticeListTotalCount && paginationNumbers.showPagination"
-							ref="pagination"
 							:to="(page: number) => ({
 								query: { page },
 							})"
@@ -105,8 +103,8 @@ import { sanitizedHtml } from '~/utils/html-sanitizer';
 import { formatDateToIranTime } from '~/utils/date-time';
 import IconMessage from '~/assets/svg-icons/menu/message.svg';
 import { useNumber } from '~/composables/useNumber';
-import { userRepository } from '~/repositories/user.repository';
 import type { UPagination } from '#build/components';
+import { securityRepository } from '~/repositories/security.repository';
 
 definePageMeta({
 	layout: 'account-single',
@@ -114,26 +112,11 @@ definePageMeta({
 });
 
 const { $api, $swal } = useNuxtApp();
-const userRepo = userRepository($api);
+const securityRepo = securityRepository($api);
 
 const toast = useToast();
 
 const notificationStore = useNotificationStore();
-
-const pagination = ref<InstanceType<typeof UPagination>>();
-const paginationNumbers = usePaginationNumbers();
-
-watch(() => useChangeNumber().getLanguage(), () => {
-	if (pagination.value) {
-		paginationNumbers.applyChangesToLinks(pagination.value);
-	}
-});
-
-watch(() => notificationStore.noticeListParams.pageNumber, () => {
-	if (pagination.value) {
-		paginationNumbers.applyChangesToLinks(pagination.value);
-	}
-}, { deep: true });
 
 const noticeDeleteAllLoading = ref<boolean>(false);
 const noticeDeleteAll = async () => {
@@ -150,7 +133,7 @@ const noticeDeleteAll = async () => {
 		try {
 			noticeDeleteAllLoading.value = true;
 
-			await userRepo.noticeDeleteAll();
+			await securityRepo.noticeDeleteAll();
 
 			toast.add({
 				title: useT('readAllNotifications'),
@@ -174,10 +157,6 @@ const selectTag = async (item: string) => {
 	selectedTag.value = item;
 	notificationStore.noticeListParams.typeId = item;
 	await notificationStore.fetchNoticeList();
-
-	if (pagination.value) {
-		paginationNumbers.applyChangesToLinks(pagination.value);
-	}
 };
 
 const isSelected = (tag: string) => selectedTag.value === tag;
@@ -185,10 +164,6 @@ const isSelected = (tag: string) => selectedTag.value === tag;
 const onPageChange = async (newPage: number) => {
 	notificationStore.noticeListParams.pageNumber = String(newPage);
 	await notificationStore.fetchNoticeList();
-
-	if (pagination.value) {
-		paginationNumbers.applyChangesToLinks(pagination.value);
-	}
 };
 
 onMounted(async () => {
@@ -197,9 +172,5 @@ onMounted(async () => {
 		notificationStore.fetchNoticeTypeList(),
 		notificationStore.noticeReadAll(),
 	]);
-
-	if (pagination.value) {
-		paginationNumbers.applyChangesToLinks(pagination.value);
-	}
 });
 </script>

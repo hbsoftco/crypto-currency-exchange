@@ -5,7 +5,7 @@
 				<div class="col-span-1 md:col-span-7">
 					<div class="relative">
 						<img
-							src="/images/profile/Business_card.png"
+							src="/images/profile/business_card.webp"
 							class="h-72"
 						>
 						<div class="absolute top-28 right-12 md:right-20">

@@ -35,8 +35,12 @@ interface BaseWorker {
 	fetchCommissionList: (baseUrl: string, marketType: number) => Promise<void>;
 }
 
+let worker: Worker | null = null;
+
 export const useBaseWorker = () => {
-	const worker = new Worker(new URL('./base-worker.ts', import.meta.url), { type: 'module' });
+	if (!worker) {
+		worker = new Worker(new URL('./base-worker.ts', import.meta.url), { type: 'module' });
+	}
 
 	const baseWorker = Comlink.wrap<BaseWorker>(worker);
 

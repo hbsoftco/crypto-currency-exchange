@@ -13,7 +13,7 @@
 			</div>
 
 			<div
-				class="absolute -left-10 top-5 hidden group-hover:block py-6 opacity-100 transition-opacity duration-200 z-10"
+				class="absolute -left-10 top-[1.55rem] py-[0.9rem] hidden group-hover:block opacity-100 transition-opacity duration-200 z-10"
 			>
 				<div class="w-56 bg-hover-light dark:bg-hover-dark shadow-lg rounded p-4">
 					<ul class="flex flex-col space-y-2">

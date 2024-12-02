@@ -20,29 +20,54 @@ let currencyBriefItems: CurrencyBrief[] = [];
 let marketBriefItems: MarketBrief[] = [];
 
 // Currencies
+const fetchCurrencyBriefQueue: Array<() => void> = [];
+let isFetchingCurrencyBrief = false;
+
+const processCurrencyBriefQueue = () => {
+	if (fetchCurrencyBriefQueue.length === 0 || isFetchingCurrencyBrief) {
+		return;
+	}
+
+	isFetchingCurrencyBrief = true;
+
+	const currentRequest = fetchCurrencyBriefQueue.shift();
+
+	if (currentRequest) {
+		currentRequest();
+	}
+};
+
 const fetchCurrencyBriefItems = async (baseUrl: string): Promise<CurrencyBrief[] | []> => {
-	try {
-		const cachedItems = await loadFromCache<CurrencyBrief[]>(CACHE_KEY_CURRENCY_BRIEF_ITEMS);
+	return new Promise<CurrencyBrief[]>((resolve, reject) => {
+		fetchCurrencyBriefQueue.push(async () => {
+			try {
+				const cachedItems = await loadFromCache<CurrencyBrief[]>(CACHE_KEY_CURRENCY_BRIEF_ITEMS);
 
-		if (cachedItems && cachedItems.length > 0) {
-			currencyBriefItems = cachedItems;
+				if (cachedItems && cachedItems.length > 0) {
+					currencyBriefItems = cachedItems;
+					resolve(currencyBriefItems);
+				}
+				else {
+					const response = await fetch(`${baseUrl}v1/currency/routine/brief_list?languageId=${1065}`);
+					const { result } = await response.json();
 
-			return currencyBriefItems;
-		}
-		else {
-			const response = await fetch(`${baseUrl}v1/currency/routine/brief_list?languageId=${1065}`);
-			const { result } = await response.json();
+					await saveToCache(CACHE_KEY_CURRENCY_BRIEF_ITEMS, result);
+					currencyBriefItems = result;
+					resolve(currencyBriefItems);
+				}
+			}
+			catch (error) {
+				console.error('Fetch error:', error);
+				reject(error);
+			}
+			finally {
+				isFetchingCurrencyBrief = false;
+				processCurrencyBriefQueue();
+			}
+		});
 
-			await saveToCache(CACHE_KEY_CURRENCY_BRIEF_ITEMS, result);
-
-			currencyBriefItems = result;
-			return currencyBriefItems;
-		}
-	}
-	catch (error) {
-		console.error('Fetch error:', error);
-		throw error;
-	}
+		processCurrencyBriefQueue();
+	});
 };
 
 const findCurrencyById = async (id: number, baseUrl: string): Promise<CurrencyBrief | null> => {
@@ -342,37 +367,64 @@ const fetchQuoteItems = async (marketTypeId: number, baseUrl: string) => {
 };
 
 // Tags
-const fetchTagItems = async (languageId: number, baseUrl: string) => {
-	try {
-		let tagItems: Tag[] = [];
-		const cachedItems = await loadFromCache<Tag[]>(CACHE_KEY_TAG_ITEMS);
+const fetchTagItemsQueue: Array<() => void> = [];
+let isFetchingTagItems = false;
 
-		if (cachedItems && cachedItems.length > 0) {
-			tagItems = [
-				{ id: 0, tag: 'همه' },
-				...cachedItems,
-			];
-
-			return tagItems;
-		}
-		else {
-			const response = await fetch(`${baseUrl}v1/currency/routine/tag_list?languageId=${languageId}`);
-			const { result } = await response.json();
-
-			await saveToCache(CACHE_KEY_TAG_ITEMS, result);
-
-			tagItems = [
-				{ id: 0, tag: 'همه' },
-				...result,
-			];
-
-			return tagItems;
-		}
+const processTagItemsQueue = () => {
+	if (fetchTagItemsQueue.length === 0 || isFetchingTagItems) {
+		return;
 	}
-	catch (error) {
-		console.error('Fetch error:', error);
-		throw error;
+
+	isFetchingTagItems = true;
+
+	const currentRequest = fetchTagItemsQueue.shift();
+
+	if (currentRequest) {
+		currentRequest();
 	}
+};
+
+const fetchTagItems = async (languageId: number, baseUrl: string): Promise<Tag[]> => {
+	return new Promise<Tag[]>((resolve, reject) => {
+		fetchTagItemsQueue.push(async () => {
+			try {
+				let tagItems: Tag[] = [];
+				const cachedItems = await loadFromCache<Tag[]>(CACHE_KEY_TAG_ITEMS);
+
+				if (cachedItems && cachedItems.length > 0) {
+					tagItems = [
+						{ id: 0, tag: 'همه' },
+						...cachedItems,
+					];
+
+					resolve(tagItems);
+				}
+				else {
+					const response = await fetch(`${baseUrl}v1/currency/routine/tag_list?languageId=${languageId}`);
+					const { result } = await response.json();
+
+					await saveToCache(CACHE_KEY_TAG_ITEMS, result);
+
+					tagItems = [
+						{ id: 0, tag: 'همه' },
+						...result,
+					];
+
+					resolve(tagItems);
+				}
+			}
+			catch (error) {
+				console.error('Fetch error:', error);
+				reject(error);
+			}
+			finally {
+				isFetchingTagItems = false;
+				processTagItemsQueue();
+			}
+		});
+
+		processTagItemsQueue();
+	});
 };
 
 // Markets

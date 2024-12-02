@@ -7,8 +7,7 @@ type UserResponse = {
 	result: {
 		totalCount: number;
 		rows: Commission[] |
-		UserLevel[] |
-		Notice [];
+		UserLevel[];
 	};
 };
 
@@ -43,25 +42,6 @@ type Commission = {
 	withdraw: string;
 };
 
-// Logs
-type NoticeListParams = {
-	from?: string;
-	to?: string;
-	typeId?: string;
-	pageNumber?: string;
-	pageSize?: string;
-};
-
-type Notice = {
-	deleted: boolean;
-	noticeBody: string;
-	noticeHeader: string;
-	readTime: string;
-	regTime: string;
-	user: string;
-	uid: number;
-};
-
 // Profile
 type SetNicknameDto = {
 	nickName: string;
@@ -76,8 +56,6 @@ export type {
 	UserResponse,
 	Commission,
 	UserLevel,
-	NoticeListParams,
-	Notice,
 	// Profile
 	SetNicknameDto,
 	UploadAvatarDto,

@@ -3,7 +3,7 @@
 		<Header class="hidden md:block" />
 		<!-- <LayoutsDefaultMobileHeader class="block md:hidden" /> -->
 
-		<div class="flex justify-start">
+		<div class="flex justify-start pt-16 md:pt-14">
 			<aside class="hidden md:block w-[16.25rem] p-2 border-l border-primary-gray-light dark:border-primary-gray-dark">
 				<ProfileMenu />
 			</aside>

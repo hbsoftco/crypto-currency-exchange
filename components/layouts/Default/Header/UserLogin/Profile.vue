@@ -12,7 +12,7 @@
 				/>
 			</div>
 			<div
-				class="absolute -right-40 top-5 hidden group-hover:block py-6 opacity-100 z-10"
+				class="absolute -right-40 top-[1.55rem] py-[0.9rem] hidden group-hover:block opacity-100 z-10"
 			>
 				<div class="w-60 bg-hover-light dark:bg-hover-dark shadow-lg rounded p-4">
 					<div>

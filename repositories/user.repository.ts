@@ -58,7 +58,6 @@ import type {
 import type { GetCountryListRes, IdentificationRes } from '~/types/response/common.types';
 import type { GetCommissionRes, GetInvitationListRes } from '~/types/response/referral.types';
 import type {
-	NoticeListParams,
 	SetNicknameDto,
 	TraderCommissionListParams,
 	UploadAvatarDto,
@@ -68,11 +67,6 @@ import type { CommonResponse, KeyValueResponse } from '~/types/definitions/commo
 type UserRepository = {
 	getTraderCommissionList: (params: TraderCommissionListParams) => Promise<UserResponse>;
 	getLevelsList: () => Promise<UserResponse>;
-	// Logs
-	getNoticeList: (params: NoticeListParams) => Promise<UserResponse>;
-	getNoticeTypeList: () => Promise<KeyValueResponse>;
-	noticeReadAll: () => Promise<CommonResponse>;
-	noticeDeleteAll: () => Promise<CommonResponse>;
 	// Profile
 	setNickname: (dto: SetNicknameDto) => Promise<CommonResponse>;
 	getCurrentUser: () => Promise<KeyValueResponse>;
@@ -146,46 +140,6 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 		const response = await fetch<UserResponse>(`${url}`, {
 			noAuth: false,
 			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	// Logs
-	async getNoticeList(params: NoticeListParams): Promise<UserResponse> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-
-		const url = `/v1/user/logs/notice_list`;
-		const result = await fetch<UserResponse>(`${url}?${query.toString()}`, {
-			noAuth: false,
-			method: 'GET',
-		} as CustomNitroFetchOptions);
-		return result;
-	},
-	async getNoticeTypeList(): Promise<KeyValueResponse> {
-		const url = `/v1/user/logs/notice_type_list`;
-		const result = await fetch<KeyValueResponse>(url, {
-			noAuth: false,
-			method: 'GET',
-		} as CustomNitroFetchOptions);
-		return result;
-	},
-	async noticeReadAll(): Promise<CommonResponse> {
-		const url = `/v1/user/logs/notice_read_all`;
-		const response = await fetch<CommonResponse>(`${url}`, {
-			noAuth: false,
-			method: 'POST',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async noticeDeleteAll(): Promise<CommonResponse> {
-		const url = `/v1/user/logs/notice_del_all`;
-		const response = await fetch<CommonResponse>(`${url}`, {
-			noAuth: false,
-			method: 'DELETE',
 		} as CustomNitroFetchOptions);
 
 		return response;

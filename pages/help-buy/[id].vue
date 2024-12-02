@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
 	<div class="mt-20 md:mt-0">
 		<section class="relative">
@@ -72,7 +73,7 @@
 								</h4>
 								<p
 									class="my-2"
-									v-html="currentBuyItem.info.content"
+									v-html="sanitizedHtml(currentBuyItem.info.content)"
 								/>
 							</div>
 						</div>

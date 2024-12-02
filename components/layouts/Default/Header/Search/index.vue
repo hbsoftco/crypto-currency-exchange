@@ -26,7 +26,7 @@
 
 		<div
 			v-if="showAdditionalBox"
-			class="absolute left-0 md:-left-20 top-5 py-7 opacity-100 transition-opacity duration-200 z-20"
+			class="absolute left-0 md:-left-20 top-5 py-6 opacity-100 transition-opacity duration-200 z-20"
 		>
 			<div class="w-auto md:w-96 bg-hover-light dark:bg-hover-dark shadow-lg rounded p-2">
 				<div

@@ -7,7 +7,7 @@
 				class="ml-2 cursor-pointer text-base font-bold duration-200 transition-all"
 			>{{ $t("wallet") }}</span>
 			<div
-				class="absolute -left-5 top-5  hidden group-hover:block py-6 opacity-100 transition-opacity duration-200 z-10"
+				class="absolute -left-5 top-[1.55rem] py-[0.9rem] hidden group-hover:block opacity-100 transition-opacity duration-200 z-10"
 			>
 				<div
 					class="w-80 left-20 bg-hover-light dark:bg-hover-dark shadow-lg rounded p-4"

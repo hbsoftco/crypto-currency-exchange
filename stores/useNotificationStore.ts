@@ -1,10 +1,10 @@
-import { userRepository } from '~/repositories/user.repository';
+import { securityRepository } from '~/repositories/security.repository';
 import type { KeyValue } from '~/types/base.types';
-import type { Notice, NoticeListParams } from '~/types/definitions/user.types';
+import type { Notice, NoticeListParams } from '~/types/definitions/security.types';
 
 export const useNotificationStore = defineStore('notification', () => {
 	const { $api } = useNuxtApp();
-	const userRepo = userRepository($api);
+	const securityRepo = securityRepository($api);
 
 	const toast = useToast();
 
@@ -22,7 +22,7 @@ export const useNotificationStore = defineStore('notification', () => {
 		try {
 			noticeListLoading.value = true;
 
-			const { result } = await userRepo.getNoticeList(noticeListParams.value);
+			const { result } = await securityRepo.getNoticeList(noticeListParams.value);
 			noticeList.value = result.rows as Notice[];
 			noticeListTotalCount.value = result.totalCount;
 
@@ -43,7 +43,7 @@ export const useNotificationStore = defineStore('notification', () => {
 		try {
 			noticeTypeListLoading.value = true;
 
-			const { result } = await userRepo.getNoticeTypeList();
+			const { result } = await securityRepo.getNoticeTypeList();
 			noticeTypeList.value = result;
 
 			noticeTypeListLoading.value = false;
@@ -61,7 +61,7 @@ export const useNotificationStore = defineStore('notification', () => {
 		try {
 			noticeReadAllLoading.value = true;
 
-			await userRepo.noticeReadAll();
+			await securityRepo.noticeReadAll();
 
 			toast.add({
 				title: useT('readAllNotifications'),

@@ -2,7 +2,7 @@
 	<div>
 		<Header class="hidden md:block" />
 		<!-- <LayoutsDefaultMobileHeader class="block md:hidden" /> -->
-		<div class="min-h-[calc(100vh-26.4rem)]">
+		<div class="min-h-[calc(100vh-26.4rem)] pt-16 md:pt-14">
 			<slot />
 		</div>
 		<LayoutsDefaultFooter />
