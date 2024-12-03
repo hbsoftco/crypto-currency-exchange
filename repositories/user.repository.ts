@@ -11,7 +11,6 @@ import type { GetActivitiesListRes, GetAddressListRes, GetApiListRes, GetApiRes,
 	GetStateTradeRes,
 	ReferralBriefResponse,
 	StoreApiRes,
-	TwoStepLoginResponse,
 	UserProfileResponse } from '../types/response/user.types';
 
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
@@ -73,7 +72,6 @@ type UserRepository = {
 	uploadAvatar: (dto: UploadAvatarDto) => Promise<CommonResponse>;
 	// OLD
 
-	generate2Fa: () => Promise<TwoStepLoginResponse>;
 	getProfile: () => Promise<UserProfileResponse>;
 	getCommissionReceivedList: (params: GetCommissionReceivedListParams) => Promise<GetCommissionReceivedList>;
 	getReferralBrief: (assessmentCurrencyId: string) => Promise<ReferralBriefResponse>;
@@ -177,16 +175,6 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 		return response;
 	},
 	// Old
-	async generate2Fa(): Promise<TwoStepLoginResponse> {
-		const url = '/v1/user/2fa/generate';
-		const response = await fetch<TwoStepLoginResponse>(`${url}`, {
-			noAuth: false,
-			apiName: url,
-			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
 	async getProfile(): Promise<UserProfileResponse> {
 		return fetch<UserProfileResponse>('/v1/currency/routine/tag_list');
 	},

@@ -29,7 +29,7 @@
 				</p>
 			</div>
 			<UButton
-				to="/account/security/two-step-login"
+				to="/account/security/2fa"
 				size="sm"
 				variant="ghost"
 				class="font-bold text-sm text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark"

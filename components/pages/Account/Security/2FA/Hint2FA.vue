@@ -29,14 +29,6 @@
 				{{ $t('androidUsersText') }}
 			</p>
 		</div>
-		<div class="my-6">
-			<p class="text-sm font-bold text-justify">
-				{{ $t('androidUsers') }}
-			</p>
-			<p class="mt-1 text-sm font-normal text-justify">
-				{{ $t('androidUsersText') }}
-			</p>
-		</div>
 		<div class="flex justify-between mt-10 mb-6">
 			<div class="flex">
 				<div class="w-1 h-6 ml-1 bg-primary-yellow-light dark:bg-primary-yellow-dark" />
@@ -62,8 +54,33 @@
 	</div>
 </template>
 
-<script>
-export default {
+<script setup lang="ts">
+import { systemRepository } from '~/repositories/system.repository';
+import type { MiniRoutine } from '~/types/definitions/system.types';
+import { TagType } from '~/utils/enums/help.enum';
 
+const { $api } = useNuxtApp();
+
+const systemRepo = systemRepository($api);
+
+const miniRoutine = ref<MiniRoutine>();
+const miniRoutineLoading = ref<boolean>(false);
+const getSystemMiniRoutine = async () => {
+	if (miniRoutineLoading.value) return;
+	miniRoutineLoading.value = true;
+	try {
+		const { result } = await systemRepo.getSystemMiniRoutine({ tagType: TagType.V2FA });
+
+		miniRoutine.value = result as MiniRoutine;
+	}
+	catch (error) {
+		console.log(error);
+	}
+	finally {
+		miniRoutineLoading.value = false;
+	}
 };
+onMounted(async () => {
+	await getSystemMiniRoutine();
+});
 </script>

@@ -10,7 +10,7 @@ type SystemListResponse = {
 
 type SystemResponse = {
 	statusCode: number;
-	result: System | LinkListItem;
+	result: System | LinkListItem | MiniRoutine;
 };
 
 type SubFaq = {
@@ -106,6 +106,16 @@ type FooterLinkSection = {
 	links: Link[];
 };
 
+type MiniRoutineParams = {
+	tagType: string;
+};
+
+type MiniRoutine = {
+	tips: KeyValue[];
+	faqs: KeyValue[];
+	helps: KeyValue[];
+};
+
 export type {
 	SystemListResponse,
 	SystemResponse,
@@ -116,4 +126,6 @@ export type {
 	SliderItem,
 	Pin,
 	FooterLinkSection,
+	MiniRoutineParams,
+	MiniRoutine,
 };

@@ -50,6 +50,7 @@
 			</div>
 
 			<label
+				:dir="labelDir && 'rtl'"
 				:for="id"
 				:class="[colorType ? (colorType === 'transparent' ? 'bg-primary-gray-light dark:bg-primary-gray-dark' : 'bg-background-light dark:bg-background-dark') : 'bg-background-light dark:bg-background-dark']"
 				class="absolute text-sm font-medium text-text-dark dark:text-text-light duration-300 transform -translate-y-5 scale-78 top-3 z-10 origin-[0] cursor-text px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-78 peer-focus:-translate-y-5 right-2 rounded-lg"
@@ -92,6 +93,7 @@ interface PropsDefinition {
 	countDownState?: boolean;
 	countdown?: number;
 	clear?: boolean;
+	labelDir?: string;
 }
 
 const props = withDefaults(defineProps<PropsDefinition>(), {
@@ -144,8 +146,8 @@ const handleOnComplete = () => {
 	emit('completed');
 };
 
-const handleOnChange = (value: string) => {
-	console.log('OTP changed: ', value);
+const handleOnChange = () => {
+	// console.log('OTP changed: ', value);
 };
 
 const startCountdown = () => {

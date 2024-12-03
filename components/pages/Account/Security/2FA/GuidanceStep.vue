@@ -12,14 +12,17 @@
 			</span>
 			<div v-if="done">
 				<img
-					src="/images/Confirmation.png"
-					alt="Confirmation"
+					src="/images/svg/confirm.svg"
+					alt="confirm"
 					class="w-4 h-4 mr-3"
 				>
 			</div>
 		</div>
 		<div class="my-4 flex justify-center items-center text-center">
-			<span class="text-base font-bold text-subtle-text-light dark:text-subtle-text-dark">
+			<span
+				class="text-base font-bold text-subtle-text-light dark:text-subtle-text-dark"
+				:class="[isActive ? 'text-black dark:text-white' : '']"
+			>
 				{{ description }}
 			</span>
 		</div>
@@ -27,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import type { HelpStepItem } from '~/types/2fa.types';
+import type { GuidanceStep } from '~/types/definitions/security.types';
 
-defineProps<HelpStepItem>();
+defineProps<GuidanceStep>();
 </script>

@@ -1,31 +1,23 @@
-import { userRepository } from '~/repositories/user.repository';
-import type { HelpStepItem } from '~/types/2fa.types';
-import type { TwoStepLogin } from '~/types/response/user.types';
+import { securityRepository } from '~/repositories/security.repository';
+import type { Generate2fa, GuidanceStep } from '~/types/definitions/security.types';
 
 export const use2FaStore = defineStore('2FA', () => {
 	const { $api } = useNuxtApp();
-	const userRepo = userRepository($api);
+	const securityRepo = securityRepository($api);
 
 	const toast = useToast();
 	const router = useRouter();
 
-	const steps = ref<HelpStepItem[]>([
-		{ title: useT('stepOne'), description: useT('stepOneText'), isActive: false, done: false },
-		{ title: useT('stepTwo'), description: useT('stepTwoText'), isActive: false, done: false },
-		{ title: useT('stepThree'), description: useT('stepThreeText'), isActive: false, done: false },
-		{ title: useT('stepFour'), description: useT('stepFourText'), isActive: false, done: false },
-	]);
-
-	const generate2FaData = ref<TwoStepLogin>();
-	const generate2FaLoading = ref(false);
+	const generate2Fa = ref<Generate2fa | null>(null);
+	const generate2FaLoading = ref<boolean>(false);
 	const getGenerate2FaData = async () => {
 		if (generate2FaLoading.value) return;
 
 		generate2FaLoading.value = true;
 
 		try {
-			const { result } = await userRepo.generate2Fa();
-			generate2FaData.value = result;
+			const { result } = await securityRepo.generate2fa();
+			generate2Fa.value = result as Generate2fa;
 		}
 		catch (error: any) {
 			router.push('/account/security');
@@ -42,10 +34,17 @@ export const use2FaStore = defineStore('2FA', () => {
 		}
 	};
 
-	const updateStepStatus = (currentStep: number) => {
-		if (currentStep < 1 || currentStep > steps.value.length) return;
+	const guidanceSteps = ref<GuidanceStep[]>([
+		{ title: useT('stepOne'), description: useT('stepOneText'), isActive: true, done: false },
+		{ title: useT('stepTwo'), description: useT('stepTwoText'), isActive: false, done: false },
+		{ title: useT('stepThree'), description: useT('stepThreeText'), isActive: false, done: false },
+		{ title: useT('stepFour'), description: useT('stepFourText'), isActive: false, done: false },
+	]);
 
-		steps.value.forEach((step, index) => {
+	const updateStepStatus = (currentStep: number) => {
+		if (currentStep < 1 || currentStep > guidanceSteps.value.length) return;
+
+		guidanceSteps.value.forEach((step, index) => {
 			if (index + 1 === currentStep) {
 				step.isActive = true;
 				step.done = false;
@@ -61,11 +60,17 @@ export const use2FaStore = defineStore('2FA', () => {
 		});
 	};
 
+	const resetData = async () => {
+		await updateStepStatus(1);
+		generate2Fa.value = null;
+	};
+
 	return {
 		getGenerate2FaData,
 		updateStepStatus,
-		generate2FaData,
+		generate2Fa,
 		generate2FaLoading,
-		steps,
+		guidanceSteps,
+		resetData,
 	};
 });

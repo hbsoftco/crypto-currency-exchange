@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<UContainer class="my-20">
+		<UContainer class="my-8">
 			<div class="my-4">
 				<UiTitleWithBack :title="$t('TwoStepLogin')" />
 				<div class="py-6">
@@ -9,10 +9,10 @@
 					</p>
 				</div>
 			</div>
-			<section class="my-14">
+			<section class="mt-4">
 				<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-					<HelpStep
-						v-for="(item, index) in twoFaStore.steps"
+					<GuidanceStep
+						v-for="(item, index) in twoFaStore.guidanceSteps"
 						:key="index"
 						:title="item.title"
 						:description="item.description"
@@ -22,15 +22,15 @@
 				</div>
 			</section>
 			<section>
-				<FormStepTwoLogin />
+				<Forms2FA />
 			</section>
 		</UContainer>
 	</div>
 </template>
 
 <script setup lang="ts">
-import HelpStep from '~/components/pages/Account/Security/TwoStepLogin/HelpStep.vue';
-import FormStepTwoLogin from '~/components/pages/Account/Security/TwoStepLogin/FormStepTwoLogin.vue';
+import GuidanceStep from '~/components/pages/Account/Security/2FA/GuidanceStep.vue';
+import Forms2FA from '~/components/pages/Account/Security/2FA/Forms2FA.vue';
 
 definePageMeta({
 	layout: 'account-single',
@@ -40,7 +40,7 @@ definePageMeta({
 const twoFaStore = use2FaStore();
 
 onMounted(async () => {
+	await twoFaStore.resetData();
 	await twoFaStore.getGenerate2FaData();
-	// twoFaStore.updateStepStatus(4);
 });
 </script>

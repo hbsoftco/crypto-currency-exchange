@@ -30,8 +30,8 @@
 		<div class="mt-12 text-center">
 			<UButton
 				size="lg"
-				class="w-full flex justify-center text-base font-medium px-6 py-2"
-				to="/"
+				block
+				@click="nextStep()"
 			>
 				{{ $t("nextStep") }}
 			</UButton>
@@ -41,4 +41,10 @@
 
 <script setup lang="ts">
 import IconVideo from '~/assets/svg-icons/profile/Subtract.svg';
+
+const twoFaStore = use2FaStore();
+
+const nextStep = () => {
+	twoFaStore.updateStepStatus(2);
+};
 </script>
