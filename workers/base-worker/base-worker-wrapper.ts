@@ -22,7 +22,8 @@ interface BaseWorker {
 	searchCurrencies: (search: string, count: number, baseUrl: string, ignore?: string) => Promise<CurrencyBrief[] | []>;
 	getReadyCurrencyWithIndex: (baseUrl: string, currencies: CurrencyBrief[], currency: string) => Promise<{ updatedCurrencies: CurrencyBrief[]; index: number } | null>;
 	// Quotes
-	fetchQuoteItems: (marketTypeId: number, baseUrl: string) => Promise<Quote[]>;
+	fetchSpotQuoteItems: (baseUrl: string) => Promise<Quote[]>;
+	fetchFuturesQuoteItems: (baseUrl: string) => Promise<Quote[]>;
 	// Tags
 	fetchTagItems: (languageId: number, baseUrl: string) => Promise<Tag[]>;
 	// Markets

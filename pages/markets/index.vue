@@ -220,9 +220,9 @@ const getMarketListL47 = async () => {
 const initFilterLoading = ref<boolean>(true);
 const initFilterItems = async () => {
 	initFilterLoading.value = true;
-	marketsPageStore.quoteItems = await worker.fetchQuoteItems(MarketType.SPOT, useEnv('apiBaseUrl'));
+	marketsPageStore.quoteItems = await worker.fetchSpotQuoteItems(useEnv('apiBaseUrl'));
 	marketsPageStore.tagItems = await worker.fetchTagItems(Language.PERSIAN, useEnv('apiBaseUrl'));
-	marketsPageStore.futuresQuoteItems = await worker.fetchQuoteItems(MarketType.FUTURES, useEnv('apiBaseUrl'));
+	marketsPageStore.futuresQuoteItems = await worker.fetchFuturesQuoteItems(useEnv('apiBaseUrl'));
 
 	marketsPageStore.initQuoteOptions();
 	marketsPageStore.initFuturesQuoteOptions();

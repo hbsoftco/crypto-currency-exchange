@@ -190,10 +190,8 @@ const getCurrencyInfo = async () => {
 };
 
 onMounted(async () => {
-	await Promise.all([
-		getCurrencyInfo(),
-		getMarketListL47(),
-	]);
+	await getCurrencyInfo();
+	await getMarketListL47();
 
 	await publicSocketStore.addMarketIds(socketMarketIds.value);
 });

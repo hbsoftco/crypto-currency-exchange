@@ -241,7 +241,7 @@ const quoteItemLoading = ref<boolean>(false);
 
 const initQuote = async () => {
 	quoteItemLoading.value = true;
-	quoteItem.value = await worker.fetchQuoteItems(MarketType.SPOT, useEnv('apiBaseUrl'));
+	quoteItem.value = await worker.fetchSpotQuoteItems(useEnv('apiBaseUrl'));
 
 	if (quoteItem.value.length > 0) {
 		selectedQuote.value = quoteItem.value[0];

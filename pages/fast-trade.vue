@@ -842,10 +842,7 @@ onMounted(async () => {
 
 	await authStore.fetchCurrentUser();
 	levelIndicator.value = authStore.getUserLevelIndicator || '0';
-	quoteItems.value = await worker.fetchQuoteItems(
-		MarketType.SPOT,
-		useEnv('apiBaseUrl'),
-	);
+	quoteItems.value = await worker.fetchSpotQuoteItems(useEnv('apiBaseUrl'));
 
 	firstSelectedCurrency.value = (await worker.searchCurrencies(firstSelectedSymbol.value, 1, useEnv('apiBaseUrl')))[0] ?? null;
 	secondSelectedCurrency.value = (await worker.searchCurrencies(secondSelectedSymbol.value, 1, useEnv('apiBaseUrl')))[0] ?? null;

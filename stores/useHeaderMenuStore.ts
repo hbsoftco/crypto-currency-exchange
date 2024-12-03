@@ -108,7 +108,12 @@ export const useHeaderMenuStore = defineStore('headerMenu', () => {
 	const initFilterItems = async (marketTypeId: number) => {
 		initFilterLoading.value = true;
 		if (!quoteItems.value.length) {
-			quoteItems.value = await worker.fetchQuoteItems(marketTypeId, useEnv('apiBaseUrl'));
+			if (marketTypeId === MarketType.SPOT) {
+				quoteItems.value = await worker.fetchSpotQuoteItems(useEnv('apiBaseUrl'));
+			}
+			else {
+				quoteItems.value = await worker.fetchFuturesQuoteItems(useEnv('apiBaseUrl'));
+			}
 		}
 		if (!tagItems.value.length) {
 			tagItems.value = await worker.fetchTagItems(Language.PERSIAN, useEnv('apiBaseUrl'));

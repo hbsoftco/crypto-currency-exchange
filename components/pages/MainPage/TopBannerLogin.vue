@@ -22,14 +22,12 @@
 				:key="fee.quote"
 				class="mb-4"
 			>
-				<span class="ml-1">{{ `${$t("marketFee")} ${$t(fee.quote+'_m')}` }}،</span>
+				<span class="ml-1">{{ `${$t("marketFee")} ${$t(fee.quote+'_m')} ${$t('spot')}` }}،</span>
 				<span>{{ $t('maker') }}: {{ `${fee.commission.maker}%` }} {{ $t('taker') }}: {{ `${fee.commission.taker}%` }}</span>
 			</div>
-			<div
-				class=""
-			>
+			<div v-if="futuresFees.length">
 				<span class="ml-1">{{ `${$t("dollarFuturesMarketFee")}` }}،</span>
-				<span>{{ $t('maker') }}: {{ '10' }}% {{ $t('taker') }}: {{ '20' }}%</span>
+				<span>{{ $t('maker') }}: {{ futuresFees[1].commission.maker }}% {{ $t('taker') }}: {{ futuresFees[1].commission.taker }}%</span>
 			</div>
 		</div>
 		<ULink
@@ -157,12 +155,14 @@ const worker = useBaseWorker();
 const authStore = useAuthStore();
 
 const quoteItems = ref<Quote[]>();
+const futuresQuoteItems = ref<Quote[]>();
 
 interface Fee {
 	quote: string;
 	commission: Commission;
 }
 const fees = ref<Fee[]>([]);
+const futuresFees = ref<Fee[]>([]);
 
 const commissionList = ref<Commission[]>([]);
 const commissionListLoading = ref<boolean>(false);
@@ -179,7 +179,7 @@ const getCommissionList = async () => {
 		}
 		else {
 			const { result } = await userRepo.getTraderCommissionList({
-				marketType: String(MarketType.SPOT),
+				marketType: '',
 			});
 
 			await saveToCache(CACHE_KEY_COMMISSION_LIST, result.rows);
@@ -194,19 +194,18 @@ const getCommissionList = async () => {
 	}
 };
 
-const findCommission = (currencyQuoteId: number) => {
+const findCommission = (currencyQuoteId: number, type: number) => {
 	return commissionList.value.find((commission) =>
 		commission.levelIndicator === Number(authStore.getUserLevelIndicator || '0')
 		&& commission.currencyQuoteId === currencyQuoteId
-		&& commission.marketTypeId === MarketType.SPOT,
+		&& commission.marketTypeId === type,
 	);
 };
 
 onMounted(async () => {
-	quoteItems.value = await worker.fetchQuoteItems(
-		MarketType.SPOT,
-		useEnv('apiBaseUrl'),
-	);
+	quoteItems.value = await worker.fetchSpotQuoteItems(useEnv('apiBaseUrl'));
+
+	futuresQuoteItems.value = await worker.fetchFuturesQuoteItems(useEnv('apiBaseUrl'));
 
 	await Promise.all([
 		authStore.fetchCurrentUser(),
@@ -214,7 +213,7 @@ onMounted(async () => {
 	]);
 
 	quoteItems.value.forEach((level) => {
-		const commission = findCommission(level.id);
+		const commission = findCommission(level.id, MarketType.SPOT);
 		if (commission) {
 			const fee: Fee = {
 				quote: level.cSymbol,
@@ -222,6 +221,18 @@ onMounted(async () => {
 			};
 
 			fees.value.push(fee);
+		}
+	});
+
+	futuresQuoteItems.value.forEach((level) => {
+		const commission = findCommission(level.id, MarketType.FUTURES);
+		if (commission) {
+			const fee: Fee = {
+				quote: level.cSymbol,
+				commission,
+			};
+
+			futuresFees.value.push(fee);
 		}
 	});
 });

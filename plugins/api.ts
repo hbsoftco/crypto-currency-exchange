@@ -59,7 +59,7 @@ export default defineNuxtPlugin(() => {
 		},
 		async onResponseError({ response }) {
 			if (response && response?._data && response?._data?.statusCode === StatusCodes.OTC_EXPIRED.fa) {
-				//
+				await authStore.clearAuthCredentials();
 			}
 		},
 	});

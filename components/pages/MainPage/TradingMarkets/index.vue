@@ -138,7 +138,12 @@ const getMarketListL21 = async () => {
 const initFilterLoading = ref<boolean>(false);
 const initFilterItems = async (marketTypeId: number) => {
 	initFilterLoading.value = true;
-	marketsPageStore.quoteItems = await worker.fetchQuoteItems(marketTypeId, useEnv('apiBaseUrl'));
+	if (marketTypeId === MarketType.SPOT) {
+		marketsPageStore.quoteItems = await worker.fetchSpotQuoteItems(useEnv('apiBaseUrl'));
+	}
+	else {
+		marketsPageStore.quoteItems = await worker.fetchFuturesQuoteItems(useEnv('apiBaseUrl'));
+	}
 	marketsPageStore.tagItems = await worker.fetchTagItems(Language.PERSIAN, useEnv('apiBaseUrl'));
 
 	marketsPageStore.initQuoteOptions();

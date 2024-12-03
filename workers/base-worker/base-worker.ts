@@ -57,7 +57,6 @@ const fetchCurrencyBriefItems = async (baseUrl: string): Promise<CurrencyBrief[]
 				}
 			}
 			catch (error) {
-				console.error('Fetch error:', error);
 				reject(error);
 			}
 			finally {
@@ -175,7 +174,12 @@ const addCurrencyToMarkets = async (markets: MarketL21[], quoteId: number, baseU
 	if (!currencyBriefItems.length) {
 		await fetchCurrencyBriefItems(baseUrl);
 	}
-	const quoteItems = await fetchQuoteItems(marketTypeId, baseUrl);
+
+	let quoteItems = await fetchSpotQuoteItems(baseUrl);
+
+	if (marketTypeId === MarketType.FUTURES) {
+		quoteItems = await fetchFuturesQuoteItems(baseUrl);
+	}
 
 	const result = await Promise.all(markets.map(async (market) => {
 		const currency = await findCurrencyById(market.cid, baseUrl);
@@ -196,7 +200,12 @@ const addCurrencyToMarketsL16 = async (markets: MarketL16[], quoteId: number, ba
 	if (!currencyBriefItems.length) {
 		await fetchCurrencyBriefItems(baseUrl);
 	}
-	const quoteItems = await fetchQuoteItems(marketTypeId, baseUrl);
+
+	let quoteItems = await fetchSpotQuoteItems(baseUrl);
+
+	if (marketTypeId === MarketType.FUTURES) {
+		quoteItems = await fetchFuturesQuoteItems(baseUrl);
+	}
 
 	const result = await Promise.all(markets.map(async (market) => {
 		const currency = await findCurrencyById(market.cid, baseUrl);
@@ -221,7 +230,7 @@ const addCurrencyToMarketStates = async (baseUrl: string, markets: MarketState[]
 		await fetchMarketBriefItems(baseUrl);
 	}
 
-	const quoteItems = await fetchQuoteItems(111, baseUrl);
+	const quoteItems = await fetchSpotQuoteItems(baseUrl);
 
 	const result = await Promise.all(markets.map(async (market) => {
 		const currency = await findCurrencyById(market.cid, baseUrl);
@@ -264,7 +273,7 @@ const addCurrencyToMarketsL47 = async (baseUrl: string, markets: MarketL47[]) =>
 		await fetchMarketBriefItems(baseUrl);
 	}
 
-	const quoteItems = await fetchQuoteItems(111, baseUrl);
+	const quoteItems = await fetchSpotQuoteItems(baseUrl);
 
 	const result = await Promise.all(markets.map(async (category) => {
 		const marketsWithDetails = await Promise.all(category.info.map(async (market) => {
@@ -297,7 +306,7 @@ const addCurrencyToMarketsL51 = async (baseUrl: string, markets: MarketL51[]) =>
 		await fetchMarketBriefItems(baseUrl);
 	}
 
-	const quoteItems = await fetchQuoteItems(111, baseUrl);
+	const quoteItems = await fetchSpotQuoteItems(baseUrl);
 
 	const result = await Promise.all(markets.map(async (tag) => {
 		const marketsWithDetails = await Promise.all(tag.markets.map(async (market) => {
@@ -322,48 +331,130 @@ const addCurrencyToMarketsL51 = async (baseUrl: string, markets: MarketL51[]) =>
 };
 
 // Quotes
-const fetchQuoteItems = async (marketTypeId: number, baseUrl: string) => {
-	try {
-		let quoteItems: Quote[] = [];
+const fetchSpotQuoteQueue: Array<() => void> = [];
+let isFetchingSpotQuote = false;
 
-		let cachedItems = await loadFromCache<Quote[]>(CACHE_KEY_QUOTE_ITEMS);
-		if (marketTypeId === MarketType.FUTURES) {
-			cachedItems = await loadFromCache<Quote[]>(CACHE_KEY_FUTURES_QUOTE_ITEMS);
-		}
-
-		if (cachedItems && cachedItems.length > 0) {
-			quoteItems = cachedItems;
-		}
-		else {
-			const response = await fetch(`${baseUrl}v1/market/routine/quote_list?marketTypeId=${marketTypeId}`);
-			const { result } = await response.json();
-
-			if (marketTypeId === MarketType.FUTURES) {
-				await saveToCache(CACHE_KEY_FUTURES_QUOTE_ITEMS, result);
-			}
-			else {
-				await saveToCache(CACHE_KEY_QUOTE_ITEMS, result);
-			}
-
-			quoteItems = result;
-		}
-
-		const items = await Promise.all(quoteItems.map(async (quote) => {
-			const currency = await findCurrencyById(quote.id, baseUrl);
-			return {
-				...quote,
-				cName: currency?.cName,
-				cSymbol: currency?.cSymbol,
-				currency,
-			};
-		}));
-
-		return items;
+const processSpotQuoteQueue = () => {
+	if (fetchSpotQuoteQueue.length === 0 || isFetchingSpotQuote) {
+		return;
 	}
-	catch (error) {
-		console.error('Fetch error:', error);
-		throw error;
+
+	isFetchingSpotQuote = true;
+
+	const currentRequest = fetchSpotQuoteQueue.shift();
+
+	if (currentRequest) {
+		currentRequest();
 	}
+};
+
+const fetchSpotQuoteItems = async (baseUrl: string): Promise<Quote[]> => {
+	return new Promise<Quote[]>((resolve, reject) => {
+		fetchSpotQuoteQueue.push(async () => {
+			try {
+				const cachedItems = await loadFromCache<Quote[]>(CACHE_KEY_QUOTE_ITEMS);
+				let quoteItems: Quote[] = [];
+
+				if (cachedItems && cachedItems.length > 0) {
+					quoteItems = cachedItems;
+				}
+				else {
+					const response = await fetch(
+						`${baseUrl}v1/market/routine/quote_list?marketTypeId=${MarketType.SPOT}`,
+					);
+					const { result } = await response.json();
+					await saveToCache(CACHE_KEY_QUOTE_ITEMS, result);
+					quoteItems = result;
+				}
+
+				const items = await Promise.all(
+					quoteItems.map(async (quote) => {
+						const currency = await findCurrencyById(quote.id, baseUrl);
+						return {
+							...quote,
+							cName: currency?.cName || '',
+							cSymbol: currency?.cSymbol || '',
+							currency,
+						};
+					}),
+				);
+
+				resolve(items);
+			}
+			catch (error) {
+				reject(error);
+			}
+			finally {
+				isFetchingSpotQuote = false;
+				processSpotQuoteQueue();
+			}
+		});
+
+		processSpotQuoteQueue();
+	});
+};
+
+const fetchFuturesQuoteQueue: Array<() => void> = [];
+let isFetchingFuturesQuote = false;
+
+const processFuturesQuoteQueue = () => {
+	if (fetchFuturesQuoteQueue.length === 0 || isFetchingFuturesQuote) {
+		return;
+	}
+
+	isFetchingFuturesQuote = true;
+
+	const currentRequest = fetchFuturesQuoteQueue.shift();
+
+	if (currentRequest) {
+		currentRequest();
+	}
+};
+
+const fetchFuturesQuoteItems = async (baseUrl: string): Promise<Quote[]> => {
+	return new Promise<Quote[]>((resolve, reject) => {
+		fetchFuturesQuoteQueue.push(async () => {
+			try {
+				const cachedItems = await loadFromCache<Quote[]>(CACHE_KEY_FUTURES_QUOTE_ITEMS);
+				let quoteItems: Quote[] = [];
+
+				if (cachedItems && cachedItems.length > 0) {
+					quoteItems = cachedItems;
+				}
+				else {
+					const response = await fetch(
+						`${baseUrl}v1/market/routine/quote_list?marketTypeId=${MarketType.FUTURES}`,
+					);
+					const { result } = await response.json();
+					await saveToCache(CACHE_KEY_FUTURES_QUOTE_ITEMS, result);
+					quoteItems = result;
+				}
+
+				const items = await Promise.all(
+					quoteItems.map(async (quote) => {
+						const currency = await findCurrencyById(quote.id, baseUrl);
+						return {
+							...quote,
+							cName: currency?.cName || '',
+							cSymbol: currency?.cSymbol || '',
+							currency,
+						};
+					}),
+				);
+
+				resolve(items);
+			}
+			catch (error) {
+				reject(error);
+			}
+			finally {
+				isFetchingFuturesQuote = false;
+				processFuturesQuoteQueue();
+			}
+		});
+
+		processFuturesQuoteQueue();
+	});
 };
 
 // Tags
@@ -428,29 +519,54 @@ const fetchTagItems = async (languageId: number, baseUrl: string): Promise<Tag[]
 };
 
 // Markets
+const fetchMarketBriefQueue: Array<() => void> = [];
+let isFetchingMarketBrief = false;
+
+const processMarketBriefQueue = () => {
+	if (fetchMarketBriefQueue.length === 0 || isFetchingMarketBrief) {
+		return;
+	}
+
+	isFetchingMarketBrief = true;
+
+	const currentRequest = fetchMarketBriefQueue.shift();
+
+	if (currentRequest) {
+		currentRequest();
+	}
+};
+
 const fetchMarketBriefItems = async (baseUrl: string): Promise<MarketBrief[] | []> => {
-	try {
-		const cachedItems = await loadFromCache<MarketBrief[]>(CACHE_KEY_MARKET_BRIEF_ITEMS);
+	return new Promise<MarketBrief[]>((resolve, reject) => {
+		fetchMarketBriefQueue.push(async () => {
+			try {
+				const cachedItems = await loadFromCache<MarketBrief[]>(CACHE_KEY_MARKET_BRIEF_ITEMS);
 
-		if (cachedItems && cachedItems.length > 0) {
-			marketBriefItems = cachedItems;
+				if (cachedItems && cachedItems.length > 0) {
+					marketBriefItems = cachedItems;
+					resolve(marketBriefItems);
+				}
+				else {
+					const response = await fetch(`${baseUrl}v1/market/routine/brief_list`);
+					const { result } = await response.json();
 
-			return marketBriefItems;
-		}
-		else {
-			const response = await fetch(`${baseUrl}v1/market/routine/brief_list`);
-			const { result } = await response.json();
+					await saveToCache(CACHE_KEY_MARKET_BRIEF_ITEMS, result);
 
-			await saveToCache(CACHE_KEY_MARKET_BRIEF_ITEMS, result);
+					marketBriefItems = result;
+					resolve(marketBriefItems);
+				}
+			}
+			catch (error) {
+				reject(error);
+			}
+			finally {
+				isFetchingMarketBrief = false;
+				processCurrencyBriefQueue();
+			}
+		});
 
-			marketBriefItems = result;
-			return marketBriefItems;
-		}
-	}
-	catch (error) {
-		console.error('Fetch error:', error);
-		throw error;
-	}
+		processMarketBriefQueue();
+	});
 };
 
 const findMarketById = async (id: number, baseUrl: string): Promise<MarketBrief | null> => {
@@ -572,7 +688,8 @@ Comlink.expose({
 	searchCurrencies,
 	getReadyCurrencyWithIndex,
 	// Quotes
-	fetchQuoteItems,
+	fetchFuturesQuoteItems,
+	fetchSpotQuoteItems,
 	// Tags
 	fetchTagItems,
 	// Markets

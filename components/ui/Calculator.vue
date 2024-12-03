@@ -79,7 +79,6 @@ import type { TradeOption } from '~/types/definitions/spot.types';
 import type { Quote } from '~/types/definitions/quote.types';
 import type { MarketBrief } from '~/types/definitions/market.types';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
-import { MarketType } from '~/utils/enums/market.enum';
 
 const route = useRoute();
 const cSymbol = String(route.params.cSymbol);
@@ -443,10 +442,7 @@ watch(
 onMounted(async () => {
 	await nextTick();
 
-	quoteItems.value = await worker.fetchQuoteItems(
-		MarketType.SPOT,
-		useEnv('apiBaseUrl'),
-	);
+	quoteItems.value = await worker.fetchSpotQuoteItems(useEnv('apiBaseUrl'));
 
 	firstSelectedCurrency.value = (await worker.searchCurrencies(firstSelectedSymbol.value, 1, useEnv('apiBaseUrl')))[0] ?? null;
 	secondSelectedCurrency.value = (await worker.searchCurrencies(secondSelectedSymbol.value, 1, useEnv('apiBaseUrl')))[0] ?? null;
