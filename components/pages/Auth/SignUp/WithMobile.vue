@@ -134,10 +134,13 @@ const submit = async () => {
 
 		if (captchaStore.stateId === 11) {
 			await signupStore.signupByMobile();
-			router.push({
-				path: '/auth/otp',
-				query: { action: 'signup', type: 'mobile' },
-			});
+
+			if (signupStore.signupByMobileIsValid) {
+				router.push({
+					path: '/auth/otp',
+					query: { action: 'signup', type: 'mobile' },
+				});
+			}
 		}
 	}
 	catch (error) {
