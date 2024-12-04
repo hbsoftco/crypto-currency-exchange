@@ -8,7 +8,7 @@
 				class="grid grid-cols-1 md:grid-cols-12 gap-4 pt-4 border-t border-primary-gray-light dark:border-primary-gray-dark"
 			>
 				<div class="col-span-8">
-					<TwoStepLogin />
+					<Login2FA />
 
 					<AdvancedSecuritySettings />
 
@@ -49,7 +49,7 @@ import IconArrowRight from '~/assets/svg-icons/menu/arrow-left.svg';
 import SecurityLevel from '~/components/pages/Account/Security/SecurityLevel.vue';
 import DevicesAndEvents from '~/components/pages/Account/Security/DevicesAndEvents.vue';
 import AdvancedSecuritySettings from '~/components/pages/Account/Security/AdvancedSecuritySettings.vue';
-import TwoStepLogin from '~/components/pages/Account/Security/TwoStepLogin.vue';
+import Login2FA from '~/components/pages/Account/Security/2FA/index.vue';
 
 definePageMeta({
 	layout: 'account',

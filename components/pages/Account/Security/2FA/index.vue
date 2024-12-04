@@ -2,7 +2,7 @@
 	<div
 		class="mb-4 px-8 border border-primary-gray-light dark:border-primary-gray-dark rounded-md"
 	>
-		<!-- TwoStepLogin Section -->
+		<!-- Login2FA Section -->
 		<div
 			class="py-4 border-b border-primary-gray-light dark:border-primary-gray-dark"
 		>
@@ -16,11 +16,11 @@
 					{{ $t("TwoStepLogin") }}
 				</h3>
 				<UBadge
-					:color="twoStepLogin ? 'green' : 'red'"
+					:color="login2fa ? 'green' : 'red'"
 					variant="solid"
 					class="mr-1"
 				>
-					{{ twoStepLogin ? $t('on') :$t("off") }}
+					{{ login2fa ? $t('on') :$t("off") }}
 				</UBadge>
 			</div>
 			<div class="my-3">
@@ -28,16 +28,28 @@
 					{{ $t("TwoStepLoginText") }}
 				</p>
 			</div>
+
 			<UButton
-				to="/account/security/2fa"
+				v-if="login2fa"
+				size="sm"
+				variant="ghost"
+				color="red"
+				class="font-bold text-sm border border-red-400"
+			>
+				{{ $t("remove") }}
+			</UButton>
+
+			<UButton
+				v-else
 				size="sm"
 				variant="ghost"
 				class="font-bold text-sm text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark"
+				@click="checkEmail()"
 			>
 				{{ $t("adjust") }}
 			</UButton>
 		</div>
-		<!-- TwoStepLogin -->
+		<!-- Login2FA -->
 
 		<div
 			class="py-4 border-b border-primary-gray-light dark:border-primary-gray-dark"
@@ -141,18 +153,37 @@
 import { useNumber } from '~/composables/useNumber';
 import { getValueByKey } from '~/utils/find-value-by-key';
 
+const router = useRouter();
+const toast = useToast();
+
 const authStore = useAuthStore();
-const twoStepLoginValue = getValueByKey(authStore.getCurrentUser, '2FA_ENABLED');
 const mobileNumberValue = getValueByKey(authStore.getCurrentUser, 'MOBILE');
 
-const twoStepLogin = computed(() => {
-	if (twoStepLoginValue === undefined) {
+const login2fa = computed(() => {
+	const login2faValue = getValueByKey(authStore.getCurrentUser, '2FA_ENABLED');
+
+	if (login2faValue === undefined) {
 		return false;
 	}
-	return twoStepLoginValue === '1' ? true : false;
+	return login2faValue === '1' ? true : false;
 });
 
-// Mobile Number Computed Properties
+const checkEmail = () => {
+	const valid = isValidGmail(getValueByKey(authStore.getCurrentUser, 'EMAIL') || '');
+
+	if (valid.isValid) {
+		router.push('/account/security/2fa');
+	}
+	else {
+		toast.add({
+			title: useT('active2Fa'),
+			description: valid.message,
+			timeout: 5000,
+			color: 'red',
+		});
+	}
+};
+
 const mobileNumberText = computed(() => {
 	if (!mobileNumberValue) {
 		return useT('off');

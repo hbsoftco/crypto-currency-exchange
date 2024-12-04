@@ -13,6 +13,7 @@ type SecurityRepository = {
 	// 2fa
 	generate2fa: () => Promise<SecurityResponse>;
 	enable2fa: (dto: Enable2faDto) => Promise<CommonResponse>;
+	disable2fa: (dto: Enable2faDto) => Promise<CommonResponse>;
 	// Identification
 	identificationSend: (dto: IdentificationDto) => Promise<SecurityResponse>;
 	identificationSendNew: (dto: IdentificationDto) => Promise<SecurityResponse>;
@@ -72,6 +73,16 @@ export const securityRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): S
 		return response;
 	},
 	async enable2fa(dto: Enable2faDto): Promise<CommonResponse> {
+		const url = `/v1/security/2fa/enable`;
+		const response = await fetch<CommonResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async disable2fa(dto: Enable2faDto): Promise<CommonResponse> {
 		const url = `/v1/security/2fa/enable`;
 		const response = await fetch<CommonResponse>(`${url}`, {
 			noAuth: false,

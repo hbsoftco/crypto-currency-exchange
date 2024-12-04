@@ -43,8 +43,6 @@
 				:error-message="v$.verificationCode.$error? $t('fieldIsRequired') : ''"
 				@resend="resendCode"
 			/>
-			<!-- @completed="submit"
-				@cleared="setClearCode" -->
 		</div>
 		<div class="my-12">
 			<OtpFieldInput
@@ -61,7 +59,6 @@
 				color-type="transparent"
 				:error-message="v$.v2FACode.$error? $t('fieldIsRequired') : ''"
 				:count-down-state="false"
-				@resend="resendCode"
 			/>
 		</div>
 		<div class="mt-12 flex justify-center text-center gap-4">
@@ -120,7 +117,18 @@ const obfuscateEmail = (email: string) => {
 
 const clearCode = ref<boolean>(false);
 const resendCode = async () => {
-	await getIdentification();
+	try {
+		const { result } = await securityRepo.identificationResend({ sendType: String(SendType.Email) });
+
+		identificationId.value = result as Identification;
+		enable2faDto.value.verificationId = identificationId.value.verificationId;
+	}
+	catch (error) {
+		console.log(error);
+	}
+	finally {
+		identificationLoading.value = false;
+	}
 };
 
 const enable2faDto = ref<Enable2faDto>({
@@ -145,6 +153,12 @@ const v$ = useVuelidate(enable2faDtoRules, enable2faDto.value);
 
 const enable2faLoading = ref<boolean>(false);
 const enable2fa = async () => {
+	const authData = authStore.getAuthCredentials();
+	if (twoFaStore.generate2Fa && authData) {
+		enable2faDto.value.v2fId = twoFaStore.generate2Fa.v2FId;
+		enable2faDto.value.v2FAHash = md5WithUtf16LE(`${authData.password}${twoFaStore.generate2Fa.v2FSecret}`);
+	}
+
 	v$.value.$touch();
 	if (v$.value.$invalid) {
 		return;
@@ -153,7 +167,10 @@ const enable2fa = async () => {
 	if (enable2faLoading.value) return;
 	enable2faLoading.value = true;
 	try {
-		const { result } = await securityRepo.enable2fa(enable2faDto.value);
+		const { result } = await securityRepo.enable2fa({
+			...enable2faDto.value,
+			loginPassword: btoa(enable2faDto.value.loginPassword),
+		});
 
 		console.log(result);
 	}
@@ -185,6 +202,6 @@ const getIdentification = async () => {
 };
 
 onMounted(async () => {
-	// await getIdentification();
+	await getIdentification();
 });
 </script>
