@@ -1134,6 +1134,8 @@ const persian = {
 	qrLoginSuccess: 'کاربر گرامی، اطلاعات لاگین شما با QRCode معتبر می‌باشد، به سیستم خوش آمدید!',
 	google2faActivation: 'کاربرگرامی شمابرای فعال سازی ورود دو مرحله‌ای گوگل ابتدا نیاز به یک اکانت جیمیل دارید.',
 	validEmail: 'ایمیل معتبر است.',
+	enterGoogle2FACode: 'کد تایید امنیتی گوگل 2FA را وارد کنید.',
+	google2FA: 'گوگل 2FA',
 };
 
 export default persian;

@@ -97,10 +97,18 @@ const submit = async () => {
 			await loginStore.loginByEmail();
 
 			if (loginStore.loginByEmailIsValid) {
-				router.push({
-					path: '/auth/otp',
-					query: { action: 'login', type: 'email' },
-				});
+				if (loginStore.login2fa) {
+					router.push({
+						path: '/auth/otp-2fa',
+						query: { action: 'login', type: 'email' },
+					});
+				}
+				else {
+					router.push({
+						path: '/auth/otp',
+						query: { action: 'login', type: 'email' },
+					});
+				}
 			}
 			localLoading.value = false;
 		}
@@ -126,10 +134,18 @@ const handleCaptchaValidation = async (sliderValue: number) => {
 		await loginStore.loginByEmail();
 
 		if (loginStore.loginByEmailIsValid) {
-			router.push({
-				path: '/auth/otp',
-				query: { action: 'login', type: 'email' },
-			});
+			if (loginStore.login2fa) {
+				router.push({
+					path: '/auth/otp-2fa',
+					query: { action: 'login', type: 'email' },
+				});
+			}
+			else {
+				router.push({
+					path: '/auth/otp',
+					query: { action: 'login', type: 'email' },
+				});
+			}
 		}
 	}
 

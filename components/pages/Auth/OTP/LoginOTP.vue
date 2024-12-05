@@ -101,8 +101,6 @@ const submit = async () => {
 			loginStore.checkCodeVerificationLoading = false;
 
 			loginStore.checkCodeVerificationIsValid = true;
-
-			// localStorage.removeItem('password');
 		}
 	}
 	catch (error) {

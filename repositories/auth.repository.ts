@@ -1,23 +1,31 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
-import type { LoginByEmailDto, LoginByMobileDto, LoginByMobileResponse } from '~/types/login.types';
-import type { SignupByEmailDto, SignupByMobileDto } from '~/types/dto/signup.dto';
-import type { CheckCodeDto, ResendVerificationParams, ResendVerificationResponse } from '~/types/verification.types';
-import type { CheckForgetPasswordDto, InitForgetPasswordDto, InitForgetPasswordResponse, ResetPasswordDto, RestForgetPasswordDto } from '~/types/forget-password.types';
 import type { CheckOTCResponse, GetSocketListenKeyResponse } from '~/types/response/check-otc.types';
-import type { LoginByEmailResponse } from '~/types/response/login.types';
 import type { SignUpResponse } from '~/types/response/sign-up.types';
-import type { VerificationCheckCodeResponse } from '~/types/response/verification.types';
 import type {
 	AuthResponse,
 	CaptchaGenerateParams,
 	CaptchaGenerateResponse,
 	CaptchaValidateDto,
+	Check2faCodeDto,
+	CheckCodeDto,
+	CheckForgetPasswordDto,
 	CheckQrCodeParams,
 	CheckResponse,
+	InitForgetPasswordDto,
+	InitForgetPasswordResponse,
+	LoginByEmailDto,
+	LoginByMobileDto,
+	LoginResponse,
 	QrCodeGenerateParams,
-	QrCodeGenerateResponse } from '~/types/definitions/auth.types';
+	QrCodeGenerateResponse,
+	ResendVerificationParams,
+	ResendVerificationResponse,
+	ResetPasswordDto,
+	RestForgetPasswordDto,
+	SignupByEmailDto,
+	SignupByMobileDto } from '~/types/definitions/auth.types';
 import type { CommonResponse } from '~/types/definitions/common.types';
 
 type AuthRepository = {
@@ -25,13 +33,14 @@ type AuthRepository = {
 	generateCaptcha: (params: CaptchaGenerateParams) => Promise<CaptchaGenerateResponse>;
 	validateCaptcha: (dto: CaptchaValidateDto) => Promise<CommonResponse>;
 	// SignUp
-	signupByMobile: (data: SignupByMobileDto) => Promise<SignUpResponse>;
-	signupByEmail: (data: SignupByEmailDto) => Promise<SignUpResponse>;
+	signupByMobile: (dto: SignupByMobileDto) => Promise<SignUpResponse>;
+	signupByEmail: (dto: SignupByEmailDto) => Promise<SignUpResponse>;
 	// Login
-	loginByMobile: (data: LoginByMobileDto) => Promise<LoginByMobileResponse>;
-	loginByEmail: (data: LoginByEmailDto) => Promise<LoginByEmailResponse>;
+	loginByMobile: (dto: LoginByMobileDto) => Promise<LoginResponse>;
+	loginByEmail: (dto: LoginByEmailDto) => Promise<LoginResponse>;
 	// Verification
-	checkCodeVerification: (data: CheckCodeDto) => Promise<VerificationCheckCodeResponse>;
+	checkCodeVerification: (data: CheckCodeDto) => Promise<CheckResponse>;
+	check2faCodeVerification: (data: Check2faCodeDto) => Promise<CheckResponse>;
 	verificationResend: (params: ResendVerificationParams) => Promise<ResendVerificationResponse>;
 	// OTC
 	refreshOtc: () => Promise<CheckOTCResponse>;
@@ -73,41 +82,55 @@ export const authRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AuthR
 		return response;
 	},
 	// SignUp
-	async signupByMobile(data: SignupByMobileDto): Promise<SignUpResponse> {
+	async signupByMobile(dto: SignupByMobileDto): Promise<SignUpResponse> {
 		const response = await fetch<SignUpResponse>(`/v1/auth/signup/by_mobile`, {
+			noAuth: true,
 			method: 'POST',
-			body: data,
-		});
+			body: dto,
+		} as CustomNitroFetchOptions);
 		return response;
 	},
-	async signupByEmail(data: SignupByEmailDto): Promise<SignUpResponse> {
+	async signupByEmail(dto: SignupByEmailDto): Promise<SignUpResponse> {
 		const response = await fetch<SignUpResponse>(`/v1/auth/signup/by_email`, {
+			noAuth: true,
 			method: 'POST',
-			body: data,
-		});
+			body: dto,
+		} as CustomNitroFetchOptions);
 		return response;
 	},
 	// Login
-	async loginByMobile(data: LoginByMobileDto): Promise<LoginByMobileResponse> {
-		const response = await fetch<LoginByMobileResponse>(`/v1/auth/login/by_mobile`, {
+	async loginByMobile(dto: LoginByMobileDto): Promise<LoginResponse> {
+		const response = await fetch<LoginResponse>(`/v1/auth/login/by_mobile`, {
+			noAuth: true,
 			method: 'POST',
-			body: data,
-		});
+			body: dto,
+		} as CustomNitroFetchOptions);
+
 		return response;
 	},
-	async loginByEmail(data: LoginByEmailDto): Promise<LoginByEmailResponse> {
-		const response = await fetch<LoginByEmailResponse>(`/v1/auth/login/by_email`, {
+	async loginByEmail(dto: LoginByEmailDto): Promise<LoginResponse> {
+		const response = await fetch<LoginResponse>(`/v1/auth/login/by_email`, {
+			noAuth: true,
 			method: 'POST',
-			body: data,
-		});
+			body: dto,
+		} as CustomNitroFetchOptions);
 		return response;
 	},
 	// Verification
-	async checkCodeVerification(data: CheckCodeDto): Promise<VerificationCheckCodeResponse> {
-		const response = await fetch<VerificationCheckCodeResponse>(`/v1/verification/check_code`, {
+	async checkCodeVerification(dto: CheckCodeDto): Promise<CheckResponse> {
+		const response = await fetch<CheckResponse>(`/v1/verification/check_code`, {
+			noAuth: true,
 			method: 'POST',
-			body: data,
-		});
+			body: dto,
+		} as CustomNitroFetchOptions);
+		return response;
+	},
+	async check2faCodeVerification(dto: Check2faCodeDto): Promise<CheckResponse> {
+		const response = await fetch<CheckResponse>(`/v1/verification/2fa_check`, {
+			noAuth: true,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
 		return response;
 	},
 	async verificationResend(params: ResendVerificationParams): Promise<ResendVerificationResponse> {

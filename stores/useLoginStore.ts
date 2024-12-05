@@ -1,8 +1,6 @@
 import { authRepository } from '~/repositories/auth.repository';
-import type { LoginTabType, QrCodeGenerateParams } from '~/types/definitions/auth.types';
+import type { Check2faCodeDto, CheckCodeDto, LoginByEmailDto, LoginByMobileDto, LoginTabType, QrCodeGenerateParams, ResendVerificationParams } from '~/types/definitions/auth.types';
 import type { QrCodeInput } from '~/types/definitions/common.types';
-import type { LoginByEmailDto, LoginByMobileDto } from '~/types/login.types';
-import type { CheckCodeDto, ResendVerificationParams } from '~/types/verification.types';
 import { normalizeMobile } from '~/utils/normalize-mobile';
 
 export const useLoginStore = defineStore('login', () => {
@@ -14,6 +12,14 @@ export const useLoginStore = defineStore('login', () => {
 	const toast = useToast();
 
 	const selectedTabLoginType = ref<LoginTabType>('phoneNumber');
+
+	const login2fa = ref<boolean>(false);
+	const login2faDto = ref<Check2faCodeDto>({
+		userId: null,
+		v2fId: null,
+		v2fCode: null,
+		v2fHash: null,
+	});
 
 	const loginByEmailDto = ref<LoginByEmailDto>({
 		captchaKey: '',
@@ -69,18 +75,27 @@ export const useLoginStore = defineStore('login', () => {
 			loginByEmailLoading.value = true;
 			loginByEmailIsValid.value = true;
 
-			const response = await authRepo.loginByEmail({
+			const { result } = await authRepo.loginByEmail({
 				...loginByEmailDto.value,
 				password: btoa(loginByEmailDto.value.password),
 			});
 
+			if (result.v2FAId) {
+				login2fa.value = true;
+
+				login2faDto.value.userId = result.userId;
+				login2faDto.value.v2fId = result.v2FAId;
+				login2faDto.value.v2fHash = md5WithUtf16LE(`${md5WithUtf16LE(loginByEmailDto.value.password)}${result.v2FASecret}`);
+			}
+			else {
+				checkCodeVerificationDto.value.userId = result.userId;
+				checkCodeVerificationDto.value.verificationId = result.verificationId;
+
+				verificationResendParams.value.lastVerificationId = String(result.verificationId);
+				verificationResendParams.value.userId = String(result.userId);
+			}
+
 			authStore.setPassword(loginByEmailDto.value.password);
-
-			checkCodeVerificationDto.value.userId = response.result.userId;
-			checkCodeVerificationDto.value.verificationId = response.result.verificationId;
-
-			verificationResendParams.value.lastVerificationId = String(response.result.verificationId);
-			verificationResendParams.value.userId = String(response.result.userId);
 
 			loginByEmailLoading.value = false;
 		}
@@ -186,6 +201,38 @@ export const useLoginStore = defineStore('login', () => {
 		}
 	};
 
+	const check2faCodeVerificationIsValid = ref<boolean>(true);
+	const check2faCodeVerificationLoading = ref<boolean>(false);
+	const check2faCodeVerification = async () => {
+		try {
+			check2faCodeVerificationLoading.value = true;
+
+			const { result, statusCode } = await authRepo.check2faCodeVerification(login2faDto.value);
+
+			toast.add({
+				title: useT('login'),
+				description: useT('loggedInSuccessfully'),
+				timeout: 5000,
+				color: 'green',
+			});
+
+			const { otc, userId, userSecretKey } = result;
+			authStore.setAuthCredentials(otc, userId, userSecretKey);
+
+			return statusCode;
+		}
+		catch (error: any) {
+			check2faCodeVerificationIsValid.value = false;
+			toast.add({
+				title: useT('password'),
+				description: error.response._data.message,
+				timeout: 5000,
+				color: 'red',
+			});
+			check2faCodeVerificationLoading.value = false;
+		}
+	};
+
 	const qrCodeInput = ref<QrCodeInput>({
 		id: '',
 		hash: '',
@@ -269,5 +316,11 @@ export const useLoginStore = defineStore('login', () => {
 		checkQrCode,
 		// Share
 		selectedTabLoginType,
+		// 2FA
+		login2faDto,
+		login2fa,
+		check2faCodeVerificationIsValid,
+		check2faCodeVerificationLoading,
+		check2faCodeVerification,
 	};
 });
