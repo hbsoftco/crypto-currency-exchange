@@ -119,19 +119,27 @@ export const useLoginStore = defineStore('login', () => {
 			loginByMobileLoading.value = true;
 			loginByMobileIsValid.value = true;
 
-			const response = await authRepo.loginByMobile({
+			const { result } = await authRepo.loginByMobile({
 				...loginByMobileDto.value,
 				mobile: normalizeMobile(loginByMobileDto.value.mobile),
 				password: btoa(loginByMobileDto.value.password),
 			});
 
+			if (result.v2FAId) {
+				login2fa.value = true;
+
+				login2faDto.value.userId = result.userId;
+				login2faDto.value.v2fId = result.v2FAId;
+				login2faDto.value.v2fHash = md5WithUtf16LE(`${md5WithUtf16LE(loginByMobileDto.value.password)}${result.v2FASecret}`);
+			}
+
+			checkCodeVerificationDto.value.userId = result.userId;
+			checkCodeVerificationDto.value.verificationId = result.verificationId;
+
+			verificationResendParams.value.lastVerificationId = String(result.verificationId);
+			verificationResendParams.value.userId = String(result.userId);
+
 			authStore.setPassword(loginByMobileDto.value.password);
-
-			checkCodeVerificationDto.value.userId = response.result.userId;
-			checkCodeVerificationDto.value.verificationId = response.result.verificationId;
-
-			verificationResendParams.value.lastVerificationId = String(response.result.verificationId);
-			verificationResendParams.value.userId = String(response.result.userId);
 
 			loginByMobileLoading.value = false;
 		}

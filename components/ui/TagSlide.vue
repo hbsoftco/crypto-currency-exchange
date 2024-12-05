@@ -33,7 +33,7 @@
 				class="w-full mx-auto"
 			>
 				<span
-					class="mx-0 h-7 min-w-16 text-center text-xs cursor-pointer px-1.5 py-1 pt-1.5 font-medium rounded transition-colors select-none text-nowrap"
+					class="mx-1 h-7 text-center text-xs cursor-pointer px-1.5 py-1 pt-1.5 font-medium rounded transition-colors select-none text-nowrap"
 					:class="
 						selectedTagItem === item
 							? 'bg-primary text-text-light dark:text-text-dark '

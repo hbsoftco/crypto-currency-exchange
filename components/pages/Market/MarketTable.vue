@@ -129,7 +129,6 @@ import { MarketType } from '~/utils/enums/market.enum';
 import { marketRepository } from '~/repositories/market.repository';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 import type { MarketL31 } from '~/types/definitions/market.types';
-import type { UPagination } from '#build/components';
 
 const { $mobileDetect, $api } = useNuxtApp();
 const marketRepo = marketRepository($api);

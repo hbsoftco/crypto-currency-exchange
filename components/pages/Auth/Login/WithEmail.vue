@@ -98,10 +98,7 @@ const submit = async () => {
 
 			if (loginStore.loginByEmailIsValid) {
 				if (loginStore.login2fa) {
-					router.push({
-						path: '/auth/otp-2fa',
-						query: { action: 'login', type: 'email' },
-					});
+					router.push('/auth/otp-2fa');
 				}
 				else {
 					router.push({
@@ -135,10 +132,7 @@ const handleCaptchaValidation = async (sliderValue: number) => {
 
 		if (loginStore.loginByEmailIsValid) {
 			if (loginStore.login2fa) {
-				router.push({
-					path: '/auth/otp-2fa',
-					query: { action: 'login', type: 'email' },
-				});
+				router.push('/auth/otp-2fa');
 			}
 			else {
 				router.push({

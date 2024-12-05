@@ -21,7 +21,7 @@
 			class="w-full mx-auto"
 		>
 			<div
-				class="mx-0 min-w-20 text-xs cursor-pointer px-2 py-2 font-medium rounded transition-colors select-none"
+				class="mx-1 text-xs cursor-pointer px-3 py-2 font-medium rounded transition-colors select-none"
 				:class="
 					selectedItem === item
 						? 'bg-primary text-text-light dark:text-text-dark '
