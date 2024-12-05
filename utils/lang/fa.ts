@@ -74,8 +74,10 @@ const persian = {
 	verificationCodeSentToMobile: 'کد تایید ارسالی به موبایل',
 	verificationCodeSentToOldMobile: 'کد تایید ارسالی به موبایل قبلی',
 	verificationCodeSentToemail: 'کد تایید ارسالی به ایمیل',
+	verificationCodeSentToOldEmail: 'کد تایید ارسالی به ایمیل قبلی',
 	verificationCodeSentTomobile: 'کد تایید ارسالی به موبایل',
 	sentVerificationCodeToEmail: 'کد تایید به آدرس ایمیل',
+	sentVerificationCodeToNewEmail: 'کد تایید به آدرس ایمیل جدید',
 	sentVerificationCodeToemail: 'کد تایید به آدرس ایمیل',
 	sentVerificationCodeToMobile: 'کد تایید به شماره موبایل',
 	sentVerificationCodeToNewMobile: 'کد تایید به شماره موبایل جدید',
@@ -1140,6 +1142,7 @@ const persian = {
 	google2FA: 'گوگل 2FA',
 	changePhone: 'تغییر شماره موبایل',
 	twoFactorCode: 'کد امنیتی دو مرحله با 2FA',
+	newEmailAddress: 'آدرس ایمیل جدید',
 };
 
 export default persian;

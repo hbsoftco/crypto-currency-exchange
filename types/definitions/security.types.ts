@@ -76,12 +76,22 @@ type Identification = {
 	verificationId: number;
 };
 
+// Change phone and email
 type ChangePhoneDto = {
 	uvIdMobileOld: number | null;
 	uvCodeMoblieOld: string;
 	uvIdMobileNew: number | null;
 	uvCodeMoblieNew: string;
 	mobileNew: string;
+	v2FACode: string | null;
+};
+
+type ChangeEmailDto = {
+	uvIdEmailAddressOld: number | null;
+	uvCodeEmailAddressOld: string;
+	uvIdEmailAddressNew: number | null;
+	uvCodeEmailAddressNew: string;
+	emailAddressNew: string;
 	v2FACode: string | null;
 };
 
@@ -97,4 +107,5 @@ export type {
 	IdentificationResendDto,
 	Identification,
 	ChangePhoneDto,
+	ChangeEmailDto,
 };

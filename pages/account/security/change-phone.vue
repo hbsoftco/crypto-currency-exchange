@@ -4,8 +4,8 @@
 			<div class="my-4">
 				<UiTitleWithBack :title="$t('changePhone')" />
 			</div>
-			<section>
-				<div class="grid grid-cols-1 md:grid-cols-2 gap-20 rounded-md mt-8 mb-10 py-6 md:py-10 px-1 md:px-20 bg-primary-gray-light dark:bg-primary-gray-dark">
+			<section class="pb-0.5">
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-20 rounded-md mt-8 mb-4 py-6 md:py-10 px-1 md:px-20 bg-primary-gray-light dark:bg-primary-gray-dark">
 					<div class="mt-10 w-full">
 						<div class="mb-8">
 							<FormsFieldInput
@@ -62,7 +62,7 @@
 							class="my-6"
 						>
 							<OtpFieldInput
-								id="verificationCodeSentEmail"
+								id="v2FACode"
 								v-model="changePhoneDto.v2FACode"
 								color-type="transparent"
 								type="text"
@@ -128,7 +128,7 @@ const systemRepo = systemRepository($api);
 const router = useRouter();
 
 const authStore = useAuthStore();
-const {	getCode,	getResendCode,	getNewCode } = useIdentification();
+const {	getCode, getResendCode,	getNewCode } = useIdentification();
 
 const changePhoneDto = ref<ChangePhoneDto>({
 	uvIdMobileOld: null,
@@ -136,7 +136,7 @@ const changePhoneDto = ref<ChangePhoneDto>({
 	uvIdMobileNew: null,
 	uvCodeMoblieNew: '',
 	mobileNew: '',
-	v2FACode: 'null',
+	v2FACode: null,
 });
 
 const changePhoneRules = {
@@ -145,7 +145,7 @@ const changePhoneRules = {
 	uvIdMobileNew: { required: validations.required },
 	uvCodeMoblieNew: { required: validations.required },
 	mobileNew: { required: validations.required },
-	v2FACode: authStore.login2faStatus ? { } : { required: validations.required },
+	v2FACode: {},
 };
 
 const v$ = useVuelidate(changePhoneRules, changePhoneDto);
@@ -177,7 +177,11 @@ const submit = async () => {
 };
 
 const mobileExist = ref<boolean>(false);
-const checkMobileExist = () => {
+const checkMobileExist = async () => {
+	await authStore.fetchCurrentUser(true);
+
+	changePhoneRules.v2FACode = authStore.login2faStatus ? { } : { required: validations.required };
+
 	const state = getValueByKey(authStore.getCurrentUser, 'MOBILE');
 	if (state) {
 		mobileExist.value = true;
@@ -228,9 +232,8 @@ const tips = ref<KeyValue[]>();
 const faqs = ref<KeyValue[]>();
 const helps = ref<KeyValue[]>();
 const miniRoutine = ref<MiniRoutine>();
-const miniRoutineLoading = ref<boolean>(false);
+const miniRoutineLoading = ref<boolean>(true);
 const getSystemMiniRoutine = async () => {
-	if (miniRoutineLoading.value) return;
 	miniRoutineLoading.value = true;
 	try {
 		const { result } = await systemRepo.getSystemMiniRoutine({ tagType: TagType.MOBILE_CHANGE });
