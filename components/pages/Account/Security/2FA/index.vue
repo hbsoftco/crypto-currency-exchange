@@ -72,11 +72,9 @@
 						alt="confirm"
 						class="w-4 h-4"
 					>
-					<span class="text-sm font-medium mr-1">{{
-						useNumber(
-							String(getValueByKey(authStore.getCurrentUser, "EMAIL")),
-						)
-					}}</span>
+					<span class="text-sm font-medium mr-1">
+						{{ getValueByKey(authStore.getCurrentUser, "EMAIL") }}
+					</span>
 				</div>
 			</div>
 			<div class="my-3">
@@ -118,26 +116,27 @@
 					<span
 						class="text-sm font-medium mr-1"
 						dir="ltr"
-					>{{
-						useNumber(
-							String(getValueByKey(authStore.getCurrentUser, "MOBILE")),
-						)
-					}}</span>
+					>
+						{{ getValueByKey(authStore.getCurrentUser, "MOBILE") }}
+					</span>
 				</div>
-				<div
+				<UBadge
 					v-else
-					:class="mobileNumberButtonClass"
-					class="rounded-full px-2 mr-4"
+					color="red"
+					variant="solid"
+					class="mr-1"
 				>
-					<span class="text-sm font-medium">{{ mobileNumberText }}</span>
-				</div>
+					{{ $t("off") }}
+				</UBadge>
 			</div>
 			<div class="my-3">
 				<p class="text-sm font-normal">
 					{{ $t("mobileNumberSettingText") }}
 				</p>
 			</div>
+
 			<UButton
+				to="/account/security/change-phone"
 				size="sm"
 				variant="ghost"
 				class="font-bold text-sm text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark"
@@ -150,14 +149,12 @@
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
 import { getValueByKey } from '~/utils/find-value-by-key';
 
 const router = useRouter();
 const toast = useToast();
 
 const authStore = useAuthStore();
-const mobileNumberValue = getValueByKey(authStore.getCurrentUser, 'MOBILE');
 
 const login2fa = computed(() => {
 	const login2faValue = getValueByKey(authStore.getCurrentUser, '2FA_ENABLED');
@@ -183,18 +180,4 @@ const checkEmail = () => {
 		});
 	}
 };
-
-const mobileNumberText = computed(() => {
-	if (!mobileNumberValue) {
-		return useT('off');
-	}
-	return useT('on');
-});
-
-const mobileNumberButtonClass = computed(() => {
-	if (!mobileNumberValue) {
-		return 'bg-accent-red';
-	}
-	return 'bg-accent-green';
-});
 </script>

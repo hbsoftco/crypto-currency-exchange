@@ -41,9 +41,6 @@ import type {
 	CodeInviteDto,
 	ContactSetDto,
 	DeleteAccountDto,
-	IdentificationResendDto,
-	IdentificationSendDto,
-	IdentificationSendNewDto,
 	SetAntiPhishingDto,
 	SetApiAddDto,
 	SetApiEditDto,
@@ -54,7 +51,7 @@ import type {
 	SetMobileDto,
 	SetPasswordDto,
 	SetPinCodeDto } from '~/types/dto/user.dto';
-import type { GetCountryListRes, IdentificationRes } from '~/types/response/common.types';
+import type { GetCountryListRes } from '~/types/response/common.types';
 import type { GetCommissionRes, GetInvitationListRes } from '~/types/response/referral.types';
 import type {
 	SetNicknameDto,
@@ -86,8 +83,6 @@ type UserRepository = {
 	storeAddress: (params: AddressSetDto) => Promise<CommonResponse>;
 	deleteAddress: (params: DeleteAddressListParams) => Promise<CommonResponse>;
 	storeBankAccAdd: (params: AddCardBankSetDto) => Promise<CommonResponse>;
-	identificationResend: (params: IdentificationResendDto) => Promise<IdentificationRes>;
-	getIdentificationCode: (params: IdentificationSendDto) => Promise<IdentificationRes>;
 	editCodeInvite: (params: CodeInviteDto) => Promise<CommonResponse>;
 	getTraderBestList: (params: GetTraderBestListParams) => Promise<GetTraderBestListResponse>;
 	getTraderBrief: (params: GetTraderBriefParams) => Promise<GetTraderBriefResponse>;
@@ -101,7 +96,6 @@ type UserRepository = {
 	getDevLinkGenerate: () => Promise<GetDevLinkGenerateRes>;
 	getActivitiesList: (params: getActivitiesListParams) => Promise<GetActivitiesListRes>;
 	getTypeList: (params: getTypeListParams) => Promise<KeyValueResponse>;
-	identificationSendNew: (dto: IdentificationSendNewDto) => Promise<IdentificationRes>;
 	setEmail: (dto: SetEmailDto) => Promise<CommonResponse>;
 	storeSetMobile: (dto: SetMobileDto) => Promise<CommonResponse>;
 	storeSetPassword: (dto: SetPasswordDto) => Promise<CommonResponse>;
@@ -364,39 +358,6 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 		const response = await fetch<CommonResponse>(`${url}?${query.toString()}`, {
 			noAuth: false,
 			method: 'DELETE',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async identificationResend(dto: IdentificationResendDto): Promise<IdentificationRes> {
-		const url = `/v1/user/identification/resend`;
-		const response = await fetch<IdentificationRes>(`${url}`, {
-			noAuth: false,
-			apiName: url,
-			method: 'POST',
-			body: dto,
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async identificationSendNew(dto: IdentificationSendNewDto): Promise<IdentificationRes> {
-		const url = `/v1/user/identification/send_new`;
-		const response = await fetch<IdentificationRes>(`${url}`, {
-			noAuth: false,
-			apiName: url,
-			method: 'POST',
-			body: dto,
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getIdentificationCode(dto: IdentificationSendDto): Promise<IdentificationRes> {
-		const url = `/v1/user/identification/send`;
-		const response = await fetch<IdentificationRes>(`${url}`, {
-			noAuth: false,
-			apiName: url,
-			method: 'POST',
-			body: dto,
 		} as CustomNitroFetchOptions);
 
 		return response;

@@ -87,8 +87,6 @@ const getNewCaptcha = async () => {
 
 const submit = async () => {
 	try {
-		console.log(v$.value);
-
 		v$.value.$touch();
 		if (v$.value.$invalid) {
 			return;

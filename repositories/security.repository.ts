@@ -2,7 +2,15 @@ import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import type { CommonResponse, KeyValueResponse } from '~/types/definitions/common.types';
-import type { Enable2faDto, IdentificationDto, NoticeListParams, SecurityListResponse, SecurityResponse } from '~/types/definitions/security.types';
+import type {
+	ChangePhoneDto,
+	Enable2faDto,
+	IdentificationDto,
+	IdentificationResendDto,
+	NoticeListParams,
+	SecurityListResponse,
+	SecurityResponse,
+} from '~/types/definitions/security.types';
 
 type SecurityRepository = {
 	// Logs
@@ -17,7 +25,9 @@ type SecurityRepository = {
 	// Identification
 	identificationSend: (dto: IdentificationDto) => Promise<SecurityResponse>;
 	identificationSendNew: (dto: IdentificationDto) => Promise<SecurityResponse>;
-	identificationResend: (dto: IdentificationDto) => Promise<SecurityResponse>;
+	identificationResend: (dto: IdentificationResendDto) => Promise<SecurityResponse>;
+	// Change Phone
+	changePhone: (dto: ChangePhoneDto) => Promise<CommonResponse>;
 
 };
 
@@ -113,9 +123,20 @@ export const securityRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): S
 
 		return response;
 	},
-	async identificationResend(dto: IdentificationDto): Promise<SecurityResponse> {
+	async identificationResend(dto: IdentificationResendDto): Promise<SecurityResponse> {
 		const url = `/v1/security/identification/resend`;
 		const response = await fetch<SecurityResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	// Change Phone
+	async changePhone(dto: ChangePhoneDto): Promise<CommonResponse> {
+		const url = `/v1/security/alter/mobile_set`;
+		const response = await fetch<CommonResponse>(`${url}`, {
 			noAuth: false,
 			method: 'POST',
 			body: dto,

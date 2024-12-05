@@ -66,9 +66,23 @@ type IdentificationDto = {
 	sendType: string;
 };
 
+type IdentificationResendDto = {
+	lastVerificationId?: number;
+	resendType: string;
+};
+
 type Identification = {
 	userId: number;
 	verificationId: number;
+};
+
+type ChangePhoneDto = {
+	uvIdMobileOld: number | null;
+	uvCodeMoblieOld: string;
+	uvIdMobileNew: number | null;
+	uvCodeMoblieNew: string;
+	mobileNew: string;
+	v2FACode: string | null;
 };
 
 export type {
@@ -80,5 +94,7 @@ export type {
 	Enable2faDto,
 	GuidanceStep,
 	IdentificationDto,
+	IdentificationResendDto,
 	Identification,
+	ChangePhoneDto,
 };

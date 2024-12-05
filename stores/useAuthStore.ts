@@ -197,6 +197,7 @@ export const useAuthStore = defineStore('auth', () => {
 
 	const getCurrentUser = computed(() => currentUser.value);
 	const getUserLevelIndicator = computed(() => getValueByKey(currentUser.value, 'TRD_LVL_ID'));
+	const login2faStatus = computed(() => getValueByKey(currentUser.value, '2FA_ENABLED') ? true : false);
 
 	const isLoggedIn = computed(() => authStatus.value);
 
@@ -256,5 +257,6 @@ export const useAuthStore = defineStore('auth', () => {
 		getUserLevelIndicator,
 		currentUser,
 		userLevel,
+		login2faStatus,
 	};
 });

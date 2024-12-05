@@ -1,4 +1,4 @@
-import type { KeyValue } from '../base.types';
+import type { KeyValue } from '../definitions/common.types';
 
 type ContactSetDto = {
 	verificationId: number;
@@ -22,20 +22,6 @@ type AddressSetDto = {
 type AddCardBankSetDto = {
 	bankAccountTypeId: number;
 	cardNo: string;
-};
-
-type IdentificationResendDto = {
-	lastVerificationId: number;
-	resendType: string;
-};
-
-type IdentificationSendNewDto = {
-	emailOrMobile: string;
-	sendType: string;
-};
-
-type IdentificationSendDto = {
-	sendType: string;
 };
 
 type CodeInviteDto = {
@@ -133,9 +119,6 @@ export type {
 	ContactSetDto,
 	AddressSetDto,
 	AddCardBankSetDto,
-	IdentificationResendDto,
-	IdentificationSendNewDto,
-	IdentificationSendDto,
 	CodeInviteDto,
 	DeleteAccountDto,
 	SetBasicDto,

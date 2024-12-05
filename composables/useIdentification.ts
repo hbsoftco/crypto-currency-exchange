@@ -1,104 +1,94 @@
-import { userRepository } from '~/repositories/user.repository';
-import type { IdentificationResendDto, IdentificationSendDto, IdentificationSendNewDto } from '~/types/dto/user.dto';
+import { securityRepository } from '~/repositories/security.repository';
+import type { Identification, IdentificationDto, IdentificationResendDto } from '~/types/definitions/security.types';
+import { SendType } from '~/utils/enums/user.enum';
 
 export const useIdentification = () => {
 	const { $api } = useNuxtApp();
-	const userRepo = userRepository($api);
-
+	const securityRepo = securityRepository($api);
 	const toast = useToast();
 
-	const identificationCodeLoading = ref<boolean>(false);
-	const identificationId = ref<number>();
-	const getIdentificationCode = async (sendType: string) => {
-		identificationCodeLoading.value = true;
+	const codeLoading = ref<boolean>();
+	const getCode = async (sendType: number) => {
+		codeLoading.value = true;
 		try {
-			const dto = ref<IdentificationSendDto>({ sendType });
-			const { result } = await userRepo.getIdentificationCode(dto.value);
-			identificationCodeLoading.value = false;
-			identificationId.value = result.verificationId;
+			const dto = ref<IdentificationDto>({ sendType: String(sendType) });
+			const { result } = await securityRepo.identificationSend(dto.value);
+			codeLoading.value = false;
 
-			return result.verificationId;
+			return (result as Identification).verificationId;
 		}
 		catch (error: any) {
 			toast.add({
-				title: useT('active2Fa'),
+				title: 'code',
 				description: error.response._data.message,
 				timeout: 5000,
 				color: 'red',
 			});
 		}
 		finally {
-			identificationCodeLoading.value = false;
+			codeLoading.value = false;
 		}
 	};
 
-	const resendIdentificationCodeLoading = ref<boolean>(false);
-	const resendIdentificationId = ref<number>();
-	const getResendIdentificationCode = async (resendType: string, lastVerificationId: number) => {
-		identificationCodeLoading.value = true;
+	const resendCodeLoading = ref<boolean>();
+	const getResendCode = async (resendType: number, lastVerificationId: number) => {
+		resendCodeLoading.value = true;
 		try {
-			const dto = ref<IdentificationResendDto>({
-				resendType,
-				lastVerificationId,
-			});
-			const { result } = await userRepo.identificationResend(dto.value);
-			resendIdentificationCodeLoading.value = false;
-			resendIdentificationId.value = result.verificationId;
+			const dto = ref<IdentificationResendDto>({ resendType: String(resendType), lastVerificationId });
+			const { result } = await securityRepo.identificationResend(dto.value);
+			resendCodeLoading.value = false;
 
-			return result.verificationId;
+			return (result as Identification).verificationId;
 		}
 		catch (error: any) {
 			toast.add({
-				title: useT('active2Fa'),
+				title: 'code',
 				description: error.response._data.message,
 				timeout: 5000,
 				color: 'red',
 			});
 		}
 		finally {
-			resendIdentificationCodeLoading.value = false;
+			resendCodeLoading.value = false;
 		}
 	};
 
-	const sendNewIdentificationCodeLoading = ref<boolean>(false);
-	const sendNewIdentificationId = ref<number>();
-	const getSendNewIdentificationCode = async (sendType: string, emailOrMobile: string) => {
-		sendNewIdentificationCodeLoading.value = true;
+	const newCodeLoading = ref<boolean>();
+	const getNewCode = async (sendType: number, emailOrMobile: string) => {
+		newCodeLoading.value = true;
 		try {
-			const dto = ref<IdentificationSendNewDto>({
-				sendType,
-				emailOrMobile,
-			});
-			const { result } = await userRepo.identificationSendNew(dto.value);
-			sendNewIdentificationCodeLoading.value = false;
-			sendNewIdentificationId.value = result.verificationId;
+			const dto = ref<IdentificationDto>({ sendType: String(sendType), emailOrMobile });
 
-			return result.verificationId;
+			if (sendType === SendType.SMS) {
+				dto.value.emailOrMobile = normalizeMobile(String(dto.value.emailOrMobile));
+			}
+
+			const { result } = await securityRepo.identificationSendNew(dto.value);
+			newCodeLoading.value = false;
+
+			return (result as Identification).verificationId;
 		}
 		catch (error: any) {
 			toast.add({
-				title: useT('active2Fa'),
+				title: 'code',
 				description: error.response._data.message,
 				timeout: 5000,
 				color: 'red',
 			});
 		}
 		finally {
-			sendNewIdentificationCodeLoading.value = false;
+			newCodeLoading.value = false;
 		}
 	};
 
 	return {
-		identificationCodeLoading,
-		getIdentificationCode,
-		identificationId,
+		codeLoading,
+		getCode,
 
-		resendIdentificationCodeLoading,
-		getResendIdentificationCode,
-		resendIdentificationId,
+		resendCodeLoading,
+		getResendCode,
 
-		sendNewIdentificationCodeLoading,
-		getSendNewIdentificationCode,
-		sendNewIdentificationId,
+		newCodeLoading,
+		getNewCode,
 	};
 };
