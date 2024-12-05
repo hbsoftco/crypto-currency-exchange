@@ -67,11 +67,6 @@ type GetUserTraderCommissionListParams = {
 	marketType: string;
 };
 
-type KeyValue = {
-	key: string;
-	value: string;
-};
-
 type GetTradeListParams = {
 	marketId: string;
 	symbol: string;
@@ -349,7 +344,6 @@ export type {
 	getTradesListParams,
 	GetAssetListParams,
 	GetExposedListParams,
-	KeyValue,
 	GetTagListParams,
 	GetStaffParams,
 	GetTradeListParams,

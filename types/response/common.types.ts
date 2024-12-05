@@ -1,4 +1,4 @@
-import type { KeyValue } from '../base.types';
+import type { KeyValue } from '../definitions/common.types';
 
 type CommonResponse = {
 	statusCode: number;
@@ -21,32 +21,6 @@ type UploadFileDto = {
 	data: File;
 };
 
-type Tip = {
-	key: number;
-	value: string;
-};
-
-type Faq = {
-	key: number;
-	value: string;
-};
-
-type Help = {
-	key: number;
-	value: string;
-};
-
-type MiniRoutine = {
-	tips: Tip[];
-	faqs: Faq[];
-	helps: Help[];
-};
-
-type GetMiniRoutineRes = {
-	statusCode: number;
-	result: MiniRoutine;
-};
-
 type CountryItem = {
 	id: number;
 	name: string;
@@ -64,11 +38,6 @@ export type {
 	KeyValueRes,
 	IdentificationRes,
 	UploadFileDto,
-	GetMiniRoutineRes,
-	MiniRoutine,
-	Tip,
-	Faq,
-	Help,
 	GetCountryListRes,
 	CountryItem,
 };

@@ -64,11 +64,11 @@
 </template>
 
 <script setup lang="ts">
-import type { CaptchaResponse } from '~/types/captcha-response.types';
 import IconRefresh from '~/assets/svg-icons/refresh.svg';
+import type { CaptchaGenerateResponse } from '~/types/definitions/auth.types';
 
 interface PropsDefinition {
-	data: CaptchaResponse;
+	data: CaptchaGenerateResponse;
 	hasError?: boolean;
 }
 
