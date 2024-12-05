@@ -23,8 +23,8 @@
 				</div>
 				<div>
 					<img
-						src="/images/Confirmation.png"
-						alt="Confirmation"
+						src="/images/svg/confirm.svg"
+						alt="confirm"
 						class="w-52 h-52"
 					>
 				</div>

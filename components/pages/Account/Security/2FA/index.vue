@@ -68,8 +68,8 @@
 					class="flex items-center mr-4"
 				>
 					<img
-						src="/images/Confirmation.png"
-						alt="Confirmation"
+						src="/images/svg/confirm.svg"
+						alt="confirm"
 						class="w-4 h-4"
 					>
 					<span class="text-sm font-medium mr-1">{{
@@ -111,8 +111,8 @@
 					class="flex items-center mr-4"
 				>
 					<img
-						src="/images/Confirmation.png"
-						alt="Confirmation"
+						src="/images/svg/confirm.svg"
+						alt="confirm"
 						class="w-4 h-4"
 					>
 					<span

@@ -15,8 +15,8 @@
 							{{ $t('baseLevel') }}
 						</span>
 						<img
-							src="/images/Confirmation.png"
-							alt="Confirmation"
+							src="/images/svg/confirm.svg"
+							alt="confirm"
 							class="w-4 h-4 mr-2"
 						>
 					</div>
@@ -32,8 +32,8 @@
 							>
 								<img
 									v-if="isConfirmed"
-									src="/images/Confirmation.png"
-									alt="Confirmation"
+									src="/images/svg/confirm.svg"
+									alt="confirm"
 									class="w-4 h-4 ml-1"
 								>
 								{{ isConfirmed ? $t('confirmed') : $t('notConfirmed') }}
@@ -59,8 +59,8 @@
 							>
 								<img
 									v-if="isConfirmed"
-									src="/images/Confirmation.png"
-									alt="Confirmation"
+									src="/images/svg/confirm.svg"
+									alt="confirm"
 									class="w-4 h-4 ml-1"
 								>
 								{{ isConfirmed ? $t('confirmed') : $t('notConfirmed') }}
@@ -77,8 +77,8 @@
 							>
 								<img
 									v-if="isConfirmed"
-									src="/images/Confirmation.png"
-									alt="Confirmation"
+									src="/images/svg/confirm.svg"
+									alt="confirm"
 									class="w-4 h-4 ml-1"
 								>
 								{{ isConfirmed ? $t('confirmed') : $t('notConfirmed') }}
@@ -95,8 +95,8 @@
 							>
 								<img
 									v-if="isConfirmed"
-									src="/images/Confirmation.png"
-									alt="Confirmation"
+									src="/images/svg/confirm.svg"
+									alt="confirm"
 									class="w-4 h-4 ml-1"
 								>
 								{{ isConfirmed ? $t('confirmed') : $t('notConfirmed') }}
@@ -123,8 +123,8 @@
 							{{ $t('baseLevel') }}
 						</span>
 						<img
-							src="/images/Confirmation.png"
-							alt="Confirmation"
+							src="/images/svg/confirm.svg"
+							alt="confirm"
 							class="w-4 h-4 mr-2"
 						>
 					</div>
@@ -140,8 +140,8 @@
 							>
 								<img
 									v-if="isConfirmed"
-									src="/images/Confirmation.png"
-									alt="Confirmation"
+									src="/images/svg/confirm.svg"
+									alt="confirm"
 									class="w-4 h-4 ml-1"
 								>
 								{{ isConfirmed ? $t('confirmed') : $t('notConfirmed') }}
@@ -205,8 +205,8 @@
 						<td class="text-sm font-normal py-2">
 							<img
 								v-if="item.baseLevel"
-								src="/images/Confirmation.png"
-								alt="Confirmation"
+								src="/images/svg/confirm.svg"
+								alt="confirm"
 								class="w-6 h-6"
 							>
 							<IconClose
@@ -217,8 +217,8 @@
 						<td class="text-sm font-normal py-2">
 							<img
 								v-if="item.level1"
-								src="/images/Confirmation.png"
-								alt="Confirmation"
+								src="/images/svg/confirm.svg"
+								alt="confirm"
 								class="w-6 h-6"
 							>
 							<IconClose
@@ -229,8 +229,8 @@
 						<td class="text-sm font-normal py-2">
 							<img
 								v-if="item.level1"
-								src="/images/Confirmation.png"
-								alt="Confirmation"
+								src="/images/svg/confirm.svg"
+								alt="confirm"
 								class="w-6 h-6"
 							>
 							<IconClose

@@ -34,8 +34,8 @@
 					</div>
 					<div class="flex items-center">
 						<img
-							src="/images/Confirmation.png"
-							alt="Confirmation"
+							src="/images/svg/confirm.svg"
+							alt="confirm"
 							class="w-4 h-4"
 						>
 						<div>

@@ -40,8 +40,8 @@
 					</div>
 					<div class="flex justify-center items-center">
 						<img
-							src="/images/Confirmation.png"
-							alt="Confirmation"
+							src="/images/svg/confirm.svg"
+							alt="confirm"
 							class="w-4 h-4"
 						>
 						<div>
@@ -192,8 +192,8 @@
 								v-if="findIndicator(item.indicator)"
 							>
 								<img
-									src="/images/Confirmation.png"
-									alt="Confirmation"
+									src="/images/svg/confirm.svg"
+									alt="confirm"
 									class="w-4 h-4"
 								>
 							</div>
