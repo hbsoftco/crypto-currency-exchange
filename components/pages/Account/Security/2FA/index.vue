@@ -76,6 +76,14 @@
 						{{ getValueByKey(authStore.getCurrentUser, "EMAIL") }}
 					</span>
 				</div>
+				<UBadge
+					v-else
+					color="red"
+					variant="solid"
+					class="mr-1"
+				>
+					{{ $t("off") }}
+				</UBadge>
 			</div>
 			<div class="my-3">
 				<p class="text-sm font-normal">
