@@ -27,7 +27,7 @@
 				<IconVideo class="text-base " />
 			</ULink>
 		</div>
-		<div class="mt-12 text-center">
+		<div class="mt-12">
 			<UButton
 				size="lg"
 				block

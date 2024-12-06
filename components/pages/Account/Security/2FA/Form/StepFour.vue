@@ -77,6 +77,7 @@
 				<UButton
 					size="lg"
 					block
+					:loading="enable2faLoading"
 					@click="enable2fa()"
 				>
 					{{ $t("register") }}
@@ -91,16 +92,21 @@ import useVuelidate from '@vuelidate/core';
 
 import OtpFieldInput from '~/components/forms/OtpFieldInput.vue';
 import { securityRepository } from '~/repositories/security.repository';
-import type { Enable2faDto, Identification } from '~/types/definitions/security.types';
+import type { Enable2faDto } from '~/types/definitions/security.types';
 import { SendType } from '~/utils/enums/user.enum';
 import { getValueByKey } from '~/utils/find-value-by-key';
+import { obfuscateEmail } from '~/utils/obfuscate-email';
 
 const { $api } = useNuxtApp();
-
 const securityRepo = securityRepository($api);
+
+const {	getCode, getResendCode } = useIdentification();
 
 const authStore = useAuthStore();
 const twoFaStore = use2FaStore();
+
+const router = useRouter();
+const toast = useToast();
 
 const prevLoading = ref<boolean>(false);
 const prevStep = async () => {
@@ -109,27 +115,7 @@ const prevStep = async () => {
 	prevLoading.value = false;
 };
 
-const obfuscateEmail = (email: string) => {
-	const [username, domain] = email.split('@');
-	const obfuscatedUsername = username.slice(0, 2) + '****';
-	return `${obfuscatedUsername}@${domain}`;
-};
-
 const clearCode = ref<boolean>(false);
-const resendCode = async () => {
-	try {
-		const { result } = await securityRepo.identificationResend({ sendType: String(SendType.Email) });
-
-		identificationId.value = result as Identification;
-		enable2faDto.value.verificationId = identificationId.value.verificationId;
-	}
-	catch (error) {
-		console.log(error);
-	}
-	finally {
-		identificationLoading.value = false;
-	}
-};
 
 const enable2faDto = ref<Enable2faDto>({
 	v2FAHash: '',
@@ -167,41 +153,42 @@ const enable2fa = async () => {
 	if (enable2faLoading.value) return;
 	enable2faLoading.value = true;
 	try {
-		const { result } = await securityRepo.enable2fa({
+		await securityRepo.enable2fa({
 			...enable2faDto.value,
 			loginPassword: btoa(enable2faDto.value.loginPassword),
 		});
 
-		console.log(result);
+		await authStore.fetchCurrentUser(true);
+		router.push('/account/security');
 	}
-	catch (error) {
-		console.log(error);
+	catch (error: any) {
+		toast.add({
+			title: useT('active2Fa'),
+			description: error.response._data.message,
+			timeout: 5000,
+			color: 'red',
+		});
 	}
 	finally {
 		enable2faLoading.value = false;
 	}
 };
 
-const identificationId = ref<Identification>();
-const identificationLoading = ref<boolean>(false);
-const getIdentification = async () => {
-	if (identificationLoading.value) return;
-	identificationLoading.value = true;
-	try {
-		const { result } = await securityRepo.identificationSend({ sendType: String(SendType.Email) });
+const resendCode = async () => {
+	const resendCodeId = await getResendCode(SendType.Email, enable2faDto.value.verificationId);
+	if (resendCodeId) {
+		enable2faDto.value.verificationId = resendCodeId;
+	}
+};
 
-		identificationId.value = result as Identification;
-		enable2faDto.value.verificationId = identificationId.value.verificationId;
-	}
-	catch (error) {
-		console.log(error);
-	}
-	finally {
-		identificationLoading.value = false;
+const getIdentificationCode = async () => {
+	const codeId = await getCode(SendType.Email);
+	if (codeId) {
+		enable2faDto.value.verificationId = codeId;
 	}
 };
 
 onMounted(async () => {
-	await getIdentification();
+	await getIdentificationCode();
 });
 </script>

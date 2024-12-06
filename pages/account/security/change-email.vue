@@ -121,7 +121,6 @@ definePageMeta({
 });
 
 const { $api } = useNuxtApp();
-
 const securityRepo = securityRepository($api);
 const systemRepo = systemRepository($api);
 const router = useRouter();
@@ -162,7 +161,7 @@ const submit = async () => {
 		await securityRepo.changeEmail(changeEmailDto.value);
 
 		await authStore.fetchCurrentUser(true);
-		router.push('account/security');
+		router.push('/account/security');
 	}
 	catch (error) {
 		console.log(error);
@@ -249,7 +248,9 @@ const getSystemMiniRoutine = async () => {
 
 onMounted(async () => {
 	await checkMobileExist();
-	await getIdentificationCode();
-	await getSystemMiniRoutine();
+	await Promise.all([
+		getIdentificationCode(),
+		getSystemMiniRoutine(),
+	]);
 });
 </script>

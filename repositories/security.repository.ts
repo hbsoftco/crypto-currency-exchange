@@ -5,6 +5,7 @@ import type { CommonResponse, KeyValueResponse } from '~/types/definitions/commo
 import type {
 	ChangeEmailDto,
 	ChangePhoneDto,
+	Disable2faDto,
 	Enable2faDto,
 	IdentificationDto,
 	IdentificationResendDto,
@@ -22,7 +23,7 @@ type SecurityRepository = {
 	// 2fa
 	generate2fa: () => Promise<SecurityResponse>;
 	enable2fa: (dto: Enable2faDto) => Promise<CommonResponse>;
-	disable2fa: (dto: Enable2faDto) => Promise<CommonResponse>;
+	disable2fa: (dto: Disable2faDto) => Promise<CommonResponse>;
 	// Identification
 	identificationSend: (dto: IdentificationDto) => Promise<SecurityResponse>;
 	identificationSendNew: (dto: IdentificationDto) => Promise<SecurityResponse>;
@@ -94,8 +95,8 @@ export const securityRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): S
 
 		return response;
 	},
-	async disable2fa(dto: Enable2faDto): Promise<CommonResponse> {
-		const url = `/v1/security/2fa/enable`;
+	async disable2fa(dto: Disable2faDto): Promise<CommonResponse> {
+		const url = `/v1/security/2fa/disable`;
 		const response = await fetch<CommonResponse>(`${url}`, {
 			noAuth: false,
 			method: 'POST',

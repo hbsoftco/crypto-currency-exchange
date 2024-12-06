@@ -35,6 +35,7 @@
 				variant="ghost"
 				color="red"
 				class="font-bold text-sm border border-red-400"
+				to="/account/security/2fa/disable"
 			>
 				{{ $t("remove") }}
 			</UButton>
@@ -46,7 +47,7 @@
 				class="font-bold text-sm text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark"
 				@click="checkEmail()"
 			>
-				{{ $t("adjust") }}
+				{{ $t("activeItem") }}
 			</UButton>
 		</div>
 		<!-- Login2FA -->

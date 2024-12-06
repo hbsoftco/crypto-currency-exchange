@@ -73,9 +73,9 @@ const tips = ref<KeyValue[]>();
 const faqs = ref<KeyValue[]>();
 const helps = ref<KeyValue[]>();
 const miniRoutine = ref<MiniRoutine>();
-const miniRoutineLoading = ref<boolean>(false);
+const miniRoutineLoading = ref<boolean>(true);
 const getSystemMiniRoutine = async () => {
-	if (miniRoutineLoading.value) return;
+	miniRoutineLoading.value = true;
 	miniRoutineLoading.value = true;
 	try {
 		const { result } = await systemRepo.getSystemMiniRoutine({ tagType: TagType.V2FA });

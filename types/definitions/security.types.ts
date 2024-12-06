@@ -33,6 +33,12 @@ type Enable2faDto = {
 	loginPassword: string;
 };
 
+type Disable2faDto = {
+	verificationId: number;
+	verificationCode: string;
+	loginPassword: string;
+};
+
 type GuidanceStep = {
 	title: string;
 	description: string;
@@ -102,6 +108,7 @@ export type {
 	Notice,
 	Generate2fa,
 	Enable2faDto,
+	Disable2faDto,
 	GuidanceStep,
 	IdentificationDto,
 	IdentificationResendDto,
