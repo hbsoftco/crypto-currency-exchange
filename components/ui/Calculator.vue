@@ -47,21 +47,22 @@
 			dir="rtl"
 			@item-selected="getSecondSelectedCurrency"
 		/>
-		<div
-			v-for="trade in tradeItems"
-			:key="trade.market.id"
-			class="my-2 mx-1"
-		>
-			<span class="mr-0.5">{{ useNumber(1) }}</span>
-			<span>{{ trade.base.currency.cSymbol }}</span>
-			<span class="mx-1">≈</span>
-			<span class="mr-0.5">{{ useNumber(priceFormat(trade.market.price)) }} </span>
-			<span>{{ trade.quote.currency.cSymbol }}</span>
+		<div class="my-2 h-6">
+			<div
+				v-for="trade in tradeItems"
+				:key="trade.market.id"
+				class="mx-1"
+			>
+				<span class="mr-0.5">{{ useNumber(1) }}</span>
+				<span>{{ trade.base.currency.cSymbol }}</span>
+				<span class="mx-1">≈</span>
+				<span class="mr-0.5">{{ useNumber(priceFormat(trade.market.price)) }} </span>
+				<span>{{ trade.quote.currency.cSymbol }}</span>
+			</div>
 		</div>
 		<UButton
-			v-if="tradeItems.length"
-			:to="checkPathLink(`/fast-trade?market=${splitMarket(tradeItems[0].base.currency.cSymbol + tradeItems[0].quote.currency.cSymbol)}`, false)"
-			class="flex justify-center w-full h-12 my-4 bg-primary-yellow-light dark:bg-primary-yellow-dark shadow-none border border-primary-yellow"
+			:to="tradeItems.length ? checkPathLink(`/fast-trade?market=${splitMarket(tradeItems[0].base.currency.cSymbol + tradeItems[0].quote.currency.cSymbol)}`, false): ''"
+			class="flex justify-center h-12 my-3 w-full bg-primary-yellow-light dark:bg-primary-yellow-dark shadow-none border border-primary-yellow"
 		>
 			<span class="text-base font-extrabold">{{ $t('trade') }}</span>
 		</UButton>

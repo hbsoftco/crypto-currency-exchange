@@ -4,6 +4,20 @@
 			<span class="text-2xl md:text-[2.5rem] font-black">{{ $t("latestCurrencies") }}</span>
 		</h3>
 
+		<div v-if="firstHalf?.length">
+			<InfiniteLooper
+				:speed="20"
+				direction="right"
+			>
+				<Currency
+					v-for="(item, index) in firstHalf"
+					:key="`top-${index}`"
+					:market="item"
+					:data="item"
+				/>
+			</InfiniteLooper>
+		</div>
+
 		<div
 			v-if="firstHalf?.length"
 			class="currency-row overflow-hidden"
@@ -45,6 +59,7 @@
 
 <script setup lang="ts">
 import Currency from './Currency.vue';
+import InfiniteLooper from './InfiniteLooper.vue';
 
 import { marketRepository } from '~/repositories/market.repository';
 import type { MarketL21 } from '~/types/definitions/market.types';
