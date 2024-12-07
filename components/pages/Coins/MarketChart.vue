@@ -76,9 +76,8 @@
 </template>
 
 <script setup lang="ts">
-import { bigNumber } from '~/utils/big-number';
+import { bigNumber, priceFormat } from '~/utils/helpers';
 import { formatDateToPersian } from '~/utils/format-date-to-persian';
-import { priceFormat } from '~/utils/price-format';
 import type { MarketBrief } from '~/types/definitions/market.types';
 import { spotRepository } from '~/repositories/spot.repository';
 import type { KLineParams } from '~/types/definitions/spot.types';

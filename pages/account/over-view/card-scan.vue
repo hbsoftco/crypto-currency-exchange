@@ -101,7 +101,7 @@ import IconPhone from '~/assets/svg-icons/profile/account/phone.svg';
 import { userRepository } from '~/repositories/user.repository';
 import type { Level } from '~/types/response/user.types';
 import type { GetTraderBriefParams } from '~/types/base.types';
-import { getValueByKey } from '~/utils/find-value-by-key';
+import { getValueByKey } from '~/utils/helpers';
 
 const profileStore = useProfileStore();
 

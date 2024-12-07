@@ -99,7 +99,7 @@ import ImportantPoint from '~/components/pages/Site/Account/OverView/ImportantPo
 import { userRepository } from '~/repositories/user.repository';
 import type { getMiniRoutineParams, GetTraderBriefParams } from '~/types/base.types';
 import type { Level } from '~/types/response/user.types';
-import { getValueByKey } from '~/utils/find-value-by-key';
+import { getValueByKey } from '~/utils/helpers';
 import TextareaFieldInput from '~/components/forms/TextareaFieldInput.vue';
 import type { SetCardPrintDto } from '~/types/dto/user.dto';
 import type { Help } from '~/types/response/common.types';

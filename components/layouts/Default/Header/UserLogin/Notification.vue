@@ -115,7 +115,7 @@
 </template>
 
 <script setup lang="ts">
-import { sanitizedHtml } from '~/utils/html-sanitizer';
+import { sanitizedHtml } from '~/utils/helpers';
 import IconNotification from '~/assets/svg-icons/menu/notification.svg';
 import IconNotificationFill from '~/assets/svg-icons/menu/notification-fill.svg';
 import IconArrowLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';

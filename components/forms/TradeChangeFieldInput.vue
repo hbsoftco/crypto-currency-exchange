@@ -120,7 +120,7 @@
 <script setup lang="ts">
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
-import { priceFormat } from '~/utils/price-format';
+import { priceFormat } from '~/utils/helpers';
 
 interface Props {
 	id: string;

@@ -94,8 +94,7 @@
 
 <script setup lang="ts">
 import { splitMarket } from '~/utils/split-market';
-import { priceFormat } from '~/utils/price-format';
-import { formatBigNumber } from '~/utils/format-big-number';
+import { priceFormat, formatBigNumber } from '~/utils/helpers';
 import IconStar from '~/assets/svg-icons/market/star.svg';
 import IconStarFill from '~/assets/svg-icons/market/fill-star.svg';
 import type { SocketSpotData } from '~/types/socket.types';

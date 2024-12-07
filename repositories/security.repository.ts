@@ -12,6 +12,7 @@ import type {
 	NoticeListParams,
 	SecurityListResponse,
 	SecurityResponse,
+	SetPasswordDto,
 } from '~/types/definitions/security.types';
 
 type SecurityRepository = {
@@ -28,9 +29,10 @@ type SecurityRepository = {
 	identificationSend: (dto: IdentificationDto) => Promise<SecurityResponse>;
 	identificationSendNew: (dto: IdentificationDto) => Promise<SecurityResponse>;
 	identificationResend: (dto: IdentificationResendDto) => Promise<SecurityResponse>;
-	// Change phone and email
+	// Changes user data
 	changePhone: (dto: ChangePhoneDto) => Promise<CommonResponse>;
 	changeEmail: (dto: ChangeEmailDto) => Promise<CommonResponse>;
+	storeSetPassword: (dto: SetPasswordDto) => Promise<CommonResponse>;
 
 };
 
@@ -136,7 +138,7 @@ export const securityRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): S
 
 		return response;
 	},
-	// Change phone and email
+	// Changes user data
 	async changePhone(dto: ChangePhoneDto): Promise<CommonResponse> {
 		const url = `/v1/security/alter/mobile_set`;
 		const { v2FACode, ...rest } = dto;
@@ -159,6 +161,16 @@ export const securityRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): S
 			noAuth: false,
 			method: 'POST',
 			body,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async storeSetPassword(dto: SetPasswordDto): Promise<CommonResponse> {
+		const url = `/v1/security/alter/password_set`;
+		const response = await fetch<CommonResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body: dto,
 		} as CustomNitroFetchOptions);
 
 		return response;

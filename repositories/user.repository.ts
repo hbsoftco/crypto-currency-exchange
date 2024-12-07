@@ -49,7 +49,6 @@ import type {
 	SetEmailDto,
 	SetLiveDto,
 	SetMobileDto,
-	SetPasswordDto,
 	SetPinCodeDto } from '~/types/dto/user.dto';
 import type { GetCountryListRes } from '~/types/response/common.types';
 import type { GetCommissionRes, GetInvitationListRes } from '~/types/response/referral.types';
@@ -98,7 +97,6 @@ type UserRepository = {
 	getTypeList: (params: getTypeListParams) => Promise<KeyValueResponse>;
 	setEmail: (dto: SetEmailDto) => Promise<CommonResponse>;
 	storeSetMobile: (dto: SetMobileDto) => Promise<CommonResponse>;
-	storeSetPassword: (dto: SetPasswordDto) => Promise<CommonResponse>;
 	storeSetPinCode: (dto: SetPinCodeDto) => Promise<CommonResponse>;
 	storeSetAntiPhishing: (dto: SetAntiPhishingDto) => Promise<CommonResponse>;
 	getHolder: (params: GetTraderBriefParams) => Promise<GetHolderRes>;
@@ -540,17 +538,6 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 	},
 	async storeSetMobile(dto: SetMobileDto): Promise<CommonResponse> {
 		const url = `/v1/user/alter/mobile_set`;
-		const response = await fetch<CommonResponse>(`${url}`, {
-			noAuth: false,
-			apiName: url,
-			method: 'POST',
-			body: dto,
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async storeSetPassword(dto: SetPasswordDto): Promise<CommonResponse> {
-		const url = `/v1/user/alter/password_set`;
 		const response = await fetch<CommonResponse>(`${url}`, {
 			noAuth: false,
 			apiName: url,

@@ -264,7 +264,7 @@
 </template>
 
 <script setup lang="ts">
-import { priceFormat } from '~/utils/price-format';
+import { priceFormat } from '~/utils/helpers';
 import IconCopy from '~/assets/svg-icons/menu/copy.svg';
 import IconQrCode from '~/assets/svg-icons/profile/qrCode.svg';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';

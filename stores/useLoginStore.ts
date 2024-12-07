@@ -1,7 +1,7 @@
 import { authRepository } from '~/repositories/auth.repository';
 import type { Check2faCodeDto, CheckCodeDto, LoginByEmailDto, LoginByMobileDto, LoginTabType, QrCodeGenerateParams, ResendVerificationParams } from '~/types/definitions/auth.types';
 import type { QrCodeInput } from '~/types/definitions/common.types';
-import { normalizeMobile } from '~/utils/normalize-mobile';
+import { normalizeMobile } from '~/utils/helpers';
 
 export const useLoginStore = defineStore('login', () => {
 	const { $api } = useNuxtApp();

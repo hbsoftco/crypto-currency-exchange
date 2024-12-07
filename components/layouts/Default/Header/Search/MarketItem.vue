@@ -45,7 +45,7 @@
 <script setup lang="ts">
 import type { MarketBrief, MarketL51Item } from '~/types/definitions/market.types';
 import type { SocketSpotData } from '~/types/socket.types';
-import { priceFormat } from '~/utils/price-format';
+import { priceFormat } from '~/utils/helpers';
 import { MarketType } from '~/utils/enums/market.enum';
 import ChangeIndicator from '~/components/ui/ChangeIndicator.vue';
 

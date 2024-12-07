@@ -33,7 +33,7 @@
 					</div>
 					<div class="my-8">
 						<SideGuideBox
-							v-if="!miniRoutineLoading"
+							:loading="miniRoutineLoading"
 							:tips="tips || []"
 							:faqs="faqs || []"
 							:helps="helps || []"

@@ -65,7 +65,7 @@
 					</div>
 					<div class="my-8">
 						<SideGuideBox
-							v-if="!miniRoutineLoading"
+							:loading="miniRoutineLoading"
 							:tips="tips || []"
 							:faqs="faqs || []"
 							:helps="helps || []"
@@ -89,7 +89,7 @@ import type { MiniRoutine } from '~/types/definitions/system.types';
 import type { Disable2faDto } from '~/types/definitions/security.types';
 import OtpFieldInput from '~/components/forms/OtpFieldInput.vue';
 import { SendType } from '~/utils/enums/user.enum';
-import { getValueByKey } from '~/utils/find-value-by-key';
+import { getValueByKey } from '~/utils/helpers';
 import { obfuscateEmail } from '~/utils/obfuscate-email';
 import { securityRepository } from '~/repositories/security.repository';
 

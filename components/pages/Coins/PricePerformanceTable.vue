@@ -201,13 +201,32 @@ watch(() => props.socketData, (newData) => {
 	}
 });
 
-const changePrice = (price: string | number, priceChangePercent: string | number) => {
-	const rawValue = (parseFloat(String(price)) * parseFloat(String(priceChangePercent))) / 100;
+const changePrice = (indexPrice: string | number, priceChangePercent: string | number) => {
+	const percentage = parseFloat(String(priceChangePercent)) / 100;
+	const index = parseFloat(String(indexPrice));
+
+	let x: number;
+	let k: number;
+
+	if (percentage > 0) {
+		x = index / (percentage + 1);
+		k = index - x;
+	}
+	else if (percentage < 0) {
+		x = index / (1 - percentage);
+		k = x - index;
+	}
+	else {
+		x = index;
+		k = 0;
+	}
 
 	const decimalPlaces = props.tickSize.includes('.')
 		? props.tickSize.split('.')[1].length
 		: 0;
 
-	return Number(rawValue.toFixed(decimalPlaces));
+	const rounded = k.toFixed(decimalPlaces);
+
+	return rounded;
 };
 </script>

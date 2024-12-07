@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { priceFormat } from '~/utils/price-format';
+import { priceFormat } from '~/utils/helpers';
 import { splitMarket } from '~/utils/split-market';
 import type { MarketL21 } from '~/types/definitions/market.types';
 

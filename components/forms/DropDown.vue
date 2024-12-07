@@ -56,7 +56,7 @@
 
 <script setup lang="ts">
 import IconArrowDown from '~/assets/svg-icons/arrow-down-red.svg';
-import type { KeyValue } from '~/types/base.types';
+import type { KeyValue } from '~/types/definitions/common.types';
 import type { NetBlockchainItem } from '~/types/response/currency.types';
 
 interface PropsDefinition {

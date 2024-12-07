@@ -86,7 +86,7 @@
 </template>
 
 <script setup lang="ts">
-import { getValueByKey } from '~/utils/find-value-by-key';
+import { getValueByKey } from '~/utils/helpers';
 import IconClose from '~/assets/svg-icons/close.svg';
 import OtpFieldInput from '~/components/forms/OtpFieldInput.vue';
 
@@ -104,10 +104,4 @@ const emit = defineEmits<EmitDefinition>();
 const closeModal = async (value: boolean) => {
 	emit('close', value);
 };
-
-// const isAssetVisible = ref(false);
-
-// const toggleAssetVisibility = () => {
-// 	isAssetVisible.value = !isAssetVisible.value;
-// };
 </script>

@@ -313,7 +313,7 @@ import { useNumber } from '~/composables/useNumber';
 import ModalTransactionDetail from '~/components/pages/Spot/List/ModalTransactionDetail.vue';
 import { spotRepository } from '~/repositories/spot.repository';
 import type { OrderFiltersType, Trade, TradeListParams } from '~/types/definitions/spot.types';
-import { priceFormat } from '~/utils/price-format';
+import { priceFormat } from '~/utils/helpers';
 import type { UPagination } from '#build/components';
 
 type PropsDefinition = {

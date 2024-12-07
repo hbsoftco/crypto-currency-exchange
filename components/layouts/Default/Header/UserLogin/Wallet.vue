@@ -107,7 +107,7 @@ import IconOverView from '~/assets/svg-icons/menu/overview.svg';
 import IconAssets from '~/assets/svg-icons/menu/quick-menu/quick-trade.svg';
 import IconHistory from '~/assets/svg-icons/menu/quick-menu/transaction-history.svg';
 import IconPortfolio from '~/assets/svg-icons/menu/quick-menu/portfolio.svg';
-import { priceFormat } from '~/utils/price-format';
+import { priceFormat } from '~/utils/helpers';
 
 const assetStore = useAssetStore();
 const assetTotal = ref();

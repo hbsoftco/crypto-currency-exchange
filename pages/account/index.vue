@@ -255,14 +255,13 @@ import IconGift from '~/assets/svg-icons/gift.svg';
 import IconEducation from '~/assets/svg-icons/education.svg';
 import IconPencil from '~/assets/svg-icons/pencil.svg';
 import IconCopy from '~/assets/svg-icons/menu/copy.svg';
-import { getValueByKey } from '~/utils/find-value-by-key';
+import { getValueByKey, priceFormat } from '~/utils/helpers';
 import { useNumber } from '~/composables/useNumber';
 import { formatDateToIranTime } from '~/utils/date-time';
 import { userRepository } from '~/repositories/user.repository';
 import type { ReferralBriefItem } from '~/types/response/user.types';
 import NickNameModal from '~/components/pages/Site/Account/OverView/NickNameModal.vue';
 import type { UploadAvatarDto } from '~/types/definitions/user.types';
-import { priceFormat } from '~/utils/price-format';
 
 definePageMeta({
 	layout: 'account',

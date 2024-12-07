@@ -129,7 +129,7 @@ import TreeNode from '~/components/pages/Site/Support/TreeNode.vue';
 import { helpRepository } from '~/repositories/help.repository';
 import SearchCrypto from '~/components/forms/SearchCrypto.vue';
 import { Language } from '~/utils/enums/language.enum';
-import { sanitizedHtml } from '~/utils/html-sanitizer';
+import { sanitizedHtml } from '~/utils/helpers';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
 import type { SearchItem } from '~/types/response/help.types';
 import type { GetFAQListParams, GetRootListParams } from '~/types/base.types';

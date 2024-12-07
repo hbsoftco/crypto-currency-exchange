@@ -99,7 +99,7 @@
 </template>
 
 <script setup lang="ts">
-import { priceFormat } from '~/utils/price-format';
+import { priceFormat } from '~/utils/helpers';
 import { useNumber } from '~/composables/useNumber';
 import CoinFieldInput from '~/components/forms/CoinFieldInput.vue';
 

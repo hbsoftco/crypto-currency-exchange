@@ -92,7 +92,7 @@
 <script setup lang="ts">
 import IconAnchor from '~/assets/svg-icons/spot/anchor.svg';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
-import { sanitizedHtml } from '~/utils/html-sanitizer';
+import { sanitizedHtml } from '~/utils/helpers';
 
 const route = useRoute();
 const id = String(route.params.id);

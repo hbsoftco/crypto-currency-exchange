@@ -260,7 +260,7 @@ import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
 import { spotRepository } from '~/repositories/spot.repository';
 import type { Trade, TradeListParams } from '~/types/definitions/spot.types';
 import { AssetType } from '~/utils/enums/asset.enum';
-import { priceFormat } from '~/utils/price-format';
+import { priceFormat } from '~/utils/helpers';
 import { formatDateToIranTime } from '~/utils/date-time';
 
 const { $api } = useNuxtApp();

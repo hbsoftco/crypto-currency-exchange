@@ -15,7 +15,7 @@
 		<span
 			class="py-1 ml-1"
 			:class="[classes]"
-		>{{ useNumber(formattedChange) }}</span>
+		>{{ formattedChange }}</span>
 		<span
 			v-if="posText"
 			class="mx-1"
@@ -25,10 +25,10 @@
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
+import { summarizeBigNumber } from '~/utils/helpers';
 
 interface PropsDefinition {
-	change: number;
+	change: number | string;
 	iconName?: string;
 	preText?: string;
 	posText?: string;
@@ -45,20 +45,20 @@ const props = withDefaults(defineProps<PropsDefinition>(), {
 });
 
 const iconClass = computed(() => {
-	return props.change > 0 ? 'text-accent-green' : 'text-accent-red';
+	return Number(props.change) > 0 ? 'text-accent-green' : 'text-accent-red';
 });
 
 const textClass = computed(() => {
-	return props.change > 0 ? 'text-white md:text-accent-green' : 'text-white md:text-accent-red';
+	return Number(props.change) > 0 ? 'text-white md:text-accent-green' : 'text-white md:text-accent-red';
 });
 
 const containerClass = computed(() => {
-	return props.change > 0 ? 'bg-accent-green md:bg-transparent rounded-md' : 'bg-accent-red md:bg-transparent rounded-md';
+	return Number(props.change) > 0 ? 'bg-accent-green md:bg-transparent rounded-md' : 'bg-accent-red md:bg-transparent rounded-md';
 });
 
 const formattedChange = computed(() => {
-	const change = props.change;
-	return props.change > 0
+	const change = summarizeBigNumber(String(props.change));
+	return Number(props.change) > 0
 		? `+${change}${props.showPercent ? '%' : ''}`
 		: `${change}${props.showPercent ? '%' : ''}`;
 });

@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { getValueByKey } from '~/utils/find-value-by-key';
+import { getValueByKey } from '~/utils/helpers';
 
 const profileStore = useProfileStore();
 const securityLevelId = getValueByKey(profileStore.userProfile, 'SEC_LVL_ID');

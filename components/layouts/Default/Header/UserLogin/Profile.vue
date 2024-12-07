@@ -293,7 +293,7 @@ import IconTopUsers from '~/assets/svg-icons/menu/quick-menu/top-users.svg';
 import IconWhiteList from '~/assets/svg-icons/menu/white-list.svg';
 import IconSetting from '~/assets/svg-icons/menu/setting.svg';
 import IconExit from '~/assets/svg-icons/menu/exit.svg';
-import { getValueByKey } from '~/utils/find-value-by-key';
+import { getValueByKey } from '~/utils/helpers';
 
 const textRef = ref<HTMLElement | null>(null);
 const authStore = useAuthStore();

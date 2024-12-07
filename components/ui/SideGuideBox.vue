@@ -1,5 +1,83 @@
 <template>
-	<div class="p-6 w-full md:w-[25.5rem] bg-background-light dark:bg-background-dark rounded-md">
+	<div
+		v-if="loading"
+		class="p-6 w-full md:w-[25.5rem] bg-background-light dark:bg-background-dark rounded-md"
+	>
+		<div class="flex">
+			<div class="w-1 h-6 ml-1 bg-primary-yellow-light dark:bg-primary-yellow-dark" />
+			<h2 class="text-base font-bold text-black dark:text-white">
+				{{ $t('importantPoints') }}
+			</h2>
+		</div>
+
+		<section>
+			<div
+				v-for="skeleton in [1, 2]"
+				:key="skeleton"
+				class="my-6"
+			>
+				<p class="mt-1 text-sm font-normal text-justify">
+					<USkeleton class="h-4 w-24" />
+				</p>
+			</div>
+		</section>
+
+		<section>
+			<div class="flex justify-between mt-10 mb-6">
+				<div class="flex">
+					<div class="w-1 h-6 ml-1 bg-primary-yellow-light dark:bg-primary-yellow-dark" />
+					<h3 class="text-base font-bold text-black dark:text-white">
+						{{ $t('FAQ') }}
+					</h3>
+				</div>
+				<ULink
+					class="text-xs font-normal"
+					to="/help-center"
+				>
+					{{ $t('showMore') }}
+				</ULink>
+			</div>
+			<div>
+				<div
+					v-for="skeleton in [1, 2]"
+					:key="skeleton"
+					class="py-2 text-sm font-normal"
+				>
+					<USkeleton class="h-4 w-24" />
+				</div>
+			</div>
+		</section>
+
+		<section>
+			<div class="flex justify-between mt-10 mb-6">
+				<div class="flex">
+					<div class="w-1 h-6 ml-1 bg-primary-yellow-light dark:bg-primary-yellow-dark" />
+					<h3 class="text-base font-bold text-black dark:text-white">
+						{{ $t('guid') }}
+					</h3>
+				</div>
+				<ULink
+					class="text-xs font-normal"
+					to="/help-center"
+				>
+					{{ $t('showMore') }}
+				</ULink>
+			</div>
+			<div>
+				<div
+					v-for="skeleton in [1, 2]"
+					:key="skeleton"
+					class="py-2 text-sm font-normal"
+				>
+					<USkeleton class="h-4 w-24" />
+				</div>
+			</div>
+		</section>
+	</div>
+	<div
+		v-else
+		class="p-6 w-full md:w-[25.5rem] bg-background-light dark:bg-background-dark rounded-md"
+	>
 		<div class="flex">
 			<div class="w-1 h-6 ml-1 bg-primary-yellow-light dark:bg-primary-yellow-dark" />
 			<h2 class="text-base font-bold text-black dark:text-white">
@@ -91,6 +169,7 @@ interface PropsDefinition {
 	tips: KeyValue[];
 	helps: KeyValue[];
 	image?: string;
+	loading: boolean;
 }
 
 defineProps<PropsDefinition>();

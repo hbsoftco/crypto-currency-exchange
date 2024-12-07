@@ -87,7 +87,7 @@
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core';
 
-import { normalizeMobile } from '~/utils/normalize-mobile';
+import { normalizeMobile } from '~/utils/helpers';
 import SlideCaptcha from '~/components/ui/SlideCaptcha.vue';
 import ReferralFieldInput from '~/components/forms/ReferralFieldInput.vue';
 import { complexPassword } from '~/utils/validation-rules';

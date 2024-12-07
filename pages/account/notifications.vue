@@ -99,7 +99,7 @@
 </template>
 
 <script setup lang="ts">
-import { sanitizedHtml } from '~/utils/html-sanitizer';
+import { sanitizedHtml } from '~/utils/helpers';
 import { formatDateToIranTime } from '~/utils/date-time';
 import IconMessage from '~/assets/svg-icons/menu/message.svg';
 import { useNumber } from '~/composables/useNumber';

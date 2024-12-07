@@ -1,8 +1,6 @@
 import { authRepository } from '~/repositories/auth.repository';
-import type { CheckForgetPasswordDto, InitForgetPasswordDto, ResetPasswordDto } from '~/types/forget-password.types';
-import type { ResendVerificationParams } from '~/types/verification.types';
-import { detectEmail } from '~/utils/detect-email';
-import { normalizeMobile } from '~/utils/normalize-mobile';
+import type { CheckForgetPasswordDto, InitForgetPasswordDto, ResendVerificationParams, ResetPasswordDto } from '~/types/definitions/auth.types';
+import { detectEmail, normalizeMobile } from '~/utils/helpers';
 
 export const useForgetPasswordStore = defineStore('forgetPassword', () => {
 	const { $api } = useNuxtApp();

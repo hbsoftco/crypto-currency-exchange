@@ -154,7 +154,7 @@
 </template>
 
 <script setup lang="ts">
-import { formatBigNumber } from '~/utils/format-big-number';
+import { formatBigNumber } from '~/utils/helpers';
 import type { Currency } from '~/types/definitions/currency.types';
 
 interface PropsDefinition {

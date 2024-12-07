@@ -90,10 +90,10 @@
 					</div>
 					<div class="my-8">
 						<SideGuideBox
-							v-if="!miniRoutineLoading"
 							:tips="tips || []"
 							:faqs="faqs || []"
 							:helps="helps || []"
+							:loading="miniRoutineLoading"
 						/>
 					</div>
 				</div>
@@ -173,7 +173,7 @@ const submit = async () => {
 
 const mobileExist = ref<boolean>(false);
 const checkMobileExist = async () => {
-	await authStore.fetchCurrentUser(true);
+	await authStore.fetchCurrentUser();
 
 	changeEmailRules.v2FACode = authStore.login2faStatus ? { } : { required: validations.required };
 

@@ -437,7 +437,7 @@ import IconGift from '~/assets/svg-icons/profile/account/gift.svg';
 import IconCoffee from '~/assets/svg-icons/profile/account/coffee.svg';
 import IconSymbol from '~/assets/svg-icons/profile/account/symbol.svg';
 import type { levelList } from '~/types/response/user.types';
-import { getValueByKey } from '~/utils/find-value-by-key';
+import { getValueByKey } from '~/utils/helpers';
 import DepositModal from '~/components/pages/Site/Wallet/Menu/DepositModal.vue';
 
 interface PropsDefinition {

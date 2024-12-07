@@ -54,7 +54,7 @@
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
 import type { MarketL47Item } from '~/types/definitions/market.types';
-import { priceFormat } from '~/utils/price-format';
+import { priceFormat } from '~/utils/helpers';
 import { splitMarket } from '~/utils/split-market';
 
 interface Props {

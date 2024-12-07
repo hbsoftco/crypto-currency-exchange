@@ -1,7 +1,7 @@
 import { authRepository } from '~/repositories/auth.repository';
 import type { SignupByEmailDto, SignupByMobileDto } from '~/types/dto/signup.dto';
 import type { CheckCodeDto, ResendVerificationParams } from '~/types/verification.types';
-import { normalizeMobile } from '~/utils/normalize-mobile';
+import { normalizeMobile } from '~/utils/helpers';
 
 export const useSignupStore = defineStore('Signup', () => {
 	const { $api } = useNuxtApp();

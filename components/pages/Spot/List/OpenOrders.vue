@@ -342,7 +342,7 @@ import { SearchMode } from '~/utils/enums/order.enum';
 import { spotRepository } from '~/repositories/spot.repository';
 import type { Order, OrderFiltersType, OrderListParams } from '~/types/definitions/spot.types';
 import IconDelete from '~/assets/svg-icons/profile/Delete.svg';
-import { priceFormat } from '~/utils/price-format';
+import { priceFormat } from '~/utils/helpers';
 import type { UPagination } from '#build/components';
 
 type PropsDefinition = {

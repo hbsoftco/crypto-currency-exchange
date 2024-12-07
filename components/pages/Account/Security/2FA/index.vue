@@ -158,7 +158,7 @@
 </template>
 
 <script setup lang="ts">
-import { getValueByKey } from '~/utils/find-value-by-key';
+import { getValueByKey } from '~/utils/helpers';
 
 const router = useRouter();
 const toast = useToast();

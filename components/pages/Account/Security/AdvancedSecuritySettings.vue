@@ -73,9 +73,10 @@
 				</p>
 			</div>
 			<UButton
+				size="sm"
+				variant="ghost"
+				class="font-bold text-sm text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark"
 				to="/account/security/pin-code"
-				color="gray"
-				class="text-black dark:text-white text-sm font-normal bg-hover-light dark:bg-hover-dark shadow-none border border-subtle-text-50"
 			>
 				{{ $t("adjust") }}
 			</UButton>
@@ -100,9 +101,10 @@
 				</p>
 			</div>
 			<UButton
+				size="sm"
+				variant="ghost"
+				class="font-bold text-sm text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark"
 				to="/account/security/manage-white-list"
-				color="gray"
-				class="text-black dark:text-white text-sm font-normal bg-hover-light dark:bg-hover-dark shadow-none border border-subtle-text-50"
 			>
 				{{ $t("adjust") }}
 			</UButton>
@@ -125,9 +127,10 @@
 				</p>
 			</div>
 			<UButton
+				size="sm"
+				variant="ghost"
+				class="font-bold text-sm text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark"
 				to="/account/security/change-password"
-				color="gray"
-				class="text-black dark:text-white text-sm font-normal bg-hover-light dark:bg-hover-dark shadow-none border border-subtle-text-50"
 			>
 				{{ $t("toChange") }}
 			</UButton>

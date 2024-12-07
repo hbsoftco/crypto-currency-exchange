@@ -72,7 +72,7 @@
 
 <script setup lang="ts">
 import type { Currency } from '~/types/definitions/currency.types';
-import { priceFormat } from '~/utils/price-format';
+import { priceFormat } from '~/utils/helpers';
 
 interface PropsDefinition {
 	currencyDetail: Currency | null;

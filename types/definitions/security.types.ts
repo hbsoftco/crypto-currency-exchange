@@ -101,6 +101,20 @@ type ChangeEmailDto = {
 	v2FACode: string | null;
 };
 
+type SetPasswordDto = {
+	verificationId: number | null;
+	verificationCode: string;
+	v2FACode: string | null;
+	passwordOld: string;
+	passwordNew: string;
+	rePasswordNew: string;
+};
+
+type DetermineOtpType = {
+	exist: 'both' | 'email' | 'mobile';
+	type: number;
+};
+
 export type {
 	SecurityListResponse,
 	SecurityResponse,
@@ -115,4 +129,6 @@ export type {
 	Identification,
 	ChangePhoneDto,
 	ChangeEmailDto,
+	SetPasswordDto,
+	DetermineOtpType,
 };

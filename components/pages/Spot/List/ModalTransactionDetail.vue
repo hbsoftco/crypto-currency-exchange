@@ -383,7 +383,7 @@ import { useNumber } from '~/composables/useNumber';
 import type { Trade } from '~/types/definitions/spot.types';
 import { formatDateToIranTime } from '~/utils/date-time';
 import { splitMarket } from '~/utils/split-market';
-import { priceFormat } from '~/utils/price-format';
+import { priceFormat } from '~/utils/helpers';
 import IconArrowRight from '~/assets/svg-icons/menu/arrow-right.svg';
 
 interface PropsDefinition {

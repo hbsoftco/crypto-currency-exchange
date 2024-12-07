@@ -91,7 +91,7 @@ import type { DeviceItem } from '~/types/response/user.types';
 import type { getDeviceListParams } from '~/types/base.types';
 import { useNumber } from '~/composables/useNumber';
 import { formatDateToIranTime } from '~/utils/date-time';
-import { isValidIPv6, isValidIPv4 } from '~/utils/valid-ip';
+import { isValidIPv6, isValidIPv4 } from '~/utils/helpers';
 
 definePageMeta({
 	layout: 'account-single',

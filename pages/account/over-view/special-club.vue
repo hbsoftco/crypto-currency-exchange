@@ -128,9 +128,8 @@
 import { userRepository } from '~/repositories/user.repository';
 import type { Level, levelList } from '~/types/response/user.types';
 import { useNumber } from '~/composables/useNumber';
-import { priceFormat } from '~/utils/price-format';
+import { priceFormat, getValueByKey } from '~/utils/helpers';
 import type { GetTraderBriefParams } from '~/types/base.types';
-import { getValueByKey } from '~/utils/find-value-by-key';
 import CardLevel from '~/components/pages/Site/Account/OverView/CardLevel.vue';
 
 definePageMeta({

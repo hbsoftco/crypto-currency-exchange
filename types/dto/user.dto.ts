@@ -64,14 +64,6 @@ type SetMobileDto = {
 	v2FACode: string;
 };
 
-type SetPasswordDto = {
-	verificationId: string;
-	verificationCode: string;
-	v2FACode?: string;
-	passwordOld: string;
-	passwordNew: string;
-};
-
 type SetPinCodeDto = {
 	verificationId: string;
 	verificationCode: string;
@@ -125,7 +117,6 @@ export type {
 	SetLiveDto,
 	SetEmailDto,
 	SetMobileDto,
-	SetPasswordDto,
 	SetPinCodeDto,
 	SetAntiPhishingDto,
 	SetCardPrintDto,

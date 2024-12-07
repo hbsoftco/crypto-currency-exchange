@@ -72,7 +72,7 @@
 import TradeFieldInput from '~/components/forms/TradeFieldInput.vue';
 import IconChange from '~/assets/svg-icons/market/change.svg';
 import { useNumber } from '~/composables/useNumber';
-import { priceFormat } from '~/utils/price-format';
+import { priceFormat } from '~/utils/helpers';
 import { splitMarket } from '~/utils/split-market';
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
 import type { TradeOption } from '~/types/definitions/spot.types';

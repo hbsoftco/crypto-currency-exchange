@@ -57,7 +57,7 @@
 <script setup lang="ts">
 import IconArrowLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';
 import { useNumber } from '~/composables/useNumber';
-import { priceFormat } from '~/utils/price-format';
+import { priceFormat } from '~/utils/helpers';
 
 const colorMode = useColorMode();
 const isDark = computed({

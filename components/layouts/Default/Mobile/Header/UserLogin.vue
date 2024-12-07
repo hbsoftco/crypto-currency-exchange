@@ -511,7 +511,7 @@ import IconLinkedin from '~/assets/svg-icons/social/linkedin.svg';
 import IconInstagram from '~/assets/svg-icons/social/instagram.svg';
 import IconWhatsapp from '~/assets/svg-icons/social/whatsapp.svg';
 import IconTelegram from '~/assets/svg-icons/social/telegram.svg';
-import { getValueByKey } from '~/utils/find-value-by-key';
+import { getValueByKey } from '~/utils/helpers';
 
 const authStore = useAuthStore();
 

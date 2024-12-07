@@ -94,7 +94,7 @@ import OtpFieldInput from '~/components/forms/OtpFieldInput.vue';
 import { securityRepository } from '~/repositories/security.repository';
 import type { Enable2faDto } from '~/types/definitions/security.types';
 import { SendType } from '~/utils/enums/user.enum';
-import { getValueByKey } from '~/utils/find-value-by-key';
+import { getValueByKey } from '~/utils/helpers';
 import { obfuscateEmail } from '~/utils/obfuscate-email';
 
 const { $api } = useNuxtApp();

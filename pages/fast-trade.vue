@@ -169,8 +169,7 @@
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
-import { priceFormat } from '~/utils/price-format';
-import { formatByDecimal } from '~/utils/format-by-decimal';
+import { priceFormat, formatByDecimal } from '~/utils/helpers';
 import TradeChangeFieldInput from '~/components/forms/TradeChangeFieldInput.vue';
 import IconChange from '~/assets/svg-icons/trade/change.svg';
 import RecentTrades from '~/components/pages/FastTrade/RecentTrades.vue';

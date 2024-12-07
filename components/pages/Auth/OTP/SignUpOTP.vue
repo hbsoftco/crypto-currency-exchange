@@ -39,7 +39,7 @@
 import useVuelidate from '@vuelidate/core';
 
 import OtpFieldInput from '~/components/forms/OtpFieldInput.vue';
-import capitalizer from '~/utils/capitalizer';
+import { capitalizer } from '~/utils/helpers';
 import { SendType } from '~/utils/enums/user.enum';
 
 const signupStore = useSignupStore();

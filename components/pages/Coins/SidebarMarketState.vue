@@ -44,7 +44,7 @@
 <script setup lang="ts">
 import { splitMarket } from '~/utils/split-market';
 import type { MarketL47Item } from '~/types/definitions/market.types';
-import { priceFormat } from '~/utils/price-format';
+import { priceFormat } from '~/utils/helpers';
 
 interface Props {
 	markets: MarketL47Item[];

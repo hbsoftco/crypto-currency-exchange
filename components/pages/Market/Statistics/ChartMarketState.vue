@@ -69,7 +69,7 @@
 
 <script setup lang="ts">
 import { splitMarket } from '~/utils/split-market';
-import { priceFormat } from '~/utils/price-format';
+import { priceFormat } from '~/utils/helpers';
 import { useNumber } from '~/composables/useNumber';
 import type { MarketL47 } from '~/types/definitions/market.types';
 
