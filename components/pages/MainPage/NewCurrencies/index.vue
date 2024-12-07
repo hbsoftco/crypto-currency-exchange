@@ -4,14 +4,19 @@
 			<span class="text-2xl md:text-[2.5rem] font-black">{{ $t("latestCurrencies") }}</span>
 		</h3>
 
-		<div v-if="firstHalf?.length">
+		<div
+			v-if="firstHalf?.length"
+			dir="ltr"
+			class="mb-4"
+		>
 			<InfiniteLooper
-				:speed="20"
+				:speed="30"
 				direction="right"
 			>
 				<Currency
 					v-for="(item, index) in firstHalf"
 					:key="`top-${index}`"
+					class="mx-3"
 					:market="item"
 					:data="item"
 				/>
@@ -19,6 +24,25 @@
 		</div>
 
 		<div
+			v-if="firstHalf?.length"
+			dir="ltr"
+			class="mb-4"
+		>
+			<InfiniteLooper
+				:speed="30"
+				direction="left"
+			>
+				<Currency
+					v-for="(item, index) in secondHalf"
+					:key="`top-${index}`"
+					class="mx-3"
+					:market="item"
+					:data="item"
+				/>
+			</InfiniteLooper>
+		</div>
+
+		<!-- <div
 			v-if="firstHalf?.length"
 			class="currency-row overflow-hidden"
 		>
@@ -47,7 +71,7 @@
 					:data="item"
 				/>
 			</div>
-		</div>
+		</div> -->
 
 		<UiSeeMore
 			link="/"
@@ -86,12 +110,12 @@ const repeatArray = (array: MarketL21[], times: number): MarketL21[] => {
 
 const firstHalf = computed(() => {
 	const half = markets.value.slice(0, Math.ceil(markets.value.length / 2));
-	return repeatArray(half, 10);
+	return repeatArray(half, 1);
 });
 
 const secondHalf = computed(() => {
 	const half = markets.value.slice(Math.ceil(markets.value.length / 2));
-	return repeatArray(half, 10);
+	return repeatArray(half, 1);
 });
 
 const marketsLoading = ref<boolean>(false);

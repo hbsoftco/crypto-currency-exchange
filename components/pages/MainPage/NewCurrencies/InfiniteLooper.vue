@@ -2,19 +2,21 @@
 	<div
 		ref="outerRef"
 		class="looper"
+		@mouseenter="stopScroll"
+		@mouseleave="startScroll"
 	>
 		<div
 			ref="innerRef"
 			class="looper__innerList"
-			data-animate="true"
+			:class="{ paused: isPaused }"
 		>
 			<div
 				v-for="(_, index) in looperInstances"
 				:key="index"
 				class="looper__listInstance"
 				:style="{
-					animationDuration: props.speed + 's',
-					animationDirection: props.direction === 'right' ? 'reverse' : 'normal',
+					animationDuration: `${speed}s`,
+					animationDirection: direction === 'right' ? 'reverse' : 'normal',
 				}"
 			>
 				<slot />
@@ -24,55 +26,38 @@
 </template>
 
 <script setup lang="ts">
-// defineProps({
-// 	speed: {
-// 		type: Number,
-// 		required: true,
-// 	},
-// 	direction: {
-// 		type: String,
-// 		default: 'left',
-// 		validator: (value) => ['left', 'right'].includes(value),
-// 	},
-// });
+defineProps({
+	speed: { type: Number, default: 5 },
+	direction: { type: String, default: 'left' },
+});
 
-interface PropsDefinition {
-	speed: number;
-	direction: string;
-}
-
-const props = defineProps<PropsDefinition>();
-
-
+const outerRef = ref<HTMLDivElement | null>(null);
+const innerRef = ref<HTMLDivElement | null>(null);
 const looperInstances = ref(1);
-const outerRef = ref(null);
-const innerRef = ref(null);
-
-const resetAnimation = () => {
-	if (innerRef.value) {
-		innerRef.value.setAttribute('data-animate', 'false');
-		setTimeout(() => {
-			if (innerRef.value) {
-				innerRef.value.setAttribute('data-animate', 'true');
-			}
-		}, 10);
-	}
-};
+const isPaused = ref(false);
 
 const setupInstances = () => {
 	if (!innerRef.value || !outerRef.value) return;
 
-	const { width } = innerRef.value.getBoundingClientRect();
+	const { width: innerWidth } = innerRef.value.getBoundingClientRect();
 	const { width: parentWidth } = outerRef.value.getBoundingClientRect();
 
-	const widthDeficit = parentWidth - width;
-	const instanceWidth = width / innerRef.value.children.length;
+	const instanceWidth = innerWidth / innerRef.value.children.length;
 
-	if (widthDeficit > 0) {
-		looperInstances.value += Math.ceil(widthDeficit / instanceWidth) + 1;
+	if (innerWidth < parentWidth + instanceWidth) {
+		looperInstances.value = Math.ceil(parentWidth / innerWidth) + 1;
 	}
+	else {
+		looperInstances.value = 1;
+	}
+};
 
-	resetAnimation();
+const stopScroll = () => {
+	isPaused.value = true;
+};
+
+const startScroll = () => {
+	isPaused.value = false;
 };
 
 onMounted(() => {
@@ -86,34 +71,35 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-@keyframes slideAnim {
-    from {
-        transform: translateX(0%);
-    }
-
-    to {
-        transform: translateX(-100%);
-    }
+@keyframes slideAnimation {
+	from {
+		transform: translateX(0%);
+	}
+	to {
+		transform: translateX(-100%);
+	}
 }
 
 .looper {
-    width: 100%;
-    overflow: hidden;
+	width: 100%;
+	overflow: hidden;
 }
 
 .looper__innerList {
-    display: flex;
-    justify-content: center;
-    width: fit-content;
+	display: flex;
+	width: fit-content;
 }
 
-.looper__innerList[data-animate="true"] .looper__listInstance {
-    animation: slideAnim linear infinite;
+.looper__innerList .looper__listInstance {
+	animation: slideAnimation linear infinite;
+}
+
+.looper__innerList.paused .looper__listInstance {
+	animation-play-state: paused;
 }
 
 .looper__listInstance {
-    display: flex;
-    width: max-content;
-    animation: none;
+	display: flex;
+	width: max-content;
 }
 </style>
