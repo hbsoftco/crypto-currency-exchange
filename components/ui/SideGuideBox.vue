@@ -1,6 +1,6 @@
 <template>
 	<div
-		v-if="loading"
+		v-if="miniRoutineLoading"
 		class="p-6 w-full md:w-[25.5rem] bg-background-light dark:bg-background-dark rounded-md"
 	>
 		<div class="flex">
@@ -162,15 +162,45 @@
 </template>
 
 <script setup lang="ts">
+import { systemRepository } from '~/repositories/system.repository';
 import type { KeyValue } from '~/types/definitions/common.types';
+import type { MiniRoutine } from '~/types/definitions/system.types';
 
 interface PropsDefinition {
-	faqs: KeyValue[];
-	tips: KeyValue[];
-	helps: KeyValue[];
 	image?: string;
-	loading: boolean;
+	tagType: string;
 }
+const props = defineProps<PropsDefinition>();
 
-defineProps<PropsDefinition>();
+const { $api } = useNuxtApp();
+const systemRepo = systemRepository($api);
+
+const tips = ref<KeyValue[]>();
+const faqs = ref<KeyValue[]>();
+const helps = ref<KeyValue[]>();
+const miniRoutine = ref<MiniRoutine>();
+const miniRoutineLoading = ref<boolean>(true);
+const getSystemMiniRoutine = async () => {
+	miniRoutineLoading.value = true;
+	try {
+		const { result } = await systemRepo.getSystemMiniRoutine({ tagType: props.tagType });
+
+		miniRoutine.value = result as MiniRoutine;
+		tips.value = miniRoutine.value.tips;
+		faqs.value = miniRoutine.value.faqs;
+		helps.value = miniRoutine.value.helps;
+	}
+	catch (error) {
+		console.log(error);
+	}
+	finally {
+		miniRoutineLoading.value = false;
+	}
+};
+
+onMounted(async () => {
+	await Promise.all([
+		getSystemMiniRoutine(),
+	]);
+});
 </script>

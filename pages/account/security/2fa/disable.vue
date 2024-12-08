@@ -65,10 +65,7 @@
 					</div>
 					<div class="my-8">
 						<SideGuideBox
-							:loading="miniRoutineLoading"
-							:tips="tips || []"
-							:faqs="faqs || []"
-							:helps="helps || []"
+							:tag-type="TagType.V2FA"
 							image="/images/svg/profile/google-authenticator.svg"
 						/>
 					</div>
@@ -82,10 +79,7 @@
 import useVuelidate from '@vuelidate/core';
 
 import SideGuideBox from '~/components/ui/SideGuideBox.vue';
-import type { KeyValue } from '~/types/definitions/common.types';
-import { systemRepository } from '~/repositories/system.repository';
 import { TagType } from '~/utils/enums/help.enum';
-import type { MiniRoutine } from '~/types/definitions/system.types';
 import type { Disable2faDto } from '~/types/definitions/security.types';
 import OtpFieldInput from '~/components/forms/OtpFieldInput.vue';
 import { SendType } from '~/utils/enums/user.enum';
@@ -99,7 +93,6 @@ definePageMeta({
 });
 
 const { $api } = useNuxtApp();
-const systemRepo = systemRepository($api);
 const securityRepo = securityRepository($api);
 
 const router = useRouter();
@@ -163,34 +156,10 @@ const resendCode = async () => {
 	}
 };
 
-const tips = ref<KeyValue[]>();
-const faqs = ref<KeyValue[]>();
-const helps = ref<KeyValue[]>();
-const miniRoutine = ref<MiniRoutine>();
-const miniRoutineLoading = ref<boolean>(true);
-const getSystemMiniRoutine = async () => {
-	miniRoutineLoading.value = true;
-	try {
-		const { result } = await systemRepo.getSystemMiniRoutine({ tagType: TagType.V2FA });
-
-		miniRoutine.value = result as MiniRoutine;
-		tips.value = miniRoutine.value.tips;
-		faqs.value = miniRoutine.value.faqs;
-		helps.value = miniRoutine.value.helps;
-	}
-	catch (error) {
-		console.log(error);
-	}
-	finally {
-		miniRoutineLoading.value = false;
-	}
-};
-
 onMounted(async () => {
 	await twoFaStore.resetData();
 	await Promise.all([
 		getIdentificationCode(),
-		getSystemMiniRoutine(),
 	]);
 });
 </script>

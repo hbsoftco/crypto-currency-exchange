@@ -63,6 +63,14 @@ export const useLoginStore = defineStore('login', () => {
 			verificationId: 0,
 		};
 
+		login2faDto.value = {
+			userId: null,
+			v2fId: null,
+			v2fCode: null,
+			v2fHash: null,
+		};
+
+		login2fa.value = false;
 		loginByEmailLoading.value = false;
 		loginByMobileLoading.value = false;
 		checkCodeVerificationLoading.value = false;

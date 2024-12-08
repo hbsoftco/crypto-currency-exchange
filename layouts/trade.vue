@@ -18,4 +18,12 @@ import { Language } from '~/utils/enums/language.enum';
 const baseDataStore = useBaseDataStore();
 baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
 baseDataStore.fetchMarketBriefItems();
+
+const loginStore = useLoginStore();
+const signupStore = useSignupStore();
+
+onMounted(() => {
+	loginStore.resetAllData();
+	signupStore.resetAllData();
+});
 </script>

@@ -19,6 +19,11 @@
 								icon="i-heroicons-eye"
 								dir="ltr"
 								color-type="transparent"
+								:error-message="
+									v$.passwordOld.$error
+										? (v$.passwordOld.required.$response ? $t('passwordMustBeComplex') : $t('fieldIsRequired'))
+										: ''
+								"
 							/>
 						</div>
 						<div>
@@ -32,6 +37,11 @@
 								icon="i-heroicons-eye"
 								dir="ltr"
 								color-type="transparent"
+								:error-message="
+									v$.passwordNew.$error
+										? (v$.passwordNew.required.$response ? $t('passwordMustBeComplex') : $t('fieldIsRequired'))
+										: ''
+								"
 							/>
 						</div>
 						<div>
@@ -45,6 +55,11 @@
 								icon="i-heroicons-eye"
 								dir="ltr"
 								color-type="transparent"
+								:error-message="
+									v$.rePasswordNew.$error
+										? (v$.rePasswordNew.required.$response ? $t('passwordMustBeComplex') : $t('fieldIsRequired'))
+										: ''
+								"
 							/>
 						</div>
 						<div>
@@ -52,21 +67,22 @@
 								size="lg"
 								block
 								:loading="loading"
-								@click="submit()"
+								@click="openVerifyModal()"
 							>
 								{{ $t("save") }}
 							</UButton>
 						</div>
 
-						<!-- <UiVerifyModal :title="$t('verification')" @close="" /> -->
+						<UiVerifyModal
+							v-if="isOpenVerifyModal"
+							v-model="isOpenVerifyModal"
+							:title="$t('changePasswordLogin')"
+							:submit-loading="loading"
+							@confirm="submit($event)"
+						/>
 					</div>
 					<div class="my-8">
-						<SideGuideBox
-							:tips="tips || []"
-							:faqs="faqs || []"
-							:helps="helps || []"
-							:loading="miniRoutineLoading"
-						/>
+						<SideGuideBox :tag-type="TagType.PASSWORD_CHANGE" />
 					</div>
 				</div>
 			</section>
@@ -79,10 +95,7 @@ import useVuelidate from '@vuelidate/core';
 
 import SideGuideBox from '~/components/ui/SideGuideBox.vue';
 import { securityRepository } from '~/repositories/security.repository';
-import { systemRepository } from '~/repositories/system.repository';
-import type { KeyValue } from '~/types/definitions/common.types';
-import type { SetPasswordDto } from '~/types/definitions/security.types';
-import type { MiniRoutine } from '~/types/definitions/system.types';
+import type { SetPasswordDto, VerifyOutput } from '~/types/definitions/security.types';
 import { TagType } from '~/utils/enums/help.enum';
 
 definePageMeta({
@@ -92,9 +105,10 @@ definePageMeta({
 
 const { $api } = useNuxtApp();
 const securityRepo = securityRepository($api);
-const systemRepo = systemRepository($api);
 
 const router = useRouter();
+
+const isOpenVerifyModal = ref(false);
 
 const setPasswordDto = ref<SetPasswordDto>({
 	verificationId: null,
@@ -106,27 +120,35 @@ const setPasswordDto = ref<SetPasswordDto>({
 });
 
 const setPasswordRules = {
-	verificationId: { required: validations.required },
-	verificationCode: { required: validations.required },
-	passwordOld: { required: validations.required },
-	passwordNew: { required: validations.required },
-	rePasswordNew: { required: validations.required },
+	verificationId: { },
+	verificationCode: { },
+	passwordOld: { required: validations.required, complexPassword },
+	passwordNew: { required: validations.required, complexPassword },
+	rePasswordNew: { required: validations.required, complexPassword },
 	v2FACode: { },
 };
 
 const v$ = useVuelidate(setPasswordRules, setPasswordDto);
 
 const loading = ref<boolean>(false);
-const submit = async () => {
-	v$.value.$touch();
-	if (v$.value.$invalid) {
-		return;
+const submit = async (event: VerifyOutput) => {
+	if (event.verificationCode) {
+		setPasswordDto.value.verificationCode = event.verificationCode;
+	}
+	if (event.verificationId) {
+		setPasswordDto.value.verificationId = event.verificationId;
+	}
+	if (event.v2FACode) {
+		setPasswordDto.value.v2FACode = event.v2FACode;
 	}
 
-	if (loading.value) return;
 	loading.value = true;
 	try {
-		await securityRepo.storeSetPassword(setPasswordDto.value);
+		await securityRepo.storeSetPassword({
+			...setPasswordDto.value,
+			passwordNew: btoa(setPasswordDto.value.passwordNew),
+			passwordOld: btoa(setPasswordDto.value.passwordOld),
+		});
 
 		router.push('/account/security');
 	}
@@ -138,33 +160,12 @@ const submit = async () => {
 	}
 };
 
-const tips = ref<KeyValue[]>();
-const faqs = ref<KeyValue[]>();
-const helps = ref<KeyValue[]>();
-const miniRoutine = ref<MiniRoutine>();
-const miniRoutineLoading = ref<boolean>(true);
-const getSystemMiniRoutine = async () => {
-	miniRoutineLoading.value = true;
-	try {
-		const { result } = await systemRepo.getSystemMiniRoutine({ tagType: TagType.PASSWORD_CHANGE });
+const openVerifyModal = () => {
+	v$.value.$touch();
+	if (v$.value.$invalid) {
+		return;
+	}
 
-		miniRoutine.value = result as MiniRoutine;
-		tips.value = miniRoutine.value.tips;
-		faqs.value = miniRoutine.value.faqs;
-		helps.value = miniRoutine.value.helps;
-	}
-	catch (error) {
-		console.log(error);
-	}
-	finally {
-		miniRoutineLoading.value = false;
-	}
+	isOpenVerifyModal.value = true;
 };
-
-onMounted(async () => {
-	// await getReadyRequiredData();
-	await Promise.all([
-		getSystemMiniRoutine(),
-	]);
-});
 </script>

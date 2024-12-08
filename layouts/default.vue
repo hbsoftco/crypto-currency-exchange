@@ -38,7 +38,12 @@ const { $mobileDetect } = useNuxtApp();
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
 
+const loginStore = useLoginStore();
+const signupStore = useSignupStore();
+
 onMounted(() => {
 	isMobile.value = !!mobileDetect.mobile();
+	loginStore.resetAllData();
+	signupStore.resetAllData();
 });
 </script>

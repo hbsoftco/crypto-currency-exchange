@@ -115,6 +115,12 @@ type DetermineOtpType = {
 	type: number;
 };
 
+type VerifyOutput = {
+	verificationId: number | null;
+	verificationCode: string | null;
+	v2FACode: string | null;
+};
+
 export type {
 	SecurityListResponse,
 	SecurityResponse,
@@ -131,4 +137,5 @@ export type {
 	ChangeEmailDto,
 	SetPasswordDto,
 	DetermineOtpType,
+	VerifyOutput,
 };

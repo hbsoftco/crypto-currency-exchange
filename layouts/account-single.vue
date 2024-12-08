@@ -14,4 +14,12 @@
 
 <script setup lang="ts">
 import Header from '~/components/layouts/Default/Header.vue';
+
+const loginStore = useLoginStore();
+const signupStore = useSignupStore();
+
+onMounted(() => {
+	loginStore.resetAllData();
+	signupStore.resetAllData();
+});
 </script>

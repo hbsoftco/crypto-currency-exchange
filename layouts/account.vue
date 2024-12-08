@@ -32,4 +32,12 @@ interface PropsDefinition {
 withDefaults(defineProps<PropsDefinition>(), {
 	cssClass: 'p-5',
 });
+
+const loginStore = useLoginStore();
+const signupStore = useSignupStore();
+
+onMounted(() => {
+	loginStore.resetAllData();
+	signupStore.resetAllData();
+});
 </script>

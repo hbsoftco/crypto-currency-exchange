@@ -1,6 +1,5 @@
 import { authRepository } from '~/repositories/auth.repository';
-import type { SignupByEmailDto, SignupByMobileDto } from '~/types/dto/signup.dto';
-import type { CheckCodeDto, ResendVerificationParams } from '~/types/verification.types';
+import type { CheckCodeDto, ResendVerificationParams, SignupByEmailDto, SignupByMobileDto } from '~/types/definitions/auth.types';
 import { normalizeMobile } from '~/utils/helpers';
 
 export const useSignupStore = defineStore('Signup', () => {

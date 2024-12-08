@@ -90,12 +90,7 @@
 						</div>
 					</div>
 					<div class="my-8">
-						<SideGuideBox
-							:tips="tips || []"
-							:faqs="faqs || []"
-							:helps="helps || []"
-							:loading="miniRoutineLoading"
-						/>
+						<SideGuideBox :tag-type="TagType.MOBILE_CHANGE" />
 					</div>
 				</div>
 			</section>
@@ -109,10 +104,7 @@ import useVuelidate from '@vuelidate/core';
 import OtpFieldInput from '~/components/forms/OtpFieldInput.vue';
 import SideGuideBox from '~/components/ui/SideGuideBox.vue';
 import { securityRepository } from '~/repositories/security.repository';
-import { systemRepository } from '~/repositories/system.repository';
-import type { KeyValue } from '~/types/definitions/common.types';
 import type { ChangePhoneDto } from '~/types/definitions/security.types';
-import type { MiniRoutine } from '~/types/definitions/system.types';
 import { TagType } from '~/utils/enums/help.enum';
 import { SendType } from '~/utils/enums/user.enum';
 
@@ -123,7 +115,6 @@ definePageMeta({
 
 const { $api } = useNuxtApp();
 const securityRepo = securityRepository($api);
-const systemRepo = systemRepository($api);
 const router = useRouter();
 
 const authStore = useAuthStore();
@@ -227,34 +218,10 @@ const resendCode = async () => {
 	}
 };
 
-const tips = ref<KeyValue[]>();
-const faqs = ref<KeyValue[]>();
-const helps = ref<KeyValue[]>();
-const miniRoutine = ref<MiniRoutine>();
-const miniRoutineLoading = ref<boolean>(true);
-const getSystemMiniRoutine = async () => {
-	miniRoutineLoading.value = true;
-	try {
-		const { result } = await systemRepo.getSystemMiniRoutine({ tagType: TagType.MOBILE_CHANGE });
-
-		miniRoutine.value = result as MiniRoutine;
-		tips.value = miniRoutine.value.tips;
-		faqs.value = miniRoutine.value.faqs;
-		helps.value = miniRoutine.value.helps;
-	}
-	catch (error) {
-		console.log(error);
-	}
-	finally {
-		miniRoutineLoading.value = false;
-	}
-};
-
 onMounted(async () => {
 	await checkMobileExist();
 	await Promise.all([
 		getIdentificationCode(),
-		getSystemMiniRoutine(),
 	]);
 });
 </script>

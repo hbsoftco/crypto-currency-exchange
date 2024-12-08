@@ -167,10 +167,13 @@ export const securityRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): S
 	},
 	async storeSetPassword(dto: SetPasswordDto): Promise<CommonResponse> {
 		const url = `/v1/security/alter/password_set`;
+		const { v2FACode, rePasswordNew, ...rest } = dto;
+		const body = v2FACode ? dto : rest;
+
 		const response = await fetch<CommonResponse>(`${url}`, {
 			noAuth: false,
 			method: 'POST',
-			body: dto,
+			body,
 		} as CustomNitroFetchOptions);
 
 		return response;
