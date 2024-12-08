@@ -75,32 +75,63 @@ export const usePublicSocketStore = defineStore('publicSocket', () => {
 	};
 
 	// Spot
+	const requestQueue: (() => Promise<void>)[] = [];
+	let isProcessingQueue = false;
+
+	const processQueue = async () => {
+		if (isProcessingQueue) return;
+		isProcessingQueue = true;
+
+		while (requestQueue.length > 0) {
+			const request = requestQueue.shift();
+			if (request) {
+				await request();
+			}
+		}
+
+		isProcessingQueue = false;
+	};
+
 	const addMarketIds = async (marketIds: number[]) => {
-		if (activeMarketIds.value.size > 0) {
-			sendMessage(createSubscriptionData(
-				SocketId.SPOT_TICKER,
-				'UNSUBSCRIBE',
-				PublicTopic.SPOT_TICKER,
-				Array.from(activeMarketIds.value).join(','),
-			));
-		}
-		marketIds.forEach((id) => activeMarketIds.value.add(id));
+		return new Promise<void>((resolve, reject) => {
+			requestQueue.push(async () => {
+				try {
+					if (activeMarketIds.value.size > 0) {
+						sendMessage(createSubscriptionData(
+							SocketId.SPOT_TICKER,
+							'UNSUBSCRIBE',
+							PublicTopic.SPOT_TICKER,
+							Array.from(activeMarketIds.value).join(','),
+						));
+					}
 
-		// Add USDT_TMN market id
-		activeMarketIds.value.add(1795);
+					marketIds.forEach((id) => activeMarketIds.value.add(id));
 
-		const ids = Array.from(activeMarketIds.value).join(',');
+					// Add USDT_TMN market id
+					activeMarketIds.value.add(1795);
 
-		if (ids) {
-			await connect();
+					const ids = Array.from(activeMarketIds.value).join(',');
 
-			sendMessage(createSubscriptionData(
-				SocketId.SPOT_TICKER,
-				'SUBSCRIBE',
-				PublicTopic.SPOT_TICKER,
-				ids,
-			));
-		}
+					if (ids) {
+						await connect();
+						sendMessage(createSubscriptionData(
+							SocketId.SPOT_TICKER,
+							'SUBSCRIBE',
+							PublicTopic.SPOT_TICKER,
+							ids,
+						));
+					}
+
+					resolve();
+				}
+				catch (error) {
+					console.error('Error processing addMarketIds:', error);
+					reject(error);
+				}
+			});
+
+			processQueue();
+		});
 	};
 
 	const removeMarketIds = async (marketIds: number[]) => {

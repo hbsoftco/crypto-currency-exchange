@@ -6,6 +6,7 @@
 	>
 		<div class="flex max-w-40 truncate md:max-w-none">
 			<img
+				v-if="market?.currency?.cSymbol"
 				:src="`https://api-bitland.site/media/currency/${market?.currency?.cSymbol}.png`"
 				alt="bitcoin Logo"
 				class="w-5 h-5 ml-1"

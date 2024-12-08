@@ -9,6 +9,7 @@
 				class="flex items-center bg-background-light dark:bg-background-dark rounded shadow-lg h-full p-2 hover:bg-primary-gray-light hover:dark:bg-primary-gray-dark duration-200 transition-all"
 			>
 				<img
+					v-if="currency.cSymbol"
 					:src="`https://api-bitland.site/media/currency/${currency?.cSymbol}.png`"
 					alt="bitcoin Logo"
 					class="w-5 h-5"
