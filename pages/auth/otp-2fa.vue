@@ -1,5 +1,5 @@
 <template>
-	<Auth :title="$t('securityConfirmation')">
+	<Auth title="securityConfirmation">
 		<div>
 			<p class="text-sm mb-6 mt-4">
 				{{ $t('enterGoogle2FACode') }}
@@ -11,7 +11,7 @@
 				v-model="loginStore.login2faDto.v2fCode"
 				type="text"
 				input-class="text-left"
-				:label="$t('google2FA')"
+				label="google2FA"
 				placeholder=""
 				icon=""
 				dir="ltr"
