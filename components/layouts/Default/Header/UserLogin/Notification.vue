@@ -17,7 +17,25 @@
 			v-if="!notificationStore.noticeListLoading"
 			class="relative group items-center space-x-2"
 		>
-			<div class="relative cursor-pointer">
+			<div
+				v-if="isMobile"
+				class="relative cursor-pointer"
+			>
+				<IconNotification
+					class="text-[1.55rem] block"
+					@click="router.push('/account/notifications')"
+				/>
+				<span
+					v-if="unreadMessages.length > 0"
+					class="absolute -top-1 -right-1 flex items-center justify-center h-4 w-4 text-xs font-bold text-white bg-accent-red rounded-full"
+				>
+					{{ unreadMessages.length }}
+				</span>
+			</div>
+			<div
+				v-else
+				class="relative cursor-pointer"
+			>
 				<IconNotification
 					class="text-2xl block group-hover:hidden group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark"
 				/>
@@ -32,6 +50,7 @@
 				</span>
 			</div>
 			<div
+				v-if="!isMobile"
 				class="absolute left-0 md:-left-20 top-[1.55rem] py-[0.9rem] hidden group-hover:block opacity-100 transition-opacity duration-200 z-10"
 			>
 				<div class="w-72 md:w-96 bg-hover-light dark:bg-hover-dark shadow-lg rounded p-4">
@@ -122,9 +141,13 @@ import IconArrowLeftQR from '~/assets/svg-icons/menu/arrow-left-qr.svg';
 import IconMessage from '~/assets/svg-icons/menu/message.svg';
 import { formatDateToIran } from '~/utils/persian-date';
 
-const { $swal } = useNuxtApp();
+const { $mobileDetect, $swal } = useNuxtApp();
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
 
 const notificationStore = useNotificationStore();
+
+const router = useRouter();
 
 const noticeReadAll = async () => {
 	const confirmation = await $swal.fire({
@@ -142,6 +165,7 @@ const noticeReadAll = async () => {
 };
 
 onMounted(async () => {
+	isMobile.value = !!mobileDetect.mobile();
 	await Promise.all([
 		notificationStore.fetchNoticeList(),
 	]);

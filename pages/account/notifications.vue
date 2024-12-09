@@ -118,7 +118,7 @@ const toast = useToast();
 
 const notificationStore = useNotificationStore();
 
-const noticeDeleteAllLoading = ref<boolean>(false);
+const noticeDeleteAllLoading = ref<boolean>(true);
 const noticeDeleteAll = async () => {
 	const confirmation = await $swal.fire({
 		title: useT('deleteAllNotifications'),

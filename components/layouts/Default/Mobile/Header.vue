@@ -10,7 +10,7 @@
 						<Search />
 					</div>
 					<div>
-						<Support />
+						<IconSupport class="text-[1.4rem]" />
 					</div>
 					<div class="mr-2">
 						<Notification v-if="authStore.isLoggedIn" />
@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import Notification from '~/components/layouts/Default/Header/UserLogin/Notification.vue';
 import UserLogin from '~/components/layouts/Default/Mobile/Header/UserLogin.vue';
-import Support from '~/components/layouts/Default/Mobile/Header/Support.vue';
+import IconSupport from '~/assets/svg-icons/menu/support.svg';
 import Search from '~/components/layouts/Default/Mobile/Header/Search.vue';
 // import Notif from '../Notif.vue';
 

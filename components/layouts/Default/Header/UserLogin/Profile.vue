@@ -21,7 +21,7 @@
 							class="flex items-center mb-2"
 						>
 							<IconMessage class="text-2xl ml-2 dark:text-subtle-text-50" />
-							<span class="text-xs font-bold mr-1">
+							<span class="text-sm font-semibold mr-1">
 								{{ authStore.currentUserLoading ? '...': getValueByKey(authStore.getCurrentUser, 'EMAIL') }}
 							</span>
 						</div>
@@ -34,7 +34,7 @@
 								class="w-6 h-6 ml-2 dark:text-subtle-text-50"
 							/>
 							<span
-								class="text-xs font-bold mr-1"
+								class="text-sm font-semibold mr-1"
 								dir="ltr"
 							>
 								{{ authStore.currentUserLoading ? '...': getValueByKey(authStore.getCurrentUser, 'MOBILE') }}
@@ -76,7 +76,7 @@
 									<div class="ml-2">
 										<IconUser class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
 									</div>
-									<p class="mb-0 text-xs font-bold">
+									<p class="mb-0 text-sm font-semibold">
 										{{ $t('showAccount') }}
 									</p>
 								</div>
@@ -92,7 +92,7 @@
 									<div class="ml-2">
 										<IconAuthentication class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
 									</div>
-									<p class="mb-0 text-xs font-bold">
+									<p class="mb-0 text-sm font-semibold">
 										{{ $t('authentication') }}
 									</p>
 								</div>
@@ -113,7 +113,7 @@
 									<div class="ml-2">
 										<IconSecurity class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
 									</div>
-									<p class="mb-0 text-xs font-bold">
+									<p class="mb-0 text-sm font-semibold">
 										{{ $t('security') }}
 									</p>
 								</div>
@@ -129,7 +129,7 @@
 									<div class="ml-2">
 										<IconFees class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
 									</div>
-									<p class="mb-0 text-xs font-bold">
+									<p class="mb-0 text-sm font-semibold">
 										{{ $t('fees') }}
 									</p>
 								</div>
@@ -145,7 +145,7 @@
 									<div class="ml-2">
 										<IconUserLevel class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
 									</div>
-									<p class="mb-0 text-xs font-bold">
+									<p class="mb-0 text-sm font-semibold">
 										{{ $t('userLevel') }}
 									</p>
 								</div>
@@ -164,7 +164,7 @@
 									<div class="ml-2">
 										<IconManageAPI class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
 									</div>
-									<p class="mb-0 text-xs font-bold">
+									<p class="mb-0 text-sm font-semibold">
 										{{ $t('manageAPI') }}
 									</p>
 								</div>
@@ -180,7 +180,7 @@
 									<div class="ml-2">
 										<IconInviteFriends class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
 									</div>
-									<p class="mb-0 text-xs font-bold">
+									<p class="mb-0 text-sm font-semibold">
 										{{ $t('inviteFriends') }}
 									</p>
 								</div>
@@ -196,7 +196,7 @@
 									<div class="ml-2">
 										<IconAwards class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
 									</div>
-									<p class="mb-0 text-xs font-bold">
+									<p class="mb-0 text-sm font-semibold">
 										{{ $t('awards') }}
 									</p>
 								</div>
@@ -212,7 +212,7 @@
 									<div class="ml-2">
 										<IconTopUsers class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
 									</div>
-									<p class="mb-0 text-xs font-bold">
+									<p class="mb-0 text-sm font-semibold">
 										{{ $t('topUsers') }}
 									</p>
 								</div>
@@ -228,7 +228,7 @@
 									<div class="ml-2">
 										<IconSetting class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
 									</div>
-									<p class="mb-0 text-xs font-bold">
+									<p class="mb-0 text-sm font-semibold">
 										{{ $t('setting') }}
 									</p>
 								</div>
@@ -244,7 +244,7 @@
 									<div class="ml-2">
 										<IconWhiteList class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
 									</div>
-									<p class="mb-0 text-xs font-bold">
+									<p class="mb-0 text-sm font-semibold">
 										{{ $t('whiteList') }}
 									</p>
 								</div>
@@ -261,7 +261,7 @@
 									<div class="ml-2">
 										<IconExit class="text-base dark: text-accent-red" />
 									</div>
-									<p class="mb-0 text-xs font-bold">
+									<p class="mb-0 text-sm font-semibold">
 										{{ $t('exit') }}
 									</p>
 								</div>

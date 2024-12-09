@@ -32,17 +32,17 @@
 			<div class="relative w-full h-full bg-background-light dark:bg-background-dark rounded-lg py-6 px-2 overflow-auto">
 				<!-- Close Button -->
 				<div class="flex items-center justify-center mb-4 mx-2">
-					<div class="w-full pl-2">
+					<div class="w-full pl-2 relative">
 						<input
 							v-model="search"
 							type="text"
-							class="w-full h-8 rounded-md outline-none pr-10 text-sm bg-hover-light dark:bg-hover-dark"
+							class="w-full h-8 rounded-md outline-none pr-8 text-sm bg-primary-gray-light dark:bg-primary-gray-dark"
 							:placeholder="$t('search')"
 							:trailing="false"
 							@focus="handleFocus"
 							@input="handleInput"
 						>
-						<IconSearch class="absolute text-xl top-7 right-6" />
+						<IconSearch class="absolute top-[0.455rem] right-[0.475rem] transform scale-x-[-1] text-subtle-text-light dark:text-subtle-text-dark" />
 					</div>
 					<IconClose
 						class="text-2xl text-subtle-text-light dark:text-subtle-text-dark"
