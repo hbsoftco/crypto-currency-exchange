@@ -28,9 +28,7 @@
 			v-if="showAdditionalBox"
 			class="fixed inset-0 bg-background-light dark:bg-background-dark z-20 flex items-center justify-center"
 		>
-			<!-- Modal Content -->
 			<div class="relative w-full h-full bg-background-light dark:bg-background-dark rounded-lg py-6 px-2 overflow-auto">
-				<!-- Close Button -->
 				<div class="flex items-center justify-center mb-4 mx-2">
 					<div class="w-full pl-2 relative">
 						<input
@@ -49,14 +47,16 @@
 						@click="closeModal"
 					/>
 				</div>
+				<!-- Header -->
 
-				<!-- Modal Header -->
 				<div class="flex justify-between items-center mb-4 mx-2">
-					<span class="text-sm font-bold">{{ $t("transaction") }}</span>
+					<span class="text-sm font-bold">
+						{{ $t("transaction") }}
+					</span>
 					<div>
 						<ULink
-							to="/markets"
 							class="w-full text-right flex items-center"
+							@click="goToMarket()"
 						>
 							<span
 								class="text-sm font-medium text-primary-yellow-light dark:text-primary-yellow-dark ml-1"
@@ -66,7 +66,6 @@
 					</div>
 				</div>
 
-				<!-- Market Items -->
 				<div
 					v-if="marketsItems.length === 0"
 					class="text-center text-sm text-gray-500 dark:text-gray-400 py-4"
@@ -85,15 +84,15 @@
 				</div>
 				<UButton
 					v-if="marketsItems.length > 0"
-					to="/markets"
-					class="flex justify-center w-full my-4 text-primary-yellow-light dark:text-primary-yellow-dark text-base hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-yellow"
+					block
+					class=" my-4 text-primary-yellow-light dark:text-primary-yellow-dark text-base hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-yellow"
+					@click="goToMarket('link')"
 				>
 					{{ $t("showMore") }}
 				</UButton>
 
-				<!-- Currency Information -->
 				<div class="mt-6 bg-background-light dark:bg-background-dark">
-					<p class="text-sm font-bold mb-2">
+					<p class="text-sm font-bold mb-2 mx-2">
 						{{ $t("currencyInformation") }}
 					</p>
 					<div
@@ -137,9 +136,31 @@ const marketsItems = ref<MarketBrief[]>([]);
 
 const worker = useBaseWorker();
 
+const router = useRouter();
+
 const publicSocketStore = usePublicSocketStore();
 
 const socketMarketIds = ref<number[]>([]);
+
+const goToMarket = (type: string = 'no-link') => {
+	if (type === 'no-link') {
+		if (search.value) {
+			router.push({
+				path: '/markets',
+				query: { query: search.value },
+			});
+		}
+		else {
+			router.push('/markets');
+		}
+	}
+	else {
+		router.push('/markets');
+	}
+
+	showAdditionalBox.value = false;
+	search.value = '';
+};
 
 const handleFocus = () => {
 	isFocused.value = true;

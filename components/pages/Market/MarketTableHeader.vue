@@ -7,7 +7,7 @@
 				v-if="isMobile"
 				class="col-span-5 border-l-2 border-primary-gray-light dark:border-primary-gray-dark flex justify-center items-center"
 			>
-				<span class="text-base font-bold">{{ $t("tradingMarkets") }}</span>
+				<span class="text-sm md:text-base font-bold">{{ $t("tradingMarkets") }}</span>
 			</div>
 			<div class="col-span-4 md:col-span-3 flex justify-center md:justify-start items-center">
 				<UDropdown
@@ -22,11 +22,11 @@
 				>
 					<span class="flex justify-center items-center cursor-pointer">
 						<span
-							class="ml-2 text-primary-yellow-light font-bold dark:text-primary-yellow-dark"
+							class="ml-2 text-primary-yellow-light text-sm md:text-base font-bold dark:text-primary-yellow-dark"
 						>{{ marketsPageStore.selectedSortModeFilter.label }}</span>
 						<UIcon
 							name="i-heroicons-chevron-down"
-							class="w-5 h-5 text-primary-yellow-light dark:text-primary-yellow-dark"
+							class="w-4 md:w-5 h-4 md:h-5 text-primary-yellow-light dark:text-primary-yellow-dark"
 						/>
 					</span>
 				</UDropdown>
@@ -53,11 +53,11 @@
 				>
 					<span class="flex justify-center items-center cursor-pointer">
 						<span
-							class="ml-2 text-primary-yellow-light font-bold dark:text-primary-yellow-dark"
+							class="ml-2 text-primary-yellow-light text-sm md:text-base font-bold dark:text-primary-yellow-dark"
 						>{{ marketsPageStore.selectedQuote.label }}</span>
 						<UIcon
 							name="i-heroicons-chevron-down"
-							class="w-5 h-5 text-primary-yellow-light dark:text-primary-yellow-dark"
+							class="w-4 md:w-5 h-4 md:h-5 text-primary-yellow-light dark:text-primary-yellow-dark"
 						/>
 					</span>
 				</UDropdown>

@@ -1,5 +1,5 @@
 <template>
-	<div class="pt-20 pb-4 md:pb-20">
+	<div class="pt-10 pb-4 md:pb-20">
 		<MarketsHeader v-if="!initFilterLoading" />
 
 		<div class="p-0 md:p-4 pt-2 md:pt-0">
