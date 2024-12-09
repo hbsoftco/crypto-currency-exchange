@@ -1,6 +1,6 @@
 <template>
 	<div class="border-primary-gray-light dark:border-primary-gray-dark border rounded-md p-2">
-		<h1 class="text-lg font-semibold py-2 px-1 mb-6 border-b-primary-gray-light dark:border-b-primary-gray-dark border-b">
+		<h1 class="text-base md:text-lg font-semibold py-2 px-1 mb-6 border-b-primary-gray-light dark:border-b-primary-gray-dark border-b">
 			{{ $t("calculator") }}
 		</h1>
 		<span>{{ $t('count') }}</span>

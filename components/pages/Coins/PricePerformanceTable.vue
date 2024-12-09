@@ -1,8 +1,8 @@
 <template>
 	<section
-		class="border border-primary-gray-light dark:border-primary-gray-dark py-4 px-8 rounded-md"
+		class="border border-primary-gray-light dark:border-primary-gray-dark py-4 px-2 md:px-8 rounded-md"
 	>
-		<h1 class="text-xl font-bold mb-2">
+		<h1 class="text-base md:text-xl font-bold mb-2">
 			{{ $t("pricePerformanceAgainstDollar") }}
 		</h1>
 		<table class="w-full">
@@ -10,13 +10,13 @@
 				class="py-4 border-b-primary-gray-light dark:border-b-primary-gray-dark border-b"
 			>
 				<tr class="text-right">
-					<th class="text-sm font-bold py-2">
+					<th class="text-[0.85rem] md:text-sm font-semibold md:font-bold py-2">
 						{{ $t("course") }}
 					</th>
-					<th class="text-sm font-bold py-2">
+					<th class="text-[0.85rem] md:text-sm font-semibold md:font-bold py-2">
 						{{ $t("changeUSD") }}
 					</th>
-					<th class="text-sm font-bold py-2">
+					<th class="text-[0.85rem] md:text-sm font-semibold md:font-bold py-2">
 						{{ $t("changePercent") }}
 					</th>
 				</tr>
@@ -35,6 +35,7 @@
 						>
 							<UiChangePrice
 								v-if="localCurrency?.price"
+								:bg-color="false"
 								classes="text-sm font-normal"
 								:show-percent="false"
 								pre-text="$"
@@ -51,6 +52,7 @@
 							dir="ltr"
 						>
 							<UiChangePrice
+								:bg-color="false"
 								classes="text-sm font-normal"
 								:show-percent="true"
 								pl="pl-0"
@@ -74,6 +76,7 @@
 						>
 							<UiChangePrice
 								v-if="localCurrency?.price"
+								:bg-color="false"
 								classes="text-sm font-normal"
 								:show-percent="false"
 								pre-text="$"
@@ -89,6 +92,7 @@
 							dir="ltr"
 						>
 							<UiChangePrice
+								:bg-color="false"
 								classes="text-sm font-normal"
 								:show-percent="true"
 								pl="pl-0"
@@ -112,6 +116,7 @@
 						>
 							<UiChangePrice
 								v-if="localCurrency?.price"
+								:bg-color="false"
 								classes="text-sm font-normal"
 								:show-percent="false"
 								pre-text="$"
@@ -128,6 +133,7 @@
 						>
 							<UiChangePrice
 								classes="text-sm font-normal"
+								:bg-color="false"
 								:show-percent="true"
 								pl="pl-0"
 								:change="parseFloat(String(localCurrency?.priceChangePerc60d))"
@@ -148,6 +154,7 @@
 						>
 							<UiChangePrice
 								v-if="localCurrency?.price"
+								:bg-color="false"
 								classes="text-sm font-normal"
 								:show-percent="false"
 								pre-text="$"
@@ -164,6 +171,7 @@
 						>
 							<UiChangePrice
 								classes="text-sm font-normal"
+								:bg-color="false"
 								:show-percent="true"
 								pl="pl-0"
 								:change="parseFloat(String(localCurrency?.priceChangePerc90d))"

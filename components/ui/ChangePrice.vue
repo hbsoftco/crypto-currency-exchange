@@ -1,6 +1,6 @@
 <template>
 	<span
-		:class="[containerClass, pl, textClass]"
+		:class="[bgColor ? containerClass: '', pl, bgColor ? textClass: textClass2, 'rounded-md']"
 		dir="ltr"
 	>
 		<UIcon
@@ -28,6 +28,7 @@
 import { summarizeBigNumber } from '~/utils/helpers';
 
 interface PropsDefinition {
+	bgColor?: boolean;
 	change: number | string;
 	iconName?: string;
 	preText?: string;
@@ -42,6 +43,7 @@ interface PropsDefinition {
 const props = withDefaults(defineProps<PropsDefinition>(), {
 	icon: true,
 	pl: 'pl-4 md:pl-8',
+	bgColor: true,
 });
 
 const iconClass = computed(() => {
@@ -52,8 +54,12 @@ const textClass = computed(() => {
 	return Number(props.change) > 0 ? 'text-white md:text-accent-green' : 'text-white md:text-accent-red';
 });
 
+const textClass2 = computed(() => {
+	return Number(props.change) > 0 ? 'text-accent-green' : 'text-accent-red';
+});
+
 const containerClass = computed(() => {
-	return Number(props.change) > 0 ? 'bg-accent-green md:bg-transparent rounded-md' : 'bg-accent-red md:bg-transparent rounded-md';
+	return Number(props.change) > 0 ? 'bg-accent-green md:bg-transparent' : 'bg-accent-red md:bg-transparent';
 });
 
 const formattedChange = computed(() => {

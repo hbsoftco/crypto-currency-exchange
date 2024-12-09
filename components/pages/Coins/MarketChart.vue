@@ -22,6 +22,7 @@
 						>${{ priceFormat(localPrice) }}</span>
 						<span class="text-sm font-normal mx-1">
 							<UiChangePrice
+								:bg-color="false"
 								classes="text-sm font-normal pr-1.5"
 								:show-percent="true"
 								pl="pl-0.5"

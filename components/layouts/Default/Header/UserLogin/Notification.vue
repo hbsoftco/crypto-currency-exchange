@@ -27,9 +27,10 @@
 				/>
 				<span
 					v-if="unreadMessages.length > 0"
-					class="absolute -top-1 -right-1 flex items-center justify-center h-4 w-4 text-xs font-bold text-white bg-accent-red rounded-full"
+					class="absolute -top-1 -right-1.5 flex items-center justify-center h-[1.15rem] w-[1.15rem] text-[0.59rem] font-bold text-white bg-accent-red rounded-full"
+					dir="ltr"
 				>
-					{{ unreadMessages.length }}
+					{{ unreadMessages.length <= 10 ? unreadMessages.length : '+10' }}
 				</span>
 			</div>
 			<div
@@ -44,9 +45,10 @@
 				/>
 				<span
 					v-if="unreadMessages.length > 0"
-					class="absolute -top-1 -right-1 flex items-center justify-center h-4 w-4 text-xs font-bold text-white bg-accent-red rounded-full"
+					class="absolute -top-1 -right-1.5 flex items-center justify-center h-[1.15rem] w-[1.15rem] text-[0.59rem] font-bold text-white bg-accent-red rounded-full"
+					dir="ltr"
 				>
-					{{ unreadMessages.length }}
+					{{ unreadMessages.length <= 10 ? unreadMessages.length : '+10' }}
 				</span>
 			</div>
 			<div

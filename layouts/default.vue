@@ -18,8 +18,10 @@
 		</div>
 		<Footer v-if="!isMobile" />
 		<MobileFooter
-			v-if="isMobile"
-			class="block md:hidden"
+			v-if="isMobile && !coinDetailFooter"
+		/>
+		<CoinFooter
+			v-if="isMobile && coinDetailFooter"
 		/>
 		<UiToast />
 		<UModals />
@@ -31,12 +33,26 @@ import Header from '~/components/layouts/Default/Header.vue';
 
 const SupportButtons = defineAsyncComponent(() => import('~/components/pages/SupportButtons.vue'));
 const MobileFooter = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/Footer.vue'));
+const CoinFooter = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/CoinFooter.vue'));
 const MobileHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/Header.vue'));
 const Footer = defineAsyncComponent(() => import('~/components/layouts/Default/Footer.vue'));
 
 const { $mobileDetect } = useNuxtApp();
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
+
+const coinDetailFooter = ref<boolean>(false);
+
+const route = useRoute();
+
+watch(() => route.name, (newName) => {
+	if (newName === 'coins-cSymbol') {
+		coinDetailFooter.value = true;
+		return;
+	}
+
+	coinDetailFooter.value = false;
+}, { deep: true, immediate: true });
 
 const loginStore = useLoginStore();
 const signupStore = useSignupStore();

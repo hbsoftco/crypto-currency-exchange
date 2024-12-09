@@ -1,6 +1,6 @@
 <template>
 	<section class="my-10">
-		<h1 class="text-xl font-bold mb-2 mt-4">
+		<h1 class="text-base md:text-xl font-bold mb-2 mt-4">
 			{{ $t("priceInformation") }}
 		</h1>
 		<div
@@ -12,7 +12,7 @@
 					class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
 				>
 					<span
-						class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
+						class="text-sm md:text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
 					>{{ $t("hours24Lowest") }}</span>
 				</div>
 				<div class="text-sm font-normal text-black dark:text-white pt-1">
@@ -27,7 +27,7 @@
 					class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
 				>
 					<span
-						class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
+						class="text-sm md:text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
 					>{{ $t("hours24Highest") }}</span>
 				</div>
 				<div class="text-sm font-normal text-black dark:text-white pt-1">

@@ -18,7 +18,12 @@
 				dir="rtl"
 				class="text-left pl-1 md:pl-0"
 			>
-				<span class="text-sm md:text-base font-medium">{{ useNumber(priceFormat(localRow.indexPrice)) }}</span>
+				<span
+					class="text-sm md:text-base font-medium"
+					dir="ltr"
+				>
+					{{ priceFormat(localRow.indexPrice, true) }}
+				</span>
 			</div>
 		</td>
 		<td>
@@ -52,7 +57,6 @@
 import ChangeIndicator from '~/components/ui/ChangeIndicator.vue';
 import TradingAction from '~/components/ui/TradingAction.vue';
 import WeeklyChart from '~/components/ui/WeeklyChart.vue';
-import { useNumber } from '~/composables/useNumber';
 import { priceFormat } from '~/utils/helpers';
 import type { SocketSpotData } from '~/types/socket.types';
 import type { MarketL21 } from '~/types/definitions/market.types';

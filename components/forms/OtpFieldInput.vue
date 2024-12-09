@@ -9,6 +9,7 @@
 			]"
 		>
 			<v-otp-input
+				v-if="!isMobile"
 				ref="otpInput"
 				v-model:value="internalValue"
 				input-classes="otp-input border-none outline-none bg-transparent"
@@ -22,6 +23,15 @@
 				@on-change="handleOnChange"
 				@on-complete="handleOnComplete"
 			/>
+
+			<input
+				v-else
+				v-model="internalValue"
+				placeholder="- - - - - -"
+				maxlength="6"
+				type="text"
+				class="otp-input border-none outline-none bg-transparent"
+			>
 
 			<div
 				v-if="localCountdown>0 && countDownState"
@@ -71,10 +81,6 @@ import type VOtpInput from 'vue3-otp-input';
 
 import IconRefresh from '~/assets/svg-icons/refresh.svg';
 
-const otpInput = ref<InstanceType<typeof VOtpInput> | null>(null);
-const localCountdown = ref(0);
-let interval: NodeJS.Timeout | undefined;
-
 interface PropsDefinition {
 	id: string;
 	modelValue: string | number | null;
@@ -95,7 +101,6 @@ interface PropsDefinition {
 	clear?: boolean;
 	labelDir?: string;
 }
-
 const props = withDefaults(defineProps<PropsDefinition>(), {
 	countDownState: true,
 	sendType: 'resend',
@@ -109,6 +114,14 @@ interface EmitDefinition {
 	(event: 'resend' | 'sendCode' | 'completed' | 'cleared'): void;
 }
 const emit = defineEmits<EmitDefinition>();
+
+const { $mobileDetect } = useNuxtApp();
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
+
+const otpInput = ref<InstanceType<typeof VOtpInput> | null>(null);
+const localCountdown = ref(0);
+let interval: NodeJS.Timeout | undefined;
 
 const resendCode = () => {
 	emit('resend');
@@ -164,6 +177,7 @@ const startCountdown = () => {
 };
 
 onMounted(() => {
+	isMobile.value = !!mobileDetect.mobile();
 	localCountdown.value = props.countdown;
 	startCountdown();
 });

@@ -1,6 +1,6 @@
 <template>
 	<section class="my-10">
-		<h1 class="text-xl font-bold mb-2 mt-4">
+		<h1 class="text-base md:text-xl font-bold mb-2 mt-4">
 			{{ $t("globalMarketInformation") }}
 		</h1>
 		<div class="grid grid-cols-2 md:grid-cols-2 gap-4">
@@ -9,7 +9,7 @@
 					class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
 				>
 					<span
-						class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
+						class="text-sm md:text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
 					>{{ $t("totalMarketValue") }}</span>
 				</div>
 				<div
@@ -23,6 +23,7 @@
 						<span>USDT</span>
 						(<UiChangePrice
 							v-if="currencyDetail?.price"
+							:bg-color="false"
 							classes="text-sm font-normal"
 							:show-percent="true"
 							pl="pl-0"
@@ -39,7 +40,7 @@
 					class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
 				>
 					<span
-						class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
+						class="text-sm md:text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
 					>{{ $t("tradingVolume24Hours") }}</span>
 				</div>
 				<div
@@ -61,7 +62,7 @@
 					class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
 				>
 					<span
-						class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
+						class="text-sm md:text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
 					>{{ $t("currencyCirculation") }}</span>
 				</div>
 				<div
@@ -83,7 +84,7 @@
 					class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
 				>
 					<span
-						class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
+						class="text-sm md:text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
 					>{{ $t("marketDominance") }}</span>
 				</div>
 				<div class="text-sm font-normal text-black dark:text-white pt-1">
@@ -97,7 +98,7 @@
 					class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
 				>
 					<span
-						class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
+						class="text-sm md:text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
 					>{{ $t("marketRank") }}</span>
 				</div>
 				<div class="text-sm font-normal pt-1">
@@ -111,7 +112,7 @@
 					class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
 				>
 					<span
-						class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
+						class="text-sm md:text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
 					>{{ $t("maxSupply") }}</span>
 				</div>
 				<div
@@ -133,7 +134,7 @@
 					class="border-b-primary-gray-light dark:border-b-primary-gray-dark border-b pb-0.5"
 				>
 					<span
-						class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
+						class="text-sm md:text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
 					>{{ $t("totalSupply") }}</span>
 				</div>
 				<div

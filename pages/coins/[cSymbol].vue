@@ -1,26 +1,43 @@
 <template>
-	<div class="mt-20 md:mt-24">
+	<div class="mt-0 md:mt-24">
 		<UContainer v-if="currencyInfoLoading">
 			<UiLogoLoading />
 		</UContainer>
 		<UContainer v-if="!currencyInfoLoading && currencyInfo">
 			<div class="grid grid-cols-12 gap-4">
 				<div class="col-span-12 md:col-span-8">
-					<div class="flex items-center">
-						<img
-							:src="`https://api-bitland.site/media/currency/${currencyInfo.currency?.cSymbol}.png`"
-							:alt="currencyInfo.currency?.cName"
-							class="w-10 h-10 rounded-full"
-							format="webp"
-						>
-						<h1 class="text-base md:text-xl font-bold mr-4">
-							{{ currencyInfo.currency?.cName }} ({{ currencyInfo.currency?.cSymbol }})
-						</h1>
+					<div class="flex justify-between items-center">
+						<div class="flex items-center">
+							<img
+								:src="`https://api-bitland.site/media/currency/${currencyInfo.currency?.cSymbol}.png`"
+								:alt="currencyInfo.currency?.cName"
+								class="w-7 md:w-10 h-7 md:h-10 rounded-full"
+								format="webp"
+							>
+							<h1 class="text-base md:text-xl font-bold mr-1 md:mr-4">
+								{{ currencyInfo.currency?.cName }} ({{ currencyInfo.currency?.cSymbol }})
+							</h1>
+						</div>
+						<div>
+							<span class="text-sm font-normal mx-1">
+								<UiChangePrice
+									:bg-color="false"
+									classes="text-sm font-normal pr-1.5"
+									:show-percent="true"
+									pl="pl-0.5"
+									:change="parseFloat(String(currencyInfo.priceChangePerc24h))"
+									:icon="false"
+								/>
+							</span>
+							<span
+								class="text-base font-bold text-subtle-text-light dark:text-subtle-text-dark"
+							>${{ priceFormat(currencyInfo.price) }}</span>
+						</div>
 					</div>
-					<div class="block mb-24">
+					<div class="block mb-8 md:mb-24">
 						<div>
 							<MarketChart
-								v-if="currencyInfo.currency && currentMarket?.id"
+								v-if="currencyInfo.currency && currentMarket?.id && !isMobile"
 								:price="currencyInfo.price"
 								:price-change-perc7d="currencyInfo.priceChangePerc7d"
 								:price-change-perc24h="currencyInfo.priceChangePerc24h"
@@ -56,7 +73,7 @@
 
 							<section>
 								<div>
-									<h1 class="text-xl font-bold mt-8 md:my-4 ">
+									<h1 class="text-base md:text-xl font-bold mt-8 md:my-4 ">
 										{{ $t("FAQ") }}
 									</h1>
 									<FAQItems
@@ -70,7 +87,10 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-span-12 md:col-span-4">
+				<div
+					v-if="!isMobile"
+					class="col-span-12 md:col-span-4"
+				>
 					<div class="px-3">
 						<section>
 							<Calculator />
@@ -85,9 +105,9 @@
 							<section
 								v-for="category in marketsL47"
 								:key="category.category"
-								class="mt-16 mb-6"
+								class="mt-10 md:mt-16 mb-6"
 							>
-								<h4 class="text-xl font-bold mb-6">
+								<h4 class="text-base md:text-xl font-bold mb-6">
 									{{ $t(category.category) }}
 								</h4>
 								<SidebarMarketState
@@ -120,10 +140,14 @@ import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 import type { MarketBrief, MarketL47, MarketsL47Params } from '~/types/definitions/market.types';
 import type { Currency, CurrencyBrief, CurrencyInfoParams } from '~/types/definitions/currency.types';
 import { MarketType } from '~/utils/enums/market.enum';
+import { priceFormat } from '~/utils/helpers';
 
-const { $api } = useNuxtApp();
+const { $mobileDetect, $api } = useNuxtApp();
 const currencyRepo = currencyRepository($api);
 const marketRepo = marketRepository($api);
+
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
 
 const publicSocketStore = usePublicSocketStore();
 
@@ -190,6 +214,8 @@ const getCurrencyInfo = async () => {
 };
 
 onMounted(async () => {
+	isMobile.value = !!mobileDetect.mobile();
+
 	await getCurrencyInfo();
 	await getMarketListL47();
 

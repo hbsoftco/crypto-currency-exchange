@@ -7,7 +7,7 @@
 			class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-2 md:px-10 py-2"
 		>
 			<div class="flex items-center">
-				<div class="block md:flex items-center text-center">
+				<div class="block md:flex items-center text-center ml-1">
 					<button @click="addFavorite(market.id, market.isFavorite)">
 						<IconStar
 							v-if="!market.isFavorite "
@@ -60,8 +60,11 @@
 				</div>
 			</div>
 		</td>
-		<td class="text-sm font-medium px-2 md:px-10 text-left">
-			<span>{{ priceFormat(localRow?.indexPrice) }}</span>
+		<td
+			class="text-sm font-medium px-2 md:px-10 text-left"
+			dir="ltr"
+		>
+			<span>{{ priceFormat(localRow?.indexPrice, true) }}</span>
 			<span
 				class="block md:hidden text-sm font-medium text-subtle-text-light dark:text-subtle-text-dark"
 				dir="ltr"
@@ -72,12 +75,14 @@
 		<td class="text-base font-medium px-2 md:px-10 text-left">
 			<UiChangeIndicator
 				pl="pl-0"
-				size="text-sm"
+				size="text-xs"
 				:change="parseFloat(priceFormat(localRow.priceChangePercIn24H))"
 				:icon="true"
 			/>
 		</td>
-		<td class="text-sm font-normal px-10 md:table-cell hidden text-left">
+		<td
+			class="text-sm font-normal px-10 md:table-cell hidden text-left"
+		>
 			{{ priceFormat(localRow?.hPriceIn24H) }}
 		</td>
 		<td class="text-sm font-normal px-10 md:table-cell hidden text-left">

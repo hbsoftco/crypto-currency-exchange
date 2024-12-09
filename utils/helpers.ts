@@ -153,7 +153,20 @@ const formatByDecimal = (value: number, decimal: string) => {
 	return Number(value.toFixed(decimalPlaces));
 };
 
-const priceFormat = (price: number | string, delimiter: string = ','): string => {
+const priceFormat = (price: number | string, summarize: boolean = false, delimiter: string = ','): string => {
+	const inputString = price.toString();
+	const match = inputString.match(/^-?0\.0+(?!0)(\d+)/);
+
+	if (summarize && match) {
+		const zerosCount = match[0].length - match[1].length - (inputString.startsWith('-') ? 3 : 2);
+		if (zerosCount > 6) {
+			const significantDigits = match[1];
+			return `0.0{${zerosCount}}${significantDigits}`;
+		}
+
+		return inputString;
+	}
+
 	const [integerPart, decimalPart] = price.toString().split('.');
 
 	if (Number(integerPart) === 0 && decimalPart) {
