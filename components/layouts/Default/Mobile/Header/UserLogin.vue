@@ -7,8 +7,8 @@
 			/>
 		</div>
 		<div v-else>
-			<IconUser
-				class="text-[1.6rem] cursor-pointer"
+			<IconUserFill
+				class="text-[1.6rem] cursor-pointer text-primary-yellow-light dark:text-primary-yellow-dark"
 				@click="open = true"
 			/>
 		</div>
