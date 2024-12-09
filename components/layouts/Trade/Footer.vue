@@ -1,5 +1,5 @@
 <template>
-	<footer class="h-8 w-full bg-hover-light dark:bg-hover-dark fixed bottom-0 left-0 right-0 px-2">
+	<footer class="h-8 w-full bg-hover-light dark:bg-hover-dark fixed bottom-0 left-0 z-10 right-0 px-2">
 		<div class="flex justify-between items-center">
 			<div class="flex justify-start items-center pt-1">
 				<div class="flex justify-start items-center mx-4 cursor-pointer">

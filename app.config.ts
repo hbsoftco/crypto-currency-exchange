@@ -49,7 +49,7 @@ export default defineAppConfig({
 		},
 		pagination: {
 			wrapper: 'flex items-center space-x-1',
-			base: 'rounded min-w-11 flex justify-center items-center border-none mx-1 text-center',
+			base: 'rounded md:min-w-11 flex justify-center items-center border-none mx-1 text-center',
 		},
 		badge: {
 			rounded: 'rounded-full',

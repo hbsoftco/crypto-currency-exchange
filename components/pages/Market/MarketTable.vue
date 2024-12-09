@@ -6,7 +6,7 @@
 			<table
 				class="min-w-full bg-background-light dark:bg-background-dark text-text-dark dark:text-text-light"
 			>
-				<thead>
+				<thead v-if="!marketsLoading">
 					<tr class="text-right font-normal md:font-medium text-sm md:text-base border-b border-primary-gray-light dark:border-primary-gray-dark">
 						<th class="pb-3.5 pr-2 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-0 md:px-10">
 							<span
@@ -65,12 +65,12 @@
 						</td>
 						<td class="text-left">
 							<div class="flex justify-end pl-8">
-								<USkeleton class="h-4 w-14 md:w-24" />
+								<USkeleton class="h-4 w-12 md:w-24" />
 							</div>
 						</td>
 						<td>
 							<div class="flex justify-end pl-8">
-								<USkeleton class="h-4 w-14 md:w-24" />
+								<USkeleton class="h-4 w-12 md:w-20" />
 							</div>
 						</td>
 						<td v-if="!isMobile">
@@ -114,7 +114,7 @@
 						query: { page },
 					})"
 					:max="6"
-					size="xl"
+					size="sm"
 					@update:model-value="onPageChange"
 				/>
 			</div>

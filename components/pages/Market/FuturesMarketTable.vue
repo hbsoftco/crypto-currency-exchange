@@ -6,7 +6,7 @@
 			<table
 				class="min-w-full bg-background-light dark:bg-background-dark text-text-dark dark:text-text-light"
 			>
-				<thead>
+				<thead v-if="!marketsLoading">
 					<tr class="text-center font-normal md:font-medium text-sm md:text-base border-b border-primary-gray-light dark:border-primary-gray-dark">
 						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-0 md:px-10">
 							<span class="hidden md:block">{{ $t("tradingPair") }}</span>
@@ -43,32 +43,32 @@
 									:ui="{ rounded: 'rounded-full' }"
 								/>
 								<div class="space-y-2">
-									<USkeleton class="h-4 w-28" />
-									<USkeleton class="h-4 w-24" />
+									<USkeleton class="h-4 w-16 md:w-28" />
+									<USkeleton class="h-4 w-14 md:w-24" />
 								</div>
 							</div>
 						</td>
 						<td class="text-left">
 							<div class="flex justify-end pl-8">
-								<USkeleton class="h-4 w-24" />
+								<USkeleton class="h-4 w-12 md:w-24" />
 							</div>
 						</td>
 						<td>
 							<div class="flex justify-end pl-8">
-								<USkeleton class="h-4 w-20" />
+								<USkeleton class="h-4 w-12 md:w-20" />
 							</div>
 						</td>
-						<td>
+						<td v-if="!isMobile">
 							<div class="flex justify-center pl-8">
 								<USkeleton class="h-4 w-36" />
 							</div>
 						</td>
-						<td>
+						<td v-if="!isMobile">
 							<div class="flex justify-end pl-8">
 								<USkeleton class="h-4 w-20" />
 							</div>
 						</td>
-						<td>
+						<td v-if="!isMobile">
 							<div class="flex justify-center pl-8">
 								<USkeleton class="h-4 w-36" />
 							</div>
@@ -100,7 +100,7 @@
 						query: { page },
 					})"
 					:max="6"
-					size="xl"
+					size="sm"
 					@update:model-value="onPageChange"
 				/>
 			</div>
@@ -118,8 +118,11 @@ import type { MarketL31 } from '~/types/definitions/market.types';
 import type { UPagination } from '#build/components';
 import { usePaginationNumbers } from '~/composables/usePaginationNumbers';
 
-const { $api } = useNuxtApp();
+const { $mobileDetect, $api } = useNuxtApp();
 const marketRepo = marketRepository($api);
+
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
 
 const publicSocketStore = usePublicSocketStore();
 const marketsPageStore = useMarketsPageStore();
@@ -207,6 +210,8 @@ watch(() => marketsPageStore.futuresMarketsParams.pageNumber, () => {
 }, { deep: true });
 
 onMounted(async () => {
+	isMobile.value = !!mobileDetect.mobile();
+
 	marketsPageStore.futuresMarketsParams.searchStatement = '';
 	marketsPageStore.futuresMarketsParams.tagTypeId = '';
 
