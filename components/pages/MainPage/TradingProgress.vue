@@ -14,7 +14,7 @@
 						</div>
 						<div
 							:class="[
-								'w-6 h-6 flex rounded items-center justify-center border-2',
+								'w-6 h-6 flex rounded items-center justify-center border-2 bg-background-light dark:bg-background-dark',
 								isSignInVisible
 									? 'border-primary-yellow-light dark:border-primary-yellow-dark'
 									: 'border-secondary-gray-light dark:border-secondary-gray-dark',
@@ -48,7 +48,7 @@
 						</div>
 						<div
 							:class="[
-								'w-6 h-6 flex rounded items-center justify-center border-2',
+								'w-6 h-6 flex rounded items-center justify-center border-2 bg-background-light dark:bg-background-dark',
 								isDepositVisible
 									? 'border-primary-yellow-light dark:border-primary-yellow-dark'
 									: 'border-secondary-gray-light dark:border-secondary-gray-dark',
@@ -82,7 +82,7 @@
 						</div>
 						<div
 							:class="[
-								'w-6 h-6 rounded flex items-center justify-center border-2',
+								'w-6 h-6 flex rounded items-center justify-center border-2 bg-background-light dark:bg-background-dark',
 								isTransactionVisible
 									? 'border-primary-yellow-light dark:border-primary-yellow-dark'
 									: 'border-secondary-gray-light dark:border-secondary-gray-dark',

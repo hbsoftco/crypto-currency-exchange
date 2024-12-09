@@ -1,5 +1,5 @@
 <template>
-	<div class="p-5">
+	<div class="p-5 pt-0 md:pt-5">
 		<div class="mb-6">
 			<UiTitleWithBack :title="$t('security')" />
 		</div>
@@ -7,14 +7,14 @@
 			<div
 				class="grid grid-cols-1 md:grid-cols-12 gap-4 pt-4 border-t border-primary-gray-light dark:border-primary-gray-dark"
 			>
-				<div class="col-span-8">
+				<div class="col-span-12 md:col-span-8">
 					<Login2FA />
 
 					<AdvancedSecuritySettings />
 
 					<DevicesAndEvents />
 				</div>
-				<div class="col-span-4">
+				<div class="col-span-12 md:col-span-4">
 					<SecurityLevel />
 
 					<div

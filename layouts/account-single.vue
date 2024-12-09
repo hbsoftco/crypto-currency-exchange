@@ -1,12 +1,22 @@
 <template>
 	<div>
-		<Header class="hidden md:block" />
-		<!-- <LayoutsDefaultMobileHeader class="block md:hidden" /> -->
+		<Header
+			v-if="!isMobile"
+			class="hidden md:block"
+		/>
+		<MobileHeader
+			v-if="isMobile"
+			class="block md:hidden"
+		/>
+
 		<div class="min-h-[calc(100vh-20rem)] pt-16 md:pt-14">
 			<slot />
 		</div>
-		<LayoutsDefaultFooter />
-		<LayoutsDefaultMobileFooter class="block md:hidden" />
+		<Footer v-if="!isMobile" />
+		<MobileFooter
+			v-if="isMobile"
+			class="block md:hidden"
+		/>
 		<UiToast />
 		<UModals />
 	</div>
@@ -14,11 +24,20 @@
 
 <script setup lang="ts">
 import Header from '~/components/layouts/Default/Header.vue';
+import Footer from '~/components/layouts/Default/Footer.vue';
+
+const MobileFooter = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/Footer.vue'));
+const MobileHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/Header.vue'));
+
+const { $mobileDetect } = useNuxtApp();
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
 
 const loginStore = useLoginStore();
 const signupStore = useSignupStore();
 
 onMounted(() => {
+	isMobile.value = !!mobileDetect.mobile();
 	loginStore.resetAllData();
 	signupStore.resetAllData();
 });

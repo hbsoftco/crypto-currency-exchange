@@ -895,7 +895,7 @@ const persian = {
 	settingPinCode: 'تنظیم پین کد برداشت',
 	settingPinCodeAlert: 'لطفاً ۶ کاراکتر عددی برای پین کد خود در قسمت برداشت انتخاب نمایید. این قسمت امنیت دارایی شما را افزایش می دهد.',
 	save: 'ذخیره',
-	ManageWhiteListIp: 'مدیریت لیست سفید IP',
+	manageWhiteListIp: 'مدیریت لیست سفید IP',
 	listAllowedIps: 'لیست IP های مجاز',
 	howSetupIPUseSystem: 'نحوه تنظیم IP  مجاز برای استفاده از سیستم چگونه است ؟',
 	howSetupIPUseSystemText: 'شما میتوانید تا ۳۰ IP اضافه کنید، برای اضافه کردن بیش از یک IP جداگانه میتوانید IP آدرس‌ها را با علامت کاما جدا کنید.',
