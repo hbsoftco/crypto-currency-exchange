@@ -121,6 +121,20 @@ type VerifyOutput = {
 	v2FACode: string | null;
 };
 
+type WithdrawPinCodeDto = {
+	verificationId: number | null;
+	verificationCode: string;
+	v2FACode: string | null;
+	withdrawPinCode: string;
+};
+
+type AntiPhishingDto = {
+	verificationId: number | null;
+	verificationCode: string;
+	v2FACode: string | null;
+	anitphishingPhrase: string;
+};
+
 export type {
 	SecurityListResponse,
 	SecurityResponse,
@@ -138,4 +152,6 @@ export type {
 	SetPasswordDto,
 	DetermineOtpType,
 	VerifyOutput,
+	WithdrawPinCodeDto,
+	AntiPhishingDto,
 };

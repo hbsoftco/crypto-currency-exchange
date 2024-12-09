@@ -78,6 +78,7 @@
 							v-model="isOpenVerifyModal"
 							:title="$t('changePasswordLogin')"
 							:submit-loading="loading"
+							:secret-text="setPasswordDto.passwordNew"
 							@confirm="submit($event)"
 						/>
 					</div>

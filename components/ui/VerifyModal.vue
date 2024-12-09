@@ -17,7 +17,22 @@
 						<h3>{{ $t('verification') }}</h3>
 					</h3>
 					<div class="flex justify-between items-center mt-6 px-4 py-3 bg-primary-gray-light dark:bg-primary-gray-dark rounded-md">
-						<span class="text-base font-semibold text-subtle-text-light dark:text-subtle-text-dark">{{ title }}</span>
+						<div class="flex justify-start items-center">
+							<span class="text-base font-semibold ml-2 text-subtle-text-light dark:text-subtle-text-dark">{{ title }}</span>
+
+							<UIcon
+								v-if="secretText"
+								:name="!showSecretText ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
+								class="w-4 h-4 ml-2 cursor-pointer text-subtle-text-light dark:text-subtle-text-50"
+								@click="showSecretText = !showSecretText"
+							/>
+						</div>
+						<div v-if="secretText">
+							<span v-if="showSecretText">
+								{{ secretText }}
+							</span>
+							<span v-else>******</span>
+						</div>
 					</div>
 					<div v-if="loading">
 						<div class="my-6">
@@ -134,8 +149,11 @@ interface PropsDefinition {
 	modelValue: boolean;
 	title: string;
 	submitLoading: boolean;
+	secretText?: string;
 }
 const props = defineProps<PropsDefinition>();
+
+const showSecretText = ref<boolean>(false);
 
 const isOpen = ref(props.modelValue);
 watch(() => props.modelValue, (newValue) => {

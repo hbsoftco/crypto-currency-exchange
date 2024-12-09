@@ -1146,6 +1146,7 @@ const persian = {
 	newEmailAddress: 'آدرس ایمیل جدید',
 	disableGoogle2FA: 'غیرفعال کردن گوگل 2FA',
 	activeItem: 'فعال سازی',
+	antiPhishingPhraseExample: 'مثال: مدرسه اول ابتدایی من ۱۳ آبان بود.',
 };
 
 export default persian;

@@ -64,20 +64,6 @@ type SetMobileDto = {
 	v2FACode: string;
 };
 
-type SetPinCodeDto = {
-	verificationId: string;
-	verificationCode: string;
-	v2FACode?: string;
-	withdrawPinCode: string;
-};
-
-type SetAntiPhishingDto = {
-	verificationId: string;
-	verificationCode: string;
-	v2FACode?: string;
-	anitphishingPhrase: string;
-};
-
 type SetCardPrintDto = {
 	address: string;
 	postalCode: string;
@@ -117,8 +103,6 @@ export type {
 	SetLiveDto,
 	SetEmailDto,
 	SetMobileDto,
-	SetPinCodeDto,
-	SetAntiPhishingDto,
 	SetCardPrintDto,
 	SetApiAddDto,
 	SetApiEditDto,

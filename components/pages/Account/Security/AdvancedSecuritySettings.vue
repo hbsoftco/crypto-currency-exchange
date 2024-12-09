@@ -26,11 +26,11 @@
 					{{ $t("antiPhishingPhrase") }}
 				</h3>
 				<UBadge
-					color="green"
+					:color="authStore.antiPhishingStatus ? 'green' : 'red'"
 					variant="solid"
 					class="mr-1"
 				>
-					{{ $t("on") }}
+					{{ authStore.antiPhishingStatus ? $t('on') :$t("off") }}
 				</UBadge>
 			</div>
 			<div class="my-3">
@@ -39,15 +39,15 @@
 				</p>
 			</div>
 			<UButton
-				to="/account/security/anti-phishing"
 				size="sm"
 				variant="ghost"
-				color="red"
-				class="font-bold text-sm border border-red-400"
+				class="font-bold text-sm text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark"
+				to="/account/security/anti-phishing"
 			>
-				{{ $t("remove") }}
+				{{ $t("adjust") }}
 			</UButton>
 		</div>
+		<!-- Anti Phishing -->
 
 		<div class="py-4">
 			<div class="flex items-center">
@@ -60,11 +60,11 @@
 					{{ $t("pinCodeWithdrawal") }}
 				</h3>
 				<UBadge
-					color="red"
+					:color="authStore.withdrawPinCodeStatus ? 'green' : 'red'"
 					variant="solid"
 					class="mr-1"
 				>
-					{{ $t("off") }}
+					{{ authStore.withdrawPinCodeStatus ? $t('on') :$t("off") }}
 				</UBadge>
 			</div>
 			<div class="my-3">
@@ -76,11 +76,12 @@
 				size="sm"
 				variant="ghost"
 				class="font-bold text-sm text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark"
-				to="/account/security/pin-code"
+				to="/account/security/withdraw-pin-code"
 			>
 				{{ $t("adjust") }}
 			</UButton>
 		</div>
+		<!-- Withdraw Pin Code -->
 
 		<div
 			class="py-4 border-b border-primary-gray-light dark:border-primary-gray-dark"
@@ -109,6 +110,7 @@
 				{{ $t("adjust") }}
 			</UButton>
 		</div>
+		<!-- Manage White List -->
 
 		<div class="py-4">
 			<div class="flex items-center">
@@ -135,9 +137,12 @@
 				{{ $t("toChange") }}
 			</UButton>
 		</div>
+		<!-- Change Password -->
 	</div>
 </template>
 
 <script setup lang="ts">
 import IconShield from '~/assets/svg-icons/profile/shield.svg';
+
+const authStore = useAuthStore();
 </script>

@@ -3,6 +3,7 @@ import type { NitroFetchRequest, $Fetch } from 'nitropack';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import type { CommonResponse, KeyValueResponse } from '~/types/definitions/common.types';
 import type {
+	AntiPhishingDto,
 	ChangeEmailDto,
 	ChangePhoneDto,
 	Disable2faDto,
@@ -13,6 +14,7 @@ import type {
 	SecurityListResponse,
 	SecurityResponse,
 	SetPasswordDto,
+	WithdrawPinCodeDto,
 } from '~/types/definitions/security.types';
 
 type SecurityRepository = {
@@ -33,7 +35,9 @@ type SecurityRepository = {
 	changePhone: (dto: ChangePhoneDto) => Promise<CommonResponse>;
 	changeEmail: (dto: ChangeEmailDto) => Promise<CommonResponse>;
 	storeSetPassword: (dto: SetPasswordDto) => Promise<CommonResponse>;
-
+	//
+	storeWithdrawPinCode: (dto: WithdrawPinCodeDto) => Promise<CommonResponse>;
+	storeAntiPhishing: (dto: AntiPhishingDto) => Promise<CommonResponse>;
 };
 
 export const securityRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SecurityRepository => ({
@@ -168,6 +172,33 @@ export const securityRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): S
 	async storeSetPassword(dto: SetPasswordDto): Promise<CommonResponse> {
 		const url = `/v1/security/alter/password_set`;
 		const { v2FACode, rePasswordNew, ...rest } = dto;
+		const body = v2FACode ? dto : rest;
+
+		const response = await fetch<CommonResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	//
+	async storeWithdrawPinCode(dto: WithdrawPinCodeDto): Promise<CommonResponse> {
+		const url = `/v1/security/alter/withdraw_pincode_set`;
+		const { v2FACode, ...rest } = dto;
+		const body = v2FACode ? dto : rest;
+
+		const response = await fetch<CommonResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async storeAntiPhishing(dto: AntiPhishingDto): Promise<CommonResponse> {
+		const url = `/v1/security/alter/antiphishing_phrase_set`;
+		const { v2FACode, ...rest } = dto;
 		const body = v2FACode ? dto : rest;
 
 		const response = await fetch<CommonResponse>(`${url}`, {

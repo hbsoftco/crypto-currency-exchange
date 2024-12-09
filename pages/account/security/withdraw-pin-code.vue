@@ -2,28 +2,29 @@
 	<div>
 		<UContainer class="my-8">
 			<div class="my-4">
-				<UiTitleWithBack :title="$t('antiPhishingPhrase')" />
+				<UiTitleWithBack :title="$t('pinCodeWithdrawal')" />
 			</div>
 			<section>
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-20 rounded-md mt-8 mb-4 py-6 md:py-10 px-1 md:px-20 bg-primary-gray-light dark:bg-primary-gray-dark">
 					<div class="mt-10 w-full">
 						<div>
-							<FormsFieldInput
-								id="anitphishingPhrase"
-								v-model="antiPhishingDto.anitphishingPhrase"
-								type="text"
-								label="settingAntiPhishing"
-								placeholder=""
+							<OtpFieldInput
+								id="withdrawPinCode"
+								v-model="withdrawPinCodeDto.withdrawPinCode"
 								color-type="transparent"
-								:error-message="v$.anitphishingPhrase.$error? $t('fieldIsRequired') : ''"
+								type="text"
+								input-class="text-left"
+								:count-down-state="false"
+								send-type="send"
+								label="settingPinCode"
+								placeholder=""
+								icon=""
+								dir="ltr"
+								:error-message="v$.withdrawPinCode.$error? $t('fieldIsRequired') : ''"
 							/>
 						</div>
-						<p class="text-xs font-normal mb-4 leading-6">
-							{{ $t('antiPhishingPhraseExample') }}
-						</p>
-
 						<p class="text-xs font-normal mb-8 leading-6">
-							{{ $t('settingAntiPhishingAlert') }}
+							{{ $t('settingPinCodeAlert') }}
 						</p>
 						<div>
 							<UButton
@@ -41,11 +42,12 @@
 							v-model="isOpenVerifyModal"
 							:title="$t('pinCodeWithdrawal')"
 							:submit-loading="loading"
+							:secret-text="withdrawPinCodeDto.withdrawPinCode"
 							@confirm="submit($event)"
 						/>
 					</div>
 					<div class="my-8">
-						<SideGuideBox :tag-type="TagType.ANTIPHISHING_PHRASE" />
+						<SideGuideBox :tag-type="TagType.WITHDRAW_PIN_CODE" />
 					</div>
 				</div>
 			</section>
@@ -56,9 +58,10 @@
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core';
 
+import OtpFieldInput from '~/components/forms/OtpFieldInput.vue';
 import SideGuideBox from '~/components/ui/SideGuideBox.vue';
 import { securityRepository } from '~/repositories/security.repository';
-import type { AntiPhishingDto, VerifyOutput } from '~/types/definitions/security.types';
+import type { VerifyOutput, WithdrawPinCodeDto } from '~/types/definitions/security.types';
 import { TagType } from '~/utils/enums/help.enum';
 
 definePageMeta({
@@ -75,37 +78,37 @@ const router = useRouter();
 
 const isOpenVerifyModal = ref(false);
 
-const antiPhishingDto = ref<AntiPhishingDto>({
+const withdrawPinCodeDto = ref<WithdrawPinCodeDto>({
 	verificationId: null,
 	verificationCode: '',
 	v2FACode: null,
-	anitphishingPhrase: '',
+	withdrawPinCode: '',
 });
 
-const antiPhishingDtoRules = {
+const withdrawPinCodeDtoRules = {
 	verificationId: { },
 	verificationCode: { },
-	anitphishingPhrase: { required: validations.required },
+	withdrawPinCode: { required: validations.required },
 	v2FACode: { },
 };
 
-const v$ = useVuelidate(antiPhishingDtoRules, antiPhishingDto);
+const v$ = useVuelidate(withdrawPinCodeDtoRules, withdrawPinCodeDto);
 
 const loading = ref<boolean>(false);
 const submit = async (event: VerifyOutput) => {
 	if (event.verificationCode) {
-		antiPhishingDto.value.verificationCode = event.verificationCode;
+		withdrawPinCodeDto.value.verificationCode = event.verificationCode;
 	}
 	if (event.verificationId) {
-		antiPhishingDto.value.verificationId = event.verificationId;
+		withdrawPinCodeDto.value.verificationId = event.verificationId;
 	}
 	if (event.v2FACode) {
-		antiPhishingDto.value.v2FACode = event.v2FACode;
+		withdrawPinCodeDto.value.v2FACode = event.v2FACode;
 	}
 
 	loading.value = true;
 	try {
-		await securityRepo.storeAntiPhishing(antiPhishingDto.value);
+		await securityRepo.storeWithdrawPinCode(withdrawPinCodeDto.value);
 
 		router.push('/account/security');
 		await authStore.fetchCurrentUser(true);
@@ -127,25 +130,3 @@ const openVerifyModal = () => {
 	isOpenVerifyModal.value = true;
 };
 </script>
-
-<!-- <template>
-	<div>
-		<UContainer class="my-20">
-			<div class="my-4">
-				<UiTitleWithBack :title="$t('antiPhishingPhrase')" />
-			</div>
-			<section>
-				<AntiPhishing />
-			</section>
-		</UContainer>
-	</div>
-</template>
-
-<script setup lang="ts">
-import AntiPhishing from '~/components/pages/Account/Security/AntiPhishing/index.vue';
-
-definePageMeta({
-	layout: 'account-single',
-	middleware: 'auth',
-});
-</script> -->

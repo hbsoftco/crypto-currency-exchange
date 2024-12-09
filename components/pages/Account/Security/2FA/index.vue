@@ -16,11 +16,11 @@
 					{{ $t("TwoStepLogin") }}
 				</h3>
 				<UBadge
-					:color="login2fa ? 'green' : 'red'"
+					:color="authStore.login2faStatus ? 'green' : 'red'"
 					variant="solid"
 					class="mr-1"
 				>
-					{{ login2fa ? $t('on') :$t("off") }}
+					{{ authStore.login2faStatus ? $t('on') :$t("off") }}
 				</UBadge>
 			</div>
 			<div class="my-3">
@@ -30,7 +30,7 @@
 			</div>
 
 			<UButton
-				v-if="login2fa"
+				v-if="authStore.login2faStatus"
 				size="sm"
 				variant="ghost"
 				color="red"
@@ -164,15 +164,6 @@ const router = useRouter();
 const toast = useToast();
 
 const authStore = useAuthStore();
-
-const login2fa = computed(() => {
-	const login2faValue = getValueByKey(authStore.getCurrentUser, '2FA_ENABLED');
-
-	if (login2faValue === undefined) {
-		return false;
-	}
-	return login2faValue === '1' ? true : false;
-});
 
 const checkEmail = () => {
 	const valid = isValidGmail(getValueByKey(authStore.getCurrentUser, 'EMAIL') || '');

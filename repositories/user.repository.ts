@@ -41,15 +41,13 @@ import type {
 	CodeInviteDto,
 	ContactSetDto,
 	DeleteAccountDto,
-	SetAntiPhishingDto,
 	SetApiAddDto,
 	SetApiEditDto,
 	SetBasicDto,
 	SetCardPrintDto,
 	SetEmailDto,
 	SetLiveDto,
-	SetMobileDto,
-	SetPinCodeDto } from '~/types/dto/user.dto';
+	SetMobileDto } from '~/types/dto/user.dto';
 import type { GetCountryListRes } from '~/types/response/common.types';
 import type { GetCommissionRes, GetInvitationListRes } from '~/types/response/referral.types';
 import type {
@@ -97,8 +95,6 @@ type UserRepository = {
 	getTypeList: (params: getTypeListParams) => Promise<KeyValueResponse>;
 	setEmail: (dto: SetEmailDto) => Promise<CommonResponse>;
 	storeSetMobile: (dto: SetMobileDto) => Promise<CommonResponse>;
-	storeSetPinCode: (dto: SetPinCodeDto) => Promise<CommonResponse>;
-	storeSetAntiPhishing: (dto: SetAntiPhishingDto) => Promise<CommonResponse>;
 	getHolder: (params: GetTraderBriefParams) => Promise<GetHolderRes>;
 	getHolderLevelList: () => Promise<GetHolderLevelListRes>;
 	storeCardPrint: (dto: SetCardPrintDto) => Promise<CommonResponse>;
@@ -538,28 +534,6 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 	},
 	async storeSetMobile(dto: SetMobileDto): Promise<CommonResponse> {
 		const url = `/v1/user/alter/mobile_set`;
-		const response = await fetch<CommonResponse>(`${url}`, {
-			noAuth: false,
-			apiName: url,
-			method: 'POST',
-			body: dto,
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async storeSetPinCode(dto: SetPinCodeDto): Promise<CommonResponse> {
-		const url = `/v1/user/alter/withdraw_pincode_set`;
-		const response = await fetch<CommonResponse>(`${url}`, {
-			noAuth: false,
-			apiName: url,
-			method: 'POST',
-			body: dto,
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async storeSetAntiPhishing(dto: SetAntiPhishingDto): Promise<CommonResponse> {
-		const url = `/v1/user/alter/antiphishing_phrase_set`;
 		const response = await fetch<CommonResponse>(`${url}`, {
 			noAuth: false,
 			apiName: url,
