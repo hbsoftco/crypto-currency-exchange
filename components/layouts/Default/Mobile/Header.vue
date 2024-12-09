@@ -26,7 +26,7 @@
 import Notification from '~/components/layouts/Default/Header/UserLogin/Notification.vue';
 import UserLogin from '~/components/layouts/Default/Mobile/Header/UserLogin.vue';
 import Support from '~/components/layouts/Default/Mobile/Header/Support.vue';
-import Search from '~/components/layouts/Default/Mobile/Header/Search/index.vue';
+import Search from '~/components/layouts/Default/Mobile/Header/Search.vue';
 // import Notif from '../Notif.vue';
 
 const authStore = useAuthStore();

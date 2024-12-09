@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<IconSupport class="text-2xl " />
+		<IconSupport class="text-2xl" />
 	</div>
 </template>
 

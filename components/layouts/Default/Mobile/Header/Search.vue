@@ -13,16 +13,14 @@
 				},
 			]"
 		>
-			<input
-				v-model="search"
-				type="text"
-				class="w-full h-full outline-none pr-8 text-sm bg-primary-gray-light md:bg-background-light dark:bg-primary-gray-dark md:dark:bg-background-dark "
-				:placeholder="$t('search')"
+			<div
+				class="w-full h-full outline-none pr-2 text-sm bg-primary-gray-light md:bg-background-light dark:bg-primary-gray-dark md:dark:bg-background-dark text-subtle-text-light dark:text-subtle-text-dark font-light"
 				:trailing="false"
-				@focus="handleFocus"
-				@input="handleInput"
+				@click="handleFocus"
 			>
-			<IconSearch class="absolute text-2xl top-0.5 right-1.5" />
+				{{ $t('search') }}
+			</div>
+			<IconSearch class="absolute top-[0.425rem] right-[0.475rem] transform scale-x-[-1] text-subtle-text-light dark:text-subtle-text-dark" />
 		</div>
 
 		<!-- Modal Background -->

@@ -7,8 +7,8 @@
 			/>
 		</div>
 		<div v-else>
-			<IconUserFill
-				class="text-2xl cursor-pointer text-primary-yellow-light dark:text-primary-yellow-dark"
+			<IconUser
+				class="text-[1.6rem] cursor-pointer"
 				@click="open = true"
 			/>
 		</div>
@@ -34,7 +34,7 @@
 					>
 						<IconUserFill class="text-black text-3xl" />
 					</div>
-					<span class="text-lg font-black mr-2">کاربر ناشناس</span>
+					<span class="text-lg font-black mr-2">{{ $t('anonymousUser') }}</span>
 				</div>
 				<UiThemeToggle />
 			</div>
