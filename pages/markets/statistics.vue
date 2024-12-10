@@ -27,7 +27,7 @@
 							:option="positiveMarketBarOptions"
 							class="w-full h-96"
 						/>
-						<div class="text-center text-base font-bold">
+						<div class="text-center text-sm md:text-base font-bold">
 							{{ $t("numberOfRisingMarkets") }}
 						</div>
 					</div>
@@ -39,7 +39,7 @@
 							:option="negativeMarketBarOptions"
 							class="w-full h-96"
 						/>
-						<div class="text-center text-base font-bold">
+						<div class="text-center text-sm md:text-base font-bold">
 							{{ $t("numberOfDecliningMarkets") }}
 						</div>
 					</div>
