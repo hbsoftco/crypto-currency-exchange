@@ -5,6 +5,7 @@
 			:src="`https://api-bitland.site/media/currency/${market?.currency?.cSymbol}.png`"
 			:alt="market?.currency?.cName"
 			class="w-4 h-4 md:w-8 md:h-8 rounded-full"
+			@error="handleImageError"
 		>
 		<div class="mr-2 md:mr-4">
 			<div
@@ -59,6 +60,7 @@
 <script setup lang="ts">
 import type { MarketL21 } from '~/types/definitions/market.types';
 import { splitMarket } from '~/utils/split-market';
+import { handleImageError } from '~/utils/helpers';
 
 interface Props {
 	market: MarketL21;
