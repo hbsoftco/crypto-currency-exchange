@@ -42,6 +42,8 @@
 					:max="200"
 					@mousedown="startDrag"
 					@mouseup="endDrag"
+					@touchstart="startDrag"
+					@touchend="endDrag"
 				/>
 			</div>
 			<div
