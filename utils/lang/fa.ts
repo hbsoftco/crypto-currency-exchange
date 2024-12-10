@@ -1147,6 +1147,7 @@ const persian = {
 	disableGoogle2FA: 'غیرفعال کردن گوگل 2FA',
 	activeItem: 'فعال سازی',
 	antiPhishingPhraseExample: 'مثال: مدرسه اول ابتدایی من ۱۳ آبان بود.',
+	buySell: 'خرید/فروش',
 };
 
 export default persian;

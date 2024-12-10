@@ -107,9 +107,8 @@
 </template>
 
 <script setup lang="ts">
-import { formatByDecimal } from '~/utils/helpers';
+import { formatByDecimal, priceFormat } from '~/utils/helpers';
 import IconClose from '~/assets/svg-icons/close.svg';
-import { priceFormat } from '~/utils/helpers';
 import type { TradeOption } from '~/types/definitions/spot.types';
 
 interface PropsDefinition {

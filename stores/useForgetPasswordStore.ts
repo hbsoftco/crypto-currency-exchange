@@ -1,5 +1,9 @@
 import { authRepository } from '~/repositories/auth.repository';
-import type { CheckForgetPasswordDto, InitForgetPasswordDto, ResendVerificationParams, ResetPasswordDto } from '~/types/definitions/auth.types';
+import type {
+	CheckForgetPasswordDto,
+	InitForgetPasswordDto,
+	ResendVerificationParams,
+	ResetPasswordDto } from '~/types/definitions/auth.types';
 import { detectEmail, normalizeMobile } from '~/utils/helpers';
 
 export const useForgetPasswordStore = defineStore('forgetPassword', () => {

@@ -13,7 +13,7 @@
 	<UContainer v-else>
 		<div>
 			<div>
-				<div class="mb-4 mt-8">
+				<div class="mb-4 mt-0 md:mt-8">
 					<UiTitleWithBack :title="$t('marketStatistics')" />
 				</div>
 				<div

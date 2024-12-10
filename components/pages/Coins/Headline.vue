@@ -5,7 +5,7 @@
 		</h1>
 		<p
 			class="text-base font-medium mt-4 text-subtle-text-light dark:text-subtle-text-50"
-			dir="ltr"
+			dir="rtl"
 		>
 			{{ headline }}
 		</p>

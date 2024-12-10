@@ -31,7 +31,7 @@
 			arrows
 			class="rounded-lg overflow-hidden pb-10"
 		>
-			<div class="px-0 md:px-4 mb-2 w-full md:w-auto">
+			<div class="px-0 md:px-4 mb-2 w-full mx-8 md:mx-0 md:w-auto">
 				<MarketCategory
 					:key="item.id"
 					:tag="item.tag"

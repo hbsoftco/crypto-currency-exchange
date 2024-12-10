@@ -183,7 +183,7 @@ const getMarketListL47 = async () => {
 const currentMarket = ref<MarketBrief>();
 const params = ref<CurrencyInfoParams>({
 	id: '',
-	languageId: String(Language.ENGLISH),
+	languageId: String(Language.PERSIAN),
 });
 const currency = ref<CurrencyBrief | null>(null);
 const markets = ref<MarketBrief[] | []>([]);

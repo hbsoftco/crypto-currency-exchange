@@ -7,9 +7,12 @@
 				class="min-w-full bg-background-light dark:bg-background-dark text-text-dark dark:text-text-light"
 			>
 				<thead v-if="!marketsLoading">
-					<tr class="text-center font-normal md:font-medium text-sm md:text-base border-b border-primary-gray-light dark:border-primary-gray-dark">
-						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-0 md:px-10">
-							<span class="hidden md:block">{{ $t("tradingPair") }}</span>
+					<tr class="text-right font-normal md:font-medium text-sm md:text-base border-b border-primary-gray-light dark:border-primary-gray-dark">
+						<th class="pb-3.5 pr-2 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-0 md:px-10">
+							<span
+								v-if="!isMobile"
+								class="hidden md:block"
+							>{{ $t("tradingPair") }}</span>
 							<span class="block md:hidden">{{ $t("market") }}</span>
 						</th>
 						<th class="pb-3.5 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-0 md:px-10 text-left">
@@ -162,7 +165,11 @@ const getMarketListL31 = async () => {
 		}
 		marketsLoading.value = true;
 		if (authStore.isLoggedIn) {
-			const { result } = await marketRepo.getMarketListL31a(marketsPageStore.futuresMarketsParams);
+			const { result } = await marketRepo.getMarketListL31a({
+				...marketsPageStore.futuresMarketsParams,
+				pageNumber: String(marketsPageStore.futuresMarketsParams.pageNumber),
+				pageSize: String(marketsPageStore.futuresMarketsParams.pageSize),
+			});
 			markets.value = await worker.addCurrencyToMarketsL16(
 				result.rows as MarketL31[],
 				Number(marketsPageStore.futuresMarketsParams.currencyQuoteId),
@@ -171,7 +178,11 @@ const getMarketListL31 = async () => {
 			totalCount.value = result.totalCount;
 		}
 		else {
-			const { result } = await marketRepo.getMarketListL31(marketsPageStore.futuresMarketsParams);
+			const { result } = await marketRepo.getMarketListL31({
+				...marketsPageStore.futuresMarketsParams,
+				pageNumber: String(marketsPageStore.futuresMarketsParams.pageNumber),
+				pageSize: String(marketsPageStore.futuresMarketsParams.pageSize),
+			});
 			markets.value = await worker.addCurrencyToMarketsL16(
 				result.rows as MarketL31[],
 				Number(marketsPageStore.futuresMarketsParams.currencyQuoteId),
@@ -236,6 +247,6 @@ watch(() => props.searchQuery, (newQuery) => {
 });
 
 const onPageChange = async (newPage: number) => {
-	marketsPageStore.futuresMarketsParams.pageNumber = String(newPage);
+	marketsPageStore.futuresMarketsParams.pageNumber = newPage;
 };
 </script>

@@ -3,8 +3,12 @@
 		<UContainer>
 			<div class="flex justify-between items-center">
 				<div class="gap-2 flex h-full">
-					<button class="bg-accent-green h-9 rounded px-5 font-bold">{{ $t('buy') }}</button>
-					<button class="bg-accent-red h-9 rounded px-4 font-bold">{{ $t('sell') }}</button>
+					<button class="bg-accent-green h-9 rounded px-5 font-bold">
+						{{ $t('buy') }}
+					</button>
+					<button class="bg-accent-red h-9 rounded px-4 font-bold">
+						{{ $t('sell') }}
+					</button>
 				</div>
 				<div class="py-1 flex justify-between">
 					<ULink

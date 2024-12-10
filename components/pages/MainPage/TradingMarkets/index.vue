@@ -7,7 +7,7 @@
 				class="min-w-full bg-background-light dark:bg-background-dark text-text-dark dark:text-text-light rounded"
 			>
 				<thead v-if="!marketsLoading">
-					<tr class="text-center font-normal md:font-medium text-sm md:text-base">
+					<tr class="text-center font-normal md:font-medium text-[0.775rem] md:text-base">
 						<th class="py-2 md:py-3 px-2 text-right max-w-36 w-36 md:max-w-80 md:w-80 pr-6 md:pr-14">
 							{{ $t("market") }}
 						</th>

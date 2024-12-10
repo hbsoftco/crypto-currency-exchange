@@ -30,7 +30,7 @@
 					class="pb-1"
 				>
 					<td class="pr-1">
-						{{ useNumber(index+1) }}
+						{{ index+1 }}
 					</td>
 					<td class="text-xs font-normal py-2 ">
 						<ULink
@@ -50,11 +50,12 @@
 						</ULink>
 					</td>
 					<td class="text-sm font-normal text-left py-2">
-						<span>{{ useNumber(priceFormat(String(market.indexPrice))) }}</span>
+						<span dir="ltr">{{ priceFormat(String(market.indexPrice), true) }}</span>
 					</td>
 					<td class="text-sm text-left font-normal py-2">
 						<UiChangePrice
 							classes="text-sm font-normal"
+							:bg-color="false"
 							:show-percent="true"
 							pl="pl-2"
 							:change="parseFloat(String(market.priceChangePercIn24H))"
@@ -64,20 +65,118 @@
 				</tr>
 			</tbody>
 		</table>
+		<USlideover
+			v-model="openSlide"
+			side="bottom"
+		>
+			<UCard
+				class="flex flex-col flex-1"
+				:ui="{ body: { base: 'flex-1' }, ring: '' }"
+			>
+				<template #header>
+					<div class="flex items-center justify-between">
+						<h3 class="text-lg font-semibold leading-6 text-gray-900 dark:text-white flex">
+							<img
+								v-if="openSlideData?.name"
+								:src="`https://api-bitland.site/media/currency/${openSlideData?.name}.png`"
+								:alt="openSlideData?.name"
+								class="w-6 h-6 rounded-full ml-1"
+								format="webp"
+								densities="x1"
+							>
+							<span class="mr-1">{{ openSlideData?.cName }}</span>
+						</h3>
+						<UButton
+							color="gray"
+							variant="ghost"
+							icon="i-heroicons-x-mark-20-solid"
+							class="-my-1 outline-none"
+							@click="openSlide=false"
+						/>
+					</div>
+				</template>
+
+				<div class="pt-2">
+					<div class="p-1">
+						<div class="flex justify-between mb-7">
+							<div class="">
+								{{ $t('price') }}
+							</div>
+							<div class="flex pl-1">
+								<span>USDT</span>
+								<span class="mr-1 font-dana">{{ priceFormat(String(openSlideData?.indexPrice)) }}</span>
+							</div>
+						</div>
+						<div class="flex justify-between mb-7">
+							<div class="">
+								{{ $t('changeIn24h') }}
+							</div>
+							<div class="text-left">
+								<UiChangePrice
+									classes="text-base ml-0 font-normal"
+									:bg-color="false"
+									:show-percent="true"
+									pl="pl-0"
+									:change="parseFloat(String(openSlideData?.indexPrice))"
+									:icon="false"
+								/>
+							</div>
+						</div>
+						<div class="flex justify-between mb-7">
+							<div class="">
+								{{ $t('volumeIn24h') }}
+							</div>
+							<div
+								class="flex pl-1"
+								dir="ltr"
+							>
+								<span class="mr-1 font-dana">{{ priceFormat(formatBigNumber(String(openSlideData?.valueOfTradesIn24H), 3)) }}</span>
+								<span>USDT</span>
+							</div>
+						</div>
+						<div class="pt-4">
+							<UButton
+								size="lg"
+								block
+							>
+								{{ $t("buySell") }} {{ openSlideData?.name }}
+							</UButton>
+						</div>
+					</div>
+				</div>
+			</UCard>
+		</USlideover>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { splitMarket } from '~/utils/split-market';
-import { priceFormat } from '~/utils/helpers';
-import { useNumber } from '~/composables/useNumber';
+import { priceFormat, formatBigNumber } from '~/utils/helpers';
 import type { MarketL47 } from '~/types/definitions/market.types';
 
 interface PropsDefinition {
 	item: MarketL47;
 }
-
 const props = defineProps<PropsDefinition>();
+
+const { $mobileDetect } = useNuxtApp();
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
+
+type OpenSlide = {
+	name: string;
+	indexPrice: string;
+	priceChangePercIn24H: string;
+	valueOfTradesIn24H: string;
+	cName: string;
+};
+const openSlide = ref<boolean>(false);
+const openSlideData = ref<OpenSlide | null>(null);
+const openSlideover = () => {
+	openSlide.value = true;
+	console.log(openSlideData);
+};
+
 const colors = [
 	'#F7931A',
 	'#627EEA',
@@ -99,6 +198,10 @@ const isDark = computed({
 	set() {
 		colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark';
 	},
+});
+
+onMounted(async () => {
+	isMobile.value = !!mobileDetect.mobile();
 });
 
 const pieChartData = computed(() => {
@@ -131,36 +234,50 @@ const doughnutOptions = computed(() => ({
 		formatter: function (params: any) {
 			const isPositive = params.data.market.priceChangePercIn24H > 0;
 			const className = isPositive ? 'text-accent-green' : 'text-accent-red';
-			return `
-			<div class="text-black dark:text-black p-1">
-				<div class="flex justify-between mb-1">
-					<div class="text-black dark:text-black font-dana">${useT('coin')}</div>
-					<div class="text-black dark:text-black font-dana mr-6">
-						${params.data.name}
+
+			if (!isMobile.value) {
+				return `
+					<div class="text-black dark:text-black p-1">
+						<div class="flex justify-between mb-1">
+							<div class="text-black dark:text-black font-dana">${useT('coin')}</div>
+							<div class="text-black dark:text-black font-dana mr-6">
+								${params.data.name}
+							</div>
+						</div>
+						<div class="flex justify-between mb-1">
+							<div class="text-black dark:text-black font-dana">${useT('price')}</div>
+							<div class="text-black dark:text-black flex">
+								<span>USDT</span>
+								<span class="mr-1 font-dana">${useNumber(priceFormat(String(params.data.market.indexPrice)))}</span>
+							</div>
+						</div>
+						<div class="flex justify-between mb-1">
+							<div class="text-black dark:text-black font-dana">${useT('changeIn24h')}</div>
+							<div class="text-black dark:text-black font-dana mr-6" dir="ltr">
+								<span class="${className}">${isPositive ? '+' : ''}${useNumber(params.data.market.priceChangePercIn24H)}%</span>
+							</div>
+						</div>
+						<div class="flex justify-between mb-1">
+							<div class="text-black dark:text-black font-dana">${useT('volumeIn24h')}</div>
+							<div class="text-black dark:text-black font-dana mr-6" dir="ltr">
+								<span>${useNumber(formatBigNumber(params.data.market.valueOfTradesIn24H, 3))}</span>
+								<span>USDT</span>
+							</div>
+						</div>
 					</div>
-				</div>
-				<div class="flex justify-between mb-1">
-					<div class="text-black dark:text-black font-dana">${useT('price')}</div>
-					<div class="text-black dark:text-black flex">
-						<span>USDT</span>
-						<span class="mr-1 font-dana">${useNumber(priceFormat(String(params.data.market.indexPrice)))}</span>
-					</div>
-				</div>
-				<div class="flex justify-between mb-1">
-					<div class="text-black dark:text-black font-dana">${useT('changeIn24h')}</div>
-					<div class="text-black dark:text-black font-dana mr-6" dir="ltr">
-						<span class="${className}">${isPositive ? '+' : ''}${useNumber(params.data.market.priceChangePercIn24H)}%</span>
-					</div>
-				</div>
-				<div class="flex justify-between mb-1">
-					<div class="text-black dark:text-black font-dana">${useT('volumeIn24h')}</div>
-					<div class="text-black dark:text-black font-dana mr-6" dir="ltr">
-						<span>${useNumber(formatBigNumber(params.data.market.valueOfTradesIn24H, 3))}</span>
-						<span>USDT</span>
-					</div>
-				</div>
-			</div>
-		`;
+				`;
+			}
+			else {
+				openSlideData.value = {
+					name: params.data.name,
+					indexPrice: params.data.market.indexPrice,
+					priceChangePercIn24H: params.data.market.priceChangePercIn24H,
+					valueOfTradesIn24H: params.data.market.valueOfTradesIn24H,
+					cName: params.data.market.currency.cName,
+				};
+
+				openSlideover();
+			}
 		},
 	},
 	series: [
