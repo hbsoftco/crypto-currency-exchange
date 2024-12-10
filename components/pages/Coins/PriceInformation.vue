@@ -15,8 +15,13 @@
 						class="text-sm md:text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
 					>{{ $t("hours24Lowest") }}</span>
 				</div>
-				<div class="text-sm font-normal text-black dark:text-white pt-1">
-					<span class="mr-1">{{ priceFormat(String(currencyDetail?.priceLowIn24h)) }} </span>
+				<div
+					class="text-sm font-normal text-black dark:text-white pt-1 text-right"
+					dir="ltr"
+				>
+					<span
+						class="mr-1"
+					>{{ priceFormat(String(currencyDetail?.priceLowIn24h), true) }} </span>
 					<span>USDT</span>
 				</div>
 			</div>
@@ -30,8 +35,11 @@
 						class="text-sm md:text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
 					>{{ $t("hours24Highest") }}</span>
 				</div>
-				<div class="text-sm font-normal text-black dark:text-white pt-1">
-					<span class="mr-1">{{ priceFormat(String(currencyDetail?.priceHighIn24h)) }} </span>
+				<div
+					class="text-sm font-normal text-black dark:text-white pt-1 text-right"
+					dir="ltr"
+				>
+					<span class="mr-1">{{ priceFormat(String(currencyDetail?.priceHighIn24h), true) }} </span>
 					<span>USDT</span>
 				</div>
 			</div>

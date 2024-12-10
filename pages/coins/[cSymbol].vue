@@ -19,7 +19,7 @@
 								{{ currencyInfo.currency?.cName }} ({{ currencyInfo.currency?.cSymbol }})
 							</h1>
 						</div>
-						<div>
+						<div v-if="isMobile">
 							<span class="text-sm font-normal mx-1">
 								<UiChangePrice
 									:bg-color="false"
@@ -72,13 +72,12 @@
 							<CurrencyDescription :currency-detail="currencyInfo" />
 							<!-- Description -->
 
-							<section>
+							<section v-if="currencyInfo?.faqList.length">
 								<div>
 									<h1 class="text-base md:text-xl font-bold mt-8 md:my-4 ">
 										{{ $t("FAQ") }}
 									</h1>
 									<FAQItems
-										v-if="currencyInfo?.faqList.length"
 										:items="currencyInfo?.faqList"
 									/>
 								</div>
