@@ -44,6 +44,7 @@
 								:src="`https://api-bitland.site/media/currency/${selected?.cSymbol}.png`"
 								:alt="selected?.cSymbol"
 								class="w-6 h-6 rounded-full"
+								@error="handleImageError"
 							>
 						</div>
 						<div class="min-w-10 text-right">
@@ -105,6 +106,7 @@
 									:src="`https://api-bitland.site/media/currency/${selected?.cSymbol}.png`"
 									:alt="selected?.cSymbol"
 									class="w-6 h-6 rounded-full"
+									@error="handleImageError"
 								>
 							</div>
 							<div class="min-w-10 text-right">
@@ -164,7 +166,7 @@
 <script setup lang="ts">
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
-import { priceFormat } from '~/utils/helpers';
+import { priceFormat, handleImageError } from '~/utils/helpers';
 import type { Quote } from '~/types/definitions/quote.types';
 
 interface Props {

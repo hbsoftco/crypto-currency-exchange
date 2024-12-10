@@ -21,6 +21,7 @@
 						class="w-4 md:w-8 h-4 md:h-8 mx-0 md:mx-2 rounded-full"
 						format="webp"
 						densities="x1"
+						@error="handleImageError"
 					>
 				</div>
 				<div class="text-right">
@@ -56,9 +57,9 @@
 			</div>
 		</td>
 		<td class="text-base font-medium px-2 md:px-10 text-left">
-			<span>{{ useNumber(market?.indexPrice) }}</span>
+			<span>{{ market?.indexPrice }}</span>
 			<span class="block md:hidden text-sm font-medium text-subtle-text-light dark:text-subtle-text-dark">
-				{{ useNumber(market?.indexPrice) }}
+				{{ market?.indexPrice }}
 			</span>
 		</td>
 		<td class="text-base font-medium px-2 md:px-10 text-left">
@@ -69,19 +70,19 @@
 			/>
 		</td>
 		<td class="text-sm font-normal px-10 md:table-cell hidden text-left">
-			{{ useNumber(market?.hPriceIn24H) }}
+			{{ market?.hPriceIn24H }}
 		</td>
 		<td class="text-sm font-normal px-10 md:table-cell hidden text-left">
-			{{ useNumber(market?.hPriceIn24H) }}
+			{{ market?.hPriceIn24H }}
 		</td>
 	</tr>
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
 import IconStar from '~/assets/svg-icons/market/star.svg';
 import IconFillStar from '~/assets/svg-icons/market/fill-star.svg';
 import type { Market } from '~/types/response/market.types';
+import { handleImageError } from '~/utils/helpers';
 
 interface Props {
 	market: Market;

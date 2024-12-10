@@ -13,6 +13,7 @@
 								:alt="currencyInfo.currency?.cName"
 								class="w-7 md:w-10 h-7 md:h-10 rounded-full"
 								format="webp"
+								@error="handleImageError"
 							>
 							<h1 class="text-base md:text-xl font-bold mr-1 md:mr-4">
 								{{ currencyInfo.currency?.cName }} ({{ currencyInfo.currency?.cSymbol }})
@@ -79,7 +80,6 @@
 									<FAQItems
 										v-if="currencyInfo?.faqList.length"
 										:items="currencyInfo?.faqList"
-										:direction="false"
 									/>
 								</div>
 							</section>
@@ -140,7 +140,7 @@ import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 import type { MarketBrief, MarketL47, MarketsL47Params } from '~/types/definitions/market.types';
 import type { Currency, CurrencyBrief, CurrencyInfoParams } from '~/types/definitions/currency.types';
 import { MarketType } from '~/utils/enums/market.enum';
-import { priceFormat } from '~/utils/helpers';
+import { priceFormat, handleImageError } from '~/utils/helpers';
 
 const { $mobileDetect, $api } = useNuxtApp();
 const currencyRepo = currencyRepository($api);

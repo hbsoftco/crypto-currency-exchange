@@ -178,6 +178,11 @@ const priceFormat = (price: number | string, summarize: boolean = false, delimit
 	return decimalPart ? `${formattedIntegerPart}.${decimalPart}` : formattedIntegerPart;
 };
 
+const handleImageError = (event: Event) => {
+	const target = event.target as HTMLImageElement;
+	target.src = '/images/ic_crypto_unknown.png';
+};
+
 export {
 	bigNumber,
 	formatBigNumber,
@@ -193,4 +198,5 @@ export {
 	isValidGmail,
 	formatByDecimal,
 	priceFormat,
+	handleImageError,
 };

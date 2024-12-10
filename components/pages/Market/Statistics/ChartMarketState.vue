@@ -44,6 +44,7 @@
 								class="w-5 h-5 rounded-full ml-1"
 								format="webp"
 								densities="x1"
+								@error="handleImageError"
 							>
 							<span class="text-sm font-normal">{{ market.quote?.cSymbol }} </span> /
 							<span class="text-sm font-normal">{{ market.currency?.cSymbol }}</span>
@@ -83,6 +84,7 @@
 								class="w-6 h-6 rounded-full ml-1"
 								format="webp"
 								densities="x1"
+								@error="handleImageError"
 							>
 							<span class="mr-1">{{ openSlideData?.cName }}</span>
 						</h3>
@@ -151,7 +153,7 @@
 
 <script setup lang="ts">
 import { splitMarket } from '~/utils/split-market';
-import { priceFormat, formatBigNumber } from '~/utils/helpers';
+import { priceFormat, formatBigNumber, handleImageError } from '~/utils/helpers';
 import type { MarketL47 } from '~/types/definitions/market.types';
 
 interface PropsDefinition {

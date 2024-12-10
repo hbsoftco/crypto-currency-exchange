@@ -37,6 +37,7 @@
 							class="w-6 h-6 mr-1 rounded-full"
 							format="webp"
 							densities="x1"
+							@error="handleImageError"
 						>
 						<div
 							class="flex mr-1 items-center"
@@ -73,6 +74,7 @@
 <script setup lang="ts">
 // import MenuTradeFilters from './MenuTradeFilters.vue';
 
+import { handleImageError } from '~/utils/helpers';
 import { splitMarket } from '~/utils/split-market';
 import ChangePrice from '~/components/ui/ChangePrice.vue';
 import type { Tag } from '~/types/definitions/tag.types';

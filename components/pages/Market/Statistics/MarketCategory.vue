@@ -56,6 +56,7 @@
 							class="w-5 h-5 rounded-full"
 							format="webp"
 							densities="x1"
+							@error="handleImageError"
 						>
 					</ULink>
 				</li>
@@ -67,6 +68,7 @@
 <script setup lang="ts">
 import { splitMarket } from '~/utils/split-market';
 import type { MarketL51Item } from '~/types/definitions/market.types';
+import { handleImageError } from '~/utils/helpers';
 
 interface PropsDefinition {
 	markets: MarketL51Item[];

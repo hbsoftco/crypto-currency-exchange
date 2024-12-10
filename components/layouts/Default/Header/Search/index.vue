@@ -67,7 +67,7 @@
 					<UButton
 						v-if="marketsItems.length > 0"
 						block
-						class="my-4 text-primary-yellow-light dark:text-primary-yellow-dark text-base hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-yellow"
+						class="my-4 text-primary-yellow-light dark:text-primary-yellow-dark text-base hover:text-hover-light dark:hover:text-hover-dark bg-hover-light dark:bg-hover-dark shadow-none border border-primary-yellow"
 						@click="goToMarket()"
 					>
 						{{ $t("showMore") }}

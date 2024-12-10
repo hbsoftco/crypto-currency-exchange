@@ -23,7 +23,7 @@
 				<p
 					v-if="item.value"
 					:key="`description-body-${item.key ? item.key : 'first'}`"
-					class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
+					class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark text-justify"
 				>
 					{{ item.value }}
 				</p>

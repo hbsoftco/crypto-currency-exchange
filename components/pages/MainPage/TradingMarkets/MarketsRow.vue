@@ -30,6 +30,7 @@
 			<ChangeIndicator
 				:change="parseFloat(localRow.priceChangePercIn24H)"
 				:icon="false"
+				size="text-xs md:text-base"
 			/>
 		</td>
 		<td

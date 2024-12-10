@@ -10,6 +10,7 @@
 				class="w-8 h-8 rounded-full m-auto"
 				format="webp"
 				densities="x1"
+				@error="handleImageError"
 			>
 		</div>
 		<h4 class="text-center font-bold text-xl mb-2">
@@ -77,10 +78,11 @@
 </template>
 
 <script setup lang="ts">
+import { handleImageError } from '~/utils/helpers';
+
 interface PropsDefinition {
 	slide: any;
 }
-
 defineProps<PropsDefinition>();
 
 const targetDate = new Date('2025-06-12T22:30:00');

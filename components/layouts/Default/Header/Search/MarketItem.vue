@@ -10,6 +10,7 @@
 				:src="`https://api-bitland.site/media/currency/${market?.currency?.cSymbol}.png`"
 				alt="bitcoin Logo"
 				class="w-5 h-5 ml-1"
+				@error="handleImageError"
 			>
 			<span class="text-sm font-normal">{{ market.mSymbol }}</span>
 			<span
@@ -26,8 +27,9 @@
 				<span v-if="localRow.indexPrice === '0'">-</span>
 				<span
 					v-else
+					dir="ltr"
 					class="text-sm md:text-sm font-medium"
-				>{{ priceFormat(localRow.indexPrice) }}</span>
+				>{{ priceFormat(localRow.indexPrice, true) }}</span>
 			</div>
 			<div class="min-w-20 text-center">
 				<span v-if="localRow.priceChangePercIn24H === '0'">-</span>
@@ -46,7 +48,7 @@
 <script setup lang="ts">
 import type { MarketBrief, MarketL51Item } from '~/types/definitions/market.types';
 import type { SocketSpotData } from '~/types/socket.types';
-import { priceFormat } from '~/utils/helpers';
+import { priceFormat, handleImageError } from '~/utils/helpers';
 import { MarketType } from '~/utils/enums/market.enum';
 import ChangeIndicator from '~/components/ui/ChangeIndicator.vue';
 

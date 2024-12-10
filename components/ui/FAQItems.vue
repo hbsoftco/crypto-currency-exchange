@@ -8,9 +8,28 @@
 				},
 			}"
 		>
+			<template #default="{ item, index, open }">
+				<UButton
+					color="gray"
+					variant="ghost"
+					class="text-base font-bold px-4 py-3 mt-2 bg-hover-light dark:bg-hover-dark hover:bg-hover-light hover:dark:bg-hover-dark text-black dark:text-white"
+					:ui="{ padding: { sm: 'p-3' } }"
+				>
+					<span class="text-justify font-semibold">{{ index + 1 }}. {{ item.label }}</span>
+
+					<template #trailing>
+						<UIcon
+							name="i-heroicons-chevron-left-20-solid"
+							class="w-5 h-5 ms-auto transform transition-transform duration-200 flex-shrink-0"
+							:class="[open && '-rotate-90']"
+						/>
+					</template>
+				</UButton>
+			</template>
+
 			<template #item="{ item }">
 				<p
-					class="text-sm font-normal px-4 py-3 bg-hover-light dark:bg-hover-dark hover:bg-hover-light hover:dark:bg-hover-dark text-black dark:text-white"
+					class="text-sm rounded font-normal px-4 py-3 bg-hover-light dark:bg-hover-dark hover:bg-hover-light hover:dark:bg-hover-dark text-black dark:text-white text-justify"
 				>
 					{{ item.content }}
 				</p>
@@ -29,7 +48,6 @@ interface AccordionItem {
 
 interface PropsDefinition {
 	items: KeyValue[];
-	direction?: boolean;
 }
 
 const props = defineProps<PropsDefinition>();

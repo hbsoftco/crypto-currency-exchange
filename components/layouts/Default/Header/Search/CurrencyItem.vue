@@ -13,6 +13,7 @@
 					:src="`https://api-bitland.site/media/currency/${currency?.cSymbol}.png`"
 					alt="bitcoin Logo"
 					class="w-5 h-5"
+					@error="handleImageError"
 				>
 				<div class="flex flex-col mr-2">
 					<div>
@@ -30,6 +31,7 @@
 
 <script setup lang="ts">
 import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
+import { handleImageError } from '~/utils/helpers';
 
 interface PropsDefinition {
 	currency: CurrencyBriefItem;

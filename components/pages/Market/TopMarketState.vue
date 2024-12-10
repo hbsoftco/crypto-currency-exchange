@@ -28,6 +28,7 @@
 						class="w-5 h-5 rounded-full"
 						format="webp"
 						densities="x1"
+						@error="handleImageError"
 					>
 					<div class="text-sm font-normal mr-1">
 						<span>{{ market?.currency?.cSymbol }}</span>
@@ -36,7 +37,10 @@
 					</div>
 				</div>
 				<div class="w-28 text-left">
-					<span class="text-sm font-normal">{{ useNumber(priceFormat(market.indexPrice)) }}</span>
+					<span
+						dir="ltr"
+						class="text-sm font-normal"
+					>{{ priceFormat(market.indexPrice, true) }}</span>
 				</div>
 				<div class="w-24">
 					<UiChangeIndicator
@@ -52,9 +56,8 @@
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
 import type { MarketL47Item } from '~/types/definitions/market.types';
-import { priceFormat } from '~/utils/helpers';
+import { priceFormat, handleImageError } from '~/utils/helpers';
 import { splitMarket } from '~/utils/split-market';
 
 interface Props {

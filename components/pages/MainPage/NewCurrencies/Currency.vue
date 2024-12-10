@@ -10,6 +10,7 @@
 				:src="`https://api-bitland.site/media/currency/${market?.currency?.cSymbol}.png`"
 				:alt="market?.currency?.cName"
 				class="w-8 h-8 mr-3 rounded-full"
+				@error="handleImageError"
 			>
 			<span class="text-base font-bold">{{ market?.currency?.cSymbol }}</span>
 			<span class="mx-0.5">/</span>
@@ -20,7 +21,7 @@
 				class="flex justify-between flex-col"
 				dir="ltr"
 			>
-				<span class="text-base font-bold text-left">{{ priceFormat(market.indexPrice, ',') }}</span>
+				<span class="text-base font-bold text-left">{{ priceFormat(market.indexPrice, true) }}</span>
 				<span :class="priceChangeClass">{{ checkNumber(market.priceChangePercIn24H) }}%</span>
 			</div>
 			<div class="w-24 h-14 pt-3">
@@ -35,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { priceFormat } from '~/utils/helpers';
+import { priceFormat, handleImageError } from '~/utils/helpers';
 import { splitMarket } from '~/utils/split-market';
 import type { MarketL21 } from '~/types/definitions/market.types';
 

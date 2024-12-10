@@ -25,6 +25,7 @@
 						class="w-4 md:w-8 h-4 md:h-8 mx-0 md:mx-2 rounded-full"
 						format="webp"
 						densities="x1"
+						@error="handleImageError"
 					>
 				</div>
 				<div class="text-right">
@@ -75,7 +76,7 @@
 		<td class="text-base font-medium px-2 md:px-10 text-left">
 			<UiChangeIndicator
 				pl="pl-0"
-				size="text-xs"
+				size="text-xs md:text-sm"
 				:change="parseFloat(priceFormat(localRow.priceChangePercIn24H))"
 				:icon="true"
 			/>
@@ -83,10 +84,10 @@
 		<td
 			class="text-sm font-normal px-10 md:table-cell hidden text-left"
 		>
-			{{ priceFormat(localRow?.hPriceIn24H) }}
+			<span dir="ltr">{{ priceFormat(localRow?.hPriceIn24H, true) }}</span>
 		</td>
 		<td class="text-sm font-normal px-10 md:table-cell hidden text-left">
-			{{ priceFormat(localRow?.lPriceIn24H) }}
+			<span dir="ltr">{{ priceFormat(localRow?.lPriceIn24H, true) }}</span>
 		</td>
 		<td
 			class="text-sm font-normal px-10 md:table-cell hidden text-left"
@@ -99,7 +100,7 @@
 
 <script setup lang="ts">
 import { splitMarket } from '~/utils/split-market';
-import { priceFormat, formatBigNumber } from '~/utils/helpers';
+import { priceFormat, formatBigNumber, handleImageError } from '~/utils/helpers';
 import IconStar from '~/assets/svg-icons/market/star.svg';
 import IconStarFill from '~/assets/svg-icons/market/fill-star.svg';
 import type { SocketSpotData } from '~/types/socket.types';

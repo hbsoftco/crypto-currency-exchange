@@ -20,6 +20,7 @@
 						class="w-8 h-8 rounded-full"
 						format="webp"
 						densities="x1"
+						@error="handleImageError"
 					>
 					<div class="flex flex-col mr-2">
 						<span class="text-sm font-normal">{{ market?.mSymbol }}</span>
@@ -29,8 +30,10 @@
 					</div>
 				</div>
 				<div>
-					<div>
-						<span class="text-sm font-normal mr-1">{{ priceFormat(market?.indexPrice) }}</span>
+					<div dir="ltr">
+						<span
+							class="text-sm font-normal mr-1"
+						>{{ priceFormat(market?.indexPrice, true) }}</span>
 						<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
 							{{ market?.quote?.cSymbol }}
 						</span>
@@ -44,7 +47,7 @@
 <script setup lang="ts">
 import { splitMarket } from '~/utils/split-market';
 import type { MarketL47Item } from '~/types/definitions/market.types';
-import { priceFormat } from '~/utils/helpers';
+import { priceFormat, handleImageError } from '~/utils/helpers';
 
 interface Props {
 	markets: MarketL47Item[];

@@ -4,7 +4,7 @@
 			{{ $t("liveInstantPriceInformation") }}
 		</h1>
 		<p
-			class="text-base font-medium mt-4 text-subtle-text-light dark:text-subtle-text-50"
+			class="text-base font-medium mt-4 text-subtle-text-light dark:text-subtle-text-50 text-justify"
 			dir="rtl"
 		>
 			{{ headline }}

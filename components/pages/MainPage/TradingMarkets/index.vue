@@ -57,7 +57,7 @@
 								v-if="!isMobile"
 								class="hidden md:block"
 							>
-								<div class="flex justify-center pl-8">
+								<div class="flex justify-center pl-8 pt-6">
 									<USkeleton class="h-4 w-36" />
 								</div>
 							</td>
