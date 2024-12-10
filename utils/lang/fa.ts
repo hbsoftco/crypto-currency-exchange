@@ -1148,6 +1148,8 @@ const persian = {
 	activeItem: 'فعال سازی',
 	antiPhishingPhraseExample: 'مثال: مدرسه اول ابتدایی من ۱۳ آبان بود.',
 	buySell: 'خرید/فروش',
+	newContentAvailable: 'محتوای جدید در دسترس است، برای به‌روزرسانی روی دکمه کلیک کنید.',
+	pwaUpdate: 'به‌روزرسانی',
 };
 
 export default persian;

@@ -18,7 +18,9 @@
 					</h3>
 					<div class="flex justify-between items-center mt-6 px-4 py-3 bg-primary-gray-light dark:bg-primary-gray-dark rounded-md">
 						<div class="flex justify-start items-center">
-							<span class="text-base font-semibold ml-2 text-subtle-text-light dark:text-subtle-text-dark">{{ title }}</span>
+							<span class="text-base font-semibold ml-2 text-subtle-text-light dark:text-subtle-text-dark">
+								{{ title }}
+							</span>
 
 							<UIcon
 								v-if="secretText"
