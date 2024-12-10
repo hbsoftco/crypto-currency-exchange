@@ -2,13 +2,13 @@
 	<div class="">
 		<div v-if="!authStore.isLoggedIn">
 			<IconUser
-				class="text-2xl cursor-pointer"
+				class="text-3xl cursor-pointer"
 				@click="open = true"
 			/>
 		</div>
 		<div v-else>
 			<IconUserFill
-				class="text-[1.6rem] cursor-pointer text-primary-yellow-light dark:text-primary-yellow-dark"
+				class="text-3xl cursor-pointer text-primary-yellow-light dark:text-primary-yellow-dark"
 				@click="open = true"
 			/>
 		</div>

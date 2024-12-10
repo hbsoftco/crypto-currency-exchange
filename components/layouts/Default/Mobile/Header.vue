@@ -10,7 +10,7 @@
 						<Search />
 					</div>
 					<div>
-						<IconSupport class="text-[1.4rem]" />
+						<IconSupport class="text-3xl" />
 					</div>
 					<div class="mr-2">
 						<Notification v-if="authStore.isLoggedIn" />

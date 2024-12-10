@@ -7,17 +7,17 @@
 			<div class="pb-20">
 				<MarketCategorySkeleton />
 			</div>
-			<MarketCategorySliderSkeleton />
+			<MarketCategorySliderSkeleton v-if="!isMobile" />
 		</div>
 	</UContainer>
 	<UContainer v-else>
 		<div>
 			<div>
-				<div class="mb-4 mt-0 md:mt-8">
+				<div class="mb-0 md:mb-4 mt-0 md:mt-8">
 					<UiTitleWithBack :title="$t('marketStatistics')" />
 				</div>
 				<div
-					class="flex justify-between w-full h-full relative mb-16"
+					class="flex justify-between w-full h-full relative mb:2 md:mb-16"
 				>
 					<div
 						v-if="negativeMarketsItems.length > 0"
@@ -44,7 +44,7 @@
 						</div>
 					</div>
 					<div
-						v-if="neutralMarketsItems.length > 0"
+						v-if="neutralMarketsItems.length > 0 && !isMobile"
 						class="w-80 h-80 absolute left-0 right-0 m-auto top-8"
 					>
 						<VChart
@@ -52,6 +52,15 @@
 							class="w-40 md:w-full h-40 md:h-80"
 						/>
 					</div>
+				</div>
+				<div
+					v-if="neutralMarketsItems.length > 0 && isMobile"
+					class="w-full relative -top-4"
+				>
+					<VChart
+						:option="neutralPieOptions"
+						class="w-full h-80"
+					/>
 				</div>
 			</div>
 
@@ -91,8 +100,11 @@ import ChartMarketStateSkeleton from '~/components/pages/Market/Statistics/Chart
 import MarketCategorySkeleton from '~/components/pages/Market/Statistics/MarketCategorySkeleton.vue';
 import MarketCategorySliderSkeleton from '~/components/pages/Market/Statistics/MarketCategorySliderSkeleton.vue';
 
-const { $api } = useNuxtApp();
+const { $api, $mobileDetect } = useNuxtApp();
 const marketRepo = marketRepository($api);
+
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
 
 const worker = useBaseWorker();
 
@@ -166,6 +178,8 @@ const getMarketDailyPriceChange = async () => {
 // Market daily price changes
 
 onMounted(async () => {
+	isMobile.value = !!mobileDetect.mobile();
+
 	await Promise.all([
 		getMarketListL51(),
 		getMarketListL47(),

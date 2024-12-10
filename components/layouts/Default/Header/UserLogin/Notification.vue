@@ -6,7 +6,8 @@
 			class="text-center"
 		>
 			<IconNotification
-				class="text-2xl block group-hover:hidden group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark"
+				:class="[isMobile? 'text-4xl' : 'text-2xl']"
+				class="block group-hover:hidden group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark"
 			/>
 			<IconNotificationFill
 				class="text-2xl hidden group-hover:block text-primary-yellow-light dark:text-primary-yellow-dark group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark"
@@ -22,7 +23,7 @@
 				class="relative cursor-pointer"
 			>
 				<IconNotification
-					class="text-[1.55rem] block"
+					class="text-4xl block"
 					@click="router.push('/account/notifications')"
 				/>
 				<span

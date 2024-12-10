@@ -6,7 +6,7 @@
 		<!-- Input Field -->
 		<div
 			:class="[
-				'relative bg-primary-gray-light md:bg-background-light dark:bg-primary-gray-dark md:dark:bg-background-dark md:max-w-52 border border-background-light dark:border-background-dark md:w-52 h-8 rounded-lg overflow-hidden p-1 px-6',
+				'relative bg-primary-gray-light md:bg-background-light dark:bg-primary-gray-dark md:dark:bg-background-dark md:max-w-52 border border-background-light dark:border-background-dark md:w-52 h-9 rounded-lg overflow-hidden p-1 px-6',
 				{
 					'border-primary-yellow-light dark:border-primary-yellow-dark':
 						isFocused && !showAdditionalBox,
@@ -14,13 +14,13 @@
 			]"
 		>
 			<div
-				class="w-full h-full outline-none pr-2 text-sm bg-primary-gray-light md:bg-background-light dark:bg-primary-gray-dark md:dark:bg-background-dark text-subtle-text-light dark:text-subtle-text-dark font-light"
+				class="w-full h-full outline-none pr-2 pt-0.5 text-sm bg-primary-gray-light md:bg-background-light dark:bg-primary-gray-dark md:dark:bg-background-dark text-subtle-text-light dark:text-subtle-text-dark font-light"
 				:trailing="false"
 				@click="handleFocus"
 			>
 				{{ $t('search') }}
 			</div>
-			<IconSearch class="absolute top-[0.425rem] right-[0.475rem] transform scale-x-[-1] text-subtle-text-light dark:text-subtle-text-dark" />
+			<IconSearch class="absolute top-2.5 right-[0.475rem] transform scale-x-[-1] text-subtle-text-light dark:text-subtle-text-dark" />
 		</div>
 
 		<!-- Modal Background -->
@@ -34,16 +34,16 @@
 						<input
 							v-model="search"
 							type="text"
-							class="w-full h-8 rounded-md outline-none pr-8 text-sm bg-primary-gray-light dark:bg-primary-gray-dark"
+							class="w-full h-9 rounded-md outline-none pr-8 text-sm bg-primary-gray-light dark:bg-primary-gray-dark"
 							:placeholder="$t('search')"
 							:trailing="false"
 							@focus="handleFocus"
 							@input="handleInput"
 						>
-						<IconSearch class="absolute top-[0.455rem] right-[0.475rem] transform scale-x-[-1] text-subtle-text-light dark:text-subtle-text-dark" />
+						<IconSearch class="absolute top-2.5 right-[0.475rem] transform scale-x-[-1] text-subtle-text-light dark:text-subtle-text-dark" />
 					</div>
 					<IconClose
-						class="text-2xl text-subtle-text-light dark:text-subtle-text-dark"
+						class="text-4xl text-subtle-text-light dark:text-subtle-text-dark"
 						@click="closeModal"
 					/>
 				</div>

@@ -1,5 +1,5 @@
 <template>
-	<div v-if="!isMobile">
+	<div>
 		<div
 			class="grid grid-cols-2 gap-10 py-1 my-2 px-2"
 		>
@@ -52,11 +52,4 @@
 </template>
 
 <script setup lang="ts">
-const { $mobileDetect } = useNuxtApp();
-const isMobile = ref(false);
-const mobileDetect = $mobileDetect as MobileDetect;
-
-onMounted(async () => {
-	isMobile.value = !!mobileDetect.mobile();
-});
 </script>
