@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
 	<section v-if="currencyDetail?.descriptionList.length">
 		<div
@@ -23,10 +24,9 @@
 				<p
 					v-if="item.value"
 					:key="`description-body-${item.key ? item.key : 'first'}`"
-					class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark text-justify"
-				>
-					{{ item.value }}
-				</p>
+					class="text-sm md:text-base font-medium text-subtle-text-light dark:text-subtle-text-dark text-justify"
+					v-html="sanitizedHtml(formatTextWithLineBreaks(item.value))"
+				/>
 			</div>
 			<div
 				v-if="isMobile && textIsOverflowing[index]"
@@ -41,6 +41,7 @@
 </template>
 
 <script setup lang="ts">
+import { sanitizedHtml, formatTextWithLineBreaks } from '~/utils/helpers';
 import IconArrowDown from '~/assets/svg-icons/menu/arrow-down.svg';
 import type { Currency } from '~/types/definitions/currency.types';
 

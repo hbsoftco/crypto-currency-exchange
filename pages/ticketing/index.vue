@@ -2,9 +2,9 @@
 	<div>
 		<section>
 			<UContainer>
-				<div class="flex justify-between items-center my-10">
+				<div class="flex justify-between items-center my-3 md:my-10">
 					<div class="flex flex-col">
-						<h1 class="text-4xl font-black">
+						<h1 class="text-lg md:text-4xl font-bold md:font-black">
 							{{ $t('ticketList') }}
 						</h1>
 						<span class="py-4 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('ticketTitle') }}</span>
@@ -22,7 +22,7 @@
 						<img
 							src="/images/svg/ticketing.svg"
 							alt="ticketing"
-							class="w-80 h-80"
+							class="w-72 h-40 md:w-80 md:h-80"
 						>
 					</div>
 				</div>
@@ -30,54 +30,119 @@
 		</section>
 		<section>
 			<UContainer>
-				<table class="min-w-full p-6 text-right">
+				<div v-if="isMobile">
+					<div
+						v-for="(item, index) in tickets"
+						:key="index"
+						class="bg-hover-light dark:bg-hover-dark rounded mb-2 p-2 shadow-sm text-sm"
+					>
+						<div class="mb-3">
+							<span class="text-sm text-subtle-text-light dark:text-subtle-text-50">{{ item.id }}</span>
+							<span class="mx-1">-</span>
+							<span class="cursor-pointer font-semibold">{{ item.header }}</span>
+						</div>
+						<div class="flex justify-between items-center">
+							<div>
+								<div class="mb-1.5 text-xs">
+									<span class="text-subtle-text-light dark:text-subtle-text-50 ml-1">{{ $t('type') }}:</span>
+									<span>{{ item.typeName }}</span>
+								</div>
+								<div class="text-xs">
+									<span class="text-subtle-text-light dark:text-subtle-text-50 ml-1">{{ $t('status') }}:</span>
+									<span>{{ item.stateName }}</span>
+								</div>
+							</div>
+							<div
+								class="text-xs"
+								dir="ltr"
+							>
+								<div class="mb-1.5">
+									{{ formatDateToIran(item.regTime) }}
+								</div>
+								<div>{{ formatDateToIranTime(item.regTime) }}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<table
+					v-else
+					class="min-w-full p-6 text-right"
+				>
 					<thead>
-						<tr class="py-4 text-subtle-text-light dark:text-subtle-text-dark bg-primary-gray-light dark:bg-primary-gray-dark">
-							<th class="p-1 text-sm font-bold">
+						<tr class="py-4 text-sm font-bold rounded-t text-subtle-text-light dark:text-subtle-text-dark bg-primary-gray-light dark:bg-primary-gray-dark">
+							<th class="py-3 pr-4 p-1 rounded-tr">
 								{{ $t('code') }}
 							</th>
-							<th class="p-1 text-sm font-bold">
+							<th class="py-3 pr-2 p-1">
 								{{ $t('title') }}
 							</th>
-							<th class="p-1 text-sm font-bold">
+							<th class="py-3 pr-2 p-1">
 								{{ $t('date') }}
 							</th>
-							<th class="p-1 text-sm font-bold">
+							<th class="py-3 pr-2 p-1">
 								{{ $t('type') }}
 							</th>
-							<th class="p-1 text-sm font-bold">
+							<th class="py-3 pr-2 p-1 rounded-tl">
 								{{ $t('status') }}
 							</th>
 						</tr>
 					</thead>
 					<tbody>
+						<template v-if="ticketsLoading">
+							<tr
+								v-for="n in 6"
+								:key="n"
+							>
+								<td class="py-4">
+									<USkeleton class="h-4 w-14 md:w-24" />
+								</td>
+								<td class="py-4">
+									<USkeleton class="h-4 w-14 md:w-24" />
+								</td>
+								<td class="py-4">
+									<USkeleton class="h-4 w-12 md:w-20" />
+								</td>
+								<td class="py-4">
+									<USkeleton class="h-4 w-36" />
+								</td>
+								<td class="py-4">
+									<USkeleton class="h-4 w-36" />
+								</td>
+							</tr>
+						</template>
 						<tr
-							v-for="(item, index) in ticketList"
+							v-for="(item, index) in tickets"
 							:key="index"
-							:class="[index % 2 === 0 ? 'bg-background-light dark:bg-background-dark' : 'bg-hover2-light dark:bg-hover2-dark']"
-							class="pb-1"
+							class="pb-1 odd:bg-hover2-light dark:odd:bg-hover2-dark text-right text-sm font-normal"
 						>
-							<td class="text-xs font-normal py-1">
-								<span>{{ useNumber(item.id) }}</span>
+							<td class="py-2.5 pr-4">
+								<span>{{ item.id }}</span>
 							</td>
-							<td class="text-xs font-normal py-1">
-								<span>{{ $t(item.header) }}</span>
+							<td class="py-2.5 pr-1">
+								<span
+									class="cursor-pointer font-semibold"
+									@:click="router.push(`/ticketing/${item.id}`)"
+								>{{ item.header }}</span>
 							</td>
-							<td class="text-xs font-normal py-1">
-								<span>{{ useNumber(formatDateToIranTime(item.regTime)) }}</span>
+							<td class="py-2.5 pr-1">
+								<span dir="ltr">{{ formatDateToIranTime(item.regTime) }}</span>
 							</td>
-							<td class="text-xs font-normal py-1">
-								<span>{{ $t(item.typeName) }}</span>
+							<td class="py-2.5 pr-1">
+								<span>{{ item.typeName }}</span>
 							</td>
-							<td class="text-xs font-normal py-1">
-								<span>{{ $t(item.stateName) }}</span>
+							<td class="py-2.5 pr-1">
+								<span>{{ item.stateName }}</span>
 							</td>
 						</tr>
 					</tbody>
 				</table>
+				<template v-if="!tickets?.length && !ticketsLoading">
+					<UiNothingToShow />
+				</template>
 				<div class="flex justify-center py-4">
 					<UPagination
-						:model-value="Number(params.pageNumber)"
+						v-if="totalCount > itemsPerPage"
+						:model-value="Number(ticketsParams.pageNumber)"
 						:page-count="20"
 						:total="totalCount"
 						:max="6"
@@ -97,21 +162,29 @@
 </template>
 
 <script setup lang="ts">
+import { formatDateToIran } from '~/utils/persian-date';
 import { formatDateToIranTime } from '~/utils/date-time';
-import { useNumber } from '~/composables/useNumber';
-import { ticketRepository } from '~/repositories/ticketing.repository';
-import type { GetTicketListParams } from '~/types/base.types';
-import type { Ticket } from '~/types/response/ticketing.types';
+import { userRepository } from '~/repositories/user.repository';
+import type { Ticket, TicketListParams } from '~/types/definitions/user.types';
 
 definePageMeta({
 	middleware: 'auth',
 });
-const { $api } = useNuxtApp();
-const ticketRepo = ticketRepository($api);
+
+const { $mobileDetect, $api } = useNuxtApp();
+const userRepo = userRepository($api);
+
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
+
+const router = useRouter();
 
 const totalCount = ref(0);
+const itemsPerPage = 10;
 
-const params = ref<GetTicketListParams>({
+const tickets = ref<Ticket[]>();
+const ticketsLoading = ref<boolean>(true);
+const ticketsParams = ref<TicketListParams>({
 	state: '',
 	typeId: '',
 	searchStatement: '',
@@ -120,27 +193,28 @@ const params = ref<GetTicketListParams>({
 	pageNumber: '1',
 	pageSize: '20',
 });
-
-const ticketList = ref<Ticket[]>();
-
-const fetchTicketList = async () => {
+const getTicketList = async () => {
+	ticketsLoading.value = true;
 	try {
-		const { result } = await ticketRepo.getTicketList(params.value);
+		const { result } = await userRepo.getTicketList(ticketsParams.value);
 
-		totalCount.value = result.totalCount;
-		ticketList.value = result.rows;
+		tickets.value = result.rows as Ticket[];
 	}
 	catch (error) {
-		console.error('Error fetching trades:', error);
+		console.log(error);
+	}
+	finally {
+		ticketsLoading.value = false;
 	}
 };
 
 onMounted(async () => {
-	await fetchTicketList();
+	isMobile.value = !!mobileDetect.mobile();
+	await getTicketList();
 });
 
 const onPageChange = async (newPage: number) => {
-	params.value.pageNumber = String(newPage);
-	await fetchTicketList();
+	ticketsParams.value.pageNumber = String(newPage);
+	await getTicketList();
 };
 </script>

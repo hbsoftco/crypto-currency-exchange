@@ -429,6 +429,22 @@
 					<!-- setting -->
 					<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 						<ULink
+							to="/ticketing"
+							class="flex justify-between items-center w-full py-2.5"
+						>
+							<div class="flex justify-start items-center">
+								<div class="ml-2">
+									<IconTicket class="text-base dark: text-subtle-text-light dark:text-subtle-text-50" />
+								</div>
+								<p class="mb-0 text-sm font-semibold">
+									{{ $t('sendTicket') }}
+								</p>
+							</div>
+						</ULink>
+					</li>
+					<!-- sendTicket -->
+					<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
+						<ULink
 							to="/account/white-list"
 							class="flex justify-between items-center w-full py-2.5"
 						>
@@ -505,6 +521,7 @@ import IconExit from '~/assets/svg-icons/menu/exit.svg';
 import IconGuidCenter from '~/assets/svg-icons/menu/guid-center.svg';
 import IconSuggest from '~/assets/svg-icons/menu/suggest.svg';
 import IconCallWithSupport from '~/assets/svg-icons/menu/phone-support.svg';
+import IconTicket from '~/assets/svg-icons/menu/ticket.svg';
 import IconLogo from '~/assets/svg-icons/menu/logo.svg';
 import IconTwitter from '~/assets/svg-icons/social/twitter.svg';
 import IconLinkedin from '~/assets/svg-icons/social/linkedin.svg';

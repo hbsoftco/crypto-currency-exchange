@@ -51,7 +51,11 @@ import type {
 import type { GetCountryListRes } from '~/types/response/common.types';
 import type { GetCommissionRes, GetInvitationListRes } from '~/types/response/referral.types';
 import type {
+	AppendTicketDto,
 	SetNicknameDto,
+	StoreTicketDto,
+	TicketListParams,
+	TicketResponse,
 	TraderCommissionListParams,
 	UploadAvatarDto,
 	UserResponse } from '~/types/definitions/user.types';
@@ -64,6 +68,14 @@ type UserRepository = {
 	setNickname: (dto: SetNicknameDto) => Promise<CommonResponse>;
 	getCurrentUser: () => Promise<KeyValueResponse>;
 	uploadAvatar: (dto: UploadAvatarDto) => Promise<CommonResponse>;
+	// Ticket
+	getTicketList: (params: TicketListParams) => Promise<UserResponse>;
+	getTicketTypes: () => Promise<KeyValueResponse>;
+	storeTicket: (dto: StoreTicketDto) => Promise<TicketResponse>;
+	uploadTicketFile: (file: File) => Promise<CommonResponse>;
+	getTicketDetail: (id: string) => Promise<TicketResponse>;
+	closeTicket: (id: string) => Promise<CommonResponse>;
+	appendTicket: (dto: AppendTicketDto) => Promise<TicketResponse>;
 	// OLD
 
 	getProfile: () => Promise<UserProfileResponse>;
@@ -162,6 +174,87 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
+	// Ticket
+	async getTicketList(params: TicketListParams): Promise<UserResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/user/ticketing/list';
+		const response = await fetch<UserResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getTicketTypes(): Promise<KeyValueResponse> {
+		const url = '/v1/user/ticketing/type_list';
+		const response = await fetch<KeyValueResponse>(`${url}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async storeTicket(dto: StoreTicketDto): Promise<TicketResponse> {
+		const url = `/v1/user/ticketing/create`;
+		const response = await fetch<TicketResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async uploadTicketFile(file: File): Promise<CommonResponse> {
+		const formData = new FormData();
+		formData.append('file', file);
+
+		const url = `/v1/upload/ticket`;
+		const response = await fetch<CommonResponse>(`${url}`, {
+			method: 'POST',
+			body: formData,
+		});
+
+		return response;
+	},
+	async getTicketDetail(id: string): Promise<TicketResponse> {
+		const query = new URLSearchParams(
+			Object.entries({ id })
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/user/ticketing/get';
+		const response = await fetch<TicketResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async closeTicket(id: string): Promise<CommonResponse> {
+		const url = `v1/user/ticketing/close`;
+		const response = await fetch<CommonResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body: { id },
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async appendTicket(dto: AppendTicketDto): Promise<TicketResponse> {
+		const url = `/v1/user/ticketing/append`;
+		const response = await fetch<TicketResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+
 	// Old
 	async getProfile(): Promise<UserProfileResponse> {
 		return fetch<UserProfileResponse>('/v1/currency/routine/tag_list');

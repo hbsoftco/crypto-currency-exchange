@@ -90,7 +90,6 @@
 					</div>
 					<div class="my-8">
 						<SideGuideBox :tag-type="TagType.EMAIL_CHANGE" />
-						/>
 					</div>
 				</div>
 			</section>

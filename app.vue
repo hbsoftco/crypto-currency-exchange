@@ -6,7 +6,7 @@
 			<NuxtPage />
 		</NuxtLayout>
 
-		<div v-if="$pwa">
+		<!-- <div v-if="$pwa">
 			<div
 				v-if="$pwa?.needRefresh"
 				class="fixed bottom-0 left-0 right-0 w-full bg-background-dark dark:bg-background-50 h-14 bg-opacity-50 backdrop-blur-sm dark:bg-opacity-40 dark:backdrop-blur-sm"
@@ -25,15 +25,15 @@
 					</div>
 				</UContainer>
 			</div>
-			<!-- <div v-if="!$pwa?.isPWAInstalled">
+			<div v-if="!$pwa?.isPWAInstalled">
 				<span>
 					ایا میخواهید این اپ را نصب کنید؟
 				</span>
 				<button @click="$pwa?.install()">
 					نصب
 				</button>
-			</div> -->
-		</div>
+			</div>
+		</div> -->
 	</div>
 </template>
 
@@ -46,7 +46,7 @@ import {
 } from '~/utils/constants/common';
 import { removeFromCache } from '~/utils/indexeddb';
 
-const { $pwa } = useNuxtApp();
+// const { $pwa } = useNuxtApp();
 
 const clearCache = () => {
 	removeFromCache(CACHE_KEY_CURRENCY_BRIEF_ITEMS);

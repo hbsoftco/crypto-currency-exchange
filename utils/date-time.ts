@@ -6,9 +6,6 @@ export function formatDateToIranTime(date: string | number | Date): string {
 	const iranDate = new Date(localDate.getTime() + utcOffset + iranTimeOffset);
 
 	return new Intl.DateTimeFormat('fa-IR-u-nu-latn', {
-		year: 'numeric',
-		month: '2-digit',
-		day: '2-digit',
 		hour: '2-digit',
 		minute: '2-digit',
 		second: '2-digit',

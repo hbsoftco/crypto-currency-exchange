@@ -183,6 +183,10 @@ const handleImageError = (event: Event) => {
 	target.src = '/images/ic_crypto_unknown.png';
 };
 
+const formatTextWithLineBreaks = (text: string) => {
+	return text.replace(/\r?\n/g, '<br>');
+};
+
 export {
 	bigNumber,
 	formatBigNumber,
@@ -199,4 +203,5 @@ export {
 	formatByDecimal,
 	priceFormat,
 	handleImageError,
+	formatTextWithLineBreaks,
 };

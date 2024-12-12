@@ -165,16 +165,6 @@ type WithdrawCoinListParams = {
 	pageSize: string;
 };
 
-type GetTicketListParams = {
-	state: string;
-	typeId: string;
-	searchStatement: string;
-	from: string;
-	to: string;
-	pageNumber: string;
-	pageSize: string;
-};
-
 type GetReferralBestListParams = {
 	periodCo: string;
 	assessmentCurrencyId: string;
@@ -356,7 +346,6 @@ export type {
 	GetWithdrawParams,
 	GetBankParams,
 	GetDepositAddressParams,
-	GetTicketListParams,
 	GetHowBuyListParams,
 	GetFAQListParams,
 	GetSubjectLiveChatParams,

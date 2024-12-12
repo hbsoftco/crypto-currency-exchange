@@ -94,7 +94,7 @@
 			</template>
 			<div class="flex justify-center py-4">
 				<UPagination
-					v-if="totalCount > itemsPerPage && paginationNumbers.showPagination"
+					v-if="totalCount > itemsPerPage"
 					ref="pagination"
 					:model-value="Number(marketsPageStore.futuresMarketsParams.pageNumber)"
 					:page-count="Math.ceil(totalCount / itemsPerPage)"
@@ -118,8 +118,6 @@ import { MarketType } from '~/utils/enums/market.enum';
 import { marketRepository } from '~/repositories/market.repository';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 import type { MarketL31 } from '~/types/definitions/market.types';
-import type { UPagination } from '#build/components';
-import { usePaginationNumbers } from '~/composables/usePaginationNumbers';
 
 const { $mobileDetect, $api } = useNuxtApp();
 const marketRepo = marketRepository($api);
@@ -132,9 +130,6 @@ const marketsPageStore = useMarketsPageStore();
 const authStore = useAuthStore();
 
 const worker = useBaseWorker();
-
-const pagination = ref<InstanceType<typeof UPagination>>();
-const paginationNumbers = usePaginationNumbers();
 
 interface PropsDefinition {
 	searchQuery: string;
@@ -198,27 +193,11 @@ const getMarketListL31 = async () => {
 		await publicSocketStore.addMarketIds(socketMarketIds.value);
 
 		marketsLoading.value = false;
-
-		if (pagination.value) {
-			paginationNumbers.applyChangesToLinks(pagination.value);
-		}
 	}
 	catch (error: unknown) {
 		console.log(error);
 	}
 };
-
-watch(() => useChangeNumber().getLanguage(), () => {
-	if (pagination.value) {
-		paginationNumbers.applyChangesToLinks(pagination.value);
-	}
-});
-
-watch(() => marketsPageStore.futuresMarketsParams.pageNumber, () => {
-	if (pagination.value) {
-		paginationNumbers.applyChangesToLinks(pagination.value);
-	}
-}, { deep: true });
 
 onMounted(async () => {
 	isMobile.value = !!mobileDetect.mobile();

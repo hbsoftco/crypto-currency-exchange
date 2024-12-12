@@ -2,9 +2,9 @@
 	<div>
 		<section>
 			<UContainer>
-				<div class="flex justify-between items-center my-10">
+				<div class="flex justify-between items-center my-3 md:my-10">
 					<div class="flex flex-col">
-						<h1 class="text-4xl font-black">
+						<h1 class="text-lg md:text-4xl font-bold md:font-black">
 							{{ $t('sendTicket') }}
 						</h1>
 						<span class="py-4 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('ticketTitle') }}</span>
@@ -13,7 +13,7 @@
 						<img
 							src="/images/svg/ticketing.svg"
 							alt="ticketing"
-							class="w-80 h-80"
+							class="w-72 h-40 md:w-80 md:h-80"
 						>
 					</div>
 				</div>
@@ -22,15 +22,16 @@
 		<section>
 			<UContainer>
 				<div class="px-2 md:px-24 py-10 bg-primary-gray-light dark:bg-primary-gray-dark text-center rounded-md shadow-md mb-24">
-					<div class="my-8">
+					<div class="mb-8">
 						<FormsFieldInput
 							id="header"
-							v-model="ticketDto.header"
+							v-model="storeTicketDto.header"
 							type="text"
 							input-class="text-right"
 							label="writeSubjectProblem"
 							placeholder=""
 							icon=""
+							mt-class="mt-0 md:mt-8"
 							dir="rtl"
 							color-type="transparent"
 							:error-message="v$.header.$error? $t('fieldIsRequired') : ''"
@@ -41,7 +42,7 @@
 					<div class="mb-4">
 						<DropDown
 							id="priority"
-							v-model="ticketDto.priority"
+							v-model="storeTicketDto.priority"
 							:options="priorities"
 							type="text"
 							input-class="text-right"
@@ -66,7 +67,7 @@
 						</p>
 						<DropDown
 							id="issueTypeId"
-							v-model="ticketDto.issueTypeId"
+							v-model="storeTicketDto.issueTypeId"
 							:options="ticketTypes"
 							type="text"
 							input-class="text-right"
@@ -88,7 +89,7 @@
 						</p>
 						<TextareaFieldInput
 							id="content"
-							v-model="ticketDto.content"
+							v-model="storeTicketDto.content"
 							type="text"
 							input-class="text-right"
 							label="description"
@@ -108,7 +109,7 @@
 					<div>
 						<UButton
 							size="lg"
-							class="px-2 md:px-9"
+							class="px-9"
 							:loading="submitTicketLoading"
 							@click="submitTicket"
 						>
@@ -127,9 +128,9 @@ import useVuelidate from '@vuelidate/core';
 import DropDown from '~/components/forms/DropDown.vue';
 import FileUploader from '~/components/forms/FileUploader.vue';
 import TextareaFieldInput from '~/components/forms/TextareaFieldInput.vue';
-import { ticketRepository } from '~/repositories/ticketing.repository';
-import type { KeyValue } from '~/types/base.types';
-import type { StoreTicketDto } from '~/types/dto/ticketing.dto';
+import { userRepository } from '~/repositories/user.repository';
+import type { KeyValue } from '~/types/definitions/common.types';
+import type { StoreTicketDto } from '~/types/definitions/user.types';
 import { Priority } from '~/utils/enums/ticketing.enum';
 
 definePageMeta({
@@ -137,31 +138,17 @@ definePageMeta({
 });
 
 const { $api } = useNuxtApp();
-const ticketRepo = ticketRepository($api);
+const userRepo = userRepository($api);
 
 const toast = useToast();
+const router = useRouter();
 
-const priorities: KeyValue[] = [
-	{
-		key: String(Priority.HIGH),
-		value: useT('high'),
-	},
-	{
-		key: String(Priority.MEDIUM),
-		value: useT('medium'),
-	},
-	{
-		key: String(Priority.LOW),
-		value: useT('low'),
-	},
-];
 const ticketTypes = ref<KeyValue[]>([]);
-
 const ticketTypesLoading = ref<boolean>(true);
 const getTicketTypes = async () => {
 	try {
 		ticketTypesLoading.value = true;
-		const response = await ticketRepo.getTicketTypes();
+		const response = await userRepo.getTicketTypes();
 		ticketTypes.value = response.result;
 	}
 	catch (error) {
@@ -172,23 +159,21 @@ const getTicketTypes = async () => {
 	}
 };
 
-const ticketDto = ref<StoreTicketDto>({
+const storeTicketDto = ref<StoreTicketDto>({
 	issueTypeId: '',
 	priority: '',
 	fileId: null,
 	header: '',
 	content: '',
 });
-
-const ticketDtoRules = {
+const storeTicketDtoRules = {
 	issueTypeId: { required: validations.required },
 	priority: { required: validations.required },
 	fileId: { },
 	header: { required: validations.required },
 	content: { required: validations.required },
 };
-
-const v$ = useVuelidate(ticketDtoRules, ticketDto);
+const v$ = useVuelidate(storeTicketDtoRules, storeTicketDto);
 
 const submitTicketLoading = ref<boolean>(false);
 const submitTicket = async () => {
@@ -199,8 +184,9 @@ const submitTicket = async () => {
 		}
 
 		submitTicketLoading.value = true;
+		await userRepo.storeTicket(storeTicketDto.value);
 
-		await ticketRepo.storeTicket(ticketDto.value);
+		router.push('/ticketing');
 
 		toast.add({
 			title: useT('registerTicket'),
@@ -216,6 +202,21 @@ const submitTicket = async () => {
 		submitTicketLoading.value = false;
 	}
 };
+
+const priorities: KeyValue[] = [
+	{
+		key: String(Priority.HIGH),
+		value: useT('high'),
+	},
+	{
+		key: String(Priority.MEDIUM),
+		value: useT('medium'),
+	},
+	{
+		key: String(Priority.LOW),
+		value: useT('low'),
+	},
+];
 
 onMounted(getTicketTypes);
 </script>
