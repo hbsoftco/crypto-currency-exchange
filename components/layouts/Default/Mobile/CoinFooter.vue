@@ -1,13 +1,13 @@
 <template>
-	<footer class="fixed bottom-0 left-0 right-0 z-10 bg-hover-light dark:bg-hover-dark mt-4 py-1">
+	<footer class="fixed bottom-0 left-0 right-0 z-10 bg-hover-light dark:bg-hover-dark mt-4 py-2">
 		<UContainer>
 			<div class="flex items-center">
 				<!-- Left Section: Buy and Sell Buttons -->
 				<div class="flex flex-grow justify-between ml-auto">
-					<button class="flex-1 bg-accent-green h-9 rounded px-5 font-bold text-center mx-1">
+					<button class="flex-1 bg-accent-green h-11 rounded px-5 font-bold text-center mx-1">
 						{{ $t('buy') }}
 					</button>
-					<button class="flex-1 bg-accent-red h-9 rounded px-5 font-bold text-center mx-1">
+					<button class="flex-1 bg-accent-red h-11 rounded px-5 font-bold text-center mx-1">
 						{{ $t('sell') }}
 					</button>
 				</div>
