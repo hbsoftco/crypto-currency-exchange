@@ -1,32 +1,37 @@
 <template>
-	<footer class="fixed bottom-0 left-0 z-10 right-0 bg-hover-light dark:bg-hover-dark mt-4 py-1">
+	<footer class="fixed bottom-0 left-0 right-0 z-10 bg-hover-light dark:bg-hover-dark mt-4 py-1">
 		<UContainer>
-			<div class="flex justify-between items-center">
-				<div class="gap-2 flex h-full">
-					<button class="bg-accent-green h-9 rounded px-5 font-bold">
+			<div class="flex items-center">
+				<!-- Left Section: Buy and Sell Buttons -->
+				<div class="flex flex-grow justify-between ml-auto">
+					<button class="flex-1 bg-accent-green h-9 rounded px-5 font-bold text-center mx-1">
 						{{ $t('buy') }}
 					</button>
-					<button class="bg-accent-red h-9 rounded px-4 font-bold">
+					<button class="flex-1 bg-accent-red h-9 rounded px-5 font-bold text-center mx-1">
 						{{ $t('sell') }}
 					</button>
 				</div>
-				<div class="py-1 flex justify-between">
+
+				<!-- Right Section: Footer Links -->
+				<div class="flex gap-4 ml-4 mr-5">
 					<ULink
 						v-for="(item, index) in footerItems"
 						:key="index"
-						class="group cursor-pointer w-full mx-2"
+						class="group cursor-pointer"
 						:to="item.url"
 						@click="setActive(index)"
 					>
 						<img
 							:src="isActive(item.url) ? item.activeIcon : item.icon"
-							class="w-6 h-6 m-auto text-center text-subtle-text-light dark:text-subtle-text-dark"
+							class="w-6 h-6 m-auto"
 						>
 						<div
-							:class="isActive(item.url) ? 'font-bold text-dark dark:text-white' : 'font-normal text-subtle-text-light dark:text-subtle-text-dark'"
+							:class="isActive(item.url)
+								? 'font-bold text-dark dark:text-white'
+								: 'font-normal text-subtle-text-light dark:text-subtle-text-dark'"
 							class="text-sm mt-1 text-center group-hover:font-bold group-hover:text-dark dark:group-hover:text-white"
 						>
-							<span class="text-nowrap">{{ $t(item.name) }}</span>
+							<span class="whitespace-nowrap">{{ $t(item.name) }}</span>
 						</div>
 					</ULink>
 				</div>
@@ -62,5 +67,3 @@ const isActive = (url: string): boolean => {
 	return route.path === url;
 };
 </script>
-
-<style scoped></style>
