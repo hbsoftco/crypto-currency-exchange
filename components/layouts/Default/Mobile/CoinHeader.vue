@@ -48,19 +48,19 @@ const goBack = () => {
 const shareContent = async () => {
 	if (navigator.share) {
 		await navigator.share({
-			title: 'عنوان اشتراک‌گذاری',
-			text: 'توضیحات کوتاه برای اشتراک‌گذاری',
+			title: window.location.href,
+			text: '',
 			url: window.location.href,
 		})
 			.then(() => {
-				console.log('محتوا با موفقیت به اشتراک گذاشته شد!');
+				console.log('Shared!');
 			})
 			.catch((error) => {
-				console.error('خطا در اشتراک‌گذاری:', error);
+				console.error('Error:', error);
 			});
 	}
 	else {
-		console.log('مرورگر از اشتراک‌گذاری پشتیبانی نمی‌کند.');
+		console.log('navigator does not support on this browser.');
 	}
 };
 
