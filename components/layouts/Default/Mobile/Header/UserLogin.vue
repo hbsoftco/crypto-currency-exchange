@@ -216,7 +216,7 @@
 							class="flex justify-between items-center h-14 p-1 my-3 rounded bg-transparent-light dark:bg-transparency-dark text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark hover:text-text-light hover:dark:text-text-light"
 						>
 							<img
-								src="/images/gift.png"
+								src="/images/svg/gift.svg"
 								alt="gift"
 								class="w-4 h-4"
 							>

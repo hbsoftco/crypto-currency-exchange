@@ -5,8 +5,10 @@
 			class="hidden md:block"
 		/>
 		<MobileHeader
-			v-if="isMobile"
-			class="block md:hidden"
+			v-if="isMobile && !coinDetailFooter"
+		/>
+		<CoinHeader
+			v-if="isMobile && coinDetailFooter"
 		/>
 
 		<SupportButtons
@@ -34,6 +36,7 @@ import Header from '~/components/layouts/Default/Header.vue';
 const SupportButtons = defineAsyncComponent(() => import('~/components/pages/SupportButtons.vue'));
 const MobileFooter = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/Footer.vue'));
 const CoinFooter = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/CoinFooter.vue'));
+const CoinHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/CoinHeader.vue'));
 const MobileHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/Header.vue'));
 const Footer = defineAsyncComponent(() => import('~/components/layouts/Default/Footer.vue'));
 

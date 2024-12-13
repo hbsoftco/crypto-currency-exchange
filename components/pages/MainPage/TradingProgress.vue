@@ -5,7 +5,7 @@
 				class="relative w-full h-6 -pr-10 border-t-2 border-primary-yellow-light dark:border-primary-yellow-dark"
 			>
 				<div
-					class="absolute -top-10 -left-5 z-[1]"
+					class="absolute -top-11 -left-5 z-[1]"
 					@click="toggleSignIn"
 				>
 					<div class="flex flex-col items-center w-full">
@@ -14,16 +14,16 @@
 						</div>
 						<div
 							:class="[
-								'w-6 h-6 flex rounded items-center justify-center border-2 bg-background-light dark:bg-background-dark',
+								'w-8 h-8 flex rounded items-center justify-center border-2 bg-background-light dark:bg-background-dark',
 								isSignInVisible
 									? 'border-primary-yellow-light dark:border-primary-yellow-dark'
 									: 'border-secondary-gray-light dark:border-secondary-gray-dark',
 							]"
 						>
 							<img
-								src="/images/gift.png"
+								src="/images/svg/gift.svg"
 								alt="gift"
-								class="w-4 h-4"
+								class="w-6 h-6"
 							>
 						</div>
 						<IconArrowDown
@@ -39,7 +39,7 @@
 			</div>
 			<div class="relative w-full border-t-2 border-secondary-gray-light dark:border-secondary-gray-dark">
 				<div
-					class="absolute -top-10 -left-5 z-[1]"
+					class="absolute -top-11 -left-5 z-[1]"
 					@click="toggleDeposit"
 				>
 					<div class="flex flex-col items-center">
@@ -48,16 +48,16 @@
 						</div>
 						<div
 							:class="[
-								'w-6 h-6 flex rounded items-center justify-center border-2 bg-background-light dark:bg-background-dark',
+								'w-8 h-8 flex rounded items-center justify-center border-2 bg-background-light dark:bg-background-dark',
 								isDepositVisible
 									? 'border-primary-yellow-light dark:border-primary-yellow-dark'
 									: 'border-secondary-gray-light dark:border-secondary-gray-dark',
 							]"
 						>
 							<img
-								src="/images/gift.png"
+								src="/images/svg/gift.svg"
 								alt="gift"
-								class="w-4 h-4"
+								class="w-6 h-6"
 							>
 						</div>
 						<IconArrowDown
@@ -73,7 +73,7 @@
 			</div>
 			<div class="relative w-full border-t-2 border-secondary-gray-light dark:border-secondary-gray-dark">
 				<div
-					class="absolute -top-10 -left-5 z-[1]"
+					class="absolute -top-11 -left-5 z-[1]"
 					@click="toggleTransaction"
 				>
 					<div class="flex flex-col items-center">
@@ -82,16 +82,16 @@
 						</div>
 						<div
 							:class="[
-								'w-6 h-6 flex rounded items-center justify-center border-2 bg-background-light dark:bg-background-dark',
+								'w-8 h-8 flex rounded items-center justify-center border-2 bg-background-light dark:bg-background-dark',
 								isTransactionVisible
 									? 'border-primary-yellow-light dark:border-primary-yellow-dark'
 									: 'border-secondary-gray-light dark:border-secondary-gray-dark',
 							]"
 						>
 							<img
-								src="/images/gift.png"
+								src="/images/svg/gift.svg"
 								alt="gift"
-								class="w-4 h-4"
+								class="w-6 h-6"
 							>
 						</div>
 						<IconArrowDown

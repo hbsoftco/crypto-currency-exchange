@@ -6,7 +6,7 @@
 		<UContainer v-if="!currencyInfoLoading && currencyInfo">
 			<div class="grid grid-cols-12 gap-4">
 				<div class="col-span-12 md:col-span-8">
-					<div class="flex justify-between items-center">
+					<div class="flex justify-between items-center mb-7 md:mb-0">
 						<div class="flex items-center">
 							<img
 								:src="`https://api-bitland.site/media/currency/${currencyInfo.currency?.cSymbol}.png`"
@@ -20,14 +20,19 @@
 							</h1>
 						</div>
 						<div v-if="isMobile">
-							<span
-								dir="ltr"
-								class="text-base font-medium md:font-bold"
-							>USDT {{ priceFormat(currencyInfo.price, true) }}</span>
-							<!-- <span
-								dir="ltr"
-								class="text-base font-bold text-subtle-text-light dark:text-subtle-text-dark"
-							>USDT {{ priceFormat(currencyInfo.price, true) }}</span> -->
+							<div dir="ltr">
+								<span
+									class="text-base font-medium"
+								>USDT {{ priceFormat(currencyInfo.price, true) }}</span>
+							</div>
+							<div class="mt-1 text-left text-xs font-medium text-subtle-text-light dark:text-subtle-text-dark">
+								<span
+									dir="ltr"
+								>
+									{{ priceFormat(TMNPrice, true) }}
+								</span>
+								<span class="mr-1">{{ $t('toman') }}</span>
+							</div>
 						</div>
 					</div>
 					<div class="block mb-8 md:mb-24">
@@ -175,6 +180,7 @@ const getMarketListL47 = async () => {
 };
 
 const currentMarket = ref<MarketBrief>();
+const currentMarketTMN = ref<MarketBrief>();
 const params = ref<CurrencyInfoParams>({
 	id: '',
 	languageId: String(Language.PERSIAN),
@@ -195,8 +201,10 @@ const getCurrencyInfo = async () => {
 
 		const findMarket = await worker.searchMarkets(useEnv('apiBaseUrl'), `${currency.value?.cSymbol}USDT`, 1);
 		currentMarket.value = findMarket[0];
+		const TMNMarket = await worker.searchMarkets(useEnv('apiBaseUrl'), `${currency.value?.cSymbol}TMN`, 1);
+		currentMarketTMN.value = TMNMarket[0];
 
-		publicSocketStore.addMarketIds([findMarket[0].id]);
+		publicSocketStore.addMarketIds([findMarket[0].id, TMNMarket[0].id]);
 
 		currencyInfo.value = result;
 		currencyInfo.value.currency = currency.value;
@@ -206,6 +214,23 @@ const getCurrencyInfo = async () => {
 		console.log(error);
 	}
 };
+
+const TMNPrice = ref<number>(0);
+
+watch(
+	() => publicSocketStore.latestMarketData,
+	(newData) => {
+		if (newData) {
+			newData.forEach((updatedMarket) => {
+				const marketId = updatedMarket.data.mi;
+				if (currentMarketTMN.value?.id === marketId) {
+					TMNPrice.value = Number(updatedMarket.data.i);
+				}
+			});
+		}
+	},
+	{ deep: true },
+);
 
 onMounted(async () => {
 	isMobile.value = !!mobileDetect.mobile();
