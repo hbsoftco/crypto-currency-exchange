@@ -71,8 +71,15 @@
 					</h3>
 				</div>
 				<div
+					v-if="isMobile"
 					class="mb-18"
+				>
+					<MarketCategorySlider :items="marketsL51" />
+				</div>
+				<div
+					v-else
 					dir="ltr"
+					class="mb-18"
 				>
 					<MarketCategorySliderInfinite :items="marketsL51" />
 				</div>
@@ -92,7 +99,7 @@
 </template>
 
 <script setup lang="ts">
-// import MarketCategorySlider from '~/components/pages/Market/Statistics/MarketCategorySlider.vue';
+import MarketCategorySlider from '~/components/pages/Market/Statistics/MarketCategorySlider.vue';
 import MarketCategorySliderInfinite from '~/components/pages/Market/Statistics/MarketCategorySliderInfinite.vue';
 import ChartMarketState from '~/components/pages/Market/Statistics/ChartMarketState.vue';
 import { marketRepository } from '~/repositories/market.repository';
