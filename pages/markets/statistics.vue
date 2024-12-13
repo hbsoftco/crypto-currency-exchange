@@ -70,8 +70,11 @@
 						{{ $t("currencyCategories") }}
 					</h3>
 				</div>
-				<div class="mb-18">
-					<MarketCategorySlider :items="marketsL51" />
+				<div
+					class="mb-18"
+					dir="ltr"
+				>
+					<MarketCategorySliderInfinite :items="marketsL51" />
 				</div>
 			</div>
 			<!-- Currency Categories -->
@@ -89,7 +92,8 @@
 </template>
 
 <script setup lang="ts">
-import MarketCategorySlider from '~/components/pages/Market/Statistics/MarketCategorySlider.vue';
+// import MarketCategorySlider from '~/components/pages/Market/Statistics/MarketCategorySlider.vue';
+import MarketCategorySliderInfinite from '~/components/pages/Market/Statistics/MarketCategorySliderInfinite.vue';
 import ChartMarketState from '~/components/pages/Market/Statistics/ChartMarketState.vue';
 import { marketRepository } from '~/repositories/market.repository';
 import { MarketType } from '~/utils/enums/market.enum';

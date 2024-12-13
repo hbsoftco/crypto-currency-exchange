@@ -4,6 +4,8 @@
 			<UiLogoLoading />
 		</UContainer>
 		<UContainer v-if="!currencyInfoLoading && currencyInfo">
+			<CoinHeader v-if="isMobile" />
+
 			<div class="grid grid-cols-12 gap-4">
 				<div class="col-span-12 md:col-span-8">
 					<div class="flex justify-between items-center mb-7 md:mb-0">
@@ -140,6 +142,8 @@ import type { MarketBrief, MarketL47, MarketsL47Params } from '~/types/definitio
 import type { Currency, CurrencyBrief, CurrencyInfoParams } from '~/types/definitions/currency.types';
 import { MarketType } from '~/utils/enums/market.enum';
 import { priceFormat, handleImageError } from '~/utils/helpers';
+
+const CoinHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/CoinHeader.vue'));
 
 const { $mobileDetect, $api } = useNuxtApp();
 const currencyRepo = currencyRepository($api);
