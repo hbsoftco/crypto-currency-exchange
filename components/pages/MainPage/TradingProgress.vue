@@ -5,7 +5,7 @@
 				class="relative w-full h-6 -pr-10 border-t-2 border-primary-yellow-light dark:border-primary-yellow-dark"
 			>
 				<div
-					class="absolute -top-11 -left-5 z-[1]"
+					class="absolute -top-12 -left-5 z-[1]"
 					@click="toggleSignIn"
 				>
 					<div class="flex flex-col items-center w-full">
@@ -39,7 +39,7 @@
 			</div>
 			<div class="relative w-full border-t-2 border-secondary-gray-light dark:border-secondary-gray-dark">
 				<div
-					class="absolute -top-11 -left-5 z-[1]"
+					class="absolute -top-12 -left-5 z-[1]"
 					@click="toggleDeposit"
 				>
 					<div class="flex flex-col items-center">
@@ -73,7 +73,7 @@
 			</div>
 			<div class="relative w-full border-t-2 border-secondary-gray-light dark:border-secondary-gray-dark">
 				<div
-					class="absolute -top-11 -left-5 z-[1]"
+					class="absolute -top-12 -left-5 z-[1]"
 					@click="toggleTransaction"
 				>
 					<div class="flex flex-col items-center">
