@@ -19,7 +19,7 @@
 						<span
 							:class="priceClass"
 							class="text-base font-bold text-subtle-text-light dark:text-subtle-text-dark"
-						>${{ priceFormat(localPrice) }}</span>
+						>${{ priceFormat(localPrice, true) }}</span>
 						<span class="text-sm font-normal mx-1">
 							<UiChangePrice
 								:bg-color="false"
@@ -46,6 +46,7 @@
 					</ul>
 				</div>
 				<VChart
+					dir="ltr"
 					:option="chartOptions"
 					class="w-full h-full"
 				/>
@@ -346,6 +347,20 @@ const tooltipShowPersianDate = (value: string | number) => {
 	return result;
 };
 
+const scientificToDecimal = (scientific: string): string => {
+	const [base, exponent] = scientific.toString().toLowerCase().split('e');
+	const baseNumber = parseFloat(base);
+	const exponentValue = parseInt(exponent, 10);
+
+	if (exponentValue >= 0) {
+		return (baseNumber * Math.pow(10, exponentValue)).toFixed(0);
+	}
+	else {
+		const decimalPlaces = Math.abs(exponentValue);
+		return `0.${'0'.repeat(decimalPlaces - 1)}${baseNumber.toString().replace('.', '')}`;
+	}
+};
+
 const tooltipTimeFormat = (value: string | number) => {
 	const time = selectedOption.value.header_option;
 	const data = Number(value);
@@ -367,12 +382,12 @@ const tooltipShowToman = (value: string | number, axisValue: string | number) =>
 		const priceType = selectedCurrency.value;
 
 		if (priceType === 'TMN') {
-			return priceFormat(value);
+			return priceFormat(value, true);
 		}
 		else {
 			const data: any = TMNkLines.value.find((item) => item[0] === String(axisValue));
 			if (data) {
-				return priceFormat(data[2]);
+				return priceFormat(data[2], true);
 			}
 			return 0;
 		}
@@ -387,12 +402,16 @@ const tooltipShowDollar = (value: string | number, axisValue: string | number) =
 		const priceType = selectedCurrency.value;
 
 		if (priceType === 'USDT') {
-			return priceFormat(value);
+			if (Number(value) > 1) {
+				return priceFormat(value, true);
+			}
+
+			return priceFormat(scientificToDecimal(String(value)), true);
 		}
 		else {
 			const data: any = USDTkLines.value.find((item) => item[0] === String(axisValue));
 			if (data) {
-				return priceFormat(data[2]);
+				return priceFormat(data[2], true);
 			}
 			return 0;
 		}
@@ -434,7 +453,7 @@ const chartOptions = computed(() => ({
 	tooltip: {
 		trigger: 'axis',
 		formatter: function (params: AxisParams[]) {
-			return `<div class="text-black pb-1">
+			return `<div class="text-black pb-1" dir='rtl'>
 						<div>
 							<span class='text-black text-xs font-dana'>${tooltipShowPersianDate	(params[0].axisValue)}</span>
 							<span class='text-black text-xs font-dana'>|</span>
@@ -445,7 +464,7 @@ const chartOptions = computed(() => ({
 						<div>
 							<span class="inline-block w-1.5 h-1.5 rounded-full bg-white dark:bg-black"></span>
 							<span class='text-black text-xs font-dana'>${useT('priceInDollar')}:</span>
-							<strong class='text-black text-xs font-dana'>${tooltipShowDollar(params[0].value, params[0].axisValue)}</strong>
+							<strong class='text-black text-xs font-dana' dir='ltr'>${tooltipShowDollar(params[0].value, params[0].axisValue)}</strong>
 							<strong class='text-black text-xs font-dana'>$</strong>
 						</div>
 						${tooltipShowToman(params[0].value, params[0].axisValue) !== '0'
@@ -453,7 +472,7 @@ const chartOptions = computed(() => ({
 							<div>
 								<span class="inline-block w-1.5 h-1.5 rounded-full bg-white dark:bg-black"></span>
 								<span class='text-black text-xs font-dana'>${useT('priceInToman')}:</span>:
-								<strong class='text-black text-xs font-dana'>${tooltipShowToman(params[0].value, params[0].axisValue)}</strong>
+								<strong class='text-black text-xs font-dana' dir='ltr'>${tooltipShowToman(params[0].value, params[0].axisValue)}</strong>
 								<strong class='text-black text-xs font-dana'>${useT('toman')}</strong>
 							</div>
 							`
@@ -509,17 +528,17 @@ const chartOptions = computed(() => ({
 		axisLabel: {
 			fontFamily: 'dana',
 			formatter: (value: number) => {
-				return (String(bigNumber(value)));
+				if (value > 1) {
+					return (String(bigNumber(value)));
+				}
+
+				return priceFormat(scientificToDecimal(String(value)), true);
 			},
 		},
 		min: () => {
 			const minPrice = Math.min(...chartData.value);
 			return formatByDecimal((minPrice - (minPrice * (0.1)) || 0), props.tickSize);
 		},
-		// max: () => {
-		// 	const maxPrice = Math.max(...chartData.value);
-		// 	return maxPrice + (maxPrice * 0.1);
-		// },
 	},
 	series: [
 		{

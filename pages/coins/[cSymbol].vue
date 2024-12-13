@@ -15,24 +15,19 @@
 								format="webp"
 								@error="handleImageError"
 							>
-							<h1 class="text-base md:text-xl font-bold mr-1 md:mr-4">
+							<h1 class="text-base md:text-xl font-medium md:font-bold mr-1 md:mr-4">
 								{{ currencyInfo.currency?.cName }} ({{ currencyInfo.currency?.cSymbol }})
 							</h1>
 						</div>
 						<div v-if="isMobile">
-							<span class="text-sm font-normal mx-1">
-								<UiChangePrice
-									:bg-color="false"
-									classes="text-sm font-normal pr-1.5"
-									:show-percent="true"
-									pl="pl-0.5"
-									:change="parseFloat(String(currencyInfo.priceChangePerc24h))"
-									:icon="false"
-								/>
-							</span>
 							<span
+								dir="ltr"
+								class="text-base font-medium md:font-bold"
+							>USDT {{ priceFormat(currencyInfo.price, true) }}</span>
+							<!-- <span
+								dir="ltr"
 								class="text-base font-bold text-subtle-text-light dark:text-subtle-text-dark"
-							>${{ priceFormat(currencyInfo.price) }}</span>
+							>USDT {{ priceFormat(currencyInfo.price, true) }}</span> -->
 						</div>
 					</div>
 					<div class="block mb-8 md:mb-24">
