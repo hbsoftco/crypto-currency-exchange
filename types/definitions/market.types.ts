@@ -29,6 +29,7 @@ type MarketsResponse = {
 			MarketL21[] |
 			MarketL51[] |
 			MarketL47[] |
+			MarketL46[] |
 			MarketL31[];
 	};
 };
@@ -71,6 +72,8 @@ type MarketL16 = {
 	market: MarketBrief | null;
 	quote?: Quote | null;
 };
+
+type MarketL46 = MarketL16;
 
 type MarketStateParams = {
 	rowCount: string;
@@ -134,6 +137,8 @@ type MarketsL47Params = {
 	marketTypeId: string;
 };
 
+type MarketsL46Params = MarketsL47Params;
+
 type MarketL47 = {
 	category: string;
 	info: MarketL47Item[];
@@ -182,6 +187,8 @@ export type {
 	MarketL51Item,
 	MarketsL47Params,
 	MarketL47,
+	MarketsL46Params,
+	MarketL46,
 	MarketL47Item,
 	MarketDailyPriceChangeResponse,
 	DailyPriceChange,

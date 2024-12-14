@@ -3,7 +3,7 @@ import * as Comlink from 'comlink';
 import type { Asset } from '~/types/definitions/asset.types';
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
 import type { SuggestionItems } from '~/types/definitions/header/search.types';
-import type { MarketBrief, MarketL16, MarketL21, MarketL47, MarketL51, MarketState } from '~/types/definitions/market.types';
+import type { MarketBrief, MarketL16, MarketL21, MarketL46, MarketL47, MarketL51, MarketState } from '~/types/definitions/market.types';
 import type { Quote } from '~/types/definitions/quote.types';
 import type { Tag } from '~/types/definitions/tag.types';
 
@@ -12,6 +12,7 @@ interface BaseWorker {
 	addCurrencyToMarkets: (markets: MarketL21[], quoteId: number, baseUrl: string, marketTypeId: number) => Promise<MarketL21[]>;
 	addCurrencyToMarketsL16: (markets: MarketL16[], quoteId: number, baseUrl: string, marketTypeId: number) => Promise<MarketL16[]>;
 	addCurrencyToMarketsL51: (baseUrl: string, markets: | MarketL51[]) => Promise<MarketL51[]>;
+	addCurrencyToMarketsL46: (baseUrl: string, markets: | MarketL46[]) => Promise<MarketL46[]>;
 	addCurrencyToMarketsL47: (baseUrl: string, markets: | MarketL47[]) => Promise<MarketL47[]>;
 	addCurrencyToMarketStates: (baseUrl: string, markets: | MarketState[]) => Promise<MarketState[]>;
 	addCurrencyToAsset: (baseUrl: string, assets: | Asset[]) => Promise<Asset[]>;

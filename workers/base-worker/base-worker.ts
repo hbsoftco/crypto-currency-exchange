@@ -9,7 +9,7 @@ import {
 	CACHE_KEY_TAG_ITEMS,
 } from '~/utils/constants/common';
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
-import type { MarketBrief, MarketL16, MarketL21, MarketL47, MarketL51, MarketState } from '~/types/definitions/market.types';
+import type { MarketBrief, MarketL16, MarketL21, MarketL46, MarketL47, MarketL51, MarketState } from '~/types/definitions/market.types';
 import type { Quote } from '~/types/definitions/quote.types';
 import type { SuggestionItems } from '~/types/definitions/header/search.types';
 import type { Tag } from '~/types/definitions/tag.types';
@@ -258,6 +258,33 @@ const addCurrencyToAsset = async (baseUrl: string, assets: Asset[]) => {
 		return {
 			...asset,
 			currency,
+		};
+	}));
+
+	return result;
+};
+
+const addCurrencyToMarketsL46 = async (baseUrl: string, markets: MarketL46[]) => {
+	if (!currencyBriefItems.length) {
+		await fetchCurrencyBriefItems(baseUrl);
+	}
+
+	if (!marketBriefItems.length) {
+		await fetchMarketBriefItems(baseUrl);
+	}
+
+	const quoteItems = await fetchSpotQuoteItems(baseUrl);
+
+	const result = await Promise.all(markets.map(async (market) => {
+		const currency = await findCurrencyById(market.cid, baseUrl);
+		const marketItem = await findMarketById(market.id, baseUrl);
+		const quote = await quoteItems.find((quote) => quote.id === marketItem?.cqId);
+		return {
+			...market,
+			currency,
+			market: marketItem,
+			quote,
+			mSymbol: `${currency?.cSymbol}${quote?.cSymbol}`,
 		};
 	}));
 
@@ -679,6 +706,7 @@ Comlink.expose({
 	addCurrencyToAsset,
 	addCurrencyToMarketsL16,
 	addCurrencyToMarketsL51,
+	addCurrencyToMarketsL46,
 	addCurrencyToMarketsL47,
 	addCurrencyToMarketStates,
 	fetchCurrencyBriefItems,

@@ -10,12 +10,12 @@
 								@click="goBack"
 							/>
 						</div>
-						<h2>
+						<h2 class="pb-1.5 border-b text-sm font-medium border-primary-yellow-light dark:border-primary-yellow-dark text-primary-yellow-light dark:text-primary-yellow-dark">
 							{{ $t('currencyInformation') }}
 						</h2>
-						<!-- <h2 class="pb-1.5 border-b border-primary-yellow-light dark:border-primary-yellow-dark text-primary-yellow-light dark:text-primary-yellow-dark">
-							{{ $t('currencyInformation') }}
-						</h2> -->
+						<h2 class="pb-1.5 border-b border-transparent text-sm font-medium mr-2">
+							{{ $t('chart') }}
+						</h2>
 					</div>
 
 					<div class="flex justify-end items-center gap-3">

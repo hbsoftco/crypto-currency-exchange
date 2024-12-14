@@ -1151,6 +1151,7 @@ const persian = {
 	buySell: 'خرید/فروش',
 	newContentAvailable: 'محتوای جدید در دسترس است، برای به‌روزرسانی روی دکمه کلیک کنید.',
 	pwaUpdate: 'به‌روزرسانی',
+	chart: 'نمودار',
 };
 
 export default persian;

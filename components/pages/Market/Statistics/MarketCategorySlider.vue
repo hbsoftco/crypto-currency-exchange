@@ -2,11 +2,8 @@
 	<div
 		dir="ltr"
 		class="relative"
-		@mouseenter="pauseCarousel"
-		@mouseleave="startCarousel"
 	>
 		<UCarousel
-			ref="carouselRef"
 			v-slot="{ item }"
 			:items="items"
 			:ui="{
@@ -51,35 +48,4 @@ interface PropsDefinition {
 }
 
 defineProps<PropsDefinition>();
-
-const carouselRef = ref();
-let interval: ReturnType<typeof setInterval> | null = null;
-
-const startCarousel = () => {
-	if (interval) return;
-	interval = setInterval(() => {
-		if (!carouselRef.value) return;
-
-		if (carouselRef.value.page === carouselRef.value.pages) {
-			return carouselRef.value.select(0);
-		}
-
-		carouselRef.value.next();
-	}, 3000);
-};
-
-const pauseCarousel = () => {
-	if (interval) {
-		clearInterval(interval);
-		interval = null;
-	}
-};
-
-onMounted(() => {
-	startCarousel();
-});
-
-onBeforeUnmount(() => {
-	pauseCarousel();
-});
 </script>

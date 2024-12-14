@@ -10,7 +10,8 @@ import type {
 	MarketStateResponse,
 	MarketsL47Params,
 	MarketDailyPriceChangeResponse,
-	FavoriteMarketDto } from '~/types/definitions/market.types';
+	FavoriteMarketDto,
+	MarketsL46Params } from '~/types/definitions/market.types';
 import type { MarketListResponse } from '~/types/response/market.types';
 
 type MarketRepository = {
@@ -25,6 +26,7 @@ type MarketRepository = {
 	getMarketListL31a: (params: MarketsParams) => Promise<MarketsResponse>;
 	getMarketListL51: () => Promise<MarketsResponse>;
 	getMarketListL47: (params: MarketsL47Params) => Promise<MarketsResponse>;
+	getMarketListL46: (params: MarketsL46Params) => Promise<MarketsResponse>;
 	getMarketDailyPriceChange: () => Promise<MarketDailyPriceChangeResponse>;
 	likeMarket: (dto: FavoriteMarketDto) => Promise<CommonResponse>;
 	dislikeMarket: (dto: FavoriteMarketDto) => Promise<CommonResponse>;
@@ -194,6 +196,22 @@ export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Mar
 
 		const url = '/v1/market/routine/l47_f';
 		const response = await fetch<MarketStateResponse>(`${url}?${query.toString()}`, {
+			noAuth: true,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getMarketListL46(params: MarketsL46Params): Promise<MarketsResponse> {
+		const query = new URLSearchParams();
+		Object.entries(params).forEach(([key, value]) => {
+			if (value !== undefined && value !== null && value.toString().trim() !== '') {
+				query.append(key, value);
+			}
+		});
+
+		const url = '/v1/market/routine/l46_f';
+		const response = await fetch<MarketsResponse>(`${url}?${query.toString()}`, {
 			noAuth: true,
 			method: 'GET',
 		} as CustomNitroFetchOptions);

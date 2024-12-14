@@ -69,11 +69,46 @@
 </template>
 
 <script setup lang="ts">
+import { marketRepository } from '~/repositories/market.repository';
+import type { MarketL16, MarketsL47Params } from '~/types/definitions/market.types';
+import { MarketType } from '~/utils/enums/market.enum';
+import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
+
+const { $api } = useNuxtApp();
+const marketRepo = marketRepository($api);
+
+const worker = useBaseWorker();
+
+const marketsParams = ref<MarketsL47Params>({
+	marketTypeId: String(MarketType.SPOT),
+	rowCount: '20',
+});
+const markets = ref<MarketL16[]>([]);
+const marketsLoading = ref<boolean>(false);
+const getMarkets = async () => {
+	try {
+		marketsLoading.value = true;
+		const { result } = await marketRepo.getMarketListL46(marketsParams.value);
+
+		markets.value = await worker.addCurrencyToMarketsL46(
+			useEnv('apiBaseUrl'),
+			result.rows as MarketL16[],
+		);
+
+		marketsLoading.value = false;
+	}
+	catch (error: unknown) {
+		console.log(error);
+	}
+};
+
 const spotStore = useSpotStore();
 
 const carouselRef = ref();
 
-onMounted(() => {
+onMounted(async () => {
+	await getMarkets();
+
 	setInterval(() => {
 		if (!carouselRef.value) return;
 
