@@ -119,7 +119,7 @@
 									:bg-color="false"
 									:show-percent="true"
 									pl="pl-0"
-									:change="parseFloat(String(openSlideData?.indexPrice))"
+									:change="parseFloat(String(openSlideData?.priceChangePercIn24H))"
 									:icon="false"
 								/>
 							</div>
