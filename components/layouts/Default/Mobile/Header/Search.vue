@@ -26,9 +26,13 @@
 		<!-- Modal Background -->
 		<div
 			v-if="showAdditionalBox"
-			class="fixed inset-0 bg-background-light dark:bg-background-dark z-20 flex items-center justify-center"
+			class="fixed inset-0 bg-background-light dark:bg-background-dark z-30 flex items-center justify-center"
+			:class="[search ? 'h-full': 'h-16 overflow-y-hidden']"
 		>
-			<div class="relative w-full h-full bg-background-light dark:bg-background-dark rounded-lg py-6 px-2 overflow-auto">
+			<div
+				class="relative w-full h-full bg-background-light dark:bg-background-dark rounded-lg py-3.5 px-2 overflow-auto"
+				:class="[search ? '': 'overflow-y-hidden']"
+			>
 				<div class="flex items-center justify-center mb-4 mx-2">
 					<div class="w-full pl-2 relative">
 						<input
@@ -37,6 +41,7 @@
 							class="w-full h-9 rounded-md outline-none pr-8 text-sm bg-primary-gray-light dark:bg-primary-gray-dark"
 							:placeholder="$t('search')"
 							:trailing="false"
+							autofocus
 							@focus="handleFocus"
 							@input="handleInput"
 						>
@@ -49,65 +54,67 @@
 				</div>
 				<!-- Header -->
 
-				<div class="flex justify-between items-center mb-4 mx-2">
-					<span class="text-sm font-bold">
-						{{ $t("transaction") }}
-					</span>
-					<div>
-						<ULink
-							class="w-full text-right flex items-center"
-							@click="goToMarket()"
-						>
-							<span
-								class="text-sm font-medium text-primary-yellow-light dark:text-primary-yellow-dark ml-1"
-							>{{ $t("market") }}</span>
-							<IconArrowLeftQR class="text-primary-yellow-light dark:text-primary-yellow-dark" />
-						</ULink>
+				<div v-if="search">
+					<div class="flex justify-between items-center mb-4 mx-2">
+						<span class="text-sm font-bold">
+							{{ $t("transaction") }}
+						</span>
+						<div>
+							<ULink
+								class="w-full text-right flex items-center"
+								@click="goToMarket()"
+							>
+								<span
+									class="text-sm font-medium text-primary-yellow-light dark:text-primary-yellow-dark ml-1"
+								>{{ $t("market") }}</span>
+								<IconArrowLeftQR class="text-primary-yellow-light dark:text-primary-yellow-dark" />
+							</ULink>
+						</div>
 					</div>
-				</div>
 
-				<div
-					v-if="marketsItems.length === 0"
-					class="text-center text-sm text-gray-500 dark:text-gray-400 py-4"
-				>
-					{{ $t("notFoundMessage") }}
-				</div>
-				<div
-					v-for="market of marketsItems"
-					:key="market.id"
-					@click="handleSelection"
-				>
-					<MarketItem
-						:market="market"
-						:socket-data="publicSocketStore.findMarketDataById(market.id)"
-					/>
-				</div>
-				<UButton
-					v-if="marketsItems.length > 0"
-					block
-					class=" my-4 text-primary-yellow-light dark:text-primary-yellow-dark text-base hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-yellow"
-					@click="goToMarket('link')"
-				>
-					{{ $t("showMore") }}
-				</UButton>
-
-				<div class="mt-6 bg-background-light dark:bg-background-dark">
-					<p class="text-sm font-bold mb-2 mx-2">
-						{{ $t("currencyInformation") }}
-					</p>
 					<div
-						v-if="currenciesItems.length === 0"
+						v-if="marketsItems.length === 0"
 						class="text-center text-sm text-gray-500 dark:text-gray-400 py-4"
 					>
 						{{ $t("notFoundMessage") }}
 					</div>
-					<CurrencyItem
-						v-for="currency of currenciesItems"
-						:key="currency.id"
-						:currency="currency"
-						class="mt-1"
+					<div
+						v-for="market of marketsItems"
+						:key="market.id"
 						@click="handleSelection"
-					/>
+					>
+						<MarketItem
+							:market="market"
+							:socket-data="publicSocketStore.findMarketDataById(market.id)"
+						/>
+					</div>
+					<UButton
+						v-if="marketsItems.length > 0"
+						block
+						class=" my-4 text-primary-yellow-light dark:text-primary-yellow-dark text-base hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-yellow"
+						@click="goToMarket('link')"
+					>
+						{{ $t("showMore") }}
+					</UButton>
+
+					<div class="mt-6 bg-background-light dark:bg-background-dark">
+						<p class="text-sm font-bold mb-2 mx-2">
+							{{ $t("currencyInformation") }}
+						</p>
+						<div
+							v-if="currenciesItems.length === 0"
+							class="text-center text-sm text-gray-500 dark:text-gray-400 py-4"
+						>
+							{{ $t("notFoundMessage") }}
+						</div>
+						<CurrencyItem
+							v-for="currency of currenciesItems"
+							:key="currency.id"
+							:currency="currency"
+							class="mt-1"
+							@click="handleSelection"
+						/>
+					</div>
 				</div>
 			</div>
 		</div>
