@@ -67,8 +67,6 @@ function setActive(index: number) {
 }
 
 const isActive = (url: string): boolean => {
-	return route.path === url;
+	return route.path === url || route.path.startsWith(`${url}/`);
 };
 </script>
-
-<style scoped></style>
