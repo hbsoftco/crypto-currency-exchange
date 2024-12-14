@@ -844,6 +844,7 @@ const persian = {
 	code: 'کد',
 	title: 'عنوان',
 	sendTicket: 'ارسال تیکت',
+	closeTicketDescription: 'آیا شما از بستن این تیکت اطمینان دارید؟',
 	writeSubjectProblem: 'موضوع مشکلتان را بنویسید',
 	speedProcess: 'برای تسریع در فرآیند، نوع درخواست خود را به دقت انتخاب کنید',
 	detailTextTicketForm: 'لطفا جزئیات درخواست خود را وارد کنید، کارکنان پشتیبانی ما در اسرع وقت پاسخ خواهند داد.',

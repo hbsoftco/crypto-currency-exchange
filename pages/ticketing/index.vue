@@ -121,7 +121,7 @@
 							<td class="py-2.5 pr-1">
 								<span
 									class="cursor-pointer font-semibold"
-									@:click="router.push(`/ticketing/${item.id}`)"
+									@click="ticketDetail(item)"
 								>{{ item.header }}</span>
 							</td>
 							<td class="py-2.5 pr-1">
@@ -178,6 +178,13 @@ const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
 
 const router = useRouter();
+
+const ticketDetail = (ticket: Ticket) => {
+	router.push({
+		path: `/ticketing/${ticket.id}`,
+		query: { regTime: ticket.regTime, header: ticket.header },
+	});
+};
 
 const totalCount = ref(0);
 const itemsPerPage = 10;

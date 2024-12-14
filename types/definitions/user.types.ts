@@ -102,7 +102,7 @@ type TicketChat = {
 
 type AppendTicketDto = {
 	id: number;
-	fileId?: number;
+	fileId: number | null;
 	content: string;
 };
 
@@ -117,6 +117,7 @@ export type {
 	// Ticket
 	TicketListParams,
 	Ticket,
+	TicketChat,
 	StoreTicketDto,
 	TicketResponse,
 	AppendTicketDto,
