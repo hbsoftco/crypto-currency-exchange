@@ -37,7 +37,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="relative w-full border-t-2 border-secondary-gray-light dark:border-secondary-gray-dark">
+			<div
+				class="relative w-full border-t-2 "
+				:class="[isDepositVisible || isTransactionVisible? 'border-primary-yellow-light dark:border-primary-yellow-dark': 'border-secondary-gray-light dark:border-secondary-gray-dark']"
+			>
 				<div
 					class="absolute -top-12 -left-5 z-[1]"
 					@click="toggleDeposit"
@@ -71,7 +74,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="relative w-full border-t-2 border-secondary-gray-light dark:border-secondary-gray-dark">
+			<div
+				class="relative w-full border-t-2"
+				:class="[isTransactionVisible? 'border-primary-yellow-light dark:border-primary-yellow-dark': 'border-secondary-gray-light dark:border-secondary-gray-dark']"
+			>
 				<div
 					class="absolute -top-12 -left-5 z-[1]"
 					@click="toggleTransaction"
