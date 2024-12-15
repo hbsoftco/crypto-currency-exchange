@@ -17,6 +17,88 @@
 					<UiTitleWithBack :title="$t('marketStatistics')" />
 				</div>
 				<div
+					v-if="isMobile"
+					class="flex justify-between w-full h-full relative mb:2 md:mb-16"
+				>
+					<div
+						v-if="negativeMarketsItems.length > 0"
+						class="w-[27%] relative"
+					>
+						<div class="absolute top-[4.8rem] pr-1 right-0">
+							<p class="text-xs mb-9">
+								{{ $t('greaterThanPlus10Percent') }}
+							</p>
+							<p class="text-xs mb-9">
+								{{ $t('plus8ToPlus10Percent') }}
+							</p>
+							<p class="text-xs mb-9">
+								{{ $t('plus6ToPlus8Percent') }}
+							</p>
+							<p class="text-xs mb-9">
+								{{ $t('plus4ToPlus6Percent') }}
+							</p>
+							<p class="text-xs mb-9">
+								{{ $t('plus2ToPlus4Percent') }}
+							</p>
+							<p class="text-xs mb-9">
+								{{ $t('lessThanPlus2Percent') }}
+							</p>
+						</div>
+						<VChart
+							:option="positiveMarketBarMobileOptions"
+							class="w-full h-96"
+						/>
+						<div class="text-center text-sm md:text-base font-bold">
+							{{ $t("numberOfRisingMarkets") }}
+						</div>
+					</div>
+					<div
+						v-if="neutralMarketsItems.length > 0"
+						class="w-[46%] pt-16 relative"
+					>
+						<div class="w-20 h-10 z-20 absolute top-28 right-0 left-0 text-center m-auto">
+							<span class="text-[0.7rem]">رشد و کاهش بازارها در ۲۴ ساعت</span>
+						</div>
+						<VChart
+							:option="neutralPieMobileOptions"
+							class="w-full md:w-full h-40 md:h-80 z-0"
+						/>
+					</div>
+					<div
+						v-if="positiveMarketsItems.length > 0"
+						class="w-[27%] relative"
+					>
+						<div class="absolute top-[4.8rem] pl-1 left-0">
+							<p class="text-xs mb-9">
+								{{ $t('lessThanMinus10Percent') }}
+							</p>
+							<p class="text-xs mb-9">
+								{{ $t('minus8ToMinus10Percent') }}
+							</p>
+							<p class="text-xs mb-9">
+								{{ $t('minus6ToMinus8Percent') }}
+							</p>
+							<p class="text-xs mb-9">
+								{{ $t('minus4ToMinus6Percent') }}
+							</p>
+							<p class="text-xs mb-9">
+								{{ $t('minus2ToMinus4Percent') }}
+							</p>
+							<p class="text-xs mb-9">
+								{{ $t('greaterThanMinus2Percent') }}
+							</p>
+						</div>
+						<VChart
+							:option="negativeMarketBarMobileOptions"
+							class="w-full h-96"
+						/>
+						<div class="text-center text-sm md:text-base font-bold">
+							{{ $t("numberOfDecliningMarkets") }}
+						</div>
+					</div>
+				</div>
+				<div
+					v-else
 					class="flex justify-between w-full h-full relative mb:2 md:mb-16"
 				>
 					<div
@@ -53,18 +135,12 @@
 						/>
 					</div>
 				</div>
-				<div
-					v-if="neutralMarketsItems.length > 0 && isMobile"
-					class="w-full relative -top-4"
-				>
-					<VChart
-						:option="neutralPieOptions"
-						class="w-full h-80"
-					/>
-				</div>
 			</div>
 
-			<div v-if="marketsL51.length">
+			<div
+				v-if="marketsL51.length"
+				class="mt-10 md:mt-0"
+			>
 				<div class="mb-10">
 					<h3 class="text-base font-bold">
 						{{ $t("currencyCategories") }}
@@ -279,6 +355,162 @@ const initChatsData = async () => {
 		{ value: neutralMarkets.value, name: useT('neutral'), itemStyle: { color: '#666666' } },
 	];
 };
+
+const negativeMarketBarMobileOptions = computed(() => ({
+	grid: {
+		left: '3%',
+		right: '30%',
+		bottom: '3%',
+		top: '10%',
+		containLabel: true,
+	},
+	xAxis: {
+		type: 'value',
+		show: false,
+		inverse: false,
+	},
+	yAxis: {
+		type: 'category',
+		show: false,
+		data: [],
+		inverse: true,
+		axisLine: {
+			show: false,
+		},
+		axisTick: {
+			show: false,
+		},
+		axisLabel: {
+			color: isDark.value ? '#FFFFFF' : '#000000',
+			fontFamily: 'dana',
+			fontSize: 10,
+			fontWeight: 'bold',
+			padding: [0, 0, 0, 10],
+			formatter: (value: string) => value,
+		},
+	},
+	series: [
+		{
+			name: useT('fallingMarkets'),
+			type: 'bar',
+			data: negativeMarketsItems.value,
+			itemStyle: {
+				color: '#FF4D4F',
+				borderRadius: [1, 1, 1, 1],
+			},
+			barWidth: 14,
+			label: {
+				show: true,
+				position: 'right',
+				color: '#FF4D4F',
+			},
+		},
+	],
+}));
+
+const positiveMarketBarMobileOptions = computed(() => ({
+	grid: {
+		left: '20%',
+		right: '4%',
+		bottom: '3%',
+		top: '10%',
+		containLabel: true,
+	},
+	xAxis: {
+		type: 'value',
+		show: false,
+		inverse: true,
+	},
+	yAxis: {
+		position: 'right',
+		type: 'category',
+		show: false,
+		data: [],
+		inverse: true,
+		axisLine: {
+			show: false,
+		},
+		axisTick: {
+			show: false,
+		},
+		axisLabel: {
+			color: isDark.value ? '#FFFFFF' : '#000000',
+			fontFamily: 'dana',
+			position: 'right',
+			fontSize: 10,
+			fontWeight: 'bold',
+			padding: [0, 0, 0, 10],
+			formatter: (value: string) => value,
+		},
+	},
+	series: [
+		{
+			name: useT('risingMarkets'),
+			type: 'bar',
+			data: positiveMarketsItems.value,
+			itemStyle: {
+				color: '#28A745',
+				borderRadius: [1, 1, 1, 1],
+			},
+			barWidth: 14,
+			label: {
+				show: true,
+				position: 'left',
+				formatter: '{c}',
+				color: '#28A745',
+			},
+		},
+	],
+}));
+
+const neutralPieMobileOptions = computed(() => ({
+	title: {
+		text: '',
+		left: 'center',
+		top: '0%',
+		textStyle: {
+			color: isDark.value ? '#FFFFFF' : '#000000',
+			fontSize: 14,
+			fontFamily: 'dana',
+			fontWeight: 'bold',
+		},
+	},
+	tooltip: {
+		show: false,
+	},
+	legend: {
+		show: false,
+	},
+	series: [
+		{
+			name: useT('marketGrowthAndDecline'),
+			type: 'pie',
+			radius: ['100%', '55%'],
+			avoidLabelOverlap: false,
+			itemStyle: {
+				borderRadius: 1,
+				borderColor: isDark.value ? '#121212' : '#ffffff',
+				borderWidth: 0,
+			},
+			label: {
+				show: true,
+				position: 'inside',
+				fontFamily: 'dana',
+				formatter: '{c}',
+				color: isDark.value ? '#000000' : '#FFFFFF',
+				fontSize: 11,
+				fontWeight: 'bold',
+			},
+			labelLine: {
+				show: false,
+			},
+			data: neutralMarketsItems.value,
+			emphasis: {
+				scale: false,
+			},
+		},
+	],
+}));
 
 const negativeMarketBarOptions = computed(() => ({
 	grid: {

@@ -68,6 +68,7 @@
 		</table>
 		<USlideover
 			v-model="openSlide"
+			prevent-close
 			side="bottom"
 		>
 			<UCard
@@ -176,7 +177,6 @@ const openSlide = ref<boolean>(false);
 const openSlideData = ref<OpenSlide | null>(null);
 const openSlideover = () => {
 	openSlide.value = true;
-	console.log(openSlideData);
 };
 
 const colors = [
