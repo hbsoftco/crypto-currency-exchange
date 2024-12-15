@@ -11,88 +11,99 @@
 		</div>
 	</UContainer>
 	<UContainer v-else>
+		<BackHeader :title="$t('marketStatisticalInformation')" />
 		<div>
 			<div>
-				<div class="mb-0 md:mb-4 mt-0 md:mt-8">
+				<div
+					v-if="!isMobile"
+					class="mb-0 md:mb-4 mt-0 md:mt-8"
+				>
 					<UiTitleWithBack :title="$t('marketStatistics')" />
 				</div>
-				<div
-					v-if="isMobile"
-					class="flex justify-between w-full h-full relative mb:2 md:mb-16"
-				>
+				<div v-if="isMobile">
 					<div
-						v-if="negativeMarketsItems.length > 0"
-						class="w-[27%] relative"
+						class="flex justify-between w-full h-full relative mb:2 md:mb-16"
 					>
-						<div class="absolute top-[4.8rem] pr-1 right-0">
-							<p class="text-xs mb-9">
-								{{ $t('greaterThanPlus10Percent') }}
-							</p>
-							<p class="text-xs mb-9">
-								{{ $t('plus8ToPlus10Percent') }}
-							</p>
-							<p class="text-xs mb-9">
-								{{ $t('plus6ToPlus8Percent') }}
-							</p>
-							<p class="text-xs mb-9">
-								{{ $t('plus4ToPlus6Percent') }}
-							</p>
-							<p class="text-xs mb-9">
-								{{ $t('plus2ToPlus4Percent') }}
-							</p>
-							<p class="text-xs mb-9">
-								{{ $t('lessThanPlus2Percent') }}
-							</p>
+						<div
+							v-if="negativeMarketsItems.length > 0"
+							class="w-[27%] relative"
+						>
+							<div class="absolute top-11 pr-1 right-0">
+								<p class="text-xs mb-[2.65rem]">
+									{{ $t('greaterThanPlus10Percent') }}
+								</p>
+								<p class="text-xs mb-[2.65rem]">
+									{{ $t('plus8ToPlus10Percent') }}
+								</p>
+								<p class="text-xs mb-[2.65rem]">
+									{{ $t('plus6ToPlus8Percent') }}
+								</p>
+								<p class="text-xs mb-[2.65rem]">
+									{{ $t('plus4ToPlus6Percent') }}
+								</p>
+								<p class="text-xs mb-[2.65rem]">
+									{{ $t('plus2ToPlus4Percent') }}
+								</p>
+								<p class="text-xs mb-[2.65rem]">
+									{{ $t('lessThanPlus2Percent') }}
+								</p>
+							</div>
+							<VChart
+								:option="positiveMarketBarMobileOptions"
+								class="w-full h-96"
+							/>
 						</div>
-						<VChart
-							:option="positiveMarketBarMobileOptions"
-							class="w-full h-96"
-						/>
-						<div class="text-center text-sm md:text-base font-bold">
+						<!-- Left Chart Mobile -->
+						<div
+							v-if="neutralMarketsItems.length > 0"
+							class="w-[46%] pt-5 relative"
+						>
+							<div class="w-20 h-10 z-20 absolute top-16 right-0 left-0 text-center m-auto">
+								<span class="text-[0.7rem]">{{ $t('marketGrowthDecline24h') }}</span>
+							</div>
+							<VChart
+								:option="neutralPieMobileOptions"
+								class="w-full md:w-full h-40 md:h-80 z-0"
+							/>
+						</div>
+						<!-- Pie Chart Mobile -->
+						<div
+							v-if="positiveMarketsItems.length > 0"
+							class="w-[27%] relative"
+						>
+							<div class="absolute top-11 pl-1 left-0">
+								<p class="text-xs mb-[2.65rem]">
+									{{ $t('lessThanMinus10Percent') }}
+								</p>
+								<p class="text-xs mb-[2.65rem]">
+									{{ $t('minus8ToMinus10Percent') }}
+								</p>
+								<p class="text-xs mb-[2.65rem]">
+									{{ $t('minus6ToMinus8Percent') }}
+								</p>
+								<p class="text-xs mb-[2.65rem]">
+									{{ $t('minus4ToMinus6Percent') }}
+								</p>
+								<p class="text-xs mb-[2.65rem]">
+									{{ $t('minus2ToMinus4Percent') }}
+								</p>
+								<p class="text-xs mb-[2.65rem]">
+									{{ $t('greaterThanMinus2Percent') }}
+								</p>
+							</div>
+							<VChart
+								:option="negativeMarketBarMobileOptions"
+								class="w-full h-96"
+							/>
+						</div>
+						<!-- Right Chart Mobile -->
+					</div>
+
+					<div class="flex justify-between">
+						<div class="text-center text-sm font-medium">
 							{{ $t("numberOfRisingMarkets") }}
 						</div>
-					</div>
-					<div
-						v-if="neutralMarketsItems.length > 0"
-						class="w-[46%] pt-16 relative"
-					>
-						<div class="w-20 h-10 z-20 absolute top-28 right-0 left-0 text-center m-auto">
-							<span class="text-[0.7rem]">رشد و کاهش بازارها در ۲۴ ساعت</span>
-						</div>
-						<VChart
-							:option="neutralPieMobileOptions"
-							class="w-full md:w-full h-40 md:h-80 z-0"
-						/>
-					</div>
-					<div
-						v-if="positiveMarketsItems.length > 0"
-						class="w-[27%] relative"
-					>
-						<div class="absolute top-[4.8rem] pl-1 left-0">
-							<p class="text-xs mb-9">
-								{{ $t('lessThanMinus10Percent') }}
-							</p>
-							<p class="text-xs mb-9">
-								{{ $t('minus8ToMinus10Percent') }}
-							</p>
-							<p class="text-xs mb-9">
-								{{ $t('minus6ToMinus8Percent') }}
-							</p>
-							<p class="text-xs mb-9">
-								{{ $t('minus4ToMinus6Percent') }}
-							</p>
-							<p class="text-xs mb-9">
-								{{ $t('minus2ToMinus4Percent') }}
-							</p>
-							<p class="text-xs mb-9">
-								{{ $t('greaterThanMinus2Percent') }}
-							</p>
-						</div>
-						<VChart
-							:option="negativeMarketBarMobileOptions"
-							class="w-full h-96"
-						/>
-						<div class="text-center text-sm md:text-base font-bold">
+						<div class="text-center text-sm font-medium">
 							{{ $t("numberOfDecliningMarkets") }}
 						</div>
 					</div>
@@ -103,7 +114,7 @@
 				>
 					<div
 						v-if="negativeMarketsItems.length > 0"
-						class="w-[50%]"
+						class="w-[40%]"
 					>
 						<VChart
 							:option="positiveMarketBarOptions"
@@ -115,7 +126,7 @@
 					</div>
 					<div
 						v-if="positiveMarketsItems.length > 0"
-						class="w-[50%]"
+						class="w-[40%]"
 					>
 						<VChart
 							:option="negativeMarketBarOptions"
@@ -175,6 +186,8 @@ import type { NeutralMarketItem } from '~/types/response/market.types';
 import ChartMarketStateSkeleton from '~/components/pages/Market/Statistics/ChartMarketStateSkeleton.vue';
 import MarketCategorySkeleton from '~/components/pages/Market/Statistics/MarketCategorySkeleton.vue';
 import MarketCategorySliderSkeleton from '~/components/pages/Market/Statistics/MarketCategorySliderSkeleton.vue';
+
+const BackHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/BackHeader.vue'));
 
 const { $api, $mobileDetect } = useNuxtApp();
 const marketRepo = marketRepository($api);
@@ -361,7 +374,7 @@ const negativeMarketBarMobileOptions = computed(() => ({
 		left: '3%',
 		right: '30%',
 		bottom: '3%',
-		top: '10%',
+		top: '0%',
 		containLabel: true,
 	},
 	xAxis: {
@@ -413,7 +426,7 @@ const positiveMarketBarMobileOptions = computed(() => ({
 		left: '20%',
 		right: '4%',
 		bottom: '3%',
-		top: '10%',
+		top: '0%',
 		containLabel: true,
 	},
 	xAxis: {
@@ -515,7 +528,7 @@ const neutralPieMobileOptions = computed(() => ({
 const negativeMarketBarOptions = computed(() => ({
 	grid: {
 		left: '3%',
-		right: '4%',
+		right: '10%',
 		bottom: '3%',
 		top: '10%',
 		containLabel: true,
@@ -572,7 +585,7 @@ const negativeMarketBarOptions = computed(() => ({
 
 const positiveMarketBarOptions = computed(() => ({
 	grid: {
-		left: '3%',
+		left: '10%',
 		right: '4%',
 		bottom: '3%',
 		top: '10%',

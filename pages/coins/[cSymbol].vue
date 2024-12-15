@@ -119,6 +119,8 @@
 					</div>
 				</div>
 			</div>
+
+			<CoinFooter v-if="isMobile " />
 		</UContainer>
 	</div>
 </template>
@@ -144,6 +146,7 @@ import { MarketType } from '~/utils/enums/market.enum';
 import { priceFormat, handleImageError } from '~/utils/helpers';
 
 const CoinHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/CoinHeader.vue'));
+const CoinFooter = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/CoinFooter.vue'));
 
 const { $mobileDetect, $api } = useNuxtApp();
 const currencyRepo = currencyRepository($api);

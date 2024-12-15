@@ -175,6 +175,7 @@ const persian = {
 	cryptocurrencyDeposit: 'واریز رمز ارز',
 	currenciesWayBitland: 'ارزهای در راه بیت‌لند',
 	marketStatisticalInformation: 'اطلاعات آماری بازار',
+	marketGrowthDecline24h: 'رشد و کاهش بازارها در ۲۴ ساعت',
 	marketSpot: 'بازارهای اسپات',
 	marketFutures: 'بازارهای فیوچرز',
 	searchMarket: 'جستجوی رمزارز / ETF / Futures',

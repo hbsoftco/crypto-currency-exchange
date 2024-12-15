@@ -5,22 +5,22 @@
 			class="hidden md:block"
 		/>
 		<MobileHeader
-			v-if="isMobile && !coinDetailFooter"
+			v-if="isMobile && !isSpecialRoute"
 		/>
 
 		<SupportButtons
 			v-if="!isMobile"
 			class="hidden md:block"
 		/>
-		<div class="min-h-[calc(100vh-18rem)] pb-16 md:pb-0 pt-16 md:pt-14">
+		<div
+			class="min-h-[calc(100vh-18rem)] md:pb-0 pt-16 md:pt-14"
+			:class="[isSpecialRoute? '' : 'pb-16']"
+		>
 			<slot />
 		</div>
 		<Footer v-if="!isMobile" />
 		<MobileFooter
-			v-if="isMobile && !coinDetailFooter"
-		/>
-		<CoinFooter
-			v-if="isMobile && coinDetailFooter"
+			v-if="isMobile && !isSpecialRoute"
 		/>
 		<UiToast />
 		<UModals />
@@ -32,7 +32,6 @@ import Header from '~/components/layouts/Default/Header.vue';
 
 const SupportButtons = defineAsyncComponent(() => import('~/components/pages/SupportButtons.vue'));
 const MobileFooter = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/Footer.vue'));
-const CoinFooter = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/CoinFooter.vue'));
 const MobileHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/Header.vue'));
 const Footer = defineAsyncComponent(() => import('~/components/layouts/Default/Footer.vue'));
 
@@ -40,17 +39,16 @@ const { $mobileDetect } = useNuxtApp();
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
 
-const coinDetailFooter = ref<boolean>(false);
+const isSpecialRoute = ref<boolean>(false);
+const specialRoutes = ref<string[]>([
+	'coins-cSymbol',
+	'markets-statistics',
+]);
 
 const route = useRoute();
 
 watch(() => route.name, (newName) => {
-	if (newName === 'coins-cSymbol') {
-		coinDetailFooter.value = true;
-		return;
-	}
-
-	coinDetailFooter.value = false;
+	isSpecialRoute.value = specialRoutes.value.includes(String(newName));
 }, { deep: true, immediate: true });
 
 const loginStore = useLoginStore();
