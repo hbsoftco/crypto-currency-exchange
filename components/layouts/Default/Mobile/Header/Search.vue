@@ -54,7 +54,7 @@
 				</div>
 				<!-- Header -->
 
-				<div v-if="search">
+				<div v-if="checkSearch">
 					<div class="flex justify-between items-center mb-4 mx-2">
 						<span class="text-sm font-bold">
 							{{ $t("transaction") }}
@@ -148,6 +148,14 @@ const router = useRouter();
 const publicSocketStore = usePublicSocketStore();
 
 const socketMarketIds = ref<number[]>([]);
+
+const checkSearch = computed<boolean>(() => {
+	if (search.value) {
+		return true;
+	}
+
+	return false;
+});
 
 const goToMarket = (type: string = 'no-link') => {
 	if (type === 'no-link') {

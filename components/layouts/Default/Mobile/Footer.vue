@@ -62,9 +62,9 @@ const footerItems = [
 const activeIndex = ref<number | null>(null);
 const route = useRoute();
 
-function setActive(index: number) {
+const setActive = (index: number) => {
 	activeIndex.value = index;
-}
+};
 
 const isActive = (url: string): boolean => {
 	return route.path === url;
