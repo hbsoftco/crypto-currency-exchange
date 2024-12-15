@@ -19,8 +19,15 @@
 					</div>
 
 					<div class="flex justify-end items-center gap-3">
-						<IconStar
+						<IconStarFill
+							v-if="status"
 							class="text-3xl cursor-pointer"
+							@click="addFavorite(id, status)"
+						/>
+						<IconStar
+							v-else
+							class="text-3xl cursor-pointer"
+							@click="addFavorite(id, status)"
 						/>
 						<IconShare
 							class="text-3xl cursor-pointer"
@@ -36,13 +43,40 @@
 <script setup lang="ts">
 import IconArrowRight from '~/assets/svg-icons/menu/arrow-right.svg';
 import IconStar from '~/assets/svg-icons/market/star.svg';
+import IconStarFill from '~/assets/svg-icons/market/fill-star.svg';
 import IconShare from '~/assets/svg-icons/market/share.svg';
-// import IconStarFill from '~/assets/svg-icons/market/fill-star.svg';
+import { marketRepository } from '~/repositories/market.repository';
 
-// const authStore = useAuthStore();
+interface PropsDefinition {
+	id: number;
+}
+
+defineProps<PropsDefinition>();
+
+const status = ref<boolean>(false);
+
+const { $api } = useNuxtApp();
+const marketRepo = marketRepository($api);
+
+const authStore = useAuthStore();
+const router = useRouter();
 
 const goBack = () => {
 	window.history.back();
+};
+
+const addFavorite = async (id: number, status: boolean | undefined) => {
+	if (authStore.isLoggedIn) {
+		if (status === true) {
+			await marketRepo.dislikeMarket({ id });
+		}
+		else {
+			await marketRepo.likeMarket({ id });
+		}
+	}
+	else {
+		router.push('/auth/login');
+	}
 };
 
 const shareContent = async () => {

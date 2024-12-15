@@ -1,8 +1,5 @@
 <template>
-	<div
-		ref="container"
-		class="relative"
-	>
+	<div class="relative">
 		<!-- Input Field -->
 		<div
 			:class="[
@@ -27,23 +24,24 @@
 		<div
 			v-if="showAdditionalBox"
 			class="fixed inset-0 bg-background-light dark:bg-background-dark z-30 flex items-center justify-center"
-			:class="[search ? 'h-full': 'h-16 overflow-y-hidden']"
+			:class="[checkSearch ? 'h-full': 'h-16 overflow-y-hidden']"
 		>
 			<div
 				class="relative w-full h-full bg-background-light dark:bg-background-dark rounded-lg py-3.5 px-2 overflow-auto"
-				:class="[search ? '': 'overflow-y-hidden']"
+				:class="[checkSearch ? '': 'overflow-y-hidden']"
 			>
 				<div class="flex items-center justify-center mb-4 mx-2">
 					<div class="w-full pl-2 relative">
 						<input
+							ref="searchInput"
 							v-model="search"
 							type="text"
 							class="w-full h-9 rounded-md outline-none pr-8 text-sm bg-primary-gray-light dark:bg-primary-gray-dark"
 							:placeholder="$t('search')"
 							:trailing="false"
 							autofocus
+							@keyup="handleInput"
 							@focus="handleFocus"
-							@input="handleInput"
 						>
 						<IconSearch class="absolute top-2.5 right-[0.475rem] transform scale-x-[-1] text-subtle-text-light dark:text-subtle-text-dark" />
 					</div>
@@ -81,7 +79,7 @@
 					<div
 						v-for="market of marketsItems"
 						:key="market.id"
-						@click="handleSelection"
+						@click="closeModal()"
 					>
 						<MarketItem
 							:market="market"
@@ -112,7 +110,7 @@
 							:key="currency.id"
 							:currency="currency"
 							class="mt-1"
-							@click="handleSelection"
+							@click="closeModal()"
 						/>
 					</div>
 				</div>
@@ -136,7 +134,8 @@ const isFocused = ref<boolean>(false);
 const showBox = ref<boolean>(false);
 const showAdditionalBox = ref<boolean>(false);
 const search = ref<string>('');
-const container = ref<HTMLElement | null>(null);
+
+const searchInput = ref<HTMLElement | null>(null);
 
 const currenciesItems = ref<CurrencyBrief[]>([]);
 const marketsItems = ref<MarketBrief[]>([]);
@@ -149,13 +148,7 @@ const publicSocketStore = usePublicSocketStore();
 
 const socketMarketIds = ref<number[]>([]);
 
-const checkSearch = computed<boolean>(() => {
-	if (search.value) {
-		return true;
-	}
-
-	return false;
-});
+const checkSearch = ref<boolean>(false);
 
 const goToMarket = (type: string = 'no-link') => {
 	if (type === 'no-link') {
@@ -185,7 +178,7 @@ const handleFocus = () => {
 
 const handleInput = async (event: Event) => {
 	const input = event.target as HTMLInputElement;
-	const inputValue = input.value;
+	const inputValue = input.value.trim();
 
 	showBox.value = inputValue.length === 0;
 	showAdditionalBox.value = inputValue.length > 0;
@@ -208,30 +201,33 @@ const handleInput = async (event: Event) => {
 	}
 };
 
-const handleClickOutside = (event: MouseEvent) => {
-	if (container.value && !container.value.contains(event.target as Node)) {
-		showBox.value = false;
-		showAdditionalBox.value = false;
-		isFocused.value = false;
-		search.value = '';
-	}
-};
-
 const closeModal = () => {
 	showAdditionalBox.value = false;
 	isFocused.value = false;
 	search.value = '';
 };
 
-onMounted(() => {
-	document.addEventListener('mousedown', handleClickOutside);
-});
+watch(
+	() => showAdditionalBox.value,
+	async (newValue) => {
+		if (newValue) {
+			await nextTick();
+			searchInput.value?.focus();
+		}
+	},
+);
 
-onBeforeUnmount(() => {
-	document.removeEventListener('mousedown', handleClickOutside);
-});
-
-const handleSelection = () => {
-	closeModal();
-};
+watch(
+	() => search.value,
+	async (newValue) => {
+		if (newValue.trim()) {
+			await nextTick();
+			checkSearch.value = true;
+		}
+		else {
+			checkSearch.value = false;
+			search.value = '';
+		}
+	},
+);
 </script>

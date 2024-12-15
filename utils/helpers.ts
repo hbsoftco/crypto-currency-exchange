@@ -29,7 +29,7 @@ const summarizeBigNumber = (input: string): string => {
 
 	if (match) {
 		const zerosCount = match[0].length - match[1].length - (inputString.startsWith('-') ? 3 : 2);
-		if (zerosCount > 6) {
+		if (zerosCount > 5) {
 			const significantDigits = match[1];
 			return `0.0{${zerosCount}}${significantDigits}`;
 		}
