@@ -35,6 +35,14 @@
 			</UContainer>
 		</section>
 
+		<section
+			class="block md:hidden"
+		>
+			<UContainer>
+				<PopularMarkets />
+			</UContainer>
+		</section>
+
 		<section class="block md:hidden">
 			<UContainer>
 				<TradingProgress />
@@ -107,6 +115,7 @@ import PinTextDown from '~/components/pages/MainPage/PinTextDown.vue';
 import QuickMenuMobile from '~/components/pages/Site/MainPage/QuickMenuMobile.vue';
 import TradingProgress from '~/components/pages/MainPage/TradingProgress.vue';
 import TopSlider from '~/components/pages/MainPage/TopSlider.vue';
+import PopularMarkets from '~/components/pages/MainPage/PopularMarkets.vue';
 
 const ImageCover = defineAsyncComponent(() => import('~/components/pages/ImageCover.vue'));
 const ImageCoverLogin = defineAsyncComponent(() => import('~/components/pages/ImageCoverLogin.vue'));
