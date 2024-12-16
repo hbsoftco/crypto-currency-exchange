@@ -4,12 +4,12 @@
 			v-if="!authStore.isLoggedIn && !isMobile"
 			class="hidden md:block"
 		>
-			<div class="w-full overflow-x-hidden">
+			<!-- <div class="w-full overflow-x-hidden">
 				<PinTextUp
 					v-if="!pinLoading && pinUp"
 					:pin="pinUp"
 				/>
-			</div>
+			</div> -->
 			<ImageCover>
 				<UContainer>
 					<SkipHydration>
@@ -38,6 +38,14 @@
 					class="hidden md:block"
 				/>
 				<TopSlider />
+			</UContainer>
+		</section>
+
+		<section
+			class="block md:hidden"
+		>
+			<UContainer>
+				<PopularMarkets />
 			</UContainer>
 		</section>
 
@@ -116,6 +124,7 @@ import TopSlider from '~/components/pages/MainPage/TopSlider.vue';
 import { systemRepository } from '~/repositories/system.repository';
 import type { Pin } from '~/types/definitions/system.types';
 import { Language } from '~/utils/enums/language.enum';
+import PopularMarkets from '~/components/pages/MainPage/PopularMarkets.vue';
 
 const ImageCover = defineAsyncComponent(() => import('~/components/pages/ImageCover.vue'));
 const ImageCoverLogin = defineAsyncComponent(() => import('~/components/pages/ImageCoverLogin.vue'));
@@ -128,7 +137,7 @@ const DownloadApp = defineAsyncComponent(() => import('~/components/common/Downl
 const AlwaysBitland = defineAsyncComponent(() => import('~/components/pages/MainPage/AlwaysBitland.vue'));
 const Prize = defineAsyncComponent(() => import('~/components/pages/MainPage/Prize.vue'));
 const NewCurrencies = defineAsyncComponent(() => import('~/components/pages/MainPage/NewCurrencies/index.vue'));
-const PinTextUp = defineAsyncComponent(() => import('~/components/pages/MainPage/PinTextUp.vue'));
+// const PinTextUp = defineAsyncComponent(() => import('~/components/pages/MainPage/PinTextUp.vue'));
 
 const { $mobileDetect, $api } = useNuxtApp();
 

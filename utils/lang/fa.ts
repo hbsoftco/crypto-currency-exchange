@@ -1153,6 +1153,8 @@ const persian = {
 	newContentAvailable: 'محتوای جدید در دسترس است، برای به‌روزرسانی روی دکمه کلیک کنید.',
 	pwaUpdate: 'به‌روزرسانی',
 	chart: 'نمودار',
+	popularMarkets: 'بازار های پرطرفدار',
+	moreItem: 'موارد بیشتر',
 };
 
 export default persian;
