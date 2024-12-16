@@ -34,11 +34,11 @@
 					/>
 				</UButton>
 			</div>
-			<div class="w-[27.3rem]">
+			<!-- <div class="w-[27.3rem]">
 				<p class="text-sm font-medium">
 					{{ $t('welcomeMessage') }}
 				</p>
-			</div>
+			</div> -->
 		</div>
 		<div
 			class="bg-transparency-light hidden xl:block dark:bg-transparency-dark rounded-full w-[36rem] h-[36rem]"
