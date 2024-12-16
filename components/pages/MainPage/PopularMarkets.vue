@@ -17,37 +17,39 @@
 			<div
 				v-for="(item, index) in markets"
 				:key="index"
-				class="relative rounded inline-block w-[8.5rem] bg-hover-light dark:bg-hover-dark py-3 pl-4 pr-3 after:absolute after:top-10 after:-left-4 after:h-8 after:w-4 after:bg-primary-yellow-light after:dark:bg-primary-yellow-dark"
+				class="relative rounded inline-block w-[8.5rem] py-3 pl-4 pr-3 after:absolute after:top-10 after:-left-4 after:h-8 after:w-4 after:bg-primary-yellow-light after:dark:bg-primary-yellow-dark "
 				:class="{
 					[bgClass]: changedItems[item.id],
-					'hover:bg-hover-light hover:dark:bg-hover-dark': !changedItems[item.id],
+					'bg-hover-light dark:bg-hover-dark': !changedItems[item.id],
 				}"
 				style="-webkit-scrollbar: none;"
 			>
-				<div class="flex items-center w-32 mb-1.5">
-					<span class="text-xs font-medium text-subtle-text-light dark:text-subtle-text-dark">
-						{{ item.currency?.cName }}
-					</span>
-					<span class="text-xs font-medium mx-0.5">/</span>
-					<span class="text-xs font-medium">{{ item.quote?.cSymbol }}</span>
-				</div>
-				<div>
-					<span class="text-sm font-medium">
-						{{ priceFormat(item.indexPrice, true) }}
-					</span>
-				</div>
-				<div>
-					<UiChangeIndicator
-						:change="parseFloat(item.priceChangePercIn24H)"
-						pl="pl-0"
-						:icon="false"
-						:bg-color="false"
-						class="mr-0 relative -right-2.5"
-						size="text-sm"
-					/>
-				</div>
+				<ULink :to="`/coins/${item?.currency?.cSymbol}`">
+					<div class="flex items-center w-32 mb-1.5">
+						<span class="text-xs font-medium text-subtle-text-light dark:text-subtle-text-dark">
+							{{ item.currency?.cName }}
+						</span>
+						<span class="text-xs font-medium mx-0.5">/</span>
+						<span class="text-xs font-medium">{{ item.quote?.cSymbol }}</span>
+					</div>
+					<div>
+						<span class="text-sm font-medium">
+							{{ priceFormat(item.indexPrice, true) }}
+						</span>
+					</div>
+					<div>
+						<UiChangeIndicator
+							:change="parseFloat(item.priceChangePercIn24H)"
+							pl="pl-0"
+							:icon="false"
+							:bg-color="false"
+							class="mr-0 relative -right-2.5"
+							size="text-sm"
+						/>
+					</div>
+				</ULink>
 				<ULink
-					to="#"
+					:to="`/spot/${splitMarket(item.mSymbol)}`"
 					class="flex items-center pt-1"
 				>
 					<span class="text-sm font-medium ml-2">
@@ -59,7 +61,7 @@
 
 			<div class="relative top-[-0.3rem]">
 				<ULink
-					to="#"
+					to="/markets"
 					class="flex items-center px-2 py-1 h-8 bg-primary-yellow-light dark:bg-primary-yellow-dark text-text-light dark:text-text-dark mr-0 rounded-l"
 				>
 					<span class="text-sm font-bold ml-1">
@@ -74,6 +76,7 @@
 
 <script setup lang="ts">
 import { priceFormat } from '~/utils/helpers';
+import { splitMarket } from '~/utils/split-market';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left-qr.svg';
 import type { MarketState } from '~/types/definitions/market.types';
 import { marketRepository } from '~/repositories/market.repository';
@@ -95,8 +98,6 @@ const getHottestMarkets = async () => {
 		const { result } = await marketRepo.getHottestMarkets({ rowCount: '10' });
 
 		markets.value = await worker.addCurrencyToMarketStates(useEnv('apiBaseUrl'), result.rows as MarketState[]);
-
-		console.log(markets.value);
 
 		socketMarketIds.value = markets.value.map((item) => item.id);
 		await publicSocketStore.addMarketIds(socketMarketIds.value);
