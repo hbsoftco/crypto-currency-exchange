@@ -99,14 +99,11 @@
 				</div>
 			</div>
 		</div>
-		<PinTextUp />
 	</div>
 </template>
 
 <script setup lang="ts">
 import { MarketType } from '~/utils/enums/market.enum';
-
-const PinTextUp = defineAsyncComponent(() => import('~/components/layouts/Default/PinTextUp.vue'));
 
 const SidebarSettingAction = defineAsyncComponent(() => import('~/components/layouts/Trade/SidebarSettingAction.vue'));
 const Search = defineAsyncComponent(() => import('~/components/layouts/Default/Header/Search/index.vue'));

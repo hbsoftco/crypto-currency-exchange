@@ -14,13 +14,16 @@ const monthNames = [
 ];
 
 const faNumToEn = (faNum: string): number => {
-	const faDigits = ['۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹', '۱۰', '۱۱', '۱۲'];
-	const enNum = faNum.split('').map((char) => {
-		const index = faDigits.indexOf(char);
-		return index !== -1 ? index.toString() : char;
-	}).join('');
+	const faDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+	const enNum = faNum
+		.split('')
+		.map((char) => {
+			const index = faDigits.indexOf(char);
+			return index !== -1 ? index : char;
+		})
+		.join('');
 
-	return parseInt(enNum, 10);
+	return parseInt(enNum, 10) || 0;
 };
 
 export const formatDateToPersian = (
