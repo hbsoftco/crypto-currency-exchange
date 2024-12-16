@@ -13,14 +13,15 @@ export const useShareStore = defineStore('share', () => {
 	const pinItems = ref<Pin[]>([]);
 	const pinLoading = ref<boolean>(false);
 	const fetchPinItems = async () => {
-		if (pinLoading.value || !pinItems.value.length) return;
-		pinLoading.value = true;
+		if (pinLoading.value || pinItems.value.length) return;
 
+		pinLoading.value = true;
 		try {
 			const { result } = await systemRepo.getSystemPinList({
 				languageId: String(Language.PERSIAN),
 				group: 'Home_Pinbar',
 			});
+
 			if (result.rows.length) {
 				pinItems.value = result.rows as Pin[];
 

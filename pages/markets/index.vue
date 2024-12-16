@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<UContainer>
-			<div class="hidden md:flex justify-between my-6 ">
+			<div class="hidden md:flex justify-between my-6 mt-10 ">
 				<h1 class="text-base font-bold">
 					{{ $t("tradingMarkets") }}
 				</h1>

@@ -11,7 +11,10 @@
 		</div>
 	</UContainer>
 	<UContainer v-else>
-		<BackHeader :title="$t('marketStatisticalInformation')" />
+		<BackHeader
+			v-if="isMobile"
+			:title="$t('marketStatisticalInformation')"
+		/>
 		<div>
 			<div>
 				<div
