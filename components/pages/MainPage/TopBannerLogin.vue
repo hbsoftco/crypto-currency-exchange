@@ -2,7 +2,7 @@
 	<div class="mt-40 lg:mt-24 2xl:mt-72">
 		<h1 class="text-4xl font-bold">
 			با
-			<span class="text-primary-yellow-light dark:text-primary-yellow-dark">بیت‌لند</span>
+			<span class="text-primary-yellow-light dark:text-primary-yellow-dark text-6xl font-black">بیت‌لند</span>
 			کمترین کارمزد و بالاترین سود را تجربه کنید!
 		</h1>
 		<div class="flex mt-6">
@@ -11,23 +11,26 @@
 				alt="user-level"
 				class="w-6 h-6 ml-2"
 			>
-			<span class="ml-1 font-bold">{{ $t("yourLevel") }}: </span>
-			<span class="font-bold">{{ authStore.userLevel?.header }}</span>
+			<span class="ml-1 font-bold text-subtle-text-light dark:text-subtle-text-dark">{{ $t("yourLevel") }}: </span>
+			<span class="font-bold text-subtle-text-light dark:text-subtle-text-dark">{{ authStore.userLevel?.header }}</span>
 		</div>
 		<div
-			class="my-4 flex flex-col text-base font-medium text-subtle-text-light dark:text-subtle-text-dark"
+			class="my-4 flex flex-col text-base font-medium"
 		>
 			<div
 				v-for="fee in fees"
 				:key="fee.quote"
 				class="mb-4"
 			>
-				<span class="ml-1">{{ `${$t("marketFee")} ${$t(fee.quote+'_m')} ${$t('spot')}` }}،</span>
-				<span v-if="fee.commission">{{ $t('maker') }}: {{ `${fee.commission.maker}%` }} {{ $t('taker') }}: {{ `${fee.commission.taker}%` }}</span>
+				<span class="ml-1 font-medium text-subtle-text-light dark:text-subtle-text-dark">{{ `${$t("marketFee")} ${$t(fee.quote+'_m')} ${$t('spot')}` }}،</span>
+				<span
+					v-if="fee.commission"
+					class="text-subtle-text-light dark:text-subtle-text-dark font-medium"
+				>{{ $t('maker') }}: {{ `${fee.commission.maker}%` }} {{ $t('taker') }}: {{ `${fee.commission.taker}%` }}</span>
 			</div>
 			<div v-if="futuresFees.length">
-				<span class="ml-1">{{ `${$t("dollarFuturesMarketFee")}` }}،</span>
-				<span>{{ $t('maker') }}: {{ futuresFees[1]?.commission.maker }}% {{ $t('taker') }}: {{ futuresFees[1]?.commission.taker }}%</span>
+				<span class="ml-1 text-subtle-text-light dark:text-subtle-text-dark font-medium">{{ `${$t("dollarFuturesMarketFee")}` }}،</span>
+				<span class="text-subtle-text-light dark:text-subtle-text-dark font-medium">{{ $t('maker') }}: {{ futuresFees[0]?.commission.maker }}% {{ $t('taker') }}: {{ futuresFees[0]?.commission.taker }}%</span>
 			</div>
 		</div>
 		<ULink
@@ -226,6 +229,7 @@ onMounted(async () => {
 
 	futuresQuoteItems.value.forEach((level) => {
 		const commission = findCommission(level.id, MarketType.FUTURES);
+
 		if (commission) {
 			const fee: Fee = {
 				quote: level.cSymbol,
