@@ -1,13 +1,16 @@
 <template>
 	<UContainer v-if="marketsL51Loading || marketsL47Loading || marketDailyPriceChangeLoading">
-		<div>
+		<div v-if="!isMobile">
 			<div class="py-20">
 				<ChartMarketStateSkeleton />
 			</div>
 			<div class="pb-20">
 				<MarketCategorySkeleton />
 			</div>
-			<MarketCategorySliderSkeleton v-if="!isMobile" />
+			<MarketCategorySliderSkeleton />
+		</div>
+		<div v-else>
+			<UiLogoLoading />
 		</div>
 	</UContainer>
 	<UContainer v-else>
