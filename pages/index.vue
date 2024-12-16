@@ -27,8 +27,8 @@
 		<section>
 			<UContainer>
 				<PinTextDown
-					v-if="!pinLoading && pinDown"
-					:pin="pinDown"
+					v-if="!shareStore.pinLoading && shareStore.pinDown && !isMobile"
+					:pin="shareStore.pinDown"
 					class="hidden md:block"
 				/>
 				<TopSlider />
@@ -107,9 +107,6 @@ import PinTextDown from '~/components/pages/MainPage/PinTextDown.vue';
 import QuickMenuMobile from '~/components/pages/Site/MainPage/QuickMenuMobile.vue';
 import TradingProgress from '~/components/pages/MainPage/TradingProgress.vue';
 import TopSlider from '~/components/pages/MainPage/TopSlider.vue';
-import { Language } from '~/utils/enums/language.enum';
-import { systemRepository } from '~/repositories/system.repository';
-import type { Pin } from '~/types/definitions/system.types';
 
 const ImageCover = defineAsyncComponent(() => import('~/components/pages/ImageCover.vue'));
 const ImageCoverLogin = defineAsyncComponent(() => import('~/components/pages/ImageCoverLogin.vue'));
@@ -123,48 +120,18 @@ const AlwaysBitland = defineAsyncComponent(() => import('~/components/pages/Main
 const Prize = defineAsyncComponent(() => import('~/components/pages/MainPage/Prize.vue'));
 const NewCurrencies = defineAsyncComponent(() => import('~/components/pages/MainPage/NewCurrencies/index.vue'));
 
-const { $mobileDetect, $api } = useNuxtApp();
-
-const systemRepo = systemRepository($api);
+const { $mobileDetect } = useNuxtApp();
 
 const publicSocketStore = usePublicSocketStore();
+const authStore = useAuthStore();
+const shareStore = useShareStore();
 
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
 
-const authStore = useAuthStore();
-
-const pinUp = ref<Pin>();
-const pinDown = ref<Pin>();
-const pinItems = ref<Pin[]>([]);
-const pinLoading = ref<boolean>(false);
-const fetchPinItems = async () => {
-	if (pinLoading.value) return;
-	pinLoading.value = true;
-
-	try {
-		const { result } = await systemRepo.getSystemPinList({
-			languageId: String(Language.PERSIAN),
-			group: 'Home_Pinbar',
-		});
-		if (result.rows.length) {
-			pinItems.value = result.rows as Pin[];
-
-			pinDown.value = pinItems.value.find((pin) => pin.tag === 'down');
-			pinUp.value = pinItems.value.find((pin) => pin.tag === 'up');
-		}
-	}
-	catch (error) {
-		console.log(error);
-	}
-	finally {
-		pinLoading.value = false;
-	}
-};
-
 onMounted(async () => {
 	isMobile.value = !!mobileDetect.mobile();
-	await fetchPinItems();
+	await shareStore.fetchPinItems();
 });
 
 onUnmounted(() => {

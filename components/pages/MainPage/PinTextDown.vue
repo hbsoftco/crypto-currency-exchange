@@ -23,5 +23,3 @@ interface PropsDefinition {
 
 defineProps<PropsDefinition>();
 </script>
-
-<style scoped></style>
