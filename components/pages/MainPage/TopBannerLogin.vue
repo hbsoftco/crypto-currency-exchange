@@ -23,11 +23,11 @@
 				class="mb-4"
 			>
 				<span class="ml-1">{{ `${$t("marketFee")} ${$t(fee.quote+'_m')} ${$t('spot')}` }}،</span>
-				<span>{{ $t('maker') }}: {{ `${fee.commission.maker}%` }} {{ $t('taker') }}: {{ `${fee.commission.taker}%` }}</span>
+				<span v-if="fee.commission">{{ $t('maker') }}: {{ `${fee.commission.maker}%` }} {{ $t('taker') }}: {{ `${fee.commission.taker}%` }}</span>
 			</div>
 			<div v-if="futuresFees.length">
 				<span class="ml-1">{{ `${$t("dollarFuturesMarketFee")}` }}،</span>
-				<span>{{ $t('maker') }}: {{ futuresFees[1].commission.maker }}% {{ $t('taker') }}: {{ futuresFees[1].commission.taker }}%</span>
+				<span>{{ $t('maker') }}: {{ futuresFees[1]?.commission.maker }}% {{ $t('taker') }}: {{ futuresFees[1]?.commission.taker }}%</span>
 			</div>
 		</div>
 		<ULink

@@ -1,5 +1,5 @@
 <template>
-	<div class="mt-28">
+	<div class="mt-16">
 		<div class="grid grid-cols-3 w-full pl-4">
 			<div
 				class="relative w-full h-6 -pr-10 border-t-2 border-primary-yellow-light dark:border-primary-yellow-dark"

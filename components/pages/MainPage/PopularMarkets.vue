@@ -1,11 +1,14 @@
 <template>
-	<div class="mt-8">
+	<div
+		v-if="!marketsLoading"
+		class="mt-8"
+	>
 		<h1 class="text-sm font-bold mb-4">
 			{{ $t('popularMarkets') }}
 		</h1>
 
 		<div
-			class="flex items-center overflow-x-auto whitespace-nowrap space-x-2 rtl:space-x-reverse"
+			class="flex items-center overflow-x-auto whitespace-nowrap space-x-4 rtl:space-x-reverse"
 			style="
 				scrollbar-width: none;
 				-ms-overflow-style: none;
@@ -14,57 +17,158 @@
 			<div
 				v-for="(item, index) in markets"
 				:key="index"
-				class="relative inline-block w-24 rounded-sm bg-hover-light dark:bg-hover-dark py-2 pl-4 pr-2"
+				class="relative rounded inline-block w-[8.5rem] bg-hover-light dark:bg-hover-dark py-3 pl-4 pr-3 after:absolute after:top-10 after:-left-4 after:h-8 after:w-4 after:bg-primary-yellow-light after:dark:bg-primary-yellow-dark"
 				:class="{
-					'after:absolute after:top-10 after:left-[-16px] after:h-8 after:w-4 after:bg-primary-yellow-light after:dark:bg-primary-yellow-dark after:content-[\'\']': true,
-					'mr-4': index !== markets.length - 1,
+					[bgClass]: changedItems[item.id],
+					'hover:bg-hover-light hover:dark:bg-hover-dark': !changedItems[item.id],
 				}"
 				style="-webkit-scrollbar: none;"
 			>
-				<div class="flex items-center w-32">
-					<span class="text-sm font-medium text-subtle-text-light dark:text-subtle-text-dark">
-						usdt
+				<div class="flex items-center w-32 mb-1.5">
+					<span class="text-xs font-medium text-subtle-text-light dark:text-subtle-text-dark">
+						{{ item.currency?.cName }}
 					</span>
-					<span class="text-sm font-medium mx-0.5">/</span>
-					<span class="text-sm font-medium">Btc</span>
+					<span class="text-xs font-medium mx-0.5">/</span>
+					<span class="text-xs font-medium">{{ item.quote?.cSymbol }}</span>
 				</div>
 				<div>
 					<span class="text-sm font-medium">
-						{{ useNumber('۰.۹۸۷') }}
+						{{ priceFormat(item.indexPrice, true) }}
 					</span>
 				</div>
 				<div>
-					<span class="text-xs font-normal text-accent-green">
-						{{ useNumber('+۲.۰۷٪') }}
-					</span>
+					<UiChangeIndicator
+						:change="parseFloat(item.priceChangePercIn24H)"
+						pl="pl-0"
+						:icon="false"
+						:bg-color="false"
+						class="mr-0 relative -right-2.5"
+						size="text-sm"
+					/>
 				</div>
 				<ULink
 					to="#"
-					class="flex items-center py-1"
+					class="flex items-center pt-1"
 				>
-					<span class="text-sm font-bold ml-2">
+					<span class="text-sm font-medium ml-2">
 						{{ $t('trade') }}
 					</span>
 					<IconArrowLeft class="text-sm" />
 				</ULink>
 			</div>
 
-			<ULink
-				to="#"
-				class="flex items-center px-2 rounded-tl-sm rounded-bl-sm py-1 h-8 bg-primary-yellow-light dark:bg-primary-yellow-dark mr-0"
-			>
-				<span class="text-sm font-bold ml-1">
-					{{ $t('moreItem') }}
-				</span>
-				<IconArrowLeft class="text-base" />
-			</ULink>
+			<div class="relative top-[-0.3rem]">
+				<ULink
+					to="#"
+					class="flex items-center px-2 py-1 h-8 bg-primary-yellow-light dark:bg-primary-yellow-dark text-text-light dark:text-text-dark mr-0 rounded-l"
+				>
+					<span class="text-sm font-bold ml-1">
+						{{ $t('moreItem') }}
+					</span>
+					<IconArrowLeft class="text-base" />
+				</ULink>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
+import { priceFormat } from '~/utils/helpers';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left-qr.svg';
+import type { MarketState } from '~/types/definitions/market.types';
+import { marketRepository } from '~/repositories/market.repository';
+import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 
-const markets = [1, 2, 3, 4, 5, 6];
+const { $api } = useNuxtApp();
+const marketRepo = marketRepository($api);
+
+const worker = useBaseWorker();
+
+const publicSocketStore = usePublicSocketStore();
+const socketMarketIds = ref<number[]>([]);
+
+const markets = ref<MarketState[]>([]);
+const marketsLoading = ref<boolean>(true);
+const getHottestMarkets = async () => {
+	try {
+		marketsLoading.value = true;
+		const { result } = await marketRepo.getHottestMarkets({ rowCount: '10' });
+
+		markets.value = await worker.addCurrencyToMarketStates(useEnv('apiBaseUrl'), result.rows as MarketState[]);
+
+		console.log(markets.value);
+
+		socketMarketIds.value = markets.value.map((item) => item.id);
+		await publicSocketStore.addMarketIds(socketMarketIds.value);
+
+		markets.value.forEach((item) => {
+			prevData.value[item.id] = {
+				indexPrice: parseFloat(item.indexPrice),
+				priceChangePercIn24H: parseFloat(item.priceChangePercIn24H),
+			};
+		});
+
+		marketsLoading.value = false;
+	}
+	catch (error: unknown) {
+		console.log(error);
+	}
+};
+
+const changedItems = ref<{ [key: string]: boolean }>({});
+const prevData = ref<{ [key: string]: { indexPrice: number; priceChangePercIn24H: number } }>({});
+const bgClass = ref<string>('');
+
+watch(
+	() => publicSocketStore.latestMarketData,
+	(newData) => {
+		if (newData) {
+			newData.forEach((updatedMarket) => {
+				const marketId = updatedMarket.data.mi;
+				const index = markets.value.findIndex((item) => item.id === marketId);
+
+				if (index !== -1) {
+					const newIndexPrice = parseFloat(updatedMarket.data.i);
+					const newPriceChangePercIn24H = parseFloat(updatedMarket.data.p);
+
+					const prevIndexPrice = prevData.value[marketId]?.indexPrice;
+					const prevPriceChangePercIn24H = prevData.value[marketId]?.priceChangePercIn24H;
+
+					if (
+						newIndexPrice !== prevIndexPrice
+						|| newPriceChangePercIn24H !== prevPriceChangePercIn24H
+					) {
+						changedItems.value[marketId] = true;
+
+						bgClass.value
+							= newIndexPrice > prevIndexPrice
+								? 'bg-[#c8ffc8] dark:bg-[#13241f]'
+								: 'bg-[#ffc8c8] dark:bg-[#2b181c]';
+
+						setTimeout(() => {
+							changedItems.value[marketId] = false;
+							bgClass.value = '';
+						}, 500);
+
+						markets.value[index] = {
+							...markets.value[index],
+							indexPrice: String(newIndexPrice),
+							priceChangePercIn24H: String(newPriceChangePercIn24H),
+						};
+
+						prevData.value[marketId] = {
+							indexPrice: newIndexPrice,
+							priceChangePercIn24H: newPriceChangePercIn24H,
+						};
+					}
+				}
+			});
+		}
+	},
+	{ deep: true },
+);
+
+onMounted(async () => {
+	await getHottestMarkets();
+});
 </script>

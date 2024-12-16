@@ -42,7 +42,8 @@
 		</section>
 
 		<section
-			class="block md:hidden"
+			v-if="isMobile"
+			class="pb-2"
 		>
 			<UContainer>
 				<PopularMarkets />
