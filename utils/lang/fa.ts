@@ -1155,6 +1155,7 @@ const persian = {
 	chart: 'نمودار',
 	popularMarkets: 'بازار های پرطرفدار',
 	moreItem: 'موارد بیشتر',
+	moreInfo: 'اطلاعات بیشتر',
 };
 
 export default persian;

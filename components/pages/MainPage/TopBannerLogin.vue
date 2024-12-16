@@ -1,6 +1,6 @@
 <template>
-	<div class="mt-40 lg:mt-24 2xl:mt-72">
-		<h1 class="text-4xl font-bold">
+	<div class="mt-40 lg:mt-24 2xl:mt-40">
+		<h1 class="text-4xl font-bold mb-8">
 			با
 			<span class="text-primary-yellow-light dark:text-primary-yellow-dark text-6xl font-black">بیت‌لند</span>
 			کمترین کارمزد و بالاترین سود را تجربه کنید!
@@ -11,8 +11,8 @@
 				alt="user-level"
 				class="w-6 h-6 ml-2"
 			>
-			<span class="ml-1 font-bold text-subtle-text-light dark:text-subtle-text-dark">{{ $t("yourLevel") }}: </span>
-			<span class="font-bold text-subtle-text-light dark:text-subtle-text-dark">{{ authStore.userLevel?.header }}</span>
+			<span class="ml-1 text-lg font-bold text-subtle-text-light dark:text-subtle-text-dark">{{ $t("yourLevel") }}: </span>
+			<span class="font-bold text-lg text-subtle-text-light dark:text-subtle-text-dark">{{ authStore.userLevel?.header }}</span>
 		</div>
 		<div
 			class="my-4 flex flex-col text-base font-medium"
@@ -35,16 +35,16 @@
 		</div>
 		<ULink
 			to="/account/fees"
-			class="flex"
+			class="flex pt-4"
 		>
 			<span
-				class="text-base font-medium text-primary-yellow-light dark:text-primary-yellow-dark"
-			>{{ $t("showMore") }}</span>
+				class="text-base font-medium text-primary-yellow-light dark:text-primary-yellow-dark ml-3"
+			>{{ $t("moreInfo") }}</span>
 			<IconLeftQR
 				class="text-2xl text-primary-yellow-light dark:text-primary-yellow-dark mr-2"
 			/>
 		</ULink>
-		<div class="flex my-3">
+		<div class="flex my-8">
 			<UButton
 				to="/wallet/deposit-toman"
 				class="px-20 font-bold text-sm ml-1"

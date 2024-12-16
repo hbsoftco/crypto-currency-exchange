@@ -1,5 +1,5 @@
 <template>
-	<div class="relative -top-16 px-6">
+	<div class="relative -top-32 px-6">
 		<div
 			class="rounded-md flex justify-center items-center px-6 py-1 bg-transparency-light dark:bg-transparency-dark opacity-70"
 		>
