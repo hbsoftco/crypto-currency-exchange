@@ -13,7 +13,7 @@
 						<img
 							src="/images/svg/ticketing.svg"
 							alt="ticketing"
-							class="w-72 h-40 md:w-80 md:h-80"
+							class="w-72 h-40 md:w-60 md:h-56"
 						>
 					</div>
 				</div>
@@ -21,7 +21,7 @@
 		</section>
 		<section>
 			<UContainer>
-				<div class="px-2 md:px-24 py-10 bg-primary-gray-light dark:bg-primary-gray-dark text-center rounded-md shadow-md mb-24">
+				<div class="px-2 md:px-24 py-10 bg-hover-light dark:bg-hover-dark text-center rounded-md shadow-md mb-24">
 					<div class="mb-8">
 						<FormsFieldInput
 							id="header"
