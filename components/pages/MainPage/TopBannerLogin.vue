@@ -1,5 +1,5 @@
 <template>
-	<div class="mt-40 lg:mt-24 2xl:mt-36 px-6">
+	<div class="mt-40 md:mt-10 lg:mt-5 xl:mt-14 2xl:mt-36 px-6">
 		<h1 class="text-4xl font-bold mb-8">
 			با
 			<span class="text-primary-yellow-light dark:text-primary-yellow-dark text-6xl font-black">بیت‌لند</span>
@@ -15,23 +15,27 @@
 			<span class="font-bold text-lg text-subtle-text-light dark:text-subtle-text-dark">{{ authStore.userLevel?.header }}</span>
 		</div>
 		<div
-			class="my-4 flex flex-col text-base font-medium"
+			class="my-4 inline-block text-subtle-text-light dark:text-subtle-text-dark text-[0.95rem]"
 		>
-			<div
-				v-for="fee in fees"
-				:key="fee.quote"
-				class="mb-4"
-			>
-				<span class="ml-1 font-medium text-subtle-text-light dark:text-subtle-text-dark">{{ `${$t("marketFee")} ${$t(fee.quote+'_m')} ${$t('spot')}` }}،</span>
-				<span
-					v-if="fee.commission"
-					class="text-subtle-text-light dark:text-subtle-text-dark font-medium"
-				>{{ $t('maker') }}: {{ `${fee.commission.maker}%` }} {{ $t('taker') }}: {{ `${fee.commission.taker}%` }}</span>
-			</div>
-			<div v-if="futuresFees.length">
-				<span class="ml-1 text-subtle-text-light dark:text-subtle-text-dark font-medium">{{ `${$t("dollarFuturesMarketFee")}` }}،</span>
-				<span class="text-subtle-text-light dark:text-subtle-text-dark font-medium">{{ $t('maker') }}: {{ futuresFees[0]?.commission.maker }}% {{ $t('taker') }}: {{ futuresFees[0]?.commission.taker }}%</span>
-			</div>
+			<table class="w-auto">
+				<tr
+					v-for="fee in fees"
+					:key="fee.quote"
+				>
+					<td>{{ `${$t("marketFee")} ${$t(fee.quote+'_m')} ${$t('spot')}` }}</td>
+					<td class="px-5">
+						{{ $t('maker') }}: {{ `${fee.commission.maker}%` }}
+					</td>
+					<td>{{ $t('taker') }}: {{ `${fee.commission.taker}%` }}</td>
+				</tr>
+				<tr v-if="futuresFees.length">
+					<td>{{ $t("dollarFuturesMarketFee") }}</td>
+					<td class="px-5">
+						{{ $t('maker') }}: {{ `${futuresFees[0]?.commission.maker}%` }}
+					</td>
+					<td>{{ $t('taker') }}: {{ `${futuresFees[0]?.commission.taker}%` }}</td>
+				</tr>
+			</table>
 		</div>
 		<ULink
 			to="/account/fees"
@@ -44,7 +48,7 @@
 				class="text-2xl text-primary-yellow-light dark:text-primary-yellow-dark mr-2"
 			/>
 		</ULink>
-		<div class="flex my-8">
+		<div class="flex lg:my-2 2xl:my-8">
 			<UButton
 				to="/wallet/deposit-toman"
 				class="px-20 font-bold text-sm ml-1"
