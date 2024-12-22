@@ -2,6 +2,7 @@
 
 body {
   font-family: dana !important;
+  @apply bg-background-light dark:bg-background-dark;
 }
 
 h1, h2, h3, h4, h5, h6, p, div {
