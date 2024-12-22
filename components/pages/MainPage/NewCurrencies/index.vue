@@ -7,6 +7,50 @@
 		<div
 			v-if="firstHalf?.length"
 			dir="ltr"
+			class="mb-6"
+		>
+			<!-- :paused="true" -->
+			<InfiniteSlideBar
+				:delay="10"
+				direction="reverse"
+			>
+				<div class="flex">
+					<Currency
+						v-for="(item, index) in firstHalf"
+						:key="`top-${index}`"
+						class="mx-3"
+						:market="item"
+						:data="item"
+					/>
+				</div>
+			</InfiniteSlideBar>
+		</div>
+
+		<div
+			v-if="firstHalf?.length"
+			dir="ltr"
+			class="mb-6"
+		>
+			<!-- :paused="true" -->
+			<InfiniteSlideBar
+				:delay="10"
+				direction="normal"
+			>
+				<div class="flex">
+					<Currency
+						v-for="(item, index) in secondHalf"
+						:key="`top-${index}`"
+						class="mx-3"
+						:market="item"
+						:data="item"
+					/>
+				</div>
+			</InfiniteSlideBar>
+		</div>
+
+		<!-- <div
+			v-if="firstHalf?.length"
+			dir="ltr"
 			class="mb-4"
 		>
 			<InfiniteLooper
@@ -21,9 +65,9 @@
 					:data="item"
 				/>
 			</InfiniteLooper>
-		</div>
+		</div> -->
 
-		<div
+		<!-- <div
 			v-if="firstHalf?.length"
 			dir="ltr"
 			class="mb-4"
@@ -40,7 +84,7 @@
 					:data="item"
 				/>
 			</InfiniteLooper>
-		</div>
+		</div> -->
 
 		<!-- <div
 			v-if="firstHalf?.length"
@@ -83,7 +127,7 @@
 
 <script setup lang="ts">
 import Currency from './Currency.vue';
-import InfiniteLooper from './InfiniteLooper.vue';
+// import InfiniteLooper from './InfiniteLooper.vue';
 
 import { marketRepository } from '~/repositories/market.repository';
 import type { MarketL21 } from '~/types/definitions/market.types';

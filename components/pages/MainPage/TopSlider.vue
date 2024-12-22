@@ -2,7 +2,7 @@
 	<div
 		v-if="!sliderLoading"
 		dir="ltr"
-		class="relative top-4 md:-top-16 lg:-top-16 2xl:-top-28"
+		class="relative top-4 md:-top-12 lg:-top-16 2xl:-top-28"
 		@mouseenter="pauseCarousel"
 		@mouseleave="startCarousel"
 	>
