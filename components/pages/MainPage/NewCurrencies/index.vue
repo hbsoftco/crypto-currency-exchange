@@ -8,11 +8,14 @@
 			v-if="firstHalf?.length"
 			dir="ltr"
 			class="mb-6"
+			@mouseenter="firstPaused=true"
+			@mouseleave="firstPaused=false"
 		>
-			<!-- :paused="true" -->
 			<InfiniteSlideBar
-				:delay="10"
+				delay="1s"
 				direction="reverse"
+				duration="30s"
+				:paused="firstPaused"
 			>
 				<div class="flex">
 					<Currency
@@ -30,11 +33,14 @@
 			v-if="firstHalf?.length"
 			dir="ltr"
 			class="mb-6"
+			@mouseenter="secondPaused=true"
+			@mouseleave="secondPaused=false"
 		>
-			<!-- :paused="true" -->
 			<InfiniteSlideBar
-				:delay="10"
+				delay="1s"
 				direction="normal"
+				duration="30s"
+				:paused="secondPaused"
 			>
 				<div class="flex">
 					<Currency
@@ -48,75 +54,6 @@
 			</InfiniteSlideBar>
 		</div>
 
-		<!-- <div
-			v-if="firstHalf?.length"
-			dir="ltr"
-			class="mb-4"
-		>
-			<InfiniteLooper
-				:speed="30"
-				direction="right"
-			>
-				<Currency
-					v-for="(item, index) in firstHalf"
-					:key="`top-${index}`"
-					class="mx-3"
-					:market="item"
-					:data="item"
-				/>
-			</InfiniteLooper>
-		</div> -->
-
-		<!-- <div
-			v-if="firstHalf?.length"
-			dir="ltr"
-			class="mb-4"
-		>
-			<InfiniteLooper
-				:speed="30"
-				direction="left"
-			>
-				<Currency
-					v-for="(item, index) in secondHalf"
-					:key="`top-${index}`"
-					class="mx-3"
-					:market="item"
-					:data="item"
-				/>
-			</InfiniteLooper>
-		</div> -->
-
-		<!-- <div
-			v-if="firstHalf?.length"
-			class="currency-row overflow-hidden"
-		>
-			<div
-				class="flex gap-4 animate-move-left"
-				dir="ltr"
-			>
-				<Currency
-					v-for="(item, index) in firstHalf"
-					:key="`top-${index}`"
-					:market="item"
-					:data="item"
-				/>
-			</div>
-		</div>
-
-		<div
-			v-if="secondHalf?.length"
-			class="currency-row overflow-hidden mt-4"
-		>
-			<div class="flex gap-4 animate-move-right">
-				<Currency
-					v-for="(item, index) in secondHalf"
-					:key="`bottom-${index}`"
-					:market="item"
-					:data="item"
-				/>
-			</div>
-		</div> -->
-
 		<UiSeeMore
 			link="/"
 			text="tradeStart"
@@ -127,7 +64,6 @@
 
 <script setup lang="ts">
 import Currency from './Currency.vue';
-// import InfiniteLooper from './InfiniteLooper.vue';
 
 import { marketRepository } from '~/repositories/market.repository';
 import type { MarketL21 } from '~/types/definitions/market.types';
@@ -136,6 +72,9 @@ import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 
 const { $api } = useNuxtApp();
 const marketRepo = marketRepository($api);
+
+const secondPaused = ref<boolean>(false);
+const firstPaused = ref<boolean>(false);
 
 const currencyWorker = useBaseWorker();
 
