@@ -88,8 +88,6 @@ const submit = async () => {
 };
 
 const getNewCaptcha = async () => {
-	console.log(forgetPasswordStore.type);
-
 	if (forgetPasswordStore.type === 'mobile') {
 		captchaStore.captchaInput.username = normalizeMobile(forgetPasswordStore.forgetPasswordDto.emailOrMobile);
 	}

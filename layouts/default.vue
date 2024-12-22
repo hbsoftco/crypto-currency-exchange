@@ -53,10 +53,12 @@ watch(() => route.name, (newName) => {
 
 const loginStore = useLoginStore();
 const signupStore = useSignupStore();
+const forgetPasswordStore = useForgetPasswordStore();
 
 onMounted(() => {
 	isMobile.value = !!mobileDetect.mobile();
 	loginStore.resetAllData();
 	signupStore.resetAllData();
+	forgetPasswordStore.resetAllData();
 });
 </script>

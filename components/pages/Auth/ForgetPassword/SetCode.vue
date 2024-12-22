@@ -11,7 +11,7 @@
 				v-model="forgetPasswordStore.checkForgetPasswordDto.verificationCode"
 				type="text"
 				input-class="text-left"
-				:label="`verificationCodeSentTo${type}`"
+				:label="`verificationCodeSentTo${forgetPasswordStore.type}`"
 				placeholder=""
 				icon=""
 				dir="ltr"
@@ -43,7 +43,6 @@ import { SendType } from '~/utils/enums/user.enum';
 
 const router = useRouter();
 
-const type = ref<'email' | 'mobile'>('email');
 const forgetPasswordStore = useForgetPasswordStore();
 const clearCode = ref<boolean>(false);
 

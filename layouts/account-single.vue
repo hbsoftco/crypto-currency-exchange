@@ -35,10 +35,12 @@ const mobileDetect = $mobileDetect as MobileDetect;
 
 const loginStore = useLoginStore();
 const signupStore = useSignupStore();
+const forgetPasswordStore = useForgetPasswordStore();
 
 onMounted(() => {
 	isMobile.value = !!mobileDetect.mobile();
 	loginStore.resetAllData();
 	signupStore.resetAllData();
+	forgetPasswordStore.resetAllData();
 });
 </script>
