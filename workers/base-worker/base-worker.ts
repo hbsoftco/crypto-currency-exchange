@@ -700,6 +700,19 @@ const SearchSuggestionItems = async (baseUrl: string, query: string): Promise<Su
 	return suggestionItems;
 };
 
+const fetchSnapshotData = async (baseUrl: string, market: string, currency: string): Promise<any> => {
+	if (!marketBriefItems.length) {
+		await fetchMarketBriefItems(baseUrl);
+	}
+	const findMarket = await marketBriefItems.filter((marketItem) => (marketItem.mSymbol === market));
+	const findCurrency = await findCurrencyBycSymbol(currency, baseUrl);
+
+	return {
+		market: findMarket,
+		currency: findCurrency,
+	};
+};
+
 Comlink.expose({
 	// Currencies
 	addCurrencyToMarkets,
@@ -727,4 +740,5 @@ Comlink.expose({
 	searchMarkets,
 	// Other
 	SearchSuggestionItems,
+	fetchSnapshotData,
 });

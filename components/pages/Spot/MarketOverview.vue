@@ -22,19 +22,16 @@
 						{{ `${spotStore.currency}/${spotStore.quote}` }}
 					</h4>
 					<div>
-						<span v-if="spotStore.currency && spotStore.currencyNameLoading">
-							{{ $t('isLoading') }}...
-						</span>
 						<span
-							class="font-normal text-xs text-subtle-text-light dark:to-subtle-text-50"
+							class="font-medium text-xs text-subtle-text-light dark:to-subtle-text-50"
 						>
-							{{ spotStore.currencyName || '...' }}
+							{{ spotStore.ticker?.currency?.cName }}
 						</span>
 					</div>
 				</div>
 
 				<div class="ml-14">
-					<strong class="text-base font-bold">{{ useNumber(String(spotStore.ticker?.i)) }}</strong>
+					<strong class="text-base font-bold">{{ priceFormat(String(spotStore.ticker?.i), true) }}</strong>
 				</div>
 
 				<div class="ml-5 text-left">
@@ -55,7 +52,7 @@
 						<span class="font-normal text-xs text-subtle-text-light dark:to-subtle-text-50">24H High</span>
 					</div>
 					<div>
-						<strong class="text-xs font-bold">{{ useNumber(String(spotStore.ticker?.h)) }}</strong>
+						<strong class="text-xs font-bold">{{ priceFormat(String(spotStore.ticker?.h), true) }}</strong>
 					</div>
 				</div>
 
@@ -64,7 +61,7 @@
 						<span class="font-normal text-xs text-subtle-text-light dark:to-subtle-text-50">24H Low</span>
 					</div>
 					<div>
-						<strong class="text-xs font-bold">{{ useNumber(String(spotStore.ticker?.l)) }}</strong>
+						<strong class="text-xs font-bold">{{ priceFormat(String(spotStore.ticker?.l), true) }}</strong>
 					</div>
 				</div>
 
@@ -73,7 +70,7 @@
 						<span class="font-normal text-xs text-subtle-text-light dark:to-subtle-text-50">24H Volume (BTC)</span>
 					</div>
 					<div>
-						<strong class="text-xs font-bold">{{ useNumber(String(spotStore.ticker?.q)) }}</strong>
+						<strong class="text-xs font-bold">{{ priceFormat(String(spotStore.ticker?.q), true) }}</strong>
 					</div>
 				</div>
 			</div>
@@ -88,7 +85,7 @@
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
+import { priceFormat } from '~/utils/helpers';
 import IconList from '~/assets/svg-icons/spot/list.svg';
 import SearchMarket from '~/components/pages/Spot/SearchMarket.vue';
 
