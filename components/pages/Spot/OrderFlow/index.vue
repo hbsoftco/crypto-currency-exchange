@@ -34,6 +34,7 @@
 		<div v-if="activeTab==='tradingView'">
 			<UTabs
 				:items="items"
+				:default-index="1"
 				:ui="{
 					list: {
 						tab: {
@@ -98,7 +99,7 @@ const items = [
 	},
 ];
 
-const activeTab = ref('depth');
+const activeTab = ref('tradingView');
 
 const setActiveTab = (tabKey: string) => {
 	activeTab.value = tabKey;

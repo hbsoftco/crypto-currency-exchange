@@ -94,24 +94,43 @@
 						<th class="text-nowrap p-2 text-xs font-normal text-left">
 							{{ $t('lastPrice') }}
 						</th>
-						<th class="p-2 text-xs font-normal text-left">
+						<th class="p-2 pl-5 text-xs font-normal text-left">
 							{{ $t('change') }}
 						</th>
 					</tr>
 				</thead>
 				<tbody>
-					<template v-if="isLoading">
-						<tr>
-							<div class="w-full py-6">
-								<p class="text-center text-sm">
-									{{ $t('isLoading') }} ...
-								</p>
-							</div>
+					<template v-if="marketsLoading">
+						<tr
+							v-for="n in 10"
+							:key="n"
+						>
+							<td class="py-3">
+								<div class="flex items-center space-x-4">
+									<USkeleton
+										class="w-5 h-5 ml-2 rounded-full"
+										:ui="{ rounded: 'rounded-full' }"
+									/>
+									<div class="space-y-2">
+										<USkeleton class="h-3 w-11" />
+									</div>
+								</div>
+							</td>
+							<td class="text-left">
+								<div class="flex justify-end pl-8">
+									<USkeleton class="h-3 w-11" />
+								</div>
+							</td>
+							<td>
+								<div class="flex justify-end pl-8">
+									<USkeleton class="h-3 w-11" />
+								</div>
+							</td>
 						</tr>
 					</template>
 					<template v-else>
 						<tr
-							v-for="(market, index) in marketItems"
+							v-for="(market, index) in markets"
 							:key="index"
 							:class="[index % 2 === 0 ? 'bg-background-light dark:bg-background-dark' : 'bg-hover2-light dark:bg-hover2-dark']"
 							class="pb-1"
@@ -120,43 +139,44 @@
 								<div class="flex items-center">
 									<IconStar
 										v-if="!isFavorite"
-										class="text-2xl cursor-pointer pl-1 md:pl-0"
+										class="text-xl cursor-pointer pl-1 md:pl-0"
 										@click="toggleFavorite"
 									/>
 									<IconFillStar
 										v-else
-										class="text-2xl pl-1 md:pl-0 text-primary-yellow-light dark:text-primary-yellow-dark group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark cursor-pointer"
+										class="text-xl pl-1 md:pl-0 text-primary-yellow-light dark:text-primary-yellow-dark group-hover:text-primary-yellow-light dark:group-hover:text-primary-yellow-dark cursor-pointer"
 										@click="toggleFavorite"
 									/>
 									<ULink
 										class="flex items-center justify-start"
-										:to="`/spot/${splitMarket(market?.marketBriefItem?.mSymbol)}`"
+										:to="`/spot/${splitMarket(market?.mSymbol)}`"
 									>
 										<img
-											:src="`https://api-bitland.site/media/currency/${market?.marketBriefItem?.currencyBriefItem?.cSymbol}.png`"
-											:alt="market?.marketBriefItem?.currencyBriefItem?.cName"
+											:src="`https://api-bitland.site/media/currency/${market?.currency?.cSymbol}.png`"
+											:alt="market?.currency?.cName"
 											class="w-4 h-4 mr-1 rounded-full"
 											format="webp"
 											densities="x1"
+											@error="handleImageError"
 										>
 										<div class="flex mr-1 items-center">
-											<span class="text-xs font-normal">{{ market?.marketBriefItem?.currencyBriefItem?.cName }}</span>/
+											<span class="text-xs font-normal">{{ market?.currency?.cName }}</span>
 											<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
-												{{ market.marketBriefItem?.quoteItem?.cName }}
+												/{{ market?.quote?.cName }}
 											</span>
 										</div>
 									</ULink>
 								</div>
 							</td>
 							<td class="p-2 text-xs font-normal py-1 text-left text-accent-red">
-								<span>{{ useNumber(market.indexPrice) }}</span>
+								<span>{{ priceFormat(market.indexPrice, true) }}</span>
 							</td>
 							<td
 								dir="ltr"
 								class="p-2 text-xs font-normal py-1 text-left"
 							>
-								<ChangePrice
-									classes="text-sm font-normal"
+								<UiChangePrice
+									classes="text-xs font-normal ml-0"
 									:show-percent="true"
 									pl="pl-2"
 									:change="parseFloat(String(market.priceChangePercIn24H))"
@@ -172,25 +192,59 @@
 </template>
 
 <script setup lang="ts">
+import { priceFormat, handleImageError } from '~/utils/helpers';
 import { splitMarket } from '~/utils/split-market';
 import { useNumber } from '~/composables/useNumber';
 import IconStar from '~/assets/svg-icons/market/star.svg';
 import IconFillStar from '~/assets/svg-icons/market/fill-star.svg';
-import type { Tag } from '~/types/response/tag.types';
 import { MarketType, SortMode } from '~/utils/enums/market.enum';
 import { marketRepository } from '~/repositories/market.repository';
+import type { Tag } from '~/types/definitions/tag.types';
+import type { Quote } from '~/types/definitions/quote.types';
+import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
+import type { MarketL31 } from '~/types/definitions/market.types';
 import { Language } from '~/utils/enums/language.enum';
-import type { Market } from '~/types/response/market.types';
-import ChangePrice from '~/components/ui/ChangePrice.vue';
-import type { CurrencyBrief } from '~/types/definitions/currency.types';
 
 const { $api } = useNuxtApp();
 const marketRepo = marketRepository($api);
+const authStore = useAuthStore();
+const worker = useBaseWorker();
 
 let searchTimeout: ReturnType<typeof setTimeout> | null = null;
 
-const baseDataStore = useBaseDataStore();
-const quoteItems = ref<CurrencyBrief[]>([]);
+const selectedTagItem = ref<Tag>();
+const selectedQuoteItem = ref<Quote>();
+
+const initFilterLoading = ref<boolean>(false);
+const quoteItems = ref<Quote[]>([]);
+const tagItems = ref<Tag[]>([]);
+const initFilterItems = async () => {
+	initFilterLoading.value = true;
+	if (!quoteItems.value.length) {
+		quoteItems.value = await worker.fetchSpotQuoteItems(useEnv('apiBaseUrl'));
+
+		selectedQuoteItem.value = quoteItems.value[0];
+		params.value.currencyQuoteId = String(selectedQuoteItem.value.id);
+	}
+	if (!tagItems.value.length) {
+		tagItems.value = await worker.fetchTagItems(Language.PERSIAN, useEnv('apiBaseUrl'));
+
+		selectedTagItem.value = tagItems.value[0];
+	}
+	initFilterLoading.value = false;
+};
+
+const selectTagItem = async (item: Tag) => {
+	selectedTagItem.value = item;
+	params.value.tagTypeId = String(item.id);
+	await getMarketListL31();
+};
+
+const selectQuoteItem = async (item: Quote) => {
+	selectedQuoteItem.value = item;
+	params.value.currencyQuoteId = String(item.id);
+	await getMarketListL31();
+};
 
 const params = ref({
 	sortMode: String(SortMode.BY_MARKET_CAPS),
@@ -202,63 +256,45 @@ const params = ref({
 	pageSize: '20',
 });
 
-const loadCurrencyOptions = async () => {
-	quoteItems.value = await baseDataStore.getMatchedCurrencyItems();
-	params.value.currencyQuoteId = String(quoteItems.value[0].id);
-};
-
-await loadCurrencyOptions();
-
-const isLoading = ref<boolean>(false);
-
-const marketItems = ref<Market[]>([]);
-
-const tagItems = computed(() => baseDataStore.tagItems);
-
-const selectedTagItem = ref(tagItems.value[0]);
-const selectedQuoteItem = ref<CurrencyBrief | null>(quoteItems.value[0]);
-
-const selectTagItem = async (item: Tag) => {
-	selectedTagItem.value = item;
-	params.value.tagTypeId = String(item.id);
-	marketItems.value = await getMarkets();
-};
-
-const selectQuoteItem = async (item: CurrencyBrief) => {
-	selectedQuoteItem.value = item;
-	params.value.currencyQuoteId = String(item.id);
-	marketItems.value = await getMarkets();
-};
-
-const getMarkets =	async () => {
-	const response = await marketRepo.getMarkets(params.value);
-
-	await baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
-	await baseDataStore.fetchMarketBriefItems();
-	const marketBriefList = baseDataStore.marketBriefItems;
-	const currencyBriefList = baseDataStore.currencyBriefItems;
-
-	return useProcessMarketData(response.result.rows, marketBriefList, currencyBriefList);
-};
-
-const initData = async () => {
+const markets = ref<MarketL31[]>([]);
+const marketsLoading = ref<boolean>(false);
+const getMarketListL31 = async () => {
 	try {
-		isLoading.value = true;
-		await baseDataStore.fetchTagItems();
-		marketItems.value = await getMarkets();
+		if (params.value.tagTypeId === '0') {
+			params.value.tagTypeId = '';
+		}
+
+		marketsLoading.value = true;
+		if (authStore.isLoggedIn) {
+			const { result } = await marketRepo.getMarketListL31a(params.value);
+			markets.value = await worker.addCurrencyToMarketsL16(
+				result.rows as MarketL31[],
+				Number(params.value.currencyQuoteId),
+				useEnv('apiBaseUrl'), MarketType.SPOT,
+			) as MarketL31[];
+		}
+		else {
+			const { result } = await marketRepo.getMarketListL31(params.value);
+			markets.value = await worker.addCurrencyToMarketsL16(
+				result.rows as MarketL31[],
+				Number(params.value.currencyQuoteId),
+				useEnv('apiBaseUrl'), MarketType.SPOT,
+			) as MarketL31[];
+		}
+
+		marketsLoading.value = false;
 	}
-	catch (error) {
-		console.error('Error fetching trades:', error);
-	}
-	finally {
-		isLoading.value = false;
+	catch (error: unknown) {
+		console.log(error);
 	}
 };
 
-onMounted(initData);
+onMounted(async () => {
+	await initFilterItems();
+	await getMarketListL31();
+});
 
 const search = ref('');
-
 watch(search, (newValue) => {
 	if (searchTimeout) {
 		clearTimeout(searchTimeout);
@@ -267,7 +303,7 @@ watch(search, (newValue) => {
 	searchTimeout = setTimeout(async () => {
 		params.value.searchStatement = newValue;
 
-		marketItems.value = await getMarkets();
+		await getMarketListL31();
 	}, 2000);
 });
 

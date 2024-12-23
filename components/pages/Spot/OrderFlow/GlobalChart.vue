@@ -1,8 +1,7 @@
 <template>
 	<div class="w-full h-[26rem]">
-		<!-- :src="`https://tv.hosseinbajan.ir/global?theme=${isDark? 'dark': 'light'}`" -->
 		<iframe
-			:src="`http://localhost:5173/global?theme=${isDark? 'dark': 'light'}`"
+			:src="`http://tv.hosseinbajan.ir/global?theme=${isDark? 'dark': 'light'}`"
 			class="w-full h-full"
 			frameborder="0"
 			allowfullscreen

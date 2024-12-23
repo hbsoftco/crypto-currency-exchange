@@ -1,7 +1,7 @@
 <template>
 	<div class="w-full h-[26rem]">
 		<iframe
-			:src="`https://tv.hosseinbajan.ir/datafeed/spot/BTCUSDT?templateId=${isDark? 'dark': 'light'}&interval=1hour`"
+			:src="`https://tv.hosseinbajan.ir/datafeed/spot/${spotStore.symbol}?templateId=${isDark? 'dark': 'light'}&interval=1hour`"
 			class="w-full h-full"
 			frameborder="0"
 			allowfullscreen
@@ -10,6 +10,8 @@
 </template>
 
 <script setup lang="ts">
+const spotStore = useSpotStore();
+
 const colorMode = useColorMode();
 const isDark = computed({
 	get() {
