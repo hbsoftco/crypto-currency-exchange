@@ -35,7 +35,13 @@
 					:key="`top-${index}`"
 					class="px-0 md:px-4 w-full md:w-auto py-1 pt-2 select-none"
 				>
-					<div class="flex justify-center items-center">
+					<div
+						class="flex justify-center items-center rounded"
+						:class="{
+							[bgClass]: changedItems[item.id],
+							'': !changedItems[item.id],
+						}"
+					>
 						<img
 							:src="`https://api-bitland.site/media/currency/${item.currency?.cSymbol}.png`"
 							:alt="item.currency?.cName"
@@ -83,7 +89,11 @@ import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 const { $api } = useNuxtApp();
 const marketRepo = marketRepository($api);
 
+const publicSocketStore = usePublicSocketStore();
+
 const worker = useBaseWorker();
+
+const socketMarketIds = ref<number[]>([]);
 
 const marketsParams = ref<MarketsL47Params>({
 	marketTypeId: String(MarketType.SPOT),
@@ -101,12 +111,78 @@ const getMarkets = async () => {
 			result.rows as MarketL16[],
 		);
 
+		if (socketMarketIds.value.length) {
+			await publicSocketStore.removeMarketIds(socketMarketIds.value);
+		}
+		socketMarketIds.value = markets.value.map((item) => item.id);
+		await publicSocketStore.addMarketIds(socketMarketIds.value);
+
+		markets.value.forEach((item) => {
+			prevData.value[item.id] = {
+				indexPrice: parseFloat(item.indexPrice),
+				priceChangePercIn24H: parseFloat(item.priceChangePercIn24H),
+			};
+		});
+
 		marketsLoading.value = false;
 	}
 	catch (error: unknown) {
 		console.log(error);
 	}
 };
+
+const changedItems = ref<{ [key: string]: boolean }>({});
+const prevData = ref<{ [key: string]: { indexPrice: number; priceChangePercIn24H: number } }>({});
+const bgClass = ref<string>('');
+
+watch(
+	() => publicSocketStore.latestMarketData,
+	(newData) => {
+		if (newData) {
+			newData.forEach((updatedMarket) => {
+				const marketId = updatedMarket.data.mi;
+				const index = markets.value.findIndex((item) => item.id === marketId);
+
+				if (index !== -1) {
+					const newIndexPrice = parseFloat(updatedMarket.data.i);
+					const newPriceChangePercIn24H = parseFloat(updatedMarket.data.p);
+
+					const prevIndexPrice = prevData.value[marketId]?.indexPrice;
+					const prevPriceChangePercIn24H = prevData.value[marketId]?.priceChangePercIn24H;
+
+					if (
+						newIndexPrice !== prevIndexPrice
+						|| newPriceChangePercIn24H !== prevPriceChangePercIn24H
+					) {
+						changedItems.value[marketId] = true;
+
+						bgClass.value
+							= newIndexPrice > prevIndexPrice
+								? 'bg-[#c8ffc8] dark:bg-[#13241f]'
+								: 'bg-[#ffc8c8] dark:bg-[#2b181c]';
+
+						setTimeout(() => {
+							changedItems.value[marketId] = false;
+							bgClass.value = '';
+						}, 500);
+
+						markets.value[index] = {
+							...markets.value[index],
+							indexPrice: String(newIndexPrice),
+							priceChangePercIn24H: String(newPriceChangePercIn24H),
+						};
+
+						prevData.value[marketId] = {
+							indexPrice: newIndexPrice,
+							priceChangePercIn24H: newPriceChangePercIn24H,
+						};
+					}
+				}
+			});
+		}
+	},
+	{ deep: true },
+);
 
 onMounted(async () => {
 	await getMarkets();
