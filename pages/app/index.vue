@@ -6,7 +6,7 @@
 			</div>
 		</UContainer>
 		<UContainer v-else>
-			<div class="flex justify-between items-center mt-20 mb-32">
+			<div class="flex justify-between items-center mt-1 md:mt-20 mb-32">
 				<div>
 					<ULink to="/">
 						<img
@@ -15,14 +15,14 @@
 							class="w-28 h-12"
 						>
 					</ULink>
-					<h1 class="mt-11 mb-6 text-2xl font-bold">
+					<h1 class="mt-6 md:mt-11 mb-6 text-xl md:text-2xl font-bold">
 						{{ systemHelp?.info.header }}
 					</h1>
-					<p class="text-xl font-bold">
+					<p class="text-base md:text-xl font-semibold md:font-bold text-justify">
 						{{ systemHelp?.info.content }}
 					</p>
 					<div class="block md:flex items-center mt-11 mb-16">
-						<span class="text-xl font-bold">{{ $t('suggestDownloadApp') }}</span>
+						<span class="hidden md:block text-base md:text-xl font-semibold md:font-bold">{{ $t('suggestDownloadApp') }}</span>
 						<div class="flex justify-center mx-10 my-4">
 							<vue-qrcode
 								value="https://play.google.com/store/apps/details?id=io.bitland"
@@ -32,12 +32,13 @@
 								:foreground="'#000000'"
 							/>
 						</div>
+						<span class="block md:hidden text-base md:text-xl font-semibold md:font-bold text-center">{{ $t('suggestDownloadApp') }}</span>
 					</div>
-					<p class="text-xl font-bold mb-6">
+					<p class="text-base md:text-xl font-semibold md:font-bold mb-6">
 						{{ $t('titrDownloadApp') }}
 					</p>
-					<div class="grid grid-cols-1 md:grid-cols-3  gap-3">
-						<ULink to="">
+					<div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+						<!-- <ULink to="">
 							<img
 								src="/images/svg/windows.svg"
 								alt="windows"
@@ -50,15 +51,16 @@
 								alt="app-store"
 								class="w-52 h-16"
 							>
-						</ULink>
+						</ULink> -->
 						<ULink
 							to="https://play.google.com/store/apps/details?id=io.bitland"
 							target="_blank"
+							class="flex justify-center"
 						>
 							<img
 								src="/images/svg/google-play.svg"
 								alt="google-play"
-								class="w-52 h-16"
+								class="w-44 md:w-52 h-14 md:h-16"
 							>
 						</ULink>
 					</div>
