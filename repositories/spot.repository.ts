@@ -1,13 +1,13 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { SpotDataParams } from '~/types/base.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
-import type { GetSpotDataResponse } from '~/types/response/spot.types';
 import type {
 	DeleteOpenOrderDto,
 	KLineParams,
 	KLineResponse,
 	OrderListParams,
+	SnapshotParams,
+	SnapshotResponse,
 	SpotResponse,
 	StoreCoinToCoinDto,
 	StoreOrderInstantDto,
@@ -23,8 +23,7 @@ type SpotRepository = {
 	storeOrderInstant: (dto: StoreOrderInstantDto) => Promise<CommonResponse>;
 	storeCoinToCoin: (dto: StoreCoinToCoinDto) => Promise<CommonResponse>;
 	deleteOpenOrder: (dto: DeleteOpenOrderDto) => Promise<CommonResponse>;
-
-	getSpotData: (params: SpotDataParams) => Promise<GetSpotDataResponse>;
+	getSnapshot: (params: SnapshotParams) => Promise<SnapshotResponse>;
 };
 
 export const spotRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SpotRepository => ({
@@ -114,8 +113,7 @@ export const spotRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SpotR
 
 		return response;
 	},
-
-	async getSpotData(params: SpotDataParams): Promise<GetSpotDataResponse> {
+	async getSnapshot(params: SnapshotParams): Promise<SnapshotResponse> {
 		const query = new URLSearchParams();
 		Object.entries(params).forEach(([key, value]) => {
 			if (value !== undefined && value !== null && value.toString().trim() !== '') {
@@ -124,10 +122,8 @@ export const spotRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SpotR
 		});
 
 		const url = '/v1/spot/routine/snapshot';
-		const response = await fetch<GetSpotDataResponse>(`${url}?${query.toString()}`, {
+		const response = await fetch<SnapshotResponse>(`${url}?${query.toString()}`, {
 			noAuth: true,
-			apiName: url,
-			queryParams: params,
 			method: 'GET',
 		} as CustomNitroFetchOptions);
 

@@ -174,6 +174,56 @@ type TradeOption = {
 	};
 };
 
+type SnapshotParams = {
+	symbol?: string;
+	marketId?: string;
+	timeFrame?: '1min' | '3min' | '5min' | '15min' | '30min' | '1hour' | '4hour' | '1day' | '1week' | '1month';
+	rows?: string;
+	level?: string;
+};
+
+type SnapshotResponse = {
+	statusCode: number;
+	result: Snapshot;
+};
+
+type Snapshot = {
+	bids: BidAsk[];
+	asks: BidAsk[];
+	depth: Depth;
+	ticker: Ticker;
+	latestTrades: LatestTrade[];
+};
+
+type Ticker = {
+	t: number;
+	i: string;
+	o: string;
+	h: string;
+	l: string;
+	p: string;
+	v: string;
+	q: string;
+};
+
+type LatestTrade = {
+	t: number;
+	s: number;
+	p: string;
+	v: string;
+};
+
+type BidAsk = {
+	p: string;
+	v: string;
+	c: string;
+};
+
+type Depth = {
+	depthOfBid: string[][];
+	depthOfAsk: string[][];
+};
+
 type StoreOrderMarketDto = {
 	marketId: number;
 	assetType: string;
@@ -215,4 +265,11 @@ export type {
 	StoreCoinToCoinDto,
 	DeleteOpenOrderDto,
 	TradeOption,
+	SnapshotResponse,
+	SnapshotParams,
+	Snapshot,
+	Depth,
+	BidAsk,
+	LatestTrade,
+	Ticker,
 };

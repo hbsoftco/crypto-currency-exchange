@@ -12,6 +12,7 @@
 			@mouseleave="firstPaused=false"
 		>
 			<InfiniteSlideBar
+				:style="{ 'animation-play-state': 'paused !important' }"
 				delay="1s"
 				direction="reverse"
 				duration="30s"

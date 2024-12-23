@@ -31,14 +31,6 @@ type getTradesListParams = {
 	pageSize?: string;
 };
 
-type SpotDataParams = {
-	symbol?: string;
-	marketId?: string;
-	timeFrame?: '1min' | '3min' | '5min' | '15min' | '30min' | '1hour' | '4hour' | '1day' | '1week' | '1month';
-	rows?: string;
-	level?: string;
-};
-
 type GetAssetListParams = {
 	statement?: string;
 	assessmentCurrencyId?: string;
@@ -325,7 +317,6 @@ type GetCurrencyParams = {
 export type {
 	GetReferralBestListParams,
 	GetRewardExposedParams,
-	SpotDataParams,
 	GetPinParams,
 	GetRootListParams,
 	GetLanguageParams,

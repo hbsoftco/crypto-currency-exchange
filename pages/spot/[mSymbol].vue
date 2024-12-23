@@ -7,7 +7,7 @@
 	</div>
 	<div v-else>
 		<div class="mb-3">
-			<TradingPairDetails />
+			<MarketsInfiniteSlider />
 		</div>
 		<div class="flex justify-start">
 			<div class="w-80 max-w-80 ml-2">
@@ -72,15 +72,7 @@
 </template>
 
 <script setup lang="ts">
-// import BuySellForm from '~/components/pages/Spot/BuySellForm/index.vue';
-// import OrderBook from '~/components/pages/Spot/OrderBook/index.vue';
-// import OrderFlow from '~/components/pages/Spot/OrderFlow/index.vue';
-// import OrderTabs from '~/components/pages/Spot/OrderTabs/index.vue';
-// import MarketOverview from '~/components/pages/Spot/MarketOverview.vue';
-import type { SpotDataParams } from '~/types/base.types';
-// import BuySellFormTrade from '~/components/pages/Spot/BuySellFormTrade/index.vue';
-
-const TradingPairDetails = defineAsyncComponent(() => import('~/components/pages/Spot/TradingPairDetails.vue'));
+const MarketsInfiniteSlider = defineAsyncComponent(() => import('~/components/pages/Spot/MarketsInfiniteSlider.vue'));
 const Setting = defineAsyncComponent(() => import('~/components/pages/Spot/Setting.vue'));
 const BuySellForm = defineAsyncComponent(() => import('~/components/pages/Spot/BuySellForm/index.vue'));
 const OrderBook = defineAsyncComponent(() => import('~/components/pages/Spot/OrderBook/index.vue'));
@@ -92,23 +84,23 @@ definePageMeta({
 	layout: 'trade',
 });
 
-const settingsStore = useSpotSettingsStore();
-const spotStore = useSpotStore();
-
 const route = useRoute();
 const mSymbol = String(route.params.mSymbol);
 const [currency, quote] = mSymbol.split('_');
 
-const params = ref<SpotDataParams>({
-	symbol: `${currency}${quote}`,
-	level: '',
-	rows: '20',
-});
+const spotStore = useSpotStore();
 
 onMounted(() => {
-	spotStore.getSnapshotData(mSymbol, `${currency}${quote}`, quote, currency, params.value);
+	spotStore.symbol = `${currency}${quote}`;
+	spotStore.currency = currency;
+	spotStore.quote = quote;
+
+	spotStore.getSnapshot();
+
 	settingsStore.isSpotPage = true;
 });
+
+const settingsStore = useSpotSettingsStore();
 
 onBeforeUnmount(() => {
 	settingsStore.isSpotPage = false;

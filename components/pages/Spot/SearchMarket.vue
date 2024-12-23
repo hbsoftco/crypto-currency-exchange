@@ -177,12 +177,12 @@ import { useNumber } from '~/composables/useNumber';
 import IconStar from '~/assets/svg-icons/market/star.svg';
 import IconFillStar from '~/assets/svg-icons/market/fill-star.svg';
 import type { Tag } from '~/types/response/tag.types';
-import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
 import { MarketType, SortMode } from '~/utils/enums/market.enum';
 import { marketRepository } from '~/repositories/market.repository';
 import { Language } from '~/utils/enums/language.enum';
 import type { Market } from '~/types/response/market.types';
 import ChangePrice from '~/components/ui/ChangePrice.vue';
+import type { CurrencyBrief } from '~/types/definitions/currency.types';
 
 const { $api } = useNuxtApp();
 const marketRepo = marketRepository($api);
@@ -190,7 +190,7 @@ const marketRepo = marketRepository($api);
 let searchTimeout: ReturnType<typeof setTimeout> | null = null;
 
 const baseDataStore = useBaseDataStore();
-const quoteItems = ref<CurrencyBriefItem[]>([]);
+const quoteItems = ref<CurrencyBrief[]>([]);
 
 const params = ref({
 	sortMode: String(SortMode.BY_MARKET_CAPS),
@@ -216,7 +216,7 @@ const marketItems = ref<Market[]>([]);
 const tagItems = computed(() => baseDataStore.tagItems);
 
 const selectedTagItem = ref(tagItems.value[0]);
-const selectedQuoteItem = ref<CurrencyBriefItem | null>(quoteItems.value[0]);
+const selectedQuoteItem = ref<CurrencyBrief | null>(quoteItems.value[0]);
 
 const selectTagItem = async (item: Tag) => {
 	selectedTagItem.value = item;
@@ -224,7 +224,7 @@ const selectTagItem = async (item: Tag) => {
 	marketItems.value = await getMarkets();
 };
 
-const selectQuoteItem = async (item: CurrencyBriefItem) => {
+const selectQuoteItem = async (item: CurrencyBrief) => {
 	selectedQuoteItem.value = item;
 	params.value.currencyQuoteId = String(item.id);
 	marketItems.value = await getMarkets();

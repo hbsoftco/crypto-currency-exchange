@@ -30,11 +30,11 @@
 </template>
 
 <script setup lang="ts">
-import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
+import type { CurrencyBrief } from '~/types/definitions/currency.types';
 import { handleImageError } from '~/utils/helpers';
 
 interface PropsDefinition {
-	currency: CurrencyBriefItem;
+	currency: CurrencyBrief;
 }
 
 defineProps<PropsDefinition>();
