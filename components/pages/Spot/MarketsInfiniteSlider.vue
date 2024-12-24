@@ -7,7 +7,7 @@
 		<div
 			v-for="item in 6"
 			:key="item"
-			class="flex justify-center items-center border-r dark:border-secondary-gray-50 mt-2 px-4 mr-4"
+			class="flex justify-center items-center mt-2 px-4 mr-4"
 		>
 			<USkeleton
 				class="w-5 h-5 bg-primary-gray-light dark:bg-primary-gray-dark"

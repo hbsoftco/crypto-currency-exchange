@@ -1,7 +1,7 @@
 <template>
 	<div class="w-full h-[26rem]">
 		<iframe
-			:src="`http://tv.hosseinbajan.ir/global?theme=${isDark? 'dark': 'light'}`"
+			:src="`http://tv.hosseinbajan.ir/global?theme=${isDark? 'dark': 'light'}&symbol=${spotStore.symbol}`"
 			class="w-full h-full"
 			frameborder="0"
 			allowfullscreen
@@ -10,6 +10,8 @@
 </template>
 
 <script setup lang="ts">
+const spotStore = useSpotStore();
+
 const colorMode = useColorMode();
 const isDark = computed({
 	get() {
