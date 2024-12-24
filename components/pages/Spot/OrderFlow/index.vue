@@ -34,7 +34,6 @@
 		<div v-if="activeTab==='tradingView'">
 			<UTabs
 				:items="items"
-				:default-index="1"
 				:ui="{
 					list: {
 						tab: {
