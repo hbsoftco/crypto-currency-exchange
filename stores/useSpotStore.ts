@@ -45,6 +45,7 @@ export const useSpotStore = defineStore('spotStore', () => {
 	const getSnapshot = async () => {
 		if (!symbol.value || !currency.value) return;
 
+		marketRevealing.value = [];
 		snapshotLoading.value = true;
 		snapshotParams.value.symbol = symbol.value;
 		const { result } = await spotRepo.getSnapshot(snapshotParams.value);
