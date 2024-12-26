@@ -1,4 +1,4 @@
-import type { SocketSpotData, SocketSpotTickerMessage } from '~/types/socket.types';
+import type { SocketSpotData, SocketSpotTickerMessage } from '~/types/definitions/socket.types';
 import { PublicTopic, SocketId } from '~/utils/enums/socket.enum';
 
 export const usePublicSocketStore = defineStore('publicSocket', () => {

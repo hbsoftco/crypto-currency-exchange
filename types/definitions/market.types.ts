@@ -137,6 +137,12 @@ type MarketsL47Params = {
 	marketTypeId: string;
 };
 
+type MarketRevealingParams = {
+	id?: string;
+	symbol: string;
+	marketTypeId?: string;
+};
+
 type MarketsL46Params = MarketsL47Params;
 
 type MarketL47 = {
@@ -193,4 +199,5 @@ export type {
 	MarketDailyPriceChangeResponse,
 	DailyPriceChange,
 	FavoriteMarketDto,
+	MarketRevealingParams,
 };

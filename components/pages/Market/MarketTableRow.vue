@@ -103,7 +103,7 @@ import { splitMarket } from '~/utils/split-market';
 import { priceFormat, formatBigNumber, handleImageError } from '~/utils/helpers';
 import IconStar from '~/assets/svg-icons/market/star.svg';
 import IconStarFill from '~/assets/svg-icons/market/fill-star.svg';
-import type { SocketSpotData } from '~/types/socket.types';
+import type { SocketSpotData } from '~/types/definitions/socket.types';
 import type { MarketL31 } from '~/types/definitions/market.types';
 import { marketRepository } from '~/repositories/market.repository';
 

@@ -1,18 +1,28 @@
 import { defineStore } from 'pinia';
 
+import { marketRepository } from '~/repositories/market.repository';
 import { spotRepository } from '~/repositories/spot.repository';
+import type { KeyValue } from '~/types/definitions/common.types';
 import type { BidAsk, Depth, LatestTrade, SnapshotParams, Ticker } from '~/types/definitions/spot.types';
+import { PublicTopic, SocketId } from '~/utils/enums/socket.enum';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 
 export const useSpotStore = defineStore('spotStore', () => {
 	const { $api } = useNuxtApp();
 	const spotRepo = spotRepository($api);
+	const marketRepo = marketRepository($api);
+
+	const { snapshotMessage, connect, sendMessage } = usePublicWebSocket();
 
 	const worker = useBaseWorker();
 
 	const currency = ref<string>();
 	const quote = ref<string>();
 	const symbol = ref<string>();
+
+	const prevPrice = ref<string>();
+	const textClass = ref<string>('');
+	const updatedPrice = ref<boolean>(false);
 
 	const depth = ref<Depth>();
 	const ticker = ref<Ticker>();
@@ -49,17 +59,87 @@ export const useSpotStore = defineStore('spotStore', () => {
 		ticker.value.market = data.market;
 		ticker.value.currency = data.currency;
 
-		// Ready chart data for depth chart
-		// await generateChartData();
-
-		// get cName for currency brief
-		// await findCurrencyName(currency.value);
-
-		// get markets for showing in top slider
-		// await fetchMarketList();
+		prevPrice.value = ticker.value.i;
 
 		snapshotLoading.value = false;
 	};
+
+	const marketRevealing = ref<KeyValue[]>([]);
+	const marketRevealingLoading = ref<boolean>(false);
+	const getMarketRevealing = async () => {
+		try {
+			if (!symbol.value || marketRevealing.value.length) return;
+
+			marketRevealingLoading.value = true;
+
+			const { result } = await marketRepo.getMarketRevealing({ symbol: symbol.value });
+			marketRevealing.value = result;
+
+			marketRevealingLoading.value = false;
+		}
+		catch (error: unknown) {
+			console.log(error);
+		}
+	};
+
+	const startSocket = async () => {
+		await connect();
+
+		sendMessage(createSubscriptionData(
+			SocketId.SPOT_SNAPSHOT,
+			'SUBSCRIBE',
+			PublicTopic.SPOT_SNAPSHOT,
+			{
+				Symbol: symbol.value || '',
+				Level: '0',
+				Rows: '40',
+				AssetTypeId: useEnv('assetType'),
+			},
+		));
+	};
+
+	const stopSocket = async () => {
+		sendMessage(createSubscriptionData(
+			SocketId.SPOT_SNAPSHOT,
+			'UNSUBSCRIBE',
+			PublicTopic.SPOT_SNAPSHOT,
+			{},
+		));
+	};
+
+	watch(snapshotMessage, (snapshot) => {
+		if (snapshot) {
+			depth.value = snapshot.depth;
+			bids.value = snapshot.bids;
+			asks.value = snapshot.asks;
+			latestTrades.value = snapshot.latestTrades;
+
+			if (ticker.value) {
+				ticker.value.h = snapshot.ticker.h;
+				ticker.value.i = snapshot.ticker.i;
+				ticker.value.l = snapshot.ticker.l;
+				ticker.value.o = snapshot.ticker.o;
+				ticker.value.p = snapshot.ticker.p;
+				ticker.value.q = snapshot.ticker.q;
+				ticker.value.t = snapshot.ticker.t;
+				ticker.value.v = snapshot.ticker.v;
+
+				if (ticker.value.i !== prevPrice.value) {
+					updatedPrice.value = true;
+					textClass.value
+							= Number(ticker.value.i) > Number(prevPrice.value)
+							? 'text-accent-green dark:text-accent-green'
+							: 'text-accent-red dark:text-accent-red';
+					setTimeout(() => {
+						updatedPrice.value = false;
+						textClass.value = '';
+					}, 500);
+
+					prevPrice.value = ticker.value.i;
+				}
+			}
+		}
+	}, { deep: true });
 
 	return {
 		snapshotLoading,
@@ -73,7 +153,15 @@ export const useSpotStore = defineStore('spotStore', () => {
 		asks,
 		latestTrades,
 		chartData,
+		textClass,
+		updatedPrice,
 
+		startSocket,
+		stopSocket,
 		getSnapshot,
+
+		marketRevealing,
+		marketRevealingLoading,
+		getMarketRevealing,
 	};
 });

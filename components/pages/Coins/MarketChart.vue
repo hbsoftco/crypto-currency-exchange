@@ -83,7 +83,7 @@ import { formatDateToPersian } from '~/utils/format-date-to-persian';
 import type { MarketBrief } from '~/types/definitions/market.types';
 import { spotRepository } from '~/repositories/spot.repository';
 import type { KLineParams } from '~/types/definitions/spot.types';
-import type { SocketSpotData } from '~/types/socket.types';
+import type { SocketSpotData } from '~/types/definitions/socket.types';
 
 interface PropsDefinition {
 	markets: MarketBrief[];
@@ -97,7 +97,6 @@ interface PropsDefinition {
 	priceChangePerc90d: string;
 	socketData: SocketSpotData | null;
 }
-
 const props = defineProps<PropsDefinition>();
 
 const { $api } = useNuxtApp();

@@ -27,25 +27,22 @@
 		<InfiniteSlideBar
 			delay="1s"
 			direction="reverse"
-			duration="80s"
+			duration="160s"
 		>
 			<div class="flex">
 				<div
 					v-for="(item, index) in markets"
 					:key="`top-${index}`"
-					class="px-0 md:px-4 w-full md:w-auto py-1 pt-2 select-none"
+					class="px-0 md:px-1 w-full md:w-auto py-1 pt-2 select-none"
 				>
-					<div
+					<ULink
 						class="flex justify-center items-center rounded"
-						:class="{
-							[bgClass]: changedItems[item.id],
-							'': !changedItems[item.id],
-						}"
+						:to="`/spot/${splitMarket(item.market?.mSymbol)}`"
 					>
 						<img
 							:src="`https://api-bitland.site/media/currency/${item.currency?.cSymbol}.png`"
 							:alt="item.currency?.cName"
-							class="w-5 h-5 mr-2 rounded-full"
+							class="w-5 h-5 mr-2"
 							format="webp"
 							densities="x1"
 							@error="handleImageError"
@@ -58,7 +55,7 @@
 							</span>
 						</div>
 
-						<div class="mx-5">
+						<div class="px-3 border-r border-primary-gray-100 dark:border-primary-gray-800 mr-1">
 							<UiChangePrice
 								classes="text-[11px] font-normal "
 								:show-percent="true"
@@ -67,10 +64,7 @@
 								:icon="false"
 							/>
 						</div>
-						<div class="text-[11px] text-subtle-text-light dark:text-subtle-text-50 pr-4 border-r dark:border-secondary-gray-50">
-							{{ priceFormat(item?.indexPrice, true) }}
-						</div>
-					</div>
+					</ULink>
 				</div>
 			</div>
 		</InfiniteSlideBar>
@@ -80,7 +74,8 @@
 <script setup lang="ts">
 import InfiniteSlideBar from 'vue3-infinite-slide-bar';
 
-import { priceFormat, handleImageError } from '~/utils/helpers';
+import { splitMarket } from '~/utils/split-market';
+import { handleImageError } from '~/utils/helpers';
 import { marketRepository } from '~/repositories/market.repository';
 import type { MarketL16, MarketsL47Params } from '~/types/definitions/market.types';
 import { MarketType } from '~/utils/enums/market.enum';
@@ -131,9 +126,7 @@ const getMarkets = async () => {
 	}
 };
 
-const changedItems = ref<{ [key: string]: boolean }>({});
 const prevData = ref<{ [key: string]: { indexPrice: number; priceChangePercIn24H: number } }>({});
-const bgClass = ref<string>('');
 
 watch(
 	() => publicSocketStore.latestMarketData,
@@ -154,18 +147,6 @@ watch(
 						newIndexPrice !== prevIndexPrice
 						|| newPriceChangePercIn24H !== prevPriceChangePercIn24H
 					) {
-						changedItems.value[marketId] = true;
-
-						bgClass.value
-							= newIndexPrice > prevIndexPrice
-								? 'bg-[#c8ffc8] dark:bg-[#13241f]'
-								: 'bg-[#ffc8c8] dark:bg-[#2b181c]';
-
-						setTimeout(() => {
-							changedItems.value[marketId] = false;
-							bgClass.value = '';
-						}, 500);
-
 						markets.value[index] = {
 							...markets.value[index],
 							indexPrice: String(newIndexPrice),

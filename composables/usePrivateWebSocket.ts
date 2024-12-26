@@ -1,4 +1,4 @@
-import type { AssetListItem, AssetListItemMessage } from '~/types/socket.types';
+import type { AssetListItem, AssetListItemMessage } from '~/types/definitions/socket.types';
 import { StatusCodes } from '~/utils/constants/status-codes';
 import { SocketId } from '~/utils/enums/socket.enum';
 

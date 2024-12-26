@@ -15,6 +15,7 @@ export enum SocketId {
 	PING = '12',
 	FUTURES_TICKER = '24',
 	SPOT_TICKER = '25',
+	SPOT_SNAPSHOT = '27',
 	SPOT_TICKER_EXCHANGE = '26',
 	ASSET_LIST = '35',
 }

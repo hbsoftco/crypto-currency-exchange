@@ -13,7 +13,8 @@
 						v-if="spotStore.currency"
 						:src="`https://api-bitland.site/media/currency/${spotStore.currency}.png`"
 						alt="Brand Logo"
-						class="w-7 h-7 rounded-full"
+						class="w-7 h-7"
+						@error="handleImageError"
 					>
 				</div>
 
@@ -31,7 +32,13 @@
 				</div>
 
 				<div class="ml-14">
-					<strong class="text-base font-bold">{{ priceFormat(String(spotStore.ticker?.i), true) }}</strong>
+					<strong
+						class="text-base font-bold"
+						:class="{
+							[spotStore.textClass]: spotStore.updatedPrice,
+							'': !spotStore.updatedPrice,
+						}"
+					>{{ priceFormat(String(spotStore.ticker?.i), true) }}</strong>
 				</div>
 
 				<div class="ml-5 text-left">
@@ -85,7 +92,7 @@
 </template>
 
 <script setup lang="ts">
-import { priceFormat } from '~/utils/helpers';
+import { priceFormat, handleImageError } from '~/utils/helpers';
 import IconList from '~/assets/svg-icons/spot/list.svg';
 import SearchMarket from '~/components/pages/Spot/SearchMarket.vue';
 

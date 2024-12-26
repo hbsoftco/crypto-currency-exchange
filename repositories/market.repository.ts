@@ -1,7 +1,7 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
-import type { CommonResponse } from '~/types/definitions/common.types';
+import type { CommonResponse, KeyValueResponse } from '~/types/definitions/common.types';
 import type {
 	MarketsL21Params,
 	MarketsResponse,
@@ -11,8 +11,8 @@ import type {
 	MarketsL47Params,
 	MarketDailyPriceChangeResponse,
 	FavoriteMarketDto,
-	MarketsL46Params } from '~/types/definitions/market.types';
-import type { MarketListResponse } from '~/types/response/market.types';
+	MarketsL46Params,
+	MarketRevealingParams } from '~/types/definitions/market.types';
 
 type MarketRepository = {
 	getMarketListL21: (params: MarketsL21Params) => Promise<MarketsResponse>;
@@ -30,9 +30,9 @@ type MarketRepository = {
 	getMarketDailyPriceChange: () => Promise<MarketDailyPriceChangeResponse>;
 	likeMarket: (dto: FavoriteMarketDto) => Promise<CommonResponse>;
 	dislikeMarket: (dto: FavoriteMarketDto) => Promise<CommonResponse>;
+	getMarketRevealing: (params: MarketRevealingParams) => Promise<KeyValueResponse>;
 
 	getMarkets: (params: MarketsParams) => Promise<MarketsResponse>;
-	getMarketList: (params: MarketsL47Params) => Promise<MarketListResponse>;
 };
 
 export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): MarketRepository => ({
@@ -247,6 +247,22 @@ export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Mar
 
 		return response;
 	},
+	async getMarketRevealing(params: MarketRevealingParams): Promise<KeyValueResponse> {
+		const query = new URLSearchParams();
+		Object.entries(params).forEach(([key, value]) => {
+			if (value !== undefined && value !== null && value.toString().trim() !== '') {
+				query.append(key, value);
+			}
+		});
+
+		const url = '/v1/market/routine/revealing';
+		const response = await fetch<KeyValueResponse>(`${url}?${query.toString()}`, {
+			noAuth: true,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
 
 	async getMarkets(
 		params: MarketsParams): Promise<MarketsResponse> {
@@ -262,16 +278,6 @@ export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Mar
 			noAuth: true,
 			apiName: url,
 			queryParams: params,
-			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getMarketList({ rowCount, marketTypeId }: MarketsL47Params): Promise<MarketListResponse> {
-		const query = new URLSearchParams({ rowCount, marketTypeId });
-		const url = '/v1/market/routine/l46_f';
-		const response = await fetch<MarketListResponse>(`${url}?${query.toString()}`, {
-			noAuth: true,
 			method: 'GET',
 		} as CustomNitroFetchOptions);
 

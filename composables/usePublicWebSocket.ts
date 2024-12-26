@@ -1,10 +1,12 @@
-import type { SocketSpotTickerMessage } from '~/types/socket.types';
+import type { SocketSpotSnapshotMessage, SocketSpotTickerMessage } from '~/types/definitions/socket.types';
+import type { Snapshot } from '~/types/definitions/spot.types';
 import { SocketId } from '~/utils/enums/socket.enum';
 
 export const usePublicWebSocket = () => {
 	const socket = ref<WebSocket | null>(null);
 	const messages = ref<SocketSpotTickerMessage[]>([]);
 	const exchangeMessages = ref<SocketSpotTickerMessage[]>([]);
+	const snapshotMessage = ref<Snapshot>();
 	let pingInterval: ReturnType<typeof setInterval> | null = null;
 
 	const connect = () => {
@@ -42,28 +44,38 @@ export const usePublicWebSocket = () => {
 			socket.value.onmessage = (event) => {
 				const messageData: SocketSpotTickerMessage = JSON.parse(event.data);
 
-				if (messageData.statusCode !== 400) {
-					if (messageData.id === SocketId.SPOT_TICKER || messageData.id === SocketId.FUTURES_TICKER) {
-						const mi = messageData.data.mi;
+				let snapshotMessageData: SocketSpotSnapshotMessage | null = null;
+				if (messageData.id === SocketId.SPOT_SNAPSHOT) {
+					snapshotMessageData = JSON.parse(event.data);
+				}
 
-						const existingIndex = messages.value.findIndex((msg) => msg.data.mi === mi);
-						if (existingIndex !== -1) {
-							messages.value[existingIndex] = messageData;
-						}
-						else {
-							messages.value.push(messageData);
-						}
+				if (messageData.statusCode === 400) return;
+
+				if (messageData.id === SocketId.SPOT_TICKER || messageData.id === SocketId.FUTURES_TICKER) {
+					const mi = messageData.data.mi;
+
+					const existingIndex = messages.value.findIndex((msg) => msg.data.mi === mi);
+					if (existingIndex !== -1) {
+						messages.value[existingIndex] = messageData;
 					}
-					else if (messageData.id === SocketId.SPOT_TICKER_EXCHANGE) {
-						const mi = messageData.data.mi;
+					else {
+						messages.value.push(messageData);
+					}
+				}
+				else if (messageData.id === SocketId.SPOT_TICKER_EXCHANGE) {
+					const mi = messageData.data.mi;
 
-						const existingIndex = exchangeMessages.value.findIndex((msg) => msg.data.mi === mi);
-						if (existingIndex !== -1) {
-							exchangeMessages.value[existingIndex] = messageData;
-						}
-						else {
-							exchangeMessages.value.push(messageData);
-						}
+					const existingIndex = exchangeMessages.value.findIndex((msg) => msg.data.mi === mi);
+					if (existingIndex !== -1) {
+						exchangeMessages.value[existingIndex] = messageData;
+					}
+					else {
+						exchangeMessages.value.push(messageData);
+					}
+				}
+				else if (messageData.id === SocketId.SPOT_SNAPSHOT) {
+					if (snapshotMessageData) {
+						snapshotMessage.value = snapshotMessageData.data as Snapshot;
 					}
 				}
 			};
@@ -90,6 +102,7 @@ export const usePublicWebSocket = () => {
 		socket,
 		messages,
 		exchangeMessages,
+		snapshotMessage,
 		connect,
 		sendMessage,
 	};

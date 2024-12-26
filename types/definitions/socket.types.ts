@@ -1,8 +1,17 @@
+import type { Snapshot } from './spot.types';
+
 type SocketSpotTickerMessage = {
 	id: string;
 	topic: string;
 	statusCode?: number;
 	data: SocketSpotData;
+};
+
+type SocketSpotSnapshotMessage = {
+	id: string;
+	topic: string;
+	statusCode?: number;
+	data: Snapshot;
 };
 
 type SocketSpotData = {
@@ -35,6 +44,7 @@ type AssetListItemMessage = {
 export type {
 	AssetListItem,
 	SocketSpotTickerMessage,
+	SocketSpotSnapshotMessage,
 	AssetListItemMessage,
 	SocketSpotData,
 };

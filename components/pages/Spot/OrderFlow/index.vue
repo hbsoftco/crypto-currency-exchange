@@ -34,6 +34,7 @@
 		<div v-if="activeTab==='tradingView'">
 			<UTabs
 				:items="items"
+				:default-index="spotStore.quote === 'TMN' ? 1 : 0"
 				:ui="{
 					list: {
 						tab: {
@@ -54,13 +55,13 @@
 						v-if="item.key === 'globalChart'"
 						class="space-y-3"
 					>
-						<GlobalChart />
+						<BitlandChart quote="USDT" />
 					</div>
 					<div
 						v-else-if="item.key === 'bitlandChart'"
 						class="space-y-3"
 					>
-						<BitlandChart />
+						<BitlandChart quote="TMN" />
 					</div>
 				</template>
 			</UTabs>
@@ -73,30 +74,32 @@
 		<!-- Depth -->
 
 		<div v-if="activeTab==='info'">
-			<Info />
+			<MarketRevealing />
 		</div>
 		<!-- Info -->
 	</div>
 </template>
 
 <script setup lang="ts">
-import BitlandChart from './BitlandChart.vue';
-import DepthChart from './DepthChart.vue';
-import GlobalChart from './GlobalChart.vue';
-import Info from './Info.vue';
+const BitlandChart = defineAsyncComponent(() => import('~/components/pages/Spot/OrderFlow/BitlandChart.vue'));
+const DepthChart = defineAsyncComponent(() => import('~/components/pages/Spot/OrderFlow/DepthChart.vue'));
+const MarketRevealing = defineAsyncComponent(() => import('~/components/pages/Spot/OrderFlow/MarketRevealing.vue'));
+
+const spotStore = useSpotStore();
 
 const items = [
-	{
-		key: 'globalChart',
-		label: 'globalChart',
-		content: '',
-	},
-	{
-		key: 'bitlandChart',
-		label: 'bitlandChart',
-		content: '',
-	},
+	{ key: 'globalChart', label: 'globalChart', content: '' },
+	{ key: 'bitlandChart', label: 'bitlandChart', content: '' },
 ];
+
+// const items = [
+// 	...(spotStore.quote === 'USDT'
+// 		? [{ key: 'globalChart', label: 'globalChart', content: '' }]
+// 		: []),
+// 	...(spotStore.quote === 'TMN'
+// 		? [{ key: 'bitlandChart', label: 'bitlandChart', content: '' }]
+// 		: []),
+// ];
 
 const activeTab = ref('tradingView');
 

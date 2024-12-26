@@ -23,10 +23,10 @@ const spotStore = useSpotStore();
 
 const chartDataLoading = ref<boolean>(true);
 
-const data = {
+const data = ref({
 	asks: spotStore.depth?.depthOfAsk,
 	bids: spotStore.depth?.depthOfBid,
-};
+});
 
 const state = reactive({
 	category: [] as number[],
@@ -45,6 +45,7 @@ const isDark = computed({
 });
 
 const chartOptions = computed(() => ({
+	animation: false,
 	tooltip: {
 		trigger: 'axis',
 		formatter: function (params: any) {
@@ -165,30 +166,34 @@ const chartOptions = computed(() => ({
 }));
 
 const generateChartData = () => {
-	if (data.bids && data.asks) {
+	if (data.value.bids && data.value.asks) {
 		chartDataLoading.value = true;
 
 		const obj2arr = (arr: string[][], key: number) =>
 			arr.map((item) => parseFloat(item[key]));
 		const centerPrice = parseFloat(
-			((parseFloat(data.asks[0][0]) + parseFloat(data.bids[0][0])) / 2).toFixed(
+			((parseFloat(data.value.asks[0][0]) + parseFloat(data.value.bids[0][0])) / 2).toFixed(
 				2,
 			),
 		);
-		data.bids.sort((a, b) => parseFloat(a[0]) - parseFloat(b[0]));
+		data.value.bids.sort((a, b) => parseFloat(a[0]) - parseFloat(b[0]));
 
 		state.category = [
-			...obj2arr(data.bids, 0),
+			...obj2arr(data.value.bids, 0),
 			centerPrice,
-			...obj2arr(data.asks, 0),
+			...obj2arr(data.value.asks, 0),
 		];
-		state.bids = [...obj2arr(data.bids, 1), NaN];
+		state.bids = [...obj2arr(data.value.bids, 1), NaN];
 		const ask = Array(state.bids.length - 1).fill('');
-		state.asks = [NaN, ...ask, ...obj2arr(data.asks, 1)];
+		state.asks = [NaN, ...ask, ...obj2arr(data.value.asks, 1)];
 
 		chartDataLoading.value = false;
 	}
 };
+
+watch(() => spotStore.depth, async () => {
+	generateChartData();
+}, { deep: true });
 
 onMounted(() => {
 	setTimeout(() => {

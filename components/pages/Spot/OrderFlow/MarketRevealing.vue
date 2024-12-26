@@ -1,24 +1,31 @@
 <template>
-	<div class="pt-16 pb-6">
+	<div v-if="spotStore.marketRevealingLoading">
+		<UiLogoLoading />
+	</div>
+	<div
+		v-else
+		class="pt-16 pb-6"
+	>
 		<div class="h-[23.5rem] overflow-y-scroll px-4">
 			<section>
 				<div
-					class="flex justify-start "
+					class="flex justify-start items-center"
 					dir="ltr"
 				>
 					<img
-						src="/images/delete/bitcoin.png"
-						alt="bitcoin Logo"
+						v-if="spotStore.currency"
+						:src="`https://api-bitland.site/media/currency/${spotStore.currency}.png`"
+						alt="Brand Logo"
 						class="w-6 h-6 mx-1"
+						@error="handleImageError"
 					>
 					<h1 class="text-2xl font-bold">
-						XRP
+						{{ spotStore.currency }}
 					</h1>
 				</div>
 				<div class="mt-4">
 					<p class="text-base font-normal text-left">
-						<span v-if="showFullText">{{ text }}</span>
-						<span v-else>{{ truncatedText }}</span>
+						<span>{{ getValueByKey(spotStore.marketRevealing, 'DESCRIPTION_ARR') }}</span>
 					</p>
 					<div class="flex justify-center">
 						<ULink
@@ -132,9 +139,21 @@
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
+import { priceFormat, handleImageError, getValueByKey } from '~/utils/helpers';
 import IconArrowUp from '~/assets/svg-icons/menu/arrow-up.svg';
 import IconArrowDown from '~/assets/svg-icons/menu/arrow-down.svg';
+
+const spotStore = useSpotStore();
+
+const parseString = (text: string) => {
+	if (!text) return;
+	return JSON.parse(text);
+};
+onMounted(() => {
+	spotStore.getMarketRevealing();
+});
+
+// OLD
 
 const text = `
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 

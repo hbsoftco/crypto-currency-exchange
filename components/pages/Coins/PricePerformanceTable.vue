@@ -189,7 +189,7 @@
 
 <script setup lang="ts">
 import type { Currency } from '~/types/definitions/currency.types';
-import type { SocketSpotData } from '~/types/socket.types';
+import type { SocketSpotData } from '~/types/definitions/socket.types';
 
 interface PropsDefinition {
 	currency: Currency;
