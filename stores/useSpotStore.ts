@@ -74,6 +74,8 @@ export const useSpotStore = defineStore('spotStore', () => {
 			marketRevealingLoading.value = true;
 
 			const { result } = await marketRepo.getMarketRevealing({ symbol: symbol.value });
+			console.log(result);
+
 			marketRevealing.value = result;
 
 			marketRevealingLoading.value = false;

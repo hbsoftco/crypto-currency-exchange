@@ -205,7 +205,7 @@ const persian = {
 	totalMarketValue: 'ارزش کل بازار',
 	tradingVolume24Hours: 'حجم معاملات / ۲۴ ساعت',
 	currencyCirculation: 'ارز در گردش',
-	marketDominance: 'تسلط به بازار (%)',
+	marketDominance: 'تسلط به بازار(%)',
 	marketRank: 'رتبه بازار',
 	maxSupply: 'حداکثر عرضه ',
 	whatBitlandToken: 'توکن بیت‌لند چیست ؟',

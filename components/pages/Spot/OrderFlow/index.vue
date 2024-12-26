@@ -46,9 +46,10 @@
 			>
 				<template #default="{ item, selected }">
 					<span
+						v-show="spotStore.symbol !== 'USDTTMN'"
 						class="truncate"
 						:class="[selected && 'text-primary-500 dark:text-primary-400']"
-					>{{ $t(item.label) }}</span>
+					>{{ spotStore.symbol !== 'USDTTMN' ? $t(item.label) : '' }}</span>
 				</template>
 				<template #item="{ item }">
 					<div
@@ -76,7 +77,7 @@
 		<div v-if="activeTab==='info'">
 			<MarketRevealing />
 		</div>
-		<!-- Info -->
+		<!-- MarketRevealing -->
 	</div>
 </template>
 
@@ -88,18 +89,11 @@ const MarketRevealing = defineAsyncComponent(() => import('~/components/pages/Sp
 const spotStore = useSpotStore();
 
 const items = [
-	{ key: 'globalChart', label: 'globalChart', content: '' },
+	...(spotStore.symbol !== 'USDTTMN'
+		? [{ key: 'globalChart', label: 'globalChart', content: '' }]
+		: []),
 	{ key: 'bitlandChart', label: 'bitlandChart', content: '' },
 ];
-
-// const items = [
-// 	...(spotStore.quote === 'USDT'
-// 		? [{ key: 'globalChart', label: 'globalChart', content: '' }]
-// 		: []),
-// 	...(spotStore.quote === 'TMN'
-// 		? [{ key: 'bitlandChart', label: 'bitlandChart', content: '' }]
-// 		: []),
-// ];
 
 const activeTab = ref('tradingView');
 
