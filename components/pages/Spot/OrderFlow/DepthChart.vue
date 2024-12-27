@@ -11,6 +11,8 @@
 			class="w-full pt-16"
 		>
 			<VChart
+				ref="chartRef"
+				autoresize
 				:option="chartOptions"
 				class="w-full h-[25rem]"
 			/>
@@ -19,14 +21,11 @@
 </template>
 
 <script setup lang="ts">
+import type { ECharts } from 'echarts/core';
+
 const spotStore = useSpotStore();
 
 const chartDataLoading = ref<boolean>(true);
-
-const data = ref({
-	asks: spotStore.depth?.depthOfAsk,
-	bids: spotStore.depth?.depthOfBid,
-});
 
 const state = reactive({
 	category: [] as number[],
@@ -44,8 +43,11 @@ const isDark = computed({
 	},
 });
 
-const chartOptions = computed(() => ({
+const chartRef = ref<ECharts>();
+
+const chartOptions = ref({
 	animation: false,
+	autoresize: true,
 	tooltip: {
 		trigger: 'axis',
 		formatter: function (params: any) {
@@ -163,41 +165,68 @@ const chartOptions = computed(() => ({
 		},
 	],
 	// backgroundColor: '#fff',
-}));
+});
 
 const generateChartData = () => {
-	if (data.value.bids && data.value.asks) {
+	if (spotStore.depth?.depthOfAsk && spotStore.depth?.depthOfBid) {
 		chartDataLoading.value = true;
 
 		const obj2arr = (arr: string[][], key: number) =>
 			arr.map((item) => parseFloat(item[key]));
 		const centerPrice = parseFloat(
-			((parseFloat(data.value.asks[0][0]) + parseFloat(data.value.bids[0][0])) / 2).toFixed(
+			((parseFloat(spotStore.depth?.depthOfAsk[0][0]) + parseFloat(spotStore.depth?.depthOfBid[0][0])) / 2).toFixed(
 				2,
 			),
 		);
-		data.value.bids.sort((a, b) => parseFloat(a[0]) - parseFloat(b[0]));
+		spotStore.depth?.depthOfBid.sort((a, b) => parseFloat(a[0]) - parseFloat(b[0]));
 
 		state.category = [
-			...obj2arr(data.value.bids, 0),
+			...obj2arr(spotStore.depth?.depthOfBid, 0),
 			centerPrice,
-			...obj2arr(data.value.asks, 0),
+			...obj2arr(spotStore.depth?.depthOfAsk, 0),
 		];
-		state.bids = [...obj2arr(data.value.bids, 1), NaN];
+		state.bids = [...obj2arr(spotStore.depth?.depthOfBid, 1), NaN];
 		const ask = Array(state.bids.length - 1).fill('');
-		state.asks = [NaN, ...ask, ...obj2arr(data.value.asks, 1)];
+		state.asks = [NaN, ...ask, ...obj2arr(spotStore.depth?.depthOfAsk, 1)];
 
 		chartDataLoading.value = false;
 	}
 };
 
-watch(() => spotStore.depth, async () => {
-	generateChartData();
-}, { deep: true });
+watch(
+	() => spotStore.depth,
+	async () => {
+		state.category = [];
+		state.bids = [];
+		state.asks = [];
 
-onMounted(() => {
-	setTimeout(() => {
-		generateChartData();
-	}, 1000);
+		await generateChartData();
+
+		if (chartRef.value) {
+			chartRef.value.setOption({
+				series: [
+					{
+						name: 'BUY',
+						data: state.bids,
+					},
+					{
+						name: 'SELL',
+						data: state.asks,
+					},
+				],
+				xAxis: {
+					data: state.category,
+				},
+			});
+
+			chartRef.value.resize();
+		}
+	},
+	{ deep: true },
+);
+
+onMounted(async () => {
+	await nextTick();
+	await generateChartData();
 });
 </script>
