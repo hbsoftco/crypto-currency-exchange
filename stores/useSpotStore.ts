@@ -6,6 +6,7 @@ import type { KeyValue } from '~/types/definitions/common.types';
 import type { BidAsk, Depth, LatestTrade, SnapshotParams, Ticker } from '~/types/definitions/spot.types';
 import { PublicTopic, SocketId } from '~/utils/enums/socket.enum';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
+import { priceFormat } from '~/utils/helpers';
 
 export const useSpotStore = defineStore('spotStore', () => {
 	const { $api } = useNuxtApp();
@@ -22,13 +23,38 @@ export const useSpotStore = defineStore('spotStore', () => {
 
 	const prevPrice = ref<string>();
 	const textClass = ref<string>('');
+	const moreState = ref<boolean>(false);
+	const lessState = ref<boolean>(false);
 	const updatedPrice = ref<boolean>(false);
+
+	const tickerItems = ref<KeyValue[]>([]);
+	const selectedTickerItem = ref<string>();
 
 	const depth = ref<Depth>();
 	const ticker = ref<Ticker>();
 	const bids = ref<BidAsk[]>([]);
 	const asks = ref<BidAsk[]>([]);
 	const latestTrades = ref<LatestTrade[]>([]);
+
+	const generateTickerItems = (ticker: string) => {
+		const tickerTimes = (Number(ticker) * 1).toString();
+		tickerItems.value.push({
+			key: scientificToDecimal(tickerTimes),
+			value: priceFormat(scientificToDecimal(tickerTimes), true),
+		});
+
+		const tickerTimes10 = (Number(ticker) * 10).toString();
+		tickerItems.value.push({
+			key: scientificToDecimal(tickerTimes10),
+			value: priceFormat(scientificToDecimal(tickerTimes10), true),
+		});
+
+		const tickerTimes100 = (Number(ticker) * 100).toString();
+		tickerItems.value.push({
+			key: scientificToDecimal(tickerTimes100),
+			value: priceFormat(scientificToDecimal(tickerTimes100), true),
+		});
+	};
 
 	const chartData = reactive({
 		category: [] as number[],
@@ -59,6 +85,14 @@ export const useSpotStore = defineStore('spotStore', () => {
 		const data = await worker.fetchSnapshotData(useEnv('apiBaseUrl'), symbol.value, currency.value);
 		ticker.value.market = data.market;
 		ticker.value.currency = data.currency;
+
+		if (ticker.value.market) {
+			tickerItems.value = [];
+			selectedTickerItem.value = undefined;
+			await generateTickerItems(ticker.value.market?.tickSize);
+
+			selectedTickerItem.value = tickerItems.value[0].key;
+		}
 
 		prevPrice.value = ticker.value.i;
 
@@ -129,11 +163,17 @@ export const useSpotStore = defineStore('spotStore', () => {
 
 				if (ticker.value.i !== prevPrice.value) {
 					updatedPrice.value = true;
-					textClass.value
-							= Number(ticker.value.i) > Number(prevPrice.value)
-							? 'text-accent-green dark:text-accent-green'
-							: 'text-accent-red dark:text-accent-red';
+					if (Number(ticker.value.i) > Number(prevPrice.value)) {
+						moreState.value = true;
+						textClass.value = 'text-accent-green dark:text-accent-green';
+					}
+					else {
+						lessState.value = true;
+						textClass.value = 'text-accent-red dark:text-accent-red';
+					}
 					setTimeout(() => {
+						moreState.value = false;
+						lessState.value = false;
 						updatedPrice.value = false;
 						textClass.value = '';
 					}, 500);
@@ -158,6 +198,10 @@ export const useSpotStore = defineStore('spotStore', () => {
 		chartData,
 		textClass,
 		updatedPrice,
+		lessState,
+		moreState,
+		tickerItems,
+		selectedTickerItem,
 
 		startSocket,
 		stopSocket,

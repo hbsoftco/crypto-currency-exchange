@@ -1,7 +1,7 @@
 <template>
 	<div
 		v-if="spotStore.snapshotLoading"
-		class="flex justify-center items-center h-[26rem]"
+		class="flex justify-center items-center h-[30.3rem]"
 	>
 		<span>{{ $t('isLoading') }} ...</span>
 	</div>
@@ -37,13 +37,13 @@
 							'text-accent-green': item.s === 1,
 						}"
 					>
-						<span>{{ useNumber (item.p) }}</span>
+						<span dir="ltr">{{ priceFormat(item.p, true) }}</span>
+					</td>
+					<td class="text-xs font-normal py-1 pl-3 text-left">
+						<span dir="ltr">{{ formatBigNumber(item.v) }}</span>
 					</td>
 					<td class="text-xs font-normal py-1 text-left">
-						<span>{{ useNumber(item.v) }}</span>
-					</td>
-					<td class="text-xs font-normal py-1 text-left">
-						<span>{{ useNumber(timeFormatter(item.t)) }}</span>
+						<span>{{ (timeFormatter(item.t)) }}</span>
 					</td>
 				</tr>
 			</tbody>
@@ -52,7 +52,6 @@
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
 import { timeFormatter } from '~/utils/time-formatter';
 
 const spotStore = useSpotStore();

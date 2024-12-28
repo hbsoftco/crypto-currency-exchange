@@ -1,0 +1,18 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12" width="12" height="12">
+	<title>arrow-up</title>
+	<defs>
+		<clipPath clipPathUnits="userSpaceOnUse" id="cp1">
+			<path d="m0 12h11.02v-12h-11.02z"/>
+		</clipPath>
+	</defs>
+	<style>
+		.s0 { fill: #f44336 } 
+	</style>
+	<g id="Clip-Path: Frame" clip-path="url(#cp1)">
+		<g id="Frame">
+			<g id="Group">
+				<path id="Vector" class="s0" d="m5 11.8q0.3 0.2 0.6 0.2 0.4 0 0.7-0.3l4.5-4.4q0.2-0.2 0.2-0.6 0-0.3-0.3-0.6-0.3-0.2-0.6-0.2-0.4 0-0.7 0.3l-2.9 2.9-0.2-8.3q0-0.3-0.3-0.6-0.3-0.2-0.7-0.2-0.3 0-0.6 0.3-0.3 0.2-0.3 0.6l0.2 8.2-3-2.8q-0.2-0.1-0.3-0.1-0.2-0.1-0.4-0.1-0.2 0-0.3 0.1-0.2 0-0.3 0.2-0.3 0.2-0.3 0.6 0 0.3 0.3 0.6z"/>
+			</g>
+		</g>
+	</g>
+</svg>

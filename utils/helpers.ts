@@ -131,6 +131,9 @@ const capitalizer = (string: string): string => {
 };
 
 const scientificToDecimal = (scientific: string): string => {
+	if (Number(scientific) > 1) {
+		return scientific;
+	}
 	const [base, exponent] = scientific.toString().toLowerCase().split('e');
 	const baseNumber = parseFloat(base);
 	const exponentValue = parseInt(exponent, 10);

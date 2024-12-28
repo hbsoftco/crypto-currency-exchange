@@ -704,7 +704,7 @@ const fetchSnapshotData = async (baseUrl: string, market: string, currency: stri
 	if (!marketBriefItems.length) {
 		await fetchMarketBriefItems(baseUrl);
 	}
-	const findMarket = await marketBriefItems.filter((marketItem) => (marketItem.mSymbol === market));
+	const findMarket = await marketBriefItems.find((marketItem) => (marketItem.mSymbol === market));
 	const findCurrency = await findCurrencyBycSymbol(currency, baseUrl);
 
 	return {

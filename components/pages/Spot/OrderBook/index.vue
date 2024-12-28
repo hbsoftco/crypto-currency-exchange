@@ -36,8 +36,8 @@
 </template>
 
 <script setup lang="ts">
-import LatestTrades from './LatestTrades.vue';
-import OrderList from './OrderList.vue';
+const LatestTrades = defineAsyncComponent(() => import('~/components/pages/Spot/OrderBook/LatestTrades.vue'));
+const OrderList = defineAsyncComponent(() => import('~/components/pages/Spot/OrderBook/OrderList.vue'));
 
 const items = [
 	{

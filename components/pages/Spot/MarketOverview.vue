@@ -113,6 +113,4 @@ const searchBox = ref<boolean>(false);
 const openSearchBox = () => {
 	searchBox.value = !searchBox.value;
 };
-
-onMounted(() => {});
 </script>

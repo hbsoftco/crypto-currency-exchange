@@ -1,12 +1,15 @@
 <template>
 	<div class="w-full bg-hover-light dark:bg-hover-dark rounded-sm">
 		<div class="flex justify-between items-center">
-			<div dir="ltr">
+			<div
+				v-if="!spotStore.snapshotLoading"
+				dir="ltr"
+			>
 				<USelectMenu
-					v-model="selected"
-					:options="items"
+					v-model="spotStore.selectedTickerItem"
+					:options="spotStore.tickerItems"
 					placeholder=""
-					value-attribute="id"
+					value-attribute="key"
 					option-attribute="value"
 					class="min-w-24 w-24"
 					size="xs"
@@ -66,9 +69,11 @@
 </template>
 
 <script setup lang="ts">
-import BuyOrders from './BuyOrders.vue';
-import BuySellOrders from './BuySellOrders.vue';
-import SellOrders from './SellOrders.vue';
+const BuyOrders = defineAsyncComponent(() => import('~/components/pages/Spot/OrderBook/BuyOrders.vue'));
+const BuySellOrders = defineAsyncComponent(() => import('~/components/pages/Spot/OrderBook/BuySellOrders.vue'));
+const SellOrders = defineAsyncComponent(() => import('~/components/pages/Spot/OrderBook/SellOrders.vue'));
+
+const spotStore = useSpotStore();
 
 const colorMode = useColorMode();
 const isDark = computed(() => colorMode.value === 'dark');
@@ -84,18 +89,6 @@ const getIconSrc = (button: 'all' | 'buy' | 'sell') => {
 	const iconSuffix = isDark.value ? 'dark.svg' : 'light.svg';
 	return `${iconPrefix}${iconNames[button]}-${iconSuffix}`;
 };
-const items = [{
-	id: 1,
-	value: '1000',
-}, {
-	id: 2,
-	value: '10000',
-}, {
-	id: 3,
-	value: '100000',
-}];
-
-const selected = ref(items[0].id);
 
 const activeButton = ref('all');
 

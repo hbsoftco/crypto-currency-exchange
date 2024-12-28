@@ -14,11 +14,6 @@
 				<BuySellForm />
 			</div>
 			<div class="flex-1">
-				<div class="mb-2">
-					<MarketOverview />
-				</div>
-				<!-- MarketOverview -->
-
 				<div class="flex justify-start">
 					<div
 						class="w-64 max-w-64 ml-2"
@@ -27,7 +22,13 @@
 					</div>
 
 					<div class="flex-1">
-						<OrderFlow />
+						<div class="mb-2">
+							<MarketOverview />
+						</div>
+
+						<div>
+							<OrderFlow />
+						</div>
 					</div>
 				</div>
 				<!-- OrderBook and OrderFlow -->
