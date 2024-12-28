@@ -4,13 +4,23 @@ type SystemListResponse = {
 	statusCode: number;
 	result: {
 		totalCount: number;
-		rows: System[] | Card[] | Pin[];
+		rows: System[] | Card[] | Pin[] | SystemRoot[] | Tree[];
 	};
 };
 
 type SystemResponse = {
 	statusCode: number;
 	result: System | LinkListItem | MiniRoutine;
+};
+
+type SystemRoot = {
+	cid: number;
+	id: number;
+	typeId: number;
+	mediaId: number;
+	mediaUrl: string;
+	tags: KeyValue[];
+	info: CardInfo;
 };
 
 type SubFaq = {
@@ -116,9 +126,18 @@ type MiniRoutine = {
 	helps: KeyValue[];
 };
 
+type Tree = {
+	id: number;
+	parentId: number;
+	order: number;
+	header: string;
+	children?: Tree[];
+};
+
 export type {
 	SystemListResponse,
 	SystemResponse,
+	SystemRoot,
 	System,
 	SubFaq,
 	LinkListItem,
@@ -128,4 +147,5 @@ export type {
 	FooterLinkSection,
 	MiniRoutineParams,
 	MiniRoutine,
+	Tree,
 };

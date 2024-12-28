@@ -49,7 +49,7 @@
 
 					<div class="grid grid-col-3 md:grid-cols-6 gap-4 my-4">
 						<ULink
-							v-for="(item, index) in shortList"
+							v-for="(item, index) in systemHelpShortList"
 							:key="index"
 							:to="`help-center/${item.id}`"
 							class="flex flex-col justify-center items-center py-4 px-4 border border-primary-gray-light dark:border-primary-gray-dark rounded-md"
@@ -85,7 +85,7 @@
 
 					<div class="grid grid-col-2 md:grid-cols-3 gap-4 my-12">
 						<ULink
-							v-for="(item, index) in helpList"
+							v-for="(item, index) in systemHelpRootList"
 							:key="index"
 							:to="`help-center/${item.id}`"
 							class="flex items-center py-4 border-b border-primary-gray-light dark:border-primary-gray-dark"
@@ -179,25 +179,51 @@ import IconTelegram from '~/assets/svg-icons/social/telegram.svg';
 import IconLinkedin from '~/assets/svg-icons/social/linkedin.svg';
 import IconWhatsapp from '~/assets/svg-icons/social/whatsapp.svg';
 import IconTwitter from '~/assets/svg-icons/social/twitter.svg';
-import { helpRepository } from '~/repositories/help.repository';
-import type { GetRootListParams } from '~/types/base.types';
-import type { RootList, ShortList } from '~/types/response/help.types';
 import ImageCover from '~/components/pages/ImageCover.vue';
+import { systemRepository } from '~/repositories/system.repository';
+import type { BaseLangGroupParams } from '~/types/definitions/common.types';
+import type { SystemRoot } from '~/types/definitions/system.types';
 
 const searchInput = ref('');
 const router = useRouter();
 
 const { $api } = useNuxtApp();
-const helpRepo = helpRepository($api);
-const params = ref<GetRootListParams>({
-	languageId: '',
-	group: '',
-});
-const response = await helpRepo.getRootList(params.value);
-const helpList = ref<RootList[]>(response.result.rows);
+const systemRepo = systemRepository($api);
 
-const responseShort = await helpRepo.getShortList(params.value);
-const shortList = ref<ShortList[]>(responseShort.result.rows);
+const systemHelpParams = ref<BaseLangGroupParams>(
+	{ languageId: '',
+		group: '',
+	},
+);
+const systemHelpRootList = ref<SystemRoot[]>();
+const systemHelpRootListLoading = ref<boolean>(false);
+const getSystemRoot = async () => {
+	try {
+		systemHelpRootListLoading.value = true;
+		const { result } = await systemRepo.getSystemRootList(systemHelpParams.value);
+		systemHelpRootList.value = result.rows as SystemRoot[];
+		systemHelpRootListLoading.value = false;
+	}
+	catch (error) {
+		console.log(error);
+		systemHelpRootListLoading.value = false;
+	}
+};
+
+const systemHelpShortList = ref<SystemRoot[]>();
+const systemHelpShortListLoading = ref<boolean>(false);
+const getSystemShort = async () => {
+	try {
+		systemHelpShortListLoading.value = true;
+		const { result } = await systemRepo.getSystemShortList(systemHelpParams.value);
+		systemHelpShortList.value = result.rows as SystemRoot[];
+		systemHelpShortListLoading.value = false;
+	}
+	catch (error) {
+		console.log(error);
+		systemHelpShortListLoading.value = false;
+	}
+};
 
 // Function to handle search
 const handleSearch = () => {
@@ -211,4 +237,9 @@ const handleSearch = () => {
 		console.log(error);
 	}
 };
+
+onMounted(async () => {
+	await getSystemRoot();
+	await getSystemShort();
+});
 </script>

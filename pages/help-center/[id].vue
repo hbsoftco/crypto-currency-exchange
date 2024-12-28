@@ -9,7 +9,7 @@
 							{{ $t('bitlandHelpCenter') }}
 						</h1>
 						<div
-							v-if="FAQItems && FAQItems.info.length > 0"
+							v-if="systemHelp"
 							class="flex items-center my-4"
 						>
 							<ULink
@@ -22,7 +22,7 @@
 							</ULink>
 							<IconArrowLeft class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark" />
 							<span class="mx-1 text-sm font-normal text-primary-yellow-light dark:text-primary-yellow-dark">
-								{{ FAQItems.info[0].header }}
+								{{ systemHelp.info.header }}
 							</span>
 						</div>
 					</div>
@@ -56,17 +56,17 @@
 						/>
 					</div>
 					<div
-						v-if="FAQItems && FAQItems.info.length > 0"
+						v-if="systemHelp"
 						class="col-span-12 md:col-span-8 p-4"
 					>
 						<div class="pt-4 pb-10">
 							<h2 class="text-4xl font-black">
-								{{ FAQItems.info[0].header }}
+								{{ systemHelp.info.header }}
 							</h2>
 						</div>
 						<p
 							class="content my-2"
-							v-html="sanitizedHtml(FAQItems.info[0].content)"
+							v-html="sanitizedHtml(systemHelp.info.content)"
 						/>
 					</div>
 				</div>
@@ -77,45 +77,49 @@
 
 <script setup lang="ts">
 import TreeNode from '~/components/pages/Site/Support/TreeNode.vue';
-import { helpRepository } from '~/repositories/help.repository';
 import SearchCrypto from '~/components/forms/SearchCrypto.vue';
 import { Language } from '~/utils/enums/language.enum';
-import type { FaqItem } from '~/types/response/help.types';
 import { sanitizedHtml } from '~/utils/helpers';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
-import type { GetCurrencyParams, GetRootListParams } from '~/types/base.types';
+import { systemRepository } from '~/repositories/system.repository';
+import type { BaseLangGroupParams, BaseLangIdParams } from '~/types/definitions/common.types';
+import type { System, Tree } from '~/types/definitions/system.types';
 
 const route = useRoute();
 const id = String(route.params.id);
 
-interface TreeItem {
-	id: number;
-	parentId: number;
-	order: number;
-	header: string;
-	children?: TreeItem[];
-}
-
 const { $api } = useNuxtApp();
-const helpRepo = helpRepository($api);
+const systemRepo = systemRepository($api);
 
-const params = ref<GetRootListParams>({
-	languageId: String(Language.PERSIAN),
-	group: '',
-});
-const response = await helpRepo.getTreeList(params.value);
+const systemHelpParams = ref<BaseLangGroupParams>(
+	{ languageId: '',
+		group: '',
+	},
+);
+const systemTree = ref<Tree[]>([]);
+const systemTreeLoading = ref<boolean>(false);
+const getSystemTree = async () => {
+	try {
+		systemTreeLoading.value = true;
+		const { result } = await systemRepo.getSystemTreeList(systemHelpParams.value);
+		systemTree.value = buildNestedList(result.rows as Tree[]);
+		systemTreeLoading.value = false;
+	}
+	catch (error) {
+		console.log(error);
+		systemTreeLoading.value = false;
+	}
+};
 
-const TreeList = ref<TreeItem[]>(buildNestedList(response.result.rows));
-
-function buildNestedList(data: TreeItem[]): TreeItem[] {
-	const itemsById: Record<number, TreeItem> = {};
-	data.forEach((item: TreeItem) => {
+const buildNestedList = (data: Tree[]): Tree[] => {
+	const itemsById: Record<number, Tree> = {};
+	data.forEach((item: Tree) => {
 		itemsById[item.id] = { ...item, children: [] };
 	});
 
-	const rootItems: TreeItem[] = [];
+	const rootItems: Tree[] = [];
 
-	data.forEach((item: TreeItem) => {
+	data.forEach((item: Tree) => {
 		if (item.parentId === 0) {
 			rootItems.push(itemsById[item.id]);
 		}
@@ -128,35 +132,37 @@ function buildNestedList(data: TreeItem[]): TreeItem[] {
 	});
 
 	return rootItems;
-}
+};
 
-const paramsData = ref<GetCurrencyParams>({
+const paramsData = ref<BaseLangIdParams>({
 	id: '',
 	languageId: String(Language.PERSIAN),
 });
-const FAQItems = ref<FaqItem | null>(null);
-
+const systemHelp = ref<System | null>(null);
+const systemHelpLoading = ref<boolean>(false);
 const loadHelpData = async (itemId: string) => {
 	try {
+		systemHelpLoading.value = true;
 		paramsData.value.id = String(itemId);
-		const loadData = await helpRepo.getHelpData(paramsData.value);
-		FAQItems.value = loadData.result;
-		// console.log('loadData------------*********************************', FAQItems);
+		const loadData = await systemRepo.getSystemHelp(paramsData.value);
+		systemHelp.value = loadData.result as System;
+		systemHelpLoading.value = false;
 	}
 	catch (error) {
 		console.log(error);
+		systemHelpLoading.value = false;
 	}
 };
 
 const searchMenu = ref('');
 const filteredTreeList = computed(() => {
-	if (!searchMenu.value) return TreeList.value;
-	return TreeList.value
+	if (!searchMenu.value) return systemTree.value;
+	return systemTree.value
 		.map((item) => filterNode(item, searchMenu.value))
 		.filter((item) => item !== null);
 });
 
-function filterNode(node: TreeItem, searchText: string): TreeItem | null {
+const filterNode = (node: Tree, searchText: string): Tree | null => {
 	const hasMatch = node.header.includes(searchText);
 	const filteredChildren = node.children
 		? node.children
@@ -168,10 +174,10 @@ function filterNode(node: TreeItem, searchText: string): TreeItem | null {
 		return { ...node, children: filteredChildren };
 	}
 	return null;
-}
+};
 onMounted(async () => {
+	await getSystemTree();
 	await nextTick();
 	await loadHelpData(id);
-	console.log(loadHelpData);
 });
 </script>
