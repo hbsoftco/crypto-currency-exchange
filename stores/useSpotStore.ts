@@ -39,19 +39,19 @@ export const useSpotStore = defineStore('spotStore', () => {
 	const generateTickerItems = (ticker: string) => {
 		const tickerTimes = (Number(ticker) * 1).toString();
 		tickerItems.value.push({
-			key: scientificToDecimal(tickerTimes),
+			key: '0',
 			value: priceFormat(scientificToDecimal(tickerTimes), true),
 		});
 
 		const tickerTimes10 = (Number(ticker) * 10).toString();
 		tickerItems.value.push({
-			key: scientificToDecimal(tickerTimes10),
+			key: '1',
 			value: priceFormat(scientificToDecimal(tickerTimes10), true),
 		});
 
 		const tickerTimes100 = (Number(ticker) * 100).toString();
 		tickerItems.value.push({
-			key: scientificToDecimal(tickerTimes100),
+			key: '2',
 			value: priceFormat(scientificToDecimal(tickerTimes100), true),
 		});
 	};
@@ -64,16 +64,18 @@ export const useSpotStore = defineStore('spotStore', () => {
 
 	const snapshotParams = ref<SnapshotParams>({
 		symbol: '',
-		level: '',
+		level: '0',
 		rows: '20',
 	});
 	const snapshotLoading = ref<boolean>(true);
+	const snapshotFirstLoading = ref<boolean>(true);
 	const getSnapshot = async () => {
 		if (!symbol.value || !currency.value) return;
 
 		marketRevealing.value = [];
 		snapshotLoading.value = true;
 		snapshotParams.value.symbol = symbol.value;
+		snapshotParams.value.level = selectedTickerItem.value;
 		const { result } = await spotRepo.getSnapshot(snapshotParams.value);
 
 		bids.value = result.bids;
@@ -88,15 +90,17 @@ export const useSpotStore = defineStore('spotStore', () => {
 
 		if (ticker.value.market) {
 			tickerItems.value = [];
-			selectedTickerItem.value = undefined;
 			await generateTickerItems(ticker.value.market?.tickSize);
 
-			selectedTickerItem.value = tickerItems.value[0].key;
+			if (snapshotFirstLoading.value) {
+				selectedTickerItem.value = '0';
+			}
 		}
 
 		prevPrice.value = ticker.value.i;
 
 		snapshotLoading.value = false;
+		snapshotFirstLoading.value = false;
 	};
 
 	const marketRevealing = ref<KeyValue[]>([]);
@@ -185,6 +189,7 @@ export const useSpotStore = defineStore('spotStore', () => {
 	}, { deep: true });
 
 	return {
+		snapshotFirstLoading,
 		snapshotLoading,
 		snapshotParams,
 		currency,

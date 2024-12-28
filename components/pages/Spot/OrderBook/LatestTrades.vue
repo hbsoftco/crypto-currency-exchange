@@ -40,7 +40,7 @@
 						<span dir="ltr">{{ priceFormat(item.p, true) }}</span>
 					</td>
 					<td class="text-xs font-normal py-1 pl-3 text-left">
-						<span dir="ltr">{{ formatBigNumber(item.v) }}</span>
+						<span dir="ltr">{{ formatBigNumber(item.v, 3) }}</span>
 					</td>
 					<td class="text-xs font-normal py-1 text-left">
 						<span>{{ (timeFormatter(item.t)) }}</span>
@@ -53,6 +53,7 @@
 
 <script setup lang="ts">
 import { timeFormatter } from '~/utils/time-formatter';
+import { formatBigNumber, priceFormat } from '~/utils/helpers';
 
 const spotStore = useSpotStore();
 </script>

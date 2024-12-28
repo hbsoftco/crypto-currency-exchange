@@ -2,7 +2,6 @@
 	<div class="w-full bg-hover-light dark:bg-hover-dark rounded-sm">
 		<div class="flex justify-between items-center">
 			<div
-				v-if="!spotStore.snapshotLoading"
 				dir="ltr"
 			>
 				<USelectMenu
@@ -13,6 +12,7 @@
 					option-attribute="value"
 					class="min-w-24 w-24"
 					size="xs"
+					@change="spotStore.getSnapshot()"
 				/>
 			</div>
 
@@ -95,4 +95,8 @@ const activeButton = ref('all');
 const setActiveButton = (button: string) => {
 	activeButton.value = button;
 };
+
+onMounted(() => {
+	spotStore.selectedTickerItem = spotStore.tickerItems[0].key;
+});
 </script>

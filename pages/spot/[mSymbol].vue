@@ -1,6 +1,6 @@
 <template>
 	<div
-		v-if="spotStore.snapshotLoading"
+		v-if="spotStore.snapshotFirstLoading"
 		class="p-4"
 	>
 		<UiLogoLoading />
