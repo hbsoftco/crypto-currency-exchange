@@ -25,13 +25,13 @@
 
 				<div class="relative flex justify-between">
 					<div class="text-xs font-normal ">
-						<span>{{ useNumber(item.c) }}</span>
+						<span>{{ (item.c) }}</span>
 					</div>
 					<div class="text-xs font-normal">
-						<span>{{ useNumber(item.v) }}</span>
+						<span>{{ (item.v) }}</span>
 					</div>
 					<div class="flex items-center text-xs font-normal text-accent-red dark:text-accent-red">
-						<span>{{ useNumber(item.p) }}</span>
+						<span dir="ltr">{{ priceFormat(item.p, true) }}</span>
 						<div class="mr-2 bg-primary-yellow dark:bg-primary-yellow-dark w-2 h-2 rounded-full" />
 					</div>
 				</div>
@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
+import { priceFormat } from '~/utils/helpers';
 
 const spotStore = useSpotStore();
 const recordCount = ref<number>(17);

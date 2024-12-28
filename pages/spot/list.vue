@@ -116,6 +116,11 @@ const OpenOrders = defineAsyncComponent(() => import('~/components/pages/Spot/Li
 const OrderHistory = defineAsyncComponent(() =>	import('~/components/pages/Spot/List/OrderHistory.vue'));
 const TransactionHistory = defineAsyncComponent(() => import('~/components/pages/Spot/List/TransactionHistory.vue'));
 
+definePageMeta({
+	layout: 'default',
+	middleware: 'auth',
+});
+
 interface TabItem {
 	key: string;
 	label: string;
