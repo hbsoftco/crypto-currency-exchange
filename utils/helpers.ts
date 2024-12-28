@@ -130,6 +130,20 @@ const capitalizer = (string: string): string => {
 	return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
+const scientificToDecimal = (scientific: string): string => {
+	const [base, exponent] = scientific.toString().toLowerCase().split('e');
+	const baseNumber = parseFloat(base);
+	const exponentValue = parseInt(exponent, 10);
+
+	if (exponentValue >= 0) {
+		return (baseNumber * Math.pow(10, exponentValue)).toFixed(0);
+	}
+	else {
+		const decimalPlaces = Math.abs(exponentValue);
+		return `0.${'0'.repeat(decimalPlaces - 1)}${baseNumber.toString().replace('.', '')}`;
+	}
+};
+
 const getValueByKey = (array: KeyValue[], key: string) => {
 	if (!array.length) {
 		return null;
@@ -204,4 +218,5 @@ export {
 	priceFormat,
 	handleImageError,
 	formatTextWithLineBreaks,
+	scientificToDecimal,
 };

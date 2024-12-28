@@ -346,20 +346,6 @@ const tooltipShowPersianDate = (value: string | number) => {
 	return result;
 };
 
-const scientificToDecimal = (scientific: string): string => {
-	const [base, exponent] = scientific.toString().toLowerCase().split('e');
-	const baseNumber = parseFloat(base);
-	const exponentValue = parseInt(exponent, 10);
-
-	if (exponentValue >= 0) {
-		return (baseNumber * Math.pow(10, exponentValue)).toFixed(0);
-	}
-	else {
-		const decimalPlaces = Math.abs(exponentValue);
-		return `0.${'0'.repeat(decimalPlaces - 1)}${baseNumber.toString().replace('.', '')}`;
-	}
-};
-
 const tooltipTimeFormat = (value: string | number) => {
 	const time = selectedOption.value.header_option;
 	const data = Number(value);

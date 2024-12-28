@@ -9,6 +9,7 @@
 		<div
 			v-if="!spotStore.snapshotLoading && !chartDataLoading"
 			class="w-full pt-16"
+			dir="ltr"
 		>
 			<VChart
 				ref="chartRef"
@@ -45,7 +46,7 @@ const isDark = computed({
 
 const chartRef = ref<ECharts>();
 
-const chartOptions = ref({
+const chartOptions = computed(() => ({
 	animation: false,
 	autoresize: true,
 	tooltip: {
@@ -82,12 +83,28 @@ const chartOptions = ref({
 		type: 'category',
 		boundaryGap: false,
 		data: state.category,
+		axisLabel: {
+			fontFamily: 'dana',
+			formatter: (value: number) => {
+				return priceFormat(scientificToDecimal(String(value)), true);
+			},
+		},
 	},
 	yAxis: {
 		type: 'value',
 		name: '',
 		splitLine: {
 			show: false,
+		},
+		axisLabel: {
+			fontFamily: 'dana',
+			formatter: (value: number) => {
+				if (value > 1) {
+					return (String(bigNumber(value)));
+				}
+
+				return priceFormat(scientificToDecimal(String(value)), true);
+			},
 		},
 	},
 	series: [
@@ -164,8 +181,7 @@ const chartOptions = ref({
 			lineStyle: { color: '#F14235' },
 		},
 	],
-	// backgroundColor: '#fff',
-});
+}));
 
 const generateChartData = () => {
 	if (spotStore.depth?.depthOfAsk && spotStore.depth?.depthOfBid) {

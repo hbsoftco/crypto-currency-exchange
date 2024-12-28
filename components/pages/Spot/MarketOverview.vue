@@ -33,6 +33,7 @@
 
 				<div class="ml-14">
 					<strong
+						dir="ltr"
 						class="text-base font-bold"
 						:class="{
 							[spotStore.textClass]: spotStore.updatedPrice,
@@ -59,7 +60,10 @@
 						<span class="font-normal text-xs text-subtle-text-light dark:to-subtle-text-50">24H High</span>
 					</div>
 					<div>
-						<strong class="text-xs font-bold">{{ priceFormat(String(spotStore.ticker?.h), true) }}</strong>
+						<strong
+							class="text-xs font-bold"
+							dir="ltr"
+						>{{ priceFormat(String(spotStore.ticker?.h), true) }}</strong>
 					</div>
 				</div>
 
@@ -68,7 +72,10 @@
 						<span class="font-normal text-xs text-subtle-text-light dark:to-subtle-text-50">24H Low</span>
 					</div>
 					<div>
-						<strong class="text-xs font-bold">{{ priceFormat(String(spotStore.ticker?.l), true) }}</strong>
+						<strong
+							class="text-xs font-bold"
+							dir="ltr"
+						>{{ priceFormat(String(spotStore.ticker?.l), true) }}</strong>
 					</div>
 				</div>
 
@@ -77,7 +84,10 @@
 						<span class="font-normal text-xs text-subtle-text-light dark:to-subtle-text-50">24H Volume (BTC)</span>
 					</div>
 					<div>
-						<strong class="text-xs font-bold">{{ priceFormat(String(spotStore.ticker?.q), true) }}</strong>
+						<strong
+							class="text-xs font-bold"
+							dir="ltr"
+						>{{ priceFormat(String(spotStore.ticker?.q), true) }}</strong>
 					</div>
 				</div>
 			</div>

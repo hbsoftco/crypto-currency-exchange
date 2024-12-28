@@ -169,7 +169,7 @@
 								</div>
 							</td>
 							<td class="p-2 text-xs font-normal py-1 text-left text-accent-red">
-								<span>{{ priceFormat(market.indexPrice, true) }}</span>
+								<span dir="ltr">{{ priceFormat(market.indexPrice, true) }}</span>
 							</td>
 							<td
 								dir="ltr"
