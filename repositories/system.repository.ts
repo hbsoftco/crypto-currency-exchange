@@ -1,7 +1,7 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
-import type { BaseLangGroupParams, BaseLangIdParams } from '~/types/definitions/common.types';
+import type { BaseLangGroupParams, BaseLangIdParams, SearchListParams } from '~/types/definitions/common.types';
 import type { MiniRoutineParams, SystemListResponse, SystemResponse } from '~/types/definitions/system.types';
 
 type SystemRepository = {
@@ -10,6 +10,10 @@ type SystemRepository = {
 	getSystemPinList: (params: BaseLangGroupParams) => Promise<SystemListResponse>;
 	getSystemCardList: (params: BaseLangGroupParams) => Promise<SystemListResponse>;
 	getSystemMiniRoutine: (params: MiniRoutineParams) => Promise<SystemResponse>;
+	getSystemRootList: (params: BaseLangGroupParams) => Promise<SystemListResponse>;
+	getSystemShortList: (params: BaseLangGroupParams) => Promise<SystemListResponse>;
+	getSystemTreeList: (params: BaseLangGroupParams) => Promise<SystemListResponse>;
+	getSearchList: (params: SearchListParams) => Promise<SystemListResponse>;
 };
 
 export const systemRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SystemRepository => ({
@@ -78,6 +82,62 @@ export const systemRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Sys
 		const url = '/v1/system/help/mini_routine';
 		const response = await fetch<SystemResponse>(`${url}?${query.toString()}`, {
 			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getSystemRootList(params: BaseLangGroupParams): Promise<SystemListResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/system/help/root_list';
+		const response = await fetch<SystemListResponse>(`${url}?${query.toString()}`, {
+			noAuth: true,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getSystemShortList(params: BaseLangGroupParams): Promise<SystemListResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/system/help/shortcut_list';
+		const response = await fetch<SystemListResponse>(`${url}?${query.toString()}`, {
+			noAuth: true,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getSystemTreeList(params: BaseLangGroupParams): Promise<SystemListResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/system/help/tree_list';
+		const response = await fetch<SystemListResponse>(`${url}?${query.toString()}`, {
+			noAuth: true,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getSearchList(params: SearchListParams): Promise<SystemListResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/system/help/search_list';
+		const response = await fetch<SystemListResponse>(`${url}?${query.toString()}`, {
+			noAuth: true,
 			method: 'GET',
 		} as CustomNitroFetchOptions);
 

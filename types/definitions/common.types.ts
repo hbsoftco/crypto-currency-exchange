@@ -29,6 +29,15 @@ type QrCodeInput = {
 	hash: string;
 };
 
+type SearchListParams = {
+	languageId: string;
+	tagId: string;
+	searchStatement: string;
+	group: string;
+	pageNumber: string;
+	pageSize: string;
+};
+
 export type {
 	CommonResponse,
 	KeyValueResponse,
@@ -36,4 +45,5 @@ export type {
 	BaseLangGroupParams,
 	KeyValue,
 	QrCodeInput,
+	SearchListParams,
 };

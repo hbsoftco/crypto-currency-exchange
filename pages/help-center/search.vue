@@ -126,45 +126,47 @@
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
 import TreeNode from '~/components/pages/Site/Support/TreeNode.vue';
-import { helpRepository } from '~/repositories/help.repository';
 import SearchCrypto from '~/components/forms/SearchCrypto.vue';
 import { Language } from '~/utils/enums/language.enum';
 import { sanitizedHtml } from '~/utils/helpers';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
-import type { SearchItem } from '~/types/response/help.types';
-import type { GetFAQListParams, GetRootListParams } from '~/types/base.types';
+import { systemRepository } from '~/repositories/system.repository';
+import type { BaseLangGroupParams, SearchListParams } from '~/types/definitions/common.types';
+import type { SystemRoot, Tree } from '~/types/definitions/system.types';
 
 const route = useRoute();
 const searchQuery = route.query.q || '';
 
-interface TreeItem {
-	id: number;
-	parentId: number;
-	order: number;
-	header: string;
-	children?: TreeItem[];
-}
-
 const { $api } = useNuxtApp();
-const helpRepo = helpRepository($api);
+const systemRepo = systemRepository($api);
 
-const params = ref<GetRootListParams>({
+const systemHelpParams = ref<BaseLangGroupParams>({
 	languageId: String(Language.PERSIAN),
 	group: '',
 });
-const response = await helpRepo.getTreeList(params.value);
-
-const TreeList = ref<TreeItem[]>(buildNestedList(response.result.rows));
-
-function buildNestedList(data: TreeItem[]): TreeItem[] {
-	const itemsById: Record<number, TreeItem> = {};
-	data.forEach((item: TreeItem) => {
+const systemTree = ref<Tree[]>([]);
+const systemTreeLoading = ref<boolean>(false);
+const getSystemTree = async () => {
+	try {
+		systemTreeLoading.value = true;
+		const { result } = await systemRepo.getSystemTreeList(systemHelpParams.value);
+		systemTree.value = buildNestedList(result.rows as Tree[]);
+		systemTreeLoading.value = false;
+	}
+	catch (error) {
+		console.log(error);
+		systemTreeLoading.value = false;
+	}
+};
+const buildNestedList = (data: Tree[]): Tree[] => {
+	const itemsById: Record<number, Tree> = {};
+	data.forEach((item: Tree) => {
 		itemsById[item.id] = { ...item, children: [] };
 	});
 
-	const rootItems: TreeItem[] = [];
+	const rootItems: Tree[] = [];
 
-	data.forEach((item: TreeItem) => {
+	data.forEach((item: Tree) => {
 		if (item.parentId === 0) {
 			rootItems.push(itemsById[item.id]);
 		}
@@ -177,9 +179,9 @@ function buildNestedList(data: TreeItem[]): TreeItem[] {
 	});
 
 	return rootItems;
-}
+};
 
-const paramsSearch = ref<GetFAQListParams>({
+const paramsSearch = ref<SearchListParams>({
 	languageId: '',
 	tagId: '',
 	searchStatement: String(searchQuery),
@@ -188,15 +190,15 @@ const paramsSearch = ref<GetFAQListParams>({
 	pageSize: '20',
 });
 
-const searchItem = ref<SearchItem[]>([]);
+const searchItem = ref<SystemRoot[]>([]);
 const loading = ref(true);
 
 const fetchSearchResults = async () => {
 	loading.value = true;
 	try {
-		const response = await helpRepo.getSearchList(paramsSearch.value);
-		searchItem.value = response.result.rows;
-		totalCount.value = response.result.totalCount;
+		const { result } = await systemRepo.getSearchList(paramsSearch.value);
+		searchItem.value = result.rows as SystemRoot[];
+		totalCount.value = result.totalCount;
 	}
 	catch (error) {
 		console.error('Error fetching search results:', error);
@@ -215,13 +217,13 @@ const onPageChange = async (newPage: number) => {
 
 const searchMenu = ref('');
 const filteredTreeList = computed(() => {
-	if (!searchMenu.value) return TreeList.value;
-	return TreeList.value
+	if (!searchMenu.value) return systemTree.value;
+	return systemTree.value
 		.map((item) => filterNode(item, searchMenu.value))
 		.filter((item) => item !== null);
 });
 
-function filterNode(node: TreeItem, searchText: string): TreeItem | null {
+const filterNode = (node: Tree, searchText: string): Tree | null => {
 	const hasMatch = node.header.includes(searchText);
 	const filteredChildren = node.children
 		? node.children
@@ -233,10 +235,11 @@ function filterNode(node: TreeItem, searchText: string): TreeItem | null {
 		return { ...node, children: filteredChildren };
 	}
 	return null;
-}
+};
 
 onMounted(async () => {
 	await nextTick();
 	fetchSearchResults();
+	await getSystemTree;
 });
 </script>

@@ -8,49 +8,16 @@ import type { GetHowToBuyListResponse, GetLiveChatListResponse, GetRootListRespo
 
 type HelpRepository = {
 	// OLD
-	getRootList: (params: BaseLangGroupParams) => Promise<GetRootListResponse>;
-	getShortList: (params: BaseLangGroupParams) => Promise<GetShortListResponse>;
 	getBuyList: (params: GetHowBuyListParams) => Promise<GetHowToBuyListResponse>;
-	getFAQList: (params: GetFAQListParams) => Promise<GetLiveChatListResponse>;
 	getSubjectList: (params: GetSubjectLiveChatParams) => Promise<GetLiveChatListResponse>;
 	getReasonList: (params: GetReasonListParams) => Promise<KeyValueRes>;
 	getMiniRoutine: (params: getMiniRoutineParams) => Promise<GetMiniRoutineRes>;
-	getTreeList: (params: BaseLangGroupParams) => Promise<GetTreeListRes>;
-	getSearchList: (params: GetFAQListParams) => Promise<GetSearchListResponse>;
+	getFAQList: (params: GetFAQListParams) => Promise<GetLiveChatListResponse>;
+
 };
 
 export const helpRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): HelpRepository => ({
 	// OLD
-	async getRootList(params: BaseLangGroupParams): Promise<GetRootListResponse> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-
-		const url = '/v1/routine/help/root_list';
-		const response = await fetch<GetRootListResponse>(`${url}?${query.toString()}`, {
-			noAuth: true,
-			apiName: url,
-			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getShortList(params: BaseLangGroupParams): Promise<GetShortListResponse> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-
-		const url = '/v1/routine/help/shortcut_list';
-		const response = await fetch<GetShortListResponse>(`${url}?${query.toString()}`, {
-			noAuth: true,
-			apiName: url,
-			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
 	async getBuyList(params: GetHowBuyListParams): Promise<GetHowToBuyListResponse> {
 		const query = new URLSearchParams(
 			Object.entries(params)
@@ -66,21 +33,7 @@ export const helpRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): HelpR
 
 		return response;
 	},
-	async getFAQList(params: GetFAQListParams): Promise<GetLiveChatListResponse> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-
-		const url = '/v1/routine/faq/before_live_chat_list';
-		const response = await fetch<GetLiveChatListResponse>(`${url}?${query.toString()}`, {
-			noAuth: true,
-			apiName: url,
-			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
+	
 	async getSubjectList(params: GetSubjectLiveChatParams): Promise<GetLiveChatListResponse> {
 		const query = new URLSearchParams(
 			Object.entries(params)
@@ -126,30 +79,14 @@ export const helpRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): HelpR
 
 		return response;
 	},
-	async getTreeList(params: BaseLangGroupParams): Promise<GetTreeListRes> {
+	async getFAQList(params: GetFAQListParams): Promise<GetLiveChatListResponse> {
 		const query = new URLSearchParams(
 			Object.entries(params)
 				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
 		);
 
-		const url = '/v1/routine/help/tree_list';
-		const response = await fetch<GetTreeListRes>(`${url}?${query.toString()}`, {
-			noAuth: true,
-			apiName: url,
-			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-
-	async getSearchList(params: GetFAQListParams): Promise<GetSearchListResponse> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-
-		const url = '/v1/routine/help/search_list';
-		const response = await fetch<GetSearchListResponse>(`${url}?${query.toString()}`, {
+		const url = '/v1/routine/faq/before_live_chat_list';
+		const response = await fetch<GetLiveChatListResponse>(`${url}?${query.toString()}`, {
 			noAuth: true,
 			apiName: url,
 			method: 'GET',
