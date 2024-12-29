@@ -1156,6 +1156,7 @@ const persian = {
 	popularMarkets: 'بازار های پرطرفدار',
 	moreItem: 'موارد بیشتر',
 	moreInfo: 'اطلاعات بیشتر',
+	receipt: 'دریافتی',
 };
 
 export default persian;

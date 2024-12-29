@@ -35,7 +35,7 @@ interface BaseWorker {
 	// Other
 	SearchSuggestionItems: (baseUrl: string, query: string) => Promise<SuggestionItems>;
 	fetchCommissionList: (baseUrl: string, marketType: number) => Promise<void>;
-	fetchSnapshotData: (baseUrl: string, market: string, currency: string) => Promise<any>;
+	fetchSnapshotData: (baseUrl: string, market: string, currency: string, quote: string) => Promise<any>;
 }
 
 let worker: Worker | null = null;

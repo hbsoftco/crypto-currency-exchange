@@ -1,7 +1,7 @@
 <template>
 	<div class="h-[28.5rem] overflow-hidden">
 		<section>
-			<div class="flex justify-between py-2">
+			<div class="flex justify-between py-2 pb-1">
 				<div class="text-xs text-center font-normal text-subtle-text-light dark:text-subtle-text-dark">
 					<span>{{ $t('total') }}</span>({{ spotStore.currency }})
 				</div>
@@ -17,7 +17,7 @@
 			<div
 				v-for="(item, index) in (spotStore.asks?.slice(0, recordCount)).reverse()"
 				:key="index"
-				class="relative my-1"
+				class="relative my-0.5 py-0.5"
 			>
 				<div
 					class="absolute inset-0 h-full py-2 rounded-sm bg-[#f142352e]"
@@ -46,13 +46,13 @@
 			<!-- Ticker Data -->
 			<div
 				dir="ltr"
-				class="py-2 rounded flex items-center"
+				class="py-1 rounded flex items-center"
 				:class="{
 					[spotStore.textClass]: spotStore.updatedPrice,
 					'bg-hover2-light dark:bg-hover2-dark': !spotStore.updatedPrice,
 				}"
 			>
-				<span class="mx-1 text-base font-bold">
+				<span class="mx-1 text-sm font-bold">
 					{{ priceFormat(String(spotStore.ticker?.i), true) }}
 				</span>
 				<div
@@ -73,7 +73,7 @@
 			<div
 				v-for="(item, index) in spotStore.bids?.slice(0, recordCount)"
 				:key="index"
-				class="relative my-1"
+				class="relative my-0.5 py-0.5"
 			>
 				<div
 					class="absolute inset-0 h-full py-2 rounded-sm bg-[#459f4b4c]"

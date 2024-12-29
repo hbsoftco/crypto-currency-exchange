@@ -2,16 +2,27 @@ import { defineStore } from 'pinia';
 
 import { marketRepository } from '~/repositories/market.repository';
 import { spotRepository } from '~/repositories/spot.repository';
+import { assetRepository } from '~/repositories/asset.repository';
+import { userRepository } from '~/repositories/user.repository';
+import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
+import { PublicTopic, SocketId } from '~/utils/enums/socket.enum';
+import { BoxMode, MiniAssetMode } from '~/utils/enums/asset.enum';
+import { CACHE_KEY_COMMISSION_LIST } from '~/utils/constants/common';
+import { priceFormat } from '~/utils/helpers';
 import type { KeyValue } from '~/types/definitions/common.types';
 import type { BidAsk, Depth, LatestTrade, SnapshotParams, Ticker } from '~/types/definitions/spot.types';
-import { PublicTopic, SocketId } from '~/utils/enums/socket.enum';
-import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
-import { priceFormat } from '~/utils/helpers';
+import type { Asset, AssetListParams } from '~/types/definitions/asset.types';
+import type { Commission } from '~/types/definitions/user.types';
+import { MarketType } from '~/utils/enums/market.enum';
 
 export const useSpotStore = defineStore('spotStore', () => {
 	const { $api } = useNuxtApp();
 	const spotRepo = spotRepository($api);
+	const assetRepo = assetRepository($api);
 	const marketRepo = marketRepository($api);
+	const userRepo = userRepository($api);
+
+	const authStore = useAuthStore();
 
 	const { snapshotMessage, connect, sendMessage } = usePublicWebSocket();
 
@@ -20,6 +31,7 @@ export const useSpotStore = defineStore('spotStore', () => {
 	const currency = ref<string>();
 	const quote = ref<string>();
 	const symbol = ref<string>();
+	const cName = ref<string>();
 
 	const prevPrice = ref<string>();
 	const textClass = ref<string>('');
@@ -62,6 +74,13 @@ export const useSpotStore = defineStore('spotStore', () => {
 		asks: [] as number[],
 	});
 
+	const amountOptions = ref<string[]>();
+	const getReadyAmountOptions = async () => {
+		if (currency.value && quote.value) {
+			amountOptions.value = [currency.value, quote.value];
+		}
+	};
+
 	const snapshotParams = ref<SnapshotParams>({
 		symbol: '',
 		level: '0',
@@ -70,12 +89,15 @@ export const useSpotStore = defineStore('spotStore', () => {
 	const snapshotLoading = ref<boolean>(true);
 	const snapshotFirstLoading = ref<boolean>(true);
 	const getSnapshot = async () => {
-		if (!symbol.value || !currency.value) return;
+		if (!symbol.value || !currency.value || !quote.value) return;
 
+		// Reset data
 		marketRevealing.value = [];
 		snapshotLoading.value = true;
 		snapshotParams.value.symbol = symbol.value;
 		snapshotParams.value.level = selectedTickerItem.value;
+
+		// Get snapshot data
 		const { result } = await spotRepo.getSnapshot(snapshotParams.value);
 
 		bids.value = result.bids;
@@ -83,11 +105,16 @@ export const useSpotStore = defineStore('spotStore', () => {
 		depth.value = result.depth;
 		latestTrades.value = result.latestTrades;
 
+		// Set ticker data
 		ticker.value = result.ticker;
-		const data = await worker.fetchSnapshotData(useEnv('apiBaseUrl'), symbol.value, currency.value);
+		const data = await worker.fetchSnapshotData(useEnv('apiBaseUrl'), symbol.value, currency.value, quote.value);
 		ticker.value.market = data.market;
 		ticker.value.currency = data.currency;
+		ticker.value.quote = data.quote;
 
+		cName.value = ticker.value.currency?.cName || '';
+
+		// Set currency and quote
 		if (ticker.value.market) {
 			tickerItems.value = [];
 			await generateTickerItems(ticker.value.market?.tickSize);
@@ -101,6 +128,17 @@ export const useSpotStore = defineStore('spotStore', () => {
 
 		snapshotLoading.value = false;
 		snapshotFirstLoading.value = false;
+
+		// Get asset list and commission list after getting snapshot
+		assetListParams.value.currencyIDs = `${ticker.value.currency?.id},${ticker.value.quote?.id}`;
+		await Promise.all([
+			getCommissionList(),
+			getAssetList(),
+			getReadyAmountOptions(),
+		]);
+
+		// Find commission
+		await findCommission();
 	};
 
 	const marketRevealing = ref<KeyValue[]>([]);
@@ -112,7 +150,6 @@ export const useSpotStore = defineStore('spotStore', () => {
 			marketRevealingLoading.value = true;
 
 			const { result } = await marketRepo.getMarketRevealing({ symbol: symbol.value });
-			console.log(result);
 
 			marketRevealing.value = result;
 
@@ -188,12 +225,97 @@ export const useSpotStore = defineStore('spotStore', () => {
 		}
 	}, { deep: true });
 
+	const assetListParams = ref<AssetListParams>({
+		pageSize: '20',
+		assetType: useEnv('assetType'),
+		boxMode: String(BoxMode.Spot),
+		miniAssetMode: String(MiniAssetMode.Any),
+		currencyIDs: '',
+	});
+	const assetList = ref<Asset[]>([]);
+	const assetListLoading = ref<boolean>(false);
+	const getAssetList = async () => {
+		try {
+			assetListLoading.value = true;
+			const { result } = await assetRepo.getAssetList(assetListParams.value);
+
+			assetList.value = await worker.addCurrencyToAsset(
+				useEnv('apiBaseUrl'),
+				result.rows,
+			);
+			assetListLoading.value = false;
+		}
+		catch (error) {
+			console.log(error);
+			assetListLoading.value = false;
+		}
+	};
+	const findAssetByCSymbol = (cSymbol: string) => {
+		const result = assetList.value.find((asset) => asset.currency?.cSymbol === cSymbol);
+
+		if (result) {
+			return result.qAvailable;
+		}
+		else {
+			return 0;
+		}
+	};
+
+	const makerCommission = ref<string>();
+	const takerCommission = ref<string>();
+	const commissionList = ref<Commission[]>([]);
+	const commissionListLoading = ref<boolean>(false);
+	const getCommissionList = async () => {
+		try {
+			commissionListLoading.value = true;
+
+			const cachedItems = await loadFromCache<Commission[]>(
+				CACHE_KEY_COMMISSION_LIST,
+			);
+
+			if (cachedItems && cachedItems.length > 0) {
+				commissionList.value = cachedItems;
+			}
+			else {
+				const { result } = await userRepo.getTraderCommissionList({
+					marketType: String(MarketType.SPOT),
+				});
+
+				await saveToCache(CACHE_KEY_COMMISSION_LIST, result.rows);
+
+				commissionList.value = result.rows as Commission[];
+			}
+			commissionListLoading.value = false;
+		}
+		catch (error) {
+			console.error(error);
+			commissionListLoading.value = false;
+		}
+	};
+	const findCommission = () => {
+		const levelIndicator = authStore.getUserLevelIndicator || '0';
+
+		const commission = commissionList.value.find((commission) =>
+			commission.levelIndicator === Number(levelIndicator)
+			&& commission.currencyQuoteId === ticker.value?.quote?.id
+			&& commission.marketTypeId === MarketType.SPOT,
+		);
+
+		console.log(commission);
+
+		if (commission) {
+			makerCommission.value = commission.maker;
+			takerCommission.value = commission.taker;
+		}
+	};
+
 	return {
 		snapshotFirstLoading,
 		snapshotLoading,
 		snapshotParams,
 		currency,
 		symbol,
+		cName,
 		quote,
 		depth,
 		ticker,
@@ -207,6 +329,17 @@ export const useSpotStore = defineStore('spotStore', () => {
 		moreState,
 		tickerItems,
 		selectedTickerItem,
+
+		amountOptions,
+
+		assetList,
+		assetListLoading,
+		findAssetByCSymbol,
+
+		commissionList,
+		commissionListLoading,
+		makerCommission,
+		takerCommission,
 
 		startSocket,
 		stopSocket,

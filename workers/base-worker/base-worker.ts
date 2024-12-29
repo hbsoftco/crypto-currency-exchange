@@ -700,16 +700,21 @@ const SearchSuggestionItems = async (baseUrl: string, query: string): Promise<Su
 	return suggestionItems;
 };
 
-const fetchSnapshotData = async (baseUrl: string, market: string, currency: string): Promise<any> => {
+const fetchSnapshotData = async (baseUrl: string, market: string, currency: string, quote: string): Promise<any> => {
 	if (!marketBriefItems.length) {
 		await fetchMarketBriefItems(baseUrl);
 	}
+
 	const findMarket = await marketBriefItems.find((marketItem) => (marketItem.mSymbol === market));
 	const findCurrency = await findCurrencyBycSymbol(currency, baseUrl);
+
+	const quoteItems = await fetchSpotQuoteItems(baseUrl);
+	const findQuote = await quoteItems.find((quoteItem) => (quoteItem.cSymbol === quote));
 
 	return {
 		market: findMarket,
 		currency: findCurrency,
+		quote: findQuote,
 	};
 };
 

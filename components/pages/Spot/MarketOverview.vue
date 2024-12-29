@@ -81,7 +81,7 @@
 
 				<div class="ml-6 text-left">
 					<div class="-mb-1">
-						<span class="font-normal text-xs text-subtle-text-light dark:to-subtle-text-50">24H Volume (BTC)</span>
+						<span class="font-normal text-xs text-subtle-text-light dark:to-subtle-text-50">24H Volume ({{ spotStore.currency }})</span>
 					</div>
 					<div>
 						<strong

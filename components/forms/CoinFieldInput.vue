@@ -75,6 +75,10 @@ watch(internalValue, (newValue: string | number) => {
 	emit('update:modelValue', newValue);
 });
 
+watch(() => props.options, async () => {
+	selected.value = props.options?.length ? props.options[0] : undefined;
+});
+
 watch(selected, (newValue) => {
 	if (newValue) {
 		emit('item-selected', newValue);

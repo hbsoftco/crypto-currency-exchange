@@ -91,6 +91,10 @@ const [currency, quote] = mSymbol.split('_');
 
 const spotStore = useSpotStore();
 
+spotStore.symbol = `${currency}${quote}`;
+spotStore.currency = currency;
+spotStore.quote = quote;
+
 onMounted(() => {
 	spotStore.symbol = `${currency}${quote}`;
 	spotStore.currency = currency;

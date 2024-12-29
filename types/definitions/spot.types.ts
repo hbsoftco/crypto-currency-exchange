@@ -1,5 +1,6 @@
 import type { CurrencyBrief } from './currency.types';
 import type { MarketBrief } from './market.types';
+import type { Quote } from './quote.types';
 
 type KLineParams = {
 	timeFrom?: string;
@@ -205,6 +206,7 @@ type Ticker = {
 	p: string;
 	v: string;
 	q: string;
+	quote?: Quote | null;
 	market?: MarketBrief;
 	currency?: CurrencyBrief;
 };

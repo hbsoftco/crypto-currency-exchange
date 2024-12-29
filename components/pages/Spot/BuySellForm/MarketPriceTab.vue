@@ -1,12 +1,12 @@
 <template>
 	<div class="h-auto">
 		<CoinFieldInput
-			v-if="amountOptions?.length"
+			v-if="spotStore.amountOptions?.length"
 			id="amount"
 			v-model="amount"
-			:unit-text="'BTC'"
+			:unit-text="spotStore.currency"
 			:label="$t('amount')"
-			:options="amountOptions"
+			:options="spotStore.amountOptions"
 			placeholder="0.0"
 			@item-selected="onChange"
 		/>
@@ -34,7 +34,7 @@
 			v-model="payment"
 			:readonly="true"
 			:unit-text="quote"
-			:label="$t('payment')"
+			:label="type === 'buy' ? $t('payment') : $t('receipt')"
 			placeholder="0.0"
 		/>
 
@@ -43,11 +43,11 @@
 				<span class="text-subtle-text-light dark:text-subtle-text-50">{{ $t('balance') }}:</span>
 				<div class="flex flex-col items-end">
 					<div v-if="type=== 'sell'">
-						<span v-if="currencyAssetDetail?.qAvailable">{{ useNumber(String(currencyAssetDetail?.qAvailable)) }}</span>
+						<span v-if="spotStore.currency">{{ spotStore.findAssetByCSymbol(spotStore.currency) }}</span>
 						<span class="ml-1">{{ currency }}</span>
 					</div>
 					<div v-else>
-						<span>{{ useNumber(String(quoteAssetDetail?.qAvailable && 0)) }}</span>
+						<span v-if="spotStore.quote">{{ spotStore.findAssetByCSymbol(spotStore.quote) }}</span>
 						<span class="ml-1">{{ quote }}</span>
 					</div>
 				</div>
@@ -58,10 +58,10 @@
 		<div class="pt-3 pb-0">
 			<div class="flex justify-between items-start text-xs">
 				<span class="text-subtle-text-light dark:text-subtle-text-50">{{ $t('feePercentage') }} (Taker/Maker):</span>
-				<div>
-					<span>{{ useNumber(String(commissionData?.taker)) }}%</span>
+				<div dir="ltr">
+					<span>{{ spotStore.takerCommission }}%</span>
 					<span class="mx-0.5">/</span>
-					<span>{{ useNumber(String(commissionData?.maker)) }}%</span>
+					<span>{{ spotStore.makerCommission }}%</span>
 				</div>
 			</div>
 		</div>
@@ -79,9 +79,13 @@
 
 		<div class="pt-2 pb-4">
 			<button
-				class="w-full text-sm font-normal text-center rounded-md py-2 bg-accent-green"
+				class="w-full text-sm font-normal text-center rounded-md py-2"
+				:class="{
+					'bg-accent-red text-white': type === 'sell',
+					'bg-accent-green text-black dark:text-white': type === 'buy',
+				}"
 			>
-				{{ $t('buy') }} بیتکوین
+				{{ $t(type) }} {{ spotStore.cName }}
 			</button>
 		</div>
 		<!-- Buttons -->
@@ -89,44 +93,41 @@
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
 import CoinFieldInput from '~/components/forms/CoinFieldInput.vue';
 import type { AssetItem } from '~/types/response/asset.types';
-import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
-import type { KeyValue } from '~/types/base.types';
 import { getValueByKey } from '#imports';
 import { MarketType } from '~/utils/enums/market.enum';
 import type { Commission } from '~/types/response/trader.types';
+import type { CurrencyBrief } from '~/types/definitions/currency.types';
+import type { KeyValue } from '~/types/definitions/common.types';
 
-interface PropsDefinition {
-	type: string;
-}
+interface PropsDefinition {	type: string }
+withDefaults(defineProps<PropsDefinition>(), {	type: 'buy' });
 
-withDefaults(defineProps<PropsDefinition>(), {
-	type: 'buy',
-});
+const spotStore = useSpotStore();
+
+const amount = ref<string>('');
+const payment = ref<number>(0);
+
+const range = ref(0);
 
 const onChange = async (newValue: string | number) => {
 	console.log('newValue', newValue);
 };
+
+// OLD
+
 const assetStore = useAssetStore();
-const spotStore = useSpotStore();
 const profileStore = useProfileStore();
 const baseDataStore = useBaseDataStore();
 
-const amountOptions = ref<string[]>();
 const quote = ref<string>();
 const currency = ref<string>();
-const quoteDetail = ref<CurrencyBriefItem>();
-const currencyDetail = ref<CurrencyBriefItem>();
+const quoteDetail = ref<CurrencyBrief>();
+const currencyDetail = ref<CurrencyBrief>();
 
 const currencyAssetDetail = ref<AssetItem | undefined>();
 const quoteAssetDetail = ref<AssetItem | undefined>();
-const getReadyAmountOptions = async () => {
-	if (spotStore.currency && spotStore.quote) {
-		amountOptions.value = await [spotStore.currency, spotStore.quote];
-	}
-};
 
 const commissionIsLoading = ref<boolean>(false);
 const commissionData = ref<Commission | null>();
@@ -167,22 +168,16 @@ watch(
 	{ immediate: true },
 );
 
-onMounted(async () => {
-	await getReadyAmountOptions();
-	quote.value = spotStore.quote;
-	currency.value = spotStore.currency;
-	quoteDetail.value = spotStore.quoteDetail;
-	currencyDetail.value = spotStore.currencyDetail;
-});
-
-const amount = ref<string>('');
-const payment = ref<number>(0);
-
-const range = ref(0);
+// onMounted(async () => {
+// 	quote.value = spotStore.quote;
+// 	currency.value = spotStore.currency;
+// 	quoteDetail.value = spotStore.quoteDetail;
+// 	currencyDetail.value = spotStore.currencyDetail;
+// });
 
 watch(range, (newRange) => {
 	console.log(newRange);
-	console.log(spotStore.tickerData.value?.i);
+	// console.log(spotStore.ticker.i);
 
 	const calculatedAmount = (newRange / 100).toFixed(2);
 	amount.value = calculatedAmount;

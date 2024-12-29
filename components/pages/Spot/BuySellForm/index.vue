@@ -1,9 +1,9 @@
 <template>
-	<div class="w-full bg-hover-light dark:bg-hover-dark rounded-sm px-2">
+	<div class="w-full bg-hover-light dark:bg-hover-dark rounded-sm p-2">
 		<div class="flex justify-center items-center">
 			<div class="w-1/2">
 				<button
-					class="w-full text-sm font-normal text-center rounded-sm py-2"
+					class="w-full text-sm font-normal text-center rounded-r py-2"
 					:class="{
 						'bg-accent-green text-white': activeButton === 'buy',
 						'bg-gray-200 dark:bg-gray-700 text-black dark:text-white': activeButton !== 'buy',
@@ -15,7 +15,7 @@
 			</div>
 			<div class="w-1/2">
 				<button
-					class="w-full text-sm font-normal text-center rounded-sm py-2"
+					class="w-full text-sm font-normal text-center rounded-l py-2"
 					:class="{
 						'bg-accent-red text-white': activeButton === 'sell',
 						'bg-gray-200 dark:bg-gray-700 text-black dark:text-white': activeButton !== 'sell',
@@ -107,66 +107,19 @@
 </template>
 
 <script setup lang="ts">
-import LimitPriceTab from './LimitPriceTab.vue';
-import StopPriceTab from './StopPriceTab.vue';
-import MarketPriceTab from './MarketPriceTab.vue';
-import StopMarketTab from './StopMarketTab.vue';
-
 import IconArrowDown from '~/assets/svg-icons/menu/arrow-down.svg';
 import IconInfo from '~/assets/svg-icons/info-fill.svg';
-// import { MarketType } from '~/utils/enums/market.enum';
-// import { assetRepository } from '~/repositories/asset.repository';
-// import { BoxMode, MiniAssetMode } from '~/utils/enums/asset.enum';
-// import type { GetAssetListParams } from '~/types/base.types';
 
-// const { $api } = useNuxtApp();
-// const assetRepo = assetRepository($api);
-
-// const assetStore = useAssetStore();
-// const baseDataStore = useBaseDataStore();
-// const spotStore = useSpotStore();
-
-// const getAssetsByCurrencies = async (currencies: string) => {
-// 	const params = ref<GetAssetListParams>({
-// 		pageSize: '1000',
-// 		assetType: useEnv('assetType'),
-// 		boxMode: String(BoxMode.Spot),
-// 		miniAssetMode: String(MiniAssetMode.Any),
-// 		currencyIDs: currencies,
-// 	});
-
-// 	const { result } = await assetRepo.getAssetList(params.value);
-// 	console.log('result ---------------->', result);
-// };
-
-onMounted(() => {
-	// getAssetsByCurrencies('3,4');
-});
+const LimitPriceTab = defineAsyncComponent(() => import('~/components/pages/Spot/BuySellForm/LimitPriceTab.vue'));
+const StopPriceTab = defineAsyncComponent(() => import('~/components/pages/Spot/BuySellForm/StopPriceTab.vue'));
+const MarketPriceTab = defineAsyncComponent(() => import('~/components/pages/Spot/BuySellForm/MarketPriceTab.vue'));
+const StopMarketTab = defineAsyncComponent(() => import('~/components/pages/Spot/BuySellForm/StopMarketTab.vue'));
 
 const activeButton = ref<'buy' | 'sell'>('buy');
 const activeTab = ref<'limitPrice' | 'market' | 'stopPrice' | 'stopMarket'>('market');
 
 const isPriceOptionSelected = ref(false);
 const selectedPriceOption = ref({ label: useT('stopPrice') });
-
-// const assetIsLoading = ref<boolean>(false);
-// const assetList = computed(() => assetStore.assetList);
-
-// const getReadyAssets = async () => {
-// 	assetIsLoading.value = true;
-
-// 	await baseDataStore.fetchUserTraderCommissionList({ marketType: String(MarketType.SPOT) });
-// 	// await assetStore.fetchAssetList();
-// 	// await assetStore.connectToSocket();
-// 	// await assetStore.getAssetByCurrencyId(currencyId);
-
-// 	assetIsLoading.value = false;
-// };
-
-// onMounted(async () => {
-// 	await getReadyAssets();
-// 	// await getAsset(spotStore.currencyDetail?.id || 3);
-// });
 
 const setActiveButton = (button: 'buy' | 'sell') => {
 	activeButton.value = button;
