@@ -16,7 +16,7 @@
 						</h3>
 						<IconClose
 							class="text-3xl"
-							@click="closeModal(false)"
+							@click="closeModal()"
 						/>
 					</div>
 				</div>
@@ -91,14 +91,14 @@
 				</div>
 				<UButton
 					class="text-base font-medium px-12 text-black py-3 w-full flex justify-center my-4"
-					@click="submit"
+					@click="confirm()"
 				>
 					{{ $t("confirm") }}
 				</UButton>
 			</div>
 			<IconClose
 				class="text-4xl hidden md:block cursor-pointer"
-				@click="closeModal(false)"
+				@click="closeModal()"
 			/>
 		</div>
 	</UModal>
@@ -110,6 +110,7 @@ import IconClose from '~/assets/svg-icons/close.svg';
 import type { TradeOption } from '~/types/definitions/spot.types';
 
 interface PropsDefinition {
+	modelValue: boolean;
 	trades: TradeOption[];
 	finalReceived: string;
 	receiveCoin: string;
@@ -117,8 +118,8 @@ interface PropsDefinition {
 defineProps<PropsDefinition>();
 
 interface EmitDefinition {
-	(event: 'close', value: boolean): void;
-	(event: 'submit'): void;
+	(event: 'confirm', value: string): void;
+	(event: 'update:modelValue', value: unknown): void;
 }
 const emit = defineEmits<EmitDefinition>();
 
@@ -127,12 +128,11 @@ const translatedLabel = useT('doNotDisplayAnymore');
 
 const isOpen = ref(true);
 
-const submit = () => {
-	emit('submit');
-	closeModal(true);
+const confirm = () => {
+	emit('confirm', 'output.value');
 };
 
-const closeModal = async (value: boolean) => {
-	emit('close', value);
+const closeModal = () => {
+	isOpen.value = false;
 };
 </script>

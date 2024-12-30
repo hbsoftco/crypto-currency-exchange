@@ -33,6 +33,9 @@ export const useSpotStore = defineStore('spotStore', () => {
 	const symbol = ref<string>();
 	const cName = ref<string>();
 
+	const baseTickSize = ref<string>('0.0');
+	const quoteTickSize = ref<string>('0.0');
+
 	const prevPrice = ref<string>();
 	const textClass = ref<string>('');
 	const moreState = ref<boolean>(false);
@@ -123,6 +126,9 @@ export const useSpotStore = defineStore('spotStore', () => {
 				selectedTickerItem.value = '0';
 			}
 		}
+
+		baseTickSize.value = ticker.value.currency?.unit || '0.0';
+		quoteTickSize.value = ticker.value.quote?.currency?.unit || '0.0';
 
 		prevPrice.value = ticker.value.i;
 
@@ -329,6 +335,9 @@ export const useSpotStore = defineStore('spotStore', () => {
 		moreState,
 		tickerItems,
 		selectedTickerItem,
+
+		baseTickSize,
+		quoteTickSize,
 
 		amountOptions,
 

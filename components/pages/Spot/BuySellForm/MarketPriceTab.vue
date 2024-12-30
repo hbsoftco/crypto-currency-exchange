@@ -1,5 +1,12 @@
 <template>
 	<div class="h-auto">
+		<!-- <ConfirmOrderModal
+			v-model="isOpenConfirmModal"
+			:submit-loading="loading"
+			:secret-text="setPasswordDto.passwordNew"
+			@confirm="submit($event)"
+		/> -->
+
 		<CoinFieldInput
 			v-if="spotStore.amountOptions?.length"
 			id="amount"
@@ -17,6 +24,8 @@
 		>
 			<URange
 				v-model="range"
+				:min="0"
+				:max="maxRange"
 				class="mr-1"
 			/>
 			<div class="w-full flex justify-between items-center relative -top-4 -mx-0.5 right-[-0.11rem]">
@@ -30,10 +39,10 @@
 		<!-- Range Slider -->
 
 		<CoinFieldInput
-			id="payment"
-			v-model="payment"
+			id="paymentReceipt"
+			v-model="paymentReceipt"
 			:readonly="true"
-			:unit-text="quote"
+			:unit-text="spotStore.quote"
 			:label="type === 'buy' ? $t('payment') : $t('receipt')"
 			placeholder="0.0"
 		/>
@@ -43,12 +52,16 @@
 				<span class="text-subtle-text-light dark:text-subtle-text-50">{{ $t('balance') }}:</span>
 				<div class="flex flex-col items-end">
 					<div v-if="type=== 'sell'">
-						<span v-if="spotStore.currency">{{ spotStore.findAssetByCSymbol(spotStore.currency) }}</span>
-						<span class="ml-1">{{ currency }}</span>
+						<span v-if="spotStore.currency">
+							{{ priceFormat(spotStore.findAssetByCSymbol(spotStore.currency), true) }}
+						</span>
+						<span class="ml-1">{{ spotStore.currency }}</span>
 					</div>
 					<div v-else>
-						<span v-if="spotStore.quote">{{ spotStore.findAssetByCSymbol(spotStore.quote) }}</span>
-						<span class="ml-1">{{ quote }}</span>
+						<span v-if="spotStore.quote">
+							{{ priceFormat(spotStore.findAssetByCSymbol(spotStore.quote), true) }}
+						</span>
+						<span class="ml-1">{{ spotStore.quote }}</span>
 					</div>
 				</div>
 			</div>
@@ -57,7 +70,9 @@
 
 		<div class="pt-3 pb-0">
 			<div class="flex justify-between items-start text-xs">
-				<span class="text-subtle-text-light dark:text-subtle-text-50">{{ $t('feePercentage') }} (Taker/Maker):</span>
+				<span class="text-subtle-text-light dark:text-subtle-text-50">
+					{{ $t('feePercentage') }} (Taker/Maker):
+				</span>
 				<div dir="ltr">
 					<span>{{ spotStore.takerCommission }}%</span>
 					<span class="mx-0.5">/</span>
@@ -71,7 +86,7 @@
 			<div class="flex justify-between items-start text-xs">
 				<span class="text-subtle-text-light dark:text-subtle-text-50">{{ $t('feeAmount') }}:</span>
 				<div>
-					<span>0</span>
+					<span>{{ feeAmount }}</span>
 				</div>
 			</div>
 		</div>
@@ -79,10 +94,10 @@
 
 		<div class="pt-2 pb-4">
 			<button
-				class="w-full text-sm font-normal text-center rounded-md py-2"
+				class="w-full text-sm font-semibold text-center rounded-md py-2"
 				:class="{
 					'bg-accent-red text-white': type === 'sell',
-					'bg-accent-green text-black dark:text-white': type === 'buy',
+					'bg-accent-green text-white': type === 'buy',
 				}"
 			>
 				{{ $t(type) }} {{ spotStore.cName }}
@@ -93,105 +108,69 @@
 </template>
 
 <script setup lang="ts">
+import { priceFormat } from '~/utils/helpers';
 import CoinFieldInput from '~/components/forms/CoinFieldInput.vue';
-import type { AssetItem } from '~/types/response/asset.types';
-import { getValueByKey } from '#imports';
-import { MarketType } from '~/utils/enums/market.enum';
-import type { Commission } from '~/types/response/trader.types';
-import type { CurrencyBrief } from '~/types/definitions/currency.types';
-import type { KeyValue } from '~/types/definitions/common.types';
+// import ConfirmOrderModal from '~/components/pages/Spot/ConfirmOrderModal.vue';
 
 interface PropsDefinition {	type: string }
-withDefaults(defineProps<PropsDefinition>(), {	type: 'buy' });
+const props = withDefaults(defineProps<PropsDefinition>(), {	type: 'buy' });
 
 const spotStore = useSpotStore();
 
-const amount = ref<string>('');
-const payment = ref<number>(0);
+// const isOpenConfirmModal = ref<boolean>(false);
 
-const range = ref(0);
+const amount = ref<string>('');
+const paymentReceipt = ref<string>('0');
+
+const feeAmount = ref<string>('0');
+const range = ref<number>(0);
+const maxRange = computed<number>(() => {
+	if (props.type === 'sell') {
+		if (spotStore.currency) {
+			return Number(spotStore.findAssetByCSymbol(spotStore.currency) || 0);
+		}
+
+		return 0;
+	}
+	else {
+		if (spotStore.quote) {
+			return Number(spotStore.findAssetByCSymbol(spotStore.quote) || 0);
+		}
+
+		return 0;
+	}
+});
 
 const onChange = async (newValue: string | number) => {
 	console.log('newValue', newValue);
 };
 
-// OLD
-
-const assetStore = useAssetStore();
-const profileStore = useProfileStore();
-const baseDataStore = useBaseDataStore();
-
-const quote = ref<string>();
-const currency = ref<string>();
-const quoteDetail = ref<CurrencyBrief>();
-const currencyDetail = ref<CurrencyBrief>();
-
-const currencyAssetDetail = ref<AssetItem | undefined>();
-const quoteAssetDetail = ref<AssetItem | undefined>();
-
-const commissionIsLoading = ref<boolean>(false);
-const commissionData = ref<Commission | null>();
-const getReadyCommission = async (currencyQuoteId: number) => {
-	commissionIsLoading.value = true;
-	const profileData: KeyValue[] = await profileStore.userProfile;
-	const levelIndicator = await getValueByKey(profileData, 'TRD_LVL_ID');
-	const marketTypeId = MarketType.SPOT;
-
-	commissionData.value = await baseDataStore.findCommission(currencyQuoteId, marketTypeId, Number(levelIndicator));
-
-	commissionIsLoading.value = false;
-};
-
-const getAsset = async (currencyId: number) => {
-	return await assetStore.getAssetByCurrencyId(currencyId);
-};
-
-watch(
-	() => currencyDetail.value?.id,
-	async (newId) => {
-		if (newId) {
-			currencyAssetDetail.value = await getAsset(newId);
-		}
-	},
-	{ immediate: true },
-);
-
-watch(
-	() => quoteDetail.value?.id,
-	async (newId) => {
-		if (newId) {
-			quoteAssetDetail.value = await getAsset(newId);
-			console.log('quoteAssetDetail.value', quoteAssetDetail.value);
-			await getReadyCommission(Number(quoteDetail.value?.id));
-		}
-	},
-	{ immediate: true },
-);
-
-// onMounted(async () => {
-// 	quote.value = spotStore.quote;
-// 	currency.value = spotStore.currency;
-// 	quoteDetail.value = spotStore.quoteDetail;
-// 	currencyDetail.value = spotStore.currencyDetail;
-// });
-
 watch(range, (newRange) => {
-	console.log(newRange);
-	// console.log(spotStore.ticker.i);
+	paymentReceipt.value = String(newRange);
 
-	const calculatedAmount = (newRange / 100).toFixed(2);
-	amount.value = calculatedAmount;
-});
+	const balanceBase = Number(paymentReceipt.value) / Number(spotStore.ticker?.i);
+
+	feeAmount.value = (String(formatByDecimal(((Number(paymentReceipt.value) * Number(spotStore.takerCommission)) / 100), spotStore.quoteTickSize))) || '0';
+	if (balanceBase) {
+		amount.value = String(formatByDecimal(balanceBase, spotStore.baseTickSize));
+	}
+	else {
+		amount.value = String(formatByDecimal(0, spotStore.baseTickSize));
+	}
+}, { immediate: true, deep: true });
 
 watch(amount, (newAmount) => {
-	const calculatedRange = parseFloat(newAmount) * 100;
-	range.value = isNaN(calculatedRange) ? 0 : calculatedRange;
+	console.log(newAmount);
+	// const calculatedRange = parseFloat(newAmount) * 100;
+	// range.value = isNaN(calculatedRange) ? 0 : calculatedRange;
 });
 
 const cssClass = 'rounded-full border-2 w-4 h-4';
 const baseColor = 'border-[#d1d1d1] dark:border-[#4f4f4f] bg-background-light dark:bg-background-dark';
-
 const getCircleColor = (index: number) => {
-	return range.value >= index * 25 ? 'border-primary-yellow-light dark:border-primary-yellow-dark bg-primary-yellow-light dark:bg-primary-yellow-dark' : baseColor;
+	const step = maxRange.value / 4;
+	return range.value >= index * step
+		? 'border-primary-yellow-light dark:border-primary-yellow-dark bg-primary-yellow-light dark:bg-primary-yellow-dark'
+		: baseColor;
 };
 </script>

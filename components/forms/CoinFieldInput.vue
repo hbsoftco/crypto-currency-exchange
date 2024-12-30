@@ -67,8 +67,8 @@ const selected = ref<string | number | undefined>();
 
 const internalValue = ref(props.modelValue);
 
-onMounted(() => {
-	selected.value = props.options?.length ? props.options[0] : undefined;
+watch(() => props.modelValue, (newValue) => {
+	internalValue.value = newValue;
 });
 
 watch(internalValue, (newValue: string | number) => {
@@ -88,4 +88,8 @@ watch(selected, (newValue) => {
 const onInput = (event: Event) => {
 	internalValue.value = (event.target as HTMLInputElement).value;
 };
+
+onMounted(() => {
+	selected.value = props.options?.length ? props.options[0] : undefined;
+});
 </script>
