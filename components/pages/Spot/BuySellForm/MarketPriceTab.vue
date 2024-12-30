@@ -24,6 +24,7 @@
 		>
 			<URange
 				v-model="range"
+				:step="unitStep"
 				:min="0"
 				:max="maxRange"
 				class="mr-1"
@@ -93,15 +94,19 @@
 		<!-- feeAmount -->
 
 		<div class="pt-2 pb-4">
-			<button
-				class="w-full text-sm font-semibold text-center rounded-md py-2"
+			<UButton
+				v-if="authStore.isLoggedIn"
+				size="lg"
 				:class="{
-					'bg-accent-red text-white': type === 'sell',
-					'bg-accent-green text-white': type === 'buy',
+					'bg-accent-red hover:bg-accent-red dark:bg-accent-red dark:hover:bg-accent-red text-white': type === 'sell',
+					'bg-accent-green hover:bg-accent-green dark:bg-accent-green dark:hover:bg-accent-green text-white': type === 'buy',
 				}"
+				block
+				:loading="submitOrderLoading"
+				@click="finalSubmit()"
 			>
 				{{ $t(type) }} {{ spotStore.cName }}
-			</button>
+			</UButton>
 		</div>
 		<!-- Buttons -->
 	</div>
@@ -110,12 +115,21 @@
 <script setup lang="ts">
 import { priceFormat } from '~/utils/helpers';
 import CoinFieldInput from '~/components/forms/CoinFieldInput.vue';
+import { AssetType } from '~/utils/enums/asset.enum';
+import type { StoreOrderInstantDto, StoreOrderMarketDto } from '~/types/definitions/spot.types';
+import { spotRepository } from '~/repositories/spot.repository';
 // import ConfirmOrderModal from '~/components/pages/Spot/ConfirmOrderModal.vue';
 
 interface PropsDefinition {	type: string }
 const props = withDefaults(defineProps<PropsDefinition>(), {	type: 'buy' });
 
+const { $api } = useNuxtApp();
+const spotRepo = spotRepository($api);
+
 const spotStore = useSpotStore();
+const authStore = useAuthStore();
+
+const toast = useToast();
 
 // const isOpenConfirmModal = ref<boolean>(false);
 
@@ -125,45 +139,177 @@ const paymentReceipt = ref<string>('0');
 const feeAmount = ref<string>('0');
 const range = ref<number>(0);
 const maxRange = computed<number>(() => {
-	if (props.type === 'sell') {
-		if (spotStore.currency) {
-			return Number(spotStore.findAssetByCSymbol(spotStore.currency) || 0);
-		}
+	if (!spotStore.currency || !spotStore.quote) return 0.00000000001;
 
-		return 0;
+	if (props.type === 'sell') {
+		if (coinItemSelected.value === spotStore.currency) {
+			return Number(spotStore.findAssetByCSymbol(spotStore.currency) || 0.00000000001);
+		}
+		else {
+			const indexPrice = Number(spotStore.ticker?.i || 0);
+			const balance = spotStore.currency ? spotStore.findAssetByCSymbol(spotStore.currency) : 0;
+			return Number(balance) * indexPrice;
+		}
 	}
 	else {
-		if (spotStore.quote) {
-			return Number(spotStore.findAssetByCSymbol(spotStore.quote) || 0);
-		}
-
-		return 0;
+		return Number(spotStore.findAssetByCSymbol(spotStore.quote) || 0.00000000001);
 	}
 });
 
-const onChange = async (newValue: string | number) => {
-	console.log('newValue', newValue);
+const coinItemSelected = ref<string>(spotStore.currency || '');
+const onChange = async (newCoin: string | number) => {
+	resetValues();
+
+	coinItemSelected.value = String(newCoin);
+};
+const unitStep = computed(() => {
+	if (coinItemSelected.value === spotStore.currency) {
+		return Number(spotStore.baseUnit);
+	}
+	return Number(spotStore.quoteUnit);
+});
+
+const resetValues = () => {
+	amount.value = '';
+	paymentReceipt.value = '0';
+	feeAmount.value = '0';
+	range.value = 0;
 };
 
+watch(() => props.type, () => {
+	resetValues();
+}, { immediate: true, deep: true });
+
 watch(range, (newRange) => {
-	paymentReceipt.value = String(newRange);
+	const indexPrice = Number(spotStore.ticker?.i || 0);
+	const commission = Number(spotStore.takerCommission || 0);
 
-	const balanceBase = Number(paymentReceipt.value) / Number(spotStore.ticker?.i);
+	if (props.type === 'buy') {
+		paymentReceipt.value = String(formatByDecimal(newRange, spotStore.quoteUnit));
 
-	feeAmount.value = (String(formatByDecimal(((Number(paymentReceipt.value) * Number(spotStore.takerCommission)) / 100), spotStore.quoteTickSize))) || '0';
-	if (balanceBase) {
-		amount.value = String(formatByDecimal(balanceBase, spotStore.baseTickSize));
+		const balanceBase = Number(paymentReceipt.value) / indexPrice;
+
+		feeAmount.value = String(
+			formatByDecimal(((Number(paymentReceipt.value) * commission) / 100), spotStore.quoteUnit),
+		) || '0';
+
+		if (coinItemSelected.value === spotStore.currency) {
+			if (balanceBase) {
+				amount.value = String(formatByDecimal(balanceBase, spotStore.baseUnit));
+			}
+			else {
+				amount.value = String(formatByDecimal(0, spotStore.baseUnit));
+			}
+		}
+		else {
+			amount.value = paymentReceipt.value;
+		}
 	}
 	else {
-		amount.value = String(formatByDecimal(0, spotStore.baseTickSize));
+		if (coinItemSelected.value === spotStore.currency) {
+			amount.value = String(range.value);
+			const balanceBase = Number(amount.value) * indexPrice;
+
+			if (balanceBase) {
+				paymentReceipt.value = String(formatByDecimal(balanceBase, spotStore.quoteUnit));
+			}
+			else {
+				paymentReceipt.value = String(formatByDecimal(0, spotStore.quoteUnit));
+			}
+		}
+		else {
+			amount.value = String(range.value);
+			paymentReceipt.value = amount.value;
+		}
 	}
 }, { immediate: true, deep: true });
 
 watch(amount, (newAmount) => {
-	console.log(newAmount);
-	// const calculatedRange = parseFloat(newAmount) * 100;
-	// range.value = isNaN(calculatedRange) ? 0 : calculatedRange;
+	const indexPrice = Number(spotStore.ticker?.i || 0);
+
+	if (props.type === 'buy') {
+		if (coinItemSelected.value === spotStore.currency) {
+			const result = Number(newAmount) * Number(indexPrice);
+			range.value = result;
+			paymentReceipt.value = String(formatByDecimal(result, spotStore.quoteUnit));
+		}
+		else {
+			range.value = Number(newAmount);
+			paymentReceipt.value = newAmount;
+		}
+	}
+	else {
+		if (coinItemSelected.value === spotStore.currency) {
+			const result = Number(newAmount) * Number(indexPrice);
+			range.value = Number(newAmount);
+			paymentReceipt.value = String(formatByDecimal(result, spotStore.quoteUnit));
+		}
+		else {
+			range.value = Number(newAmount);
+			paymentReceipt.value = newAmount;
+		}
+	}
 });
+
+const orderInstantParams = ref<StoreOrderInstantDto>({
+	assetType: AssetType.Testnet,
+	marketId: 0,
+	orderSide: '',
+	reqByQot: '0',
+	userUniqueTag: null,
+});
+
+const orderMarketParams = ref<StoreOrderMarketDto>({
+	assetType: AssetType.Testnet,
+	marketId: 0,
+	orderSide: '',
+	reqByQnt: '0',
+	userUniqueTag: null,
+});
+const submitOrderLoading = ref<boolean>(false);
+const finalSubmit = async () => {
+	try {
+		submitOrderLoading.value = true;
+
+		if (!spotStore.ticker || !spotStore.ticker.market) {
+			return;
+		}
+
+		if (coinItemSelected.value === spotStore.currency) {
+			orderMarketParams.value.marketId = spotStore.ticker.market.id;
+			orderMarketParams.value.orderSide = props.type;
+			orderMarketParams.value.reqByQnt = amount.value;
+
+			const { result } = await spotRepo.storeOrderMarket(orderMarketParams.value);
+			console.log(result);
+		}
+		else {
+			orderInstantParams.value.marketId = spotStore.ticker.market.id;
+			orderInstantParams.value.orderSide = props.type;
+			orderInstantParams.value.reqByQot = amount.value;
+
+			const { result } = await spotRepo.storeOrderInstant(orderInstantParams.value);
+
+			console.log('storeOrderInstant', result);
+		}
+
+		toast.add({
+			title: useT('quickTrade'),
+			description: useT('operationSuccess'),
+			timeout: 5000,
+			color: 'green',
+		});
+
+		// firstCurrencyBalance.value = '';
+		// await getAssetList();
+
+		submitOrderLoading.value = false;
+	}
+	catch (error) {
+		console.log(error);
+		submitOrderLoading.value = false;
+	}
+};
 
 const cssClass = 'rounded-full border-2 w-4 h-4';
 const baseColor = 'border-[#d1d1d1] dark:border-[#4f4f4f] bg-background-light dark:bg-background-dark';

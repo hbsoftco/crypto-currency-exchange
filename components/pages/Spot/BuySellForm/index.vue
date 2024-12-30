@@ -3,9 +3,9 @@
 		<div class="flex justify-center items-center">
 			<div class="w-1/2">
 				<button
-					class="w-full text-sm font-normal text-center rounded-r-md py-2"
+					class="w-full text-sm font-semibold text-center rounded-r-md py-2"
 					:class="{
-						'bg-accent-green text-white': activeButton === 'buy',
+						'bg-accent-green text-white dark:text-black': activeButton === 'buy',
 						'bg-gray-200 dark:bg-gray-700 text-black dark:text-white': activeButton !== 'buy',
 					}"
 					@click="setActiveButton('buy')"
@@ -15,9 +15,9 @@
 			</div>
 			<div class="w-1/2">
 				<button
-					class="w-full text-sm font-normal text-center rounded-l-md py-2"
+					class="w-full text-sm font-semibold text-center rounded-l-md py-2"
 					:class="{
-						'bg-accent-red text-white': activeButton === 'sell',
+						'bg-accent-red text-white dark:text-black': activeButton === 'sell',
 						'bg-gray-200 dark:bg-gray-700 text-black dark:text-white': activeButton !== 'sell',
 					}"
 					@click="setActiveButton('sell')"
@@ -103,6 +103,14 @@
 				<StopMarketTab />
 			</div>
 		</div>
+		<UButton
+			v-if="!authStore.isLoggedIn"
+			size="lg"
+			block
+			to="/auth/login"
+		>
+			{{ $t("registerOrLogin") }}
+		</UButton>
 	</div>
 </template>
 
@@ -114,6 +122,8 @@ const LimitPriceTab = defineAsyncComponent(() => import('~/components/pages/Spot
 const StopPriceTab = defineAsyncComponent(() => import('~/components/pages/Spot/BuySellForm/StopPriceTab.vue'));
 const MarketPriceTab = defineAsyncComponent(() => import('~/components/pages/Spot/BuySellForm/MarketPriceTab.vue'));
 const StopMarketTab = defineAsyncComponent(() => import('~/components/pages/Spot/BuySellForm/StopMarketTab.vue'));
+
+const authStore = useAuthStore();
 
 const activeButton = ref<'buy' | 'sell'>('buy');
 const activeTab = ref<'limitPrice' | 'market' | 'stopPrice' | 'stopMarket'>('market');

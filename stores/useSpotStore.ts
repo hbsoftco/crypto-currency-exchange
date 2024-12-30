@@ -33,8 +33,8 @@ export const useSpotStore = defineStore('spotStore', () => {
 	const symbol = ref<string>();
 	const cName = ref<string>();
 
-	const baseTickSize = ref<string>('0.0');
-	const quoteTickSize = ref<string>('0.0');
+	const baseUnit = ref<string>('0.0');
+	const quoteUnit = ref<string>('0.0');
 
 	const prevPrice = ref<string>();
 	const textClass = ref<string>('');
@@ -127,8 +127,8 @@ export const useSpotStore = defineStore('spotStore', () => {
 			}
 		}
 
-		baseTickSize.value = ticker.value.currency?.unit || '0.0';
-		quoteTickSize.value = ticker.value.quote?.currency?.unit || '0.0';
+		baseUnit.value = ticker.value.currency?.unit || '0.0';
+		quoteUnit.value = ticker.value.quote?.currency?.unit || '0.0';
 
 		prevPrice.value = ticker.value.i;
 
@@ -137,14 +137,20 @@ export const useSpotStore = defineStore('spotStore', () => {
 
 		// Get asset list and commission list after getting snapshot
 		assetListParams.value.currencyIDs = `${ticker.value.currency?.id},${ticker.value.quote?.id}`;
-		await Promise.all([
-			getCommissionList(),
-			getAssetList(),
-			getReadyAmountOptions(),
-		]);
 
-		// Find commission
-		await findCommission();
+		if (authStore.isLoggedIn) {
+			await Promise.all([
+				getCommissionList(),
+				getAssetList(),
+				getReadyAmountOptions(),
+			]);
+
+			// Find commission
+			await findCommission();
+		}
+		else {
+			await getReadyAmountOptions();
+		}
 	};
 
 	const marketRevealing = ref<KeyValue[]>([]);
@@ -267,8 +273,8 @@ export const useSpotStore = defineStore('spotStore', () => {
 		}
 	};
 
-	const makerCommission = ref<string>();
-	const takerCommission = ref<string>();
+	const makerCommission = ref<string>('0');
+	const takerCommission = ref<string>('0');
 	const commissionList = ref<Commission[]>([]);
 	const commissionListLoading = ref<boolean>(false);
 	const getCommissionList = async () => {
@@ -307,8 +313,6 @@ export const useSpotStore = defineStore('spotStore', () => {
 			&& commission.marketTypeId === MarketType.SPOT,
 		);
 
-		console.log(commission);
-
 		if (commission) {
 			makerCommission.value = commission.maker;
 			takerCommission.value = commission.taker;
@@ -336,8 +340,8 @@ export const useSpotStore = defineStore('spotStore', () => {
 		tickerItems,
 		selectedTickerItem,
 
-		baseTickSize,
-		quoteTickSize,
+		baseUnit,
+		quoteUnit,
 
 		amountOptions,
 
