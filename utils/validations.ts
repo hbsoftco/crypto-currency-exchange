@@ -8,6 +8,10 @@ const validations = {
 	numeric: helpers.withMessage('thisFieldMustBeNumeric', (value: number) => {
 		return !isNaN(parseFloat(String(value))) && isFinite(value);
 	}),
+	greaterThanZero: helpers.withMessage('valueMustBeGreaterThanZero', (value: number | string) => {
+		const number = Number(value);
+		return number > 0;
+	}),
 	externalServerValidation: () => true,
 
 };

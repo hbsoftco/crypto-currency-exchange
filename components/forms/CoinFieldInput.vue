@@ -5,7 +5,10 @@
 			class="text-subtle-text-light dark:text-subtle-text-50 text-xs font-normal mb-0.5"
 		>{{ label }}</label>
 		<div
-			class="h-10 w-full bg-primary-gray-light dark:bg-primary-gray-dark rounded flex justify-between px-4 py-1 items-center"
+			:class="[
+				errorMessage? 'border-accent-red focus:border-accent-red' : 'border-transparent  focus:border-primary-yellow-light dark:focus:border-primary-yellow-dark',
+			]"
+			class="h-10 w-full border bg-primary-gray-light dark:bg-primary-gray-dark rounded flex justify-between px-4 py-1 items-center"
 			dir="ltr"
 		>
 			<div>
@@ -16,6 +19,7 @@
 					class="bg-transparent outline-none text-xs font-normal"
 					:placeholder="placeholder"
 					:readonly="readonly"
+					autocomplete="off"
 					@input="onInput"
 				>
 			</div>
@@ -37,6 +41,13 @@
 					class="text-sm font-normal"
 				>{{ unitText }}</span>
 			</div>
+		</div>
+		<div
+			v-if="errorMessage"
+			class="text-accent-red dark:text-accent-red text-xs mt-1 text-right"
+			dir="rtl"
+		>
+			{{ errorMessage }}
 		</div>
 	</div>
 </template>

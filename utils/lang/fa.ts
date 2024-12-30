@@ -471,7 +471,7 @@ const persian = {
 	receivedCurrency: 'ارز دریافتی',
 	direction: 'جهت',
 	finalReceipt: 'دریافت نهایی',
-	doNotDisplayAnymore: 'دیگر نمایش داده نشود',
+	doNotDisplayAnymore: 'دیگر نمایش داده نشود.',
 	buy: 'خرید',
 	firstTransaction: 'معامله اول',
 	secondTransaction: 'معامله دوم',
@@ -1157,6 +1157,7 @@ const persian = {
 	moreItem: 'موارد بیشتر',
 	moreInfo: 'اطلاعات بیشتر',
 	receipt: 'دریافتی',
+	registerOrder: 'ثبت سفارش',
 };
 
 export default persian;

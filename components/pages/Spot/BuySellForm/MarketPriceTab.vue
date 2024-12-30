@@ -1,11 +1,10 @@
 <template>
 	<div class="h-auto">
-		<!-- <ConfirmOrderModal
+		<ConfirmOrderModal
 			v-model="isOpenConfirmModal"
-			:submit-loading="loading"
-			:secret-text="setPasswordDto.passwordNew"
-			@confirm="submit($event)"
-		/> -->
+			:trade="trade"
+			@confirm="finalSubmit()"
+		/>
 
 		<CoinFieldInput
 			v-if="spotStore.amountOptions?.length"
@@ -15,6 +14,7 @@
 			:label="$t('amount')"
 			:options="spotStore.amountOptions"
 			placeholder="0.0"
+			:error-message="v$.amount.$error? $t('fieldIsRequired') : ''"
 			@item-selected="onChange"
 		/>
 
@@ -103,7 +103,7 @@
 				}"
 				block
 				:loading="submitOrderLoading"
-				@click="finalSubmit()"
+				@click="submitConfirm()"
 			>
 				{{ $t(type) }} {{ spotStore.cName }}
 			</UButton>
@@ -113,15 +113,18 @@
 </template>
 
 <script setup lang="ts">
+import useVuelidate from '@vuelidate/core';
+
 import { priceFormat } from '~/utils/helpers';
 import CoinFieldInput from '~/components/forms/CoinFieldInput.vue';
 import { AssetType } from '~/utils/enums/asset.enum';
 import type { StoreOrderInstantDto, StoreOrderMarketDto } from '~/types/definitions/spot.types';
 import { spotRepository } from '~/repositories/spot.repository';
-// import ConfirmOrderModal from '~/components/pages/Spot/ConfirmOrderModal.vue';
+
+const ConfirmOrderModal = defineAsyncComponent(() => import('~/components/pages/Spot/ConfirmOrderModal.vue'));
 
 interface PropsDefinition {	type: string }
-const props = withDefaults(defineProps<PropsDefinition>(), {	type: 'buy' });
+const props = withDefaults(defineProps<PropsDefinition>(), { type: 'buy' });
 
 const { $api } = useNuxtApp();
 const spotRepo = spotRepository($api);
@@ -131,10 +134,17 @@ const authStore = useAuthStore();
 
 const toast = useToast();
 
-// const isOpenConfirmModal = ref<boolean>(false);
-
 const amount = ref<string>('');
 const paymentReceipt = ref<string>('0');
+
+const amountRule = {
+	amount: {
+		required: validations.required,
+		greaterThanZero: validations.greaterThanZero,
+	},
+};
+
+const v$ = useVuelidate(amountRule, { amount });
 
 const feeAmount = ref<string>('0');
 const range = ref<number>(0);
@@ -174,6 +184,8 @@ const resetValues = () => {
 	paymentReceipt.value = '0';
 	feeAmount.value = '0';
 	range.value = 0;
+
+	v$.value.$reset();
 };
 
 watch(() => props.type, () => {
@@ -184,15 +196,14 @@ watch(range, (newRange) => {
 	const indexPrice = Number(spotStore.ticker?.i || 0);
 	const commission = Number(spotStore.takerCommission || 0);
 
+	feeAmount.value = String(
+		formatByDecimal(((Number(paymentReceipt.value) * commission) / 100), spotStore.quoteUnit),
+	) || '0';
+
 	if (props.type === 'buy') {
 		paymentReceipt.value = String(formatByDecimal(newRange, spotStore.quoteUnit));
 
 		const balanceBase = Number(paymentReceipt.value) / indexPrice;
-
-		feeAmount.value = String(
-			formatByDecimal(((Number(paymentReceipt.value) * commission) / 100), spotStore.quoteUnit),
-		) || '0';
-
 		if (coinItemSelected.value === spotStore.currency) {
 			if (balanceBase) {
 				amount.value = String(formatByDecimal(balanceBase, spotStore.baseUnit));
@@ -209,7 +220,6 @@ watch(range, (newRange) => {
 		if (coinItemSelected.value === spotStore.currency) {
 			amount.value = String(range.value);
 			const balanceBase = Number(amount.value) * indexPrice;
-
 			if (balanceBase) {
 				paymentReceipt.value = String(formatByDecimal(balanceBase, spotStore.quoteUnit));
 			}
@@ -251,6 +261,44 @@ watch(amount, (newAmount) => {
 	}
 });
 
+const isOpenConfirmModal = ref<boolean>(false);
+const trade = ref();
+const submitConfirm = () => {
+	v$.value.$touch();
+	if (v$.value.$invalid) {
+		return;
+	}
+
+	const indexPrice = Number(spotStore.ticker?.i || 0);
+	const feeAmountNum = Number(feeAmount.value);
+	const amountNum = Number(amount.value);
+	const paymentReceiptNum = Number(paymentReceipt.value);
+
+	trade.value = {
+		type: props.type,
+		feeAmount: `${priceFormat(formatByDecimal(feeAmountNum, spotStore.quoteUnit))} ${spotStore.quote}`,
+		currencyReceived: '',
+		currencyPaid: '',
+		marketPrice: `${indexPrice} ${spotStore.quote}`,
+		finalReceived: '',
+	};
+
+	if (props.type === 'buy') {
+		trade.value.currencyReceived = `${priceFormat(formatByDecimal(amountNum, spotStore.baseUnit))} ${spotStore.currency}`;
+		trade.value.currencyPaid = `${priceFormat(formatByDecimal(paymentReceiptNum, spotStore.quoteUnit))} ${spotStore.quote}`;
+
+		trade.value.finalReceived = `${priceFormat(formatByDecimal((paymentReceiptNum - feeAmountNum) / indexPrice, spotStore.baseUnit))} ${spotStore.currency}`;
+	}
+	else {
+		trade.value.currencyReceived = `${priceFormat(formatByDecimal(paymentReceiptNum, spotStore.quoteUnit))} ${spotStore.quote}`;
+		trade.value.currencyPaid = `${priceFormat(formatByDecimal(amountNum, spotStore.baseUnit))} ${spotStore.currency}`;
+
+		trade.value.finalReceived = `${priceFormat(formatByDecimal(paymentReceiptNum - feeAmountNum, spotStore.quoteUnit))} ${spotStore.quote}`;
+	}
+
+	isOpenConfirmModal.value = true;
+};
+
 const orderInstantParams = ref<StoreOrderInstantDto>({
 	assetType: AssetType.Testnet,
 	marketId: 0,
@@ -280,28 +328,25 @@ const finalSubmit = async () => {
 			orderMarketParams.value.orderSide = props.type;
 			orderMarketParams.value.reqByQnt = amount.value;
 
-			const { result } = await spotRepo.storeOrderMarket(orderMarketParams.value);
-			console.log(result);
+			await spotRepo.storeOrderMarket(orderMarketParams.value);
 		}
 		else {
 			orderInstantParams.value.marketId = spotStore.ticker.market.id;
 			orderInstantParams.value.orderSide = props.type;
 			orderInstantParams.value.reqByQot = amount.value;
 
-			const { result } = await spotRepo.storeOrderInstant(orderInstantParams.value);
-
-			console.log('storeOrderInstant', result);
+			await spotRepo.storeOrderInstant(orderInstantParams.value);
 		}
 
 		toast.add({
-			title: useT('quickTrade'),
+			title: useT('registerOrder'),
 			description: useT('operationSuccess'),
 			timeout: 5000,
 			color: 'green',
 		});
 
-		// firstCurrencyBalance.value = '';
-		// await getAssetList();
+		resetValues();
+		spotStore.getSnapshot();
 
 		submitOrderLoading.value = false;
 	}
