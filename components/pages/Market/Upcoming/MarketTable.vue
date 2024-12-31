@@ -24,13 +24,7 @@
 					</tr>
 				</thead>
 
-				<tbody v-if="status==='success'">
-					<MarketTableRow
-						v-for="(item, index) in markets"
-						:key="index"
-						:market="item"
-					/>
-				</tbody>
+				<tbody />
 			</table>
 			<div class="flex justify-center py-4">
 				<UPagination
@@ -53,27 +47,18 @@
 </template>
 
 <script setup lang="ts">
-import MarketTableRow from '~/components/pages/Market/Upcoming/MarketTableRow.vue';
+// import MarketTableRow from '~/components/pages/Market/Upcoming/MarketTableRow.vue';
 import { MarketType, SortMode } from '~/utils/enums/market.enum';
-import { marketRepository } from '~/repositories/market.repository';
-import { Language } from '~/utils/enums/language.enum';
+// import { marketRepository } from '~/repositories/market.repository';
 
-const { $api } = useNuxtApp();
-const marketRepo = marketRepository($api);
+// const { $api } = useNuxtApp();
+// const marketRepo = marketRepository($api);
 
 interface PropsDefinition {
 	searchQuery: string;
 }
 
 const props = defineProps<PropsDefinition>();
-
-const { useCachedCurrencyBriefList, useCachedMarketBriefList } = useCachedData();
-
-const { data: cachedCurrencyBriefList } = await useCachedCurrencyBriefList({ languageId: Language.PERSIAN });
-const { data: cachedMarketBriefList } = await useCachedMarketBriefList();
-
-const marketBriefList = cachedMarketBriefList.value ?? [];
-const currencyBriefList = cachedCurrencyBriefList.value ?? [];
 
 const totalCount = ref(0);
 
@@ -87,11 +72,11 @@ const params = ref({
 	pageSize: '20',
 });
 
-const { data: markets, status } = useAsyncData('markets', async () => {
-	const response = await marketRepo.getMarkets(params.value);
-	totalCount.value = response.result.totalCount;
-	return useProcessMarketData(response.result.rows, marketBriefList, currencyBriefList);
-}, { watch: [params.value], deep: true });
+// const { data: markets, status } = useAsyncData('markets', async () => {
+// 	const response = await marketRepo.getMarkets(params.value);
+// 	totalCount.value = response.result.totalCount;
+// 	return response.result.rows;
+// }, { watch: [params.value], deep: true });
 
 watch(() => props.searchQuery, (newQuery) => {
 	params.value.searchStatement = newQuery;

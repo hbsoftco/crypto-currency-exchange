@@ -310,8 +310,7 @@
 		</div>
 		<div class="flex justify-center py-4">
 			<UPagination
-				v-if="totalCount && paginationNumbers.showPagination"
-				ref="pagination"
+				v-if="totalCount > itemsPerPage"
 				:model-value="Number(params.pageNumber)"
 				:page-count="20"
 				:total="totalCount"
@@ -343,7 +342,6 @@ import { spotRepository } from '~/repositories/spot.repository';
 import type { Order, OrderFiltersType, OrderListParams } from '~/types/definitions/spot.types';
 import IconDelete from '~/assets/svg-icons/profile/Delete.svg';
 import { priceFormat } from '~/utils/helpers';
-import type { UPagination } from '#build/components';
 
 type PropsDefinition = {
 	filterParams?: OrderFiltersType;
@@ -356,9 +354,7 @@ const spotRepo = spotRepository($api);
 
 const toast = useToast();
 
-const pagination = ref<InstanceType<typeof UPagination>>();
-const paginationNumbers = usePaginationNumbers();
-
+const itemsPerPage = 20;
 const totalCount = ref(0);
 const orderItem = ref<Order>();
 
@@ -384,27 +380,12 @@ const getOrderList = async () => {
 		orderList.value = result.rows as Order[];
 
 		orderListLoading.value = false;
-		if (pagination.value) {
-			paginationNumbers.applyChangesToLinks(pagination.value);
-		}
 	}
 	catch (error) {
 		console.log(error);
 		orderListLoading.value = false;
 	}
 };
-
-watch(() => useChangeNumber().getLanguage(), () => {
-	if (pagination.value) {
-		paginationNumbers.applyChangesToLinks(pagination.value);
-	}
-});
-
-watch(() => params.value.pageNumber, () => {
-	if (pagination.value) {
-		paginationNumbers.applyChangesToLinks(pagination.value);
-	}
-}, { deep: true });
 
 const deleteOrderListLoading = ref<boolean>(false);
 const openDeleteModal = async (id: number) => {
