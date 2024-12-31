@@ -20,7 +20,7 @@
 				class="relative my-0.5 py-0.5"
 			>
 				<div
-					class="absolute inset-0 h-full py-2 rounded-sm bg-[#f142352e]"
+					class="absolute inset-0 h-full py-2 rounded-sm bg-[#f142352e] duration-200 transition-all"
 					:style="{ width: calculateWidth(item.c, 'asks') + '%' }"
 				/>
 
@@ -76,7 +76,7 @@
 				class="relative my-0.5 py-0.5"
 			>
 				<div
-					class="absolute inset-0 h-full py-2 rounded-sm bg-[#459f4b4c]"
+					class="absolute inset-0 h-full py-2 rounded-sm bg-[#459f4b4c] duration-200 transition-all"
 					:style="{ width: calculateWidth(item.c, 'bids') + '%' }"
 				/>
 

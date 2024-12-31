@@ -44,7 +44,7 @@
 				class="relative my-0.5 py-0.5"
 			>
 				<div
-					class="absolute inset-0 h-full py-2 rounded-sm bg-[#459f4b4c]"
+					class="absolute inset-0 h-full py-2 rounded-sm bg-[#459f4b4c] duration-200 transition-all"
 					:style="{ width: calculateWidth(item.c) + '%' }"
 				/>
 
@@ -78,7 +78,7 @@ import IconArrowDown from '~/assets/svg-icons/spot/arrow-down.svg';
 const authStore = useAuthStore();
 const spotStore = useSpotStore();
 
-const recordCount = ref<number>(19);
+const recordCount = ref<number>(18);
 
 const maxBids = computed(() => {
 	return Math.max(...(spotStore.bids?.slice(0, recordCount.value).map((item) => parseFloat(item.c) || 0) || []));

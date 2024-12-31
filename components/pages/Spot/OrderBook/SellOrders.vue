@@ -14,6 +14,35 @@
 			</div>
 
 			<div
+				v-for="(item, index) in (spotStore.asks?.slice(0, recordCount)).reverse()"
+				:key="index"
+				class="relative my-0.5 py-0.5"
+			>
+				<div
+					class="absolute inset-0 h-full py-2 rounded-sm bg-[#f142352e] duration-200 transition-all"
+					:style="{ width: calculateWidth(item.c) + '%' }"
+				/>
+
+				<div class="relative flex justify-between w-full">
+					<div class="text-xs text-right font-normal w-1/3 pr-1">
+						<span dir="ltr">{{ formatBigNumber(item.c, 3) }}</span>
+					</div>
+					<div class="text-xs text-left font-normal w-1/4">
+						<span dir="ltr">{{ formatBigNumber(item.v, 3) }}</span>
+					</div>
+					<div class="flex items-center justify-end text-xs font-normal w-1/3 text-accent-red dark:text-accent-red">
+						<span dir="ltr">{{ priceFormat(item.p, true) }}</span>
+						<div class="w-3 h-3 mr-1 pt-0.5 flex justify-center">
+							<div
+								v-if="authStore.isLoggedIn"
+								class="bg-primary-yellow dark:bg-primary-yellow-dark w-2 h-2 rounded-full"
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div
 				dir="ltr"
 				class="py-1 rounded flex items-center"
 				:class="{
@@ -37,35 +66,6 @@
 					/>
 				</div>
 			</div>
-
-			<div
-				v-for="(item, index) in (spotStore.asks?.slice(0, recordCount)).reverse()"
-				:key="index"
-				class="relative my-0.5 py-0.5"
-			>
-				<div
-					class="absolute inset-0 h-full py-2 rounded-sm bg-[#f142352e]"
-					:style="{ width: calculateWidth(item.c) + '%' }"
-				/>
-
-				<div class="relative flex justify-between w-full">
-					<div class="text-xs text-right font-normal w-1/3 pr-1">
-						<span dir="ltr">{{ formatBigNumber(item.c, 3) }}</span>
-					</div>
-					<div class="text-xs text-left font-normal w-1/4">
-						<span dir="ltr">{{ formatBigNumber(item.v, 3) }}</span>
-					</div>
-					<div class="flex items-center justify-end text-xs font-normal w-1/3 text-accent-red dark:text-accent-red">
-						<span dir="ltr">{{ priceFormat(item.p, true) }}</span>
-						<div class="w-3 h-3 mr-1 pt-0.5 flex justify-center">
-							<div
-								v-if="authStore.isLoggedIn"
-								class="bg-primary-yellow dark:bg-primary-yellow-dark w-2 h-2 rounded-full"
-							/>
-						</div>
-					</div>
-				</div>
-			</div>
 		</section>
 	</div>
 </template>
@@ -78,7 +78,7 @@ import IconArrowDown from '~/assets/svg-icons/spot/arrow-down.svg';
 const authStore = useAuthStore();
 const spotStore = useSpotStore();
 
-const recordCount = ref<number>(19);
+const recordCount = ref<number>(18);
 
 const maxAsks = computed(() => {
 	return Math.max(...(spotStore.asks?.slice(0, recordCount.value).map((item) => parseFloat(item.c) || 0) || []));

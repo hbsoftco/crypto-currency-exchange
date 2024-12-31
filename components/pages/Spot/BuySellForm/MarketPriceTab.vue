@@ -48,7 +48,10 @@
 			placeholder="0.0"
 		/>
 
-		<div class="pt-3 pb-0">
+		<div
+			v-if="authStore.isLoggedIn"
+			class="pt-3 pb-0"
+		>
 			<div class="flex justify-between items-start text-xs">
 				<span class="text-subtle-text-light dark:text-subtle-text-50">{{ $t('balance') }}:</span>
 				<div class="flex flex-col items-end">
@@ -83,7 +86,10 @@
 		</div>
 		<!-- feePercentage -->
 
-		<div class="pt-2 pb-2">
+		<div
+			v-if="authStore.isLoggedIn"
+			class="pt-2 pb-2"
+		>
 			<div class="flex justify-between items-start text-xs">
 				<span class="text-subtle-text-light dark:text-subtle-text-50">{{ $t('feeAmount') }}:</span>
 				<div>

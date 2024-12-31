@@ -1,33 +1,16 @@
 <template>
 	<div>
 		<div class="mb-4 py-2 border-b border-primary-gray-light dark:border-primary-gray-800">
-			<div>
+			<div
+				class="flex justify-between pb-2"
+			>
 				<h2 class="text-base font-medium">
-					{{ $t('changingCandles') }}
+					{{ $t('theme') }}
 				</h2>
-			</div>
-			<div class="py-4">
-				<URadioGroup
-					v-model="settingsStore.selectedChanging"
-					:options="changes"
-					:ui="{
-						fieldset: 'w-full flex justify-between flex-wrap items-center',
-						legend: ' mb-10',
-					}"
-				>
-					<template #label="{ option }">
-						<p class="flex px-1 w-1/2 cursor-pointer">
-							<span class="text-nowrap">{{ option.label }}</span>
-							<img
-								:src="option.icon"
-								class="mr-2 w-6 h-6"
-							>
-						</p>
-					</template>
-				</URadioGroup>
+				<UiThemeToggleSwitch />
 			</div>
 		</div>
-		<!-- changingCandles -->
+		<!-- change theme -->
 
 		<div class="mb-4 py-2 border-b border-primary-gray-light dark:border-primary-gray-800">
 			<div>
@@ -61,7 +44,7 @@
 				<span class="text-base font-medium">{{ $t('orderConfirmation') }}</span>
 				<UToggle
 					v-model="settingsStore.orderConfirmation"
-					size="xl"
+					size="lg"
 				/>
 			</div>
 			<div class="py-2 flex justify-start">
@@ -109,7 +92,7 @@
 					{{ $t('orderNotifications') }}</span>
 				<UToggle
 					v-model="settingsStore.orderNotifications"
-					size="xl"
+					size="lg"
 				/>
 			</div>
 		</div>
@@ -172,12 +155,6 @@
 
 <script setup lang="ts">
 const settingsStore = useSpotSettingsStore();
-
-const changes = [
-	{ value: 'greenUp', label: useT('greenUp'), icon: '/images/svg/profile/change-green-red.svg' },
-	{ value: 'redUp', label: useT('redUp'), icon: '/images/svg/profile/change-green-red.svg' },
-	{ value: 'blueDown', label: useT('blueDown'), icon: '/images/svg/profile/change-blue-red.svg' },
-];
 
 const trading = [
 	{
