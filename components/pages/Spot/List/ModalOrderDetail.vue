@@ -33,7 +33,14 @@
 								>
 								<div class="mr-2">
 									<span class="text-base font-bold ">{{ orderItem?.mSymbol }}</span>
-									<div class="mt-1 px-2 py-1 text-accent-red dark:text-accent-red bg-[#33181D] rounded-md text-center">
+									<div
+										class="mt-1 px-2 py-1 rounded-md text-center"
+										:class="orderItem?.sideName === 'Sell'
+											? 'text-accent-red dark:text-accent-red bg-[#33181D]'
+											: orderItem?.sideName === 'Buy'
+												? 'text-accent-green dark:text-accent-green bg-[#1D3318]'
+												: ''"
+									>
 										{{ $t(orderItem?.sideName) }}
 									</div>
 								</div>
