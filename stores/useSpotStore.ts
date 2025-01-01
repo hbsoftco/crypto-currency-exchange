@@ -149,7 +149,13 @@ export const useSpotStore = defineStore('spotStore', () => {
 			await findCommission();
 		}
 		else {
-			await getReadyAmountOptions();
+			await Promise.all([
+				getCommissionList(),
+				getReadyAmountOptions(),
+			]);
+
+			// Find commission
+			await findCommission();
 		}
 	};
 

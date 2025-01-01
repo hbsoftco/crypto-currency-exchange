@@ -127,7 +127,7 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		const url = '/v1/user/trader/commission_list';
 		const response = await fetch<UserResponse>(`${url}?${query.toString()}`, {
-			noAuth: false,
+			noAuth: true,
 			apiName: url,
 		} as CustomNitroFetchOptions);
 

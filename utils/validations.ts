@@ -9,7 +9,7 @@ const validations = {
 		return !isNaN(parseFloat(String(value))) && isFinite(value);
 	}),
 	greaterThanZero: helpers.withMessage('valueMustBeGreaterThanZero', (value: number | string) => {
-		const number = Number(value);
+		const number = parseFloat(String(value));
 		return number > 0;
 	}),
 	externalServerValidation: () => true,

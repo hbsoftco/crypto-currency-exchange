@@ -11,6 +11,7 @@
 			id="amount"
 			v-model="amount"
 			:unit-text="spotStore.currency"
+			:unit-size="getUnitSize()"
 			:label="$t('amount')"
 			:options="spotStore.amountOptions"
 			placeholder="0.0"
@@ -42,9 +43,10 @@
 		<CoinFieldInput
 			id="paymentReceipt"
 			v-model="paymentReceipt"
+			:currency-value="getCurrencyValue()"
 			:readonly="true"
-			:unit-text="spotStore.quote"
-			:label="type === 'buy' ? $t('payment') : $t('receipt')"
+			:unit-text="getCoin()"
+			:label="getLabel()"
 			placeholder="0.0"
 		/>
 
@@ -285,7 +287,7 @@ const submitConfirm = () => {
 		feeAmount: `${priceFormat(formatByDecimal(feeAmountNum, spotStore.quoteUnit))} ${spotStore.quote}`,
 		currencyReceived: '',
 		currencyPaid: '',
-		marketPrice: `${indexPrice} ${spotStore.quote}`,
+		marketPrice: `${priceFormat(formatByDecimal(indexPrice, spotStore.quote || ''))} ${spotStore.quote}`,
 		finalReceived: '',
 	};
 
@@ -359,6 +361,52 @@ const finalSubmit = async () => {
 	catch (error) {
 		console.log(error);
 		submitOrderLoading.value = false;
+	}
+};
+
+const getLabel = () => {
+	if (props.type === 'buy') {
+		if (coinItemSelected.value === spotStore.currency) {
+			return useT('payment');
+		}
+		return useT('receipt');
+	}
+	else {
+		if (coinItemSelected.value === spotStore.currency) {
+			return useT('receipt');
+		}
+		return useT('payment');
+	}
+};
+
+const getCoin = () => {
+	if (coinItemSelected.value === spotStore.currency) {
+		return spotStore.quote;
+	}
+	return spotStore.currency;
+};
+
+const getUnitSize = () => {
+	if (coinItemSelected.value === spotStore.currency) {
+		return spotStore.baseUnit;
+	}
+	return spotStore.quoteUnit;
+};
+
+const getCurrencyValue = () => {
+	const indexPrice = Number(spotStore.ticker?.i || 0);
+
+	if (props.type === 'buy') {
+		if (coinItemSelected.value === spotStore.currency) {
+			return priceFormat(formatByDecimal(Number(paymentReceipt.value), spotStore.quoteUnit));
+		}
+		return priceFormat(scientificToDecimal(String(formatByDecimal(Number(amount.value) / indexPrice, spotStore.baseUnit))));
+	}
+	else {
+		if (coinItemSelected.value === spotStore.currency) {
+			return priceFormat(formatByDecimal(Number(amount.value) * indexPrice, spotStore.quoteUnit));
+		}
+		return priceFormat(formatByDecimal(Number(amount.value) / indexPrice, spotStore.baseUnit));
 	}
 };
 

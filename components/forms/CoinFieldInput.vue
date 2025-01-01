@@ -13,6 +13,18 @@
 		>
 			<div>
 				<input
+					v-if="internalCurrencyValue"
+					:id="id"
+					v-model="internalCurrencyValue"
+					type="text"
+					class="bg-transparent outline-none text-xs font-normal"
+					:placeholder="placeholder"
+					:readonly="readonly"
+					autocomplete="off"
+					@input="onInput"
+				>
+				<input
+					v-else
 					:id="id"
 					v-model="internalValue"
 					type="text"
@@ -42,6 +54,7 @@
 				>{{ unitText }}</span>
 			</div>
 		</div>
+
 		<div
 			v-if="errorMessage"
 			class="text-accent-red dark:text-accent-red text-xs mt-1 text-right"
@@ -56,9 +69,11 @@
 interface PropsDefinition {
 	id: string;
 	modelValue: string | number;
+	currencyValue?: string | number | null;
 	label: string;
 	placeholder?: string;
 	unitText?: string;
+	unitSize?: string;
 	readonly?: boolean;
 	errorMessage?: string;
 	options?: string[];
@@ -69,19 +84,25 @@ const props = withDefaults(defineProps<PropsDefinition>(), {
 });
 
 interface EmitDefinition {
-	(event: 'update:modelValue', value: unknown): void;
+	(event: 'update:modelValue' | 'update:currencyValue', value: unknown): void;
 	(event: 'item-selected', value: string | number): void;
 }
 const emit = defineEmits<EmitDefinition>();
 
 const selected = ref<string | number | undefined>();
 
-const internalValue = ref(props.modelValue);
+const internalCurrencyValue = ref(props.currencyValue);
+watch(() => props.currencyValue, (newValue) => {
+	internalCurrencyValue.value = newValue;
+});
+watch(internalCurrencyValue, (newValue: string | number | null | undefined) => {
+	emit('update:currencyValue', newValue);
+});
 
+const internalValue = ref(props.modelValue);
 watch(() => props.modelValue, (newValue) => {
 	internalValue.value = newValue;
 });
-
 watch(internalValue, (newValue: string | number) => {
 	emit('update:modelValue', newValue);
 });
