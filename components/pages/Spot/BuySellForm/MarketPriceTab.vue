@@ -29,6 +29,7 @@
 				:min="0"
 				:max="maxRange"
 				class="mr-1"
+				:disabled="!authStore.isLoggedIn"
 			/>
 			<div class="w-full flex justify-between items-center relative -top-4 -mx-0.5 right-[-0.11rem]">
 				<div
@@ -59,13 +60,13 @@
 				<div class="flex flex-col items-end">
 					<div v-if="type=== 'sell'">
 						<span v-if="spotStore.currency">
-							{{ priceFormat(spotStore.findAssetByCSymbol(spotStore.currency), true) }}
+							{{ priceFormat(currencyBalance, true) }}
 						</span>
 						<span class="ml-1">{{ spotStore.currency }}</span>
 					</div>
 					<div v-else>
 						<span v-if="spotStore.quote">
-							{{ priceFormat(spotStore.findAssetByCSymbol(spotStore.quote), true) }}
+							{{ priceFormat(quoteBalance, true) }}
 						</span>
 						<span class="ml-1">{{ spotStore.quote }}</span>
 					</div>
@@ -74,7 +75,7 @@
 		</div>
 		<!-- balance -->
 
-		<div class="pt-3 pb-0">
+		<div class="pt-2 pb-0">
 			<div class="flex justify-between items-start text-xs">
 				<span class="text-subtle-text-light dark:text-subtle-text-50">
 					{{ $t('feePercentage') }} (Taker/Maker):
@@ -95,7 +96,8 @@
 			<div class="flex justify-between items-start text-xs">
 				<span class="text-subtle-text-light dark:text-subtle-text-50">{{ $t('feeAmount') }}:</span>
 				<div>
-					<span>{{ feeAmount }}</span>
+					<span>{{ priceFormat(feeAmount) }}</span>
+					<span class="ml-1">{{ spotStore.quote }}</span>
 				</div>
 			</div>
 		</div>
@@ -122,6 +124,7 @@
 
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core';
+import { helpers } from '@vuelidate/validators';
 
 import { priceFormat } from '~/utils/helpers';
 import CoinFieldInput from '~/components/forms/CoinFieldInput.vue';
@@ -140,15 +143,47 @@ const spotRepo = spotRepository($api);
 const spotStore = useSpotStore();
 const authStore = useAuthStore();
 
+const currencyBalance = computed(() => {
+	return spotStore.currency ? spotStore.findAssetByCSymbol(spotStore.currency) : 0;
+});
+
+const quoteBalance = computed(() => {
+	return spotStore.quote ? spotStore.findAssetByCSymbol(spotStore.quote) : 0;
+});
+
 const toast = useToast();
 
 const amount = ref<string>('');
 const paymentReceipt = ref<string>('0');
 
+const checkBalance = helpers.withMessage(
+	useT('insufficientBalance'),
+	(value: string) => {
+		if (props.type === 'buy') {
+			if (coinItemSelected.value === spotStore.currency) {
+
+				// const balance = spotStore.currency ? spotStore.findAssetByCSymbol(spotStore.currency) : 0;
+				// return !!value && Number(value) <= Number(balance);
+			}
+			else {
+				const balance = spotStore.quote ? spotStore.findAssetByCSymbol(spotStore.quote) : 0;
+				return !!value && Number(value) <= Number(balance);
+			}
+		}
+		else {
+			if (coinItemSelected.value === spotStore.currency) {
+				// Add logic for sell type if needed
+				return true; // Placeholder return value
+			}
+		}
+		return false; // Default return value
+	},
+);
 const amountRule = {
 	amount: {
 		required: validations.required,
 		greaterThanZero: validations.greaterThanZero,
+		checkBalance,
 	},
 };
 
@@ -245,25 +280,30 @@ watch(range, (newRange) => {
 watch(amount, (newAmount) => {
 	const indexPrice = Number(spotStore.ticker?.i || 0);
 
+	if (authStore.isLoggedIn) {
+		range.value = Number(newAmount);
+	}
+
 	if (props.type === 'buy') {
 		if (coinItemSelected.value === spotStore.currency) {
 			const result = Number(newAmount) * Number(indexPrice);
-			range.value = result;
+
 			paymentReceipt.value = String(formatByDecimal(result, spotStore.quoteUnit));
+
+			if (authStore.isLoggedIn) {
+				range.value = result;
+			}
 		}
 		else {
-			range.value = Number(newAmount);
 			paymentReceipt.value = newAmount;
 		}
 	}
 	else {
 		if (coinItemSelected.value === spotStore.currency) {
 			const result = Number(newAmount) * Number(indexPrice);
-			range.value = Number(newAmount);
 			paymentReceipt.value = String(formatByDecimal(result, spotStore.quoteUnit));
 		}
 		else {
-			range.value = Number(newAmount);
 			paymentReceipt.value = newAmount;
 		}
 	}
@@ -413,6 +453,8 @@ const getCurrencyValue = () => {
 const cssClass = 'rounded-full border-2 w-4 h-4';
 const baseColor = 'border-[#d1d1d1] dark:border-[#4f4f4f] bg-background-light dark:bg-background-dark';
 const getCircleColor = (index: number) => {
+	if (!authStore.isLoggedIn) return baseColor;
+
 	const step = maxRange.value / 4;
 	return range.value >= index * step
 		? 'border-primary-yellow-light dark:border-primary-yellow-dark bg-primary-yellow-light dark:bg-primary-yellow-dark'

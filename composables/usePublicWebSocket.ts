@@ -43,7 +43,7 @@ export const usePublicWebSocket = () => {
 
 			socket.value.onmessage = (event) => {
 				const messageData: SocketSpotTickerMessage = JSON.parse(event.data);
-				console.log('messageData.id ------------------------------>:', messageData.id);
+				// console.log('messageData.id ------------------------------>:', messageData.id);
 
 				let snapshotMessageData: SocketSpotSnapshotMessage | null = null;
 				if (messageData.id === SocketId.SPOT_SNAPSHOT) {

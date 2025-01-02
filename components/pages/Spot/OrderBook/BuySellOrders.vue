@@ -1,15 +1,15 @@
 <template>
 	<div class="h-[28.5rem] overflow-hidden">
 		<section>
-			<div class="flex justify-between py-2 pb-1">
-				<div class="text-xs text-center font-normal text-subtle-text-light dark:text-subtle-text-dark">
-					<span>{{ $t('total') }}</span>({{ spotStore.currency }})
+			<div class="flex justify-between py-2 pb-1 w-full">
+				<div class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark w-1/3">
+					<span>{{ $t('total') }} ({{ spotStore.currency }})</span>
 				</div>
-				<div class="text-xs text-center font-normal text-subtle-text-light dark:text-subtle-text-dark">
-					<span>{{ $t('amount') }}</span>({{ spotStore.currency }})
+				<div class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark w-1/4 flex-1">
+					<span>{{ $t('amount') }} ({{ spotStore.currency }})</span>
 				</div>
-				<div class="text-xs text-center font-normal text-subtle-text-light dark:text-subtle-text-dark">
-					<span>{{ $t('price') }}</span>({{ spotStore.quote }})
+				<div class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark w-1/3">
+					<span>{{ $t('price') }} ({{ spotStore.quote }})</span>
 				</div>
 			</div>
 

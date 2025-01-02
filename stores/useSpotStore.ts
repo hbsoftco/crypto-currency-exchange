@@ -52,23 +52,38 @@ export const useSpotStore = defineStore('spotStore', () => {
 	const latestTrades = ref<LatestTrade[]>([]);
 
 	const generateTickerItems = (ticker: string) => {
-		const tickerTimes = (Number(ticker) * 1).toString();
-		tickerItems.value.push({
-			key: '0',
-			value: priceFormat(scientificToDecimal(tickerTimes), true),
-		});
+		const tickerNumber = parseFloat(ticker);
 
-		const tickerTimes10 = (Number(ticker) * 10).toString();
-		tickerItems.value.push({
-			key: '1',
-			value: priceFormat(scientificToDecimal(tickerTimes10), true),
-		});
+		console.log('tickerNumber:', tickerNumber);
+		console.log('tickerNumber:', tickerNumber * 10);
+		console.log('tickerNumber:', tickerNumber * 100);
 
-		const tickerTimes100 = (Number(ticker) * 100).toString();
-		tickerItems.value.push({
-			key: '2',
-			value: priceFormat(scientificToDecimal(tickerTimes100), true),
-		});
+		if (tickerNumber >= 1 || tickerNumber.toString().length <= 5) {
+			let counter = 1;
+			for (let i = 0; i < 3; i++) {
+				tickerItems.value.push({
+					key: i.toString(),
+					value: priceFormat(tickerNumber * (counter), true),
+				});
+				counter = counter * 10;
+			}
+		}
+		else {
+			tickerItems.value.push({
+				key: '0',
+				value: priceFormat(scientificToDecimal((String(tickerNumber))), true),
+			});
+
+			tickerItems.value.push({
+				key: '1',
+				value: priceFormat(scientificToDecimal((String(tickerNumber * 10))), true),
+			});
+
+			tickerItems.value.push({
+				key: '2',
+				value: priceFormat(scientificToDecimal((String(tickerNumber * 100))), true),
+			});
+		}
 	};
 
 	const chartData = reactive({

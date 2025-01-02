@@ -1158,6 +1158,7 @@ const persian = {
 	moreInfo: 'اطلاعات بیشتر',
 	receipt: 'دریافتی',
 	registerOrder: 'ثبت سفارش',
+	insufficientBalance: 'موجودی کافی نیست.',
 };
 
 export default persian;
