@@ -43,9 +43,14 @@ const isSpecialRoute = ref<boolean>(false);
 const specialRoutes = ref<string[]>([
 	'coins-cSymbol',
 	'markets-statistics',
+	'help-center',
+	'help-center-id',
+	'help-center-search',
 ]);
 
 const route = useRoute();
+
+console.log(route.name);
 
 watch(() => route.name, (newName) => {
 	isSpecialRoute.value = specialRoutes.value.includes(String(newName));

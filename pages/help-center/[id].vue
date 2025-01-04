@@ -1,27 +1,49 @@
-<!-- eslint-disable vue/no-v-html -->
 <template>
 	<div>
+		<BackHeader
+			v-if="isMobile"
+			:title="$t('helpCenter')"
+		/>
 		<section>
 			<UContainer>
 				<div class="block md:flex justify-between items-center py-5">
 					<div>
-						<h1 class="text-4xl font-black">
+						<div class="flex justify-between items-center md:hidden">
+							<div class="flex items-center">
+								<button
+									class="p-2"
+									@click="toggleMenu"
+								>
+									<IconHamburger class="w-6 h-6 text-primary-yellow-light dark:text-primary-yellow-dark" />
+								</button>
+								<h1 class="text-xl md:text-4xl font-bold md:font-black">
+									{{ $t('bitlandHelpCenter') }}
+								</h1>
+							</div>
+							<img
+								src="/images/svg/support/help-center/help-center.svg"
+								alt="Brand Logo"
+								class="w-24 h-16"
+							>
+						</div>
+
+						<h1 class="hidden md:block text-xl md:text-4xl font-bold md:font-black">
 							{{ $t('bitlandHelpCenter') }}
 						</h1>
 						<div
 							v-if="systemHelp"
-							class="flex items-center my-4"
+							class="hidden md:flex items-center my-4"
 						>
 							<ULink
 								to="/help-center"
 							>
 
-								<span class="mx-1 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
+								<span class="mx-1 text-xs md:text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
 									{{ $t('bitlandHelpCenter') }}
 								</span>
 							</ULink>
-							<IconArrowLeft class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark" />
-							<span class="mx-1 text-sm font-normal text-primary-yellow-light dark:text-primary-yellow-dark">
+							<IconArrowLeft class="text-xs md:text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark" />
+							<span class="mx-1 text-xs md:text-sm font-normal text-primary-yellow-light dark:text-primary-yellow-dark">
 								{{ systemHelp.info.header }}
 							</span>
 						</div>
@@ -29,15 +51,46 @@
 					<img
 						src="/images/svg/support/help-center/help-center.svg"
 						alt="Brand Logo"
-						class="w-52 h-56"
+						class="hidden md:block w-20 md:w-52 h-16 md:h-56"
 					>
 				</div>
 			</UContainer>
 		</section>
+		<div
+			v-if="isMobile"
+			class="relative"
+		>
+			<div
+				v-if="isMenuOpen"
+				class="absolute top-0 left-0 w-full bg-background-light dark:bg-background-dark shadow-lg z-50"
+			>
+				<div class="p-4 border-t border-gray-300 dark:border-gray-600">
+					<SearchCrypto
+						id="searchMenu"
+						v-model="searchMenu"
+						type="text"
+						input-class="text-right"
+						label="search"
+						placeholder=""
+						icon="heroicons:magnifying-glass"
+					/>
+				</div>
+				<div>
+					<TreeNode
+						v-for="(item, index) in filteredTreeList"
+						:key="index"
+						:node="item"
+					/>
+				</div>
+			</div>
+		</div>
 		<section>
 			<UContainer>
 				<div class="grid grid-cols-12 border-t border-primary-gray-light dark:border-primary-gray-dark">
-					<div class="col-span-12 md:col-span-4 p-2 border-l border-primary-gray-light dark:border-primary-gray-dark">
+					<div
+						v-if="!isMobile"
+						class="col-span-12 md:col-span-4 p-2 border-l border-primary-gray-light dark:border-primary-gray-dark"
+					>
 						<div class="w-full">
 							<SearchCrypto
 								id="searchMenu"
@@ -60,7 +113,7 @@
 						class="col-span-12 md:col-span-8 p-4"
 					>
 						<div class="pt-4 pb-10">
-							<h2 class="text-4xl font-black">
+							<h2 class="text-xl md:text-4xl font-bold md:font-black">
 								{{ systemHelp.info.header }}
 							</h2>
 						</div>
@@ -81,15 +134,27 @@ import SearchCrypto from '~/components/forms/SearchCrypto.vue';
 import { Language } from '~/utils/enums/language.enum';
 import { sanitizedHtml } from '~/utils/helpers';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
+import IconHamburger from '~/assets/svg-icons/hamburger.svg';
 import { systemRepository } from '~/repositories/system.repository';
 import type { BaseLangGroupParams, BaseLangIdParams } from '~/types/definitions/common.types';
 import type { System, Tree } from '~/types/definitions/system.types';
 
+const BackHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/BackHeader.vue'));
+
 const route = useRoute();
 const id = String(route.params.id);
 
-const { $api } = useNuxtApp();
+const { $api, $mobileDetect } = useNuxtApp();
 const systemRepo = systemRepository($api);
+
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
+
+const isMenuOpen = ref(false);
+
+const toggleMenu = () => {
+	isMenuOpen.value = !isMenuOpen.value;
+};
 
 const systemHelpParams = ref<BaseLangGroupParams>(
 	{ languageId: '',
@@ -176,6 +241,8 @@ const filterNode = (node: Tree, searchText: string): Tree | null => {
 	return null;
 };
 onMounted(async () => {
+	isMobile.value = !!mobileDetect.mobile();
+
 	await getSystemTree();
 	await nextTick();
 	await loadHelpData(id);

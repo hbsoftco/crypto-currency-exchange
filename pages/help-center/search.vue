@@ -1,26 +1,30 @@
 <!-- eslint-disable vue/no-v-html -->
 <template>
 	<div>
+		<BackHeader
+			v-if="isMobile"
+			:title="$t('search')"
+		/>
 		<section>
 			<UContainer>
-				<div class="block md:flex justify-between items-center py-5">
+				<div class="flex justify-between items-center py-0 md:py-5">
 					<div>
-						<h1 class="text-4xl font-black">
+						<h1 class="hidden md:block text-xl md:text-4xl font-bold md:font-black">
 							{{ $t('bitlandHelpCenter') }}
 						</h1>
 						<div
-							class="flex items-center my-4"
+							class="flex items-center my-0 md:my-4"
 						>
 							<ULink
 								to="/help-center"
 							>
 
-								<span class="mx-1 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
+								<span class="mx-1 text-xs md:text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
 									{{ $t('bitlandHelpCenter') }}
 								</span>
 							</ULink>
-							<IconArrowLeft class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark" />
-							<span class="mx-1 text-sm font-normal text-primary-yellow-light dark:text-primary-yellow-dark">
+							<IconArrowLeft class="text-xs md:text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark" />
+							<span class="mx-1 text-xs md:text-sm font-normal text-primary-yellow-light dark:text-primary-yellow-dark">
 								{{ searchQuery }}
 							</span>
 						</div>
@@ -28,15 +32,15 @@
 					<img
 						src="/images/svg/support/help-center/help-center.svg"
 						alt="Brand Logo"
-						class="w-52 h-56"
+						class="hidden md:block w-52 h-56"
 					>
 				</div>
 			</UContainer>
 		</section>
 		<section>
 			<UContainer>
-				<div class="grid grid-cols-12 border-t border-primary-gray-light dark:border-primary-gray-dark">
-					<div class="col-span-12 md:col-span-4 p-2 border-l border-primary-gray-light dark:border-primary-gray-dark">
+				<div class="grid grid-cols-12 border-t border-background-light md:border-primary-gray-light dark:border-background-dark md:dark:border-primary-gray-dark">
+					<div class="hidden md:block col-span-12 md:col-span-4 p-2 border-l border-primary-gray-light dark:border-primary-gray-dark">
 						<div class="w-full">
 							<SearchCrypto
 								id="searchMenu"
@@ -59,7 +63,7 @@
 					>
 						<div class="">
 							<h2
-								class="text-right text-subtle-text-light dark:text-subtle-text-dark text-sm font-normal mb-4"
+								class="border-b md:border-none border-primary-gray-light dark:border-primary-gray-dark text-right text-subtle-text-light dark:text-subtle-text-dark text-sm font-normal mb-4 pb-4 md:pb-0"
 							>
 								{{ $t('searchResultsFor') }}: <span class="text-2xl font-bold text-white dark:text-white">«{{ searchQuery }}» </span>{{ useNumber(totalCount) }} {{ $t('result') }}
 							</h2>
@@ -81,22 +85,25 @@
 									:key="item.id"
 									class="border-b border-primary-gray-light dark:border-primary-gray-dark mb-4 pb-4"
 								>
-									<h3 class=" text-xl font-bold">
-										{{ item.info.header }}
-									</h3>
-									<p
-										class="my-2 text-sm font-normal"
-										v-html="sanitizedHtml(item.info.content)"
-									/>
-									<div class="flex flex-wrap mt-2">
-										<span
-											v-for="(tag, index) in item.tags"
-											:key="index"
-											class="border border-primary-gray-light dark:border-primary-gray-dark text-subtle-text-light dark:text-subtle-text-dark text-xs font-normal px-2 py-1 rounded-full mr-2 mb-2"
-										>
-											{{ tag.value }}
-										</span>
-									</div>
+									<ULink :to="`/help-center/${item.id}`">
+
+										<h3 class=" text-xl font-bold">
+											{{ item.info.header }}
+										</h3>
+										<p
+											class="my-2 text-sm font-normal"
+											v-html="sanitizedHtml(item.info.content)"
+										/>
+										<div class="flex flex-wrap mt-2">
+											<span
+												v-for="(tag, index) in item.tags"
+												:key="index"
+												class="border border-primary-gray-light dark:border-primary-gray-dark text-subtle-text-light dark:text-subtle-text-dark text-xs font-normal px-2 py-1 rounded-full mr-2 mb-2"
+											>
+												{{ tag.value }}
+											</span>
+										</div>
+									</ULink>
 								</div>
 								<div class="flex justify-center py-4">
 									<UPagination
@@ -134,11 +141,16 @@ import { systemRepository } from '~/repositories/system.repository';
 import type { BaseLangGroupParams, SearchListParams } from '~/types/definitions/common.types';
 import type { SystemRoot, Tree } from '~/types/definitions/system.types';
 
+const BackHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/BackHeader.vue'));
+
 const route = useRoute();
 const searchQuery = route.query.q || '';
 
-const { $api } = useNuxtApp();
+const { $api, $mobileDetect } = useNuxtApp();
 const systemRepo = systemRepository($api);
+
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
 
 const systemHelpParams = ref<BaseLangGroupParams>({
 	languageId: String(Language.PERSIAN),
@@ -222,6 +234,7 @@ const filteredTreeList = computed(() => {
 		.map((item) => filterNode(item, searchMenu.value))
 		.filter((item) => item !== null);
 });
+console.log('////////////////////////////////', filteredTreeList);
 
 const filterNode = (node: Tree, searchText: string): Tree | null => {
 	const hasMatch = node.header.includes(searchText);
@@ -236,8 +249,9 @@ const filterNode = (node: Tree, searchText: string): Tree | null => {
 	}
 	return null;
 };
-
 onMounted(async () => {
+	isMobile.value = !!mobileDetect.mobile();
+
 	await nextTick();
 	fetchSearchResults();
 	await getSystemTree;
