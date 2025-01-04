@@ -37,7 +37,7 @@ export const useHeaderMenuStore = defineStore('headerMenu', () => {
 	});
 
 	const futuresParams = ref({
-		currencyQuoteId: '1',
+		currencyQuoteId: '3',
 		marketTypeId: String(MarketType.FUTURES),
 		tagTypeId: '',
 		searchStatement: '',
