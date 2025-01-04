@@ -23,6 +23,7 @@ export const useSpotStore = defineStore('spotStore', () => {
 	const userRepo = userRepository($api);
 
 	const snapshotMessage = ref<Snapshot>();
+	const spotSnapshotId = ref<string>(`${SocketId.SPOT_TICKER}_${new Date().getTime()}`);
 
 	const authStore = useAuthStore();
 
@@ -199,7 +200,7 @@ export const useSpotStore = defineStore('spotStore', () => {
 		await connect();
 
 		sendMessage(createSubscriptionData(
-			SocketId.SPOT_SNAPSHOT,
+			spotSnapshotId.value,
 			'SUBSCRIBE',
 			PublicTopic.SPOT_SNAPSHOT,
 			{
@@ -213,7 +214,7 @@ export const useSpotStore = defineStore('spotStore', () => {
 
 	const stopSocket = async () => {
 		sendMessage(createSubscriptionData(
-			SocketId.SPOT_SNAPSHOT,
+			spotSnapshotId.value,
 			'UNSUBSCRIBE',
 			PublicTopic.SPOT_SNAPSHOT,
 			{},
