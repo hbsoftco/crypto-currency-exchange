@@ -15,7 +15,7 @@
 				:style="{ 'animation-play-state': 'paused !important' }"
 				delay="1s"
 				direction="reverse"
-				duration="30s"
+				duration="50s"
 				:paused="firstPaused"
 			>
 				<div class="flex">
@@ -40,7 +40,7 @@
 			<InfiniteSlideBar
 				delay="1s"
 				direction="normal"
-				duration="30s"
+				duration="50s"
 				:paused="secondPaused"
 			>
 				<div class="flex">

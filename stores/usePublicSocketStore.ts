@@ -5,8 +5,11 @@ export const usePublicSocketStore = defineStore('publicSocket', () => {
 	const activeMarketIds = ref<Set<number>>(new Set());
 	const activeFuturesMarketIds = ref<Set<number>>(new Set());
 	const latestMarketData = ref<SocketSpotTickerMessage[]>([]);
+	const spotTickerId = ref<string>(`${SocketId.SPOT_TICKER}_${new Date().getTime()}`);
 
-	const { messages, connect, sendMessage } = usePublicWebSocket();
+	const messages = ref<SocketSpotTickerMessage[]>([]);
+
+	const { connect, sendMessage } = usePublicWebSocket();
 
 	// Futures
 	const addFuturesMarketIds = async (marketIds: number[]) => {
@@ -98,7 +101,7 @@ export const usePublicSocketStore = defineStore('publicSocket', () => {
 				try {
 					if (activeMarketIds.value.size > 0) {
 						sendMessage(createSubscriptionData(
-							SocketId.SPOT_TICKER,
+							spotTickerId.value,
 							'UNSUBSCRIBE',
 							PublicTopic.SPOT_TICKER,
 							Array.from(activeMarketIds.value).join(','),
@@ -115,7 +118,7 @@ export const usePublicSocketStore = defineStore('publicSocket', () => {
 					if (ids) {
 						await connect();
 						sendMessage(createSubscriptionData(
-							SocketId.SPOT_TICKER,
+							spotTickerId.value,
 							'SUBSCRIBE',
 							PublicTopic.SPOT_TICKER,
 							ids,
@@ -137,7 +140,7 @@ export const usePublicSocketStore = defineStore('publicSocket', () => {
 	const removeMarketIds = async (marketIds: number[]) => {
 		if (activeMarketIds.value.size > 0) {
 			sendMessage(createSubscriptionData(
-				SocketId.SPOT_TICKER,
+				spotTickerId.value,
 				'UNSUBSCRIBE',
 				PublicTopic.SPOT_TICKER,
 				Array.from(activeMarketIds.value).join(','),
@@ -154,7 +157,7 @@ export const usePublicSocketStore = defineStore('publicSocket', () => {
 			await connect();
 
 			sendMessage(createSubscriptionData(
-				SocketId.SPOT_TICKER,
+				spotTickerId.value,
 				'SUBSCRIBE',
 				PublicTopic.SPOT_TICKER,
 				ids,
@@ -165,7 +168,7 @@ export const usePublicSocketStore = defineStore('publicSocket', () => {
 	const unSubscribe = async () => {
 		if (activeMarketIds.value.size > 0) {
 			sendMessage(createSubscriptionData(
-				SocketId.SPOT_TICKER,
+				spotTickerId.value,
 				'UNSUBSCRIBE',
 				PublicTopic.SPOT_TICKER,
 				Array.from(activeMarketIds.value).join(','),
@@ -196,5 +199,6 @@ export const usePublicSocketStore = defineStore('publicSocket', () => {
 		// Share
 		findMarketDataById,
 		latestMarketData,
+		messages,
 	};
 });

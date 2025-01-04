@@ -1,4 +1,4 @@
-import type { PrivateTopic, PublicTopic, SocketId } from './enums/socket.enum';
+import type { PrivateTopic, PublicTopic } from './enums/socket.enum';
 
 const generatePair = (cSymbol: string, qSymbol: string): string => {
 	if (qSymbol === 'TMN' || qSymbol === 'USDT') {
@@ -23,7 +23,7 @@ const splitSymbols = (symbols: string | null): string[] => {
 };
 
 const createSubscriptionData = (
-	id: SocketId,
+	id: string,
 	method: 'SUBSCRIBE' | 'UNSUBSCRIBE',
 	topic: PublicTopic | PrivateTopic,
 	params: string | Record<string, string>,

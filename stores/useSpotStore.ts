@@ -10,7 +10,7 @@ import { BoxMode, MiniAssetMode } from '~/utils/enums/asset.enum';
 import { CACHE_KEY_COMMISSION_LIST } from '~/utils/constants/common';
 import { priceFormat } from '~/utils/helpers';
 import type { KeyValue } from '~/types/definitions/common.types';
-import type { BidAsk, Depth, LatestTrade, SnapshotParams, Ticker } from '~/types/definitions/spot.types';
+import type { BidAsk, Depth, LatestTrade, Snapshot, SnapshotParams, Ticker } from '~/types/definitions/spot.types';
 import type { Asset, AssetListParams } from '~/types/definitions/asset.types';
 import type { Commission } from '~/types/definitions/user.types';
 import { MarketType } from '~/utils/enums/market.enum';
@@ -22,9 +22,11 @@ export const useSpotStore = defineStore('spotStore', () => {
 	const marketRepo = marketRepository($api);
 	const userRepo = userRepository($api);
 
+	const snapshotMessage = ref<Snapshot>();
+
 	const authStore = useAuthStore();
 
-	const { snapshotMessage, connect, sendMessage } = usePublicWebSocket();
+	const { connect, sendMessage } = usePublicWebSocket();
 
 	const worker = useBaseWorker();
 
@@ -365,6 +367,8 @@ export const useSpotStore = defineStore('spotStore', () => {
 		quoteUnit,
 
 		amountOptions,
+
+		snapshotMessage,
 
 		assetList,
 		assetListLoading,

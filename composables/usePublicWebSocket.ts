@@ -1,17 +1,18 @@
 import type { SocketSpotSnapshotMessage, SocketSpotTickerMessage } from '~/types/definitions/socket.types';
 import type { Snapshot } from '~/types/definitions/spot.types';
-import { SocketId } from '~/utils/enums/socket.enum';
+import { PublicTopic, SocketId } from '~/utils/enums/socket.enum';
+
+let socketInstance: WebSocket | null = null;
+let pingInterval: ReturnType<typeof setInterval> | null = null;
+const socketPingId = `${SocketId.PING}_${new Date().getTime()}`;
 
 export const usePublicWebSocket = () => {
-	const socket = ref<WebSocket | null>(null);
-	const messages = ref<SocketSpotTickerMessage[]>([]);
-	const exchangeMessages = ref<SocketSpotTickerMessage[]>([]);
-	const snapshotMessage = ref<Snapshot>();
-	let pingInterval: ReturnType<typeof setInterval> | null = null;
+	const spotStore = useSpotStore();
+	const publicSocketStore = usePublicSocketStore();
 
 	const connect = () => {
 		return new Promise<void>((resolve, reject) => {
-			if (socket.value && socket.value.readyState === WebSocket.OPEN) {
+			if (socketInstance && socketInstance.readyState === WebSocket.OPEN) {
 				resolve();
 				return;
 			}
@@ -19,16 +20,16 @@ export const usePublicWebSocket = () => {
 			const socketBaseURL = useEnv('socketBaseUrl');
 			const socketURL = `${socketBaseURL}/v1/wss/public`;
 
-			socket.value = new WebSocket(socketURL);
+			socketInstance = new WebSocket(socketURL);
 
-			socket.value.onopen = () => {
+			socketInstance.onopen = () => {
 				console.log('Public WebSocket connection opened');
 				resolve();
 
 				if (!pingInterval) {
 					pingInterval = setInterval(() => {
 						const pingData = JSON.stringify({
-							id: SocketId.PING,
+							id: socketPingId,
 							method: 'Ping',
 						});
 						sendMessage(pingData);
@@ -36,63 +37,52 @@ export const usePublicWebSocket = () => {
 				}
 			};
 
-			socket.value.onerror = (error) => {
+			socketInstance.onerror = (error) => {
 				console.error('WebSocket error:', error);
 				reject(error);
 			};
 
-			socket.value.onmessage = (event) => {
+			socketInstance.onmessage = (event) => {
 				const messageData: SocketSpotTickerMessage = JSON.parse(event.data);
-				// console.log('messageData.id ------------------------------>:', messageData.id);
 
 				let snapshotMessageData: SocketSpotSnapshotMessage | null = null;
-				if (messageData.id === SocketId.SPOT_SNAPSHOT) {
+				if (messageData.topic === PublicTopic.SPOT_SNAPSHOT) {
 					snapshotMessageData = JSON.parse(event.data);
 				}
 
 				if (messageData.statusCode === 400) return;
 
-				if (messageData.id === SocketId.SPOT_TICKER || messageData.id === SocketId.FUTURES_TICKER) {
+				if (messageData.topic === PublicTopic.SPOT_TICKER || messageData.topic === PublicTopic.FUTURES_TICKER) {
 					const mi = messageData.data.mi;
 
-					const existingIndex = messages.value.findIndex((msg) => msg.data.mi === mi);
+					const existingIndex = publicSocketStore.messages.findIndex((msg) => msg.data.mi === mi);
 					if (existingIndex !== -1) {
-						messages.value[existingIndex] = messageData;
+						publicSocketStore.messages[existingIndex] = messageData;
 					}
 					else {
-						messages.value.push(messageData);
+						publicSocketStore.messages.push(messageData);
 					}
 				}
-				else if (messageData.id === SocketId.SPOT_TICKER_EXCHANGE) {
-					const mi = messageData.data.mi;
-
-					const existingIndex = exchangeMessages.value.findIndex((msg) => msg.data.mi === mi);
-					if (existingIndex !== -1) {
-						exchangeMessages.value[existingIndex] = messageData;
-					}
-					else {
-						exchangeMessages.value.push(messageData);
-					}
-				}
-				else if (messageData.id === SocketId.SPOT_SNAPSHOT) {
+				else if (messageData.topic === PublicTopic.SPOT_SNAPSHOT) {
 					if (snapshotMessageData) {
-						snapshotMessage.value = snapshotMessageData.data as Snapshot;
+						spotStore.snapshotMessage = snapshotMessageData.data as Snapshot;
 					}
 				}
 			};
 
-			socket.value.onclose = () => {
-				console.log('Public WebSocket is not open', socket.value);
+			socketInstance.onclose = () => {
+				console.log('Public WebSocket is not open', socketInstance);
 				if (pingInterval) {
 					clearInterval(pingInterval);
 				}
+				socketInstance = null;
 			};
 		});
 	};
 
 	const sendMessage = (message: string) => {
-		if (socket.value && socket.value.readyState === WebSocket.OPEN) {
-			socket.value.send(message);
+		if (socketInstance && socketInstance.readyState === WebSocket.OPEN) {
+			socketInstance.send(message);
 		}
 		else {
 			console.error('WebSocket is not open');
@@ -100,10 +90,6 @@ export const usePublicWebSocket = () => {
 	};
 
 	return {
-		socket,
-		messages,
-		exchangeMessages,
-		snapshotMessage,
 		connect,
 		sendMessage,
 	};
