@@ -10,7 +10,9 @@
 			]"
 			@click="toggle"
 		>
-			<p>{{ node.header }}</p>
+			<ULink :to="`/help-center/${node.id}`">
+				<p>{{ node.header }}</p>
+			</ULink>
 
 			<span
 				v-if="hasChildren"
