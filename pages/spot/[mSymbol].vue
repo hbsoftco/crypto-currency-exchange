@@ -103,6 +103,7 @@ onMounted(() => {
 	spotStore.getSnapshot();
 
 	spotStore.startSocket();
+	spotStore.startSystemTimeSocket();
 
 	settingsStore.isSpotPage = true;
 });
@@ -112,5 +113,6 @@ const settingsStore = useSpotSettingsStore();
 onBeforeUnmount(() => {
 	settingsStore.isSpotPage = false;
 	spotStore.stopSocket();
+	spotStore.stopSystemTimeSocket();
 });
 </script>

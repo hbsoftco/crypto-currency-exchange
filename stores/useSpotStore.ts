@@ -24,6 +24,9 @@ export const useSpotStore = defineStore('spotStore', () => {
 
 	const snapshotMessage = ref<Snapshot>();
 	const spotSnapshotId = ref<string>(`${SocketId.SPOT_TICKER}_${new Date().getTime()}`);
+	const systemTimeId = ref<string>(`${SocketId.SYSTEM_TIME}_${new Date().getTime()}`);
+
+	const networkState = ref<string>('stable');
 
 	const authStore = useAuthStore();
 
@@ -205,6 +208,26 @@ export const useSpotStore = defineStore('spotStore', () => {
 		));
 	};
 
+	const startSystemTimeSocket = async () => {
+		await connect();
+
+		sendMessage(createSubscriptionData(
+			systemTimeId.value,
+			'SUBSCRIBE',
+			PublicTopic.SYSTEM_TIME,
+			{},
+		));
+	};
+
+	const stopSystemTimeSocket = async () => {
+		sendMessage(createSubscriptionData(
+			systemTimeId.value,
+			'UNSUBSCRIBE',
+			PublicTopic.SYSTEM_TIME,
+			{},
+		));
+	};
+
 	watch(snapshotMessage, (snapshot) => {
 		if (snapshot) {
 			depth.value = snapshot.depth;
@@ -347,6 +370,7 @@ export const useSpotStore = defineStore('spotStore', () => {
 		moreState,
 		tickerItems,
 		selectedTickerItem,
+		networkState,
 
 		baseUnit,
 		quoteUnit,
@@ -364,6 +388,8 @@ export const useSpotStore = defineStore('spotStore', () => {
 		makerCommission,
 		takerCommission,
 
+		startSystemTimeSocket,
+		stopSystemTimeSocket,
 		startSocket,
 		stopSocket,
 		getSnapshot,

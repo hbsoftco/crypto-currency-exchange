@@ -45,7 +45,7 @@
 				</div>
 				<div class="ml-8">
 					<span class="text-subtle-text-light dark:text-subtle-text-50 text-xs font-normal">{{ $t('networkStatus') }}: </span>
-					<span class="text-accent-green text-xs">{{ $t('stable') }}</span>
+					<span class="text-accent-green text-xs">{{ $t(spotStore.networkState) }}</span>
 				</div>
 			</div>
 		</div>
@@ -54,4 +54,6 @@
 
 <script setup lang="ts">
 import IconSupport from '~/assets/svg-icons/support.svg';
+
+const spotStore = useSpotStore();
 </script>

@@ -514,7 +514,6 @@ const persian = {
 	limitPrice: 'قیمت ثابت',
 	stopPrice: 'ایست قیمت',
 	stopMarket: 'ایست بازار',
-	stable: 'پایدار',
 	onlineSupport: 'پشتیبانی آنلاین',
 	API: 'API',
 	guidance: 'راهنمایی',
@@ -782,7 +781,6 @@ const persian = {
 	securityLevel: 'سطح امنیتی',
 	securityLevelText: 'برای محافظت از حساب خود، توصیه می کنیم احراز هویت دو عاملی را فعال کنید.',
 	good: 'خوب',
-	weak: 'ضعیف',
 	averageLevel: 'متوسط',
 	tutorialText: 'همه چیز درباره کریپتو بیاموزید. همه سوالات، پاسخ داده شده است.',
 	twoStepLoginPageText: 'نرم افزار Google Authenticator یک ابزار رمز عبور متغیر است. پس از اتصال، هر  ۶۰ ثانیه یک کد تأیید تولید می شود. این کد تأیید می تواند به عنوان یک تأیید امنیتی در هنگام ورود به سیستم، عملیات بانکی و حسابداری، تغییر تنظیمات امنیتی و سایر عملیات استفاده شود.',
@@ -1159,6 +1157,10 @@ const persian = {
 	receipt: 'دریافتی',
 	registerOrder: 'ثبت سفارش',
 	insufficientBalance: 'موجودی کافی نیست.',
+	stable: 'پایدار',
+	weak: 'ضعیف',
+	semiStable: 'نیمه پایدار',
+	disconnected: 'قطع',
 };
 
 export default persian;
