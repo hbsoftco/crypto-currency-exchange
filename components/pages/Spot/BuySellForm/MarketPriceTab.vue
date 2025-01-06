@@ -10,6 +10,7 @@
 			v-if="spotStore.amountOptions?.length"
 			id="amount"
 			v-model="amount"
+			:readonly="authStore.isLoggedIn ? false : true"
 			:unit-text="spotStore.currency"
 			:unit-size="getUnitSize()"
 			:label="$t('amount')"

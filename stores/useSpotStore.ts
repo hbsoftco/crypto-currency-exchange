@@ -57,36 +57,20 @@ export const useSpotStore = defineStore('spotStore', () => {
 	const generateTickerItems = (ticker: string) => {
 		const tickerNumber = parseFloat(ticker);
 
-		console.log('tickerNumber:', tickerNumber);
-		console.log('tickerNumber:', tickerNumber * 10);
-		console.log('tickerNumber:', tickerNumber * 100);
+		tickerItems.value.push({
+			key: '0',
+			value: priceFormat(convertScientificToDecimal(tickerNumber), true),
+		});
 
-		if (tickerNumber >= 1 || tickerNumber.toString().length <= 5) {
-			let counter = 1;
-			for (let i = 0; i < 3; i++) {
-				tickerItems.value.push({
-					key: i.toString(),
-					value: priceFormat(tickerNumber * (counter), true),
-				});
-				counter = counter * 10;
-			}
-		}
-		else {
-			tickerItems.value.push({
-				key: '0',
-				value: priceFormat(scientificToDecimal((String(tickerNumber))), true),
-			});
+		tickerItems.value.push({
+			key: '1',
+			value: priceFormat(convertScientificToDecimal(tickerNumber * 10), true),
+		});
 
-			tickerItems.value.push({
-				key: '1',
-				value: priceFormat(scientificToDecimal((String(tickerNumber * 10))), true),
-			});
-
-			tickerItems.value.push({
-				key: '2',
-				value: priceFormat(scientificToDecimal((String(tickerNumber * 100))), true),
-			});
-		}
+		tickerItems.value.push({
+			key: '2',
+			value: priceFormat(convertScientificToDecimal(tickerNumber * 100), true),
+		});
 	};
 
 	const chartData = reactive({

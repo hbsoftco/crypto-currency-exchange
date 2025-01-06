@@ -130,6 +130,17 @@ const capitalizer = (string: string): string => {
 	return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
+const convertScientificToDecimal = (number: number) => {
+	const decimalPlaces = Math.max(0, Math.min(100, -Math.floor(Math.log10(Math.abs(number)))));
+	const fixedNumber = number.toFixed(decimalPlaces);
+
+	if (fixedNumber.includes('e')) {
+		return parseFloat(fixedNumber).toString();
+	}
+
+	return fixedNumber;
+};
+
 const scientificToDecimal = (scientific: string): string => {
 	if (Number(scientific) > 1) {
 		return scientific;
@@ -222,4 +233,5 @@ export {
 	handleImageError,
 	formatTextWithLineBreaks,
 	scientificToDecimal,
+	convertScientificToDecimal,
 };

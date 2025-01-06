@@ -1,5 +1,5 @@
 <template>
-	<div class="w-full min-h-52 m-auto text-center flex justify-center items-center">
+	<div class="w-full min-h-60 m-auto text-center flex justify-center items-center">
 		<div>
 			<p v-if="text">
 				{{ text }}
