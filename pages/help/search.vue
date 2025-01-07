@@ -130,7 +130,7 @@
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
-import TreeNode from '~/components/pages/Site/Support/TreeNode.vue';
+import TreeNode from '~/components/pages/Support/TreeNode.vue';
 import SearchCrypto from '~/components/forms/SearchCrypto.vue';
 import { Language } from '~/utils/enums/language.enum';
 import { sanitizedHtml } from '~/utils/helpers';

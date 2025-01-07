@@ -1,5 +1,10 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
-	<div>
+	<div v-if="systemTreeLoading || systemHelpLoading">
+		<UiLogoLoading />
+	</div>
+
+	<div v-else>
 		<BackHeader
 			v-if="isMobile"
 			:title="$t('helpCenter')"
@@ -22,7 +27,7 @@
 							</div>
 							<img
 								src="/images/svg/support/help-center/help-center.svg"
-								alt="Brand Logo"
+								alt="help-center"
 								class="w-24 h-16"
 							>
 						</div>
@@ -34,9 +39,7 @@
 							v-if="systemHelp"
 							class="hidden md:flex items-center my-4"
 						>
-							<ULink
-								to="/help"
-							>
+							<ULink to="/help">
 
 								<span class="mx-1 text-xs md:text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
 									{{ $t('bitlandHelpCenter') }}
@@ -56,6 +59,7 @@
 				</div>
 			</UContainer>
 		</section>
+
 		<div
 			v-if="isMobile"
 			class="relative"
@@ -84,6 +88,7 @@
 				</div>
 			</div>
 		</div>
+
 		<section>
 			<UContainer>
 				<div class="grid grid-cols-12 border-t border-primary-gray-light dark:border-primary-gray-dark">
@@ -129,7 +134,7 @@
 </template>
 
 <script setup lang="ts">
-import TreeNode from '~/components/pages/Site/Support/TreeNode.vue';
+import TreeNode from '~/components/pages/Support/TreeNode.vue';
 import SearchCrypto from '~/components/forms/SearchCrypto.vue';
 import { Language } from '~/utils/enums/language.enum';
 import { sanitizedHtml } from '~/utils/helpers';
@@ -162,7 +167,7 @@ const systemHelpParams = ref<BaseLangGroupParams>(
 	},
 );
 const systemTree = ref<Tree[]>([]);
-const systemTreeLoading = ref<boolean>(false);
+const systemTreeLoading = ref<boolean>(true);
 const getSystemTree = async () => {
 	try {
 		systemTreeLoading.value = true;
@@ -204,7 +209,7 @@ const paramsData = ref<BaseLangIdParams>({
 	languageId: String(Language.PERSIAN),
 });
 const systemHelp = ref<System | null>(null);
-const systemHelpLoading = ref<boolean>(false);
+const systemHelpLoading = ref<boolean>(true);
 const loadHelpData = async (itemId: string) => {
 	try {
 		systemHelpLoading.value = true;
@@ -243,8 +248,10 @@ const filterNode = (node: Tree, searchText: string): Tree | null => {
 onMounted(async () => {
 	isMobile.value = !!mobileDetect.mobile();
 
-	await getSystemTree();
-	await nextTick();
-	await loadHelpData(id);
+	// await nextTick();
+	await Promise.all([
+		getSystemTree(),
+		loadHelpData(id),
+	]);
 });
 </script>

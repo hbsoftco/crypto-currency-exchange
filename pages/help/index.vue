@@ -256,7 +256,6 @@ const getSystemShort = async () => {
 	}
 };
 
-// Function to handle search
 const handleSearch = () => {
 	try {
 		if (searchInput.value.trim() !== '') {
