@@ -12,12 +12,6 @@ type GetLanguageParams = {
 	languageId: number;
 };
 
-type GetStaffParams = {
-	languageId?: string;
-	staffId: string;
-	profileTypeId: string;
-};
-
 type getTradesListParams = {
 	marketId?: string;
 	symbol?: string;
@@ -186,15 +180,6 @@ type GetHowBuyListParams = {
 	pageSize: string;
 };
 
-type GetFAQListParams = {
-	languageId: string;
-	tagId: string;
-	searchStatement: string;
-	group: string;
-	pageNumber: string;
-	pageSize: string;
-};
-
 type GetSubjectLiveChatParams = {
 	languageId: string;
 	group: string;
@@ -326,7 +311,6 @@ export type {
 	GetAssetListParams,
 	GetExposedListParams,
 	GetTagListParams,
-	GetStaffParams,
 	GetTradeListParams,
 	GetDepositParams,
 	GetTraderBestListParams,
@@ -338,7 +322,6 @@ export type {
 	GetBankParams,
 	GetDepositAddressParams,
 	GetHowBuyListParams,
-	GetFAQListParams,
 	GetSubjectLiveChatParams,
 	GetContactListParams,
 	DeleteContactListParams,

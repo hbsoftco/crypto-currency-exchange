@@ -1,8 +1,8 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
-import type { BaseLangGroupParams, BaseLangIdParams, SearchListParams } from '~/types/definitions/common.types';
-import type { MiniRoutineParams, SystemListResponse, SystemResponse } from '~/types/definitions/system.types';
+import type { BaseLangGroupParams, BaseLangIdParams, CommonResponse, KeyValueResponse, SearchListParams } from '~/types/definitions/common.types';
+import type { FAQListParams, MiniRoutineParams, StaffParams, SystemListResponse, SystemResponse } from '~/types/definitions/system.types';
 
 type SystemRepository = {
 	getSystemHelp: (params: BaseLangIdParams) => Promise<SystemResponse>;
@@ -14,6 +14,10 @@ type SystemRepository = {
 	getSystemShortList: (params: BaseLangGroupParams) => Promise<SystemListResponse>;
 	getSystemTreeList: (params: BaseLangGroupParams) => Promise<SystemListResponse>;
 	getSearchList: (params: SearchListParams) => Promise<SystemListResponse>;
+	getSocialNetList: () => Promise<KeyValueResponse>;
+	getStaffCheck: (params: StaffParams) => Promise<CommonResponse>;
+	getSubjectList: (params: BaseLangGroupParams) => Promise<SystemListResponse>;
+	getFAQList: (params: FAQListParams) => Promise<SystemListResponse>;
 };
 
 export const systemRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SystemRepository => ({
@@ -136,6 +140,56 @@ export const systemRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Sys
 		);
 
 		const url = '/v1/system/help/search_list';
+		const response = await fetch<SystemListResponse>(`${url}?${query.toString()}`, {
+			noAuth: true,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getSocialNetList(): Promise<KeyValueResponse> {
+		const url = '/v1/system/support/social_net_list';
+		const response = await fetch<KeyValueResponse>(`${url}`, {
+			noAuth: true,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getStaffCheck(params: StaffParams): Promise<CommonResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+		const url = '/v1/system/support/staff_check';
+		const response = await fetch<CommonResponse>(`${url}?${query.toString()}`, {
+			noAuth: true,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getSubjectList(params: BaseLangGroupParams): Promise<SystemListResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/system/help/before_live_chat_list';
+		const response = await fetch<SystemListResponse>(`${url}?${query.toString()}`, {
+			noAuth: true,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getFAQList(params: FAQListParams): Promise<SystemListResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/system/faq/before_live_chat_list';
 		const response = await fetch<SystemListResponse>(`${url}?${query.toString()}`, {
 			noAuth: true,
 			method: 'GET',

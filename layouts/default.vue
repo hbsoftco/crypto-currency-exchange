@@ -46,6 +46,8 @@ const specialRoutes = ref<string[]>([
 	'help-center',
 	'help-center-id',
 	'help-center-search',
+	'verification',
+	'live-chat',
 ]);
 
 const route = useRoute();

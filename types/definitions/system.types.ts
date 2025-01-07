@@ -1,3 +1,5 @@
+import type { CurrencyBriefItem } from '../response/brief-list.types';
+
 import type { KeyValue } from './common.types';
 
 type SystemListResponse = {
@@ -21,6 +23,7 @@ type SystemRoot = {
 	mediaUrl: string;
 	tags: KeyValue[];
 	info: CardInfo;
+	currency?: CurrencyBriefItem | null;
 };
 
 type SubFaq = {
@@ -134,6 +137,21 @@ type Tree = {
 	children?: Tree[];
 };
 
+type StaffParams = {
+	languageId?: string;
+	staffId: string;
+	profileTypeId: string;
+};
+
+type FAQListParams = {
+	languageId: string;
+	tagId: string;
+	searchStatement: string;
+	group: string;
+	pageNumber: string;
+	pageSize: string;
+};
+
 export type {
 	SystemListResponse,
 	SystemResponse,
@@ -148,4 +166,6 @@ export type {
 	MiniRoutineParams,
 	MiniRoutine,
 	Tree,
+	StaffParams,
+	FAQListParams,
 };

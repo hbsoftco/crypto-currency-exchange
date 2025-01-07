@@ -1,17 +1,21 @@
 <template>
 	<div class="mb-[30rem] md:mb-24">
+		<BackHeader
+			v-if="isMobile"
+			:title="$t('bitlandApproval')"
+		/>
 		<section>
 			<ImageCover>
-				<UContainer class="h-full">
+				<div class="mx-auto px-0 sm:px-6 lg:px-8 max-w-7xl h-full">
 					<div class="w-full h-full relative flex items-center justify-between">
-						<div class="mt-10 md:mt-12">
+						<div class="mt-[35rem] md:mt-12 bg-transparency-light dark:bg-transparency-dark opacity-75 md:bg-none md:dark:bg-none w-full md:w-0">
 							<h1
 								class="text-light dark:text-dark text-lg md:text-7xl font-extrabold mb-2 md:mb-8"
 							>
 								{{ $t("bitlandApproval") }}
 							</h1>
 							<div
-								class="p-3 bg-transparency-light dark:bg-transparency-dark rounded-md shadow-md text-white w-full md:w-[40rem] h-auto my-6"
+								class="p-3 bg-none md:bg-transparency-light dark:bg-none md:dark:bg-transparency-dark rounded-md shadow-md text-white w-full md:w-[40rem] h-auto my-6"
 							>
 								<p
 									class="text-text-dark dark:text-text-light mt-1 md:mt-4 text-sm md:text-base"
@@ -53,7 +57,7 @@
 												id="info"
 												v-model="params.staffId"
 												type="text"
-												input-class="text-left text-left placeholder:text-right bg-background-light dark:bg-background-dark"
+												input-class="text-left text-left placeholder:text-right bg-background-light dark:bg-background-dark h-10"
 												label=""
 												:placeholder="$t('placeholderInfo')"
 												icon=""
@@ -90,10 +94,10 @@
 						<img
 							src="/images/svg/vertification.svg"
 							alt="vertification"
-							class="absolute bottom-0 left-0 hidden md:block w-[30rem] h-[36.125rem]"
+							class="absolute bottom-0 left-0 w-full md:w-[30rem] h-40 md:h-[36.125rem]"
 						>
 					</div>
-				</UContainer>
+				</div>
 			</ImageCover>
 		</section>
 	</div>
@@ -104,43 +108,50 @@ import IconEnter from '~/assets/svg-icons/enter.svg';
 import ImageCover from '~/components/pages/ImageCover.vue';
 import UnverifiedModal from '~/components/pages/Site/Support/UnverifiedModal.vue';
 import VerifiedModal from '~/components/pages/Site/Support/VerifiedModal.vue';
-import { supportRepository } from '~/repositories/support.repository';
-import type { GetStaffParams, KeyValue } from '~/types/base.types';
+import { systemRepository } from '~/repositories/system.repository';
+import type { KeyValue } from '~/types/definitions/common.types';
+import type { StaffParams } from '~/types/definitions/system.types';
 import { Language } from '~/utils/enums/language.enum';
 
-const { $api } = useNuxtApp();
-const supportRepo = supportRepository($api);
-const socialNetList = ref<KeyValue[]>();
-const socialListLoading = ref<boolean>(false);
-const isValid = ref<boolean>(false);
-const showDetail = ref<boolean>(false);
+const BackHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/BackHeader.vue'));
 
+const { $api, $mobileDetect } = useNuxtApp();
+const systemRepo = systemRepository($api);
+
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
+
+const socialNetList = ref<KeyValue[]>();
+const socialNetListLoading = ref<boolean>(false);
 const getSocialList = async () => {
 	try {
-		socialListLoading.value = true;
-		const { result } = await supportRepo.getSocialNetList();
+		socialNetListLoading.value = true;
+		const { result } = await systemRepo.getSocialNetList();
 		socialNetList.value = result;
-		socialListLoading.value = false;
+		socialNetListLoading.value = false;
 	}
 	catch (error) {
-		socialListLoading.value = false;
 		console.log(error);
+		socialNetListLoading.value = false;
 	}
 };
 
-const params = ref<GetStaffParams>({
+const isValid = ref<boolean>(false);
+const showDetail = ref<boolean>(false);
+const params = ref<StaffParams>({
 	languageId: String(Language.PERSIAN),
 	staffId: '',
 	profileTypeId: '',
 });
 
+const staffCheckList = ref<string>();
 const staffCheckListLoading = ref<boolean>(false);
-
 const getStaffCheck = async () => {
 	try {
 		staffCheckListLoading.value = true;
 
-		await supportRepo.getStaffCheck(params.value);
+		const { result } = await systemRepo.getStaffCheck(params.value);
+		staffCheckList.value = result;
 		isValid.value = true;
 	}
 	catch (error) {
@@ -158,6 +169,8 @@ const closeDetail = () => {
 };
 
 onMounted(async () => {
+	isMobile.value = !!mobileDetect.mobile();
+
 	await getSocialList();
 });
 </script>

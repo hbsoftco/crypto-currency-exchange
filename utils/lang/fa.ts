@@ -1161,6 +1161,7 @@ const persian = {
 	weak: 'ضعیف',
 	semiStable: 'نیمه پایدار',
 	disconnected: 'قطع',
+	liveChatBitlandExpert: 'گفتگوی زنده با کارشناس بیت لند',
 };
 
 export default persian;
