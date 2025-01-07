@@ -42,90 +42,94 @@
 			</ImageCover>
 		</section>
 
-		<section class="block md:hidden">
-			<UContainer>
-				<div class="w-full -mt-8">
-					<SearchCrypto
-						id="searchInput"
-						v-model="searchInput"
-						type="text"
-						input-class="text-right"
-						label=""
-						:placeholder="$t('helpCenterSearch')"
-						icon="heroicons:magnifying-glass"
-						@keyup.enter="handleSearch"
-					/>
-				</div>
-			</UContainer>
-		</section>
-
-		<section>
-			<UContainer>
-				<div class="my-10 md:my-24">
-					<div class="bg-primary-gray-light dark:bg-primary-gray-dark px-4 md:px-12 py-4 rounded-md">
-						<h2 class="text-xl md:text-2xl font-bold">
-							{{ $t('essentialAccess') }}
-						</h2>
+		<div v-if="systemHelpRootListLoading || systemHelpShortListLoading">
+			<UiLogoLoading />
+		</div>
+		<div v-else>
+			<section class="block md:hidden">
+				<UContainer>
+					<div class="w-full -mt-8">
+						<SearchCrypto
+							id="searchInput"
+							v-model="searchInput"
+							type="text"
+							input-class="text-right"
+							label=""
+							:placeholder="$t('helpCenterSearch')"
+							icon="heroicons:magnifying-glass"
+							@keyup.enter="handleSearch"
+						/>
 					</div>
+				</UContainer>
+			</section>
 
-					<div class="grid grid-cols-3 md:grid-cols-6 gap-2 my-4">
-						<ULink
-							v-for="(item, index) in systemHelpShortList"
-							:key="index"
-							:to="`help/${item.id}`"
-							class="flex flex-col justify-center items-center px-2 py-4 border border-primary-gray-light dark:border-primary-gray-dark rounded-md"
-						>
-							<img
-								:src="item.mediaUrl"
-								alt="icon"
-								class="w-8 md:w-12 h-8 md:h-12"
+			<section>
+				<UContainer>
+					<div class="my-10 md:my-24">
+						<div class="bg-primary-gray-light dark:bg-primary-gray-dark px-4 md:px-12 py-4 rounded-md">
+							<h2 class="text-xl md:text-2xl font-bold">
+								{{ $t('essentialAccess') }}
+							</h2>
+						</div>
+
+						<div class="grid grid-cols-3 md:grid-cols-6 gap-2 my-4">
+							<ULink
+								v-for="(item, index) in systemHelpShortList"
+								:key="index"
+								:to="`help/${item.id}`"
+								class="flex flex-col justify-center items-center px-2 py-4 border border-primary-gray-light dark:border-primary-gray-dark rounded-md"
 							>
-							<p class="text-sm font-normal md:font-bold text-center mt-1 md:mt-4">
-								{{ item.info.header }}
-							</p>
-						</ULink>
-					</div>
-				</div>
-			</UContainer>
-		</section>
-
-		<section>
-			<UContainer>
-				<div class="my-10 md:my-24">
-					<div class="flex justify-between items-center bg-primary-gray-light dark:bg-primary-gray-dark px-4 md:px-12 rounded-md">
-						<h2 class="text-lg md:text-2xl font-bold">
-							{{ $t('educationCenter') }}
-						</h2>
-						<div>
-							<UiSeeMore
-								link="/"
-								text="showMore"
-							/>
+								<img
+									:src="item.mediaUrl"
+									alt="icon"
+									class="w-8 md:w-12 h-8 md:h-12"
+								>
+								<p class="text-sm font-normal md:font-bold text-center mt-1 md:mt-4">
+									{{ item.info.header }}
+								</p>
+							</ULink>
 						</div>
 					</div>
+				</UContainer>
+			</section>
 
-					<div class="grid grid-cols-2 md:grid-cols-3 gap-4 my-12">
-						<ULink
-							v-for="(item, index) in systemHelpRootList"
-							:key="index"
-							:to="`help/${item.id}`"
-							class="flex items-center py-4 border-b border-primary-gray-light dark:border-primary-gray-dark"
-						>
-							<img
-								:src="item.mediaUrl"
-								alt="icon"
-								class="w-5 h-5"
+			<section>
+				<UContainer>
+					<div class="my-10 md:my-24">
+						<div class="flex justify-between items-center bg-primary-gray-light dark:bg-primary-gray-dark px-4 md:px-12 rounded-md">
+							<h2 class="text-lg md:text-2xl font-bold">
+								{{ $t('educationCenter') }}
+							</h2>
+							<div>
+								<UiSeeMore
+									link="/"
+									text="showMore"
+								/>
+							</div>
+						</div>
+
+						<div class="grid grid-cols-2 md:grid-cols-3 gap-4 my-12">
+							<ULink
+								v-for="(item, index) in systemHelpRootList"
+								:key="index"
+								:to="`help/${item.id}`"
+								class="flex items-center py-4 border-b border-primary-gray-light dark:border-primary-gray-dark"
 							>
-							<p class="text-sm font-medium mr-1 md:mr-3">
-								{{ item.info.header }}
-							</p>
-						</ULink>
+								<img
+									:src="item.mediaUrl"
+									alt="icon"
+									class="w-5 h-5"
+								>
+								<p class="text-sm font-medium mr-1 md:mr-3">
+									{{ item.info.header }}
+								</p>
+							</ULink>
+						</div>
 					</div>
-				</div>
-			</UContainer>
-		</section>
+				</UContainer>
+			</section>
 
-		<section>
+			<!-- <section>
 			<UContainer>
 				<div class="my-10 md:my-24">
 					<div class="flex justify-between items-center bg-primary-gray-light dark:bg-primary-gray-dark px-4 md:px-12 rounded-md">
@@ -167,29 +171,30 @@
 					</div>
 				</div>
 			</UContainer>
-		</section>
+		</section> -->
 
-		<section>
-			<UContainer>
-				<div class="flex justify-center text-center">
-					<div class="w-full md:w-96">
-						<h5 class="text-2xl font-bold">
-							{{ $t('doYouStillHaveQuestions') }}
-						</h5>
-						<p class="text-base font-medium my-4">
-							{{ $t('doYouStillHaveQuestionsText') }}
-						</p>
-						<div class="flex justify-between px-6">
-							<IconInstagram class="text-3xl" />
-							<IconTelegram class="text-3xl" />
-							<IconLinkedin class="text-3xl" />
-							<IconWhatsapp class="text-3xl" />
-							<IconTwitter class="text-3xl" />
+			<section class="pt-20">
+				<UContainer>
+					<div class="flex justify-center text-center">
+						<div class="w-full md:w-96">
+							<h5 class="text-2xl font-bold">
+								{{ $t('doYouStillHaveQuestions') }}
+							</h5>
+							<p class="text-base font-medium my-4">
+								{{ $t('doYouStillHaveQuestionsText') }}
+							</p>
+							<div class="flex justify-between px-6">
+								<IconInstagram class="text-3xl" />
+								<IconTelegram class="text-3xl" />
+								<IconLinkedin class="text-3xl" />
+								<IconWhatsapp class="text-3xl" />
+								<IconTwitter class="text-3xl" />
+							</div>
 						</div>
 					</div>
-				</div>
-			</UContainer>
-		</section>
+				</UContainer>
+			</section>
+		</div>
 	</div>
 </template>
 
@@ -222,7 +227,7 @@ const systemHelpParams = ref<BaseLangGroupParams>(
 	},
 );
 const systemHelpRootList = ref<SystemRoot[]>();
-const systemHelpRootListLoading = ref<boolean>(false);
+const systemHelpRootListLoading = ref<boolean>(true);
 const getSystemRoot = async () => {
 	try {
 		systemHelpRootListLoading.value = true;
@@ -237,7 +242,7 @@ const getSystemRoot = async () => {
 };
 
 const systemHelpShortList = ref<SystemRoot[]>();
-const systemHelpShortListLoading = ref<boolean>(false);
+const systemHelpShortListLoading = ref<boolean>(true);
 const getSystemShort = async () => {
 	try {
 		systemHelpShortListLoading.value = true;
@@ -267,7 +272,9 @@ const handleSearch = () => {
 onMounted(async () => {
 	isMobile.value = !!mobileDetect.mobile();
 
-	await getSystemRoot();
-	await getSystemShort();
+	await Promise.all([
+		getSystemRoot(),
+		getSystemShort(),
+	]);
 });
 </script>
