@@ -47,7 +47,7 @@
 							<span>{{ $t('verificationModalTextOne') }}</span><br>
 							<h5>
 								مراقب کلاهبرداری باشید و با احتیاط عمل کنید. برای اطلاعات بیشتر لطفا به <ULink
-									to="/help-center"
+									to="/help"
 									class="text-accent-blue cursor-pointer"
 								>
 									{{ $t('guidCenter') }}

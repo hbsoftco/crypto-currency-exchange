@@ -10,7 +10,7 @@
 			]"
 			@click="toggle"
 		>
-			<ULink :to="`/help-center/${node.id}`">
+			<ULink :to="`/help/${node.id}`">
 				<p>{{ node.header }}</p>
 			</ULink>
 

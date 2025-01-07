@@ -93,7 +93,7 @@
 						class="border-b border-primary-gray-light dark:border-primary-gray-dark"
 					>
 						<ULink
-							to="/help-center"
+							to="/help"
 							class="flex justify-between items-center w-full py-2.5"
 						>
 							<div class="flex justify-start items-center">

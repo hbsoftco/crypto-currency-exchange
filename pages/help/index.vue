@@ -72,7 +72,7 @@
 						<ULink
 							v-for="(item, index) in systemHelpShortList"
 							:key="index"
-							:to="`help-center/${item.id}`"
+							:to="`help/${item.id}`"
 							class="flex flex-col justify-center items-center px-2 py-4 border border-primary-gray-light dark:border-primary-gray-dark rounded-md"
 						>
 							<img
@@ -108,7 +108,7 @@
 						<ULink
 							v-for="(item, index) in systemHelpRootList"
 							:key="index"
-							:to="`help-center/${item.id}`"
+							:to="`help/${item.id}`"
 							class="flex items-center py-4 border-b border-primary-gray-light dark:border-primary-gray-dark"
 						>
 							<img
@@ -255,7 +255,7 @@ const getSystemShort = async () => {
 const handleSearch = () => {
 	try {
 		if (searchInput.value.trim() !== '') {
-			router.push({ path: '/help-center/search', query: { q: searchInput.value } });
+			router.push({ path: '/help/search', query: { q: searchInput.value } });
 			// router.push({ name: '/help-center/search', query: { q: searchInput.value } }); // Navigate to the search page with query
 		}
 	}

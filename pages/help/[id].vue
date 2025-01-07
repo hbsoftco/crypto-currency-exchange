@@ -35,7 +35,7 @@
 							class="hidden md:flex items-center my-4"
 						>
 							<ULink
-								to="/help-center"
+								to="/help"
 							>
 
 								<span class="mx-1 text-xs md:text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">

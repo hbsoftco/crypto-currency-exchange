@@ -15,9 +15,7 @@
 						<div
 							class="flex items-center my-0 md:my-4"
 						>
-							<ULink
-								to="/help-center"
-							>
+							<ULink to="/help">
 
 								<span class="mx-1 text-xs md:text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
 									{{ $t('bitlandHelpCenter') }}
@@ -85,7 +83,7 @@
 									:key="item.id"
 									class="border-b border-primary-gray-light dark:border-primary-gray-dark mb-4 pb-4"
 								>
-									<ULink :to="`/help-center/${item.id}`">
+									<ULink :to="`/help/${item.id}`">
 
 										<h3 class=" text-xl font-bold">
 											{{ item.info.header }}

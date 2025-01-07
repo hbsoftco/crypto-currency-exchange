@@ -13,7 +13,7 @@
 			<button
 				:aria-label="$t('guidCenter')"
 				class="rounded-full shadow-sm w-12 h-12 bg-hover-light dark:bg-hover-dark flex justify-center items-center"
-				@click="router.push('/help-center')"
+				@click="router.push('/help')"
 			>
 				<IconSupport class="text-2xl text-primary-yellow-light dark:text-primary-yellow-dark hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark" />
 			</button>

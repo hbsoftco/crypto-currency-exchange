@@ -80,7 +80,7 @@
 				<span class="text-sm">{{ $t('howBuyCurrency') }}</span>
 			</ULink>
 			<ULink
-				to="/help-center"
+				to="/help"
 				class="flex flex-col justify-center items-center  mb-4"
 			>
 				<img
