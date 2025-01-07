@@ -18,6 +18,7 @@ type SystemRepository = {
 	getStaffCheck: (params: StaffParams) => Promise<CommonResponse>;
 	getSubjectList: (params: BaseLangGroupParams) => Promise<SystemListResponse>;
 	getFAQList: (params: FAQListParams) => Promise<SystemListResponse>;
+	getBuyList: (params: FAQListParams) => Promise<SystemListResponse>;
 };
 
 export const systemRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SystemRepository => ({
@@ -190,6 +191,20 @@ export const systemRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Sys
 		);
 
 		const url = '/v1/system/faq/before_live_chat_list';
+		const response = await fetch<SystemListResponse>(`${url}?${query.toString()}`, {
+			noAuth: true,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getBuyList(params: FAQListParams): Promise<SystemListResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/system/help/how_to_buy_list';
 		const response = await fetch<SystemListResponse>(`${url}?${query.toString()}`, {
 			noAuth: true,
 			method: 'GET',

@@ -2,12 +2,12 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-import { helpRepository } from '~/repositories/help.repository';
-import type { BuyItem } from '~/types/response/help.types';
 import type { GetHowBuyListParams } from '~/types/base.types';
+import { systemRepository } from '~/repositories/system.repository';
+import type { SystemRoot } from '~/types/definitions/system.types';
 
 export const useBuyingGuideStore = defineStore('buyingGuide', () => {
-	const buyList = ref<BuyItem[]>([]);
+	const buyList = ref<SystemRoot[]>([]);
 	const totalCount = ref(0);
 	const params = ref<GetHowBuyListParams>({
 		languageId: '',
@@ -21,7 +21,7 @@ export const useBuyingGuideStore = defineStore('buyingGuide', () => {
 	const isLoading = ref(false);
 	const baseDataStore = useBaseDataStore();
 	const { $api } = useNuxtApp();
-	const helpRepo = helpRepository($api);
+	const systemRepo = systemRepository($api);
 
 	const findCurrencyById = (id: number) => {
 		let start = 0;
@@ -48,9 +48,10 @@ export const useBuyingGuideStore = defineStore('buyingGuide', () => {
 	const fetchBuyList = async () => {
 		isLoading.value = true;
 		try {
-			const { result } = await helpRepo.getBuyList(params.value);
+			const { result } = await systemRepo.getBuyList(params.value);
 			totalCount.value = result.totalCount;
-			buyList.value = result.rows.map((buy) => {
+			const finalList = result.rows as SystemRoot[];
+			buyList.value = finalList.map((buy) => {
 				const currency = findCurrencyById(buy.cid);
 				return {
 					...buy,

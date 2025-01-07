@@ -184,11 +184,33 @@
 								{{ $t('doYouStillHaveQuestionsText') }}
 							</p>
 							<div class="flex justify-between px-6">
-								<IconInstagram class="text-3xl" />
-								<IconTelegram class="text-3xl" />
-								<IconLinkedin class="text-3xl" />
-								<IconWhatsapp class="text-3xl" />
-								<IconTwitter class="text-3xl" />
+								<ULink
+									to="https://instagram.com/bitland.io"
+									target="_blank"
+								>
+									<IconInstagram class="text-3xl" />
+								</ULink>
+								<ULink
+									to="https://t.me/bitlandio"
+									target="_blank"
+								>
+									<IconTelegram class="text-3xl" />
+								</ULink>
+								<!-- <ULink to="https://instagram.com/bitland.io">
+									<IconLinkedin class="text-3xl" />
+								</ULink> -->
+								<ULink
+									to="https://wa.me/+989026031145"
+									target="_blank"
+								>
+									<IconWhatsapp class="text-3xl" />
+								</ULink>
+								<ULink
+									to="https://x.com/bitlandio"
+									target="_blank"
+								>
+									<IconTwitter class="text-3xl" />
+								</ULink>
 							</div>
 						</div>
 					</div>
@@ -202,7 +224,7 @@
 import SearchCrypto from '~/components/forms/SearchCrypto.vue';
 import IconInstagram from '~/assets/svg-icons/social/instagram.svg';
 import IconTelegram from '~/assets/svg-icons/social/telegram.svg';
-import IconLinkedin from '~/assets/svg-icons/social/linkedin.svg';
+// import IconLinkedin from '~/assets/svg-icons/social/linkedin.svg';
 import IconWhatsapp from '~/assets/svg-icons/social/whatsapp.svg';
 import IconTwitter from '~/assets/svg-icons/social/twitter.svg';
 import ImageCover from '~/components/pages/ImageCover.vue';
