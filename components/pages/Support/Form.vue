@@ -52,8 +52,8 @@
 
 <script setup lang="ts">
 import IconEnter from '~/assets/svg-icons/enter.svg';
-// import UnverifiedModal from '~/components/pages/Site/Support/UnverifiedModal.vue';
-import VerifiedModal from '~/components/pages/Site/Support/VerifiedModal.vue';
+// import UnverifiedModal from '~/components/pages/Support/UnverifiedModal.vue';
+import VerifiedModal from '~/components/pages/Support/VerifiedModal.vue';
 import { supportRepository } from '~/repositories/support.repository';
 import type { KeyValue } from '~/types/base.types';
 
