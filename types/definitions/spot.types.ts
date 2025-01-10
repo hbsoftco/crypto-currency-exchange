@@ -237,11 +237,29 @@ type StoreOrderMarketDto = {
 	reqByQnt: string;
 };
 
+type StoreOrderStopMarketDto = {
+	marketId: number;
+	assetType: string;
+	orderSide: string;
+	userUniqueTag: string | null;
+	triggerPrice: string;
+	reqByQnt: string;
+};
+
 type StoreOrderInstantDto = {
 	marketId: number;
 	assetType: string;
 	orderSide: string;
 	userUniqueTag: string | null;
+	reqByQot: string;
+};
+
+type StoreOrderStopInstantDto = {
+	marketId: number;
+	assetType: string;
+	orderSide: string;
+	userUniqueTag: string | null;
+	triggerPrice: string;
 	reqByQot: string;
 };
 
@@ -302,4 +320,6 @@ export type {
 	Ticker,
 	StoreOrderLimitDto,
 	StoreOrderStopLimitDto,
+	StoreOrderStopMarketDto,
+	StoreOrderStopInstantDto,
 };
