@@ -215,7 +215,19 @@ const formatTextWithLineBreaks = (text: string) => {
 	return text.replace(/\r?\n/g, '<br>');
 };
 
+const slug = (text: string): string => {
+	return text
+		.trim()
+		.toLowerCase()
+		.normalize('NFD')
+		.replace(/[\u064B-\u0652]/g, '')
+		.replace(/[^a-zA-Z0-9\u0600-\u06FF\s-]/g, '')
+		.replace(/\s+/g, '-')
+		.replace(/-+/g, '-');
+};
+
 export {
+	slug,
 	bigNumber,
 	formatBigNumber,
 	summarizeBigNumber,

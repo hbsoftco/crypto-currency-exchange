@@ -69,9 +69,10 @@
 				class="absolute top-0 left-0 w-full bg-background-light dark:bg-background-dark shadow-lg z-50"
 			>
 				<div class="p-4 border-t border-gray-300 dark:border-gray-600">
-					<SearchCrypto
+					<FormsFieldInput
 						id="searchMenu"
 						v-model="searchMenu"
+						mt-class="mt-0"
 						type="text"
 						input-class="text-right"
 						label="search"
@@ -89,17 +90,18 @@
 			</div>
 		</div>
 
-		<section>
-			<UContainer>
-				<div class="grid grid-cols-12 border-t border-primary-gray-light dark:border-primary-gray-dark">
-					<div
-						v-if="!isMobile"
-						class="col-span-12 md:col-span-4 p-2 border-l border-primary-gray-light dark:border-primary-gray-dark"
-					>
+		<section class="px-6 mb-28">
+			<div class="flex border-t border-primary-gray-light dark:border-primary-gray-dark">
+				<div
+					v-if="!isMobile"
+					class="min-w-80"
+				>
+					<div class="border-l border-primary-gray-light dark:border-primary-gray-dark pt-10 pl-3 pb-2">
 						<div class="w-full">
-							<SearchCrypto
+							<FormsFieldInput
 								id="searchMenu"
 								v-model="searchMenu"
+								mt-class="mt-0"
 								type="text"
 								input-class="text-right"
 								label="search"
@@ -113,29 +115,36 @@
 							:node="item"
 						/>
 					</div>
-					<div
-						v-if="systemHelp"
-						class="col-span-12 md:col-span-8 p-4"
-					>
-						<div class="pt-4 pb-10">
-							<h2 class="text-xl md:text-4xl font-bold md:font-black">
-								{{ systemHelp.info.header }}
-							</h2>
-						</div>
-						<p
-							class="content my-2"
-							v-html="sanitizedHtml(systemHelp.info.content)"
-						/>
-					</div>
 				</div>
-			</UContainer>
+				<!-- Sidebar menu and search -->
+
+				<div
+					v-if="systemHelp"
+					class="p-4 px-10 w-full"
+				>
+					<div class="pt-4 pb-10">
+						<h2 class="text-xl md:text-4xl font-bold md:font-black">
+							{{ systemHelp.info.header }}
+						</h2>
+					</div>
+					<p
+						class="content my-2"
+						v-html="sanitizedHtml(systemHelp.info.content)"
+					/>
+				</div>
+				<!-- content -->
+
+				<div class="p-4 pt-10 min-w-72">
+					<h1>linksssss</h1>
+				</div>
+				<!-- similar links -->
+			</div>
 		</section>
 	</div>
 </template>
 
 <script setup lang="ts">
 import TreeNode from '~/components/pages/Support/TreeNode.vue';
-import SearchCrypto from '~/components/forms/SearchCrypto.vue';
 import { Language } from '~/utils/enums/language.enum';
 import { sanitizedHtml } from '~/utils/helpers';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';

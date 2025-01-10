@@ -91,16 +91,16 @@
 		<!-- Tab content -->
 		<div>
 			<div v-if="activeTab === 'limitPrice'">
-				<LimitPriceTab />
+				<LimitPriceTab :type="activeButton" />
 			</div>
 			<div v-if="activeTab === 'market'">
 				<MarketPriceTab :type="activeButton" />
 			</div>
 			<div v-if="activeTab === 'stopPrice'">
-				<StopPriceTab />
+				<StopPriceTab :type="activeButton" />
 			</div>
 			<div v-if="activeTab === 'stopMarket'">
-				<StopMarketTab />
+				<StopMarketTab :type="activeButton" />
 			</div>
 		</div>
 		<UButton

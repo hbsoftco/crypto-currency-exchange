@@ -15,7 +15,7 @@
 			:unit-size="getUnitSize()"
 			:label="$t('amount')"
 			:options="spotStore.amountOptions"
-			placeholder="0.0"
+			placeholder="0"
 			:error-message="v$.amount.$error? $t('fieldIsRequired') : ''"
 			@item-selected="onChange"
 		/>
@@ -49,7 +49,7 @@
 			:readonly="true"
 			:unit-text="getCoin()"
 			:label="getLabel()"
-			placeholder="0.0"
+			placeholder="0"
 		/>
 
 		<div

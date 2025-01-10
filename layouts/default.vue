@@ -9,7 +9,7 @@
 		/>
 
 		<SupportButtons
-			v-if="!isMobile"
+			v-if="!isMobile && !isHelpRoute"
 			class="hidden md:block"
 		/>
 		<div
@@ -39,6 +39,20 @@ const { $mobileDetect } = useNuxtApp();
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
 
+const route = useRoute();
+
+const isHelpRoute = ref<boolean>(false);
+const helpRoutes = ref<string[]>([
+	'help',
+	'help-id-title',
+	'help-search',
+	'verification',
+	'live-chat',
+]);
+watch(() => route.name, (newName) => {
+	isHelpRoute.value = helpRoutes.value.includes(String(newName));
+}, { deep: true, immediate: true });
+
 const isSpecialRoute = ref<boolean>(false);
 const specialRoutes = ref<string[]>([
 	'coins-cSymbol',
@@ -49,9 +63,6 @@ const specialRoutes = ref<string[]>([
 	'verification',
 	'live-chat',
 ]);
-
-const route = useRoute();
-
 watch(() => route.name, (newName) => {
 	isSpecialRoute.value = specialRoutes.value.includes(String(newName));
 }, { deep: true, immediate: true });

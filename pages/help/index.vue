@@ -19,13 +19,13 @@
 									{{ $t("helpCenterText") }}
 								</p>
 								<div class="w-full">
-									<SearchCrypto
+									<FormsFieldInput
 										id="searchInput"
 										v-model="searchInput"
 										type="text"
 										input-class="text-right"
 										label=""
-										:placeholder="$t('helpCenterSearch')"
+										:placeholder="$t('search')"
 										icon="heroicons:magnifying-glass"
 										@keyup.enter="handleSearch"
 									/>
@@ -49,13 +49,13 @@
 			<section class="block md:hidden">
 				<UContainer>
 					<div class="w-full -mt-8">
-						<SearchCrypto
+						<FormsFieldInput
 							id="searchInput"
 							v-model="searchInput"
 							type="text"
 							input-class="text-right"
-							label=""
-							:placeholder="$t('helpCenterSearch')"
+							label="helpCenterSearch"
+							placeholder=""
 							icon="heroicons:magnifying-glass"
 							@keyup.enter="handleSearch"
 						/>
@@ -76,7 +76,7 @@
 							<ULink
 								v-for="(item, index) in systemHelpShortList"
 								:key="index"
-								:to="`help/${item.id}`"
+								:to="`help/${item.id}/${slug(item.info.header)}`"
 								class="flex flex-col justify-center items-center px-2 py-4 border border-primary-gray-light dark:border-primary-gray-dark rounded-md"
 							>
 								<img
@@ -112,7 +112,7 @@
 							<ULink
 								v-for="(item, index) in systemHelpRootList"
 								:key="index"
-								:to="`help/${item.id}`"
+								:to="`help/${item.id}/${slug(item.info.header)}`"
 								class="flex items-center py-4 border-b border-primary-gray-light dark:border-primary-gray-dark"
 							>
 								<img
@@ -199,13 +199,13 @@
 </template>
 
 <script setup lang="ts">
-import SearchCrypto from '~/components/forms/SearchCrypto.vue';
 import IconInstagram from '~/assets/svg-icons/social/instagram.svg';
 import IconTelegram from '~/assets/svg-icons/social/telegram.svg';
 import IconLinkedin from '~/assets/svg-icons/social/linkedin.svg';
 import IconWhatsapp from '~/assets/svg-icons/social/whatsapp.svg';
 import IconTwitter from '~/assets/svg-icons/social/twitter.svg';
 import ImageCover from '~/components/pages/ImageCover.vue';
+import { slug } from '~/utils/helpers';
 import { systemRepository } from '~/repositories/system.repository';
 import type { BaseLangGroupParams } from '~/types/definitions/common.types';
 import type { SystemRoot } from '~/types/definitions/system.types';
