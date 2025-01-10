@@ -40,7 +40,7 @@
 				<div class="grid grid-cols-12 border-t border-background-light md:border-primary-gray-light dark:border-background-dark md:dark:border-primary-gray-dark">
 					<div class="hidden md:block col-span-12 md:col-span-4 p-2 border-l border-primary-gray-light dark:border-primary-gray-dark">
 						<div class="w-full">
-							<SearchCrypto
+							<FormsFieldInput
 								id="searchMenu"
 								v-model="searchMenu"
 								type="text"
@@ -63,7 +63,7 @@
 							<h2
 								class="border-b md:border-none border-primary-gray-light dark:border-primary-gray-dark text-right text-subtle-text-light dark:text-subtle-text-dark text-sm font-normal mb-4 pb-4 md:pb-0"
 							>
-								{{ $t('searchResultsFor') }}: <span class="text-2xl font-bold text-white dark:text-white">«{{ searchQuery }}» </span>{{ useNumber(totalCount) }} {{ $t('result') }}
+								{{ $t('searchResultsFor') }}: <span class="text-2xl font-bold text-white dark:text-white">«{{ searchQuery }}» </span>{{ totalCount }} {{ $t('result') }}
 							</h2>
 							<div
 								v-if="loading"
@@ -83,7 +83,7 @@
 									:key="item.id"
 									class="border-b border-primary-gray-light dark:border-primary-gray-dark mb-4 pb-4"
 								>
-									<ULink :to="`/help/${item.id}`">
+									<ULink :to="`/help/${item.id}/${slug(item.info.header)}`">
 
 										<h3 class=" text-xl font-bold">
 											{{ item.info.header }}
@@ -129,11 +129,9 @@
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
 import TreeNode from '~/components/pages/Support/TreeNode.vue';
-import SearchCrypto from '~/components/forms/SearchCrypto.vue';
 import { Language } from '~/utils/enums/language.enum';
-import { sanitizedHtml } from '~/utils/helpers';
+import { sanitizedHtml, slug } from '~/utils/helpers';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
 import { systemRepository } from '~/repositories/system.repository';
 import type { BaseLangGroupParams, SearchListParams } from '~/types/definitions/common.types';
