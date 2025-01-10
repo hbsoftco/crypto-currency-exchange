@@ -35,7 +35,7 @@
 						<span dir="ltr">{{ priceFormat(item.p, true) }}</span>
 						<div class="w-3 h-3 mr-1 pt-0.5 flex justify-center">
 							<div
-								v-if="authStore.isLoggedIn"
+								v-if="authStore.isLoggedIn && false"
 								class="bg-primary-yellow dark:bg-primary-yellow-dark w-2 h-2 rounded-full"
 							/>
 						</div>
@@ -91,7 +91,7 @@
 						<span dir="ltr">{{ priceFormat(item.p, true) }}</span>
 						<div class="w-3 h-3 mr-1 pt-1 flex justify-center">
 							<div
-								v-if="authStore.isLoggedIn"
+								v-if="authStore.isLoggedIn && false"
 								class="bg-primary-yellow dark:bg-primary-yellow-dark w-2 h-2 rounded-full"
 							/>
 						</div>

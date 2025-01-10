@@ -256,6 +256,18 @@ type StoreOrderLimitDto = {
 	userUniqueTag: string | null;
 };
 
+type StoreOrderStopLimitDto = {
+	marketId: number;
+	assetType: string;
+	orderSide: string;
+	reqByQnt: string;
+	limitPrice: string;
+	tifType: string;
+	maxLifespanBySecond: number | null;
+	userUniqueTag: string | null;
+	triggerPrice: string;
+};
+
 type StoreCoinToCoinDto = {
 	srcCurrencyId: number;
 	desCurrencyId: number;
@@ -289,4 +301,5 @@ export type {
 	LatestTrade,
 	Ticker,
 	StoreOrderLimitDto,
+	StoreOrderStopLimitDto,
 };

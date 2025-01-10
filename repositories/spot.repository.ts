@@ -13,6 +13,7 @@ import type {
 	StoreOrderInstantDto,
 	StoreOrderLimitDto,
 	StoreOrderMarketDto,
+	StoreOrderStopLimitDto,
 	TradeListParams } from '~/types/definitions/spot.types';
 import type { CommonResponse } from '~/types/definitions/common.types';
 
@@ -23,6 +24,7 @@ type SpotRepository = {
 	storeOrderMarket: (dto: StoreOrderMarketDto) => Promise<CommonResponse>;
 	storeOrderInstant: (dto: StoreOrderInstantDto) => Promise<CommonResponse>;
 	storeOrderLimit: (dto: StoreOrderLimitDto) => Promise<CommonResponse>;
+	storeOrderStopLimit: (dto: StoreOrderStopLimitDto) => Promise<CommonResponse>;
 	storeCoinToCoin: (dto: StoreCoinToCoinDto) => Promise<CommonResponse>;
 	deleteOpenOrder: (dto: DeleteOpenOrderDto) => Promise<CommonResponse>;
 	getSnapshot: (params: SnapshotParams) => Promise<SnapshotResponse>;
@@ -105,6 +107,16 @@ export const spotRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SpotR
 
 		return response;
 	},
+	async storeOrderStopLimit(dto: StoreOrderStopLimitDto): Promise<CommonResponse> {
+		const url = `/v1/spot/order/stop_limit`;
+		const response = await fetch<CommonResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
 	async storeCoinToCoin(dto: StoreCoinToCoinDto): Promise<CommonResponse> {
 		const url = `/v1/spot/order/coin2coin`;
 		const response = await fetch<CommonResponse>(`${url}`, {
@@ -144,6 +156,5 @@ export const spotRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SpotR
 
 });
 
-// v1/spot/order/stop_limit
 // v1/spot/order/stop_instant
 // v1/spot/order/stop_market

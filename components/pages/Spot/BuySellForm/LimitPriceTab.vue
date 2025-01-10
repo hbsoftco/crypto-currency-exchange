@@ -245,11 +245,6 @@ watch(range, (newRange) => {
 		}
 	}
 
-	console.log('paymentReceipt.value', paymentReceipt.value);
-	console.log('commission', commission);
-	console.log('((Number(paymentReceipt.value) * commission) / 100)', ((Number(paymentReceipt.value) * commission) / 100));
-	console.log('formatByDecimal', formatByDecimal(((Number(paymentReceipt.value) * commission) / 100), spotStore.quoteUnit));
-
 	feeAmount.value = String(
 		formatByDecimal(((Number(paymentReceipt.value) * commission) / 100), spotStore.quoteUnit),
 	) || '0';
