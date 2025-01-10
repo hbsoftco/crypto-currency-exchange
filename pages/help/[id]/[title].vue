@@ -122,10 +122,19 @@
 					v-if="systemHelp"
 					class="p-4 px-10 w-full"
 				>
-					<div class="pt-4 pb-10">
+					<div class="py-4">
 						<h2 class="text-xl md:text-4xl font-bold md:font-black">
 							{{ systemHelp.info.header }}
 						</h2>
+					</div>
+					<div class="flex flex-wrap mt-2">
+						<span
+							v-for="(tag, index) in systemHelp?.tags"
+							:key="index"
+							class="border border-primary-gray-light dark:border-primary-gray-dark text-subtle-text-light dark:text-subtle-text-dark text-xs font-normal px-2 py-1 rounded-full mr-2 mb-2"
+						>
+							{{ tag.value }}
+						</span>
 					</div>
 					<p
 						class="content my-2"
@@ -134,8 +143,44 @@
 				</div>
 				<!-- content -->
 
-				<div class="p-4 pt-10 min-w-72">
-					<h1>linksssss</h1>
+				<div
+					v-if="!isMobile"
+					class="p-4 pt-10 min-w-72"
+				>
+					<div class="flex flex-col">
+						<div
+							v-for="(link, index) in systemHelp?.similars"
+							:key="index"
+							class="flex"
+						>
+							<div class="flex flex-col items-center">
+								<!-- Circle -->
+								<div
+									class="
+										w-4 h-4 flex items-center justify-center rounded-full bg-gray-300
+									"
+								/>
+								<!-- Vertical Line -->
+								<div
+									v-if="index < (systemHelp?.similars.length || 0) - 1"
+									class="h-6 w-0.5 bg-gray-300"
+								/>
+							</div>
+							<!-- Step Label -->
+							<ULink
+								:to="`/help/${link.id}/${slug(link.header)}`"
+								class="mr-2 relative -top-1"
+							>
+								<span
+									:class="[
+										'text-sm font-medium hover:text-primary-yellow-light hover:dark:text-primary-yellow-dark',
+									]"
+								>
+									{{ link.header }}
+								</span>
+							</ULink>
+						</div>
+					</div>
 				</div>
 				<!-- similar links -->
 			</div>
@@ -146,7 +191,7 @@
 <script setup lang="ts">
 import TreeNode from '~/components/pages/Support/TreeNode.vue';
 import { Language } from '~/utils/enums/language.enum';
-import { sanitizedHtml } from '~/utils/helpers';
+import { sanitizedHtml, slug } from '~/utils/helpers';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
 import IconHamburger from '~/assets/svg-icons/hamburger.svg';
 import { systemRepository } from '~/repositories/system.repository';
