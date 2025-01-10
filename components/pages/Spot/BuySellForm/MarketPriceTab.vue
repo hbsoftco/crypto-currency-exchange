@@ -125,7 +125,7 @@
 
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core';
-import { helpers } from '@vuelidate/validators';
+// import { helpers } from '@vuelidate/validators';
 
 import { priceFormat } from '~/utils/helpers';
 import CoinFieldInput from '~/components/forms/CoinFieldInput.vue';
@@ -157,34 +157,34 @@ const toast = useToast();
 const amount = ref<string>('');
 const paymentReceipt = ref<string>('0');
 
-const checkBalance = helpers.withMessage(
-	useT('insufficientBalance'),
-	(value: string) => {
-		if (props.type === 'buy') {
-			if (coinItemSelected.value === spotStore.currency) {
+// const checkBalance = helpers.withMessage(
+// 	useT('insufficientBalance'),
+// 	(value: string) => {
+// 		if (props.type === 'buy') {
+// 			if (coinItemSelected.value === spotStore.currency) {
 
-				// const balance = spotStore.currency ? spotStore.findAssetByCSymbol(spotStore.currency) : 0;
-				// return !!value && Number(value) <= Number(balance);
-			}
-			else {
-				const balance = spotStore.quote ? spotStore.findAssetByCSymbol(spotStore.quote) : 0;
-				return !!value && Number(value) <= Number(balance);
-			}
-		}
-		else {
-			if (coinItemSelected.value === spotStore.currency) {
-				// Add logic for sell type if needed
-				return true; // Placeholder return value
-			}
-		}
-		return false; // Default return value
-	},
-);
+// 				// const balance = spotStore.currency ? spotStore.findAssetByCSymbol(spotStore.currency) : 0;
+// 				// return !!value && Number(value) <= Number(balance);
+// 			}
+// 			else {
+// 				const balance = spotStore.quote ? spotStore.findAssetByCSymbol(spotStore.quote) : 0;
+// 				return !!value && Number(value) <= Number(balance);
+// 			}
+// 		}
+// 		else {
+// 			if (coinItemSelected.value === spotStore.currency) {
+// 				// Add logic for sell type if needed
+// 				return true; // Placeholder return value
+// 			}
+// 		}
+// 		return false; // Default return value
+// 	},
+// );
 const amountRule = {
 	amount: {
 		required: validations.required,
 		greaterThanZero: validations.greaterThanZero,
-		checkBalance,
+		// checkBalance,
 	},
 };
 
@@ -240,10 +240,6 @@ watch(range, (newRange) => {
 	const indexPrice = Number(spotStore.ticker?.i || 0);
 	const commission = Number(spotStore.takerCommission || 0);
 
-	feeAmount.value = String(
-		formatByDecimal(((Number(paymentReceipt.value) * commission) / 100), spotStore.quoteUnit),
-	) || '0';
-
 	if (props.type === 'buy') {
 		paymentReceipt.value = String(formatByDecimal(newRange, spotStore.quoteUnit));
 
@@ -276,6 +272,10 @@ watch(range, (newRange) => {
 			paymentReceipt.value = amount.value;
 		}
 	}
+
+	feeAmount.value = String(
+		formatByDecimal(((Number(paymentReceipt.value) * commission) / 100), spotStore.quoteUnit),
+	) || '0';
 }, { immediate: true, deep: true });
 
 watch(amount, (newAmount) => {
@@ -324,6 +324,7 @@ const submitConfirm = () => {
 	const paymentReceiptNum = Number(paymentReceipt.value);
 
 	trade.value = {
+		priceTitle: 'marketPrice',
 		type: props.type,
 		feeAmount: `${priceFormat(formatByDecimal(feeAmountNum, spotStore.quoteUnit))} ${spotStore.quote}`,
 		currencyReceived: '',

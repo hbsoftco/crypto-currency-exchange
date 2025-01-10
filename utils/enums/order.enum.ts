@@ -12,6 +12,13 @@ enum OrderSide {
 	SELL = 'Sell',
 }
 
+enum TIFIType {
+	GTC = 'GTC',
+	FOK = 'FOK',
+	IOC = 'IOC',
+	GTT = 'GTT',
+}
+
 enum SearchMode {
 	ANY = '0',
 	OPEN = '11',
@@ -22,4 +29,5 @@ export {
 	OrderType,
 	OrderSide,
 	SearchMode,
+	TIFIType,
 };

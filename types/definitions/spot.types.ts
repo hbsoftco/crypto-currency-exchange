@@ -245,6 +245,17 @@ type StoreOrderInstantDto = {
 	reqByQot: string;
 };
 
+type StoreOrderLimitDto = {
+	marketId: number;
+	assetType: string;
+	orderSide: string;
+	reqByQnt: string;
+	limitPrice: string;
+	tifType: string;
+	maxLifespanBySecond: number | null;
+	userUniqueTag: string | null;
+};
+
 type StoreCoinToCoinDto = {
 	srcCurrencyId: number;
 	desCurrencyId: number;
@@ -277,4 +288,5 @@ export type {
 	BidAsk,
 	LatestTrade,
 	Ticker,
+	StoreOrderLimitDto,
 };

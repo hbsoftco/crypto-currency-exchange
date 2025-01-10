@@ -29,7 +29,7 @@
 				<div class="w-full">
 					<div class="w-full my-4">
 						<div class="pb-3 w-full flex justify-between">
-							<span class="text-sm font-normal">{{ $t('marketPrice') }}:</span>
+							<span class="text-sm font-normal">{{ $t(trade.priceTitle) }}:</span>
 							<div class="text-sm font-bold">
 								<span dir="ltr">{{ trade.marketPrice }}</span>
 							</div>

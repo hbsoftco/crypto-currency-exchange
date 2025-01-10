@@ -143,7 +143,8 @@ import { priceFormat } from '~/utils/helpers';
 import CoinFieldInput from '~/components/forms/CoinFieldInput.vue';
 import { spotRepository } from '~/repositories/spot.repository';
 import { AssetType } from '~/utils/enums/asset.enum';
-import type { StoreOrderMarketDto } from '~/types/definitions/spot.types';
+import type { StoreOrderLimitDto } from '~/types/definitions/spot.types';
+import { TIFIType } from '~/utils/enums/order.enum';
 
 const ConfirmOrderModal = defineAsyncComponent(() => import('~/components/pages/Spot/ConfirmOrderModal.vue'));
 
@@ -206,7 +207,6 @@ const unitStep = computed(() => {
 const resetValues = () => {
 	amount.value = '';
 	paymentReceipt.value = '0';
-	orderPrice.value = '';
 	feeAmount.value = '0';
 	range.value = 0;
 
@@ -218,13 +218,10 @@ watch(() => props.type, () => {
 }, { immediate: true, deep: true });
 
 watch(range, (newRange) => {
-	// const indexPrice = Number(spotStore.ticker?.i || 0);
 	const indexPrice = Number(orderPrice.value || 0);
-	const commission = Number(spotStore.takerCommission || 0);
+	const commission = Number(spotStore.makerCommission || 0);
 
-	feeAmount.value = String(
-		formatByDecimal(((Number(paymentReceipt.value) * commission) / 100), spotStore.quoteUnit),
-	) || '0';
+	if (!indexPrice) return;
 
 	if (props.type === 'buy') {
 		paymentReceipt.value = String(formatByDecimal(newRange, spotStore.quoteUnit));
@@ -247,10 +244,18 @@ watch(range, (newRange) => {
 			paymentReceipt.value = String(formatByDecimal(0, spotStore.quoteUnit));
 		}
 	}
+
+	console.log('paymentReceipt.value', paymentReceipt.value);
+	console.log('commission', commission);
+	console.log('((Number(paymentReceipt.value) * commission) / 100)', ((Number(paymentReceipt.value) * commission) / 100));
+	console.log('formatByDecimal', formatByDecimal(((Number(paymentReceipt.value) * commission) / 100), spotStore.quoteUnit));
+
+	feeAmount.value = String(
+		formatByDecimal(((Number(paymentReceipt.value) * commission) / 100), spotStore.quoteUnit),
+	) || '0';
 }, { immediate: true, deep: true });
 
 watch(amount, (newAmount) => {
-	// const indexPrice = Number(spotStore.ticker?.i || 0);
 	const indexPrice = Number(orderPrice.value || 0);
 
 	if (authStore.isLoggedIn) {
@@ -272,46 +277,31 @@ watch(amount, (newAmount) => {
 	}
 });
 
-// const orderInstantParams = ref<StoreOrderInstantDto>({
-// 	assetType: AssetType.Testnet,
-// 	marketId: 0,
-// 	orderSide: '',
-// 	reqByQot: '0',
-// 	userUniqueTag: null,
-// });
-
-const orderMarketParams = ref<StoreOrderMarketDto>({
+const orderMarketParams = ref<StoreOrderLimitDto>({
 	assetType: AssetType.Testnet,
 	marketId: 0,
 	orderSide: '',
 	reqByQnt: '0',
 	userUniqueTag: null,
+	limitPrice: '',
+	tifType: '',
+	maxLifespanBySecond: null,
 });
 
 const submitOrderLoading = ref<boolean>(false);
 const finalSubmit = async () => {
 	try {
-		submitOrderLoading.value = true;
+		if (!spotStore.ticker || !spotStore.ticker.market) return;
 
-		if (!spotStore.ticker || !spotStore.ticker.market) {
-			return;
-		}
+		submitOrderLoading.value = true;
 
 		orderMarketParams.value.marketId = spotStore.ticker.market.id;
 		orderMarketParams.value.orderSide = props.type;
+		orderMarketParams.value.tifType = TIFIType.GTC;
 		orderMarketParams.value.reqByQnt = amount.value;
+		orderMarketParams.value.limitPrice = orderPrice.value;
 
-		await spotRepo.storeOrderMarket(orderMarketParams.value);
-		// if (coinItemSelected.value === spotStore.currency) {
-
-		// }
-		// else {
-		// 	orderInstantParams.value.marketId = spotStore.ticker.market.id;
-		// 	orderInstantParams.value.orderSide = props.type;
-		// 	orderInstantParams.value.reqByQot = amount.value;
-
-		// 	await spotRepo.storeOrderInstant(orderInstantParams.value);
-		// }
+		await spotRepo.storeOrderLimit(orderMarketParams.value);
 
 		toast.add({
 			title: useT('registerOrder'),
@@ -335,17 +325,15 @@ const isOpenConfirmModal = ref<boolean>(false);
 const trade = ref();
 const submitConfirm = () => {
 	v$.value.$touch();
-	if (v$.value.$invalid) {
-		return;
-	}
+	if (v$.value.$invalid) return;
 
-	// const indexPrice = Number(spotStore.ticker?.i || 0);
 	const indexPrice = Number(orderPrice.value || 0);
 	const feeAmountNum = Number(feeAmount.value);
 	const amountNum = Number(amount.value);
 	const paymentReceiptNum = Number(paymentReceipt.value);
 
 	trade.value = {
+		priceTitle: 'orderPrice',
 		type: props.type,
 		feeAmount: `${priceFormat(formatByDecimal(feeAmountNum, spotStore.quoteUnit))} ${spotStore.quote}`,
 		currencyReceived: '',
@@ -380,7 +368,6 @@ const getLabel = () => {
 };
 
 const getCurrencyValue = () => {
-	// const indexPrice = Number(spotStore.ticker?.i || 0);
 	const indexPrice = Number(orderPrice.value || 0);
 
 	if (props.type === 'buy') {
@@ -401,4 +388,8 @@ const getCircleColor = (index: number) => {
 		? 'border-primary-yellow-light dark:border-primary-yellow-dark bg-primary-yellow-light dark:bg-primary-yellow-dark'
 		: baseColor;
 };
+
+onMounted(() => {
+	orderPrice.value = spotStore.ticker?.i || '0';
+});
 </script>
