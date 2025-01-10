@@ -122,10 +122,19 @@
 					v-if="systemHelp"
 					class="p-4 px-10 w-full"
 				>
-					<div class="pt-4 pb-10">
+					<div class="py-4">
 						<h2 class="text-xl md:text-4xl font-bold md:font-black">
 							{{ systemHelp.info.header }}
 						</h2>
+					</div>
+					<div class="flex flex-wrap mt-2">
+						<span
+							v-for="(tag, index) in systemHelp?.tags"
+							:key="index"
+							class="border border-primary-gray-light dark:border-primary-gray-dark text-subtle-text-light dark:text-subtle-text-dark text-xs font-normal px-2 py-1 rounded-full mr-2 mb-2"
+						>
+							{{ tag.value }}
+						</span>
 					</div>
 					<p
 						class="content my-2"
@@ -134,7 +143,10 @@
 				</div>
 				<!-- content -->
 
-				<div class="p-4 pt-10 min-w-72">
+				<div
+					v-if="!isMobile"
+					class="p-4 pt-10 min-w-72"
+				>
 					<div class="flex flex-col">
 						<div
 							v-for="(link, index) in systemHelp?.similars"
@@ -161,7 +173,7 @@
 							>
 								<span
 									:class="[
-										'text-sm font-medium',
+										'text-sm font-medium hover:text-primary-yellow-light hover:dark:text-primary-yellow-dark',
 									]"
 								>
 									{{ link.header }}

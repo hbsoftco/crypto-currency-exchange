@@ -35,14 +35,18 @@
 				</div>
 			</UContainer>
 		</section>
-		<section>
-			<UContainer>
-				<div class="grid grid-cols-12 border-t border-background-light md:border-primary-gray-light dark:border-background-dark md:dark:border-primary-gray-dark">
-					<div class="hidden md:block col-span-12 md:col-span-4 p-2 border-l border-primary-gray-light dark:border-primary-gray-dark">
+		<section class="px-6 mb-28">
+			<div class="flex border-t border-primary-gray-light dark:border-primary-gray-dark">
+				<div
+					v-if="!isMobile"
+					class="min-w-80"
+				>
+					<div class="border-l border-primary-gray-light dark:border-primary-gray-dark pt-10 pl-3 pb-2">
 						<div class="w-full">
 							<FormsFieldInput
 								id="searchMenu"
 								v-model="searchMenu"
+								mt-class="mt-0"
 								type="text"
 								input-class="text-right"
 								label="search"
@@ -56,74 +60,70 @@
 							:node="item"
 						/>
 					</div>
-					<div
-						class="col-span-12 md:col-span-8 p-4"
+				</div>
+				<div class="p-4 px-10 w-full">
+					<h2
+						class="border-b md:border-none border-primary-gray-light dark:border-primary-gray-dark text-right text-subtle-text-light dark:text-subtle-text-dark text-sm font-normal mb-4 pb-4 md:pb-0"
 					>
-						<div class="">
-							<h2
-								class="border-b md:border-none border-primary-gray-light dark:border-primary-gray-dark text-right text-subtle-text-light dark:text-subtle-text-dark text-sm font-normal mb-4 pb-4 md:pb-0"
-							>
-								{{ $t('searchResultsFor') }}: <span class="text-2xl font-bold text-white dark:text-white">«{{ searchQuery }}» </span>{{ totalCount }} {{ $t('result') }}
-							</h2>
-							<div
-								v-if="loading"
-								class="text-center"
-							>
-								{{ $t('isLoading') }}
-							</div>
-							<div v-else>
-								<div
-									v-if="searchItem.length === 0"
-									class="text-center"
-								>
-									<p>{{ $t('noResultsFound') }}</p>
-								</div>
-								<div
-									v-for="item in searchItem"
-									:key="item.id"
-									class="border-b border-primary-gray-light dark:border-primary-gray-dark mb-4 pb-4"
-								>
-									<ULink :to="`/help/${item.id}/${slug(item.info.header)}`">
+						{{ $t('searchResultsFor') }}: <span class="text-2xl font-bold text-white dark:text-white">«{{ searchQuery }}» </span>{{ totalCount }} {{ $t('result') }}
+					</h2>
+					<div
+						v-if="loading"
+						class="text-center"
+					>
+						{{ $t('isLoading') }}
+					</div>
+					<div v-else>
+						<div
+							v-if="searchItem.length === 0"
+							class="text-center"
+						>
+							<p>{{ $t('noResultsFound') }}</p>
+						</div>
+						<div
+							v-for="item in searchItem"
+							:key="item.id"
+							class="border-b border-primary-gray-light dark:border-primary-gray-dark py-4 hover:bg-hover2-light dark:hover:bg-hover2-dark"
+						>
+							<ULink :to="`/help/${item.id}/${slug(item.info.header)}`">
 
-										<h3 class=" text-xl font-bold">
-											{{ item.info.header }}
-										</h3>
-										<p
-											class="my-2 text-sm font-normal"
-											v-html="sanitizedHtml(item.info.content)"
-										/>
-										<div class="flex flex-wrap mt-2">
-											<span
-												v-for="(tag, index) in item.tags"
-												:key="index"
-												class="border border-primary-gray-light dark:border-primary-gray-dark text-subtle-text-light dark:text-subtle-text-dark text-xs font-normal px-2 py-1 rounded-full mr-2 mb-2"
-											>
-												{{ tag.value }}
-											</span>
-										</div>
-									</ULink>
+								<h3 class=" text-xl font-bold">
+									{{ item.info.header }}
+								</h3>
+								<p
+									class="my-2 text-sm font-normal"
+									v-html="sanitizedHtml(item.info.content)"
+								/>
+								<div class="flex flex-wrap mt-2">
+									<span
+										v-for="(tag, index) in item.tags"
+										:key="index"
+										class="border border-primary-gray-light dark:border-primary-gray-dark text-subtle-text-light dark:text-subtle-text-dark text-xs font-normal px-2 py-1 rounded-full mr-2 mb-2"
+									>
+										{{ tag.value }}
+									</span>
 								</div>
-								<div class="flex justify-center py-4">
-									<UPagination
-										:model-value="Number(paramsSearch.pageNumber)"
-										:page-count="20"
-										:total="totalCount"
-										:max="6"
-										size="xl"
-										ul-class="flex space-x-2 bg-blue-500 border-none"
-										li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500 px-3"
-										button-class-base="flex items-center justify-center w-full h-full transition-colors duration-200"
-										button-class-inactive="bg-green-700 hover:bg-gray-600"
-										button-class-active="bg-blue-500"
-										class="my-14"
-										@update:model-value="onPageChange"
-									/>
-								</div>
-							</div>
+							</ULink>
+						</div>
+						<div class="flex justify-center py-4">
+							<UPagination
+								:model-value="Number(paramsSearch.pageNumber)"
+								:page-count="20"
+								:total="totalCount"
+								:max="6"
+								size="xl"
+								ul-class="flex space-x-2 bg-blue-500 border-none"
+								li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500 px-3"
+								button-class-base="flex items-center justify-center w-full h-full transition-colors duration-200"
+								button-class-inactive="bg-green-700 hover:bg-gray-600"
+								button-class-active="bg-blue-500"
+								class="my-14"
+								@update:model-value="onPageChange"
+							/>
 						</div>
 					</div>
 				</div>
-			</UContainer>
+			</div>
 		</section>
 	</div>
 </template>
@@ -230,7 +230,6 @@ const filteredTreeList = computed(() => {
 		.map((item) => filterNode(item, searchMenu.value))
 		.filter((item) => item !== null);
 });
-console.log('////////////////////////////////', filteredTreeList);
 
 const filterNode = (node: Tree, searchText: string): Tree | null => {
 	const hasMatch = node.header.includes(searchText);
@@ -245,11 +244,16 @@ const filterNode = (node: Tree, searchText: string): Tree | null => {
 	}
 	return null;
 };
+
+console.log(filteredTreeList.value);
+
 onMounted(async () => {
 	isMobile.value = !!mobileDetect.mobile();
 
-	await nextTick();
-	fetchSearchResults();
-	await getSystemTree;
+	await Promise.all([
+		nextTick(),
+		fetchSearchResults(),
+		getSystemTree,
+	]);
 });
 </script>
