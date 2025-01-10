@@ -116,9 +116,6 @@ import type { FAQListParams, SystemRoot } from '~/types/definitions/system.types
 
 const BackHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/BackHeader.vue'));
 
-// const { $api } = useNuxtApp();
-// const helpRepo = helpRepository($api);
-
 const { $api, $mobileDetect } = useNuxtApp();
 const systemRepo = systemRepository($api);
 
