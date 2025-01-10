@@ -47,10 +47,10 @@ type System = {
 		header: string;
 		level: number;
 	};
-	similars: {
+	similars: [{
 		id: number;
 		header: string;
-	};
+	}];
 };
 
 type Info = {

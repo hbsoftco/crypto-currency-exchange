@@ -135,7 +135,40 @@
 				<!-- content -->
 
 				<div class="p-4 pt-10 min-w-72">
-					<h1>linksssss</h1>
+					<div class="flex flex-col">
+						<div
+							v-for="(link, index) in systemHelp?.similars"
+							:key="index"
+							class="flex"
+						>
+							<div class="flex flex-col items-center">
+								<!-- Circle -->
+								<div
+									class="
+										w-4 h-4 flex items-center justify-center rounded-full bg-gray-300
+									"
+								/>
+								<!-- Vertical Line -->
+								<div
+									v-if="index < (systemHelp?.similars.length || 0) - 1"
+									class="h-6 w-0.5 bg-gray-300"
+								/>
+							</div>
+							<!-- Step Label -->
+							<ULink
+								:to="`/help/${link.id}/${slug(link.header)}`"
+								class="mr-2 relative -top-1"
+							>
+								<span
+									:class="[
+										'text-sm font-medium',
+									]"
+								>
+									{{ link.header }}
+								</span>
+							</ULink>
+						</div>
+					</div>
 				</div>
 				<!-- similar links -->
 			</div>
@@ -146,7 +179,7 @@
 <script setup lang="ts">
 import TreeNode from '~/components/pages/Support/TreeNode.vue';
 import { Language } from '~/utils/enums/language.enum';
-import { sanitizedHtml } from '~/utils/helpers';
+import { sanitizedHtml, slug } from '~/utils/helpers';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
 import IconHamburger from '~/assets/svg-icons/hamburger.svg';
 import { systemRepository } from '~/repositories/system.repository';
