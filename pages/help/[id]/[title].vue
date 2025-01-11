@@ -149,9 +149,11 @@
 						v-html="sanitizedHtml(systemHelp.info.content)"
 					/>
 
-					<div>
+					<div
+						v-if="finalFAQList.length"
+						class="mt-16"
+					>
 						<FAQItems
-							v-if="finalFAQList.length"
 							:items="finalFAQList"
 							:direction="true"
 						/>

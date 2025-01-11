@@ -82,8 +82,8 @@ const toggle = (node: TreeItem) => {
 };
 
 const containerClasses = computed(() => [
-	'flex items-center justify-between cursor-pointer transition-all duration-300 text-sm font-normal',
-	'border-r-4 py-2 px-2',
+	'flex items-center justify-between cursor-pointer transition-all duration-300 text-sm font-normal rounded',
+	'border-r-2 py-2 px-2',
 	localNode.value.isOpen
 		? 'border-r border-r-primary-yellow-light dark:border-r-primary-yellow-dark'
 		: 'border-r-transparent',
