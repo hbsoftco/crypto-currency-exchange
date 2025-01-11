@@ -25,7 +25,7 @@
 						<th class="p-1 text-xs font-normal">
 							{{ $t('direction') }}
 						</th>
-						<th class="p-1 text-xs font-normal text-left">
+						<th class="p-1 text-xs font-normal">
 							{{ $t('status') }}
 						</th>
 						<th class="p-1 text-xs font-normal text-left">
@@ -43,7 +43,7 @@
 						<th class="p-1 text-xs font-normal pr-4 text-left">
 							{{ $t('tradePrice') }}
 						</th>
-						<th class="p-1 text-xs font-normal pr-4">
+						<th class="p-1 text-xs font-normal pr-4 text-left">
 							{{ $t('date') }}
 						</th>
 						<th class="p-1 text-xs font-normal text-center">
@@ -439,10 +439,6 @@ const openDeleteModal = async (id: number) => {
 			console.error('Error deleting notification:', error);
 		}
 	}
-};
-
-const remainingQuantity = (reqQnt: string, filledQnt: string): number => {
-	return parseFloat(reqQnt) - parseFloat(filledQnt);
 };
 
 const applyFilter = async (event: OrderFiltersType) => {
