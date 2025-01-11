@@ -90,8 +90,8 @@
 				</div>
 				<div>
 					<TreeNode
-						v-for="(item, index) in filteredTreeList"
-						:key="index"
+						v-for="item in filteredTreeList"
+						:key="item.id"
 						:node="item"
 					/>
 				</div>
@@ -257,8 +257,9 @@ const getSystemTree = async () => {
 
 const buildNestedList = (data: Tree[]): Tree[] => {
 	const itemsById: Record<number, Tree> = {};
+
 	data.forEach((item: Tree) => {
-		itemsById[item.id] = { ...item, children: [] };
+		itemsById[item.id] = { ...item, children: [], isOpen: false };
 	});
 
 	const rootItems: Tree[] = [];

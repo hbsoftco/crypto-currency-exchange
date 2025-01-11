@@ -131,6 +131,7 @@ type Tree = {
 	parentId: number;
 	order: number;
 	header: string;
+	isOpen: boolean;
 	children?: Tree[];
 };
 
