@@ -1,5 +1,4 @@
 import type { KeyValue } from './common.types';
-import type { CurrencyBrief } from './currency.types';
 
 type SystemListResponse = {
 	statusCode: number;
@@ -22,7 +21,6 @@ type SystemRoot = {
 	mediaUrl: string;
 	tags: KeyValue[];
 	info: CardInfo;
-	currency?: CurrencyBrief | null;
 };
 
 type SubFaq = {

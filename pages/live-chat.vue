@@ -1,5 +1,12 @@
 <template>
-	<div class="mb-12">
+	<div v-if="subjectListLoading || FAQListLoading">
+		<UiLogoLoading />
+	</div>
+
+	<div
+		v-else
+		class="mb-12"
+	>
 		<BackHeader
 			v-if="isMobile"
 			:title="$t('liveChat')"
@@ -35,11 +42,9 @@
 					<IconNote class="text-2xl" />
 					<span class="text-base font-bold mr-2">{{ $t('subjects') }}</span>
 				</div>
-				<div
-					class="grid grid-cols-3 md:grid-cols-6 gap-4 my-0 md:my-2"
-				>
+				<div class="grid grid-cols-3 md:grid-cols-6 gap-4 my-0 md:my-2">
 					<div
-						v-for="(item, index) in liveChatList"
+						v-for="(item, index) in subjectList"
 						:key="index"
 					>
 						<ULink
@@ -75,8 +80,8 @@
 									/>
 								</div>
 								<FAQItems
-									v-if="currency?.faqList.length"
-									:items="transformedFAQList"
+									v-if="finalFAQList.length"
+									:items="finalFAQList"
 									:direction="true"
 								/>
 							</div>
@@ -90,9 +95,12 @@
 								class="w-64 h-72 cursor-pointer"
 							>
 						</div>
-						<div class="flex md:hidden justify-between items-center py-2 px-2 bg-primary-gray-light dark:bg-primary-gray-dark">
+						<div
+							class="flex md:hidden justify-between items-center py-2 px-2 bg-primary-gray-light dark:bg-primary-gray-dark"
+						>
 							<div class="bg-primary-yellow-light dark:bg-primary-yellow-dark rounded-md py-2 px-1">
-								<span class="text-base font-extrabold text-[#1C1B19] dark:text-[#1C1B19]">{{ $t('liveChatBitlandExpert') }}</span>
+								<span class="text-base font-extrabold text-[#1C1B19] dark:text-[#1C1B19]">{{
+									$t('liveChatBitlandExpert') }}</span>
 							</div>
 							<img
 								src="/images/svg/live-chat-mobile.svg"
@@ -113,6 +121,7 @@ import FAQItems from '~/components/ui/FAQItems.vue';
 import { systemRepository } from '~/repositories/system.repository';
 import type { BaseLangGroupParams, KeyValue } from '~/types/definitions/common.types';
 import type { FAQListParams, SystemRoot } from '~/types/definitions/system.types';
+import { Language } from '~/utils/enums/language.enum';
 
 const BackHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/BackHeader.vue'));
 
@@ -122,49 +131,63 @@ const systemRepo = systemRepository($api);
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
 
-const params = ref<BaseLangGroupParams>(
-	{ languageId: '',
+const subjectListParams = ref<BaseLangGroupParams>(
+	{
+		languageId: String(Language.PERSIAN),
 		group: '',
 	},
 );
+const subjectList = ref<SystemRoot[]>([]);
+const subjectListLoading = ref<boolean>(true);
+const getSubjectList = async () => {
+	try {
+		subjectListLoading.value = true;
+		const { result } = await systemRepo.getSubjectList(subjectListParams.value);
+		subjectList.value = result.rows as SystemRoot[];
+		subjectListLoading.value = false;
+	}
+	catch (error) {
+		console.log(error);
+		subjectListLoading.value = false;
+	}
+};
 
+const finalFAQList = ref<KeyValue[]>([]);
 const paramsFAQ = ref<FAQListParams>({
-	languageId: '',
+	languageId: String(Language.PERSIAN),
 	tagId: '',
 	searchStatement: '',
 	group: '',
 	pageNumber: '',
 	pageSize: '',
 });
-
-const liveChatList = ref<SystemRoot[]>([]);
-const currency = ref<{ faqList: SystemRoot[] }>({
-	faqList: [],
-});
-
-const transformedFAQList = ref<KeyValue[]>([]);
-
-const fetchSubjectList = async () => {
+const FAQList = ref<SystemRoot[]>([]);
+const FAQListLoading = ref<boolean>(true);
+const getFAQList = async () => {
 	try {
-		const { result } = await systemRepo.getSubjectList(params.value);
-		liveChatList.value = result.rows as SystemRoot[];
+		FAQListLoading.value = true;
+		const { result } = await systemRepo.getFAQList(paramsFAQ.value);
+		FAQList.value = result.rows as SystemRoot[];
 
-		const faqResponse = await systemRepo.getFAQList(paramsFAQ.value);
-		currency.value.faqList = faqResponse.result.rows as SystemRoot[];
-
-		transformedFAQList.value = currency.value.faqList.map((faq) => ({
+		finalFAQList.value = FAQList.value.map((faq) => ({
 			key: faq.info.header,
 			value: faq.info.content,
 		}));
+
+		FAQListLoading.value = false;
 	}
 	catch (error) {
-		console.error('Error fetching data:', error);
+		console.log(error);
+		FAQListLoading.value = false;
 	}
 };
 
 onMounted(async () => {
 	isMobile.value = !!mobileDetect.mobile();
 
-	await fetchSubjectList();
+	await Promise.all([
+		getSubjectList(),
+		getFAQList(),
+	]);
 });
 </script>

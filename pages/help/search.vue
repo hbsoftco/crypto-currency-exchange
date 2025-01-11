@@ -102,11 +102,11 @@
 									class="my-2 text-sm font-normal"
 									v-html="sanitizedHtml(item.info.content)"
 								/>
-								<div class="flex flex-wrap mt-2">
+								<div class="flex flex-wrap mt-2 mb-4">
 									<span
 										v-for="(tag, index) in item.tags"
 										:key="index"
-										class="border border-primary-gray-light dark:border-primary-gray-dark text-subtle-text-light dark:text-subtle-text-dark text-xs font-normal px-2 py-1 rounded-full mr-2 mb-2"
+										class="border border-primary-gray-light dark:border-primary-gray-dark text-subtle-text-light dark:text-subtle-text-dark text-xs font-normal px-2 py-1 rounded-full ml-2 mb-2"
 									>
 										{{ tag.value }}
 									</span>

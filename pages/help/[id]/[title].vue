@@ -127,11 +127,11 @@
 							{{ systemHelp.info.header }}
 						</h2>
 					</div>
-					<div class="flex flex-wrap mt-2">
+					<div class="flex flex-wrap mt-2 mb-4">
 						<span
 							v-for="(tag, index) in systemHelp?.tags"
 							:key="index"
-							class="border border-primary-gray-light dark:border-primary-gray-dark text-subtle-text-light dark:text-subtle-text-dark text-xs font-normal px-2 py-1 rounded-full mr-2 mb-2"
+							class="border border-primary-gray-light dark:border-primary-gray-dark text-subtle-text-light dark:text-subtle-text-dark text-xs font-normal px-2 py-1 rounded-full ml-2 mb-2"
 						>
 							{{ tag.value }}
 						</span>
@@ -302,7 +302,6 @@ const filterNode = (node: Tree, searchText: string): Tree | null => {
 onMounted(async () => {
 	isMobile.value = !!mobileDetect.mobile();
 
-	// await nextTick();
 	await Promise.all([
 		getSystemTree(),
 		loadHelpData(id),
