@@ -117,11 +117,16 @@
 								icon="heroicons:magnifying-glass"
 							/>
 						</div>
-						<TreeNode
-							v-for="(item, index) in filteredTreeList"
-							:key="index"
-							:node="item"
-						/>
+						<div v-if="filteredTreeList.length">
+							<TreeNode
+								v-for="(item, index) in filteredTreeList"
+								:key="index"
+								:node="item"
+							/>
+						</div>
+						<div v-else>
+							<p>{{ $t('notFoundMessage') }}</p>
+						</div>
 					</div>
 				</div>
 				<!-- Sidebar menu and search -->

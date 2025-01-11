@@ -62,11 +62,16 @@
 								icon="heroicons:magnifying-glass"
 							/>
 						</div>
-						<TreeNode
-							v-for="(item, index) in filteredTreeList"
-							:key="index"
-							:node="item"
-						/>
+						<div v-if="filteredTreeList.length">
+							<TreeNode
+								v-for="(item, index) in filteredTreeList"
+								:key="index"
+								:node="item"
+							/>
+						</div>
+						<div v-else>
+							<p>{{ $t('notFoundMessage') }}</p>
+						</div>
 					</div>
 				</div>
 				<div class="p-4 px-10 w-full">
@@ -177,7 +182,7 @@ const getSystemTree = async () => {
 const buildNestedList = (data: Tree[]): Tree[] => {
 	const itemsById: Record<number, Tree> = {};
 	data.forEach((item: Tree) => {
-		itemsById[item.id] = { ...item, children: [] };
+		itemsById[item.id] = { ...item, children: [], isOpen: false, isSelected: false };
 	});
 
 	const rootItems: Tree[] = [];

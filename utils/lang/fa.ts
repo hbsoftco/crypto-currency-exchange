@@ -839,7 +839,7 @@ const persian = {
 	ticketList: 'لیست تیکت‌ها',
 	ticketTitle: 'فیلد های زیر را برای درخواست خود پر کنید تا کارشناسان بیت لند در اولین فرصت به شما پاسخ دهند.',
 	addNewTicket: 'ثبت تیکت جدید',
-	notFoundMessage: 'موردی یافت نشد',
+	notFoundMessage: 'موردی یافت نشد!',
 	code: 'کد',
 	title: 'عنوان',
 	sendTicket: 'ارسال تیکت',
