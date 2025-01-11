@@ -6,14 +6,22 @@
 		>
 			<template v-if="!hasChildren">
 				<ULink :to="`/help/${localNode.id}/${slug(localNode.header)}`">
-					<p>{{ localNode.header }}</p>
+					<p :class="{ 'text-primary-yellow-light dark:text-primary-yellow-dark font-semibold': localNode.isSelected }">
+						<template v-if="localNode.isSelected">
+							<span class="w-2 h-2 ml-1.5 rounded-full inline-block bg-primary-yellow-light dark:bg-primary-yellow-dark" />
+						</template>
+						<template v-else>
+							<span class="w-2 h-2 ml-1.5 rounded-full inline-block bg-primary-gray-light dark:bg-primary-gray-dark" />
+						</template>
+						<span>
+							{{ localNode.header }}
+						</span>
+					</p>
 				</ULink>
 			</template>
 
 			<template v-else>
-				<p :class="{ 'bg-red-400': isSelected }">
-					{{ localNode.header }}
-				</p>
+				<p>{{ localNode.header }}</p>
 			</template>
 
 			<span
@@ -53,6 +61,7 @@ interface TreeItem {
 	order: number;
 	header: string;
 	isOpen: boolean;
+	isSelected: boolean;
 	children?: TreeItem[];
 }
 
@@ -65,10 +74,6 @@ const localNode = ref(props.node);
 
 const route = useRoute();
 const id = String(route.params.id);
-
-const isSelected = computed(() => {
-	return id === String(localNode.value.id);
-});
 
 const hasChildren = computed(() => localNode.value.children && localNode.value.children.length > 0);
 
@@ -86,10 +91,7 @@ const containerClasses = computed(() => [
 ]);
 
 watchEffect(() => {
-	if (isSelected.value) {
-		openParentNodes(localNode.value);
-	}
-
+	updateSelection(localNode.value, id);
 	if (localNode.value.children) {
 		const anyChildSelected = checkAnyChildSelected(localNode.value.children);
 		if (anyChildSelected) {
@@ -97,6 +99,14 @@ watchEffect(() => {
 		}
 	}
 });
+
+function updateSelection(node: TreeItem, selectedId: string) {
+	node.isSelected = String(node.id) === selectedId;
+
+	if (node.children) {
+		node.children.forEach((child) => updateSelection(child, selectedId));
+	}
+}
 
 function openParentNodes(node: TreeItem) {
 	node.isOpen = true;
@@ -130,7 +140,7 @@ function findNodeById(node: TreeItem, id: number): TreeItem | null {
 function checkAnyChildSelected(children: TreeItem[]): boolean {
 	return children.some(
 		(child) =>
-			id === String(child.id) || (child.children && checkAnyChildSelected(child.children)),
+			child.isSelected || (child.children && checkAnyChildSelected(child.children)),
 	);
 }
 </script>

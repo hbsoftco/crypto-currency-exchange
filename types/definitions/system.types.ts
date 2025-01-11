@@ -132,6 +132,7 @@ type Tree = {
 	order: number;
 	header: string;
 	isOpen: boolean;
+	isSelected: boolean;
 	children?: Tree[];
 };
 

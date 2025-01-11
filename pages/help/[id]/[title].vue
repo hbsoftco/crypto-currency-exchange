@@ -259,7 +259,7 @@ const buildNestedList = (data: Tree[]): Tree[] => {
 	const itemsById: Record<number, Tree> = {};
 
 	data.forEach((item: Tree) => {
-		itemsById[item.id] = { ...item, children: [], isOpen: false };
+		itemsById[item.id] = { ...item, children: [], isOpen: false, isSelected: false };
 	});
 
 	const rootItems: Tree[] = [];
