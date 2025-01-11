@@ -19,7 +19,9 @@
 									class="p-2"
 									@click="toggleMenu"
 								>
-									<IconHamburger class="w-6 h-6 text-primary-yellow-light dark:text-primary-yellow-dark" />
+									<IconHamburger
+										class="w-6 h-6 text-primary-yellow-light dark:text-primary-yellow-dark"
+									/>
 								</button>
 								<h1 class="text-xl md:text-4xl font-bold md:font-black">
 									{{ $t('bitlandHelpCenter') }}
@@ -41,12 +43,18 @@
 						>
 							<ULink to="/help">
 
-								<span class="mx-1 text-xs md:text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
+								<span
+									class="mx-1 text-xs md:text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark"
+								>
 									{{ $t('bitlandHelpCenter') }}
 								</span>
 							</ULink>
-							<IconArrowLeft class="text-xs md:text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark" />
-							<span class="mx-1 text-xs md:text-sm font-normal text-primary-yellow-light dark:text-primary-yellow-dark">
+							<IconArrowLeft
+								class="text-xs md:text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark"
+							/>
+							<span
+								class="mx-1 text-xs md:text-sm font-normal text-primary-yellow-light dark:text-primary-yellow-dark"
+							>
 								{{ systemHelp.info.header }}
 							</span>
 						</div>
@@ -140,6 +148,15 @@
 						class="content my-2"
 						v-html="sanitizedHtml(systemHelp.info.content)"
 					/>
+
+					<div>
+						<FAQItems
+							v-if="finalFAQList.length"
+							:items="finalFAQList"
+							:direction="true"
+						/>
+					</div>
+				<!-- faq lists -->
 				</div>
 				<!-- content -->
 
@@ -195,8 +212,9 @@ import { sanitizedHtml, slug } from '~/utils/helpers';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
 import IconHamburger from '~/assets/svg-icons/hamburger.svg';
 import { systemRepository } from '~/repositories/system.repository';
-import type { BaseLangGroupParams, BaseLangIdParams } from '~/types/definitions/common.types';
+import type { BaseLangGroupParams, BaseLangIdParams, KeyValue } from '~/types/definitions/common.types';
 import type { System, Tree } from '~/types/definitions/system.types';
+import FAQItems from '~/components/ui/FAQItems.vue';
 
 const BackHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/BackHeader.vue'));
 
@@ -216,7 +234,8 @@ const toggleMenu = () => {
 };
 
 const systemHelpParams = ref<BaseLangGroupParams>(
-	{ languageId: '',
+	{
+		languageId: String(Language.PERSIAN),
 		group: '',
 	},
 );
@@ -227,6 +246,7 @@ const getSystemTree = async () => {
 		systemTreeLoading.value = true;
 		const { result } = await systemRepo.getSystemTreeList(systemHelpParams.value);
 		systemTree.value = buildNestedList(result.rows as Tree[]);
+
 		systemTreeLoading.value = false;
 	}
 	catch (error) {
@@ -262,6 +282,7 @@ const paramsData = ref<BaseLangIdParams>({
 	id: '',
 	languageId: String(Language.PERSIAN),
 });
+const finalFAQList = ref<KeyValue[]>([]);
 const systemHelp = ref<System | null>(null);
 const systemHelpLoading = ref<boolean>(true);
 const loadHelpData = async (itemId: string) => {
@@ -270,6 +291,11 @@ const loadHelpData = async (itemId: string) => {
 		paramsData.value.id = String(itemId);
 		const loadData = await systemRepo.getSystemHelp(paramsData.value);
 		systemHelp.value = loadData.result as System;
+
+		finalFAQList.value = systemHelp.value.subFaqs.map((faq) => ({
+			key: faq.header,
+			value: faq.content,
+		}));
 		systemHelpLoading.value = false;
 	}
 	catch (error) {
