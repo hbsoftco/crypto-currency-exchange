@@ -1,6 +1,10 @@
 <!-- eslint-disable vue/no-v-html -->
 <template>
-	<div>
+	<div v-if="systemTreeLoading">
+		<UiLogoLoading />
+	</div>
+
+	<div v-else>
 		<BackHeader
 			v-if="isMobile"
 			:title="$t('search')"
@@ -21,6 +25,10 @@
 									{{ $t('bitlandHelpCenter') }}
 								</span>
 							</ULink>
+							<IconArrowLeft class="text-xs md:text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark" />
+							<span class="mx-1 text-xs md:text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
+								{{ $t('search') }}
+							</span>
 							<IconArrowLeft class="text-xs md:text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark" />
 							<span class="mx-1 text-xs md:text-sm font-normal text-primary-yellow-light dark:text-primary-yellow-dark">
 								{{ searchQuery }}
@@ -153,7 +161,7 @@ const systemHelpParams = ref<BaseLangGroupParams>({
 	group: '',
 });
 const systemTree = ref<Tree[]>([]);
-const systemTreeLoading = ref<boolean>(false);
+const systemTreeLoading = ref<boolean>(true);
 const getSystemTree = async () => {
 	try {
 		systemTreeLoading.value = true;
@@ -253,7 +261,7 @@ onMounted(async () => {
 	await Promise.all([
 		nextTick(),
 		fetchSearchResults(),
-		getSystemTree,
+		getSystemTree(),
 	]);
 });
 </script>
