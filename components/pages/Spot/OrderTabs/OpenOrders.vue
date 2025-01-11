@@ -30,16 +30,16 @@
 						<th class="p-1 text-xs font-normal text-left">
 							{{ $t('amountFilled') }}
 						</th>
-						<th class="p-1 text-xs font-normal">
+						<th class="p-1 text-xs font-normal text-left">
 							{{ $t('remaining') }}
 						</th>
 						<th class="p-1 text-xs font-normal text-left">
 							{{ $t('tradePrice') }}
 						</th>
-						<th class="p-1 text-xs font-normal pr-4">
+						<th class="p-1 text-xs font-normal pr-4 text-left">
 							{{ $t('date') }}
 						</th>
-						<th class="p-1 text-xs font-normal">
+						<th class="p-1 text-xs font-normal text-center">
 							{{ $t('detail') }}
 						</th>
 					</tr>
@@ -148,19 +148,16 @@
 						<td class="text-xs font-normal py-1 text-left">
 							<span dir="ltr">{{ useNumber(order.filledQnt) }} {{ findSymbol(order.mSymbol, 'currency') }}</span>
 						</td>
-						<td class="text-xs font-normal py-1">
+						<td class="text-xs font-normal py-1 text-left">
 							<span dir="ltr">{{ useNumber(remainingQuantity(order.reqQnt, order.filledQnt)) }} {{ findSymbol(order.mSymbol, 'quote') }}</span>
 						</td>
 						<td class="text-xs font-normal py-1 text-left">
 							<span dir="ltr">{{ useNumber(order.limitPrice) }} {{ findSymbol(order.mSymbol, 'quote') }}</span>
 						</td>
-						<td class="text-xs font-normal py-1 pr-4">
+						<td class="text-xs font-normal py-1 pr-4 text-left">
 							<span dir="ltr">{{ useNumber(formatDateToIranTime(order.regTime)) }}</span>
 						</td>
-						<!-- <td class="text-xs font-normal py-1">
-							<span>{{ useNumber(order.tid) }}</span>
-						</td> -->
-						<td class="flex text-xs font-normal py-1">
+						<td class="flex justify-center text-xs font-normal py-1">
 							<div class="flex items-center">
 								<IconInfo
 									class="text-base cursor-pointer"
