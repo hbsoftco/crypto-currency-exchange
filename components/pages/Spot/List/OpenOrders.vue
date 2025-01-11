@@ -14,6 +14,9 @@
 				<thead>
 					<tr class="py-4 text-subtle-text-light dark:text-subtle-text-dark bg-primary-gray-light dark:bg-primary-gray-dark">
 						<th class="p-1 text-xs font-normal">
+							{{ $t('orderNumber') }}
+						</th>
+						<th class="p-1 text-xs font-normal">
 							{{ $t('market') }}
 						</th>
 						<th class="p-1 text-xs font-normal">
@@ -22,7 +25,7 @@
 						<th class="p-1 text-xs font-normal">
 							{{ $t('direction') }}
 						</th>
-						<th class="p-1 text-xs font-normal">
+						<th class="p-1 text-xs font-normal text-left">
 							{{ $t('status') }}
 						</th>
 						<th class="p-1 text-xs font-normal text-left">
@@ -34,16 +37,16 @@
 						<th class="p-1 text-xs font-normal text-left">
 							{{ $t('amountFilled') }}
 						</th>
-						<th class="p-1 text-xs font-normal">
-							{{ $t('remaining') }}
-						</th>
 						<th class="p-1 text-xs font-normal text-left">
+							{{ $t('filledValue') }}
+						</th>
+						<th class="p-1 text-xs font-normal pr-4 text-left">
 							{{ $t('tradePrice') }}
 						</th>
 						<th class="p-1 text-xs font-normal pr-4">
 							{{ $t('date') }}
 						</th>
-						<th class="p-1 text-xs font-normal">
+						<th class="p-1 text-xs font-normal text-center">
 							{{ $t('detail') }}
 						</th>
 					</tr>
@@ -129,6 +132,9 @@
 						class="pb-1 odd:bg-hover2-light dark:odd:bg-hover2-dark even:bg-background-light dark:even:bg-background-dark hover:bg-hover-light dark:hover:bg-hover-dark"
 					>
 						<td class="text-xs font-normal py-1">
+							<span>{{ useNumber(order.oid) }}</span>
+						</td>
+						<td class="text-xs font-normal py-1">
 							<span>{{ order.mSymbol }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
@@ -143,28 +149,40 @@
 						>
 							<span>{{ order.orderStateName }}</span>
 						</td>
-						<td class="text-xs font-normal py-1 text-left">
-							<span dir="ltr">{{ useNumber(order.reqQnt) }} {{ findSymbol(order.mSymbol, 'currency') }}</span>
+						<td
+							class="text-xs font-normal py-1 text-left"
+							dir="ltr"
+						>
+							<span class="text-left">{{ useNumber(priceFormat(order.reqQnt)) }} {{ findSymbol(order.mSymbol, 'currency') }}</span>
 						</td>
-						<td class="text-xs font-normal py-1 text-left">
-							<span dir="ltr">{{ useNumber(order.reqQot) }} {{ findSymbol(order.mSymbol, 'quote') }}</span>
+						<td
+							class="text-xs font-normal py-1 text-left"
+							dir="ltr"
+						>
+							<span class="text-left">{{ useNumber(priceFormat(order.reqQot)) }}  {{ findSymbol(order.mSymbol, 'quote') }}</span>
 						</td>
-						<td class="text-xs font-normal py-1 text-left">
-							<span dir="ltr">{{ useNumber(order.filledQnt) }} {{ findSymbol(order.mSymbol, 'currency') }}</span>
+						<td
+							class="text-xs font-normal py-1 text-left"
+							dir="ltr"
+						>
+							<span class="text-left">{{ useNumber(order.filledQnt) }} {{ findSymbol(order.mSymbol, 'currency') }}</span>
 						</td>
-						<td class="text-xs font-normal py-1">
-							<span dir="ltr">{{ useNumber(remainingQuantity(order.reqQnt, order.filledQnt)) }} {{ findSymbol(order.mSymbol, 'quote') }}</span>
+						<td
+							class="text-xs font-normal py-1 text-left"
+							dir="ltr"
+						>
+							<span class="text-left">{{ useNumber(priceFormat(order.filledQot)) }} {{ findSymbol(order.mSymbol, 'quote') }}</span>
 						</td>
-						<td class="text-xs font-normal py-1 text-left">
-							<span dir="ltr">{{ useNumber(order.limitPrice) }} {{ findSymbol(order.mSymbol, 'quote') }}</span>
+						<td
+							class="text-xs font-normal py-1 text-left"
+							dir="ltr"
+						>
+							<span class="text-left">{{ useNumber(priceFormat(order.dealPrice)) }} {{ findSymbol(order.mSymbol, 'quote') }}</span>
 						</td>
-						<td class="text-xs font-normal py-1 pr-4">
-							<span dir="ltr">{{ useNumber(formatDateToIranTime(order.regTime)) }}</span>
+						<td class="text-xs font-normal py-1 pr-4 text-left">
+							<span dir="ltr">{{ useNumber(formatDateToIran(order.regTime)) }}-{{ useNumber(formatDateToIranTime(order.regTime)) }}</span>
 						</td>
-						<!-- <td class="text-xs font-normal py-1">
-							<span>{{ useNumber(order.tid) }}</span>
-						</td> -->
-						<td class="flex text-xs font-normal py-1">
+						<td class="flex justify-center text-xs font-normal py-1">
 							<div class="flex items-center">
 								<IconInfo
 									class="text-base cursor-pointer"
@@ -333,6 +351,7 @@
 
 <script setup lang="ts">
 import { formatDateToIranTime } from '~/utils/date-time';
+import { formatDateToIran } from '~/utils/persian-date';
 import FilterOptions from '~/components/pages/Spot/List/FilterOptions.vue';
 import IconInfo from '~/assets/svg-icons/info.svg';
 import { useNumber } from '~/composables/useNumber';

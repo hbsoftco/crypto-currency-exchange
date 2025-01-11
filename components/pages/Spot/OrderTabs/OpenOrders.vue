@@ -10,6 +10,9 @@
 				<thead>
 					<tr class="py-4 text-subtle-text-light dark:text-subtle-text-dark bg-primary-gray-light dark:bg-primary-gray-dark">
 						<th class="p-1 text-xs font-normal">
+							{{ $t('orderNumber') }}
+						</th>
+						<th class="p-1 text-xs font-normal">
 							{{ $t('market') }}
 						</th>
 						<th class="p-1 text-xs font-normal">
@@ -18,7 +21,7 @@
 						<th class="p-1 text-xs font-normal">
 							{{ $t('direction') }}
 						</th>
-						<th class="p-1 text-xs font-normal">
+						<th class="p-1 text-xs font-normal text-left">
 							{{ $t('status') }}
 						</th>
 						<th class="p-1 text-xs font-normal text-left">
@@ -31,12 +34,12 @@
 							{{ $t('amountFilled') }}
 						</th>
 						<th class="p-1 text-xs font-normal text-left">
-							{{ $t('remaining') }}
-						</th>
-						<th class="p-1 text-xs font-normal text-left">
-							{{ $t('tradePrice') }}
+							{{ $t('filledValue') }}
 						</th>
 						<th class="p-1 text-xs font-normal pr-4 text-left">
+							{{ $t('tradePrice') }}
+						</th>
+						<th class="p-1 text-xs font-normal pr-4">
 							{{ $t('date') }}
 						</th>
 						<th class="p-1 text-xs font-normal text-center">
@@ -125,6 +128,9 @@
 						class="pb-1 odd:bg-hover2-light dark:odd:bg-hover2-dark even:bg-background-light dark:even:bg-background-dark hover:bg-hover-light dark:hover:bg-hover-dark"
 					>
 						<td class="text-xs font-normal py-1">
+							<span>{{ useNumber(order.oid) }}</span>
+						</td>
+						<td class="text-xs font-normal py-1">
 							<span>{{ order.mSymbol }}</span>
 						</td>
 						<td class="text-xs font-normal py-1">
@@ -139,23 +145,38 @@
 						>
 							<span>{{ order.orderStateName }}</span>
 						</td>
-						<td class="text-xs font-normal py-1 text-left">
-							<span dir="ltr">{{ useNumber(order.reqQnt) }} {{ findSymbol(order.mSymbol, 'currency') }}</span>
+						<td
+							class="text-xs font-normal py-1 text-left"
+							dir="ltr"
+						>
+							<span class="text-left">{{ useNumber(priceFormat(order.reqQnt)) }} {{ findSymbol(order.mSymbol, 'currency') }}</span>
 						</td>
-						<td class="text-xs font-normal py-1 text-left">
-							<span dir="ltr">{{ useNumber(order.reqQot) }} {{ findSymbol(order.mSymbol, 'quote') }}</span>
+						<td
+							class="text-xs font-normal py-1 text-left"
+							dir="ltr"
+						>
+							<span class="text-left">{{ useNumber(priceFormat(order.reqQot)) }}  {{ findSymbol(order.mSymbol, 'quote') }}</span>
 						</td>
-						<td class="text-xs font-normal py-1 text-left">
-							<span dir="ltr">{{ useNumber(order.filledQnt) }} {{ findSymbol(order.mSymbol, 'currency') }}</span>
+						<td
+							class="text-xs font-normal py-1 text-left"
+							dir="ltr"
+						>
+							<span class="text-left">{{ useNumber(order.filledQnt) }} {{ findSymbol(order.mSymbol, 'currency') }}</span>
 						</td>
-						<td class="text-xs font-normal py-1 text-left">
-							<span dir="ltr">{{ useNumber(remainingQuantity(order.reqQnt, order.filledQnt)) }} {{ findSymbol(order.mSymbol, 'quote') }}</span>
+						<td
+							class="text-xs font-normal py-1 text-left"
+							dir="ltr"
+						>
+							<span class="text-left">{{ useNumber(priceFormat(order.filledQot)) }} {{ findSymbol(order.mSymbol, 'quote') }}</span>
 						</td>
-						<td class="text-xs font-normal py-1 text-left">
-							<span dir="ltr">{{ useNumber(order.limitPrice) }} {{ findSymbol(order.mSymbol, 'quote') }}</span>
+						<td
+							class="text-xs font-normal py-1 text-left"
+							dir="ltr"
+						>
+							<span class="text-left">{{ useNumber(priceFormat(order.dealPrice)) }} {{ findSymbol(order.mSymbol, 'quote') }}</span>
 						</td>
 						<td class="text-xs font-normal py-1 pr-4 text-left">
-							<span dir="ltr">{{ useNumber(formatDateToIranTime(order.regTime)) }}</span>
+							<span dir="ltr">{{ useNumber(formatDateToIran(order.regTime)) }}-{{ useNumber(formatDateToIranTime(order.regTime)) }}</span>
 						</td>
 						<td class="flex justify-center text-xs font-normal py-1">
 							<div class="flex items-center">
@@ -301,7 +322,7 @@
 				<UiNothingToShow />
 			</template>
 		</div>
-		<div class="flex justify-center py-4">
+		<!-- <div class="flex justify-center py-4">
 			<UPagination
 				v-if="totalCount > itemsPerPage"
 				:model-value="Number(params.pageNumber)"
@@ -320,12 +341,13 @@
 				class="my-14"
 				@update:model-value="onPageChange"
 			/>
-		</div>
+		</div> -->
 	</div>
 </template>
 
 <script setup lang="ts">
 import { formatDateToIranTime } from '~/utils/date-time';
+import { formatDateToIran } from '~/utils/persian-date';
 import IconInfo from '~/assets/svg-icons/info.svg';
 import { useNumber } from '~/composables/useNumber';
 import ModalOrderDetail from '~/components/pages/Spot/List/ModalOrderDetail.vue';
@@ -346,8 +368,8 @@ const spotRepo = spotRepository($api);
 
 const toast = useToast();
 
-const itemsPerPage = 20;
-const totalCount = ref(0);
+// const itemsPerPage = 20;
+// const totalCount = ref(0);
 const orderItem = ref<Order>();
 
 const params = ref<OrderListParams>({
@@ -361,7 +383,7 @@ const params = ref<OrderListParams>({
 	from: '',
 	to: '',
 	pageNumber: '1',
-	pageSize: '20',
+	pageSize: '10',
 });
 const orderList = ref<Order[]>([]);
 const orderListLoading = ref<boolean>(false);
@@ -414,9 +436,9 @@ const openDeleteModal = async (id: number) => {
 	}
 };
 
-const remainingQuantity = (reqQnt: string, filledQnt: string): number => {
-	return parseFloat(reqQnt) - parseFloat(filledQnt);
-};
+// const remainingQuantity = (reqQnt: string, filledQnt: string): number => {
+// 	return parseFloat(reqQnt) - parseFloat(filledQnt);
+// };
 
 watch(() => props.filterParams, async (newFilters) => {
 	if (!props.filterParams || !newFilters) return;
@@ -456,10 +478,10 @@ const closeModalOrderDetail = () => {
 	showModalOrderDetail.value = false;
 };
 
-const onPageChange = async (newPage: number) => {
-	params.value.pageNumber = String(newPage);
-	await getOrderList();
-};
+// const onPageChange = async (newPage: number) => {
+// 	params.value.pageNumber = String(newPage);
+// 	await getOrderList();
+// };
 
 onMounted(async () => {
 	await getOrderList();

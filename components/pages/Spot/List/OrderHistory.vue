@@ -193,7 +193,7 @@
 							<span class="text-left">{{ useNumber(priceFormat(order.dealPrice)) }} {{ findSymbol(order.mSymbol, 'quote') }}</span>
 						</td>
 						<td class="text-xs font-normal py-1 pr-4">
-							<span dir="ltr">{{ useNumber(formatDateToIranTime(order.regTime)) }}</span>
+							<span dir="ltr">{{ useNumber(formatDateToIran(order.regTime)) }}-{{ useNumber(formatDateToIranTime(order.regTime)) }}</span>
 						</td>
 						<td class="flex text-xs font-normal py-1">
 							<IconInfo
@@ -352,6 +352,7 @@
 
 <script setup lang="ts">
 import { formatDateToIranTime } from '~/utils/date-time';
+import { formatDateToIran } from '~/utils/persian-date';
 import FilterOptions from '~/components/pages/Spot/List/FilterOptions.vue';
 import IconInfo from '~/assets/svg-icons/info.svg';
 import { useNumber } from '~/composables/useNumber';

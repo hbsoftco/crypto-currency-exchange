@@ -167,7 +167,7 @@
 							>{{ useNumber(priceFormat(trade.dealPrice)) }} {{ findSymbol(trade.mSymbol, 'quote') }}</span>
 						</td>
 						<td class="text-xs font-normal py-1 pr-4">
-							<span dir="ltr">{{ useNumber(formatDateToIranTime(trade.regTime)) }}</span>
+							<span dir="ltr">{{ useNumber(formatDateToIran(trade.regTime)) }}-{{ useNumber(formatDateToIranTime(trade.regTime)) }}</span>
 						</td>
 						<td class="flex text-xs font-normal py-1">
 							<IconInfo
@@ -277,7 +277,7 @@
 				<UiNothingToShow />
 			</template>
 		</div>
-		<div class="flex justify-center py-4">
+		<!-- <div class="flex justify-center py-4">
 			<UPagination
 				v-if="totalCount > itemsPerPage"
 				:model-value="Number(params.pageNumber)"
@@ -296,12 +296,13 @@
 				class="my-14"
 				@update:model-value="onPageChange"
 			/>
-		</div>
+		</div> -->
 	</div>
 </template>
 
 <script setup lang="ts">
 import { formatDateToIranTime } from '~/utils/date-time';
+import { formatDateToIran } from '~/utils/persian-date';
 import IconInfo from '~/assets/svg-icons/info.svg';
 import { useNumber } from '~/composables/useNumber';
 import ModalTransactionDetail from '~/components/pages/Spot/List/ModalTransactionDetail.vue';
@@ -318,7 +319,7 @@ const props = defineProps<PropsDefinition>();
 const { $api } = useNuxtApp();
 const spotRepo = spotRepository($api);
 
-const itemsPerPage = 20;
+// const itemsPerPage = 20;
 const totalCount = ref(0);
 const tradeItem = ref<Trade>();
 
@@ -332,7 +333,7 @@ const params = ref<TradeListParams>({
 	from: '',
 	to: '',
 	pageNumber: '1',
-	pageSize: '20',
+	pageSize: '10',
 });
 
 const tradesList = ref<Trade[]>([]);
@@ -390,10 +391,10 @@ const closeModalTransactionDetail = () => {
 	showModalTransactionDetail.value = false;
 };
 
-const onPageChange = async (newPage: number) => {
-	params.value.pageNumber = String(newPage);
-	await getTradeList();
-};
+// const onPageChange = async (newPage: number) => {
+// 	params.value.pageNumber = String(newPage);
+// 	await getTradeList();
+// };
 
 onMounted(async () => {
 	await getTradeList();

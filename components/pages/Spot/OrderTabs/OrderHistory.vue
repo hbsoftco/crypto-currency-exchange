@@ -189,9 +189,9 @@
 							<span class="text-left">{{ useNumber(priceFormat(order.dealPrice)) }} {{ findSymbol(order.mSymbol, 'quote') }}</span>
 						</td>
 						<td class="text-xs font-normal py-1 pr-4">
-							<span dir="ltr">{{ useNumber(formatDateToIranTime(order.regTime)) }}</span>
+							<span dir="ltr">{{ useNumber(formatDateToIran(order.regTime)) }}-{{ useNumber(formatDateToIranTime(order.regTime)) }}</span>
 						</td>
-						<td class="flex text-xs font-normal py-1">
+						<td class="flex items-center text-xs font-normal py-1">
 							<IconInfo
 								class="text-base cursor-pointer"
 								@click="openModalOrderDetail(order)"
@@ -323,7 +323,7 @@
 				<UiNothingToShow />
 			</template>
 		</div>
-		<div class="flex justify-center py-4">
+		<!-- <div class="flex justify-center py-4">
 			<UPagination
 				v-if="totalCount > itemsPerPage"
 				:model-value="Number(params.pageNumber)"
@@ -342,12 +342,13 @@
 				class="my-14"
 				@update:model-value="onPageChange"
 			/>
-		</div>
+		</div> -->
 	</div>
 </template>
 
 <script setup lang="ts">
 import { formatDateToIranTime } from '~/utils/date-time';
+import { formatDateToIran } from '~/utils/persian-date';
 import IconInfo from '~/assets/svg-icons/info.svg';
 import { useNumber } from '~/composables/useNumber';
 import { splitMarket } from '~/utils/split-market';
@@ -356,7 +357,7 @@ import { spotRepository } from '~/repositories/spot.repository';
 import type { Order, OrderFiltersType, OrderListParams } from '~/types/definitions/spot.types';
 import ModalOrderDetail from '~/components/pages/Spot/List/ModalOrderDetail.vue';
 import { priceFormat } from '~/utils/helpers';
-import type { UPagination } from '#build/components';
+// import type { UPagination } from '#build/components';
 
 type PropsDefinition = {
 	filterParams?: OrderFiltersType;
@@ -367,7 +368,7 @@ const props = defineProps<PropsDefinition>();
 const { $api } = useNuxtApp();
 const spotRepo = spotRepository($api);
 
-const itemsPerPage = 20;
+// const itemsPerPage = 20;
 const totalCount = ref(0);
 const orderItem = ref<Order>();
 
@@ -382,7 +383,7 @@ const params = ref<OrderListParams>({
 	from: '',
 	to: '',
 	pageNumber: '1',
-	pageSize: '20',
+	pageSize: '10',
 });
 const orderList = ref<Order[]>([]);
 const orderListLoading = ref<boolean>(false);
@@ -438,10 +439,10 @@ const closeModalOrderDetail = () => {
 	showModalOrderDetail.value = false;
 };
 
-const onPageChange = async (newPage: number) => {
-	params.value.pageNumber = String(newPage);
-	await getOrderList();
-};
+// const onPageChange = async (newPage: number) => {
+// 	params.value.pageNumber = String(newPage);
+// 	await getOrderList();
+// };
 
 onMounted(async () => {
 	await getOrderList();

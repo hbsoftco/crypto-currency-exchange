@@ -36,9 +36,9 @@
 									<div
 										class="mt-1 px-2 py-1 rounded-md text-center"
 										:class="orderItem?.sideName === 'Sell'
-											? 'text-accent-red dark:text-accent-red bg-[#33181D]'
+											? 'text-accent-red dark:text-accent-red bg-[#f142352e] dark:bg-[#f142352e]'
 											: orderItem?.sideName === 'Buy'
-												? 'text-accent-green dark:text-accent-green bg-[#1D3318]'
+												? 'text-accent-green dark:text-accent-green bg-[#459f4b4c] dark:bg-[#459f4b4c]'
 												: ''"
 									>
 										{{ $t(orderItem?.sideName) }}
