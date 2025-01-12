@@ -1,12 +1,12 @@
 <template>
-	<div>
-		<UModal
-			v-model="isOpen"
-			fullscreen
+	<UModal
+		v-model="isOpen"
+		fullscreen
+	>
+		<div
+			class="h-full flex flex-col items-center justify-start overflow-auto"
 		>
-			<div
-				class="h-full flex flex-col items-center justify-start overflow-auto"
-			>
+			<div>
 				<div
 					class="w-full md:w-[30rem] flex flex-col justify-center items-center my-auto text-center rounded-md bg-background-light dark:bg-background-dark px-1 md:px-14 py-6 md:py-8"
 				>
@@ -45,15 +45,15 @@
 						</div>
 					</div>
 				</div>
-				<div class="mt-2">
+				<div class="mt-2 flex justify-center">
 					<IconClose
 						class="text-4xl hidden md:block cursor-pointer"
 						@click="closeModal(false)"
 					/>
 				</div>
 			</div>
-		</UModal>
-	</div>
+		</div>
+	</UModal>
 </template>
 
 <script setup lang="ts">
@@ -62,8 +62,7 @@ import IconClose from '~/assets/svg-icons/close.svg';
 interface PropsDefinition {
 	staffId: string;
 }
-const props = defineProps<PropsDefinition>();
-console.log('staff-id', props.staffId);
+defineProps<PropsDefinition>();
 
 const isOpen = ref(true);
 interface EmitDefinition {

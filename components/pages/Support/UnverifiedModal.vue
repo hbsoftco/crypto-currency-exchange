@@ -1,12 +1,12 @@
 <template>
-	<div>
-		<UModal
-			v-model="isOpen"
-			fullscreen
+	<UModal
+		v-model="isOpen"
+		fullscreen
+	>
+		<div
+			class="h-full flex flex-col items-center justify-start overflow-auto"
 		>
-			<div
-				class="h-full flex flex-col items-center justify-start overflow-auto"
-			>
+			<div>
 				<div
 					class="w-full md:w-[30rem] flex flex-col justify-center items-center my-auto text-center rounded-md bg-background-light dark:bg-background-dark px-1 md:px-14 py-6 md:py-8"
 				>
@@ -35,7 +35,7 @@
 								جستجوی شما <span
 									class="text-left"
 									dir="ltr"
-								>{{ staffId }}</span> یک منبع رسمی و تایید شده در بیت لند نیست.
+								>{{ staffId }}</span> یک منبع رسمی و تایید شده در بیت‌لند نیست.
 							</p>
 						</div>
 						<div class="my-6 text-sm font-medium text-right p-2 bg-hover-light dark:bg-hover-dark text-primary-yellow-light dark:text-primary-yellow-dark">
@@ -60,15 +60,15 @@
 						</div>
 					</div>
 				</div>
-				<div class="mt-2">
+				<div class="mt-2 flex justify-center">
 					<IconClose
 						class="text-4xl hidden md:block cursor-pointer"
 						@click="closeModal(false)"
 					/>
 				</div>
 			</div>
-		</UModal>
-	</div>
+		</div>
+	</UModal>
 </template>
 
 <script setup lang="ts">

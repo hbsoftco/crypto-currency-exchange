@@ -47,7 +47,7 @@
 													background: '',
 													color: {
 														white: {
-															outline: 'bg-hover-light dark:bg-hover-dark',
+															outline: 'bg-text-light dark:bg-hover-dark',
 														},
 													},
 												}"
@@ -58,7 +58,7 @@
 												id="info"
 												v-model="params.staffId"
 												type="text"
-												input-class="text-left text-left placeholder:text-right bg-[#ffffff] dark:bg-background-dark h-10 border-[#ffffff] dark:border-gray-600"
+												input-class="text-left text-left placeholder:text-right bg-[#ffffff] dark:bg-background-dark h-10 border-[#b0b0b0] dark:border-gray-600"
 												label=""
 												:placeholder="$t('placeholderInfo')"
 												icon=""
