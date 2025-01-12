@@ -16,7 +16,7 @@
 								{{ $t("bitlandApproval") }}
 							</h1>
 							<div
-								class="p-3 px-5 bg-none md:bg-transparency-light dark:bg-none md:dark:bg-transparency-dark rounded-md shadow-md text-white w-full md:w-[40rem] h-auto my-6"
+								class="p-3 px-5 bg-none dark:bg-none md:bg-transparency-light md:dark:bg-transparency-dark rounded-md shadow-md text-white w-full md:w-[40rem] h-auto my-6"
 							>
 								<p
 									class="text-text-dark dark:text-text-light mt-1 md:mt-4 text-sm md:text-base text-justify"
@@ -47,7 +47,7 @@
 													background: '',
 													color: {
 														white: {
-															outline: ' bg-hover-light dark:bg-hover-dark',
+															outline: 'bg-hover-light dark:bg-hover-dark',
 														},
 													},
 												}"
@@ -58,13 +58,13 @@
 												id="info"
 												v-model="params.staffId"
 												type="text"
-												input-class="text-left text-left placeholder:text-right bg-background-light dark:bg-background-dark h-10"
+												input-class="text-left text-left placeholder:text-right bg-[#ffffff] dark:bg-background-dark h-10 border-[#ffffff] dark:border-gray-600"
 												label=""
 												:placeholder="$t('placeholderInfo')"
 												icon=""
 												mt-class="mt-0 md:mt-8"
 												dir="ltr"
-												color-type="bg-hover-light dark:bg-hover-dark"
+												color-type="bg-hover-light dark:bg-hover-dark "
 											/>
 										</div>
 										<div class="col-span-2 md:col-span-1">

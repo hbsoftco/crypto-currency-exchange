@@ -10,9 +10,13 @@
 				<div
 					class="w-full md:w-[30rem] flex flex-col justify-center items-center my-auto text-center rounded-md bg-background-light dark:bg-background-dark px-1 md:px-14 py-6 md:py-8"
 				>
-					<div class="block md:hidden w-full">
-						<UiTitleWithBack
-							:title="$t('unverifiedSource')"
+					<div class="flex justify-between items-center px-2 pb-2 md:hidden w-full border-b border-primary-gray-light dark:border-primary-gray-dark">
+						<h3 class="text-base font-medium">
+							{{ $t('verifiedSource') }}
+						</h3>
+						<IconClose
+							class="text-3xl cursor-pointer"
+							@click="closeModal(false)"
 						/>
 					</div>
 					<div>
@@ -26,7 +30,7 @@
 						<h3 class="text-base font-bold text-accent-green dark:text-accent-green my-8">
 							{{ $t('verifiedSource') }}
 						</h3>
-						<div class="my-6">
+						<div class="my-6 px-2 md:px-0">
 							<p class="text-xs font-normal text-justify">
 								جستجوی شما <span
 									class="text-left"
@@ -35,13 +39,13 @@
 								می باشد.
 							</p>
 						</div>
-						<div class=" text-base font-medium text-right border-t border-primary-gray-light dark:border-primary-gray-dark">
+						<div class="px-2 md:px-0 text-base font-medium text-right border-t border-primary-gray-light dark:border-primary-gray-dark">
 							<span>{{ $t('verificationModalTextOne') }}</span><br>
 							<span>{{ $t('verificationModalTextTwo') }}</span>
 						</div>
 					</div>
 				</div>
-				<div class="mt-6">
+				<div class="mt-2">
 					<IconClose
 						class="text-4xl hidden md:block cursor-pointer"
 						@click="closeModal(false)"
