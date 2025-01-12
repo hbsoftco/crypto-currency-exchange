@@ -2,10 +2,13 @@
 	<footer class="h-8 w-full bg-hover-light dark:bg-hover-dark fixed bottom-0 left-0 z-10 right-0 px-2">
 		<div class="flex justify-between items-center">
 			<div class="flex justify-start items-center pt-1">
-				<div class="flex justify-start items-center mx-4 cursor-pointer">
+				<ULink
+					to="/support"
+					class="flex justify-start items-center mx-4 cursor-pointer"
+				>
 					<IconSupport class="text-xl text-subtle-text-light dark:text-subtle-text-50" />
 					<span class="mr-2 text-subtle-text-light dark:text-subtle-text-50 text-xs">{{ $t('onlineSupport') }}</span>
-				</div>
+				</ULink>
 
 				<ULink
 					to="/"
@@ -22,7 +25,7 @@
 				</ULink>
 
 				<ULink
-					to="/"
+					to="/help"
 					class="mx-4 text-subtle-text-light dark:text-subtle-text-50 text-xs"
 				>
 					{{ $t('guidance') }}
