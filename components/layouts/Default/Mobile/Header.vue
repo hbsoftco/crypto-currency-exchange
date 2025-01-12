@@ -10,7 +10,9 @@
 						<Search />
 					</div>
 					<div>
-						<IconSupport class="text-3xl" />
+						<ULink to="/help">
+							<IconSupport class="text-3xl" />
+						</ULink>
 					</div>
 					<div class="mr-2">
 						<Notification v-if="authStore.isLoggedIn" />

@@ -20,7 +20,7 @@
 									@click="toggleMenu"
 								>
 									<IconHamburger
-										class="w-6 h-6 text-primary-yellow-light dark:text-primary-yellow-dark"
+										class="text-2xl text-primary-yellow-light dark:text-primary-yellow-dark"
 									/>
 								</button>
 								<h1 class="text-xl md:text-4xl font-bold md:font-black">
@@ -133,7 +133,7 @@
 
 				<div
 					v-if="systemHelp"
-					class="p-4 px-10 w-full"
+					class="p-4 px-0 md:px-10 w-full"
 				>
 					<div class="py-4">
 						<h2 class="text-xl md:text-4xl font-bold md:font-black">

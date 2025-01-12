@@ -10,7 +10,7 @@
 					<div class="w-full h-full relative flex justify-between items-center">
 						<div class="mt-[5.5rem] md:mt-16">
 							<h1
-								class="text-light dark:text-dark text-lg md:text-7xl font-bold md:font-extrabold mb-2 md:mb-8"
+								class="text-light dark:text-dark text-xl md:text-7xl font-bold md:font-extrabold mb-0 md:mb-8"
 							>
 								{{ $t("helpCenter") }}
 							</h1>
@@ -48,7 +48,7 @@
 		<div v-else>
 			<section class="block md:hidden">
 				<UContainer>
-					<div class="w-full -mt-8">
+					<div class="w-full -mt-4">
 						<FormsFieldInput
 							id="searchInput"
 							v-model="searchInput"
