@@ -1,24 +1,25 @@
 <template>
-	<div class="mb-[30rem] md:mb-24">
+	<!-- <div class="mb-[30rem] md:mb-24"> -->
+	<div>
 		<BackHeader
 			v-if="isMobile"
 			:title="$t('bitlandApproval')"
 		/>
 		<section>
-			<ImageCover>
+			<ImageCover css-class="px-0 sm:px-6 lg:px-8">
 				<div class="mx-auto px-0 sm:px-6 lg:px-8 max-w-7xl h-full">
 					<div class="w-full h-full relative flex items-center justify-between">
-						<div class="mt-[35rem] md:mt-12 bg-transparency-light dark:bg-transparency-dark opacity-75 md:bg-none md:dark:bg-none w-full md:w-0">
+						<div class="mt-[35rem] md:mt-12 bg-transparency-light dark:bg-transparency-dark md:bg-none md:dark:bg-none w-full md:w-0 relative z-20">
 							<h1
-								class="text-light dark:text-dark text-lg md:text-7xl font-extrabold mb-2 md:mb-8"
+								class="text-light dark:text-dark p-4 text-2xl md:text-6xl font-bold text-nowrap mb-2 md:mb-8"
 							>
 								{{ $t("bitlandApproval") }}
 							</h1>
 							<div
-								class="p-3 bg-none md:bg-transparency-light dark:bg-none md:dark:bg-transparency-dark rounded-md shadow-md text-white w-full md:w-[40rem] h-auto my-6"
+								class="p-3 px-5 bg-none md:bg-transparency-light dark:bg-none md:dark:bg-transparency-dark rounded-md shadow-md text-white w-full md:w-[40rem] h-auto my-6"
 							>
 								<p
-									class="text-text-dark dark:text-text-light mt-1 md:mt-4 text-sm md:text-base"
+									class="text-text-dark dark:text-text-light mt-1 md:mt-4 text-sm md:text-base text-justify"
 								>
 									{{ $t('bitlandApprovalText') }}
 								</p>
@@ -82,19 +83,19 @@
 								</div>
 							</div>
 							<div
-								class="p-3 bg-transparency-light dark:bg-transparency-dark rounded-md shadow-md text-white w-full md:w-[40rem] h-auto"
+								class="p-3 px-5 bg-transparency-light dark:bg-transparency-dark rounded-md shadow-md text-white w-full md:w-[40rem] h-auto"
 							>
 								<h3
-									class="text-text-dark dark:text-text-light mt-1 md:mt-4 text-sm md:text-base"
+									class="text-text-dark dark:text-text-light mt-1 md:mt-4 text-sm md:text-base text-justify"
 								>
-									یک نکته ضروری برای همه کاربران بیت لند: برای کسب اطلاعات بیشتر در مورد پیشگیری از تقلب و مراقبت از کلاهبرداری های سازمان‌یافته به <span class="text-primary-yellow-light dark:text-primary-yellow-dark">مرکز راهنمای بیت لند </span>مراجعه کنید.
+									یک نکته ضروری برای همه کاربران بیت لند: برای کسب اطلاعات بیشتر در مورد پیشگیری از تقلب و مراقبت از کلاهبرداری های سازمان‌یافته به <span class="text-primary-yellow-light dark:text-primary-yellow-dark">مرکز راهنمای بیت‌لند </span>مراجعه کنید.
 								</h3>
 							</div>
 						</div>
 						<img
-							src="/images/svg/vertification.svg"
-							alt="vertification"
-							class="absolute bottom-0 left-0 w-full md:w-[30rem] h-40 md:h-[36.125rem]"
+							src="/images/svg/verification.svg"
+							alt="verification"
+							class="absolute bottom-0 z-10 left-0 w-full md:w-[30rem] h-40 md:h-[36.125rem]"
 						>
 					</div>
 				</div>

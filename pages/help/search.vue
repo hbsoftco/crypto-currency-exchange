@@ -74,7 +74,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="p-4 px-10 w-full">
+				<div class="p-4 px-0 md:px-10 w-full">
 					<h2
 						class="border-b md:border-none border-primary-gray-light dark:border-primary-gray-dark text-right text-subtle-text-light dark:text-subtle-text-dark text-sm font-normal mb-4 pb-4 md:pb-0"
 					>

@@ -68,7 +68,6 @@
 </template>
 
 <script setup lang="ts">
-// import { useNumber } from '~/composables/useNumber';
 import IconClose from '~/assets/svg-icons/close.svg';
 
 interface PropsDefinition {
