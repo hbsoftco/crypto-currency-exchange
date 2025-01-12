@@ -48,7 +48,7 @@
 						:key="index"
 					>
 						<ULink
-							:to="`help/${item.id}`"
+							:to="`help/${item.id}/${item.info.header}`"
 							class="flex flex-col items-center justify-center text-center py-3 px-2 cursor-pointer bg-none md:bg-hover2-light dark:bg-none md:dark:bg-hover2-dark rounded-md"
 						>
 							<img
