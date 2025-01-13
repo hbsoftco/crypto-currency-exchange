@@ -21,7 +21,7 @@
 		</section>
 		<section>
 			<UContainer>
-				<div class="px-2 md:px-24 py-10 bg-hover-light dark:bg-hover-dark text-center rounded-md shadow-md mb-24">
+				<div class="px-2 md:px-24 py-10 bg-hover-light dark:bg-hover-dark text-center rounded-md shadow-sm mb-24">
 					<div class="mb-8">
 						<FormsFieldInput
 							id="header"
@@ -33,7 +33,7 @@
 							icon=""
 							mt-class="mt-0 md:mt-8"
 							dir="rtl"
-							color-type="transparent"
+							color-type="pages"
 							:error-message="v$.header.$error? $t('fieldIsRequired') : ''"
 						/>
 					</div>
@@ -49,7 +49,7 @@
 							label="choosePriority"
 							placeholder=""
 							icon=""
-							color-type="transparent"
+							color-type="pages"
 							:error-message="v$.priority.$error? $t('fieldIsRequired') : ''"
 						/>
 					</div>
@@ -74,7 +74,7 @@
 							label="requestType"
 							placeholder=""
 							icon=""
-							color-type="transparent"
+							color-type="pages"
 							:error-message="v$.issueTypeId.$error? $t('fieldIsRequired') : ''"
 						/>
 					</div>
@@ -96,7 +96,7 @@
 							placeholder=""
 							icon=""
 							dir="rtl"
-							color-type="transparent"
+							color-type="pages"
 							:error-message="v$.content.$error? $t('fieldIsRequired') : ''"
 						/>
 					</div>
@@ -186,7 +186,7 @@ const submitTicket = async () => {
 		submitTicketLoading.value = true;
 		await userRepo.storeTicket(storeTicketDto.value);
 
-		router.push('/ticketing');
+		router.push('/support/tickets/mine');
 
 		toast.add({
 			title: useT('registerTicket'),

@@ -12,7 +12,7 @@
 							<UButton
 								size="lg"
 								class="text-base font-medium px-6 py-2"
-								to="/ticketing/create"
+								to="/support/tickets/add"
 							>
 								{{ $t("addNewTicket") }}
 							</UButton>
@@ -181,7 +181,7 @@ const router = useRouter();
 
 const ticketDetail = (ticket: Ticket) => {
 	router.push({
-		path: `/ticketing/${ticket.id}`,
+		path: `/support/tickets/${ticket.id}`,
 		query: { regTime: ticket.regTime, header: ticket.header },
 	});
 };

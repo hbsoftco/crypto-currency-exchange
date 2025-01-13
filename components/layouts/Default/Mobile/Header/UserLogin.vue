@@ -429,7 +429,7 @@
 					<!-- setting -->
 					<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 						<ULink
-							to="/ticketing"
+							to="/support/tickets/mine"
 							class="flex justify-between items-center w-full py-2.5"
 						>
 							<div class="flex justify-start items-center">

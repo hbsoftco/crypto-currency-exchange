@@ -23,7 +23,7 @@
 						v-if="selected"
 						:class="[
 							'absolute text-sm font-medium duration-300 transform -translate-y-5 scale-78 top-3 origin-[0] cursor-text px-2',
-							colorType ? (colorType === 'transparent' ? 'bg-primary-gray-light dark:bg-primary-gray-dark' : 'bg-background-light dark:bg-background-dark') : 'bg-background-light dark:bg-background-dark',
+							colorTypeClass,
 							'peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-78 peer-focus:-translate-y-5 right-2 rounded-lg',
 						]"
 					>{{ $t(label) }}</span>
@@ -99,4 +99,18 @@ const updateSelected = (value: KeyValue | NetBlockchainItem) => {
 		emit('update:modelValue', value.blockchainId);
 	}
 };
+
+const colorTypeClass = computed(() => {
+	if (!props.colorType) {
+		return 'bg-background-light dark:bg-background-dark';
+	}
+	switch (props.colorType) {
+		case 'transparent':
+			return 'bg-primary-gray-light dark:bg-primary-gray-dark';
+		case 'pages':
+			return 'bg-hover-light dark:bg-hover-dark';
+		default:
+			return 'bg-background-light dark:bg-background-dark';
+	}
+});
 </script>

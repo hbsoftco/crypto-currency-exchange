@@ -4,7 +4,7 @@
 			<button
 				:aria-label="$t('sendTicket')"
 				class="rounded-full shadow-sm w-12 h-12 bg-hover-light dark:bg-hover-dark flex justify-center items-center"
-				@click="router.push(checkPathLink('/ticketing', false))"
+				@click="router.push(checkPathLink('/support/tickets/mine', false))"
 			>
 				<IconEmail class="text-2xl text-primary-yellow-light dark:text-primary-yellow-dark hover:text-primary-yellow-light dark:hover:text-primary-yellow-dark" />
 			</button>
