@@ -2,7 +2,7 @@ import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import type { BaseLangGroupParams, BaseLangIdParams, CommonResponse, KeyValueResponse, SearchListParams } from '~/types/definitions/common.types';
-import type { FAQListParams, MiniRoutineParams, StaffParams, SystemListResponse, SystemResponse } from '~/types/definitions/system.types';
+import type { SystemParams, MiniRoutineParams, StaffParams, SystemListResponse, SystemResponse } from '~/types/definitions/system.types';
 
 type SystemRepository = {
 	getSystemHelp: (params: BaseLangIdParams) => Promise<SystemResponse>;
@@ -17,8 +17,8 @@ type SystemRepository = {
 	getSocialNetList: () => Promise<KeyValueResponse>;
 	getStaffCheck: (params: StaffParams) => Promise<CommonResponse>;
 	getSubjectList: (params: BaseLangGroupParams) => Promise<SystemListResponse>;
-	getFAQList: (params: FAQListParams) => Promise<SystemListResponse>;
-	getBuyList: (params: FAQListParams) => Promise<SystemListResponse>;
+	getFAQList: (params: SystemParams) => Promise<SystemListResponse>;
+	getHowToBuyList: (params: SystemParams) => Promise<SystemListResponse>;
 };
 
 export const systemRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SystemRepository => ({
@@ -184,7 +184,7 @@ export const systemRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Sys
 
 		return response;
 	},
-	async getFAQList(params: FAQListParams): Promise<SystemListResponse> {
+	async getFAQList(params: SystemParams): Promise<SystemListResponse> {
 		const query = new URLSearchParams(
 			Object.entries(params)
 				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
@@ -198,7 +198,7 @@ export const systemRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Sys
 
 		return response;
 	},
-	async getBuyList(params: FAQListParams): Promise<SystemListResponse> {
+	async getHowToBuyList(params: SystemParams): Promise<SystemListResponse> {
 		const query = new URLSearchParams(
 			Object.entries(params)
 				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),

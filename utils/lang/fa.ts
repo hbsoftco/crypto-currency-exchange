@@ -1162,6 +1162,7 @@ const persian = {
 	semiStable: 'نیمه پایدار',
 	disconnected: 'قطع',
 	liveChatBitlandExpert: 'گفتگوی زنده با کارشناس بیت لند',
+	growth2: 'افزایش',
 };
 
 export default persian;

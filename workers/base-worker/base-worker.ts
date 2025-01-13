@@ -15,6 +15,7 @@ import type { SuggestionItems } from '~/types/definitions/header/search.types';
 import type { Tag } from '~/types/definitions/tag.types';
 import type { Asset } from '~/types/definitions/asset.types';
 import { MarketType } from '~/utils/enums/market.enum';
+import type { SystemRoot } from '~/types/definitions/system.types';
 
 let currencyBriefItems: CurrencyBrief[] = [];
 let marketBriefItems: MarketBrief[] = [];
@@ -622,12 +623,12 @@ const findMarketById = async (id: number, baseUrl: string): Promise<MarketBrief 
 	return null;
 };
 
-const findMarketsByCurrencyId = async (baseUrl: string, cid: number): Promise<MarketBrief[] | []> => {
+const findMarketsByCurrencyId = async (baseUrl: string, cid: number, typeId: number = MarketType.SPOT): Promise<MarketBrief[] | []> => {
 	if (!marketBriefItems.length) {
 		await fetchMarketBriefItems(baseUrl);
 	}
 
-	const filteredMarkets = marketBriefItems.filter((market) => (market.cbId === cid));
+	const filteredMarkets = marketBriefItems.filter((market) => (market.cbId === cid && market.typeId === typeId));
 
 	return filteredMarkets;
 };
@@ -718,6 +719,23 @@ const fetchSnapshotData = async (baseUrl: string, market: string, currency: stri
 	};
 };
 
+const addCurrenciesHelpToBuyList = async (baseUrl: string, items: SystemRoot[]): Promise<SystemRoot[] | null> => {
+	if (!currencyBriefItems.length) {
+		await fetchCurrencyBriefItems(baseUrl);
+	}
+
+	const result = await Promise.all(items.map(async (item) => {
+		const currency = await findCurrencyById(item.cid, baseUrl);
+
+		return {
+			...item,
+			currency,
+		};
+	}));
+
+	return result;
+};
+
 Comlink.expose({
 	// Currencies
 	addCurrencyToMarkets,
@@ -746,4 +764,5 @@ Comlink.expose({
 	// Other
 	SearchSuggestionItems,
 	fetchSnapshotData,
+	addCurrenciesHelpToBuyList,
 });

@@ -120,7 +120,7 @@ import IconNote from '~/assets/svg-icons/note.svg';
 import FAQItems from '~/components/ui/FAQItems.vue';
 import { systemRepository } from '~/repositories/system.repository';
 import type { BaseLangGroupParams, KeyValue } from '~/types/definitions/common.types';
-import type { FAQListParams, SystemRoot } from '~/types/definitions/system.types';
+import type { SystemParams, SystemRoot } from '~/types/definitions/system.types';
 import { Language } from '~/utils/enums/language.enum';
 
 const BackHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/BackHeader.vue'));
@@ -153,7 +153,7 @@ const getSubjectList = async () => {
 };
 
 const finalFAQList = ref<KeyValue[]>([]);
-const paramsFAQ = ref<FAQListParams>({
+const paramsFAQ = ref<SystemParams>({
 	languageId: String(Language.PERSIAN),
 	tagId: '',
 	searchStatement: '',

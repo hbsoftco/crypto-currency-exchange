@@ -5,6 +5,7 @@ import type { CurrencyBrief } from '~/types/definitions/currency.types';
 import type { SuggestionItems } from '~/types/definitions/header/search.types';
 import type { MarketBrief, MarketL16, MarketL21, MarketL46, MarketL47, MarketL51, MarketState } from '~/types/definitions/market.types';
 import type { Quote } from '~/types/definitions/quote.types';
+import type { SystemRoot } from '~/types/definitions/system.types';
 import type { Tag } from '~/types/definitions/tag.types';
 
 interface BaseWorker {
@@ -30,12 +31,13 @@ interface BaseWorker {
 	// Markets
 	fetchMarketBriefItems: (baseUrl: string) => Promise<MarketBrief[] | []>;
 	findMarketById: (id: number, baseUrl: string) => Promise<MarketBrief | null>;
-	findMarketsByCurrencyId: (baseUrl: string, cid: number) => Promise<MarketBrief[] | []>;
+	findMarketsByCurrencyId: (baseUrl: string, cid: number, typeId?: number) => Promise<MarketBrief[] | []>;
 	searchMarkets: (baseUrl: string, search: string, count?: number) => Promise<MarketBrief[] | []>;
 	// Other
 	SearchSuggestionItems: (baseUrl: string, query: string) => Promise<SuggestionItems>;
 	fetchCommissionList: (baseUrl: string, marketType: number) => Promise<void>;
 	fetchSnapshotData: (baseUrl: string, market: string, currency: string, quote: string) => Promise<any>;
+	addCurrenciesHelpToBuyList: (baseUrl: string, items: SystemRoot[]) => Promise<any>;
 }
 
 let worker: Worker | null = null;

@@ -1,4 +1,5 @@
 import type { KeyValue } from './common.types';
+import type { CurrencyBrief } from './currency.types';
 
 type SystemListResponse = {
 	statusCode: number;
@@ -21,6 +22,7 @@ type SystemRoot = {
 	mediaUrl: string;
 	tags: KeyValue[];
 	info: CardInfo;
+	currency?: CurrencyBrief | null;
 };
 
 type SubFaq = {
@@ -32,6 +34,7 @@ type SubFaq = {
 type System = {
 	id: number;
 	currencyId: number;
+	currency?: CurrencyBrief | null;
 	mediaId: number;
 	mediaUrl: string;
 	info: {
@@ -142,7 +145,7 @@ type StaffParams = {
 	profileTypeId: string;
 };
 
-type FAQListParams = {
+type SystemParams = {
 	languageId: string;
 	tagId: string;
 	searchStatement: string;
@@ -166,5 +169,5 @@ export type {
 	MiniRoutine,
 	Tree,
 	StaffParams,
-	FAQListParams,
+	SystemParams,
 };

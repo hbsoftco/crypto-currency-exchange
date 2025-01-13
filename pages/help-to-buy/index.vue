@@ -1,5 +1,9 @@
 <template>
-	<div>
+	<div v-if="systemHelpToBuyListLoading">
+		<UiLogoLoading />
+	</div>
+
+	<div v-else>
 		<section>
 			<UContainer>
 				<div class="flex justify-between items-center my-10">
@@ -15,7 +19,7 @@
 					</div>
 					<div>
 						<img
-							src="/images/svg/help-buy-cryoto.svg"
+							src="/images/svg/help-buy-crypto.svg"
 							alt="help-buy"
 							class="w-96 h-60"
 						>
@@ -40,7 +44,7 @@
 					<ULink
 						v-for="(item, index) in filteredTreeList"
 						:key="index"
-						:to="`help-buy/${item.id}`"
+						:to="`help-to-buy/${item.id}/${slug(item.info.header)}`"
 						class="flex justify-between items-center py-4 border-b border-primary-gray-light dark:border-primary-gray-dark"
 					>
 						<div class="flex items-center">
@@ -57,7 +61,7 @@
 					</ULink>
 				</div>
 				<div class="flex justify-center py-4">
-					<UPagination
+					<!-- <UPagination
 						:model-value="Number(buyingGuideStore.params.pageNumber)"
 						:page-count="20"
 						:total="buyingGuideStore.totalCount"
@@ -70,7 +74,7 @@
 						button-class-active="bg-blue-500"
 						class="my-14"
 						@update:model-value="buyingGuideStore.onPageChange"
-					/>
+					/> -->
 				</div>
 			</UContainer>
 		</section>
@@ -78,20 +82,56 @@
 </template>
 
 <script setup lang="ts">
+import { slug } from '~/utils/helpers';
 import SearchCrypto from '~/components/forms/SearchCrypto.vue';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
+import type { SystemParams, SystemRoot } from '~/types/definitions/system.types';
+import { systemRepository } from '~/repositories/system.repository';
+import { Language } from '~/utils/enums/language.enum';
+import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 
-const buyingGuideStore = useBuyingGuideStore();
+const { $api } = useNuxtApp();
+const systemRepo = systemRepository($api);
+
+const worker = useBaseWorker();
+
+const systemHelpParams = ref<SystemParams>({
+	languageId: String(Language.PERSIAN),
+	group: '',
+	tagId: '',
+	searchStatement: '',
+	pageNumber: '1',
+	pageSize: '20',
+});
+const systemHelpToBuyList = ref<SystemRoot[]>();
+const systemHelpToBuyListLoading = ref<boolean>(true);
+const getHowToBuyList = async () => {
+	try {
+		systemHelpToBuyListLoading.value = true;
+		const { result } = await systemRepo.getHowToBuyList(systemHelpParams.value);
+		const items = await worker.addCurrenciesHelpToBuyList(
+			useEnv('apiBaseUrl'),
+			result.rows as SystemRoot[],
+		);
+
+		systemHelpToBuyList.value = items;
+		systemHelpToBuyListLoading.value = false;
+	}
+	catch (error) {
+		console.log(error);
+		systemHelpToBuyListLoading.value = false;
+	}
+};
 
 onMounted(async () => {
-	await buyingGuideStore.fetchBuyList();
+	await getHowToBuyList();
 });
 
 const searchMenu = ref('');
 const filteredTreeList = computed(() => {
-	if (!searchMenu.value) return buyingGuideStore.buyList;
+	if (!searchMenu.value) return systemHelpToBuyList.value;
 
-	return buyingGuideStore.buyList.filter((item) =>
+	return (systemHelpToBuyList.value ?? []).filter((item) =>
 		item.info?.header?.toLowerCase().includes(searchMenu.value.toLowerCase()),
 	);
 });

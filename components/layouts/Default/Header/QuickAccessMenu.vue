@@ -96,7 +96,7 @@ const menuItems = [
 		name: 'buyCryptoGuide',
 		description: useT('howToBuyCrypto'),
 		icon: IconTutorial,
-		url: '/risk-agreement',
+		url: '/help-to-buy',
 
 	},
 	{
