@@ -6,9 +6,9 @@
 	<div v-else>
 		<section>
 			<UContainer>
-				<div class="flex justify-between items-center my-10">
+				<div class="flex justify-between flex-col-reverse md:flex-row items-center my-0 md:my-10">
 					<div class="flex flex-col">
-						<h1 class="text-4xl font-black">
+						<h1 class="text-lg md:text-4xl font-black">
 							{{ $t('helpBuyList') }}
 						</h1>
 						<span
