@@ -187,7 +187,7 @@
 							<span class="text-sm mt-2">{{ $t('fees') }}</span>
 						</ULink>
 						<ULink
-							to="/help-buy"
+							to="/help-to-buy"
 							class="flex flex-col justify-center items-center  mb-4"
 						>
 							<IconFeeFinal class=" text-primary-yellow-light dark:text-primary-yellow-dark text-lg" />
@@ -280,7 +280,7 @@
 					</h4>
 					‌<div class="grid grid-cols-3 gap-1">
 						<ULink
-							to="/verification"
+							to="/cert"
 							class="flex flex-col justify-center items-center  mb-4"
 						>
 							<img

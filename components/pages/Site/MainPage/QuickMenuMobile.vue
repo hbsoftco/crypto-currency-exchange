@@ -69,7 +69,7 @@
 				<span class="text-sm">{{ $t('quickTrade') }}</span>
 			</ULink>
 			<ULink
-				to="/help-buy"
+				to="/help-to-buy"
 				class="flex flex-col justify-center items-center  mb-4"
 			>
 				<img
