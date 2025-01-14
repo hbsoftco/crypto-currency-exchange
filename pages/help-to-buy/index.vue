@@ -26,12 +26,13 @@
 					</div>
 				</div>
 				<div class="w-full md:w-96">
-					<SearchCrypto
+					<FieldInput
 						id="searchMenu"
 						v-model="searchMenu"
 						type="text"
 						input-class="text-right"
 						label="search"
+						label-class="z-0"
 						placeholder=""
 						icon="heroicons:magnifying-glass"
 					/>
@@ -83,7 +84,7 @@
 
 <script setup lang="ts">
 import { slug } from '~/utils/helpers';
-import SearchCrypto from '~/components/forms/SearchCrypto.vue';
+import FieldInput from '~/components/forms/FieldInput.vue';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
 import type { SystemParams, SystemRoot } from '~/types/definitions/system.types';
 import { systemRepository } from '~/repositories/system.repository';
