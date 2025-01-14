@@ -12,7 +12,7 @@
 			<UButton
 				size="lg"
 				class="text-base font-medium px-6 py-2"
-				:to="tradeItems.length ? checkPathLink(`/fast-trade?market=${currencySymbol}_USDT`, false): ''"
+				:to="tradeItems.length ? `/spot/${currencySymbol}_USDT`: ''"
 			>
 				{{ `خرید/فروش ${currencyName} (${currencySymbol})` }}
 			</UButton>
@@ -44,7 +44,7 @@
 			<div class="col-span-12 md:col-span-2">
 				<div class="flex justify-center items-center mt-0 md:mt-8">
 					<button
-						class="flex justify-center items-center cursor-pointer rounded-full w-16 h-16 bg-primary-yellow-light dark:bg-primary-yellow-dark border-4 border-background-light dark:border-background-dark"
+						class="flex relative z-40 justify-center items-center cursor-pointer rounded-full w-16 h-16 bg-primary-yellow-light dark:bg-primary-yellow-dark border-4 border-background-light dark:border-background-dark"
 						@click="replacementMarket"
 					>
 						<IconChange
@@ -111,8 +111,6 @@ import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 const cSymbol = 'BTC';
 
 const publicSocketStore = usePublicSocketStore();
-
-const { checkPathLink } = useLinkManager();
 
 const worker = useBaseWorker();
 
@@ -411,10 +409,31 @@ const fieldDataCalculation = (input: number) => {
 
 			checkTradeInputValidation(inputBalance, inputUnit, inputBalanceLength, inputUnitLength);
 		}
-	}
 
-	if (!firstCurrencyBalance.value) {
-		secondCurrencyBalance.value = '0';
+		tradeItems.value[0].fee = (tradeItems.value[0].quote.value * Number(tradeItems.value[0].takerFee)) / 100;
+	}
+	else if (tradeItems.value.length === 2) {
+		// Top calculation
+		const topMarketPrice = tradeItems.value[0].market.price;
+		tradeItems.value[0].base.value = Number(input);
+		const topBalancePrice = (tradeItems.value[0].base.value * topMarketPrice);
+		tradeItems.value[0].quote.value = formatByDecimal(topBalancePrice, tradeItems.value[0].quote.currency.unit);
+
+		tradeItems.value[0].fee = (tradeItems.value[0].quote.value * Number(tradeItems.value[0].takerFee)) / 100;
+
+		// Bottom calculation
+		const bottomMarketPrice = tradeItems.value[1].market.price;
+		tradeItems.value[1].quote.value = tradeItems.value[0].quote.value;
+		const bottomBalanceBase = tradeItems.value[1].quote.value / bottomMarketPrice;
+		tradeItems.value[1].base.value = formatByDecimal(bottomBalanceBase, tradeItems.value[1].base.currency.unit);
+		secondCurrencyBalance.value = String(tradeItems.value[1].base.value);
+
+		tradeItems.value[1].fee = (tradeItems.value[1].quote.value * Number(tradeItems.value[1].takerFee)) / 100;
+
+		const inputUnit = Number(tradeItems.value[0].base.currency.unit);
+		const inputUnitLength = (tradeItems.value[0].base.currency.unit).length;
+
+		checkTradeInputValidation(inputBalance, inputUnit, inputBalanceLength, inputUnitLength);
 	}
 };
 

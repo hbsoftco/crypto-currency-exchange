@@ -127,7 +127,7 @@
 				</USelectMenu>
 			</div>
 
-			<div class="absolute left-32 top-4">
+			<div class="absolute left-32 top-4 w-auto">
 				<input
 					v-if="!showText"
 					v-model="internalValue"
