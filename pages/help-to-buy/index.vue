@@ -40,7 +40,7 @@
 		</section>
 		<section>
 			<UContainer>
-				<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+				<div class="grid grid-cols-1 md:grid-cols-4 gap-0 md:gap-4">
 					<ULink
 						v-for="(item, index) in filteredTreeList"
 						:key="index"

@@ -1,86 +1,25 @@
 <template>
-	<div class="mb-[30rem] md:mb-24">
+	<div v-if="marketsLoading">
+		<UiLogoLoading />
+	</div>
+	<div
+		v-else
+		class="mb-[30rem] md:mb-24"
+	>
 		<section>
-			<PagesImageCover>
+			<ImageCover>
 				<UContainer class="h-full">
 					<div class="w-full h-full relative flex items-center justify-between">
 						<div class="mt-96 md:mt-12">
 							<h1
-								class="text-light dark:text-dark text-lg md:text-7xl font-extrabold mb-2 md:mb-8"
+								class="text-light dark:text-dark p-4 text-2xl md:text-6xl font-bold text-nowrap mb-2 md:mb-8"
 							>
 								{{ $t("calculator") }}
 							</h1>
 							<div
 								class="p-3 bg-transparency-light dark:bg-transparency-dark rounded-md shadow-md text-white w-full md:w-[40rem] h-auto my-6"
 							>
-								<div class="block md:flex justify-between items-center">
-									<div>
-										<div>
-											<span class="text-base font-bold">بیت کوین به دلار</span>
-										</div>
-										<div class="mt-2">
-											<span class="text-sm font-normal">0 بیت کوین برابر با 0 دلار آمریکا است.</span>
-										</div>
-									</div>
-									<UButton
-										size="lg"
-										class="text-base font-medium px-6 py-2"
-										to="#"
-									>
-										{{ $t("خرید بیت کوین (BTC)") }}
-									</UButton>
-								</div>
-
-								<div class="grid grid-cols-12">
-									<div class="col-span-12 md:col-span-5">
-										<div class="">
-											<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('from') }}</span>
-										</div>
-										<TradeFieldInput
-											id="tradeOne"
-											v-model="tradeOne"
-											type="text"
-											input-class="text-left"
-											:label="``"
-											placeholder=""
-											icon=""
-											dir="ltr"
-										/>
-									</div>
-									<div class="col-span-12 md:col-span-2">
-										<div class="flex justify-center items-center mt-0 md:mt-8">
-											<ULink class="flex justify-center items-center rounded-full w-16 h-16 bg-primary-yellow-light dark:bg-primary-yellow-dark border-4 border-background-light dark:border-background-dark">
-												<IconChange class="text-black text-4xl" />
-											</ULink>
-										</div>
-									</div>
-									<div class="col-span-12 md:col-span-5">
-										<div class="">
-											<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('to') }}</span>
-										</div>
-										<TradeFieldInput
-											id="tradeTwo"
-											v-model="tradeTwo"
-											type="text"
-											input-class="text-left"
-											:label="``"
-											placeholder=""
-											icon=""
-											dir="ltr"
-										/>
-									</div>
-								</div>
-
-								<div class="block md:flex justify-between items-center">
-									<div>
-										<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('lastUpdate') }}:</span>
-										<span class="text-sm font-normal">{{ useNumber('۱۴۰۲/۰۳/۲۳ ۱۴:۲۳:۲۴') }}</span>
-									</div>
-									<div class="flex items-center cursor-pointer">
-										<span class="text-sm font-bold text-primary-yellow-light dark:text-primary-yellow-dark">{{ $t('update') }}</span>
-										<IconChange class="text-primary-yellow-light dark:text-primary-yellow-dark text-lg" />
-									</div>
-								</div>
+								<Calculator />
 							</div>
 						</div>
 						<img
@@ -90,7 +29,7 @@
 						>
 					</div>
 				</UContainer>
-			</PagesImageCover>
+			</ImageCover>
 		</section>
 
 		<section>
@@ -134,18 +73,11 @@
 					</UCarousel>
 				</div>
 				<div
-					v-if="isLoadingMarkets"
-					class="text-center py-10"
-				>
-					<p>{{ $t('isLoading') }}</p>
-				</div>
-				<div
-					v-else
-					class="grid grid-cols-1 md:grid-cols-4 gap-4"
+					class="grid grid-cols-1 md:grid-cols-4"
 				>
 					<div
-						v-for="(market, index) in marketList"
-						:key="index"
+						v-for="market in markets"
+						:key="market.id"
 						class="py-3 flex border-b border-primary-gray-light dark:border-primary-gray-dark"
 					>
 						<img
@@ -153,9 +85,9 @@
 							:alt="market?.currency?.cName"
 							class="w-4 h-4 mr-1"
 						>
-						<span class="text-sm font-normal mr-3">
-							{{ currencyDisplayText(market) }}
-							<span class="text-xs text-accent mx-1">
+						<span class="text-sm font-normal mr-3 cursor-pointer">
+							{{ market.currency?.cSymbol }}
+							<span class="text-xs text-accent ml-1">
 								{{ $t('to') }}
 							</span>
 							<span
@@ -172,7 +104,7 @@
 			<UContainer>
 				<div class="mt-6">
 					<p class="text-base font-medium text-justify text-subtle-text-light dark:text-subtle-text-dark">
-						این محتوا فقط برای مقاصد اطلاعاتی در اختیار شما قرار می گیرد و به منزله پیشنهاد یا درخواست پیشنهاد نیست. این محتوا توصیه ای از بیت لند برای خرید، فروش یا نگهداری هر گونه امنیت، محصول مالی یا ابزاری نیست که در محتوا به آن اشاره شده است. این محتوا توصیه سرمایه گذاری، مشاوره مالی، مشاوره تجاری یا هر نوع مشاوره دیگری نیست. داده های ارائه شده در اینجا ممکن است منعکس کننده قیمت دارایی های معامله شده در صرافی بیت لند و همچنین سایر مبادلات ارزهای دیجیتال یا داده های بازار از سایر پلتفرم ها باشد. بیت لند ممکن است برای پردازش تراکنش‌های ارز دیجیتال هزینه‌هایی دریافت کند که ممکن است در قیمت‌های تبدیل نمایش داده شده منعکس نشود. بیت لند هیچ مسئولیتی در قبال خطا یا تاخیر در محتوا یا اطلاعات، یا هر گونه اقدامی که بر اساس هر محتوا یا اطلاعات انجام می شود، ندارد.
+						{{ $t('calculatorDescription') }}
 					</p>
 				</div>
 			</UContainer>
@@ -183,23 +115,24 @@
 <script setup lang="ts">
 import { marketRepository } from '~/repositories/market.repository';
 import type { Quote } from '~/types/definitions/quote.types';
-import type { Market } from '~/types/response/market.types';
-import { MarketType } from '~/utils/enums/market.enum';
+import { MarketType, SortMode } from '~/utils/enums/market.enum';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
-import { useNumber } from '~/composables/useNumber';
-import IconChange from '~/assets/svg-icons/trade/change.svg';
-import TradeFieldInput from '~/components/forms/TradeFieldInput.vue';
-
-const tradeOne = ref('');
-const tradeTwo = ref('');
+import type { MarketL31 } from '~/types/definitions/market.types';
+import ImageCover from '~/components/pages/ImageCover.vue';
+import Calculator from '~/components/pages/Calculator/index.vue';
 
 const { $api } = useNuxtApp();
 const marketRepo = marketRepository($api);
-const baseDataStore = useBaseDataStore();
+
 const worker = useBaseWorker();
 
+const selectedQuote = ref<Quote | null>(null);
+const selectQuote = (item: Quote) => {
+	selectedQuote.value = item;
+};
+
 const params = ref({
-	sortMode: '',
+	sortMode: String(SortMode.BY_MARKET_CAPS),
 	currencyQuoteId: '',
 	marketTypeId: String(MarketType.SPOT),
 	tagTypeId: '',
@@ -207,37 +140,31 @@ const params = ref({
 	pageNumber: '1',
 	pageSize: '20',
 });
-
-const marketList = ref<Market[]>();
-const selectedQuote = ref<Quote | null>(null);
-const isLoadingMarkets = ref(true);
-
-const getMarkets = async () => {
+const markets = ref<MarketL31[]>([]);
+const marketsLoading = ref<boolean>(true);
+const getMarketListL31 = async () => {
 	try {
-		const { result } = await marketRepo.getMarkets(params.value);
-		marketList.value = await Promise.all(result.rows.map(async (market) => {
-			return {
-				...market,
-				currency: await baseDataStore.findCurrencyById(market.cid),
-			};
-		}));
+		if (params.value.tagTypeId === '0') {
+			params.value.tagTypeId = '';
+		}
 
-		console.log(marketList.value);
+		marketsLoading.value = true;
+		const { result } = await marketRepo.getMarketListL31(params.value);
+		markets.value = await worker.addCurrencyToMarketsL16(
+			result.rows as MarketL31[],
+			Number(params.value.currencyQuoteId),
+			useEnv('apiBaseUrl'), MarketType.SPOT,
+		) as MarketL31[];
+
+		marketsLoading.value = false;
 	}
-	catch (error) {
-		console.error('Error fetching trades:', error);
-	}
-	finally {
-		isLoadingMarkets.value = false;
+	catch (error: unknown) {
+		console.log(error);
 	}
 };
 
-onMounted(async () => {
-	await getMarkets();
-});
-
 const quoteItem = ref<Quote[]>([]);
-const quoteItemLoading = ref<boolean>(false);
+const quoteItemLoading = ref<boolean>(true);
 
 const initQuote = async () => {
 	quoteItemLoading.value = true;
@@ -250,15 +177,10 @@ const initQuote = async () => {
 	quoteItemLoading.value = false;
 };
 
-const selectQuote = (item: Quote) => {
-	selectedQuote.value = item;
-};
-
-const currencyDisplayText = (market: Market) => {
-	return market.currency ? `${market.currency.cSymbol}` : '';
-};
-
 onMounted(async () => {
-	await initQuote();
+	await Promise.all([
+		initQuote(),
+		getMarketListL31(),
+	]);
 });
 </script>

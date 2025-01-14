@@ -72,12 +72,6 @@ const params = ref({
 	pageSize: '20',
 });
 
-// const { data: markets, status } = useAsyncData('markets', async () => {
-// 	const response = await marketRepo.getMarkets(params.value);
-// 	totalCount.value = response.result.totalCount;
-// 	return response.result.rows;
-// }, { watch: [params.value], deep: true });
-
 watch(() => props.searchQuery, (newQuery) => {
 	params.value.searchStatement = newQuery;
 });

@@ -31,8 +31,6 @@ type MarketRepository = {
 	likeMarket: (dto: FavoriteMarketDto) => Promise<CommonResponse>;
 	dislikeMarket: (dto: FavoriteMarketDto) => Promise<CommonResponse>;
 	getMarketRevealing: (params: MarketRevealingParams) => Promise<KeyValueResponse>;
-
-	getMarkets: (params: MarketsParams) => Promise<MarketsResponse>;
 };
 
 export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): MarketRepository => ({
@@ -258,26 +256,6 @@ export const marketRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Mar
 		const url = '/v1/market/routine/revealing';
 		const response = await fetch<KeyValueResponse>(`${url}?${query.toString()}`, {
 			noAuth: true,
-			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-
-	async getMarkets(
-		params: MarketsParams): Promise<MarketsResponse> {
-		const query = new URLSearchParams();
-		Object.entries(params).forEach(([key, value]) => {
-			if (value !== undefined && value !== null && value.toString().trim() !== '') {
-				query.append(key, value);
-			}
-		});
-
-		const url = '/v1/market/routine/l31_f';
-		const response = await fetch<MarketsResponse>(`${url}?${query.toString()}`, {
-			noAuth: true,
-			apiName: url,
-			queryParams: params,
 			method: 'GET',
 		} as CustomNitroFetchOptions);
 
