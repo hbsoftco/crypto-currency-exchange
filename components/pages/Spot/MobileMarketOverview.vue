@@ -10,7 +10,7 @@
 				</ULink>
 
 				<ULink
-					to=""
+					:to="`/spot/market-detail/${spotStore.currency}_${spotStore.quote}`"
 					class="mx-4"
 				>
 					<img

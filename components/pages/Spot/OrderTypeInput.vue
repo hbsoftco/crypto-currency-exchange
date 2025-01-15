@@ -27,7 +27,7 @@
 						>
 							<template #header>
 								<div class="flex items-center justify-between">
-									<ul class="flex text-subtle-text-light dark:text-subtle-text-dark text-base font-bold">
+									<ul class="flex text-subtle-text-light dark:text-subtle-text-dark text-base font-medium">
 										<li
 											:class="[
 												'pb-1 px-2 cursor-pointer',
