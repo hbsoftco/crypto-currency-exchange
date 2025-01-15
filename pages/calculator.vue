@@ -4,21 +4,35 @@
 	</div>
 	<div
 		v-else
-		class="mb-[30rem] md:mb-24"
+		class="mb-16 md:mb-24"
 	>
+		<BackHeader
+			v-if="isMobile"
+			:title="$t('calculator')"
+		/>
 		<section>
-			<ImageCover>
-				<UContainer class="h-full">
+			<ImageCover css-class="px-0 sm:px-6 lg:px-8">
+				<div class="mx-auto px-0 sm:px-6 lg:px-8 max-w-7xl h-full">
 					<div class="w-full h-full relative flex items-center justify-between">
-						<div class="mt-96 md:mt-12">
+						<div class="mt-[29rem] md:mt-12 w-full">
+							<img
+								src="/images/svg/calculator.svg"
+								alt="calculator"
+								class="absolute bottom-0 z-0 left-0 block md:hidden w-full h-40"
+							>
 							<h1
-								class="text-light dark:text-dark p-4 text-2xl md:text-6xl font-bold text-nowrap mb-2 md:mb-8"
+								class="hidden md:block text-light dark:text-dark p-4 text-2xl md:text-6xl font-bold text-nowrap mb-2 md:mb-8"
 							>
 								{{ $t("calculator") }}
 							</h1>
 							<div
-								class="p-3 bg-transparency-light dark:bg-transparency-dark rounded-md shadow-md text-white w-full md:w-[40rem] h-auto my-6"
+								class=" relative z-10 p-3 bg-transparency-light dark:bg-transparency-dark rounded-md shadow-md text-white w-full md:w-[40rem] h-auto my-6"
 							>
+								<h1
+									class="block md:hidden text-light dark:text-dark p-1 md:p-4 text-2xl md:text-6xl font-bold text-nowrap mb-2 md:mb-8"
+								>
+									{{ $t("calculator") }}
+								</h1>
 								<Calculator />
 							</div>
 						</div>
@@ -28,11 +42,11 @@
 							class="absolute bottom-0 left-0 hidden md:block w-[30rem] h-[36.125rem]"
 						>
 					</div>
-				</UContainer>
+				</div>
 			</ImageCover>
 		</section>
 
-		<section>
+		<section class="mt-[26rem] md:mt-0">
 			<UContainer>
 				<div class="my-10">
 					<h3 class="text-2xl font-bold">
@@ -73,7 +87,7 @@
 					</UCarousel>
 				</div>
 				<div
-					class="grid grid-cols-1 md:grid-cols-4"
+					class="grid grid-cols-2 md:grid-cols-4 gap-4"
 				>
 					<div
 						v-for="market in markets"
@@ -121,8 +135,13 @@ import type { MarketL31 } from '~/types/definitions/market.types';
 import ImageCover from '~/components/pages/ImageCover.vue';
 import Calculator from '~/components/pages/Calculator/index.vue';
 
-const { $api } = useNuxtApp();
+const BackHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/BackHeader.vue'));
+
+const { $api, $mobileDetect } = useNuxtApp();
 const marketRepo = marketRepository($api);
+
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
 
 const worker = useBaseWorker();
 
@@ -178,6 +197,8 @@ const initQuote = async () => {
 };
 
 onMounted(async () => {
+	isMobile.value = !!mobileDetect.mobile();
+
 	await Promise.all([
 		initQuote(),
 		getMarketListL31(),

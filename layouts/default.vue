@@ -62,6 +62,7 @@ const specialRoutes = ref<string[]>([
 	'help-search',
 	'verification',
 	'live-chat',
+	'calculator',
 ]);
 watch(() => route.name, (newName) => {
 	isSpecialRoute.value = specialRoutes.value.includes(String(newName));
