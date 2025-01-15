@@ -176,6 +176,7 @@
 								class="p-2 text-xs font-normal py-1 text-left"
 							>
 								<UiChangePrice
+									:bg-color="false"
 									classes="text-xs font-normal ml-0"
 									:show-percent="true"
 									pl="pl-2"

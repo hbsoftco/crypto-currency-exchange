@@ -68,12 +68,6 @@
 				</div>
 			</div>
 		</div>
-		<div
-			v-if="searchBox"
-			class="max-w-[406px] w-[406px] absolute left-0 top-[4.25rem] z-10 bg-hover-light dark:bg-hover-dark shadow-md rounded-md overflow-hidden"
-		>
-			<SearchMarket />
-		</div>
 	</div>
 </template>
 
@@ -82,13 +76,12 @@ import { handleImageError } from '~/utils/helpers';
 import IconList from '~/assets/svg-icons/spot/list.svg';
 import IconDots from '~/assets/svg-icons/spot/dots.svg';
 import IconArrowRight from '~/assets/svg-icons/spot/arrow-right.svg';
-import SearchMarket from '~/components/pages/Spot/SearchMarket.vue';
 
 const spotStore = useSpotStore();
 
-const searchBox = ref<boolean>(false);
+const router = useRouter();
 
 const openSearchBox = () => {
-	searchBox.value = !searchBox.value;
+	router.push('/spot/search-list');
 };
 </script>
