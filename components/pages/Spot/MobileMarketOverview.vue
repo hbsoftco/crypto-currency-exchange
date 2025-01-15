@@ -14,6 +14,9 @@
 						v-model="openSlide"
 						prevent-close
 						side="top"
+						:ui="{
+							height: 'h-screen max-h-36',
+						}"
 					>
 						<UCard
 							class="flex flex-col flex-1"

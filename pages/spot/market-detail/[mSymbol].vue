@@ -1,5 +1,5 @@
 <template>
-	<div class="px-4">
+	<div class="p-4 bg-hover-light dark:bg-hover-dark">
 		<MarketDetailHeader :title="`${spotStore.currency}${spotStore.quote}`" />
 
 		<div
@@ -7,7 +7,7 @@
 			dir="ltr"
 		>
 			<div>
-				<p class="text-xs ml-1 mb-1.5">
+				<p class="text-xs ml-1 mb-1.5 text-subtle-text-light dark:text-subtle-text-dark">
 					Last Price
 				</p>
 				<div class="ml-1">
@@ -34,7 +34,7 @@
 			<div class="flex justify-between w-1/2">
 				<div>
 					<div class="mb-3">
-						<p class="text-xs ml-1 mb-1.5">
+						<p class="text-xs ml-1 mb-1.5 text-subtle-text-light dark:text-subtle-text-dark">
 							24H High
 						</p>
 						<div>
@@ -45,7 +45,7 @@
 						</div>
 					</div>
 					<div>
-						<p class="text-xs ml-1 mb-1.5">
+						<p class="text-xs ml-1 mb-1.5 text-subtle-text-light dark:text-subtle-text-dark">
 							24H Low
 						</p>
 						<div>
@@ -58,7 +58,7 @@
 				</div>
 				<div class="ml-4">
 					<div class="mb-3">
-						<p class="text-xs ml-1 mb-1.5">
+						<p class="text-xs ml-1 mb-1.5 text-subtle-text-light dark:text-subtle-text-dark">
 							24H Vol ({{ spotStore.currency }})
 						</p>
 						<div>
@@ -69,7 +69,7 @@
 						</div>
 					</div>
 					<div>
-						<p class="text-xs ml-1 mb-1.5">
+						<p class="text-xs ml-1 mb-1.5 text-subtle-text-light dark:text-subtle-text-dark">
 							24H Vol ({{ spotStore.quote }})
 						</p>
 						<div>
