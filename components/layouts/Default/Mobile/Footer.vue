@@ -41,7 +41,7 @@ const footerItems = [
 	},
 	{
 		name: 'transaction',
-		url: '/coins/32',
+		url: '/spot/BTC_USDT',
 		icon: '/images/svg/footer/transaction.svg',
 		activeIcon: '/images/svg/footer/active-transaction.svg',
 	},
