@@ -6,11 +6,7 @@
 					to=""
 					class="mr-2"
 				>
-					<img
-						src="/images/svg/dots.svg"
-						alt="dots"
-						class=""
-					>
+					<IconDots class="text-xl" />
 				</ULink>
 
 				<ULink
@@ -18,18 +14,21 @@
 					class="mx-4"
 				>
 					<img
-						src="/images/svg/dots.svg"
-						alt="dots"
-						class=""
+						src="/images/svg/candle-light.svg"
+						alt="candle-light"
+						class="w-6 h-6"
 					>
 				</ULink>
 
 				<ULink
 					to=""
+					class="bg-[#16306e] text-[#2196f3] rounded-sm pl-1 py-1 flex items-center"
 					dir="ltr"
 				>
-					<span>110X</span>
-					<span>></span>
+					<span class="text-xs">110X</span>
+					<span>
+						<IconArrowRight class="text-lg" />
+					</span>
 				</ULink>
 			</div>
 			<div class="flex justify-start flex-row-reverse items-center">
@@ -81,6 +80,8 @@
 <script setup lang="ts">
 import { handleImageError } from '~/utils/helpers';
 import IconList from '~/assets/svg-icons/spot/list.svg';
+import IconDots from '~/assets/svg-icons/spot/dots.svg';
+import IconArrowRight from '~/assets/svg-icons/spot/arrow-right.svg';
 import SearchMarket from '~/components/pages/Spot/SearchMarket.vue';
 
 const spotStore = useSpotStore();

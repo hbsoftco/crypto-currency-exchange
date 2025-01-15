@@ -26,9 +26,13 @@
 				</button>
 			</div>
 		</div>
+		<!-- buy and sale buttons -->
 
 		<!-- Tab titles -->
-		<div class="flex justify-between items-center mt-4 pb-4 px-1">
+		<div
+			v-if="!isMobile"
+			class="flex justify-between items-center mt-4 pb-4 px-1"
+		>
 			<div>
 				<ul class="flex justify-start items-center">
 					<li
@@ -87,6 +91,15 @@
 				/>
 			</div>
 		</div>
+		<!-- Desktop -->
+
+		<div
+			v-else
+			class="mt-2"
+		>
+			<OrderTypeInput v-model="mobileActiveTab" />
+		</div>
+		<!-- Mobile -->
 
 		<!-- Tab content -->
 		<div>
@@ -118,13 +131,23 @@
 import IconArrowDown from '~/assets/svg-icons/menu/arrow-down.svg';
 import IconInfo from '~/assets/svg-icons/info-fill.svg';
 
+const OrderTypeInput = defineAsyncComponent(() => import('~/components/pages/Spot/OrderTypeInput.vue'));
 const LimitPriceTab = defineAsyncComponent(() => import('~/components/pages/Spot/BuySellForm/LimitPriceTab.vue'));
 const StopPriceTab = defineAsyncComponent(() => import('~/components/pages/Spot/BuySellForm/StopPriceTab.vue'));
 const MarketPriceTab = defineAsyncComponent(() => import('~/components/pages/Spot/BuySellForm/MarketPriceTab.vue'));
 const StopMarketTab = defineAsyncComponent(() => import('~/components/pages/Spot/BuySellForm/StopMarketTab.vue'));
 
+const { $mobileDetect } = useNuxtApp();
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
+
+onMounted(() => {
+	isMobile.value = !!mobileDetect.mobile();
+});
+
 const authStore = useAuthStore();
 
+const mobileActiveTab = ref();
 const activeButton = ref<'buy' | 'sell'>('buy');
 const activeTab = ref<'limitPrice' | 'market' | 'stopPrice' | 'stopMarket'>('market');
 
@@ -182,6 +205,10 @@ const priceOptions: Item[][] = [
 const handleSelectPriceOption = (selectedItem: 'stopPrice' | 'stopMarket') => {
 	setActiveTab(selectedItem);
 };
+
+watch(mobileActiveTab, (newValue) => {
+	activeTab.value = newValue.value;
+});
 
 // const handleSelectPriceOption = (selectedItem: string) => {
 // 	selectedPriceOption.value = { label: selectedItem };
