@@ -8,7 +8,83 @@
 				<div class="pt-1">
 					<IconInfo
 						class="text-base cursor-pointer text-primary-yellow-light dark:text-primary-yellow-dark"
+						@click="openSlide=true"
 					/>
+
+					<USlideover
+						v-model="openSlide"
+						prevent-close
+						side="bottom"
+					>
+						<UCard
+							class="flex flex-col flex-1"
+							:ui="{ body: {
+									base: 'flex-1',
+									padding: 'px-0' },
+								ring: '',
+
+							}"
+						>
+							<template #header>
+								<div class="flex items-center justify-between">
+									<ul class="flex text-subtle-text-light dark:text-subtle-text-dark text-base font-bold">
+										<li
+											:class="[
+												'pb-1 px-2 cursor-pointer',
+												selectedTab === 'limitedOrder'
+													? 'text-black dark:text-white border-b border-primary-yellow-light dark:border-primary-yellow-dark'
+													: '',
+											]"
+											@click="selectedTab = 'limitedOrder'"
+										>
+											<span>{{ $t('limitedOrder') }}</span>
+										</li>
+										<li
+											:class="[
+												'pb-1 px-2 cursor-pointer',
+												selectedTab === 'urgent'
+													? 'text-black dark:text-white border-b border-primary-yellow-light dark:border-primary-yellow-dark'
+													: '',
+											]"
+											@click="selectedTab = 'urgent'"
+										>
+											<span>{{ $t('urgent') }}</span>
+										</li>
+										<li
+											:class="[
+												'pb-1 px-2 cursor-pointer',
+												selectedTab === 'profitLossLimit'
+													? 'text-black dark:text-white border-b border-primary-yellow-light dark:border-primary-yellow-dark'
+													: '',
+											]"
+											@click="selectedTab = 'profitLossLimit'"
+										>
+											<span>{{ $t('profitLossLimit') }}</span>
+										</li>
+									</ul>
+									<UButton
+										color="gray"
+										variant="ghost"
+										icon="i-heroicons-x-mark-20-solid"
+										class="-my-1 outline-none"
+										@click="openSlide=false"
+									/>
+								</div>
+							</template>
+
+							<div class="pb-8">
+								<div v-if="selectedTab === 'limitedOrder'">
+									<LimitedOrderInfo />
+								</div>
+								<div v-if="selectedTab === 'urgent'">
+									<UrgentInfo />
+								</div>
+								<div v-if="selectedTab === 'profitLossLimit'">
+									<ProfitLossLimitInfo />
+								</div>
+							</div>
+						</UCard>
+					</USlideover>
 				</div>
 				<div>
 					<USelectMenu
@@ -49,6 +125,10 @@
 </template>
 
 <script setup lang="ts">
+import LimitedOrderInfo from './OrderType/LimitedOrderInfo.vue';
+import UrgentInfo from './OrderType/UrgentInfo.vue';
+import ProfitLossLimitInfo from './OrderType/ProfitLossLimitInfo.vue';
+
 import IconArrowDown from '~/assets/svg-icons/arrow-down.svg';
 import IconInfo from '~/assets/svg-icons/info-fill.svg';
 import type { KeyValue } from '~/types/definitions/common.types';
@@ -68,6 +148,8 @@ interface EmitDefinition {
 	(event: 'item-selected', value: string | number): void;
 }
 const emit = defineEmits<EmitDefinition>();
+
+const openSlide = ref<boolean>(false);
 
 const selected = ref<KeyValue>();
 
@@ -93,6 +175,8 @@ watch(selected, (newValue) => {
 		emit('item-selected', newValue.key);
 	}
 });
+
+const selectedTab = ref<string>('limitedOrder');
 
 onMounted(() => {
 	selected.value = options.value[0];
