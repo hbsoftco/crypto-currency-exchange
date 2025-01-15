@@ -1168,6 +1168,7 @@ const persian = {
 	limitedOrder: 'سفارش محدود',
 	urgent: 'فوری',
 	profitLossLimit: 'با حد سود/ضرر',
+	addBTCUSDTFavorites: 'افزودن BTC/USDT به علاقه مندی ها',
 };
 
 export default persian;

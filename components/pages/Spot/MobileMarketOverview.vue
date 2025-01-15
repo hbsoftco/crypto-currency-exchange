@@ -6,7 +6,83 @@
 					to=""
 					class="mr-2"
 				>
-					<IconDots class="text-xl" />
+					<IconDots
+						class="text-xl"
+						@click="openSlide=true"
+					/>
+					<USlideover
+						v-model="openSlide"
+						prevent-close
+						side="top"
+					>
+						<UCard
+							class="flex flex-col flex-1"
+							:ui="{ body: {
+									base: 'flex-1',
+									padding: 'px-0' },
+								ring: '',
+
+							}"
+						>
+							<template #header>
+								<div class="flex justify-end items-center">
+									<UButton
+										color="gray"
+										variant="ghost"
+										icon="i-heroicons-x-mark-20-solid"
+										class="-my-1 outline-none"
+										@click="openSlide=false"
+									/>
+								</div>
+							</template>
+							<div class="grid grid-cols-4 gap-4 px-2">
+								<div class="flex flex-col justify-center text-center items-center">
+									<div class="flex items-center justify-center bg-hover-light dark:bg-hover-dark w-10 h-10 rounded-full">
+										<img
+											src="/images/svg/deposit.svg"
+											alt="deposit"
+											class="w-6 h-6"
+										>
+									</div>
+									<span class="text-sm font-medium">{{ $t('deposit') }}</span>
+								</div>
+								<div class="flex flex-col justify-center text-center items-center">
+									<div class="flex items-center justify-center bg-hover-light dark:bg-hover-dark w-10 h-10 rounded-full">
+										<img
+											src="/images/svg/transfer.svg"
+											alt="transform"
+											class="w-6 h-6"
+										>
+									</div>
+									<span class="text-sm font-medium">{{ $t('transfer') }}</span>
+								</div>
+								<div class="flex flex-col justify-center text-center items-center">
+									<div class="flex items-center justify-center bg-hover-light dark:bg-hover-dark w-10 h-10 rounded-full">
+										<img
+											src="/images/svg/setting.svg"
+											alt="setting"
+											class="w-6 h-6"
+										>
+									</div>
+									<span class="text-sm font-medium">{{ $t('setting') }}</span>
+								</div>
+								<div class="flex flex-col justify-center text-center items-center">
+									<div class="flex items-center justify-center bg-hover-light dark:bg-hover-dark w-10 h-10 rounded-full">
+										<img
+											src="/images/svg/helpcenter.svg"
+											alt="helpcenter"
+											class="w-6 h-6"
+										>
+									</div>
+									<span class="text-sm font-medium">{{ $t('helpCenter') }}</span>
+								</div>
+							</div>
+							<div class="flex mt-4 pt-4 px-2">
+								<IconStar class="text-2xl text-subtle-text-light dark:text-subtle-text-dark" />
+								<span class="text-base font-medium mr-1">{{ $t('addBTCUSDTFavorites') }}</span>
+							</div>
+						</UCard>
+					</USlideover>
 				</ULink>
 
 				<ULink
@@ -76,6 +152,7 @@ import { handleImageError } from '~/utils/helpers';
 import IconList from '~/assets/svg-icons/spot/list.svg';
 import IconDots from '~/assets/svg-icons/spot/dots.svg';
 import IconArrowRight from '~/assets/svg-icons/spot/arrow-right.svg';
+import IconStar from '~/assets/svg-icons/market/star.svg';
 
 const spotStore = useSpotStore();
 
@@ -84,4 +161,6 @@ const router = useRouter();
 const openSearchBox = () => {
 	router.push('/spot/search-list');
 };
+
+const openSlide = ref<boolean>(false);
 </script>
