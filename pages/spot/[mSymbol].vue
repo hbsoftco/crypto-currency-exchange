@@ -78,8 +78,9 @@
 			<div class="mb-3">
 				<MobileMarketOverview />
 			</div>
+			<!-- market overview -->
 
-			<div class="grid grid-cols-12">
+			<div class="grid grid-cols-12 bg-hover-light dark:bg-hover-dark pb-4 mb-3">
 				<div class="col-span-7">
 					<BuySellForm />
 				</div>
@@ -87,6 +88,12 @@
 					<OrderBook />
 				</div>
 			</div>
+			<!-- Orders and order book -->
+
+			<div>
+				<OrderTabs />
+			</div>
+			<!-- Orders tabs -->
 		</div>
 		<!-- End of mobile -->
 	</div>

@@ -7,6 +7,7 @@
 					tab: {
 						font: 'font-normal',
 						size: 'text-sm',
+						padding: 'px-1 md:px-3',
 					},
 				},
 			}"
@@ -15,12 +16,13 @@
 				<span
 					class="truncate"
 					:class="[selected && 'text-primary-500 dark:text-primary-400']"
-				>{{ $t(item.label) }}</span>
+				>{{ $t(item.label)
+				}}</span>
 			</template>
 			<template #item="{ item }">
 				<div
 					v-if="item.key === 'openOrders'"
-					class="space-y-3"
+					class="space-y-0 md:space-y-3"
 				>
 					<OpenOrder v-if="authStore.isLoggedIn" />
 					<UiMustBeLogin
@@ -29,7 +31,7 @@
 					/>
 				</div>
 				<div
-					v-else-if="item.key === 'orderHistory'"
+					v-else-if="item.key === 'orderHistory' && !isMobile"
 					class="space-y-3"
 				>
 					<OrderHistory v-if="authStore.isLoggedIn" />
@@ -54,7 +56,7 @@
 			<div class="flex items-center">
 				<UCheckbox
 					v-model="selectCheckBox"
-					:label="translatedLabel"
+					:label="isMobile ? '' : translatedLabel"
 				/>
 				<UButton
 					class="mr-2 text-primary-yellow-light hover:bg-hover-light dark:hover:bg-hover-dark dark:text-primary-yellow-dark bg-hover-light dark:bg-hover-dark text-xs font-bold"
@@ -72,30 +74,44 @@ import OpenOrder from '~/components/pages/Spot/OrderTabs/OpenOrders.vue';
 import OrderHistory from '~/components/pages/Spot/OrderTabs/OrderHistory.vue';
 import TradeHistory from '~/components/pages/Spot/OrderTabs/TradeHistory.vue';
 
-const items = [
-	{
-		key: 'openOrders',
-		label: 'openOrders',
-		content: '',
-	},
-	{
-		key: 'orderHistory',
-		label: 'orderHistory',
-		content: '',
-	},
-	{
-		key: 'tradeHistory',
-		label: 'tradeHistory',
-		content: '',
-	},
-];
+const { $mobileDetect } = useNuxtApp();
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
 
 const authStore = useAuthStore();
 
-onMounted(() => {
-	// authStore.loadAuthData();
-});
-
 const selectCheckBox = ref(true);
 const translatedLabel = useT('showOtherMarkets');
+
+interface TabItem {
+	key: string;
+	label: string;
+	content: string;
+}
+
+const items = ref<TabItem[]>([]);
+
+onMounted(() => {
+	isMobile.value = !!mobileDetect.mobile();
+
+	items.value = [
+		{
+			key: 'openOrders',
+			label: 'openOrders',
+			content: '',
+		},
+		...(!isMobile.value
+			? [{
+					key: 'orderHistory',
+					label: 'orderHistory',
+					content: '',
+				}]
+			: []),
+		{
+			key: 'tradeHistory',
+			label: isMobile.value ? 'trading' : 'tradeHistory',
+			content: '',
+		},
+	];
+});
 </script>
