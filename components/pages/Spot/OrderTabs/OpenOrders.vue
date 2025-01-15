@@ -254,7 +254,7 @@
 							class="text-xl text-accent-red dark:text-accent-red cursor-pointer"
 							@click="openDeleteModal(Number(order.oid))"
 						/>
-						<span class="text-sm font-normal">{{ order.orderStateName }}</span>
+						<span class="text-sm font-normal mr-2">{{ order.orderStateName }}</span>
 					</div>
 					<div
 						class="flex items-center"

@@ -73,7 +73,10 @@
 		</div>
 		<!-- End of desktop -->
 
-		<div v-else>
+		<div
+			v-else
+			class="mb-10"
+		>
 			<SpotHeader active-menu="spot" />
 			<div class="mb-3">
 				<MobileMarketOverview />

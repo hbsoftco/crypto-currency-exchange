@@ -56,9 +56,23 @@
 			<div class="flex items-center">
 				<UCheckbox
 					v-model="selectCheckBox"
-					:label="isMobile ? '' : translatedLabel"
+					:label="isMobile ? $t('all') : $t('showOtherMarkets')"
 				/>
+
+				<ULink
+					v-if="isMobile"
+					to="/spot/list"
+					class="flex justify-end items-center mr-4"
+				>
+					<span class="text-sm ml-1">{{ $t('moreDetail') }}</span>
+					<UIcon
+						name="i-heroicons-square-3-stack-3d-solid"
+						class="w-4 h-4"
+					/>
+				</ULink>
+
 				<UButton
+					v-else
 					class="mr-2 text-primary-yellow-light hover:bg-hover-light dark:hover:bg-hover-dark dark:text-primary-yellow-dark bg-hover-light dark:bg-hover-dark text-xs font-bold"
 					to="/spot/list"
 				>
@@ -81,7 +95,6 @@ const mobileDetect = $mobileDetect as MobileDetect;
 const authStore = useAuthStore();
 
 const selectCheckBox = ref(true);
-const translatedLabel = useT('showOtherMarkets');
 
 interface TabItem {
 	key: string;

@@ -187,7 +187,7 @@
 				<div
 					v-for="n in 10"
 					:key="n"
-					class="bg-hover-light dark:bg-hover-dark rounded-md py-1 my-2 px-2"
+					class="bg-hover2-light dark:bg-hover2-dark rounded-md py-1 my-2 px-2"
 				>
 					<div class="grid grid-cols-2 gap-2">
 						<div class="flex justify-center">
@@ -221,7 +221,7 @@
 				v-for="(trade, index) in tradesList"
 				v-else
 				:key="index"
-				class="bg-hover-light dark:bg-hover-dark rounded-md py-1 my-2 px-2"
+				class="bg-hover2-light dark:bg-hover2-dark rounded-md py-1 my-2 px-2"
 				@click="openModalTransactionDetail(trade)"
 			>
 				<div class="flex justify-between my-2">
