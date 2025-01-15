@@ -5,7 +5,10 @@
 				<div class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark w-1/3">
 					<span>{{ $t('total') }} ({{ spotStore.currency }})</span>
 				</div>
-				<div class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark w-1/4 flex-1">
+				<div
+					v-if="!isMobile"
+					class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark w-1/4 flex-1"
+				>
 					<span>{{ $t('amount') }} ({{ spotStore.currency }})</span>
 				</div>
 				<div class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark w-1/3">
@@ -28,7 +31,10 @@
 					<div class="text-xs text-right font-normal w-1/3 pr-1">
 						<span dir="ltr">{{ formatBigNumber(item.c, 3) }}</span>
 					</div>
-					<div class="text-xs text-left font-normal w-1/4">
+					<div
+						v-if="!isMobile"
+						class="text-xs text-left font-normal w-1/4"
+					>
 						<span dir="ltr">{{ formatBigNumber(item.v, 3) }}</span>
 					</div>
 					<div class="flex items-center justify-end text-xs font-normal w-1/3 text-accent-red dark:text-accent-red">
@@ -81,13 +87,16 @@
 				/>
 
 				<div class="relative flex justify-between">
-					<div class="text-xs text-right font-normal w-1/3 pr-1">
+					<div class="text-xs text-right font-normal w-1/2 md:w-1/3 pr-1">
 						<span dir="ltr">{{ formatBigNumber(item.c, 3) }}</span>
 					</div>
-					<div class="text-xs text-left font-normal  w-1/4">
+					<div
+						v-if="!isMobile"
+						class="text-xs text-left font-normal md:w-1/4"
+					>
 						<span dir="ltr">{{ formatBigNumber(item.v, 3) }}</span>
 					</div>
-					<div class="flex items-center justify-end  w-1/3 text-xs font-normal text-accent-green dark:text-accent-green">
+					<div class="flex items-center justify-end w-1/2 md:w-1/3 text-xs font-normal text-accent-green dark:text-accent-green">
 						<span dir="ltr">{{ priceFormat(item.p, true) }}</span>
 						<div class="w-3 h-3 mr-1 pt-1 flex justify-center">
 							<div
@@ -106,6 +115,14 @@
 import { priceFormat, formatBigNumber } from '~/utils/helpers';
 import IconArrowUp from '~/assets/svg-icons/spot/arrow-up.svg';
 import IconArrowDown from '~/assets/svg-icons/spot/arrow-down.svg';
+
+const { $mobileDetect } = useNuxtApp();
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
+
+onMounted(() => {
+	isMobile.value = !!mobileDetect.mobile();
+});
 
 const authStore = useAuthStore();
 const spotStore = useSpotStore();

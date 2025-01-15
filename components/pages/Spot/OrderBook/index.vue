@@ -1,5 +1,13 @@
 <template>
-	<div class="w-full bg-hover-light dark:bg-hover-dark rounded-sm px-2">
+	<div v-if="isMobile">
+		<OrderList />
+	</div>
+	<!-- Mobile -->
+
+	<div
+		v-else
+		class="w-full bg-hover-light dark:bg-hover-dark rounded-sm px-2"
+	>
 		<UTabs
 			:items="items"
 			:ui="{
@@ -33,11 +41,20 @@
 			</template>
 		</UTabs>
 	</div>
+	<!-- Desktop -->
 </template>
 
 <script setup lang="ts">
 const LatestTrades = defineAsyncComponent(() => import('~/components/pages/Spot/OrderBook/LatestTrades.vue'));
 const OrderList = defineAsyncComponent(() => import('~/components/pages/Spot/OrderBook/OrderList.vue'));
+
+const { $mobileDetect } = useNuxtApp();
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
+
+onMounted(() => {
+	isMobile.value = !!mobileDetect.mobile();
+});
 
 const items = [
 	{

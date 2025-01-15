@@ -5,9 +5,9 @@
 			class="hidden md:block"
 		/>
 		<MobileHeader
-			v-if="isMobile"
-			class="block md:hidden"
+			v-if="isMobile && !isSpecialRoute"
 		/>
+
 		<div class="pb-10 pt-16 md:pt-14">
 			<slot />
 		</div>
@@ -29,9 +29,21 @@ import Footer from '~/components/layouts/Trade/Footer.vue';
 const MobileFooter = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/Footer.vue'));
 const MobileHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/Header.vue'));
 
+const route = useRoute();
+
 const { $mobileDetect } = useNuxtApp();
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
+
+const isSpecialRoute = ref<boolean>(false);
+const specialRoutes = ref<string[]>([
+	'spot-mSymbol',
+]);
+
+watch(() => route.name, (newName) => {
+	isSpecialRoute.value = specialRoutes.value.includes(String(newName));
+	console.log(route.name);
+}, { deep: true, immediate: true });
 
 const loginStore = useLoginStore();
 const signupStore = useSignupStore();

@@ -1,6 +1,6 @@
 <template>
 	<div class="w-full bg-hover-light dark:bg-hover-dark rounded-sm">
-		<div class="flex justify-between items-center">
+		<div class="flex justify-start md:justify-between items-center">
 			<div
 				dir="ltr"
 			>
@@ -16,7 +16,10 @@
 				/>
 			</div>
 
-			<div class="flex flex-row-reverse">
+			<div
+				v-if="!isMobile"
+				class="flex flex-row-reverse"
+			>
 				<button
 					class="w-7 h-7 flex justify-center items-center"
 					:class="{ 'opacity-100': activeButton === 'all', 'opacity-40': activeButton !== 'all' }"
@@ -51,7 +54,25 @@
 					>
 				</button>
 			</div>
-			<!-- Buttons -->
+			<!-- Desktop Buttons -->
+
+			<div
+				v-else
+				class="flex flex-row-reverse mr-3"
+			>
+				<button
+					class="w-7 h-7 flex justify-center items-center"
+					:class="{ 'opacity-100': activeButton === 'all', 'opacity-40': activeButton !== 'all' }"
+					@click="setActiveButton('all')"
+				>
+					<img
+						:src="getIconSrc('all')"
+						alt="handicap"
+						class="w-6 h-6"
+					>
+				</button>
+			</div>
+			<!-- Mobile Buttons -->
 		</div>
 
 		<div>
@@ -72,6 +93,10 @@
 const BuyOrders = defineAsyncComponent(() => import('~/components/pages/Spot/OrderBook/BuyOrders.vue'));
 const BuySellOrders = defineAsyncComponent(() => import('~/components/pages/Spot/OrderBook/BuySellOrders.vue'));
 const SellOrders = defineAsyncComponent(() => import('~/components/pages/Spot/OrderBook/SellOrders.vue'));
+
+const { $mobileDetect } = useNuxtApp();
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
 
 const spotStore = useSpotStore();
 
@@ -97,6 +122,7 @@ const setActiveButton = (button: string) => {
 };
 
 onMounted(() => {
+	isMobile.value = !!mobileDetect.mobile();
 	spotStore.selectedTickerItem = spotStore.tickerItems[0].key;
 });
 </script>

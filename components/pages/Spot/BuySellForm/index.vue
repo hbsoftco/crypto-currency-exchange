@@ -1,9 +1,9 @@
 <template>
-	<div class="w-full bg-hover-light dark:bg-hover-dark rounded-sm p-2">
+	<div class="w-full bg-hover-light dark:bg-hover-dark rounded-sm p-2 pt-0 md:pt-2">
 		<div class="flex justify-center items-center">
 			<div class="w-1/2">
 				<button
-					class="w-full text-sm font-semibold text-center rounded-r-md py-2"
+					class="w-full text-sm font-semibold text-center rounded-r-md py-1 md:py-2"
 					:class="{
 						'bg-accent-green text-white dark:text-black': activeButton === 'buy',
 						'bg-gray-200 dark:bg-gray-700 text-black dark:text-white': activeButton !== 'buy',
@@ -15,7 +15,7 @@
 			</div>
 			<div class="w-1/2">
 				<button
-					class="w-full text-sm font-semibold text-center rounded-l-md py-2"
+					class="w-full text-sm font-semibold text-center rounded-l-md py-1 md:py-2"
 					:class="{
 						'bg-accent-red text-white dark:text-black': activeButton === 'sell',
 						'bg-gray-200 dark:bg-gray-700 text-black dark:text-white': activeButton !== 'sell',
