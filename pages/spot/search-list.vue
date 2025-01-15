@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<!-- v-if="isMobile" -->
 		<BackHeader
 			:title="$t('selectMarket')"
 		/>

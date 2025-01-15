@@ -20,7 +20,7 @@
 				v-slot="{ item }"
 				:items="quoteItems"
 				:ui="{
-					item: 'basis-full md:basis-1/3 lg:basis-1/4 xl:basis-1/6 snap-center md:snap-start',
+					item: 'snap-start md:snap-start',
 				}"
 				class="w-full mx-auto"
 			>
@@ -47,7 +47,7 @@
 				v-slot="{ item }"
 				:items="tagItems"
 				:ui="{
-					item: 'basis-full md:basis-1/3 lg:basis-1/4 xl:basis-1/6 snap-center md:snap-start text-nowrap',
+					item: 'snap-start md:snap-start',
 					default: {
 						prevButton: {
 							color: 'black',
@@ -84,7 +84,7 @@
 			</UCarousel>
 		</div>
 
-		<div class="w-full bg-hover-light dark:bg-hover-dark rounded-sm px-2 h-[26rem] overflow-y-scroll">
+		<div class="w-full bg-hover-light dark:bg-hover-dark rounded-sm px-2 md:h-[26rem] overflow-y-scroll">
 			<table class="min-w-full p-6 text-right border-t border-primary-gray-light dark:border-primary-gray-dark">
 				<thead>
 					<tr class="py-4 text-subtle-text-light dark:text-subtle-text-dark ">
