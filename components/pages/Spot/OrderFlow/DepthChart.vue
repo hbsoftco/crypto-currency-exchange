@@ -1,14 +1,14 @@
 <template>
-	<div class="min-h-[27rem]">
+	<div class="min-h-[14rem] md:min-h-[27rem]">
 		<div
 			v-if="spotStore.snapshotLoading && chartDataLoading"
-			class="w-full pt-16"
+			class="w-full pt-0 md:pt-16"
 		>
 			{{ $t("isLoading") }}...
 		</div>
 		<div
 			v-if="!spotStore.snapshotLoading && !chartDataLoading"
-			class="w-full pt-16"
+			class="w-full pt-0 md:pt-16"
 			dir="ltr"
 		>
 			<VChart

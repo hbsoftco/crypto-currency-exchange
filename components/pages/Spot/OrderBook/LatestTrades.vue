@@ -7,7 +7,7 @@
 	</div>
 	<div
 		v-else
-		class="w-full bg-hover-light dark:bg-hover-dark rounded-sm px-2 h-[26rem] overflow-y-scroll"
+		class="w-full bg-hover-light dark:bg-hover-dark rounded-sm px-2 h-auto md:h-[26rem]"
 	>
 		<table class="min-w-full p-6 text-right">
 			<thead>
