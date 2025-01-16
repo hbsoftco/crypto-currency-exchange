@@ -1,5 +1,16 @@
 <template>
-	<div>
+	<div
+		v-if="ticketsLoading"
+		class="p-4"
+	>
+		<UiLogoLoading />
+	</div>
+
+	<div v-else>
+		<BackHeader
+			v-if="isMobile"
+			:title="$t('ticketList')"
+		/>
 		<section>
 			<UContainer>
 				<div class="flex justify-between items-center my-3 md:my-10">
@@ -7,8 +18,13 @@
 						<h1 class="text-lg md:text-4xl font-bold md:font-black">
 							{{ $t('ticketList') }}
 						</h1>
-						<span class="py-4 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('ticketTitle') }}</span>
-						<div>
+						<p
+							v-if="!isMobile"
+							class="py-4 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark"
+						>
+							{{ $t('ticketTitle') }}
+						</p>
+						<div v-if="!isMobile">
 							<UButton
 								size="lg"
 								class="text-base font-medium px-6 py-2"
@@ -22,9 +38,17 @@
 						<img
 							src="/images/svg/ticketing.svg"
 							alt="ticketing"
-							class="w-72 h-40 md:w-80 md:h-80"
+							class="w-20 h-20 md:w-80 md:h-80"
 						>
 					</div>
+				</div>
+				<div class="mb-8">
+					<p
+						v-if="isMobile"
+						class="py-4 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark"
+					>
+						{{ $t('ticketTitle') }}
+					</p>
 				</div>
 			</UContainer>
 		</section>
@@ -35,6 +59,7 @@
 						v-for="(item, index) in tickets"
 						:key="index"
 						class="bg-hover-light dark:bg-hover-dark rounded mb-2 p-2 shadow-sm text-sm"
+						@click="router.push(`/support/tickets/${item.id}`)"
 					>
 						<div class="mb-3">
 							<span class="text-sm text-subtle-text-light dark:text-subtle-text-50">{{ item.id }}</span>
@@ -158,6 +183,19 @@
 				</div>
 			</UContainer>
 		</section>
+
+		<DynamicFooter v-if="isMobile">
+			<div class="py-1.5">
+				<UButton
+					block
+					size="lg"
+					class="text-base font-medium px-6 py-2"
+					to="/support/tickets/add"
+				>
+					{{ $t("addNewTicket") }}
+				</UButton>
+			</div>
+		</DynamicFooter>
 	</div>
 </template>
 
@@ -166,6 +204,8 @@ import { formatDateToIran } from '~/utils/persian-date';
 import { formatDateToIranTime } from '~/utils/date-time';
 import { userRepository } from '~/repositories/user.repository';
 import type { Ticket, TicketListParams } from '~/types/definitions/user.types';
+import BackHeader from '~/components/layouts/Default/Mobile/BackHeader.vue';
+import DynamicFooter from '~/components/layouts/Default/Mobile/DynamicFooter.vue';
 
 definePageMeta({
 	middleware: 'auth',
