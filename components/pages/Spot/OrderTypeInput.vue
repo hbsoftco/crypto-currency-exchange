@@ -21,22 +21,27 @@
 					>
 						<UCard
 							class="flex flex-col flex-1"
-							:ui="{ body: {
+							:ui="{
+								header: {
+									padding: 'pb-0',
+								},
+								body: {
 									base: 'flex-1',
-									padding: 'px-0' },
+									padding: 'px-0',
+								},
 								ring: '',
 
 							}"
 						>
 							<template #header>
 								<div class="flex items-center justify-between">
-									<ul class="flex text-subtle-text-light dark:text-subtle-text-dark text-base font-medium">
+									<ul class="flex text-subtle-text-light dark:text-subtle-text-dark text-sm font-medium">
 										<li
 											:class="[
-												'pb-1 px-2 cursor-pointer',
+												'pb-1 px-2 cursor-pointer border-b-2',
 												selectedTab === 'limitedOrder'
-													? 'text-black dark:text-white border-b border-primary-yellow-light dark:border-primary-yellow-dark'
-													: '',
+													? 'text-black dark:text-white border-primary-yellow-light dark:border-primary-yellow-dark'
+													: 'border-transparent',
 											]"
 											@click="selectedTab = 'limitedOrder'"
 										>
@@ -44,10 +49,10 @@
 										</li>
 										<li
 											:class="[
-												'pb-1 px-2 cursor-pointer',
+												'pb-1 px-2 cursor-pointer border-b-2',
 												selectedTab === 'urgent'
-													? 'text-black dark:text-white border-b border-primary-yellow-light dark:border-primary-yellow-dark'
-													: '',
+													? 'text-black dark:text-white border-primary-yellow-light dark:border-primary-yellow-dark'
+													: 'border-transparent',
 											]"
 											@click="selectedTab = 'urgent'"
 										>
@@ -55,10 +60,10 @@
 										</li>
 										<li
 											:class="[
-												'pb-1 px-2 cursor-pointer',
+												'pb-1 px-2 cursor-pointer border-b-2',
 												selectedTab === 'profitLossLimit'
-													? 'text-black dark:text-white border-b border-primary-yellow-light dark:border-primary-yellow-dark'
-													: '',
+													? 'text-black dark:text-white border-primary-yellow-light dark:border-primary-yellow-dark'
+													: 'border-transparent',
 											]"
 											@click="selectedTab = 'profitLossLimit'"
 										>
@@ -69,13 +74,13 @@
 										color="gray"
 										variant="ghost"
 										icon="i-heroicons-x-mark-20-solid"
-										class="-my-1 outline-none"
+										class="-mt-4 outline-none"
 										@click="openSlide=false"
 									/>
 								</div>
 							</template>
 
-							<div class="pb-8">
+							<div class="">
 								<div v-if="selectedTab === 'limitedOrder'">
 									<LimitedOrderInfo />
 								</div>

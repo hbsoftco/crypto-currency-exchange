@@ -1,9 +1,19 @@
 <template>
-	<div class="p-4 bg-hover-light dark:bg-hover-dark">
+	<div
+		v-if="spotStore.snapshotFirstLoading"
+		class="p-4"
+	>
+		<UiLogoLoading />
+	</div>
+
+	<div
+		v-else
+		class="py-4 bg-hover-light dark:bg-hover-dark"
+	>
 		<MarketDetailHeader :title="`${spotStore.currency}${spotStore.quote}`" />
 
 		<div
-			class="flex justify-between mb-6"
+			class="flex justify-between mb-6 px-4"
 			dir="ltr"
 		>
 			<div>

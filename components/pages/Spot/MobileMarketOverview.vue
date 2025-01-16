@@ -39,7 +39,7 @@
 								</div>
 							</template>
 							<div class="grid grid-cols-4 gap-4 px-2">
-								<div class="flex flex-col justify-center text-center items-center">
+								<ULink class="flex flex-col justify-center text-center items-center">
 									<div class="flex items-center justify-center bg-hover-light dark:bg-hover-dark w-10 h-10 rounded-full">
 										<img
 											src="/images/svg/deposit.svg"
@@ -48,8 +48,8 @@
 										>
 									</div>
 									<span class="text-sm font-medium">{{ $t('deposit') }}</span>
-								</div>
-								<div class="flex flex-col justify-center text-center items-center">
+								</ULink>
+								<ULink class="flex flex-col justify-center text-center items-center">
 									<div class="flex items-center justify-center bg-hover-light dark:bg-hover-dark w-10 h-10 rounded-full">
 										<img
 											src="/images/svg/transfer.svg"
@@ -58,8 +58,8 @@
 										>
 									</div>
 									<span class="text-sm font-medium">{{ $t('transfer') }}</span>
-								</div>
-								<div class="flex flex-col justify-center text-center items-center">
+								</ULink>
+								<ULink class="flex flex-col justify-center text-center items-center">
 									<div class="flex items-center justify-center bg-hover-light dark:bg-hover-dark w-10 h-10 rounded-full">
 										<img
 											src="/images/svg/setting.svg"
@@ -68,8 +68,11 @@
 										>
 									</div>
 									<span class="text-sm font-medium">{{ $t('setting') }}</span>
-								</div>
-								<div class="flex flex-col justify-center text-center items-center">
+								</ULink>
+								<ULink
+									to="/help"
+									class="flex flex-col justify-center text-center items-center"
+								>
 									<div class="flex items-center justify-center bg-hover-light dark:bg-hover-dark w-10 h-10 rounded-full">
 										<img
 											src="/images/svg/helpcenter.svg"
@@ -78,11 +81,11 @@
 										>
 									</div>
 									<span class="text-sm font-medium">{{ $t('helpCenter') }}</span>
-								</div>
+								</ULink>
 							</div>
-							<div class="flex mt-4 pt-4 px-2">
+							<div class="flex items-center mt-4 pt-4 px-4">
 								<IconStar class="text-2xl text-subtle-text-light dark:text-subtle-text-dark" />
-								<span class="text-base font-medium mr-1">{{ $t('addBTCUSDTFavorites') }}</span>
+								<span class="text-sm font-medium mr-1">{{ `افزودن ${spotStore.currency}${spotStore.quote} به علاقه‌مندی‌ها` }}</span>
 							</div>
 						</UCard>
 					</USlideover>
@@ -93,7 +96,7 @@
 					class="mx-4"
 				>
 					<img
-						src="/images/svg/candle-light.svg"
+						:src="`/images/svg/candle-${!isDark? 'dark':'light'}.svg`"
 						alt="candle-light"
 						class="w-6 h-6"
 					>
@@ -101,7 +104,7 @@
 
 				<ULink
 					to=""
-					class="bg-[#16306e] text-[#2196f3] rounded-sm pl-1 py-1 flex items-center"
+					class="bg-[#cfddff] dark:bg-[#16306e] text-[#2196f3] rounded-sm pl-1 py-1 flex items-center"
 					dir="ltr"
 				>
 					<span class="text-xs">110X</span>
@@ -157,9 +160,18 @@ import IconDots from '~/assets/svg-icons/spot/dots.svg';
 import IconArrowRight from '~/assets/svg-icons/spot/arrow-right.svg';
 import IconStar from '~/assets/svg-icons/market/star.svg';
 
-const spotStore = useSpotStore();
-
 const router = useRouter();
+const spotStore = useSpotStore();
+const colorMode = useColorMode();
+
+const isDark = computed({
+	get() {
+		return colorMode.value === 'dark';
+	},
+	set() {
+		colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark';
+	},
+});
 
 const openSearchBox = () => {
 	router.push('/spot/search-list');

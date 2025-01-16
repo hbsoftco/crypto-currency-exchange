@@ -15,7 +15,7 @@
 				ref="chartRef"
 				autoresize
 				:option="chartOptions"
-				class="w-full h-[25rem]"
+				class="w-full h-[15rem] md:h-[25rem]"
 			/>
 		</div>
 	</div>
@@ -75,7 +75,7 @@ const chartOptions = computed(() => ({
 	},
 	grid: {
 		left: '10%',
-		right: '10%',
+		right: '2%',
 		top: '10%',
 		bottom: '10%',
 	},
