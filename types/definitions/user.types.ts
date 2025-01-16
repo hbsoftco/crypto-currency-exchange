@@ -77,6 +77,19 @@ type Ticket = {
 	regTime: string;
 };
 
+type TicketChat = {
+	discussions: TicketChatItem[];
+	meta: {
+		createTime: string;
+		header: string;
+		fileId: number | null;
+		creatorUid: number | null;
+		id: number | null;
+		stateId: number | null;
+		typeId: number | null;
+	};
+};
+
 type StoreTicketDto = {
 	issueTypeId: number | '';
 	priority: string | '';
@@ -87,10 +100,10 @@ type StoreTicketDto = {
 
 type TicketResponse = {
 	statusCode: number;
-	result: Ticket | TicketChat[];
+	result: Ticket | TicketChat;
 };
 
-type TicketChat = {
+type TicketChatItem = {
 	id: number;
 	fileId: number;
 	fileUrl: string;

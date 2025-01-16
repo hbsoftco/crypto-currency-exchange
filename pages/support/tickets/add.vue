@@ -266,7 +266,6 @@ const submitTicket = async () => {
 };
 
 const handleFiles = (files: FileList) => {
-	console.log(fileUpload.value);
 	const file = files[0];
 	if (file) {
 		const reader = new FileReader();
@@ -275,7 +274,7 @@ const handleFiles = (files: FileList) => {
 		}
 		else if (file.type.startsWith('image/')) {
 			reader.onload = () => {
-				uploadAvatar(file);
+				uploadTicketFile(file);
 			};
 			reader.readAsDataURL(file);
 		}
@@ -290,7 +289,7 @@ const handleDragLeave = (event: DragEvent) => {
 	console.log('Drag Leave event:', event);
 };
 
-const uploadAvatar = async (data: File) => {
+const uploadTicketFile = async (data: File) => {
 	fileUpload.value = data.name;
 
 	try {
