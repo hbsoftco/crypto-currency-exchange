@@ -1168,7 +1168,10 @@ const persian = {
 	limitedOrder: 'سفارش محدود',
 	urgent: 'فوری',
 	profitLossLimit: 'با حد سود/ضرر',
-	addBTCUSDTFavorites: 'افزودن BTC/USDT به علاقه مندی ها',
+	clickForUpload: 'برای آپلود کلیک، یا فایل را بکشید و اینجا رها کنید.',
+	minLength10char: 'حداقل باید 10 کاراکتر وارد کنید!',
+	uploadFile: 'آپلود فایل',
+	fileUploadSuccess: 'فایل با موفقیت آپلود شد!',
 };
 
 export default persian;

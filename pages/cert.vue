@@ -1,6 +1,5 @@
 <template>
-	<!-- <div class="mb-[30rem] md:mb-24"> -->
-	<div>
+	<div class="mb-[30rem] md:mb-0">
 		<BackHeader
 			v-if="isMobile"
 			:title="$t('bitlandApproval')"

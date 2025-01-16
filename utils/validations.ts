@@ -1,7 +1,8 @@
-import { required, helpers } from '@vuelidate/validators';
+import { required, minLength, helpers } from '@vuelidate/validators';
 
 const validations = {
 	required: helpers.withMessage('thisFieldIsRequired', required),
+	minLength: helpers.withMessage('minLength10char', minLength(10)),
 	phone: helpers.withMessage('pleaseEnterValidPhoneNumber', (value: string) => {
 		return /^\+?\d{1,3}[- ]?\(?\d\)?[- ]?\d{1,8}$/.test(value);
 	}),

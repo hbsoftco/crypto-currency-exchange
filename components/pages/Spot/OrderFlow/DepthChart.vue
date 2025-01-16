@@ -45,7 +45,6 @@ const isDark = computed({
 });
 
 const chartRef = ref<ECharts>();
-
 const chartOptions = computed(() => ({
 	animation: false,
 	autoresize: true,

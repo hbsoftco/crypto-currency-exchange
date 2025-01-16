@@ -210,13 +210,15 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 	},
 	async uploadTicketFile(file: File): Promise<CommonResponse> {
 		const formData = new FormData();
-		formData.append('file', file);
+		formData.append('data', file);
 
 		const url = `/v1/upload/ticket`;
-		const response = await fetch<CommonResponse>(`${url}`, {
+
+		const response = await fetch<CommonResponse>(`${url}?wloId=1`, {
+			noAuth: false,
 			method: 'POST',
 			body: formData,
-		});
+		} as CustomNitroFetchOptions);
 
 		return response;
 	},

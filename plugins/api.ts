@@ -19,7 +19,8 @@ export default defineNuxtPlugin(() => {
 
 				await authStore.startRefreshInterval();
 
-				options.headers = { ...options.headers };
+				options.headers = { ...options.headers, wloId: '1' };
+
 				const tokenHeaders = await authStore.generateToken();
 				if (tokenHeaders) {
 					options.headers = {

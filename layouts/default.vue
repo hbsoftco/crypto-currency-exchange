@@ -64,8 +64,13 @@ const specialRoutes = ref<string[]>([
 	'live-chat',
 	'calculator',
 	'spot-market-detail-mSymbol',
+	'support-tickets-mine',
+	'support-tickets-add',
+	'support-tickets-id',
 ]);
 watch(() => route.name, (newName) => {
+	console.log(route.name);
+
 	isSpecialRoute.value = specialRoutes.value.includes(String(newName));
 }, { deep: true, immediate: true });
 

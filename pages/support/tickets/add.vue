@@ -1,21 +1,45 @@
 <template>
-	<div>
+	<div
+		v-if="ticketTypesLoading"
+		class="p-4"
+	>
+		<UiLogoLoading />
+	</div>
+
+	<div v-else>
+		<BackHeader
+			v-if="isMobile"
+			:title="$t('sendTicket')"
+		/>
 		<section>
 			<UContainer>
-				<div class="flex justify-between items-center my-3 md:my-10">
+				<div class="flex justify-between items-center my-0 md:my-10">
 					<div class="flex flex-col">
-						<h1 class="text-lg md:text-4xl font-bold md:font-black">
+						<h1 class="text-xl md:text-4xl font-bold md:font-black">
 							{{ $t('sendTicket') }}
 						</h1>
-						<span class="py-4 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('ticketTitle') }}</span>
+						<p
+							v-if="!isMobile"
+							class="py-4 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark"
+						>
+							{{ $t('ticketTitle') }}
+						</p>
 					</div>
 					<div>
 						<img
 							src="/images/svg/ticketing.svg"
 							alt="ticketing"
-							class="w-72 h-40 md:w-60 md:h-56"
+							class="w-20 h-20 md:w-60 md:h-56"
 						>
 					</div>
+				</div>
+				<div class="mb-8">
+					<p
+						v-if="isMobile"
+						class="py-4 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark"
+					>
+						{{ $t('ticketTitle') }}
+					</p>
 				</div>
 			</UContainer>
 		</section>
@@ -97,16 +121,33 @@
 							icon=""
 							dir="rtl"
 							color-type="pages"
-							:error-message="v$.content.$error? $t('fieldIsRequired') : ''"
+							:error-message="
+								v$.content.$error
+									? (v$.content.required.$response ? $t('minLength10char') : $t('fieldIsRequired'))
+									: ''
+							"
 						/>
 					</div>
 					<!-- description -->
 
 					<div class="mb-8">
-						<FileUploader />
+						<UiDropZone
+							@on-transfer="handleFiles"
+							@on-drag-enter="handleDragEnter"
+							@on-drag-leave="handleDragLeave"
+						>
+							<FormsFieldUpload
+								id="fileUpload"
+								:key="fileUpload"
+								v-model="fileUpload"
+								:label="fileUploadLabel"
+								color-type="pages"
+								readonly="true"
+							/>
+						</UiDropZone>
 					</div>
 
-					<div>
+					<div v-if="!isMobile">
 						<UButton
 							size="lg"
 							class="px-9"
@@ -119,6 +160,20 @@
 				</div>
 			</UContainer>
 		</section>
+
+		<DynamicFooter v-if="isMobile">
+			<div class="py-1.5">
+				<UButton
+					size="lg"
+					class="px-9"
+					:loading="submitTicketLoading"
+					block
+					@click="submitTicket"
+				>
+					{{ $t("sendTicket") }}
+				</UButton>
+			</div>
+		</DynamicFooter>
 	</div>
 </template>
 
@@ -126,8 +181,9 @@
 import useVuelidate from '@vuelidate/core';
 
 import DropDown from '~/components/forms/DropDown.vue';
-import FileUploader from '~/components/forms/FileUploader.vue';
 import TextareaFieldInput from '~/components/forms/TextareaFieldInput.vue';
+import BackHeader from '~/components/layouts/Default/Mobile/BackHeader.vue';
+import DynamicFooter from '~/components/layouts/Default/Mobile/DynamicFooter.vue';
 import { userRepository } from '~/repositories/user.repository';
 import type { KeyValue } from '~/types/definitions/common.types';
 import type { StoreTicketDto } from '~/types/definitions/user.types';
@@ -137,11 +193,17 @@ definePageMeta({
 	middleware: 'auth',
 });
 
-const { $api } = useNuxtApp();
+const { $api, $mobileDetect } = useNuxtApp();
 const userRepo = userRepository($api);
+
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
 
 const toast = useToast();
 const router = useRouter();
+
+const fileUpload = ref<string>('');
+const fileUploadLabel = ref<string>(useT('selectFile'));
 
 const ticketTypes = ref<KeyValue[]>([]);
 const ticketTypesLoading = ref<boolean>(true);
@@ -171,7 +233,7 @@ const storeTicketDtoRules = {
 	priority: { required: validations.required },
 	fileId: { },
 	header: { required: validations.required },
-	content: { required: validations.required },
+	content: { required: validations.required, minLength: validations.minLength },
 };
 const v$ = useVuelidate(storeTicketDtoRules, storeTicketDto);
 
@@ -203,6 +265,50 @@ const submitTicket = async () => {
 	}
 };
 
+const handleFiles = (files: FileList) => {
+	console.log(fileUpload.value);
+	const file = files[0];
+	if (file) {
+		const reader = new FileReader();
+		if (file.type === 'application/pdf') {
+			alert('hosseinam');
+		}
+		else if (file.type.startsWith('image/')) {
+			reader.onload = () => {
+				uploadAvatar(file);
+			};
+			reader.readAsDataURL(file);
+		}
+	}
+};
+
+const handleDragEnter = (event: DragEvent) => {
+	console.log('Drag Enter event:', event);
+};
+
+const handleDragLeave = (event: DragEvent) => {
+	console.log('Drag Leave event:', event);
+};
+
+const uploadAvatar = async (data: File) => {
+	fileUpload.value = data.name;
+
+	try {
+		const { result } = await userRepo.uploadTicketFile(data);
+		storeTicketDto.value.fileId = Number(result);
+
+		toast.add({
+			title: useT('uploadFile'),
+			description: useT('fileUploadSuccess'),
+			timeout: 5000,
+			color: 'green',
+		});
+	}
+	catch (error) {
+		console.error('Error uploading file:', error);
+	}
+};
+
 const priorities: KeyValue[] = [
 	{
 		key: String(Priority.HIGH),
@@ -218,5 +324,12 @@ const priorities: KeyValue[] = [
 	},
 ];
 
-onMounted(getTicketTypes);
+onMounted(async () => {
+	isMobile.value = !!mobileDetect.mobile();
+
+	await nextTick();
+	await getTicketTypes();
+
+	fileUpload.value = useT('clickForUpload');
+});
 </script>

@@ -41,7 +41,7 @@
 					/>
 				</div>
 			</div>
-			<div class="flex justify-between w-1/2">
+			<div class="flex justify-between w-48">
 				<div>
 					<div class="mb-3">
 						<p class="text-xs ml-1 mb-1.5 text-subtle-text-light dark:text-subtle-text-dark">
@@ -75,7 +75,7 @@
 							<strong
 								class="text-xs font-bold"
 								dir="ltr"
-							>{{ priceFormat(String(spotStore.ticker?.q), true) }}</strong>
+							>{{ bigNumber(Number(spotStore.ticker?.q ?? 0)) }}</strong>
 						</div>
 					</div>
 					<div>
@@ -171,7 +171,7 @@
 
 <script setup lang="ts">
 import MarketDetailHeader from '~/components/layouts/Default/Mobile/MarketDetailHeader.vue';
-import { priceFormat } from '~/utils/helpers';
+import { priceFormat, bigNumber } from '~/utils/helpers';
 
 const LatestTrades = defineAsyncComponent(() => import('~/components/pages/Spot/OrderBook/LatestTrades.vue'));
 const BitlandChart = defineAsyncComponent(() => import('~/components/pages/Spot/OrderFlow/BitlandChart.vue'));
