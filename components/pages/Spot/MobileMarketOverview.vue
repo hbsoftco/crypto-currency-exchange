@@ -59,7 +59,10 @@
 									</div>
 									<span class="text-sm font-medium">{{ $t('transfer') }}</span>
 								</ULink>
-								<ULink class="flex flex-col justify-center text-center items-center">
+								<ULink
+									to="/account/settings"
+									class="flex flex-col justify-center text-center items-center"
+								>
 									<div class="flex items-center justify-center bg-hover-light dark:bg-hover-dark w-10 h-10 rounded-full">
 										<img
 											src="/images/svg/setting.svg"

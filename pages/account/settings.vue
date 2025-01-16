@@ -1,70 +1,30 @@
 <template>
-	<div class="p-5">
-		<div class="mb-4">
-			<UiTitleWithBack :title="$t('setting')" />
-		</div>
+	<div class="p-2 pt-0 md:pt-5 md:p-5">
+		<BackHeader
+			v-if="isMobile"
+			:title="$t('setting')"
+		/>
+		<section class="my-4 py-4 px-8 border border-primary-gray-light dark:border-primary-gray-dark rounded">
+			<div
+				class="flex justify-between pb-5 mb-4 border-b-primary-gray-light dark:border-b-primary-gray-dark border-b-[1px] max-w-96"
+			>
+				<p class="text-base font-bold">
+					{{ $t("theme") }}
+				</p>
+				<UiThemeToggleSwitch />
+			</div>
+			<!-- end of theme -->
 
-		<section class="my-4 py-4 px-8 border border-primary-gray-light dark:border-primary-gray-dark">
-			<h2>{{ $t('genral') }}</h2>
-			<div class="my-4 border-b border-primary-gray-light dark:border-primary-gray-dark">
-				<div class="flex mb-3">
-					<IconPencil class="text-base text-primary-yellow-light dark:text-primary-yellow-dark" />
-					<span class="text-sm font-bold mr-2">{{ $t('displayTheme') }}</span>
-				</div>
-				<div class="mb-4">
-					<URadioGroup
-						v-model="selectedThemes"
-						:options="themes"
-						:ui="{
-							fieldset: 'w-96 block md:flex justify-between',
-						}"
-					/>
-				</div>
+			<div class="flex justify-between pb-2 max-w-96">
+				<p class="text-base font-bold">
+					{{ $t("displayNumbers") }}
+				</p>
+				<UiToggleButton />
 			</div>
-			<div class="my-4">
-				<div class="flex mb-3">
-					<IconNumber class="text-base text-primary-yellow-light dark:text-primary-yellow-dark" />
-					<span class="text-sm font-bold mr-2">{{ $t('displayNumbers') }}</span>
-				</div>
-				<div class="mb-4">
-					<URadioGroup
-						v-model="selectedLang"
-						:options="lang"
-						:ui="{
-							fieldset: 'w-96 flex justify-between',
-						}"
-					/>
-				</div>
-			</div>
+			<!-- end of change numbers -->
 		</section>
 
-		<section class="my-4 py-4 px-8 border border-primary-gray-light dark:border-primary-gray-dark">
-			<h2>{{ $t('trading') }}</h2>
-			<div class="my-4 border-b border-primary-gray-light dark:border-primary-gray-dark">
-				<div class="flex mb-3">
-					<IconChange class="text-base text-primary-yellow-light dark:text-primary-yellow-dark" />
-					<span class="text-sm font-bold mr-2">{{ $t('changingCandles') }}</span>
-				</div>
-				<div class="mb-4 ">
-					<URadioGroup
-						v-model="selectedChanging"
-						:options="changes"
-						:ui="{
-							fieldset: 'w-full ml-20 block md:flex justify-between',
-						}"
-					>
-						<template #label="{ option }">
-							<p class="flex">
-								{{ option.label }}
-								<img
-									:src="option.icon"
-									class="mr-2 w-6 h-6"
-								>
-							</p>
-						</template>
-					</URadioGroup>
-				</div>
-			</div>
+		<section class="my-4 py-4 px-8 border border-primary-gray-light dark:border-primary-gray-dark rounded">
 			<div class="my-4  border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<div class=" pb-4">
 					<span class="text-base font-bold">{{ $t('tradingGraphicalInterface') }}</span>
@@ -125,7 +85,7 @@
 			</div>
 		</section>
 
-		<section class="my-4 py-4 px-8 border border-primary-gray-light dark:border-primary-gray-dark">
+		<section class="my-4 py-4 px-8 border border-primary-gray-light dark:border-primary-gray-dark rounded">
 			<div
 				class="cursor-pointer flex justify-between items-center"
 			>
@@ -161,46 +121,22 @@
 </template>
 
 <script setup lang="ts">
-import IconPencil from '~/assets/svg-icons/profile/brush.svg';
-import IconNumber from '~/assets/svg-icons/profile/number.svg';
-import IconChange from '~/assets/svg-icons/profile/change.svg';
 import IconScreen from '~/assets/svg-icons/profile/screen.svg';
 import IconNotification from '~/assets/svg-icons/menu/notification.svg';
+import BackHeader from '~/components/layouts/Default/Mobile/BackHeader.vue';
 
 definePageMeta({
 	layout: 'account',
 });
 
-const themes = [
-	{
-		value: 'light',
-		label: useT('light'),
-	},
-	{
-		value: 'dark',
-		label: useT('dark'),
-	},
-	{
-		value: 'systemDefault',
-		label: useT('systemDefault'),
-	},
-];
-const lang = [
-	{
-		value: 'english',
-		label: useT('english'),
-	},
-	{
-		value: 'farsi',
-		label: useT('farsi'),
-	},
-];
+const { $mobileDetect } = useNuxtApp();
 
-const changes = [
-	{ value: 'greenUp', label: useT('greenUp'), icon: '/images/svg/profile/change-green-red.svg' },
-	{ value: 'redUp', label: useT('redUp'), icon: '/images/svg/profile/change-green-red.svg' },
-	{ value: 'blueDown', label: useT('blueDown'), icon: '/images/svg/profile/change-blue-red.svg' },
-];
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
+
+onMounted(() => {
+	isMobile.value = !!mobileDetect.mobile();
+});
 
 const showOrderBook = [
 	{
@@ -260,13 +196,9 @@ const trading = [
 		icon: '/images/svg/profile/chart-standard.svg',
 	},
 ];
-const selectedThemes = ref('light');
-const selectedLang = ref('english');
-const selectedChanging = ref('greenUp');
+
 const selectedShowOrderBook = ref('cumulativeNumberValue');
 const selectedBasisDisplayMarkets = ref('priceChangePriority');
 const selectedNotification = ref('all');
 const selectedTrading = ref('classic');
 </script>
-
-<style scoped></style>

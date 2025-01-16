@@ -278,7 +278,7 @@
 					<li class="border-b border-primary-gray-light dark:border-primary-gray-dark mt-0">
 						<ULink
 							to="/account/authentication"
-							class="flex justify-between items-center w-full py-1.5"
+							class="flex justify-between items-center w-full py-3"
 						>
 							<div class="flex justify-start items-center">
 								<div class="ml-2">
