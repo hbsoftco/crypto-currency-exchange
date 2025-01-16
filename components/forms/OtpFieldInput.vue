@@ -29,7 +29,7 @@
 				v-model="internalValue"
 				placeholder="- - - - - -"
 				maxlength="6"
-				type="number"
+				type="text"
 				class="otp-input border-none outline-none bg-transparent"
 			>
 
