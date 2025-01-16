@@ -13,25 +13,36 @@
 		/>
 		<section>
 			<UContainer>
-				<div
-					v-if="ticketDetail"
-					class="flex justify-between my-10"
-				>
-					<div>
-						<span class="text-sm font-medium text-subtle-text-light dark:text-subtle-text-dark ml-1">{{ $t('code') }}:</span>
-						<span class="text-sm font-bold">{{ ticketDetail.meta.id }}</span>
-						<p class="text-base font-bold mt-4">
-							{{ ticketDetail?.meta.header }}
-						</p>
+				<div class="my-10">
+					<div
+						v-if="ticketDetail"
+						class="flex justify-between"
+					>
+						<div>
+							<span class="text-sm font-medium text-subtle-text-light dark:text-subtle-text-dark ml-1">{{ $t('code') }}:</span>
+							<span class="text-sm font-bold">{{ ticketDetail.meta.id }}</span>
+							<p
+								v-if="!isMobile"
+								class="text-base font-bold mt-4"
+							>
+								{{ ticketDetail?.meta.header }}
+							</p>
+						</div>
+						<div>
+							<span class="text-sm font-medium text-subtle-text-light dark:text-subtle-text-dark ml-1">{{ $t('registerTime') }}:</span>
+							<span dir="ltr">
+								<span class="text-sm font-bold">{{ formatDateToIran(ticketDetail?.meta.createTime) }}</span>
+								<span class="mx-1">-</span>
+								<span class="text-sm font-bold">{{ formatDateToIranTime(ticketDetail?.meta.createTime) }}</span>
+							</span>
+						</div>
 					</div>
-					<div>
-						<span class="text-sm font-medium text-subtle-text-light dark:text-subtle-text-dark ml-1">{{ $t('registerTime') }}:</span>
-						<span dir="ltr">
-							<span class="text-sm font-bold">{{ formatDateToIran(ticketDetail?.meta.createTime) }}</span>
-							<span class="mx-1">-</span>
-							<span class="text-sm font-bold">{{ formatDateToIranTime(ticketDetail?.meta.createTime) }}</span>
-						</span>
-					</div>
+					<p
+						v-if="isMobile"
+						class="text-base font-bold mt-4"
+					>
+						{{ ticketDetail?.meta.header }}
+					</p>
 				</div>
 			</UContainer>
 		</section>
@@ -77,7 +88,7 @@
 				</div>
 				<!-- end of discussions -->
 
-				<div class="p-6 bg-primary-gray-light dark:bg-primary-gray-dark mb-24 rounded-b-md">
+				<div class="p-2 md:p-6 bg-primary-gray-light dark:bg-primary-gray-dark mb-24 rounded-b-md">
 					<div class="my-8">
 						<TextareaFieldInput
 							id="content"
@@ -309,6 +320,8 @@ const closeTicket = async () => {
 
 	if (confirmation.isConfirmed) {
 		await userRepo.closeTicket(String(route.params.id));
+
+		await getTicketDetail();
 	}
 };
 
