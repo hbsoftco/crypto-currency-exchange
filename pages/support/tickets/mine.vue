@@ -189,7 +189,7 @@
 				<UButton
 					block
 					size="lg"
-					class="text-base font-medium px-6 py-2"
+					class="text-base font-bold px-6 py-2"
 					to="/support/tickets/add"
 				>
 					{{ $t("addNewTicket") }}

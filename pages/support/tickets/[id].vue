@@ -165,7 +165,7 @@
 					<div>
 						<UButton
 							size="lg"
-							class="text-base font-medium px-16 py-2"
+							class="text-base font-bold px-16 py-2"
 							:loading="submitLoading"
 							@click="submit"
 						>

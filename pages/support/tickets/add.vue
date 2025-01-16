@@ -165,7 +165,7 @@
 			<div class="py-1.5">
 				<UButton
 					size="lg"
-					class="px-9"
+					class="px-9 font-bold"
 					:loading="submitTicketLoading"
 					block
 					@click="submitTicket"
