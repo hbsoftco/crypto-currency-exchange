@@ -67,6 +67,7 @@ const specialRoutes = ref<string[]>([
 	'support-tickets-mine',
 	'support-tickets-add',
 	'support-tickets-id',
+	'more-links',
 ]);
 watch(() => route.name, (newName) => {
 	console.log(route.name);

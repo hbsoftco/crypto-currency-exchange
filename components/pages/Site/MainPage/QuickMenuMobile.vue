@@ -1,9 +1,5 @@
 <template>
 	<div>
-		<MoreQuickMenuMobile
-			v-if="showDetail"
-			@close="closeDetail"
-		/>
 		<div class="grid grid-cols-2 gap-4 mt-10">
 			<UButton
 				to="/wallet/deposit"
@@ -92,7 +88,7 @@
 			</ULink>
 			<ULink
 				class="flex flex-col justify-center items-center mb-4"
-				@click.prevent="openDetail"
+				to="/more-links"
 			>
 				<img
 					src="/images/svg/quick-access-mobile/more.svg"
@@ -106,15 +102,5 @@
 </template>
 
 <script setup lang="ts">
-import MoreQuickMenuMobile from './MoreQuickMenuMobile.vue';
 
-const showDetail = ref(false);
-
-const openDetail = () => {
-	showDetail.value = true;
-};
-
-const closeDetail = () => {
-	showDetail.value = false;
-};
 </script>
