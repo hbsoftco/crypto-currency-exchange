@@ -1,6 +1,16 @@
 <template>
+	<div v-if="marketsLoading">
+		<h1 class="text-sm font-bold mb-4">
+			{{ $t('popularMarkets') }}
+		</h1>
+
+		<div class="flex space-x-4 items-center overflow-x-auto whitespace-nowrap">
+			<USkeleton class="h-32 w-[8.5rem] bg-primary-gray-light dark:bg-primary-gray-dark ml-4" />
+			<USkeleton class="h-32 w-[8.5rem] bg-primary-gray-light dark:bg-primary-gray-dark ml-4" />
+		</div>
+	</div>
 	<div
-		v-if="!marketsLoading"
+		v-else
 		class="mt-8"
 	>
 		<h1 class="text-sm font-bold mb-4">
