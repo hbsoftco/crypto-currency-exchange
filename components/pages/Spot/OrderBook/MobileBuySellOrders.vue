@@ -37,7 +37,7 @@
 				</div>
 			</div>
 
-			<div class="flex justify-between gap-2">
+			<div class="flex justify-between gap-2 px-2">
 				<!-- Ask Data -->
 				<div
 					class="w-1/2"
@@ -54,17 +54,11 @@
 						/>
 
 						<div class="relative flex justify-between w-full">
-							<div class="text-xs text-left font-normal w-1/3 pl-1">
-								<span dir="ltr">{{ formatBigNumber(item.c, 3) }}</span>
-							</div>
-							<div class="flex items-center justify-end text-xs font-normal w-1/3 text-accent-red dark:text-accent-red">
+							<div class="flex items-center justify-start pl-1 text-xs font-normal w-1/2 text-accent-red dark:text-accent-red">
 								<span dir="ltr">{{ priceFormat(item.p, true) }}</span>
-								<div class="w-3 h-3 mr-1 pt-0.5 flex justify-center">
-									<div
-										v-if="authStore.isLoggedIn && false"
-										class="bg-primary-yellow dark:bg-primary-yellow-dark w-2 h-2 rounded-full"
-									/>
-								</div>
+							</div>
+							<div class="text-xs text-right font-normal w-1/2 pr-1">
+								<span dir="ltr">{{ formatBigNumber(item.c, 3) }}</span>
 							</div>
 						</div>
 					</div>
@@ -83,17 +77,11 @@
 						/>
 
 						<div class="relative flex justify-between">
-							<div class="text-xs text-right font-normal w-1/2 md:w-1/3 pr-1">
-								<span dir="ltr">{{ formatBigNumber(item.c, 3) }}</span>
-							</div>
-							<div class="flex items-center justify-end w-1/2 md:w-1/3 text-xs font-normal text-accent-green dark:text-accent-green">
+							<div class="flex items-center justify-start pr-1 w-1/2 text-xs font-normal text-accent-green dark:text-accent-green">
 								<span dir="ltr">{{ priceFormat(item.p, true) }}</span>
-								<div class="w-3 h-3 mr-1 pt-1 flex justify-center">
-									<div
-										v-if="authStore.isLoggedIn && false"
-										class="bg-primary-yellow dark:bg-primary-yellow-dark w-2 h-2 rounded-full"
-									/>
-								</div>
+							</div>
+							<div class="text-xs text-left font-normal w-1/2 pl-1">
+								<span dir="ltr">{{ formatBigNumber(item.c, 3) }}</span>
 							</div>
 						</div>
 					</div>
@@ -114,7 +102,6 @@ onMounted(() => {
 	isMobile.value = !!mobileDetect.mobile();
 });
 
-const authStore = useAuthStore();
 const spotStore = useSpotStore();
 
 const recordCount = ref<number>(20);
