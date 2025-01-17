@@ -154,7 +154,13 @@
 							v-if="item.key === 'orderList'"
 							class="space-y-3"
 						>
-							<DepthChart />
+							<div class="mb-6">
+								<DepthChart />
+							</div>
+
+							<div>
+								<MobileBuySellOrders />
+							</div>
 						</div>
 						<div
 							v-else-if="item.key === 'latestTrades'"
@@ -166,17 +172,44 @@
 				</UTabs>
 			</div>
 		</div>
+
+		<DynamicFooter v-if="isMobile">
+			<div class="py-1.5">
+				<div class="flex flex-grow justify-between ml-auto">
+					<button
+						class="flex-1 bg-accent-green h-11 text-white rounded px-5 font-bold text-center mx-1"
+						@click="router.push(`/spot/${currency}_${quote}?type=buy`)"
+					>
+						{{ $t('buy') }}
+					</button>
+					<button
+						class="flex-1 bg-accent-red h-11 text-white rounded px-5 font-bold text-center mx-1"
+						@click="router.push(`/spot/${currency}_${quote}?type=sell`)"
+					>
+						{{ $t('sell') }}
+					</button>
+				</div>
+			</div>
+		</DynamicFooter>
 	</div>
 </template>
 
 <script setup lang="ts">
-import MarketDetailHeader from '~/components/layouts/Default/Mobile/MarketDetailHeader.vue';
 import { priceFormat, bigNumber } from '~/utils/helpers';
 
+const MarketDetailHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/MarketDetailHeader.vue'));
+const MobileBuySellOrders = defineAsyncComponent(() => import('~/components/pages/Spot/OrderBook/MobileBuySellOrders.vue'));
+const DynamicFooter = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/DynamicFooter.vue'));
 const LatestTrades = defineAsyncComponent(() => import('~/components/pages/Spot/OrderBook/LatestTrades.vue'));
 const BitlandChart = defineAsyncComponent(() => import('~/components/pages/Spot/OrderFlow/BitlandChart.vue'));
 const DepthChart = defineAsyncComponent(() => import('~/components/pages/Spot/OrderFlow/DepthChart.vue'));
 
+const { $mobileDetect } = useNuxtApp();
+
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
+
+const router = useRouter();
 const route = useRoute();
 const mSymbol = String(route.params.mSymbol);
 const [currency, quote] = mSymbol.split('_');
@@ -204,6 +237,8 @@ const orderItems = [
 ];
 
 onMounted(() => {
+	isMobile.value = !!mobileDetect.mobile();
+
 	spotStore.symbol = `${currency}${quote}`;
 	spotStore.currency = currency;
 	spotStore.quote = quote;

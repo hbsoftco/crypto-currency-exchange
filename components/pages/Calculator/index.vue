@@ -22,7 +22,7 @@
 			<UButton
 				size="lg"
 				class="text-base font-medium px-6 py-2 my-4 md:my-0"
-				:to="tradeItems.length ? `/spot/${firstSelectedCurrency}_USDT`: ''"
+				:to="tradeItems.length ? `/spot/${firstSelectedCurrency?.cSymbol}_USDT`: ''"
 			>
 				{{ `${$t('buySell')} ${firstSelectedCurrency?.cName} (${firstSelectedCurrency?.cSymbol})` }}
 			</UButton>
