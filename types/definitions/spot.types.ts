@@ -297,7 +297,12 @@ type DeleteOpenOrderDto = {
 	id: number;
 };
 
+type SpotThemeType = 'classic' | 'standard' | 'vertical';
+type TypeTrade = 'buy' | 'sell';
+
 export type {
+	TypeTrade,
+	SpotThemeType,
 	KLineParams,
 	KLineResponse,
 	TradeListParams,

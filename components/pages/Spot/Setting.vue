@@ -2,12 +2,20 @@
 	<div>
 		<div class="mb-4 py-2 border-b border-primary-gray-light dark:border-primary-gray-800">
 			<div
-				class="flex justify-between pb-2"
+				class="flex justify-between pb-2 mb-4"
 			>
 				<h2 class="text-base font-medium">
 					{{ $t('theme') }}
 				</h2>
 				<UiThemeToggleSwitch />
+			</div>
+			<div
+				class="flex justify-between pb-2"
+			>
+				<h2 class="text-base font-medium">
+					{{ $t('displayNumbers') }}
+				</h2>
+				<UiToggleButton />
 			</div>
 		</div>
 		<!-- change theme -->
@@ -20,8 +28,8 @@
 			</div>
 			<div class="py-4">
 				<URadioGroup
-					v-model="settingsStore.selectedTrading"
-					:options="trading"
+					v-model="settingsStore.selectedSpotThemeType"
+					:options="themes"
 					:ui="{
 						fieldset: 'w-full flex justify-between items-center',
 					}"
@@ -154,9 +162,9 @@
 </template>
 
 <script setup lang="ts">
-const settingsStore = useSpotSettingsStore();
+const settingsStore = useSettingsStore();
 
-const trading = [
+const themes = [
 	{
 		value: 'classic',
 		label: useT('classic'),

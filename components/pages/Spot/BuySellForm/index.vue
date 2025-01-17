@@ -1,6 +1,9 @@
 <template>
 	<div class="w-full bg-hover-light dark:bg-hover-dark rounded-sm p-2 pt-0.5 md:pt-2">
-		<div class="flex justify-center items-center">
+		<div
+			v-if="showSwitch"
+			class="flex justify-center items-center"
+		>
 			<div class="w-1/2">
 				<button
 					class="w-full text-sm font-semibold text-center rounded-r-md py-1 md:py-2"
@@ -130,12 +133,22 @@
 <script setup lang="ts">
 import IconArrowDown from '~/assets/svg-icons/menu/arrow-down.svg';
 import IconInfo from '~/assets/svg-icons/info-fill.svg';
+import type { TypeTrade } from '~/types/definitions/spot.types';
 
 const OrderTypeInput = defineAsyncComponent(() => import('~/components/pages/Spot/OrderTypeInput.vue'));
 const LimitPriceTab = defineAsyncComponent(() => import('~/components/pages/Spot/BuySellForm/LimitPriceTab.vue'));
 const StopPriceTab = defineAsyncComponent(() => import('~/components/pages/Spot/BuySellForm/StopPriceTab.vue'));
 const MarketPriceTab = defineAsyncComponent(() => import('~/components/pages/Spot/BuySellForm/MarketPriceTab.vue'));
 const StopMarketTab = defineAsyncComponent(() => import('~/components/pages/Spot/BuySellForm/StopMarketTab.vue'));
+
+interface PropsDefinition {
+	typeTrade: TypeTrade;
+	showSwitch: boolean;
+}
+const props = withDefaults(defineProps<PropsDefinition>(), {
+	showSwitch: true,
+	typeTrade: 'buy',
+});
 
 const { $mobileDetect } = useNuxtApp();
 const isMobile = ref(false);
@@ -148,13 +161,13 @@ onMounted(() => {
 const authStore = useAuthStore();
 
 const mobileActiveTab = ref();
-const activeButton = ref<'buy' | 'sell'>('buy');
+const activeButton = ref<TypeTrade>(props.typeTrade);
 const activeTab = ref<'limitPrice' | 'market' | 'stopPrice' | 'stopMarket'>('market');
 
 const isPriceOptionSelected = ref(false);
 const selectedPriceOption = ref({ label: useT('stopPrice') });
 
-const setActiveButton = (button: 'buy' | 'sell') => {
+const setActiveButton = (button: TypeTrade) => {
 	activeButton.value = button;
 };
 

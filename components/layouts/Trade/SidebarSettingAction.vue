@@ -22,7 +22,7 @@
 import IconSetting from '~/assets/svg-icons/menu/setting.svg';
 import IconSettingFill from '~/assets/svg-icons/menu/setting-fill.svg';
 
-const settingsStore = useSpotSettingsStore();
+const settingsStore = useSettingsStore();
 
 const toggleSidebar = () => {
 	settingsStore.toggleSidebarSettingsSpot(!settingsStore.isOpenSidebarSettingsSpot);

@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia';
 
-export const useSpotSettingsStore = defineStore('spotSettings', () => {
+import type { SpotThemeType } from '~/types/definitions/spot.types';
+
+export const useSettingsStore = defineStore('systemSettings', () => {
 	const isOpenSidebarSettingsSpot = ref<boolean>(false);
 	const isSpotPage = ref<boolean>(false);
 
-	const selectedChanging = ref('greenUp');
-	const selectedTrading = ref('classic');
+	const selectedSpotThemeType = ref<SpotThemeType>('standard');
 	const selectedDisplayListOrders = ref('priceQuantity');
 	const selectedDisplayOrderCryptocurrencyMarketList = ref('priceChange');
 	const orderNotifications = ref(false);
@@ -18,12 +19,8 @@ export const useSpotSettingsStore = defineStore('spotSettings', () => {
 	const stopMarket = ref(false);
 
 	// Actions
-	const setSelectedChanging = (value: string) => {
-		selectedChanging.value = value;
-	};
-
-	const setSelectedTrading = (value: string) => {
-		selectedTrading.value = value;
+	const setSelectedTrading = (value: SpotThemeType) => {
+		selectedSpotThemeType.value = value;
 	};
 
 	const setSelectedDisplayListOrders = (value: string) => {
@@ -64,8 +61,7 @@ export const useSpotSettingsStore = defineStore('spotSettings', () => {
 
 	return {
 		// States
-		selectedChanging,
-		selectedTrading,
+		selectedSpotThemeType,
 		selectedDisplayListOrders,
 		selectedDisplayOrderCryptocurrencyMarketList,
 		orderNotifications,
@@ -77,7 +73,6 @@ export const useSpotSettingsStore = defineStore('spotSettings', () => {
 		stopMarket,
 
 		// Actions
-		setSelectedChanging,
 		setSelectedTrading,
 		setSelectedDisplayListOrders,
 		setSelectedDisplayOrderCryptocurrencyMarketList,

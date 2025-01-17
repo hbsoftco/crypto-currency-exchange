@@ -1,7 +1,7 @@
 <template>
 	<div
 		class="overflow-hidden"
-		:class="[isMobile? 'h-[30rem]' : 'h-[28.5rem]']"
+		:class="[isMobile? 'h-[30rem]' : height]"
 	>
 		<section>
 			<div class="flex justify-between py-2 pb-1 w-full">
@@ -131,14 +131,25 @@ const { $mobileDetect } = useNuxtApp();
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
 
-onMounted(() => {
-	isMobile.value = !!mobileDetect.mobile();
-});
-
 const authStore = useAuthStore();
 const spotStore = useSpotStore();
+const settingsStore = useSettingsStore();
 
-const recordCount = ref<number>(9);
+const recordCount = ref<number>();
+const height = ref<string>('h-[28.5rem]');
+
+onMounted(() => {
+	isMobile.value = !!mobileDetect.mobile();
+
+	if (settingsStore.selectedSpotThemeType === 'standard') {
+		recordCount.value = 9;
+		height.value = 'h-[28.5rem]';
+	}
+	else if (settingsStore.selectedSpotThemeType === 'vertical') {
+		recordCount.value = 17;
+		height.value = 'h-[50.3rem]';
+	}
+});
 
 const maxAsks = computed(() => {
 	return Math.max(...(spotStore.asks?.slice(0, recordCount.value).map((item) => parseFloat(item.c) || 0) || []));

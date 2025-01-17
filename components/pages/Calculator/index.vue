@@ -523,6 +523,10 @@ onMounted(async () => {
 		firstSelectedSymbol.value = currency;
 		secondSelectedSymbol.value = quote;
 	}
+	else {
+		firstSelectedSymbol.value = 'BTC';
+		secondSelectedSymbol.value = 'USDT';
+	}
 
 	await authStore.fetchCurrentUser();
 	levelIndicator.value = authStore.getUserLevelIndicator || '0';

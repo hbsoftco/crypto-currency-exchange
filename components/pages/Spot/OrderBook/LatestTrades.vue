@@ -7,7 +7,8 @@
 	</div>
 	<div
 		v-else
-		class="w-full bg-hover-light dark:bg-hover-dark rounded-sm px-2 h-auto md:h-[26rem]"
+		class="w-full bg-hover-light dark:bg-hover-dark rounded-sm px-2 h-auto"
+		:class="[height]"
 	>
 		<table class="min-w-full p-6 text-right">
 			<thead>
@@ -54,6 +55,13 @@
 <script setup lang="ts">
 import { timeFormatter } from '~/utils/time-formatter';
 import { formatBigNumber, priceFormat } from '~/utils/helpers';
+
+interface PropsDefinition {
+	height: string;
+}
+withDefaults(defineProps<PropsDefinition>(), {
+	height: 'h-[26rem]',
+});
 
 const spotStore = useSpotStore();
 </script>

@@ -35,7 +35,7 @@
 				</div>
 				<div class="mb-4">
 					<URadioGroup
-						v-model="selectedTrading"
+						v-model="selectedSpotThemeType"
 						:options="trading"
 						:ui="{
 							fieldset: 'w-full ml-20 block md:flex justify-between items-center',
@@ -200,5 +200,5 @@ const trading = [
 const selectedShowOrderBook = ref('cumulativeNumberValue');
 const selectedBasisDisplayMarkets = ref('priceChangePriority');
 const selectedNotification = ref('all');
-const selectedTrading = ref('classic');
+const selectedSpotThemeType = ref('classic');
 </script>

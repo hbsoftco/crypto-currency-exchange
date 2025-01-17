@@ -10,7 +10,10 @@
 			<div class="mb-3">
 				<MarketsInfiniteSlider />
 			</div>
-			<div class="flex justify-start">
+			<div
+				v-if="settingsStore.selectedSpotThemeType === 'standard'"
+				class="flex justify-start"
+			>
 				<div class="w-80 max-w-80 ml-2">
 					<BuySellForm />
 				</div>
@@ -40,6 +43,66 @@
 					</div>
 				</div>
 			</div>
+			<!-- end of standard theme -->
+
+			<div v-else-if="settingsStore.selectedSpotThemeType === 'vertical'">
+				<div class="mb-2">
+					<MarketOverview />
+				</div>
+
+				<div class="flex w-full">
+					<div class="w-1/2 flex pl-2">
+						<div class="w-1/2 pl-2">
+							<div class="bg-hover-light dark:bg-hover-dark rounded-sm p-2">
+								<h5 class="mb-4 text-sm font-medium px-2 pt-1">
+									{{ $t('latestTrades') }}
+								</h5>
+
+								<LatestTrades height="h-[52rem]" />
+							</div>
+						</div>
+						<div class="w-1/2">
+							<div class="bg-hover-light dark:bg-hover-dark rounded-sm p-2">
+								<h5 class="mb-4 text-sm font-medium px-1 pt-1">
+									{{ $t('orderList') }}
+								</h5>
+
+								<OrderList />
+							</div>
+						</div>
+					</div>
+
+					<div class="flex-1 px-0.5">
+						<div class="mb-2">
+							<OrderFlow />
+						</div>
+
+						<div class="flex mb-2 bg-hover-light dark:bg-hover-dark rounded-sm">
+							<div class="w-1/2 px-1">
+								<BuySellForm
+									:show-switch="false"
+									type-trade="buy"
+								/>
+							</div>
+
+							<div class="w-1/2 px-1">
+								<BuySellForm
+									:show-switch="false"
+									type-trade="sell"
+								/>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="w-full">
+					<div class="bg-hover-light dark:bg-hover-dark rounded-sm px-2">
+						<OrderTabs />
+					</div>
+				</div>
+			</div>
+			<!-- end of classic theme -->
+
 			<div>
 				<USlideover
 					v-model="settingsStore.isOpenSidebarSettingsSpot"
@@ -70,6 +133,7 @@
 					</UCard>
 				</USlideover>
 			</div>
+			<!-- end of settings -->
 		</div>
 		<!-- End of desktop -->
 
@@ -106,12 +170,14 @@
 const MarketsInfiniteSlider = defineAsyncComponent(() => import('~/components/pages/Spot/MarketsInfiniteSlider.vue'));
 const Setting = defineAsyncComponent(() => import('~/components/pages/Spot/Setting.vue'));
 const BuySellForm = defineAsyncComponent(() => import('~/components/pages/Spot/BuySellForm/index.vue'));
+const OrderList = defineAsyncComponent(() => import('~/components/pages/Spot/OrderBook/OrderList.vue'));
 const OrderBook = defineAsyncComponent(() => import('~/components/pages/Spot/OrderBook/index.vue'));
 const OrderFlow = defineAsyncComponent(() => import('~/components/pages/Spot/OrderFlow/index.vue'));
 const OrderTabs = defineAsyncComponent(() => import('~/components/pages/Spot/OrderTabs/index.vue'));
 const MarketOverview = defineAsyncComponent(() => import('~/components/pages/Spot/MarketOverview.vue'));
 const MobileMarketOverview = defineAsyncComponent(() => import('~/components/pages/Spot/MobileMarketOverview.vue'));
 const TradeHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/TradeHeader.vue'));
+const LatestTrades = defineAsyncComponent(() => import('~/components/pages/Spot/OrderBook/LatestTrades.vue'));
 
 definePageMeta({
 	layout: 'trade',
@@ -126,6 +192,7 @@ const mSymbol = String(route.params.mSymbol);
 const [currency, quote] = mSymbol.split('_');
 
 const spotStore = useSpotStore();
+const settingsStore = useSettingsStore();
 
 spotStore.symbol = `${currency}${quote}`;
 spotStore.currency = currency;
@@ -145,8 +212,6 @@ onMounted(() => {
 
 	settingsStore.isSpotPage = true;
 });
-
-const settingsStore = useSpotSettingsStore();
 
 onBeforeUnmount(() => {
 	settingsStore.isSpotPage = false;

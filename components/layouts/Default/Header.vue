@@ -114,7 +114,7 @@ const QuickAccessMenu = defineAsyncComponent(() => import('~/components/layouts/
 const Transaction = defineAsyncComponent(() => import('~/components/layouts/Default/Header/Transaction.vue'));
 const Futures = defineAsyncComponent(() => import('~/components/layouts/Default/Header/Futures.vue'));
 
-const settingsStore = useSpotSettingsStore();
+const settingsStore = useSettingsStore();
 const headerMenuStore = useHeaderMenuStore();
 
 onMounted(async () => {

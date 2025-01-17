@@ -92,7 +92,7 @@ export const useSpotStore = defineStore('spotStore', () => {
 	const snapshotParams = ref<SnapshotParams>({
 		symbol: '',
 		level: '0',
-		rows: '20',
+		rows: '40',
 	});
 	const snapshotLoading = ref<boolean>(true);
 	const snapshotFirstLoading = ref<boolean>(true);
