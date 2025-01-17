@@ -26,14 +26,14 @@
 								{{ $t("calculator") }}
 							</h1>
 							<div
-								class=" relative z-10 p-3 bg-transparency-light dark:bg-transparency-dark rounded-md shadow-md text-white w-full md:w-[40rem] h-auto my-6"
+								class=" relative z-10 p-3 px-3 md:px-5 bg-transparency-light dark:bg-transparency-dark rounded-none md:rounded-md shadow-md text-white w-full md:w-[44rem] h-auto my-6"
 							>
 								<h1
 									class="block md:hidden text-light dark:text-dark p-1 md:p-4 text-2xl md:text-6xl font-bold text-nowrap mb-2 md:mb-8"
 								>
 									{{ $t("calculator") }}
 								</h1>
-								<Calculator />
+								<Calculator :key="selectedQuote?.id || 'default-key'" />
 							</div>
 						</div>
 						<img
@@ -89,9 +89,10 @@
 				<div
 					class="grid grid-cols-2 md:grid-cols-4 gap-4"
 				>
-					<div
+					<a
 						v-for="market in markets"
 						:key="market.id"
+						:href="`/calculator?market=${market.currency?.cSymbol}_${selectedQuote?.cSymbol}`"
 						class="py-3 flex border-b border-primary-gray-light dark:border-primary-gray-dark"
 					>
 						<img
@@ -109,7 +110,7 @@
 								class="text-xs text-accent"
 							>{{ selectedQuote.cSymbol }}</span>
 						</span>
-					</div>
+					</a>
 				</div>
 			</UContainer>
 		</section>
@@ -129,9 +130,9 @@
 <script setup lang="ts">
 import { marketRepository } from '~/repositories/market.repository';
 import type { Quote } from '~/types/definitions/quote.types';
+import type { MarketL31 } from '~/types/definitions/market.types';
 import { MarketType, SortMode } from '~/utils/enums/market.enum';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
-import type { MarketL31 } from '~/types/definitions/market.types';
 import ImageCover from '~/components/pages/ImageCover.vue';
 import Calculator from '~/components/pages/Calculator/index.vue';
 
@@ -152,7 +153,7 @@ const selectQuote = (item: Quote) => {
 
 const params = ref({
 	sortMode: String(SortMode.BY_MARKET_CAPS),
-	currencyQuoteId: '',
+	currencyQuoteId: '1',
 	marketTypeId: String(MarketType.SPOT),
 	tagTypeId: '',
 	searchStatement: '',

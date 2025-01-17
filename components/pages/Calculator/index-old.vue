@@ -1,189 +1,130 @@
 <template>
 	<div>
-		<div class="block md:flex mb-8 md:mb-0 justify-between items-center">
+		<div class="block md:flex justify-between items-center">
 			<div>
 				<div>
-					<span class="text-base font-bold">
-						<span class="inline-block">{{ firstSelectedCurrency?.cName }}</span>
-						<span class="mx-2">{{ $t('to') }}</span>
-						<span class="inline-block">{{ secondSelectedCurrency?.cName }}</span>
-					</span>
+					<span class="text-base font-bold">بیت کوین به دلار</span>
 				</div>
 				<div class="mt-2">
-					<span class="text-sm font-normal inline-block">1 {{ $t('unit') }} </span>
-					<span class="inline-block mx-0.5 text-sm">{{ firstSelectedCurrency?.cSymbol }}</span>
-					<span class="inline-block mx-0.5 text-sm">{{ $t('equalTo') }} </span>
-					<span class="inline-block mx-0.5 text-sm">{{ finalReceived }}</span>
-					<span class="inline-block mx-0.5 text-sm">{{ $t('unit') }}</span>
-					<span class="inline-block mx-0.5 text-sm">{{ secondSelectedCurrency?.cSymbol }}</span>
-					<span class="inline-block mx-0.5 text-sm">{{ $t('is') }}.</span>
+					<span class="text-sm font-normal">0 بیت کوین برابر با 0 دلار آمریکا است.</span>
 				</div>
 			</div>
 			<UButton
 				size="lg"
-				class="text-base font-medium px-6 py-2 my-4 md:my-0"
-				:to="tradeItems.length ? `/spot/${firstSelectedCurrency}_USDT`: ''"
+				class="text-base font-medium px-6 py-2"
+				:to="tradeItems.length ? `/spot/${currencySymbol}_USDT`: ''"
 			>
-				{{ `${$t('buySell')} ${firstSelectedCurrency?.cName} (${firstSelectedCurrency?.cSymbol})` }}
+				{{ `خرید/فروش ${currencyName} (${currencySymbol})` }}
 			</UButton>
 		</div>
-		<section class="mb-10 md:mb-6 -mt-6 md:mt-12">
-			<div
-				class="text-center w-full"
-			>
-				<div class="my-4 flex flex-col md:flex-row w-full relative">
-					<div class="w-full md:w-1/2">
-						<div class="w-full flex justify-between items-center">
-							<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{
-								$t("from") }}</span>
-						</div>
-						<TradeChangeFieldInput
-							v-if="firstSelectedSymbol"
-							id="firstCurrency"
-							:key="currency"
-							v-model:modelValue="firstCurrencyBalance"
-							v-model:selectedSymbol="firstSelectedSymbol"
-							:ignore-currency="secondSelectedSymbol"
-							type="text"
-							input-class="text-left"
-							:label="``"
-							placeholder=""
-							icon=""
-							:show-text="false"
-							dir="rtl"
-							@item-selected="getFirstSelectedCurrency"
-							@input="getFirstCurrencyBalanceInput($event)"
-						/>
-					</div>
-					<!-- first currency -->
 
-					<div :class="[isMobile ? 'absolute top-[6.5rem] -ml-6 z-[1] mx-auto flex justify-center w-full' : 'flex justify-center items-center h-full w-16 mt-10']">
-						<ULink
-							class="flex justify-center items-center rounded-full w-16 h-16 md:w-12 md:h-12 bg-primary-yellow-light dark:bg-primary-yellow-dark border-2 border-hover-light dark:border-hover-dark"
-							@click="replacementMarket"
-						>
-							<IconChange class="text-black text-4xl md:text-2xl" />
-						</ULink>
-					</div>
-					<!-- replacement market -->
-
-					<div class="w-full md:w-1/2">
-						<div class="w-full flex justify-between">
-							<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{
-								$t("to") }}</span>
-						</div>
-						<TradeChangeFieldInput
-							v-if="secondSelectedSymbol"
-							id="secondCurrency"
-							:key="currency"
-							v-model:modelValue="secondCurrencyBalance"
-							v-model:selectedSymbol="secondSelectedSymbol"
-							:ignore-currency="firstSelectedSymbol"
-							type="number"
-							:readonly="true"
-							input-class="text-left"
-							:label="``"
-							placeholder=""
-							icon=""
-							:show-text="true"
-							dir="rtl"
-							@item-selected="getSecondSelectedCurrency"
-						/>
-					</div>
-					<!-- second currency -->
-				</div>
-				<div
-					class="flex justify-between items-center my-4"
-					dir="ltr"
-				>
-					<div class="bg-secondary-gray-light dark:bg-secondary-gray-dark w-full h-[0.063rem]" />
-					<template
-						v-for="(trade, index) in tradeItems"
-						:key="trade.market.id"
-					>
-						<div class="flex justify-between items-center text-xs font-normal">
-							<div class="ml-1 flex text-nowrap">
-								{{ useNumber(`1 ${trade.base.currency.cSymbol}`) }}
-							</div>
-							<div
-								class="mx-1"
-								dir="ltr"
-							>
-								≈
-							</div>
-							<div class="mr-1 flex text-nowrap">
-								{{ `${useNumber(priceFormat(trade.market.price))} ${trade.quote.currency.cSymbol}`
-								}}
-							</div>
-						</div>
-						<span
-							v-if="tradeItems.length > 1 && index < tradeItems.length - 1"
-							class="mx-1"
-						>
-							|
-						</span>
-					</template>
-
-					<div class="bg-secondary-gray-light dark:bg-secondary-gray-dark w-full h-[0.063rem]" />
+		<div class="grid grid-cols-12">
+			<div class="col-span-12 md:col-span-5">
+				<div class="mt-0 md:mt-8">
+					<TradeFieldInput
+						v-if="secondSelectedSymbol"
+						id="secondCurrency"
+						v-model:modelValue="secondCurrencyBalance"
+						v-model:selectedSymbol="secondSelectedSymbol"
+						:ignore-currency="firstSelectedSymbol"
+						type="number"
+						:readonly="true"
+						input-class="text-left"
+						:label="``"
+						placeholder=""
+						icon=""
+						:just-quote="false"
+						:show-text="true"
+						dir="rtl"
+						@item-selected="getSecondSelectedCurrency"
+					/>
 				</div>
 			</div>
-		</section>
+
+			<div class="col-span-12 md:col-span-2">
+				<div class="flex justify-center items-center mt-0 md:mt-8">
+					<button
+						class="flex relative z-40 justify-center items-center cursor-pointer rounded-full w-16 h-16 bg-primary-yellow-light dark:bg-primary-yellow-dark border-4 border-background-light dark:border-background-dark"
+						@click="replacementMarket"
+					>
+						<IconChange
+							class="text-black text-4xl cursor-pointer"
+							@click="replacementMarket"
+						/>
+					</button>
+				</div>
+			</div>
+
+			<div class="col-span-12 md:col-span-5">
+				<div class="mt-0 md:mt-8">
+					<TradeFieldInput
+						v-if="firstSelectedSymbol"
+						id="firstCurrency"
+						v-model:modelValue="firstCurrencyBalance"
+						v-model:selectedSymbol="firstSelectedSymbol"
+						:ignore-currency="secondSelectedSymbol"
+						type="text"
+						input-class="text-left"
+						:label="``"
+						placeholder=""
+						icon=""
+						:show-text="false"
+						:just-quote="false"
+						dir="rtl"
+						:error-message="firstCurrencyBalanceErrorMessage"
+						@item-selected="getFirstSelectedCurrency"
+						@input="getFirstCurrencyBalanceInput($event)"
+					/>
+				</div>
+			</div>
+
+			<div class="col-span-12">
+				<div>
+					<div
+						v-for="trade in tradeItems"
+						:key="trade.market.id"
+						class="mx-1 my-2 h-6"
+					>
+						<span class="mr-0.5">{{ useNumber(1) }}</span>
+						<span>{{ trade.base.currency.cSymbol }}</span>
+						<span class="mx-1">≈</span>
+						<span class="mr-0.5">{{ useNumber(priceFormat(trade.market.price)) }} </span>
+						<span>{{ trade.quote.currency.cSymbol }}</span>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
-import { priceFormat, formatByDecimal } from '~/utils/helpers';
-import TradeChangeFieldInput from '~/components/forms/TradeChangeFieldInput.vue';
+import TradeFieldInput from '~/components/forms/TradeFieldInput.vue';
 import IconChange from '~/assets/svg-icons/trade/change.svg';
-import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
-import type { TradeOption } from '~/types/definitions/spot.types';
+import { useNumber } from '~/composables/useNumber';
+import { priceFormat } from '~/utils/helpers';
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
-import type { MarketBrief } from '~/types/definitions/market.types';
+import type { TradeOption } from '~/types/definitions/spot.types';
 import type { Quote } from '~/types/definitions/quote.types';
+import type { MarketBrief } from '~/types/definitions/market.types';
+import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 
-const { $mobileDetect } = useNuxtApp();
-
-const isMobile = ref(false);
-const mobileDetect = $mobileDetect as MobileDetect;
+const cSymbol = 'BTC';
 
 const publicSocketStore = usePublicSocketStore();
-const authStore = useAuthStore();
 
 const worker = useBaseWorker();
 
-const route = useRoute();
-
-const mSymbol = String(route.query.market);
-const [currency, quote] = mSymbol.split('_');
+const firstCurrencyBalanceErrorMessage = ref<string>('');
 
 const firstCurrencyBalanceInput = ref<number>(0);
 const firstCurrencyBalance = ref<string>('');
 const secondCurrencyBalance = ref<string>('');
-const firstSelectedSymbol = ref('');
-const secondSelectedSymbol = ref('');
+const firstSelectedSymbol = ref(cSymbol);
+const secondSelectedSymbol = ref('usdt');
 
 const getFirstCurrencyBalanceInput = (input: number) => {
 	firstCurrencyBalanceInput.value = input;
 };
-
-const socketMarketIds = ref<number[]>([]);
-
-const finalReceived = computed(() => {
-	let received = '';
-	if (tradeItems.value.length > 1) {
-		//
-	}
-	else if (tradeItems.value.length === 1) {
-		if (tradeItems.value[0].quote.location === 'BOTTOM') {
-			received = priceFormat(formatByDecimal(1 * tradeItems.value[0].market.price, tradeItems.value[0].quote.currency.unit), true);
-		}
-		else {
-			received = priceFormat(formatByDecimal(1 * tradeItems.value[0].market.price, tradeItems.value[0].base.currency.unit), true);
-		}
-	}
-	return received;
-});
 
 const firstSelectedCurrency = ref<CurrencyBrief>();
 const getFirstSelectedCurrency = async (newCurrency: CurrencyBrief) => {
@@ -206,30 +147,26 @@ const replacementMarket = async () => {
 	secondCurrencyBalance.value = '';
 };
 
-const levelIndicator = ref<string>();
+const currencyName = computed<string>(() => {
+	if (!tradeItems.value.length) return '';
+	if (tradeItems.value[0].base.currency.cSymbol !== 'TMN') {
+		return tradeItems.value[0].base.currency.cName;
+	}
+
+	return tradeItems.value[0].quote.currency.cName;
+});
+const currencySymbol = computed<string>(() => {
+	if (!tradeItems.value.length) return '';
+	if (tradeItems.value[0].base.currency.cSymbol !== 'TMN') {
+		return tradeItems.value[0].base.currency.cSymbol;
+	}
+
+	return tradeItems.value[0].quote.currency.cSymbol;
+});
+
 const quoteItems = ref<Quote[]>();
-
-watch(
-	() => route.query.market,
-	(newMarket, oldMarket) => {
-		if (newMarket !== oldMarket) {
-			if (newMarket) {
-				const [currency, quote] = String(newMarket).split('_');
-				firstSelectedSymbol.value = currency;
-				secondSelectedSymbol.value = quote;
-			}
-		}
-	},
-);
-
-watch(
-	[firstSelectedSymbol, secondSelectedSymbol],
-	async ([newFirst, newSecond]) => {
-		await getReadyTrade(newFirst, newSecond);
-	},
-);
-
 const tradeItems = ref<TradeOption[]>([]);
+const socketMarketIds = ref<number[]>([]);
 
 const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) => {
 	if (!quoteItems.value || !firstSelectedCurrency.value || !secondSelectedCurrency.value) return;
@@ -420,23 +357,32 @@ const getReadyTrade = async (_firstCurrency: string, _secondCurrency: string) =>
 		}
 	}
 
-	socketMarketIds.value = [];
+	if (socketMarketIds.value.length) {
+		await publicSocketStore.removeMarketIds(socketMarketIds.value);
+	}
 
-	// Finding taker fee and assets
-	tradeItems.value.forEach((item, index) => {
-		tradeItems.value[index].base.qAvailable = '0';
-		tradeItems.value[index].quote.qAvailable = '0';
-
-		// Get marketIds
-		socketMarketIds.value.push(item.market.id);
-	});
-
-	// Get price by socket
-	await publicSocketStore.unSubscribe();
+	socketMarketIds.value = tradeItems.value.map((item) => item.market.id);
 	await publicSocketStore.addMarketIds(socketMarketIds.value);
 };
 
+const checkTradeInputValidation = (inputBalance: number, inputUnit: number, inputBalanceLength: number, inputUnitLength: number) => {
+	if (inputBalanceLength >= inputUnitLength) {
+		if (inputBalance < inputUnit) {
+			firstCurrencyBalanceErrorMessage.value = useT('invalidInputNumber');
+		}
+		else {
+			firstCurrencyBalanceErrorMessage.value = '';
+		}
+	}
+	else {
+		firstCurrencyBalanceErrorMessage.value = '';
+	}
+};
+
 const fieldDataCalculation = (input: number) => {
+	const inputBalance = convertPersianToEnglishNumber(firstCurrencyBalance.value);
+	const inputBalanceLength = firstCurrencyBalance.value.length;
+
 	if (tradeItems.value.length === 1) {
 		const marketPrice = tradeItems.value[0].market.price;
 
@@ -446,12 +392,22 @@ const fieldDataCalculation = (input: number) => {
 			const balancePrice = (tradeItems.value[0].base.value * marketPrice);
 			tradeItems.value[0].quote.value = formatByDecimal(balancePrice, tradeItems.value[0].quote.currency.unit);
 			secondCurrencyBalance.value = String(tradeItems.value[0].quote.value);
+
+			const inputUnit = Number(tradeItems.value[0].base.currency.unit);
+			const inputUnitLength = (tradeItems.value[0].base.currency.unit).length;
+
+			checkTradeInputValidation(inputBalance, inputUnit, inputBalanceLength, inputUnitLength);
 		}
 		else if (tradeItems.value[0].quote.location === 'TOP') {
 			tradeItems.value[0].quote.value = Number(input);
 			const balanceBase = tradeItems.value[0].quote.value / marketPrice;
 			tradeItems.value[0].base.value = formatByDecimal(balanceBase, tradeItems.value[0].base.currency.unit);
 			secondCurrencyBalance.value = String(tradeItems.value[0].base.value);
+
+			const inputUnit = Number(tradeItems.value[0].quote.currency.unit);
+			const inputUnitLength = (tradeItems.value[0].quote.currency.unit).length;
+
+			checkTradeInputValidation(inputBalance, inputUnit, inputBalanceLength, inputUnitLength);
 		}
 
 		tradeItems.value[0].fee = (tradeItems.value[0].quote.value * Number(tradeItems.value[0].takerFee)) / 100;
@@ -473,6 +429,11 @@ const fieldDataCalculation = (input: number) => {
 		secondCurrencyBalance.value = String(tradeItems.value[1].base.value);
 
 		tradeItems.value[1].fee = (tradeItems.value[1].quote.value * Number(tradeItems.value[1].takerFee)) / 100;
+
+		const inputUnit = Number(tradeItems.value[0].base.currency.unit);
+		const inputUnitLength = (tradeItems.value[0].base.currency.unit).length;
+
+		checkTradeInputValidation(inputBalance, inputUnit, inputBalanceLength, inputUnitLength);
 	}
 };
 
@@ -484,6 +445,7 @@ watch(
 		}
 		else {
 			secondCurrencyBalance.value = '';
+			firstCurrencyBalanceErrorMessage.value = '';
 
 			tradeItems.value.forEach((item, index) => {
 				tradeItems.value[index].fee = 0;
@@ -515,26 +477,21 @@ watch(
 	{ deep: true },
 );
 
+watch(
+	[firstSelectedSymbol, secondSelectedSymbol],
+	async ([newFirst, newSecond]) => {
+		await getReadyTrade(newFirst, newSecond);
+	},
+);
+
 onMounted(async () => {
-	isMobile.value = !!mobileDetect.mobile();
-
 	await nextTick();
-	if (currency && quote) {
-		firstSelectedSymbol.value = currency;
-		secondSelectedSymbol.value = quote;
-	}
 
-	await authStore.fetchCurrentUser();
-	levelIndicator.value = authStore.getUserLevelIndicator || '0';
 	quoteItems.value = await worker.fetchSpotQuoteItems(useEnv('apiBaseUrl'));
 
 	firstSelectedCurrency.value = (await worker.searchCurrencies(firstSelectedSymbol.value, 1, useEnv('apiBaseUrl')))[0] ?? null;
 	secondSelectedCurrency.value = (await worker.searchCurrencies(secondSelectedSymbol.value, 1, useEnv('apiBaseUrl')))[0] ?? null;
 
 	await getReadyTrade(firstSelectedSymbol.value, secondSelectedSymbol.value);
-});
-
-onBeforeUnmount(async () => {
-	await publicSocketStore.unSubscribe();
 });
 </script>

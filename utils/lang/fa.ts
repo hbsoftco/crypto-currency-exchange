@@ -1174,6 +1174,9 @@ const persian = {
 	fileUploadSuccess: 'فایل با موفقیت آپلود شد!',
 	send: 'ارسال',
 	yourTicket: 'تیکت شما',
+	unit: 'واحد',
+	equalTo: 'برابر با',
+	is: 'است',
 };
 
 export default persian;
