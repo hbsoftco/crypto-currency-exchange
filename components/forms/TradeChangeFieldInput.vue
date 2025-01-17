@@ -84,7 +84,7 @@
 					v-if="!showText"
 					v-model="internalValue"
 					step=".01"
-					placeholder="0.00"
+					placeholder="0"
 					:type="type"
 					:readonly="readonly"
 					dir="ltr"
