@@ -77,15 +77,15 @@
 							<OrderFlow />
 						</div>
 
-						<div class="flex mb-2 bg-hover-light dark:bg-hover-dark rounded-sm">
-							<div class="w-1/2 px-1">
+						<div class="flex mb-2 bg-hover-light dark:bg-hover-dark rounded-sm px-5">
+							<div class="w-1/2 px-6">
 								<BuySellForm
 									:show-switch="false"
 									type-trade="buy"
 								/>
 							</div>
 
-							<div class="w-1/2 px-1">
+							<div class="w-1/2 px-6">
 								<BuySellForm
 									:show-switch="false"
 									type-trade="sell"
