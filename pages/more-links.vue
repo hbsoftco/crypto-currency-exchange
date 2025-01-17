@@ -196,7 +196,7 @@
 						<span class="text-sm mt-2">{{ $t('calculator') }}</span>
 					</ULink>
 					<ULink
-						to="/fast-trade"
+						to="/fast-trade?market=BTC_USDT"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<IconFeeFinal class=" text-primary-yellow-light dark:text-primary-yellow-dark text-2xl" />

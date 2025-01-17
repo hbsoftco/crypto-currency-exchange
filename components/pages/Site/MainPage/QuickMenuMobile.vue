@@ -54,7 +54,7 @@
 				<span class="text-sm">{{ $t('inviteFriends') }}</span>
 			</ULink>
 			<ULink
-				to="/fast-trade"
+				to="/fast-trade?market=BTC_USDT"
 				class="flex flex-col justify-center items-center  mb-4"
 			>
 				<img

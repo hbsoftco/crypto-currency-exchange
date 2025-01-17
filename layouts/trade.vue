@@ -38,6 +38,7 @@ const mobileDetect = $mobileDetect as MobileDetect;
 const isSpecialRoute = ref<boolean>(false);
 const specialRoutes = ref<string[]>([
 	'spot-mSymbol',
+	'fast-trade',
 ]);
 
 watch(() => route.name, (newName) => {

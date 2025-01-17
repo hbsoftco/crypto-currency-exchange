@@ -121,7 +121,7 @@
 					<div class="grid grid-cols-2 gap-4">
 						<div>
 							<UButton
-								to="/fast-trade"
+								to="/fast-trade?market=BTC_USDT"
 								class="flex justify-center w-full my-2 text-black text-base bg-white dark:bg-white border border-primary-yellow-light dark:border-primary-yellow-dark"
 							>
 								{{ $t("buyCryptocurrency") }}
@@ -260,7 +260,7 @@
 					<div class="grid grid-cols-2 gap-4">
 						<div>
 							<UButton
-								to="/fast-trade"
+								to="/fast-trade?market=BTC_USDT"
 								class="flex justify-center w-full my-2 text-black text-base bg-white dark:bg-white border border-primary-yellow-light dark:border-primary-yellow-dark"
 							>
 								{{ $t("buyCryptocurrency") }}
@@ -399,7 +399,7 @@
 					<div class="grid grid-cols-2 gap-4">
 						<div>
 							<UButton
-								to="/fast-trade"
+								to="/fast-trade?market=BTC_USDT"
 								class="flex justify-center w-full my-2 text-black text-base bg-white dark:bg-white border border-primary-yellow-light dark:border-primary-yellow-dark"
 							>
 								{{ $t("buyCryptocurrency") }}

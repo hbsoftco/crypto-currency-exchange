@@ -11,12 +11,20 @@
 		<UContainer v-if="commissionListLoading && assetListLoading">
 			<UiLogoLoading />
 		</UContainer>
-		<UContainer v-else>
-			<section class="my-12">
+		<div
+			v-else
+			class="mx-auto px-0 sm:px-6 lg:px-8 max-w-7xl"
+		>
+			<TradeHeader
+				v-if="isMobile"
+				active-menu="quickTrade"
+			/>
+
+			<section class="mb-10 md:mb-12 -mt-6 md:mt-12">
 				<div
-					class="mx-auto text-center rounded-md bg-hover-light dark:bg-hover-dark py-8 px-1 md:px-10 w-full md:w-[34.188rem]"
+					class="mx-auto text-center rounded-none md:rounded-md bg-hover-light dark:bg-hover-dark pt-8 pb-4 md:pb-8 px-4 md:px-10 w-full md:w-[34.188rem]"
 				>
-					<h1 class="text-2xl font-bold">
+					<h1 class="text-xl md:text-2xl font-bold">
 						{{ $t("conversion") }}
 					</h1>
 					<div class="my-4 relative">
@@ -139,7 +147,7 @@
 							</span>
 						</div>
 					</div>
-					<div class="flex justify-between my-4 py-2">
+					<div class="flex justify-between my-1 md:my-4 py-2">
 						<span>{{ $t("receivable") }}</span>
 						<div class="flex">
 							<span
@@ -162,8 +170,11 @@
 					</UButton>
 				</div>
 			</section>
-			<RecentTrades />
-		</UContainer>
+
+			<section class="mb-20 md:mb-0 px-4 md:px-0">
+				<RecentTrades />
+			</section>
+		</div>
 	</div>
 </template>
 
@@ -187,6 +198,7 @@ import { spotRepository } from '~/repositories/spot.repository';
 import { userRepository } from '~/repositories/user.repository';
 import { assetRepository } from '~/repositories/asset.repository';
 
+const TradeHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/TradeHeader.vue'));
 const ConfirmOrderModal = defineAsyncComponent(() => import('~/components/pages/FastTrade/ConfirmOrderModal.vue'));
 
 definePageMeta({
@@ -194,10 +206,13 @@ definePageMeta({
 	middleware: 'auth',
 });
 
-const { $api } = useNuxtApp();
+const { $api, $mobileDetect } = useNuxtApp();
 const assetRepo = assetRepository($api);
 const userRepo = userRepository($api);
 const spotRepo = spotRepository($api);
+
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
 
 const publicSocketStore = usePublicSocketStore();
 const authStore = useAuthStore();
@@ -829,6 +844,8 @@ watch(
 );
 
 onMounted(async () => {
+	isMobile.value = !!mobileDetect.mobile();
+
 	await nextTick();
 
 	await getCommissionList();

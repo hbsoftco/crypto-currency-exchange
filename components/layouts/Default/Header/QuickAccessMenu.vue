@@ -89,7 +89,7 @@ const menuItems = [
 		name: 'quickTrade',
 		description: useT('instantCryptoTrade'),
 		icon: IconQuickTrade,
-		url: '/fast-trade',
+		url: '/fast-trade?market=BTC_USDT',
 
 	},
 	{

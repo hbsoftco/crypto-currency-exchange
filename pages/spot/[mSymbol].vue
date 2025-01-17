@@ -77,7 +77,7 @@
 			v-else
 			class="mb-10"
 		>
-			<SpotHeader active-menu="spot" />
+			<TradeHeader active-menu="spot" />
 			<div class="mb-3">
 				<MobileMarketOverview />
 			</div>
@@ -111,7 +111,7 @@ const OrderFlow = defineAsyncComponent(() => import('~/components/pages/Spot/Ord
 const OrderTabs = defineAsyncComponent(() => import('~/components/pages/Spot/OrderTabs/index.vue'));
 const MarketOverview = defineAsyncComponent(() => import('~/components/pages/Spot/MarketOverview.vue'));
 const MobileMarketOverview = defineAsyncComponent(() => import('~/components/pages/Spot/MobileMarketOverview.vue'));
-const SpotHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/SpotHeader.vue'));
+const TradeHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/TradeHeader.vue'));
 
 definePageMeta({
 	layout: 'trade',

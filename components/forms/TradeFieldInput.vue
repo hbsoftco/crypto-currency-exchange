@@ -1,6 +1,7 @@
 <template>
 	<div class="relative mb-3">
 		<div
+			class="bg-white dark:bg-black md:bg-transparent md:dark:bg-transparent"
 			:class="['mt-3 h-14 block cursor-text appearance-none focus:outline-none focus:ring-0 px-2.5 pl-10 pb-2.5 pt-3 w-full text-sm text-text-dark dark:text-text-light bg-transparent rounded-lg border peer',
 				errorMessage ? 'border-accent-red focus:border-accent-red' : 'border-gray-600  focus:border-primary-yellow-light dark:focus:border-primary-yellow-dark',
 			]"
