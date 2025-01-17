@@ -142,8 +142,8 @@ const MarketPriceTab = defineAsyncComponent(() => import('~/components/pages/Spo
 const StopMarketTab = defineAsyncComponent(() => import('~/components/pages/Spot/BuySellForm/StopMarketTab.vue'));
 
 interface PropsDefinition {
-	typeTrade: TypeTrade;
-	showSwitch: boolean;
+	typeTrade?: TypeTrade;
+	showSwitch?: boolean;
 }
 const props = withDefaults(defineProps<PropsDefinition>(), {
 	showSwitch: true,

@@ -108,7 +108,7 @@ import IconList from '~/assets/svg-icons/spot/list.svg';
 import SearchMarket from '~/components/pages/Spot/SearchMarket.vue';
 
 interface PropsDefinition {
-	showSearchBox: boolean;
+	showSearchBox?: boolean;
 }
 withDefaults(defineProps<PropsDefinition>(), {
 	showSearchBox: true,

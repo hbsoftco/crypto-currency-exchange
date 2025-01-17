@@ -57,7 +57,7 @@ import { timeFormatter } from '~/utils/time-formatter';
 import { formatBigNumber, priceFormat } from '~/utils/helpers';
 
 interface PropsDefinition {
-	height: string;
+	height?: string;
 }
 withDefaults(defineProps<PropsDefinition>(), {
 	height: 'h-[26rem]',
