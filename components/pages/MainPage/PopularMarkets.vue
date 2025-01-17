@@ -1,5 +1,8 @@
 <template>
-	<div v-if="marketsLoading">
+	<div
+		v-if="marketsLoading"
+		class="mt-8"
+	>
 		<h1 class="text-sm font-bold mb-4">
 			{{ $t('popularMarkets') }}
 		</h1>
