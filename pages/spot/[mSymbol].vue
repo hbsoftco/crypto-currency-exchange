@@ -77,7 +77,7 @@
 							<OrderFlow />
 						</div>
 
-						<div class="flex mb-2 bg-hover-light dark:bg-hover-dark rounded-sm px-5">
+						<div class="flex mb-2 bg-hover-light dark:bg-hover-dark rounded-sm px-6">
 							<div class="w-1/2 px-6">
 								<BuySellForm
 									:show-switch="false"
@@ -91,6 +91,57 @@
 									type-trade="sell"
 								/>
 							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="w-full">
+					<div class="bg-hover-light dark:bg-hover-dark rounded-sm px-2">
+						<OrderTabs />
+					</div>
+				</div>
+			</div>
+			<!-- end of vertical theme -->
+
+			<div v-else-if="settingsStore.selectedSpotThemeType === 'classic'">
+				<div class="w-full flex">
+					<div class="w-[27rem] pl-2">
+						<div class="bg-hover-light dark:bg-hover-dark rounded-sm p-2">
+							<SearchMarket />
+						</div>
+					</div>
+					<div class="flex-1">
+						<div class="mb-2">
+							<MarketOverview :show-search-box="false" />
+						</div>
+
+						<div class="mb-2">
+							<OrderFlow />
+						</div>
+
+						<div class="flex mb-2 bg-hover-light dark:bg-hover-dark rounded-sm px-6">
+							<div class="w-1/2 px-6">
+								<BuySellForm
+									:show-switch="false"
+									type-trade="buy"
+								/>
+							</div>
+
+							<div class="w-1/2 px-6">
+								<BuySellForm
+									:show-switch="false"
+									type-trade="sell"
+								/>
+							</div>
+						</div>
+					</div>
+					<div class="w-[27rem] pr-2">
+						<div class="bg-hover-light dark:bg-hover-dark rounded-sm p-2">
+							<h5 class="mb-4 text-sm font-medium px-1 pt-1">
+								{{ $t('orderList') }}
+							</h5>
+
+							<OrderList />
 						</div>
 					</div>
 				</div>
@@ -167,6 +218,8 @@
 </template>
 
 <script setup lang="ts">
+import SearchMarket from '~/components/pages/Spot/SearchMarket.vue';
+
 const MarketsInfiniteSlider = defineAsyncComponent(() => import('~/components/pages/Spot/MarketsInfiniteSlider.vue'));
 const Setting = defineAsyncComponent(() => import('~/components/pages/Spot/Setting.vue'));
 const BuySellForm = defineAsyncComponent(() => import('~/components/pages/Spot/BuySellForm/index.vue'));

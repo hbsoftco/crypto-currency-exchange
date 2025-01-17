@@ -100,7 +100,7 @@ const authStore = useAuthStore();
 const spotStore = useSpotStore();
 const settingsStore = useSettingsStore();
 
-const recordCount = ref<number>(18);
+const recordCount = ref<number>();
 const height = ref<string>('h-[28.5rem]');
 
 onMounted(() => {
@@ -113,6 +113,10 @@ onMounted(() => {
 	else if (settingsStore.selectedSpotThemeType === 'vertical') {
 		recordCount.value = 33;
 		height.value = 'h-[50.3rem]';
+	}
+	else {
+		recordCount.value = 38;
+		height.value = 'h-[54.5rem]';
 	}
 });
 

@@ -149,6 +149,10 @@ onMounted(() => {
 		recordCount.value = 17;
 		height.value = 'h-[50.3rem]';
 	}
+	else {
+		recordCount.value = 18;
+		height.value = 'h-[54.5rem]';
+	}
 });
 
 const maxAsks = computed(() => {

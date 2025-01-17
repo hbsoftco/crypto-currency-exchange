@@ -2,6 +2,7 @@
 	<div class="w-full relative bg-hover-light dark:bg-hover-dark rounded-sm p-2">
 		<div class="flex justify-start flex-row-reverse items-center">
 			<div
+				v-if="showSearchBox"
 				class="cursor-pointer px-2"
 				@click="openSearchBox"
 			>
@@ -105,6 +106,13 @@
 import { priceFormat, handleImageError } from '~/utils/helpers';
 import IconList from '~/assets/svg-icons/spot/list.svg';
 import SearchMarket from '~/components/pages/Spot/SearchMarket.vue';
+
+interface PropsDefinition {
+	showSearchBox: boolean;
+}
+withDefaults(defineProps<PropsDefinition>(), {
+	showSearchBox: true,
+});
 
 const spotStore = useSpotStore();
 
