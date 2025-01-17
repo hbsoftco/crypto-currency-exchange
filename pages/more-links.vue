@@ -186,7 +186,7 @@
 						<span class="text-sm mt-2">{{ $t('helpBuy') }}</span>
 					</ULink>
 					<ULink
-						to="/calculator"
+						to="/calculator?market=BTC_USDT"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<UIcon
@@ -227,7 +227,7 @@
 				</h4>
 				‌<div class="grid grid-cols-3 gap-1">
 					<ULink
-						to="/calculator"
+						to="/calculator?market=BTC_USDT"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<UIcon
