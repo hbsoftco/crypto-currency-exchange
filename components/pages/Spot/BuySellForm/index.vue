@@ -1,5 +1,5 @@
 <template>
-	<div class="w-full bg-hover-light dark:bg-hover-dark rounded-sm p-2 pt-0 md:pt-2">
+	<div class="w-full bg-hover-light dark:bg-hover-dark rounded-sm p-2 pt-0.5 md:pt-2">
 		<div class="flex justify-center items-center">
 			<div class="w-1/2">
 				<button

@@ -58,19 +58,55 @@
 
 			<div
 				v-else
-				class="flex flex-row-reverse mr-3"
+				class="flex flex-row-reverse mr-3 relative"
 			>
-				<button
-					class="w-7 h-7 flex justify-center items-center"
-					:class="{ 'opacity-100': activeButton === 'all', 'opacity-40': activeButton !== 'all' }"
-					@click="setActiveButton('all')"
-				>
-					<img
-						:src="getIconSrc('all')"
-						alt="handicap"
-						class="w-6 h-6"
-					>
-				</button>
+				<UPopover v-model:open="open">
+					<button class="w-6 h-6 pt-1">
+						<img
+							:src="getIconSrc(activeButton as 'all' | 'buy' | 'sell')"
+							alt="handicap"
+							class="w-6 h-6"
+						>
+					</button>
+
+					<template #panel>
+						<div class="flex flex-row-reverse justify-start p-1">
+							<button
+								class="w-7 h-7 flex justify-center items-center"
+								:class="{ 'opacity-100': activeButton === 'all', 'opacity-40': activeButton !== 'all' }"
+								@click="setActiveButton('all')"
+							>
+								<img
+									:src="getIconSrc('all')"
+									alt="handicap"
+									class="w-6 h-6"
+								>
+							</button>
+							<button
+								class="w-7 h-7 flex justify-center items-center mx-3"
+								:class="{ 'opacity-100': activeButton === 'buy', 'opacity-40': activeButton !== 'buy' }"
+								@click="setActiveButton('buy')"
+							>
+								<img
+									:src="getIconSrc('buy')"
+									alt="handicap"
+									class="w-6 h-6"
+								>
+							</button>
+							<button
+								class="w-7 h-7 flex justify-center items-center"
+								:class="{ 'opacity-100': activeButton === 'sell', 'opacity-40': activeButton !== 'sell' }"
+								@click="setActiveButton('sell')"
+							>
+								<img
+									:src="getIconSrc('sell')"
+									alt="handicap"
+									class="w-6 h-6"
+								>
+							</button>
+						</div>
+					</template>
+				</UPopover>
 			</div>
 			<!-- Mobile Buttons -->
 		</div>
@@ -98,6 +134,8 @@ const { $mobileDetect } = useNuxtApp();
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
 
+const open = ref(false);
+
 const spotStore = useSpotStore();
 
 const colorMode = useColorMode();
@@ -119,6 +157,7 @@ const activeButton = ref('all');
 
 const setActiveButton = (button: string) => {
 	activeButton.value = button;
+	open.value = false;
 };
 
 onMounted(() => {

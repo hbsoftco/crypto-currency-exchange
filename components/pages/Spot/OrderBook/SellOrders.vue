@@ -1,9 +1,13 @@
 <template>
-	<div class="h-[28.5rem] overflow-hidden px-1">
+	<div class="h-[30rem] md:h-[28.5rem] overflow-hidden px-1">
 		<section>
 			<div class="flex justify-between py-2">
 				<div class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
-					<span>{{ $t('total') }}</span>({{ spotStore.currency }})
+					<span v-if="!isMobile">{{ $t('total') }} ({{ spotStore.currency }})</span>
+					<div v-else>
+						<div>{{ $t('total') }}</div>
+						<div>({{ spotStore.currency }})</div>
+					</div>
 				</div>
 				<div
 					v-if="!isMobile"
@@ -12,7 +16,11 @@
 					<span>{{ $t('amount') }}</span>({{ spotStore.currency }})
 				</div>
 				<div class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
-					<span>{{ $t('price') }}</span>({{ spotStore.quote }})
+					<span v-if="!isMobile">{{ $t('price') }} ({{ spotStore.quote }})</span>
+					<div v-else>
+						<div>{{ $t('price') }}</div>
+						<div>({{ spotStore.quote }})</div>
+					</div>
 				</div>
 			</div>
 

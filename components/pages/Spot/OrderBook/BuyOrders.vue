@@ -1,15 +1,26 @@
 <template>
-	<div class="h-[28.5rem] overflow-hidden px-1">
+	<div class="h-[30rem] md:h-[28.5rem] overflow-hidden px-1">
 		<section>
 			<div class="flex justify-between py-2">
 				<div class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
-					<span>{{ $t('total') }}</span>({{ spotStore.currency }})
+					<span v-if="!isMobile">{{ $t('total') }} ({{ spotStore.currency }})</span>
+					<div v-else>
+						<div>{{ $t('total') }}</div>
+						<div>({{ spotStore.currency }})</div>
+					</div>
 				</div>
-				<div class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
+				<div
+					v-if="!isMobile"
+					class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark"
+				>
 					<span>{{ $t('amount') }}</span>({{ spotStore.currency }})
 				</div>
 				<div class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
-					<span>{{ $t('price') }}</span>({{ spotStore.quote }})
+					<span v-if="!isMobile">{{ $t('price') }} ({{ spotStore.quote }})</span>
+					<div v-else>
+						<div>{{ $t('price') }}</div>
+						<div>({{ spotStore.quote }})</div>
+					</div>
 				</div>
 			</div>
 
@@ -52,7 +63,10 @@
 					<div class="text-xs text-right font-normal w-1/3 pr-1">
 						<span dir="ltr">{{ formatBigNumber(item.c, 3) }}</span>
 					</div>
-					<div class="text-xs text-left font-normal w-1/4">
+					<div
+						v-if="!isMobile"
+						class="text-xs text-left font-normal w-1/4"
+					>
 						<span dir="ltr">{{ formatBigNumber(item.v, 3) }}</span>
 					</div>
 					<div class="flex items-center justify-end text-xs font-normal w-1/3 text-accent-green dark:text-accent-green">
@@ -74,6 +88,14 @@
 import { priceFormat, formatBigNumber } from '~/utils/helpers';
 import IconArrowUp from '~/assets/svg-icons/spot/arrow-up.svg';
 import IconArrowDown from '~/assets/svg-icons/spot/arrow-down.svg';
+
+const { $mobileDetect } = useNuxtApp();
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
+
+onMounted(() => {
+	isMobile.value = !!mobileDetect.mobile();
+});
 
 const authStore = useAuthStore();
 const spotStore = useSpotStore();
