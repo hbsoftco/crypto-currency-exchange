@@ -122,12 +122,15 @@
 		<div class="grid grid-cols-12 gap-8">
 			<div class="col-span-12 md:col-span-8">
 				<div class="border pt-4 pb-1 px-8 mb-4 rounded-md border-primary-gray-light dark:border-primary-gray-dark">
-					<div class="border-b border-primary-gray-light dark:border-primary-gray-dark">
+					<div
+						:class="[showBorder ? 'border-b' : '']"
+						class="border-primary-gray-light dark:border-primary-gray-dark"
+					>
 						<h6 class="mb-4 text-base font-semibold">
-							احراز هویت (سطح یک)
+							احراز هویت ({{ getValueByKey(authStore.getCurrentUser, 'KYC_LVL_NAME') }})
 						</h6>
 						<p class="mb-4 text-sm">
-							سقف برداشت فعلی: 20 بیت کوین در 24 ساعت
+							سقف برداشت فعلی: {{ getValueByKey(authStore.getCurrentUser, 'KYC_LVL_WITHDRAW') }} بیت کوین در 24 ساعت
 						</p>
 						<p class="mb-4 text-sm">
 							برای افزایش سقف برداشت، فرآیند احراز هویت را تکمیل کنید.
@@ -135,7 +138,15 @@
 					</div>
 					<div class="text-right">
 						<UiSeeMore
-							link="/"
+							v-if="getValueByKey(authStore.getCurrentUser, 'KYC_LVL_ID') === '0' "
+							link="/user/id-auth/level1"
+							align="text-right"
+							py="py-2"
+							text="upgradeToLevelOne"
+						/>
+						<UiSeeMore
+							v-else-if="getValueByKey(authStore.getCurrentUser, 'KYC_LVL_ID') === '1' "
+							link="/user/id-auth/level2"
 							align="text-right"
 							py="py-2"
 							text="upgradeToLevelTwo"
@@ -277,6 +288,14 @@ const toast = useToast();
 const { copyText } = useClipboard();
 
 const openModal = ref(false);
+
+const showBorder = computed<boolean>(() => {
+	if (getValueByKey(authStore.getCurrentUser, 'KYC_LVL_ID') === '1' || getValueByKey(authStore.getCurrentUser, 'KYC_LVL_ID') === '0') {
+		return true;
+	}
+
+	return false;
+});
 
 const setNickName = () => {
 	openModal.value = true;

@@ -277,7 +277,7 @@
 					<!-- showAccount -->
 					<li class="border-b border-primary-gray-light dark:border-primary-gray-dark mt-0">
 						<ULink
-							to="/user/authentication"
+							to="/user/id-auth"
 							class="flex justify-between items-center w-full py-3"
 						>
 							<div class="flex justify-start items-center">

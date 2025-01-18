@@ -22,7 +22,7 @@
 			<!-- authentication -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark mt-0">
 				<ULink
-					to="/user/authentication"
+					to="/user/id-auth"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
 					active-class="text-active"
 				>

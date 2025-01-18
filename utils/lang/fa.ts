@@ -273,6 +273,7 @@ const persian = {
 	registrationTime: 'زمان ثبت نام',
 	lastLogin: 'آخرین ورود',
 	upgradeToLevelTwo: 'ارتقا به سطح دو',
+	upgradeToLevelOne: 'ارتقا به سطح یک',
 	assetDetails: 'جزئیات دارایی',
 	totalValue: 'ارزش کل',
 	buyCrypto: 'خرید رمز ارز',

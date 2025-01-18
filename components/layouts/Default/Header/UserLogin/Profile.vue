@@ -85,7 +85,7 @@
 						<!-- showAccount -->
 						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark mt-0 hover:bg-hover2-light dark:hover:bg-hover2-dark">
 							<ULink
-								to="/user/authentication"
+								to="/user/id-auth"
 								class="flex justify-between items-center w-full py-1.5"
 							>
 								<div class="flex justify-start items-center">
