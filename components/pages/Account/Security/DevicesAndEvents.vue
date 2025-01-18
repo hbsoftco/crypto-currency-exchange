@@ -30,7 +30,7 @@
 				</p>
 			</div>
 			<UButton
-				to="/account/security/active-account"
+				to="/user/security/active-account"
 				color="gray"
 				class="text-black dark:text-white text-sm font-normal bg-hover-light dark:bg-hover-dark shadow-none border border-subtle-text-50"
 			>
@@ -55,7 +55,7 @@
 				</p>
 			</div>
 			<UButton
-				to="/account/security/device-manage"
+				to="/user/security/device-manage"
 				color="gray"
 				class="text-black dark:text-white text-sm font-normal bg-hover-light dark:bg-hover-dark shadow-none border border-subtle-text-50"
 			>
@@ -82,7 +82,7 @@
 				</p>
 			</div>
 			<UButton
-				to="/account/security/freeze-account"
+				to="/user/security/freeze-account"
 				color="gray"
 				class="text-accent-red dark:text-accent-red text-sm font-normal bg-hover-light dark:bg-hover-dark shadow-none border border-subtle-text-50"
 			>
@@ -107,7 +107,7 @@
 				</p>
 			</div>
 			<UButton
-				to="/account/security/delete-account"
+				to="/user/security/delete-account"
 				color="gray"
 				class="text-accent-red dark:text-accent-red text-sm font-normal bg-hover-light dark:bg-hover-dark shadow-none border border-subtle-text-50"
 			>

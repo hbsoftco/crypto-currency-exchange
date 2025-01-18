@@ -23,7 +23,7 @@
 				<UButton
 					size="lg"
 					class="text-base font-medium px-6 py-2"
-					to="/account/white-list/add-address"
+					to="/user/white-list/add-address"
 				>
 					{{ $t("addWhiteAddress") }}
 				</UButton>

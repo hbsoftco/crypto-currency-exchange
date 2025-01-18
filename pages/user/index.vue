@@ -9,10 +9,8 @@
 		v-else
 		class="py-4 p-5"
 	>
-		<NickNameModal
-			v-if="openModal"
-			@close="closeDetail"
-		/>
+		<SetNickName v-model="openModal" />
+
 		<div class="flex pb-6 mb-4 border-b border-primary-gray-light dark:border-primary-gray-dark">
 			<div>
 				<div class="relative ml-4">
@@ -53,11 +51,11 @@
 					<div class="mx-2">
 						<IconPencil
 							class="text-subtle-text-light dark:text-subtle-text-50 text-xl cursor-pointer"
-							@click="openDetail"
+							@click="setNickName()"
 						/>
 					</div>
 
-					<ULink to="/account/over-view/special-club">
+					<ULink to="/user/over-view/special-club">
 						<div class="flex justify-start items-center bg-primary-yellow-light dark:bg-primary-yellow-dark rounded-full p-0.5 px-3">
 							<p class="dark:text-text-dark font-medium ml-2">
 								{{ $t('vipClubAction') }}
@@ -168,10 +166,10 @@
 							class="mb-4 text-sm text-right"
 							dir="ltr"
 						>
-							<span>{{ assetStore.assetTotalLoading ? '...' : (isAssetVisible ? useNumber(priceFormat(assetTotal?.totalOnQ2)) : '***') }}</span>
+							<span>{{ assetTotalLoading ? '...' : (isAssetVisible ? priceFormat(assetTotal?.totalOnQ2 ?? 0, true) : '***') }}</span>
 							<span class="ml-1">USD</span>
 							<span class="mx-2">≈</span>
-							<span>{{ assetStore.assetTotalLoading ? '...' : (isAssetVisible ? useNumber(priceFormat(assetTotal?.totalOnQ1)) : '***') }}</span>
+							<span>{{ assetTotalLoading ? '...' : (isAssetVisible ? priceFormat(assetTotal?.totalOnQ1 ?? 0, true) : '***') }}</span>
 							<span class="mx-1">{{ $t('toman') }}</span>
 						</p>
 
@@ -258,48 +256,43 @@ import IconCopy from '~/assets/svg-icons/menu/copy.svg';
 import { getValueByKey, priceFormat } from '~/utils/helpers';
 import { useNumber } from '~/composables/useNumber';
 import { formatDateToIranTime } from '~/utils/date-time';
+import type { ReferralBrief } from '~/types/definitions/user.types';
+import type { AssetTotal, AssetTotalParams } from '~/types/definitions/asset.types';
 import { userRepository } from '~/repositories/user.repository';
-import type { ReferralBriefItem } from '~/types/response/user.types';
-import NickNameModal from '~/components/pages/Site/Account/OverView/NickNameModal.vue';
-import type { UploadAvatarDto } from '~/types/definitions/user.types';
+import { assetRepository } from '~/repositories/asset.repository';
+
+const SetNickName = defineAsyncComponent(() => import('~/components/pages/User/SetNickName.vue'));
 
 definePageMeta({
 	layout: 'account',
 	middleware: 'auth',
 });
 
-const authStore = useAuthStore();
-
-onMounted(async () => {
-	await authStore.fetchCurrentUser(true);
-	await getReferralBrief();
-	assetTotal.value = await assetStore.getAssetTotal();
-});
-
-// OLD
-
 const { $api } = useNuxtApp();
 const userRepo = userRepository($api);
+const assetRepo = assetRepository($api);
 
-const assetStore = useAssetStore();
-
+const authStore = useAuthStore();
 const toast = useToast();
-
 const { copyText } = useClipboard();
 
-const profileStore = useProfileStore();
+const openModal = ref(false);
+
+const setNickName = () => {
+	openModal.value = true;
+};
 
 const referralLink = useEnv('referralLink');
 const referralCode = ref<string | null>(null);
-const referralBriefLoading = ref<boolean>(false);
-const referralBrief = ref<ReferralBriefItem>();
+const referralBriefLoading = ref<boolean>(true);
+const referralBrief = ref<ReferralBrief>();
 const getReferralBrief = async () => {
 	try {
 		referralBriefLoading.value = true;
 
-		const { result } = await userRepo.getReferralBrief('1');
-		referralBrief.value = result;
-		referralCode.value = result.refCode;
+		const { result } = await userRepo.getReferralBrief({ assessmentCurrencyId: '1' });
+		referralBrief.value = result as ReferralBrief;
+		referralCode.value = referralBrief.value.refCode;
 
 		referralBriefLoading.value = false;
 	}
@@ -309,13 +302,53 @@ const getReferralBrief = async () => {
 	}
 };
 
+const assetTotalParams = ref<AssetTotalParams>({
+	assetType: useEnv('assetType'),
+	q1CurrencyId: '1',
+	q2CurrencyId: '3',
+});
+const assetTotal = ref<AssetTotal>();
+const assetTotalLoading = ref<boolean>(true);
+const getAssetTotal = async () => {
+	try {
+		assetTotalLoading.value = true;
+		const { result } = await assetRepo.getAssetTotal(assetTotalParams.value);
+		assetTotal.value = result as AssetTotal;
+
+		assetTotalLoading.value = false;
+
+		return result;
+	}
+	catch (error) {
+		assetTotalLoading.value = false;
+		console.log(error);
+	}
+};
+
+const uploadAvatar = async (data: File) => {
+	try {
+		await userRepo.uploadAvatar({ image: data });
+		await authStore.fetchCurrentUser(true);
+
+		toast.add({
+			title: useT('uploadAvatar'),
+			description: useT('avatarUploadSuccess'),
+			timeout: 5000,
+			color: 'green',
+		});
+	}
+	catch (error) {
+		console.error('Error uploading file:', error);
+	}
+};
+
 const handleFiles = (files: FileList) => {
 	const file = files[0];
 	if (file) {
 		const reader = new FileReader();
 
 		if (file.type === 'application/pdf') {
-			alert('hosseinam');
+			//
 		}
 		else if (file.type.startsWith('image/')) {
 			reader.onload = () => {
@@ -334,47 +367,16 @@ const handleDragLeave = (event: DragEvent) => {
 	console.log('Drag Leave event:', event);
 };
 
-const uploadAvatar = async (data: File) => {
-	const dto: UploadAvatarDto = {
-		image: data,
-	};
-
-	try {
-		await userRepo.uploadAvatar(dto);
-		await profileStore.fetchProfile();
-
-		toast.add({
-			title: useT('uploadAvatar'),
-			description: useT('avatarUploadSuccess'),
-			timeout: 5000,
-			color: 'green',
-		});
-	}
-	catch (error) {
-		console.error('Error uploading file:', error);
-	}
-};
-
-const assetTotal = ref();
-
-onMounted(async () => {
-	await getReferralBrief();
-	assetTotal.value = await assetStore.getAssetTotal();
-});
-
 const isAssetVisible = ref(false);
-
 const toggleAssetVisibility = () => {
 	isAssetVisible.value = !isAssetVisible.value;
 };
 
-const openModal = ref(false);
-
-const openDetail = () => {
-	openModal.value = true;
-};
-
-const closeDetail = () => {
-	openModal.value = false;
-};
+onMounted(async () => {
+	await Promise.all([
+		authStore.fetchCurrentUser(true),
+		getReferralBrief(),
+		getAssetTotal(),
+	]);
+});
 </script>

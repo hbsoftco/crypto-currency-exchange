@@ -59,14 +59,14 @@
 						<div class="flex justify-between mt-4">
 							<span class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark">{{ $t('tomanValue') }}</span>
 							<div class="flex items-center">
-								<span class="text-base font-medium ml-1">{{ assetStore.assetTotalLoading ? '...' : (isAssetVisible ? useNumber(assetTotal?.totalOnQ1) : '***') }}</span>
+								<!-- <span class="text-base font-medium ml-1">{{ assetStore.assetTotalLoading ? '...' : (isAssetVisible ? useNumber(assetTotal?.totalOnQ1) : '***') }}</span> -->
 								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('toman') }}</span>
 							</div>
 						</div>
 						<div class="flex justify-between mt-4">
 							<span class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark">{{ $t('dollarValue') }}</span>
 							<div class="flex items-center">
-								<span class="text-base font-medium ml-1">{{ assetStore.assetTotalLoading ? '...' : (isAssetVisible ? useNumber(assetTotal?.totalOnQ2) : '***') }}</span>
+								<!-- <span class="text-base font-medium ml-1">{{ assetStore.assetTotalLoading ? '...' : (isAssetVisible ? useNumber(assetTotal?.totalOnQ2) : '***') }}</span> -->
 								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('USD') }}</span>
 							</div>
 						</div>
@@ -103,7 +103,6 @@
 
 <script setup lang="ts">
 import IconWallet from '~/assets/svg-icons/menu/wallet.svg';
-import { useNumber } from '~/composables/useNumber';
 import IconArrowDownRed from '~/assets/svg-icons/arrow-down-red.svg';
 import IconArrowUpGreen from '~/assets/svg-icons/arrow-up-green.svg';
 import IconMoney from '~/assets/svg-icons/wallet/money.svg';
@@ -119,11 +118,9 @@ definePageMeta({
 	middleware: 'auth',
 });
 
-const assetStore = useAssetStore();
-const assetTotal = ref();
+// const assetTotal = ref();
 
 onMounted(async () => {
-	assetTotal.value = await assetStore.getAssetTotal();
 });
 
 const isAssetVisible = ref(false);

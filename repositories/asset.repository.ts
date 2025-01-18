@@ -1,27 +1,29 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { GetAssetBoxParams, GetAssetTotalParams, GetInternalReceiveParams, GetMiscellaneousListParams, GetPanelListParams, GetRecentListParams } from '~/types/base.types';
+import type { GetAssetBoxParams, GetInternalReceiveParams, GetMiscellaneousListParams, GetPanelListParams, GetRecentListParams } from '~/types/base.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
-import type { GetAssetListResponse, GetAssetTotalResponse, GetBoxRes, GetInternalReceiveListResponse, GetMiscellaneousListResponse, GetPortfolioRes, GetRecentListRes } from '~/types/response/asset.types';
+import type { GetAssetListResponse, GetBoxRes, GetInternalReceiveListResponse, GetMiscellaneousListResponse, GetPortfolioRes, GetRecentListRes } from '~/types/response/asset.types';
 import type {
 	AssetListParams,
+	AssetListResponse,
 	AssetResponse,
+	AssetTotalParams,
 
 } from '~/types/definitions/asset.types';
 
 type AssetRepository = {
-	getAssetList: (params: AssetListParams) => Promise<AssetResponse>;
+	getAssetList: (params: AssetListParams) => Promise<AssetListResponse>;
+	getAssetTotal: (params: AssetTotalParams) => Promise<AssetResponse>;
 	//
 	getInternalReceiveList: (params: GetInternalReceiveParams) => Promise<GetInternalReceiveListResponse>;
 	getMiscellaneousList: (params: GetMiscellaneousListParams) => Promise<GetMiscellaneousListResponse>;
-	getAssetTotal: (params: GetAssetTotalParams) => Promise<GetAssetTotalResponse>;
 	getSpotPanelList: (params: GetPanelListParams) => Promise<GetPortfolioRes>;
 	getSpotBox: (params: GetAssetBoxParams) => Promise<GetBoxRes>;
 	getRecentList: (params: GetRecentListParams) => Promise<GetRecentListRes>;
 };
 
 export const assetRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AssetRepository => ({
-	async getAssetList(params: AssetListParams): Promise<AssetResponse> {
+	async getAssetList(params: AssetListParams): Promise<AssetListResponse> {
 		const query = new URLSearchParams(
 			Object.entries(params)
 				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
@@ -35,7 +37,22 @@ export const assetRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Asse
 
 		return response;
 	},
-	//
+	async getAssetTotal(params: AssetTotalParams): Promise<AssetResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/asset/box/asset_total';
+		const response = await fetch<AssetResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+
+	// OLD
 	async getInternalReceiveList(params: GetInternalReceiveParams): Promise<GetInternalReceiveListResponse> {
 		const query = new URLSearchParams(
 			Object.entries(params)
@@ -60,22 +77,6 @@ export const assetRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Asse
 
 		const url = '/v1/asset/common/miscellaneous_list';
 		const response = await fetch<GetMiscellaneousListResponse>(`${url}?${query.toString()}`, {
-			noAuth: false,
-			apiName: url,
-			queryParams: params,
-			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getAssetTotal(params: GetAssetTotalParams): Promise<GetAssetTotalResponse> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-
-		const url = '/v1/asset/box/asset_total';
-		const response = await fetch<GetAssetTotalResponse>(`${url}?${query.toString()}`, {
 			noAuth: false,
 			apiName: url,
 			queryParams: params,

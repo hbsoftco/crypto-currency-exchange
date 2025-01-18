@@ -42,7 +42,7 @@
 				size="sm"
 				variant="ghost"
 				class="font-bold text-sm text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark"
-				to="/account/security/anti-phishing"
+				to="/user/security/anti-phishing"
 			>
 				{{ $t("adjust") }}
 			</UButton>
@@ -76,7 +76,7 @@
 				size="sm"
 				variant="ghost"
 				class="font-bold text-sm text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark"
-				to="/account/security/withdraw-pin-code"
+				to="/user/security/withdraw-pin-code"
 			>
 				{{ $t("adjust") }}
 			</UButton>
@@ -105,7 +105,7 @@
 				size="sm"
 				variant="ghost"
 				class="font-bold text-sm text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark"
-				to="/account/security/manage-white-list"
+				to="/user/security/manage-white-list"
 			>
 				{{ $t("adjust") }}
 			</UButton>
@@ -132,7 +132,7 @@
 				size="sm"
 				variant="ghost"
 				class="font-bold text-sm text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark"
-				to="/account/security/change-password"
+				to="/user/security/change-password"
 			>
 				{{ $t("toChange") }}
 			</UButton>

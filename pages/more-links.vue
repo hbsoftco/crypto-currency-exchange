@@ -12,7 +12,7 @@
 				</h4>
 				‌<div class="grid grid-cols-3 gap-1">
 					<ULink
-						to="/account/fees"
+						to="/user/fees"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<IconFeeFinal class=" text-primary-yellow-light dark:text-primary-yellow-dark text-2xl" />
@@ -74,7 +74,7 @@
 						<span class="text-sm mt-2">{{ $t('bankCards') }}</span>
 					</ULink>
 					<ULink
-						to="/account/fees"
+						to="/user/fees"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<IconFeeFinal class=" text-primary-yellow-light dark:text-primary-yellow-dark text-2xl" />
@@ -170,7 +170,7 @@
 						<span class="text-sm mt-2">{{ $t('tradeHistory') }}</span>
 					</ULink>
 					<ULink
-						to="/account/fees"
+						to="/user/fees"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<IconFees class=" text-primary-yellow-light dark:text-primary-yellow-dark text-2xl" />
@@ -245,7 +245,7 @@
 				</h4>
 				‌<div class="grid grid-cols-3 gap-1">
 					<ULink
-						to="/account/settings"
+						to="/user/settings"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<IconSetting
@@ -254,7 +254,7 @@
 						<span class="text-sm mt-2">{{ $t('setting') }}</span>
 					</ULink>
 					<ULink
-						to="/account/invite-friends"
+						to="/user/invite-friends"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<IconInviteFriends
@@ -282,14 +282,14 @@
 						<span class="text-sm mt-2">{{ $t('confirmBitland') }}</span>
 					</ULink>
 					<ULink
-						to="/account/security/two-step-login"
+						to="/user/security/two-step-login"
 						class="flex flex-col justify-center items-center mb-4"
 					>
 						<span class=" text-primary-yellow-light dark:text-primary-yellow-dark text-2xl">*</span>
 						<span class="text-sm mt-1">{{ $t('setting2FA') }}</span>
 					</ULink>
 					<ULink
-						to="/account/security/anti-phishing"
+						to="/user/security/anti-phishing"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<img
@@ -302,7 +302,7 @@
 						</span>
 					</ULink>
 					<ULink
-						to="/account/security/two-step-login"
+						to="/user/security/two-step-login"
 						class="flex flex-col justify-center items-center mb-4"
 					>
 						<img
@@ -313,7 +313,7 @@
 						<span class="text-sm mt-2">{{ $t('pinCodeWithdrawal') }}</span>
 					</ULink>
 					<ULink
-						to="/account/security/two-step-login"
+						to="/user/security/two-step-login"
 						class="flex flex-col justify-center items-center mb-4"
 					>
 						<img
@@ -324,7 +324,7 @@
 						<span class="text-sm mt-2">{{ $t('changePasswordLogin') }}</span>
 					</ULink>
 					<ULink
-						to="/account/security/change-email"
+						to="/user/security/change-email"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<img
@@ -335,7 +335,7 @@
 						<span class="text-sm mt-2">{{ $t('changeMobile') }}</span>
 					</ULink>
 					<ULink
-						to="/account/security/change-email"
+						to="/user/security/change-email"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<img
@@ -346,7 +346,7 @@
 						<span class="text-sm mt-2">{{ $t('changeEmail') }}</span>
 					</ULink>
 					<ULink
-						to="/account/security/manage-white-list"
+						to="/user/security/manage-white-list"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<img
@@ -357,7 +357,7 @@
 						<span class="text-sm mt-2">{{ $t('listAllowedIps') }}</span>
 					</ULink>
 					<ULink
-						to="/account/white-list"
+						to="/user/white-list"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<img
@@ -368,7 +368,7 @@
 						<span class="text-sm mt-2">{{ $t('authorizedAddresses') }}</span>
 					</ULink>
 					<ULink
-						to="/account/white-list"
+						to="/user/white-list"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<IconInviteFriends class=" text-primary-yellow-light dark:text-primary-yellow-dark text-2xl" />
@@ -376,7 +376,7 @@
 						<span class="text-sm mt-2">{{ $t('contactMe') }}</span>
 					</ULink>
 					<ULink
-						to="/account/security/freeze-account"
+						to="/user/security/freeze-account"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<img

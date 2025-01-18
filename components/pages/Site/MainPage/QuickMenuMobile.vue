@@ -32,7 +32,7 @@
 		</div>
 		<div class="grid grid-cols-3 mt-6">
 			<ULink
-				to="/account/fees"
+				to="/user/fees"
 				class="flex flex-col justify-center items-center  mb-4"
 			>
 				<img
@@ -43,7 +43,7 @@
 				<span class="text-sm">{{ $t('fees') }}</span>
 			</ULink>
 			<ULink
-				to="/account/invite-friends"
+				to="/user/invite-friends"
 				class="flex flex-col justify-center items-center  mb-4"
 			>
 				<img

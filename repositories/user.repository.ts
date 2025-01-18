@@ -9,7 +9,6 @@ import type { GetActivitiesListRes, GetAddressListRes, GetApiListRes, GetApiRes,
 	GetHolderRes,
 	GetRewardReceivedListResponse,
 	GetStateTradeRes,
-	ReferralBriefResponse,
 	StoreApiRes,
 	UserProfileResponse } from '../types/response/user.types';
 
@@ -52,6 +51,8 @@ import type { GetCountryListRes } from '~/types/response/common.types';
 import type { GetCommissionRes, GetInvitationListRes } from '~/types/response/referral.types';
 import type {
 	AppendTicketDto,
+	ReferralBriefParams,
+	ResultResponse,
 	SetNicknameDto,
 	StoreTicketDto,
 	TicketListParams,
@@ -64,10 +65,12 @@ import type { CommonResponse, KeyValueResponse } from '~/types/definitions/commo
 type UserRepository = {
 	getTraderCommissionList: (params: TraderCommissionListParams) => Promise<UserResponse>;
 	getLevelsList: () => Promise<UserResponse>;
+
 	// Profile
 	setNickname: (dto: SetNicknameDto) => Promise<CommonResponse>;
 	getCurrentUser: () => Promise<KeyValueResponse>;
 	uploadAvatar: (dto: UploadAvatarDto) => Promise<CommonResponse>;
+
 	// Ticket
 	getTicketList: (params: TicketListParams) => Promise<UserResponse>;
 	getTicketTypes: () => Promise<KeyValueResponse>;
@@ -76,11 +79,12 @@ type UserRepository = {
 	getTicketDetail: (id: string) => Promise<TicketResponse>;
 	closeTicket: (id: string) => Promise<CommonResponse>;
 	appendTicket: (dto: AppendTicketDto) => Promise<TicketResponse>;
+
+	getReferralBrief: (params: ReferralBriefParams) => Promise<ResultResponse>;
 	// OLD
 
 	getProfile: () => Promise<UserProfileResponse>;
 	getCommissionReceivedList: (params: GetCommissionReceivedListParams) => Promise<GetCommissionReceivedList>;
-	getReferralBrief: (assessmentCurrencyId: string) => Promise<ReferralBriefResponse>;
 	getRewardReceivedList: (params: GetRewardReceivedListParams) => Promise<GetRewardReceivedListResponse>;
 	getBankAccList: (params: GetBankParams) => Promise<GetBankListResponse>;
 	getReferralBestList: (params: GetReferralBestListParams) => Promise<GetBestListResponse>;
@@ -166,7 +170,7 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 		formData.append('image', dto.image);
 
 		const url = `/v1/upload/avatar`;
-		const response = await fetch<CommonResponse>(`${url}`, {
+		const response = await fetch<CommonResponse>(`${url}?wloId=1`, {
 			noAuth: false,
 			method: 'POST',
 			body: formData,
@@ -257,6 +261,21 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 		return response;
 	},
 
+	async getReferralBrief(params: ReferralBriefParams): Promise<ResultResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/user/referral/brief';
+		const response = await fetch<ResultResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
 	// Old
 	async getProfile(): Promise<UserProfileResponse> {
 		return fetch<UserProfileResponse>('/v1/currency/routine/tag_list');
@@ -272,21 +291,6 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 			noAuth: false,
 			apiName: url,
 			queryParams: params,
-			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getReferralBrief(assessmentCurrencyId: string = '1'): Promise<ReferralBriefResponse> {
-		const query = new URLSearchParams(
-			Object.entries({ assessmentCurrencyId })
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-
-		const url = '/v1/user/referral/brief';
-		const response = await fetch<ReferralBriefResponse>(`${url}?${query.toString()}`, {
-			noAuth: false,
-			apiName: url,
 			method: 'GET',
 		} as CustomNitroFetchOptions);
 

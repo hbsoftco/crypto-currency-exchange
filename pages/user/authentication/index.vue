@@ -110,7 +110,7 @@
 									'bg-primary-yellow-light dark:bg-primary-yellow-dark': isConfirmed,
 									'bg-secondary-gray-light dark:bg-secondary-gray-dark ': !isConfirmed,
 								}"
-								to="/account/authentication/level-one"
+								to="/user/authentication/level-one"
 							>
 								{{ $t("upgradeLevel1User") }}
 							</UButton>
@@ -155,7 +155,7 @@
 									'bg-primary-yellow-light dark:bg-primary-yellow-dark': isConfirmed,
 									'bg-secondary-gray-light dark:bg-secondary-gray-dark ': !isConfirmed,
 								}"
-								to="/account/authentication/level-two"
+								to="/user/authentication/level-two"
 							>
 								{{ $t("upgradeLevel1User") }}
 							</UButton>

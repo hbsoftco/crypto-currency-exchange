@@ -4,7 +4,7 @@
 			<!-- showAccount -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
-					to="/account"
+					to="/user"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
 					active-class="text-active"
 				>
@@ -22,7 +22,7 @@
 			<!-- authentication -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark mt-0">
 				<ULink
-					to="/account/authentication"
+					to="/user/authentication"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
 					active-class="text-active"
 				>
@@ -40,7 +40,7 @@
 			<!-- security -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
-					to="/account/security"
+					to="/user/security"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
 					active-class="text-active"
 				>
@@ -58,7 +58,7 @@
 			<!-- fees -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
-					to="/account/fees"
+					to="/user/fees"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
 					active-class="text-active"
 				>
@@ -76,7 +76,7 @@
 			<!-- userLevel -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark mt-0">
 				<ULink
-					to="/account/user-level"
+					to="/user/user-level"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
 					active-class="text-active"
 				>
@@ -94,7 +94,7 @@
 			<!-- manageAPI -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
-					to="/account/manage-api"
+					to="/user/manage-api"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
 					active-class="text-active"
 				>
@@ -112,7 +112,7 @@
 			<!-- inviteFriends -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
-					to="/account/invite-friends"
+					to="/user/invite-friends"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
 					active-class="text-active"
 				>
@@ -130,7 +130,7 @@
 			<!-- awards -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
-					to="/account/rewards"
+					to="/user/rewards"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
 					active-class="text-active"
 				>
@@ -148,7 +148,7 @@
 			<!-- topUsers -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
-					to="/account/top-users"
+					to="/user/top-users"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
 					active-class="text-active"
 				>
@@ -166,7 +166,7 @@
 			<!-- settings -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
-					to="/account/settings"
+					to="/user/settings"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
 					active-class="text-active"
 				>
@@ -184,7 +184,7 @@
 			<!-- whiteList -->
 			<li>
 				<ULink
-					to="/account/white-list"
+					to="/user/white-list"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
 					active-class="text-active"
 				>

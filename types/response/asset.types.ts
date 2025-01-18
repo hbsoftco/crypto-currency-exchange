@@ -62,15 +62,6 @@ type GetMiscellaneousListResponse = {
 	};
 };
 
-type GetAssetTotalResponse = {
-	statusCode: number;
-	result: {
-		totalOnQ1: string;
-		totalOnQ2: string;
-		totalOnQ3: string;
-	};
-};
-
 type PortfolioItem = {
 	pid: number;
 	pcid: number;
@@ -140,7 +131,6 @@ export type {
 	InternalReceive,
 	MiscellaneousList,
 	BoxItem,
-	GetAssetTotalResponse,
 	GetPortfolioRes,
 	GetBoxRes,
 	GetRecentListRes,

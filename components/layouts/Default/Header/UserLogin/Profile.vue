@@ -69,7 +69,7 @@
 					<ul class="flex flex-col">
 						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark hover:bg-hover2-light dark:hover:bg-hover2-dark">
 							<ULink
-								to="/account"
+								to="/user"
 								class="flex justify-between items-center w-full py-2.5"
 							>
 								<div class="flex justify-start items-center">
@@ -85,7 +85,7 @@
 						<!-- showAccount -->
 						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark mt-0 hover:bg-hover2-light dark:hover:bg-hover2-dark">
 							<ULink
-								to="/account/authentication"
+								to="/user/authentication"
 								class="flex justify-between items-center w-full py-1.5"
 							>
 								<div class="flex justify-start items-center">
@@ -106,7 +106,7 @@
 						<!-- authentication -->
 						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark hover:bg-hover2-light dark:hover:bg-hover2-dark">
 							<ULink
-								to="/account/security"
+								to="/user/security"
 								class="flex justify-between items-center w-full py-2.5"
 							>
 								<div class="flex justify-start items-center">
@@ -122,7 +122,7 @@
 						<!-- security -->
 						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark hover:bg-hover2-light dark:hover:bg-hover2-dark">
 							<ULink
-								to="/account/fees"
+								to="/user/fees"
 								class="flex justify-between items-center w-full py-2.5"
 							>
 								<div class="flex justify-start items-center">
@@ -138,7 +138,7 @@
 						<!-- fees -->
 						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark mt-0 hover:bg-hover2-light dark:hover:bg-hover2-dark">
 							<ULink
-								to="/account/user-level"
+								to="/user/user-level"
 								class="flex justify-between items-center w-full py-1.5"
 							>
 								<div class="flex justify-start items-center">
@@ -157,7 +157,7 @@
 						<!-- userLevel -->
 						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark hover:bg-hover2-light dark:hover:bg-hover2-dark">
 							<ULink
-								to="/account/manage-api"
+								to="/user/manage-api"
 								class="flex justify-between items-center w-full py-2.5"
 							>
 								<div class="flex justify-start items-center">
@@ -173,7 +173,7 @@
 						<!-- manageAPI -->
 						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark hover:bg-hover2-light dark:hover:bg-hover2-dark">
 							<ULink
-								to="/account/invite-friends"
+								to="/user/invite-friends"
 								class="flex justify-between items-center w-full py-2.5"
 							>
 								<div class="flex justify-start items-center">
@@ -189,7 +189,7 @@
 						<!-- inviteFriends -->
 						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark hover:bg-hover2-light dark:hover:bg-hover2-dark">
 							<ULink
-								to="/account/rewards"
+								to="/user/rewards"
 								class="flex justify-between items-center w-full py-2.5"
 							>
 								<div class="flex justify-start items-center">
@@ -205,7 +205,7 @@
 						<!-- awards -->
 						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark hover:bg-hover2-light dark:hover:bg-hover2-dark">
 							<ULink
-								to="/account/top-users"
+								to="/user/top-users"
 								class="flex justify-between items-center w-full py-2.5"
 							>
 								<div class="flex justify-start items-center">
@@ -221,7 +221,7 @@
 						<!-- topUsers -->
 						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark hover:bg-hover2-light dark:hover:bg-hover2-dark">
 							<ULink
-								to="/account/settings"
+								to="/user/settings"
 								class="flex justify-between items-center w-full py-2.5"
 							>
 								<div class="flex justify-start items-center">
@@ -237,7 +237,7 @@
 						<!-- setting -->
 						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark hover:bg-hover2-light dark:hover:bg-hover2-dark">
 							<ULink
-								to="/account/white-list"
+								to="/user/white-list"
 								class="flex justify-between items-center w-full py-2.5"
 							>
 								<div class="flex justify-start items-center">

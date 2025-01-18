@@ -5,7 +5,7 @@
 				<UButton
 					size="lg"
 					class="text-base font-medium px-6 py-2"
-					to="/account/white-list/add-contact"
+					to="/user/white-list/add-contact"
 				>
 					{{ $t("addContact") }}
 				</UButton>

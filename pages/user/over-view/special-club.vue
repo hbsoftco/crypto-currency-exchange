@@ -43,7 +43,7 @@
 							</div>
 						</div>
 						<ULink
-							to="/account/over-view/send-card"
+							to="/user/over-view/send-card"
 							class="text-base font-bold text-primary-yellow-light dark:text-primary-yellow-dark"
 						>
 							{{ $t('requestSendCard') }}

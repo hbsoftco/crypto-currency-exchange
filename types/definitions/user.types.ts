@@ -12,6 +12,47 @@ type UserResponse = {
 	};
 };
 
+type ResultResponse = {
+	statusCode: number;
+	result: ReferralBrief | number;
+};
+
+type ReferralBrief = {
+	refCode: string;
+	config: { id: number;
+		indicator: number;
+		name: string;
+		from: number;
+		to: number;
+		percentages: {
+			cid: number;
+			dPerc: number;
+			oPerc: number;
+		}; };
+	global: {
+		overallPayment: number;
+		receivers: number;
+	};
+	subject: {
+		inLY: number;
+		inL6M: number;
+		inL3M: number;
+		inL1M: number;
+		coLY: number;
+		coL6M: number;
+		coL3M: number;
+		coL1M: number;
+	};
+	coDirectActive: number;
+	coDirectInactive: number;
+	coIndirectActive: number;
+	coIndirectInactive: number;
+};
+
+type ReferralBriefParams = {
+	assessmentCurrencyId: string;
+};
+
 type UserLevel = {
 	levelId: number;
 	levelName: string;
@@ -134,4 +175,8 @@ export type {
 	StoreTicketDto,
 	TicketResponse,
 	AppendTicketDto,
+
+	ResultResponse,
+	ReferralBrief,
+	ReferralBriefParams,
 };

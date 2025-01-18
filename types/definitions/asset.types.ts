@@ -1,11 +1,31 @@
 import type { CurrencyBrief } from './currency.types';
 
-type AssetResponse = {
+type AssetListResponse = {
 	statusCode: number;
 	result: {
 		totalCount: number;
 		rows: Asset[];
 	};
+};
+
+type AssetResponse = {
+	statusCode: number;
+	result: AssetTotal | 'test';
+};
+
+type AssetTotalParams = {
+	q1CurrencyId?: string;
+	q2CurrencyId?: string;
+	q3CurrencyId?: string;
+	assetType?: string;
+	boxMode?: string;
+	miniAssetMode?: string;
+};
+
+type AssetTotal = {
+	totalOnQ1: string;
+	totalOnQ2: string;
+	totalOnQ3: string;
 };
 
 type Asset = {
@@ -31,6 +51,9 @@ type AssetListParams = {
 
 export type {
 	Asset,
+	AssetTotal,
+	AssetListResponse,
 	AssetResponse,
 	AssetListParams,
+	AssetTotalParams,
 };

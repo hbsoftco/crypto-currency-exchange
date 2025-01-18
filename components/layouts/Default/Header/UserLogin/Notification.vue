@@ -78,7 +78,7 @@
 									</span>
 								</ULink>
 							</div>
-							<ULink to="/account/notifications">
+							<ULink to="/user/notifications">
 								<div class="flex justify-between items-center">
 									<span
 										class="ml-1 text-xs font-bold text-primary-yellow-light dark:text-primary-yellow-dark"

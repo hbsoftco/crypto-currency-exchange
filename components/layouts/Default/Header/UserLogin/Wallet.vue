@@ -109,11 +109,9 @@ import IconHistory from '~/assets/svg-icons/menu/quick-menu/transaction-history.
 import IconPortfolio from '~/assets/svg-icons/menu/quick-menu/portfolio.svg';
 import { priceFormat } from '~/utils/helpers';
 
-const assetStore = useAssetStore();
 const assetTotal = ref();
 
 onMounted(async () => {
-	assetTotal.value = await assetStore.getAssetTotal();
 });
 
 const menuItems = [

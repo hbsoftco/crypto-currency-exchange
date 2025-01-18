@@ -35,7 +35,7 @@
 				variant="ghost"
 				color="red"
 				class="font-bold text-sm border border-red-400"
-				to="/account/security/2fa/disable"
+				to="/user/security/2fa/disable"
 			>
 				{{ $t("remove") }}
 			</UButton>
@@ -92,7 +92,7 @@
 				</p>
 			</div>
 			<UButton
-				to="/account/security/change-email"
+				to="/user/security/change-email"
 				size="sm"
 				variant="ghost"
 				class="font-bold text-sm text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark"
@@ -145,7 +145,7 @@
 			</div>
 
 			<UButton
-				to="/account/security/change-phone"
+				to="/user/security/change-phone"
 				size="sm"
 				variant="ghost"
 				class="font-bold text-sm text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark"

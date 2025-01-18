@@ -38,7 +38,7 @@
 			</table>
 		</div>
 		<ULink
-			to="/account/fees"
+			to="/user/fees"
 			class="flex pt-4"
 		>
 			<span

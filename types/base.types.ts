@@ -206,15 +206,6 @@ type DeleteAddressListParams = {
 	withdrawId: string;
 };
 
-type GetAssetTotalParams = {
-	q1CurrencyId?: string;
-	q2CurrencyId?: string;
-	q3CurrencyId?: string;
-	assetType?: string;
-	boxMode?: string;
-	miniAssetMode?: string;
-};
-
 type GetPanelListParams = {
 	pnlCourseId: string;
 	currencyId?: string;
@@ -327,7 +318,6 @@ export type {
 	DeleteContactListParams,
 	GetAddressListParams,
 	DeleteAddressListParams,
-	GetAssetTotalParams,
 	GetPanelListParams,
 	GetAssetBoxParams,
 	GetRecentListParams,

@@ -161,7 +161,6 @@ const isOpen = ref(props.modelValue);
 watch(() => props.modelValue, (newValue) => {
 	isOpen.value = newValue;
 });
-
 watch(isOpen, (newValue) => {
 	emit('update:modelValue', newValue);
 });
