@@ -95,7 +95,7 @@
 
 <script setup lang="ts">
 import IconUserFill from '~/assets/svg-icons/menu/user-fill.svg';
-import IconEmail from '~/assets/svg-icons/profile/user/Id-card.svg';
+import IconEmail from '~/assets/svg-icons/profile/account/Id-card.svg';
 import IconMessage from '~/assets/svg-icons/menu/message.svg';
 import IconPhone from '~/assets/svg-icons/profile/user/phone.svg';
 import { userRepository } from '~/repositories/user.repository';
