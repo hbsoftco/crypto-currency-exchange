@@ -573,7 +573,7 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 		return response;
 	},
 	async deleteAccount(dto: DeleteAccountDto): Promise<CommonResponse> {
-		const url = `/v1/user/account/delete`;
+		const url = `/v1/user/user/delete`;
 		const response = await fetch<CommonResponse>(`${url}`, {
 			noAuth: false,
 			apiName: url,
@@ -584,7 +584,7 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 		return response;
 	},
 	async getDevLinkGenerate(): Promise<GetDevLinkGenerateRes> {
-		const url = '/v1/user/account/devlink_qrc_generate';
+		const url = '/v1/user/user/devlink_qrc_generate';
 		const response = await fetch<GetDevLinkGenerateRes>(`${url}`, {
 			noAuth: false,
 			method: 'GET',

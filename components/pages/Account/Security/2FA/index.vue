@@ -169,7 +169,7 @@ const checkEmail = () => {
 	const valid = isValidGmail(getValueByKey(authStore.getCurrentUser, 'EMAIL') || '');
 
 	if (valid.isValid) {
-		router.push('/account/security/2fa');
+		router.push('/user/security/2fa');
 	}
 	else {
 		toast.add({

@@ -82,7 +82,7 @@ const menuItems = [
 		name: 'fees',
 		description: useT('transactionCosts'),
 		icon: IconFees,
-		url: '/account/fees',
+		url: '/user/fees',
 
 	},
 	{
@@ -117,7 +117,7 @@ const menuItems = [
 		name: 'rewardsBonuses',
 		description: useT('userActivityIncentives'),
 		icon: IconAwards,
-		url: '/account/rewards',
+		url: '/user/rewards',
 
 	},
 	{
@@ -138,7 +138,7 @@ const menuItems = [
 		name: 'profitLoss',
 		description: useT('systemAnalysis'),
 		icon: IconUserLevel,
-		url: '/account/user-level',
+		url: '/user/user-level',
 
 	},
 	{
@@ -152,7 +152,7 @@ const menuItems = [
 		name: 'marketStats',
 		description: useT('marketStatus'),
 		icon: IconUserLevel,
-		url: '/account/user-level',
+		url: '/user/user-level',
 	},
 	{
 		name: 'withdrawToman',
@@ -165,21 +165,21 @@ const menuItems = [
 		name: 'createAPI',
 		description: useT('createAccessKeys'),
 		icon: IconCreateAPI,
-		url: '/account/manage-api/new-api',
+		url: '/user/manage-api/new-api',
 
 	},
 	{
 		name: 'userLevel',
 		description: useT('userLevelDetails'),
 		icon: IconUserLevel,
-		url: '/account/user-level',
+		url: '/user/user-level',
 
 	},
 	{
 		name: 'myFriends',
 		description: useT('referralIncomeStatus'),
 		icon: IconInviteFriends,
-		url: '/account/user-level',
+		url: '/user/user-level',
 
 	},
 ];

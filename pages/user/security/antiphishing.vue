@@ -107,7 +107,7 @@ const submit = async (event: VerifyOutput) => {
 	try {
 		await securityRepo.storeAntiPhishing(antiPhishingDto.value);
 
-		router.push('/account/security');
+		router.push('/user/security');
 		await authStore.fetchCurrentUser(true);
 	}
 	catch (error) {
