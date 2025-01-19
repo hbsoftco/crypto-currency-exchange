@@ -257,10 +257,6 @@ type GetReasonListParams = {
 	langId?: string;
 };
 
-type getMiniRoutineParams = {
-	tagType: string;
-};
-
 type getActivitiesListParams = {
 	logTypeId?: string;
 	from?: string;
@@ -328,7 +324,6 @@ export type {
 	WithdrawCoinListParams,
 	getDeviceListParams,
 	GetReasonListParams,
-	getMiniRoutineParams,
 	getActivitiesListParams,
 	getTypeListParams,
 	getApiListParams,

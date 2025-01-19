@@ -59,11 +59,14 @@
 			/>
 		</div>
 		<!-- National ID -->
-		<div class="mb-8">
+		<div
+			v-if="countries.length"
+			class="mb-8"
+		>
 			<DropDown
-				id="countrySelected"
+				id="country"
 				v-model="setLiveDto.livingCountryId"
-				:options="baseDataStore.countries"
+				:options="countries"
 				type="text"
 				input-class="text-right"
 				label="countrySelected"
@@ -107,32 +110,30 @@ import useVuelidate from '@vuelidate/core';
 
 import DropDown from '~/components/forms/DropDown.vue';
 import TextareaFieldInput from '~/components/forms/TextareaFieldInput.vue';
+import { systemRepository } from '~/repositories/system.repository';
 import { userRepository } from '~/repositories/user.repository';
-import type { SetBasicDto, SetLiveDto } from '~/types/dto/user.dto';
+import type { Country } from '~/types/definitions/system.types';
+import type { SetBasicDto, SetLiveDto } from '~/types/definitions/user.types';
 
 const { $api } = useNuxtApp();
 const userRepo = userRepository($api);
+const systemRepo = systemRepository($api);
 
-// const profileStore = useProfileStore();
-const baseDataStore = useBaseDataStore();
-
+const setLiveDto = ref<SetLiveDto>({
+	natCode: '',
+	livingAddress: '',
+	livingCountryId: '',
+});
 const setBasicDto = ref<SetBasicDto>({
 	name: '',
 	family: '',
 	birthDate: '',
 	birthCountryId: '',
 });
-const setLiveDto = ref<SetLiveDto>({
-	natCode: '',
-	livingAddress: '',
-	livingCountryId: '',
-});
-
 const setBasicDtoRules = {
 	name: { required: validations.required },
 	family: { required: validations.required },
 };
-
 const v$ = useVuelidate(setBasicDtoRules, setBasicDto);
 
 const submitSetBasicLoading = ref<boolean>(false);
@@ -156,8 +157,23 @@ const submitSetBasic = async () => {
 	}
 };
 
+const countries = ref<Country[]>([]);
+const countryLoading = ref(true);
+const getCountries = async () => {
+	try {
+		countryLoading.value = true;
+		const { result } = await systemRepo.getCountryList();
+		countries.value = result as Country[];
+	}
+	catch (error) {
+		throw Error(String(error));
+	}
+	finally {
+		countryLoading.value = false;
+	}
+};
+
 onMounted(async () => {
-	await baseDataStore.fetchCountries();
-	console.log(baseDataStore.countries);
+	await getCountries();
 });
 </script>

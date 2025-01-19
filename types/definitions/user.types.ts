@@ -160,6 +160,19 @@ type AppendTicketDto = {
 	content: string;
 };
 
+type SetBasicDto = {
+	name: string;
+	family: string;
+	birthDate: string;
+	birthCountryId: string;
+};
+
+type SetLiveDto = {
+	natCode: string;
+	livingAddress: string;
+	livingCountryId: string;
+};
+
 export type {
 	TraderCommissionListParams,
 	UserResponse,
@@ -175,7 +188,10 @@ export type {
 	StoreTicketDto,
 	TicketResponse,
 	AppendTicketDto,
-
+	// Id-Auth
+	SetBasicDto,
+	SetLiveDto,
+	// Others
 	ResultResponse,
 	ReferralBrief,
 	ReferralBriefParams,

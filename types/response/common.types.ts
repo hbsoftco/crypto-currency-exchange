@@ -21,23 +21,9 @@ type UploadFileDto = {
 	data: File;
 };
 
-type CountryItem = {
-	id: number;
-	name: string;
-	abbreviation: string ;
-	phonePrefix: string ;
-};
-
-type GetCountryListRes = {
-	statusCode: number;
-	result: CountryItem[];
-};
-
 export type {
 	CommonResponse,
 	KeyValueRes,
 	IdentificationRes,
 	UploadFileDto,
-	GetCountryListRes,
-	CountryItem,
 };

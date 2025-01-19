@@ -127,13 +127,13 @@
 						class="border-primary-gray-light dark:border-primary-gray-dark"
 					>
 						<h6 class="mb-4 text-base font-semibold">
-							احراز هویت ({{ getValueByKey(authStore.getCurrentUser, 'KYC_LVL_NAME') }})
+							{{ $t('identityVerification') }} ({{ getValueByKey(authStore.getCurrentUser, 'KYC_LVL_NAME') }})
 						</h6>
 						<p class="mb-4 text-sm">
 							سقف برداشت فعلی: {{ getValueByKey(authStore.getCurrentUser, 'KYC_LVL_WITHDRAW') }} بیت کوین در 24 ساعت
 						</p>
 						<p class="mb-4 text-sm">
-							برای افزایش سقف برداشت، فرآیند احراز هویت را تکمیل کنید.
+							{{ $t('authenticationDescription') }}
 						</p>
 					</div>
 					<div class="text-right">

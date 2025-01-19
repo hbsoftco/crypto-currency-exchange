@@ -42,7 +42,7 @@
 				size="sm"
 				variant="ghost"
 				class="font-bold text-sm text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark"
-				to="/user/security/anti-phishing"
+				to="/user/security/antiphishing"
 			>
 				{{ $t("adjust") }}
 			</UButton>

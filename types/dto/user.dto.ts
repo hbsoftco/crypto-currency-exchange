@@ -33,19 +33,6 @@ type DeleteAccountDto = {
 	password: string;
 };
 
-type SetBasicDto = {
-	name: string;
-	family: string;
-	birthDate?: string;
-	birthCountryId?: string;
-};
-
-type SetLiveDto = {
-	natCode: string;
-	livingAddress: string;
-	livingCountryId: string;
-};
-
 type SetEmailDto = {
 	uvIdEmailAddressOld: number;
 	uvCodeEmailAddressOld: string;
@@ -99,8 +86,6 @@ export type {
 	AddCardBankSetDto,
 	CodeInviteDto,
 	DeleteAccountDto,
-	SetBasicDto,
-	SetLiveDto,
 	SetEmailDto,
 	SetMobileDto,
 	SetCardPrintDto,

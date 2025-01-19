@@ -1,100 +1,98 @@
 <template>
-	<div>
-		<UContainer class="my-8">
-			<div class="my-4">
-				<UiTitleWithBack :title="$t('changeEmail')" />
-			</div>
-			<section class="pb-0.5">
-				<div class="grid grid-cols-1 md:grid-cols-2 gap-20 rounded-md mt-8 mb-4 py-6 md:py-10 px-1 md:px-20 bg-primary-gray-light dark:bg-primary-gray-dark">
-					<div class="mt-10 w-full">
-						<div class="mb-8">
-							<FormsFieldInput
-								id="emailAddressNew"
-								v-model="changeEmailDto.emailAddressNew"
-								type="text"
-								input-class="text-left"
-								label="newEmailAddress"
-								placeholder="your@email.com"
-								icon="i-heroicons-envelope"
-								dir="ltr"
-								color-type="transparent"
-								mt-class="mt-0"
-								:error-message="v$.emailAddressNew.$error? $t('fieldIsRequired') : ''"
-							/>
-						</div>
-						<div class="my-6">
-							<OtpFieldInput
-								id="uvCodeEmailAddressNew"
-								v-model="changeEmailDto.uvCodeEmailAddressNew"
-								color-type="transparent"
-								type="text"
-								input-class="text-left"
-								:countdown="sendCodeCountdown"
-								send-type="send"
-								label="sentVerificationCodeToNewEmail"
-								placeholder=""
-								icon=""
-								dir="ltr"
-								:error-message="v$.uvCodeEmailAddressNew.$error? $t('fieldIsRequired') : ''"
-								@resend="resendCode()"
-								@send-code="getNewIdentificationCode"
-							/>
-						</div>
-						<div class="my-6">
-							<OtpFieldInput
-								id="uvCodeEmailAddressOld"
-								v-model="changeEmailDto.uvCodeEmailAddressOld"
-								color-type="transparent"
-								type="text"
-								input-class="text-left"
-								send-type="resend"
-								:label="mobileExist ? 'verificationCodeSentToMobile' : 'verificationCodeSentToOldEmail'"
-								placeholder=""
-								icon=""
-								dir="ltr"
-								:error-message="v$.uvCodeEmailAddressOld.$error? $t('fieldIsRequired') : ''"
-								@resend="resendCode()"
-							/>
-						</div>
-						<div
-							v-if="authStore.login2faStatus"
-							class="my-6"
-						>
-							<OtpFieldInput
-								id="v2FACode"
-								v-model="changeEmailDto.v2FACode"
-								color-type="transparent"
-								type="text"
-								input-class="text-left"
-								send-type="send"
-								label-dir="rtl"
-								label="twoFactorCode"
-								placeholder=""
-								icon=""
-								:error-message="v$.v2FACode.$error? $t('fieldIsRequired') : ''"
-								dir="ltr"
-								:count-down-state="false"
-							/>
-						</div>
-
-						<div class="mt-12 flex justify-center text-center gap-2">
-							<UButton
-								size="lg"
-								block
-								:loading="loading"
-								@click="submit()"
-							>
-								{{ $t("save") }}
-							</UButton>
-						</div>
+	<UContainer class="my-8">
+		<div class="my-4">
+			<UiTitleWithBack :title="$t('changeEmail')" />
+		</div>
+		<section class="pb-0.5">
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-20 rounded-md mt-8 mb-4 py-6 md:py-10 px-1 md:px-20 bg-primary-gray-light dark:bg-primary-gray-dark">
+				<div class="mt-10 w-full">
+					<div class="mb-8">
+						<FormsFieldInput
+							id="emailAddressNew"
+							v-model="changeEmailDto.emailAddressNew"
+							type="text"
+							input-class="text-left"
+							label="newEmailAddress"
+							placeholder="your@email.com"
+							icon="i-heroicons-envelope"
+							dir="ltr"
+							color-type="transparent"
+							mt-class="mt-0"
+							:error-message="v$.emailAddressNew.$error? $t('fieldIsRequired') : ''"
+						/>
 					</div>
-					<div class="my-8">
-						<SideGuideBox :tag-type="TagType.EMAIL_CHANGE" />
+					<div class="my-6">
+						<OtpFieldInput
+							id="uvCodeEmailAddressNew"
+							v-model="changeEmailDto.uvCodeEmailAddressNew"
+							color-type="transparent"
+							type="text"
+							input-class="text-left"
+							:countdown="sendCodeCountdown"
+							send-type="send"
+							label="sentVerificationCodeToNewEmail"
+							placeholder=""
+							icon=""
+							dir="ltr"
+							:error-message="v$.uvCodeEmailAddressNew.$error? $t('fieldIsRequired') : ''"
+							@resend="resendCode()"
+							@send-code="getNewIdentificationCode"
+						/>
+					</div>
+					<div class="my-6">
+						<OtpFieldInput
+							id="uvCodeEmailAddressOld"
+							v-model="changeEmailDto.uvCodeEmailAddressOld"
+							color-type="transparent"
+							type="text"
+							input-class="text-left"
+							send-type="resend"
+							:label="mobileExist ? 'verificationCodeSentToMobile' : 'verificationCodeSentToOldEmail'"
+							placeholder=""
+							icon=""
+							dir="ltr"
+							:error-message="v$.uvCodeEmailAddressOld.$error? $t('fieldIsRequired') : ''"
+							@resend="resendCode()"
+						/>
+					</div>
+					<div
+						v-if="authStore.login2faStatus"
+						class="my-6"
+					>
+						<OtpFieldInput
+							id="v2FACode"
+							v-model="changeEmailDto.v2FACode"
+							color-type="transparent"
+							type="text"
+							input-class="text-left"
+							send-type="send"
+							label-dir="rtl"
+							label="twoFactorCode"
+							placeholder=""
+							icon=""
+							:error-message="v$.v2FACode.$error? $t('fieldIsRequired') : ''"
+							dir="ltr"
+							:count-down-state="false"
+						/>
+					</div>
+
+					<div class="mt-12 flex justify-center text-center gap-2">
+						<UButton
+							size="lg"
+							block
+							:loading="loading"
+							@click="submit()"
+						>
+							{{ $t("save") }}
+						</UButton>
 					</div>
 				</div>
-			</section>
-		</UContainer>
-	</div>
+				<div class="my-8">
+					<SideGuideBox :tag-type="TagType.EMAIL_CHANGE" />
+				</div>
+			</div>
+		</section>
+	</UContainer>
 </template>
 
 <script setup lang="ts">

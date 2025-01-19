@@ -11,7 +11,14 @@ type SystemListResponse = {
 
 type SystemResponse = {
 	statusCode: number;
-	result: System | LinkListItem | MiniRoutine;
+	result: System | LinkListItem | MiniRoutine | Country[];
+};
+
+type Country = {
+	id: number;
+	name: string;
+	abbreviation: string ;
+	phonePrefix: string ;
 };
 
 type SystemRoot = {
@@ -170,4 +177,5 @@ export type {
 	Tree,
 	StaffParams,
 	SystemParams,
+	Country,
 };

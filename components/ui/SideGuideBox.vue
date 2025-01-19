@@ -32,7 +32,7 @@
 				</div>
 				<ULink
 					class="text-xs font-normal"
-					to="/help-center"
+					to="/help"
 				>
 					{{ $t('showMore') }}
 				</ULink>
@@ -58,7 +58,7 @@
 				</div>
 				<ULink
 					class="text-xs font-normal"
-					to="/help-center"
+					to="/help"
 				>
 					{{ $t('showMore') }}
 				</ULink>
@@ -107,7 +107,7 @@
 			</div>
 		</section>
 
-		<section>
+		<section v-if="faqs?.length">
 			<div class="flex justify-between mt-10 mb-6">
 				<div class="flex">
 					<div class="w-1 h-6 ml-1 bg-primary-yellow-light dark:bg-primary-yellow-dark" />
@@ -133,7 +133,7 @@
 			</div>
 		</section>
 
-		<section>
+		<section v-if="helps?.length">
 			<div class="flex justify-between mt-10 mb-6">
 				<div class="flex">
 					<div class="w-1 h-6 ml-1 bg-primary-yellow-light dark:bg-primary-yellow-dark" />

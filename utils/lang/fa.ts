@@ -484,8 +484,8 @@ const persian = {
 	userLevel1: 'سطح۱ کاربری',
 	userLevel2: 'سطح ۲ کاربری',
 	identityInformation: 'اطلاعات هویتی',
-	uploadDocuments: 'آپلود مدارک',
-	uploadCommitmentLetter: 'آپلود تعهد نامه',
+	uploadDocuments: 'بارگذاری مدارک',
+	uploadCommitmentLetter: 'بارگذاری تعهدنامه',
 	upgradeLevel1User: 'ارتقا سطح۱ کاربری',
 	upgradeLevel2User: 'ارتقا سطح ۲ کاربری',
 	imageSecondCommitmentLetter: 'تصویر تعهد نامه دوم',
@@ -1178,6 +1178,7 @@ const persian = {
 	unit: 'واحد',
 	equalTo: 'برابر با',
 	is: 'است',
+	authenticationDescription: 'برای افزایش سقف برداشت، فرآیند احراز هویت را تکمیل کنید.',
 };
 
 export default persian;

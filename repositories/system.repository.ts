@@ -19,6 +19,7 @@ type SystemRepository = {
 	getSubjectList: (params: BaseLangGroupParams) => Promise<SystemListResponse>;
 	getFAQList: (params: SystemParams) => Promise<SystemListResponse>;
 	getHowToBuyList: (params: SystemParams) => Promise<SystemListResponse>;
+	getCountryList: () => Promise<SystemResponse>;
 };
 
 export const systemRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SystemRepository => ({
@@ -207,6 +208,15 @@ export const systemRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Sys
 		const url = '/v1/system/help/how_to_buy_list';
 		const response = await fetch<SystemListResponse>(`${url}?${query.toString()}`, {
 			noAuth: true,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getCountryList(): Promise<SystemResponse> {
+		const url = '/v1/system/common/country_list';
+		const response = await fetch<SystemResponse>(`${url}`, {
+			noAuth: false,
 			method: 'GET',
 		} as CustomNitroFetchOptions);
 

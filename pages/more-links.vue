@@ -289,7 +289,7 @@
 						<span class="text-sm mt-1">{{ $t('setting2FA') }}</span>
 					</ULink>
 					<ULink
-						to="/user/security/anti-phishing"
+						to="/user/security/antiphishing"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<img

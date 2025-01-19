@@ -42,17 +42,16 @@ import type {
 	DeleteAccountDto,
 	SetApiAddDto,
 	SetApiEditDto,
-	SetBasicDto,
 	SetCardPrintDto,
 	SetEmailDto,
-	SetLiveDto,
 	SetMobileDto } from '~/types/dto/user.dto';
-import type { GetCountryListRes } from '~/types/response/common.types';
 import type { GetCommissionRes, GetInvitationListRes } from '~/types/response/referral.types';
 import type {
 	AppendTicketDto,
 	ReferralBriefParams,
 	ResultResponse,
+	SetBasicDto,
+	SetLiveDto,
 	SetNicknameDto,
 	StoreTicketDto,
 	TicketListParams,
@@ -80,7 +79,12 @@ type UserRepository = {
 	closeTicket: (id: string) => Promise<CommonResponse>;
 	appendTicket: (dto: AppendTicketDto) => Promise<TicketResponse>;
 
+	// Others
 	getReferralBrief: (params: ReferralBriefParams) => Promise<ResultResponse>;
+
+	// Id-Auth
+	storeSetBasic: (dto: SetBasicDto) => Promise<CommonResponse>;
+	storeSetLive: (dto: SetLiveDto) => Promise<CommonResponse>;
 	// OLD
 
 	getProfile: () => Promise<UserProfileResponse>;
@@ -104,8 +108,6 @@ type UserRepository = {
 	getCommissionReceived: (params: GetCommissionReceivedListParams) => Promise<GetCommissionRes>;
 	getDeviceList: (params: getDeviceListParams) => Promise<GetDeviceListRes>;
 	deleteAccount: (dto: DeleteAccountDto) => Promise<CommonResponse>;
-	storeSetBasic: (dto: SetBasicDto) => Promise<CommonResponse>;
-	storeSetLive: (dto: SetLiveDto) => Promise<CommonResponse>;
 	getDevLinkGenerate: () => Promise<GetDevLinkGenerateRes>;
 	getActivitiesList: (params: getActivitiesListParams) => Promise<GetActivitiesListRes>;
 	getTypeList: (params: getTypeListParams) => Promise<KeyValueResponse>;
@@ -114,7 +116,6 @@ type UserRepository = {
 	getHolder: (params: GetTraderBriefParams) => Promise<GetHolderRes>;
 	getHolderLevelList: () => Promise<GetHolderLevelListRes>;
 	storeCardPrint: (dto: SetCardPrintDto) => Promise<CommonResponse>;
-	getCountryList: () => Promise<GetCountryListRes>;
 	getApiList: (params: getApiListParams) => Promise<GetApiListRes>;
 	getApi: (params: getApiParams) => Promise<GetApiRes>;
 	storeApiAdd: (dto: SetApiAddDto) => Promise<StoreApiRes>;
@@ -260,7 +261,7 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
-
+	// Others
 	async getReferralBrief(params: ReferralBriefParams): Promise<ResultResponse> {
 		const query = new URLSearchParams(
 			Object.entries(params)
@@ -272,6 +273,27 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 			noAuth: false,
 			apiName: url,
 			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	// Id-auth
+	async storeSetBasic(dto: SetBasicDto): Promise<CommonResponse> {
+		const url = `/v1/user/profile/set_basic`;
+		const response = await fetch<CommonResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async storeSetLive(dto: SetLiveDto): Promise<CommonResponse> {
+		const url = `/v1/user/profile/set_live`;
+		const response = await fetch<CommonResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body: dto,
 		} as CustomNitroFetchOptions);
 
 		return response;
@@ -561,28 +583,6 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
-	async storeSetBasic(dto: SetBasicDto): Promise<CommonResponse> {
-		const url = `/v1/user/profile/set_basic`;
-		const response = await fetch<CommonResponse>(`${url}`, {
-			noAuth: false,
-			apiName: url,
-			method: 'POST',
-			body: dto,
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async storeSetLive(dto: SetLiveDto): Promise<CommonResponse> {
-		const url = `/v1/user/profile/set_live`;
-		const response = await fetch<CommonResponse>(`${url}`, {
-			noAuth: false,
-			apiName: url,
-			method: 'POST',
-			body: dto,
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
 	async getDevLinkGenerate(): Promise<GetDevLinkGenerateRes> {
 		const url = '/v1/user/account/devlink_qrc_generate';
 		const response = await fetch<GetDevLinkGenerateRes>(`${url}`, {
@@ -672,16 +672,6 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 			apiName: url,
 			method: 'POST',
 			body: dto,
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getCountryList(): Promise<GetCountryListRes> {
-		const url = '/v1/routine/common/country_list';
-		const response = await fetch<GetCountryListRes>(`${url}`, {
-			noAuth: false,
-			apiName: url,
-			method: 'GET',
 		} as CustomNitroFetchOptions);
 
 		return response;
