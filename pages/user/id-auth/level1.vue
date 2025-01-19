@@ -9,7 +9,10 @@
 			</div>
 			<div class="w-80">
 				<div>
-					<IdentityInfo v-if="steps[0].current" />
+					<IdentityInfo
+						v-if="steps[0].current"
+						@set-next-step="setNextStep($event)"
+					/>
 					<UploadDocuments v-else-if="steps[1].current" />
 					<UploadLetter v-else />
 				</div>
@@ -34,9 +37,19 @@ definePageMeta({
 	layout: 'account-single',
 	middleware: 'auth',
 });
-const steps = [
+
+const setNextStep = (step: number) => {
+	console.log(step);
+
+	steps.value[step].completed = true;
+	steps.value[step].current = false;
+
+	steps.value[step + 1].current = true;
+};
+
+const steps = ref([
 	{ label: useT('identityInformation'), completed: false, current: true },
 	{ label: useT('uploadDocuments'), completed: false, current: false },
 	{ label: useT('uploadCommitmentLetter'), completed: false, current: false },
-];
+]);
 </script>

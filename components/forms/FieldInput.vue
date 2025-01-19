@@ -48,6 +48,8 @@
 </template>
 
 <script setup lang="ts">
+import { convertToEnglishDigits } from '~/utils/helpers';
+
 interface PropsDefinition {
 	id: string;
 	modelValue: string;

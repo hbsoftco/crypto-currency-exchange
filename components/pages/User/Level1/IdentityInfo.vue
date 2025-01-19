@@ -144,6 +144,11 @@ import type { KeyValue } from '~/types/definitions/common.types';
 import type { Country } from '~/types/definitions/system.types';
 import type { SetBasicDto, SetLiveDto } from '~/types/definitions/user.types';
 
+interface EmitDefinition {
+	(event: 'set-next-step', step: number): void;
+}
+const emit = defineEmits<EmitDefinition>();
+
 const { $api } = useNuxtApp();
 const userRepo = userRepository($api);
 const systemRepo = systemRepository($api);
@@ -187,7 +192,6 @@ const submit = async () => {
 		if (v$.value.$invalid) {
 			return;
 		}
-		submitLoading.value = true;
 
 		setLiveDto.value.natCode = dto.value.natCode;
 		setLiveDto.value.livingAddress = dto.value.livingAddress;
@@ -200,16 +204,19 @@ const submit = async () => {
 		const dateTime = Jalali.parse(dto.value.birthDate);
 		setBasicDto.value.birthDate = dateTime.gregorian('YYYY-MM-DD');
 
-		Promise.all([
+		submitLoading.value = true;
+
+		await Promise.all([
 			userRepo.storeSetBasic(setBasicDto.value),
 			userRepo.storeSetLive(setLiveDto.value),
 		]);
+
+		emit('set-next-step', 0);
+
+		submitLoading.value = false;
 	}
 	catch (error: any) {
 		console.error('Failed:', error);
-	}
-	finally {
-		submitLoading.value = false;
 	}
 };
 

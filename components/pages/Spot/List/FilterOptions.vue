@@ -176,6 +176,7 @@ import type { OrderFiltersType } from '~/types/definitions/spot.types';
 import { OrderType, OrderSide } from '~/utils/enums/order.enum';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 import IconDelete from '~/assets/svg-icons/profile/Delete.svg';
+import { convertPersianToEnglishNumber } from '~/utils/helpers';
 
 const { $mobileDetect } = useNuxtApp();
 

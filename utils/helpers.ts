@@ -226,6 +226,92 @@ const slug = (text: string): string => {
 		.replace(/-+/g, '-');
 };
 
+const convertToEnglishDigits = (value: string) => {
+	const persianDigits = '۰۱۲۳۴۵۶۷۸۹,،';
+	const englishDigits = '0123456789,,';
+
+	if (value) {
+		return value.replace(/[۰-۹,،]/g, (digit) => englishDigits[persianDigits.indexOf(digit)]);
+	}
+};
+
+const convertPersianToEnglishNumber = (input: string): number => {
+	const persianNumbers = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+	const englishNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+	return Number(input.replace(/[۰-۹]/g, (match) => {
+		const index = persianNumbers.indexOf(match);
+		return index !== -1 ? englishNumbers[index] : match;
+	}));
+};
+
+const monthNames = [
+	'فروردین',
+	'اردیبهشت',
+	'خرداد',
+	'تیر',
+	'مرداد',
+	'شهریور',
+	'مهر',
+	'آبان',
+	'آذر',
+	'دی',
+	'بهمن',
+	'اسفند',
+];
+
+const faNumToEn = (faNum: string): number => {
+	const faDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+	const enNum = faNum
+		.split('')
+		.map((char) => {
+			const index = faDigits.indexOf(char);
+			return index !== -1 ? index : char;
+		})
+		.join('');
+
+	return parseInt(enNum, 10) || 0;
+};
+
+const toPersianDate = (date: string, type: 'month' | 'full' | 'full-with-month' = 'full') => {
+	try {
+		const datetime = new Date(date);
+
+		const formattedDate = new Intl.DateTimeFormat('fa-IR-u-nu-latn', {
+			year: 'numeric',
+			month: 'numeric',
+			day: 'numeric',
+		}).format(datetime);
+
+		const [year, month, day] = formattedDate.split('/');
+
+		let monthIndex = faNumToEn(month) - 1;
+		if (monthIndex === -1) {
+			monthIndex = 11;
+		}
+
+		const monthName = monthNames[monthIndex];
+
+		const hours = datetime.getHours().toString().padStart(2, '0');
+		const minutes = datetime.getMinutes().toString().padStart(2, '0');
+		const seconds = datetime.getSeconds().toString().padStart(2, '0');
+
+		if (type === 'month') {
+			return `${day} ${monthName} ${year}`;
+		}
+		else if (type === 'full') {
+			return `${day} ${monthName} ${year} - ${hours}:${minutes}:${seconds}`;
+		}
+		else {
+			return `${formattedDate} - ${hours}:${minutes}:${seconds}`;
+		}
+	}
+	catch (error) {
+		console.error('Invalid timestamp:', error);
+		return 'تاریخ نامعتبر است';
+	}
+};
+
 export {
 	slug,
 	bigNumber,
@@ -246,4 +332,7 @@ export {
 	formatTextWithLineBreaks,
 	scientificToDecimal,
 	convertScientificToDecimal,
+	convertToEnglishDigits,
+	convertPersianToEnglishNumber,
+	toPersianDate,
 };

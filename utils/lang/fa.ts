@@ -1182,6 +1182,9 @@ const persian = {
 	is: 'است',
 	authenticationDescription: 'برای افزایش سقف برداشت، فرآیند احراز هویت را تکمیل کنید.',
 	pointsProgram: 'امتیاز به برنامه',
+	nationalCard: 'کارت ملی',
+	passport: 'پاسپورت',
+	birthCertificate: 'شناسنامه',
 };
 
 export default persian;

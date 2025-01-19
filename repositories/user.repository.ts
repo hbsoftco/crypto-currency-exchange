@@ -85,6 +85,8 @@ type UserRepository = {
 	// Id-Auth
 	storeSetBasic: (dto: SetBasicDto) => Promise<CommonResponse>;
 	storeSetLive: (dto: SetLiveDto) => Promise<CommonResponse>;
+	uploadIdCard: (image: File) => Promise<CommonResponse>;
+	uploadSelfy1: (image: File) => Promise<CommonResponse>;
 	// OLD
 
 	getProfile: () => Promise<UserProfileResponse>;
@@ -294,6 +296,34 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 			noAuth: false,
 			method: 'POST',
 			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async uploadIdCard(image: File): Promise<CommonResponse> {
+		const formData = new FormData();
+		formData.append('image', image);
+
+		const url = `/v1/upload/idcard`;
+
+		const response = await fetch<CommonResponse>(`${url}?wloId=1`, {
+			noAuth: false,
+			method: 'POST',
+			body: formData,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async uploadSelfy1(image: File): Promise<CommonResponse> {
+		const formData = new FormData();
+		formData.append('image', image);
+
+		const url = `/v1/upload/idcard`;
+
+		const response = await fetch<CommonResponse>(`${url}?wloId=1`, {
+			noAuth: false,
+			method: 'POST',
+			body: formData,
 		} as CustomNitroFetchOptions);
 
 		return response;

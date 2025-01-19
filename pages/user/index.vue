@@ -7,16 +7,17 @@
 	</div>
 	<div
 		v-else
-		class="py-4 p-5"
+		class="py-4 p-3 md:p-5"
 	>
-		<ProfileHeader />
+		<ProfileHeader v-if="isMobile" />
+
 		<SetNickName v-model="openModal" />
 
 		<div class="block md:flex pb-6 mb-4 border-b border-transparent md:border-primary-gray-light dark:border-transparent md:dark:border-primary-gray-dark">
 			<div class="flex flex-col justify-center items-center md:block">
 				<div class="relative ml-4">
 					<div
-						class="bg-bg-secondary-gray-light dark:bg-secondary-gray-50 rounded-full mr-1 w-16 h-16 text-center flex justify-center items-center"
+						class="bg-bg-secondary-gray-light dark:bg-secondary-gray-50 rounded-full mr-1 w-24 h-24 md:w-16 md:h-16 text-center flex justify-center items-center"
 					>
 						<IconUserFill
 							v-if="!getValueByKey(authStore.getCurrentUser, 'AVATAR_URL')"
@@ -26,7 +27,7 @@
 							v-else
 							:src="getValueByKey(authStore.getCurrentUser, 'AVATAR_URL')!"
 							alt="user-avatar"
-							class="w-16 h-16 rounded-full"
+							class="w-24 h-24 md:w-16 md:h-16 rounded-full"
 						>
 					</div>
 					<div class="bg-primary-gray-light dark:bg-primary-gray-dark w-6 h-6 p-1 cursor-pointer shadow-sm rounded-full absolute right-0 bottom-0 flex justify-center items-center">
@@ -46,7 +47,7 @@
 				</div>
 				<div
 					v-if="isMobile"
-					class="flex mt-2"
+					class="flex mt-6 md:mt-2"
 				>
 					<h5>{{ getValueByKey(authStore.getCurrentUser, 'NICKNAME') || $t('anonymousUser') }}</h5>
 					<div class="mx-2">
@@ -87,17 +88,15 @@
 					</ULink>
 				</div>
 
-				<div class="block md:flex justify-start items-center mb-4">
-					<div class="ml-6 flex justify-between md:block w-full">
-						<p class="text-subtle-text-light text-xs dark:text-subtle-text-50 mb-2">
+				<div
+					v-if="!isMobile"
+					class="flex justify-start items-center mb-4"
+				>
+					<div class="ml-6 flex items-center justify-between md:block w-full">
+						<p class="text-subtle-text-light text-xs dark:text-subtle-text-50 mb-0 md:mb-2">
 							{{ $t('account') }}
 						</p>
 						<p class="flex justify-start items-center">
-							<!-- 'i-heroicons-eye-slash' : 'i-heroicons-eye'" -->
-							<!-- <UIcon
-								name="i-heroicons-eye-slash"
-								class="w-4 h-4 ml-2 cursor-pointer text-subtle-text-light dark:text-subtle-text-50"
-							/> -->
 							<span>{{ getValueByKey(authStore.getCurrentUser, 'EMAIL') }}</span>
 						</p>
 					</div>
@@ -109,9 +108,9 @@
 						<p class="flex justify-start items-center">
 							<IconCopy
 								class="cursor-pointer text-xl text-subtle-text-light dark:text-subtle-text-50"
-								@click="copyText(useNumber(String(getValueByKey(authStore.getCurrentUser, 'UID'))))"
+								@click="copyText(String(getValueByKey(authStore.getCurrentUser, 'UID')))"
 							/>
-							<span class="mr-2">{{ useNumber(String(getValueByKey(authStore.getCurrentUser, 'UID'))) }}</span>
+							<span class="mr-2">{{ getValueByKey(authStore.getCurrentUser, 'UID') }}</span>
 						</p>
 					</div>
 
@@ -120,7 +119,10 @@
 							{{ $t('registrationTime') }}
 						</p>
 						<p class="flex justify-start items-center">
-							<span dir="ltr">{{ useNumber(formatDateToIranTime(getValueByKey(authStore.getCurrentUser, 'REG_TIME')!)) }}</span>
+							<span
+								dir="ltr"
+								class="text-nowrap"
+							>{{ toPersianDate(getValueByKey(authStore.getCurrentUser, 'REG_TIME')!, 'full-with-month') }}</span>
 						</p>
 					</div>
 
@@ -129,7 +131,58 @@
 							{{ $t('lastLogin') }}
 						</p>
 						<p class="flex justify-start items-center">
-							<span dir="ltr">{{ useNumber(formatDateToIranTime(getValueByKey(authStore.getCurrentUser, 'LATEST_LOGIN_TIME')!)) }}</span>
+							<span
+								dir="ltr"
+								class="text-nowrap"
+							>{{ toPersianDate(getValueByKey(authStore.getCurrentUser, 'LATEST_LOGIN_TIME')!, 'full-with-month') }}</span>
+						</p>
+					</div>
+				</div>
+
+				<div
+					v-else
+					class="px-5"
+				>
+					<div class="flex justify-between items-center mb-3">
+						<p class="text-subtle-text-light text-xs dark:text-subtle-text-50 mb-2">
+							{{ $t('registrationTime') }}
+						</p>
+						<p class="flex justify-start items-center">
+							<span
+								dir="ltr"
+								class="text-sm"
+							>{{ toPersianDate(getValueByKey(authStore.getCurrentUser, 'REG_TIME')!, 'full-with-month') }}</span>
+						</p>
+					</div>
+					<div class="flex justify-between items-center mb-3">
+						<p class="text-subtle-text-light text-xs dark:text-subtle-text-50 mb-2">
+							{{ $t('lastLogin') }}
+						</p>
+						<p class="flex justify-start items-center">
+							<span
+								dir="ltr"
+								class="text-sm"
+							>{{ toPersianDate(getValueByKey(authStore.getCurrentUser, 'LATEST_LOGIN_TIME')!, 'full-with-month') }}</span>
+						</p>
+					</div>
+					<div class="flex justify-between items-center mb-4">
+						<p class="text-subtle-text-light text-xs dark:text-subtle-text-50 mb-0 md:mb-2">
+							{{ $t('account') }}
+						</p>
+						<p class="flex justify-start items-center">
+							<span class="text-sm">{{ getValueByKey(authStore.getCurrentUser, 'EMAIL') }}</span>
+						</p>
+					</div>
+					<div class="flex justify-between items-center">
+						<p class="text-subtle-text-light text-xs dark:text-subtle-text-50 mb-2">
+							{{ $t('UID') }}
+						</p>
+						<p class="flex justify-start items-center">
+							<IconCopy
+								class="cursor-pointer text-xl text-subtle-text-light dark:text-subtle-text-50"
+								@click="copyText(String(getValueByKey(authStore.getCurrentUser, 'UID')))"
+							/>
+							<span class="mr-2 text-sm">{{ getValueByKey(authStore.getCurrentUser, 'UID') }}</span>
 						</p>
 					</div>
 				</div>
@@ -175,7 +228,7 @@
 					</div>
 				</div>
 
-				<div class="border py-4 px-8 mb-4 rounded-md border-primary-gray-light dark:border-primary-gray-dark">
+				<div class="border py-4 px-3 md:px-8 mb-4 rounded-md border-primary-gray-light dark:border-primary-gray-dark">
 					<div>
 						<div class="flex justify-between items-center">
 							<h6 class="mb-4 text-base font-semibold flex justify-start items-center">
@@ -205,7 +258,7 @@
 							<span class="mx-1">{{ $t('toman') }}</span>
 						</p>
 
-						<div>
+						<div v-if="!isMobile">
 							<UButton
 								class="font-bold px-12 text-sm ml-1"
 								size="lg"
@@ -219,6 +272,30 @@
 							>
 								{{ $t('buyCrypto') }}
 							</UButton>
+						</div>
+						<div
+							v-else
+							class="flex justify-between gap-2 mt-8"
+						>
+							<div class="w-1/2">
+								<UButton
+									block
+									class="font-bold px-12 text-sm"
+									size="lg"
+								>
+									{{ $t("deposit") }}
+								</UButton>
+							</div>
+							<div class="w-1/2">
+								<UButton
+									block
+									size="lg"
+									variant="ghost"
+									class="px-8 font-bold text-sm text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark"
+								>
+									{{ $t('buyCrypto') }}
+								</UButton>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -288,9 +365,7 @@ import IconGift from '~/assets/svg-icons/gift.svg';
 import IconEducation from '~/assets/svg-icons/education.svg';
 import IconPencil from '~/assets/svg-icons/pencil.svg';
 import IconCopy from '~/assets/svg-icons/menu/copy.svg';
-import { getValueByKey, priceFormat } from '~/utils/helpers';
-import { useNumber } from '~/composables/useNumber';
-import { formatDateToIranTime } from '~/utils/date-time';
+import { getValueByKey, priceFormat, toPersianDate } from '~/utils/helpers';
 import type { ReferralBrief } from '~/types/definitions/user.types';
 import type { AssetTotal, AssetTotalParams } from '~/types/definitions/asset.types';
 import { userRepository } from '~/repositories/user.repository';

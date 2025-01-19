@@ -121,7 +121,7 @@
 <script setup lang="ts">
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
-import { priceFormat, handleImageError } from '~/utils/helpers';
+import { priceFormat, handleImageError, convertPersianToEnglishNumber } from '~/utils/helpers';
 
 interface Props {
 	id: string;

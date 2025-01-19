@@ -51,7 +51,8 @@ const route = useRoute();
 
 const isSpecialRoute = ref<boolean>(false);
 const specialRoutes = ref<string[]>([
-	'account-settings',
+	'user-settings',
+	'user',
 ]);
 
 watch(() => route.name, (newName) => {
