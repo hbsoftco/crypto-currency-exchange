@@ -512,7 +512,6 @@ import IconFees from '~/assets/svg-icons/menu/quick-menu/fees.svg';
 import IconUserLevel from '~/assets/svg-icons/menu/quick-menu/user-level.svg';
 import IconManageAPI from '~/assets/svg-icons/menu/api.svg';
 import IconInviteFriends from '~/assets/svg-icons/menu/invite-friends.svg';
-import IconAwards from '~/assets/svg-icons/menu/quick-menu/awards.svg';
 import IconTopUsers from '~/assets/svg-icons/menu/quick-menu/top-users.svg';
 import IconWhiteList from '~/assets/svg-icons/menu/white-list.svg';
 import IconSetting from '~/assets/svg-icons/menu/setting.svg';

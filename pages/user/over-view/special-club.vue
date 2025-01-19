@@ -56,10 +56,10 @@
 					{{ $t('specialClubLevelKeyBenefits') }}
 				</h2>
 				<div>
-					<CardLevel
+					<!-- <CardLevel
 						v-if="levelListItem"
 						:level-list-item="levelListItem"
-					/>
+					/> -->
 				</div>
 			</section>
 
@@ -130,7 +130,7 @@ import type { Level, levelList } from '~/types/response/user.types';
 import { useNumber } from '~/composables/useNumber';
 import { priceFormat, getValueByKey } from '~/utils/helpers';
 import type { GetTraderBriefParams } from '~/types/base.types';
-import CardLevel from '~/components/pages/Site/Account/OverView/CardLevel.vue';
+// import CardLevel from '~/components/pages/Site/Account/OverView/CardLevel.vue';
 
 definePageMeta({
 	layout: 'account-single',
