@@ -24,7 +24,7 @@
 			>
 				<IconNotification
 					class="text-4xl block"
-					@click="router.push('/account/notifications')"
+					@click="router.push('/user/notifications')"
 				/>
 				<span
 					v-if="unreadMessages.length > 0"

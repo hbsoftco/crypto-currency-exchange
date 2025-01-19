@@ -20,7 +20,7 @@ export const use2FaStore = defineStore('2FA', () => {
 			generate2Fa.value = result as Generate2fa;
 		}
 		catch (error: any) {
-			router.push('/account/security');
+			router.push('/user/security');
 
 			toast.add({
 				title: useT('active2Fa'),

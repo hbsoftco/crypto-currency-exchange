@@ -141,7 +141,7 @@ const storeContact = async () => {
 		});
 
 		storeContactLoading.value = false;
-		router.push('/account/white-list');
+		router.push('/user/white-list');
 	}
 	catch (error) {
 		storeContactLoading.value = false;

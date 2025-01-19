@@ -421,21 +421,21 @@
 </template>
 
 <script setup lang="ts">
-import IconPersent from '~/assets/svg-icons/profile/account/present.svg';
-import IconKing from '~/assets/svg-icons/profile/account/king.svg';
-import IconGroup from '~/assets/svg-icons/profile/account/group.svg';
-import IconAddUser from '~/assets/svg-icons/profile/account/add-user.svg';
-import IconSupport from '~/assets/svg-icons/profile/account/support.svg';
-import IconAnalyze from '~/assets/svg-icons/profile/account/analyze.svg';
-import IconCode from '~/assets/svg-icons/profile/account/code.svg';
-import IconDeposit from '~/assets/svg-icons/profile/account/deposit.svg';
-import IconUpper from '~/assets/svg-icons/profile/account/upper.svg';
-import IconFriendly from '~/assets/svg-icons/profile/account/friendly.svg';
-import IconSendInvite from '~/assets/svg-icons/profile/account/send-invite.svg';
-import IconStar from '~/assets/svg-icons/profile/account/star.svg';
-import IconGift from '~/assets/svg-icons/profile/account/gift.svg';
-import IconCoffee from '~/assets/svg-icons/profile/account/coffee.svg';
-import IconSymbol from '~/assets/svg-icons/profile/account/symbol.svg';
+import IconPersent from '~/assets/svg-icons/profile/user/present.svg';
+import IconKing from '~/assets/svg-icons/profile/user/king.svg';
+import IconGroup from '~/assets/svg-icons/profile/user/group.svg';
+import IconAddUser from '~/assets/svg-icons/profile/user/add-user.svg';
+import IconSupport from '~/assets/svg-icons/profile/user/support.svg';
+import IconAnalyze from '~/assets/svg-icons/profile/user/analyze.svg';
+import IconCode from '~/assets/svg-icons/profile/user/code.svg';
+import IconDeposit from '~/assets/svg-icons/profile/user/deposit.svg';
+import IconUpper from '~/assets/svg-icons/profile/user/upper.svg';
+import IconFriendly from '~/assets/svg-icons/profile/user/friendly.svg';
+import IconSendInvite from '~/assets/svg-icons/profile/user/send-invite.svg';
+import IconStar from '~/assets/svg-icons/profile/user/star.svg';
+import IconGift from '~/assets/svg-icons/profile/user/gift.svg';
+import IconCoffee from '~/assets/svg-icons/profile/user/coffee.svg';
+import IconSymbol from '~/assets/svg-icons/profile/user/symbol.svg';
 import type { levelList } from '~/types/response/user.types';
 import { getValueByKey } from '~/utils/helpers';
 import DepositModal from '~/components/pages/Site/Wallet/Menu/DepositModal.vue';

@@ -151,7 +151,7 @@ const submit = async (event: VerifyOutput) => {
 			passwordOld: btoa(setPasswordDto.value.passwordOld),
 		});
 
-		router.push('/account/security');
+		router.push('/user/security');
 	}
 	catch (error) {
 		console.log(error);

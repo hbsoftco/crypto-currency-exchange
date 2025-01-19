@@ -150,7 +150,7 @@ const submit = async () => {
 		await securityRepo.changeEmail(changeEmailDto.value);
 
 		await authStore.fetchCurrentUser(true);
-		router.push('/account/security');
+		router.push('/user/security');
 	}
 	catch (error) {
 		console.log(error);

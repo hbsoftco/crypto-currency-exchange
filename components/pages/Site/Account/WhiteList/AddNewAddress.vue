@@ -166,7 +166,7 @@ const storeAddress = async () => {
 		});
 
 		storeAddressLoading.value = false;
-		router.push('/account/white-list');
+		router.push('/user/white-list');
 	}
 	catch (error) {
 		storeAddressLoading.value = false;

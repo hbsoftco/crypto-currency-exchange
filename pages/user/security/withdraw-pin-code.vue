@@ -110,7 +110,7 @@ const submit = async (event: VerifyOutput) => {
 	try {
 		await securityRepo.storeWithdrawPinCode(withdrawPinCodeDto.value);
 
-		router.push('/account/security');
+		router.push('/user/security');
 		await authStore.fetchCurrentUser(true);
 	}
 	catch (error) {

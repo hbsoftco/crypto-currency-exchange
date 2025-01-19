@@ -1181,6 +1181,7 @@ const persian = {
 	equalTo: 'برابر با',
 	is: 'است',
 	authenticationDescription: 'برای افزایش سقف برداشت، فرآیند احراز هویت را تکمیل کنید.',
+	pointsProgram: 'امتیاز به برنامه',
 };
 
 export default persian;

@@ -159,7 +159,7 @@ const enable2fa = async () => {
 		});
 
 		await authStore.fetchCurrentUser(true);
-		router.push('/account/security');
+		router.push('/user/security');
 	}
 	catch (error: any) {
 		toast.add({
