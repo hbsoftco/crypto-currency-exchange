@@ -3,7 +3,7 @@
 		<div v-if="!authStore.isLoggedIn">
 			<IconUser
 				class="text-3xl cursor-pointer"
-				@click="router.push('/auth/login')"
+				@click="router.push('/user/profile')"
 			/>
 		</div>
 		<div v-else>
