@@ -134,6 +134,7 @@
 
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core';
+import { Jalali } from 'jalali-ts';
 
 import DropDown from '~/components/forms/DropDown.vue';
 import TextareaFieldInput from '~/components/forms/TextareaFieldInput.vue';
@@ -159,8 +160,8 @@ const dto = ref({
 const dtoRules = {
 	name: { required: validations.required },
 	family: { required: validations.required },
-	birthDate: { },
-	birthCountryId: { },
+	birthDate: { required: validations.required },
+	birthCountryId: { required: validations.required },
 	natCode: { required: validations.required },
 	livingCountryId: { required: validations.required },
 	livingAddress: { required: validations.required },
@@ -194,8 +195,10 @@ const submit = async () => {
 
 		setBasicDto.value.name = dto.value.name;
 		setBasicDto.value.family = dto.value.family;
-		setBasicDto.value.birthDate = dto.value.birthDate;
 		setBasicDto.value.birthCountryId = Number(dto.value.birthCountryId);
+
+		const dateTime = Jalali.parse(dto.value.birthDate);
+		setBasicDto.value.birthDate = dateTime.gregorian('YYYY-MM-DD');
 
 		Promise.all([
 			userRepo.storeSetBasic(setBasicDto.value),

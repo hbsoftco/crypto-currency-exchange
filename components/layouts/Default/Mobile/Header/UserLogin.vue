@@ -1,5 +1,5 @@
 <template>
-	<div class="">
+	<div>
 		<div v-if="!authStore.isLoggedIn">
 			<IconUser
 				class="text-3xl cursor-pointer"

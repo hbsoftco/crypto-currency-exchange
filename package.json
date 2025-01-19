@@ -21,6 +21,7 @@
     "comlink": "^4.4.1",
     "dompurify": "^3.1.7",
     "idb-keyval": "^3.0.0",
+    "jalali-ts": "^8.0.0",
     "md5": "^2.3.0",
     "mobile-detect": "^1.4.5",
     "nuxt": "^3.12.4",
