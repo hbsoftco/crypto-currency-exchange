@@ -9,10 +9,11 @@
 		v-else
 		class="py-4 p-5"
 	>
+		<ProfileHeader />
 		<SetNickName v-model="openModal" />
 
-		<div class="flex pb-6 mb-4 border-b border-primary-gray-light dark:border-primary-gray-dark">
-			<div>
+		<div class="block md:flex pb-6 mb-4 border-b border-transparent md:border-primary-gray-light dark:border-transparent md:dark:border-primary-gray-dark">
+			<div class="flex flex-col justify-center items-center md:block">
 				<div class="relative ml-4">
 					<div
 						class="bg-bg-secondary-gray-light dark:bg-secondary-gray-50 rounded-full mr-1 w-16 h-16 text-center flex justify-center items-center"
@@ -43,10 +44,25 @@
 						</UiDropZone>
 					</div>
 				</div>
+				<div
+					v-if="isMobile"
+					class="flex mt-2"
+				>
+					<h5>{{ getValueByKey(authStore.getCurrentUser, 'NICKNAME') || $t('anonymousUser') }}</h5>
+					<div class="mx-2">
+						<IconPencil
+							class="text-subtle-text-light dark:text-subtle-text-50 text-xl cursor-pointer"
+							@click="setNickName()"
+						/>
+					</div>
+				</div>
 			</div>
 
-			<div class="">
-				<div class="flex justify-start items-center mb-4">
+			<div class="mt-4 md:mt-0">
+				<div
+					v-if="!isMobile"
+					class="flex justify-start items-center mb-4"
+				>
 					<h5>{{ getValueByKey(authStore.getCurrentUser, 'NICKNAME') || $t('anonymousUser') }}</h5>
 					<div class="mx-2">
 						<IconPencil
@@ -55,7 +71,9 @@
 						/>
 					</div>
 
-					<ULink to="/user/over-view/special-club">
+					<ULink
+						to="/user/over-view/special-club"
+					>
 						<div class="flex justify-start items-center bg-primary-yellow-light dark:bg-primary-yellow-dark rounded-full p-0.5 px-3">
 							<p class="dark:text-text-dark font-medium ml-2">
 								{{ $t('vipClubAction') }}
@@ -69,8 +87,8 @@
 					</ULink>
 				</div>
 
-				<div class="flex justify-start items-center mb-4">
-					<div class="ml-6">
+				<div class="block md:flex justify-start items-center mb-4">
+					<div class="ml-6 flex justify-between md:block w-full">
 						<p class="text-subtle-text-light text-xs dark:text-subtle-text-50 mb-2">
 							{{ $t('account') }}
 						</p>
@@ -84,7 +102,7 @@
 						</p>
 					</div>
 
-					<div class="ml-6">
+					<div class="ml-6 flex justify-between md:block w-full">
 						<p class="text-subtle-text-light text-xs dark:text-subtle-text-50 mb-2">
 							{{ $t('UID') }}
 						</p>
@@ -97,7 +115,7 @@
 						</p>
 					</div>
 
-					<div class="ml-6">
+					<div class="ml-6 flex justify-between md:block w-full">
 						<p class="text-subtle-text-light text-xs dark:text-subtle-text-50 mb-2">
 							{{ $t('registrationTime') }}
 						</p>
@@ -106,7 +124,7 @@
 						</p>
 					</div>
 
-					<div class="ml-6">
+					<div class="ml-6 flex justify-between md:block w-full">
 						<p class="text-subtle-text-light text-xs dark:text-subtle-text-50 mb-2">
 							{{ $t('lastLogin') }}
 						</p>
@@ -119,9 +137,12 @@
 		</div>
 		<!-- Top Information -->
 
-		<div class="grid grid-cols-12 gap-8">
+		<div class="grid grid-cols-12 gap-0 md:gap-8">
 			<div class="col-span-12 md:col-span-8">
-				<div class="border pt-4 pb-1 px-8 mb-4 rounded-md border-primary-gray-light dark:border-primary-gray-dark">
+				<div
+					v-if="!isMobile"
+					class="border pt-4 pb-1 px-8 mb-4 rounded-md border-primary-gray-light dark:border-primary-gray-dark"
+				>
 					<div
 						:class="[showBorder ? 'border-b' : '']"
 						class="border-primary-gray-light dark:border-primary-gray-dark"
@@ -202,7 +223,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-span-12 md:col-span-4">
+			<div
+				v-if="!isMobile"
+				class="col-span-12 md:col-span-4"
+			>
 				<div class="bg-primary-gray-light dark:bg-primary-gray-dark p-5 mb-4 rounded-md">
 					<div class="flex justify-between items-center mb-4">
 						<div class="flex justify-start items-center">
@@ -272,6 +296,8 @@ import type { AssetTotal, AssetTotalParams } from '~/types/definitions/asset.typ
 import { userRepository } from '~/repositories/user.repository';
 import { assetRepository } from '~/repositories/asset.repository';
 
+const ProfileHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/ProfileHeader.vue'));
+
 const SetNickName = defineAsyncComponent(() => import('~/components/pages/User/SetNickName.vue'));
 
 definePageMeta({
@@ -279,7 +305,11 @@ definePageMeta({
 	middleware: 'auth',
 });
 
-const { $api } = useNuxtApp();
+const { $api, $mobileDetect } = useNuxtApp();
+
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
+
 const userRepo = userRepository($api);
 const assetRepo = assetRepository($api);
 
@@ -392,6 +422,8 @@ const toggleAssetVisibility = () => {
 };
 
 onMounted(async () => {
+	isMobile.value = !!mobileDetect.mobile();
+
 	await Promise.all([
 		authStore.fetchCurrentUser(true),
 		getReferralBrief(),

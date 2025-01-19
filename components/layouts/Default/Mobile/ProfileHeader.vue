@@ -11,26 +11,6 @@
 									@click="goBack"
 								/>
 							</div>
-							<ULink
-								to="/user"
-								class="flex items-center text-sm font-medium mr-2"
-							>
-								<div
-									v-if="!getValueByKey(authStore.getCurrentUser, 'AVATAR_URL')"
-									class="flex items-center justify-center bg-primary-yellow-light dark:bg-primary-yellow-dark rounded-full w-14 h-14 text-center"
-								>
-									<IconUserFill class="text-white dark:text-black text-6xl" />
-								</div>
-								<img
-									v-else
-									:src="getValueByKey(authStore.getCurrentUser, 'AVATAR_URL')!"
-									alt="user-avatar"
-									class="w-14 h-14 rounded-full"
-								>
-								<h5 class="text-lg font-black mr-2">
-									{{ getValueByKey(authStore.getCurrentUser, 'NICKNAME') || $t('anonymousUser') }}
-								</h5>
-							</ULink>
 						</div>
 						<div>
 							<UiThemeToggle />
@@ -48,10 +28,6 @@
 
 <script setup lang="ts">
 import IconArrowRight from '~/assets/svg-icons/menu/arrow-right.svg';
-import IconUserFill from '~/assets/svg-icons/menu/user-fill.svg';
-import { getValueByKey } from '~/utils/helpers';
-
-const authStore = useAuthStore();
 
 // interface PropsDefinition {
 // 	title: string;
