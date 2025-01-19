@@ -164,13 +164,13 @@ type SetBasicDto = {
 	name: string;
 	family: string;
 	birthDate: string;
-	birthCountryId: string;
+	birthCountryId: number | null;
 };
 
 type SetLiveDto = {
 	natCode: string;
 	livingAddress: string;
-	livingCountryId: string;
+	livingCountryId: number | null;
 };
 
 export type {

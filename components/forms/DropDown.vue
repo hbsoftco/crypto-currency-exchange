@@ -69,12 +69,12 @@ interface PropsDefinition {
 	colorType?: string;
 	errorMessage?: string;
 	searchable?: boolean;
+	defaultId?: string;
 }
 
 const props = withDefaults(defineProps<PropsDefinition>(), {
 	searchable: false,
 });
-
 const emit = defineEmits(['update:modelValue']);
 
 const selected = ref(props.modelValue);
@@ -111,6 +111,16 @@ const colorTypeClass = computed(() => {
 			return 'bg-hover-light dark:bg-hover-dark';
 		default:
 			return 'bg-background-light dark:bg-background-dark';
+	}
+});
+
+onMounted(async () => {
+	if (props.defaultId) {
+		const items = props.options as KeyValue[];
+		selectedOption.value = items.find((item) => item.key === props.defaultId);
+		if (selectedOption.value) {
+			selected.value = selectedOption.value.key;
+		}
 	}
 });
 </script>
