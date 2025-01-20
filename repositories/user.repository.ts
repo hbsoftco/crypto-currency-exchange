@@ -318,7 +318,7 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 		const formData = new FormData();
 		formData.append('image', image);
 
-		const url = `/v1/upload/idcard`;
+		const url = `/v1/upload/selfy1`;
 
 		const response = await fetch<CommonResponse>(`${url}?wloId=1`, {
 			noAuth: false,

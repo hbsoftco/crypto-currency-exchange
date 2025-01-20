@@ -1185,6 +1185,7 @@ const persian = {
 	nationalCard: 'کارت ملی',
 	passport: 'پاسپورت',
 	birthCertificate: 'شناسنامه',
+	uploadDocFile: 'انتخاب فایل مدارک اجباری است!',
 };
 
 export default persian;

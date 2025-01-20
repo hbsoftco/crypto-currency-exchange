@@ -3,6 +3,7 @@
 		<div class="mb-8">
 			<FormsFieldInput
 				id="name"
+				:key="dto.name"
 				v-model="dto.name"
 				type="text"
 				input-class="text-right"
@@ -18,6 +19,7 @@
 		<div class="mb-8">
 			<FormsFieldInput
 				id="family"
+				:key="dto.family"
 				v-model="dto.family"
 				type="text"
 				input-class="text-right"
@@ -33,6 +35,7 @@
 		<div class="mb-8">
 			<FormsFieldInput
 				id="birthDate"
+				:key="dto.birthDate"
 				v-model="dto.birthDate"
 				type="text"
 				input-class="text-left"
@@ -49,6 +52,7 @@
 		<div class="mb-8">
 			<FormsFieldInput
 				id="nationalID"
+				:key="dto.natCode"
 				v-model="dto.natCode"
 				type="text"
 				input-class="text-left"
@@ -68,6 +72,7 @@
 		>
 			<DropDown
 				id="birthCountryId"
+				:key="dto.birthCountryId"
 				v-model="dto.birthCountryId"
 				:options="countries"
 				type="text"
@@ -89,6 +94,7 @@
 		>
 			<DropDown
 				id="country"
+				:key="dto.livingCountryId"
 				v-model="dto.livingCountryId"
 				:options="countries"
 				type="text"
@@ -107,6 +113,7 @@
 		<div class="mb-8 text-right">
 			<TextareaFieldInput
 				id="content"
+				:key="dto.livingAddress"
 				v-model="dto.livingAddress"
 				type="text"
 				input-class="text-right"
@@ -152,6 +159,8 @@ const emit = defineEmits<EmitDefinition>();
 const { $api } = useNuxtApp();
 const userRepo = userRepository($api);
 const systemRepo = systemRepository($api);
+
+const authStore = useAuthStore();
 
 const dto = ref({
 	name: '',
@@ -240,7 +249,18 @@ const getCountries = async () => {
 	}
 };
 
+const initUserData = () => {
+	dto.value.name = getValueByKey(authStore.getCurrentUser, 'NAME') ?? '';
+	dto.value.family = getValueByKey(authStore.getCurrentUser, 'FAMILY') ?? '';
+	dto.value.natCode = getValueByKey(authStore.getCurrentUser, 'LIVE_NATCODE') ?? '';
+	dto.value.livingAddress = getValueByKey(authStore.getCurrentUser, 'LIVE_ADDRESS') ?? '';
+	dto.value.birthDate = toPersianDate(getValueByKey(authStore.getCurrentUser, 'BIRTH_DATE') ?? '', 'numeric-month');
+};
+
 onMounted(async () => {
+	await nextTick();
+	await authStore.fetchCurrentUser(false);
+	await initUserData();
 	await getCountries();
 });
 </script>

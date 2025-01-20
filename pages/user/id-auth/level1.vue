@@ -13,12 +13,22 @@
 						v-if="steps[0].current"
 						@set-next-step="setNextStep($event)"
 					/>
-					<UploadDocuments v-else-if="steps[1].current" />
-					<UploadLetter v-else />
+					<UploadDocuments
+						v-else-if="steps[1].current"
+						@set-next-step="setNextStep($event)"
+					/>
+					<UploadLetter
+						v-else
+						@set-next-step="setNextStep($event)"
+					/>
 				</div>
 			</div>
 			<div class="my-8">
-				<SideGuideBox :tag-type="TagType.IDENTIFICATION" />
+				<SideGuideBox
+					:tag-type="TagType.IDENTIFICATION"
+					image-class="w-full"
+					:image="steps[2].current ? '/images/commitment.png': ''"
+				/>
 			</div>
 		</div>
 	</UContainer>
@@ -27,7 +37,6 @@
 <script setup lang="ts">
 import SideGuideBox from '~/components/ui/SideGuideBox.vue';
 import { TagType } from '~/utils/enums/help.enum';
-// import ImportantPoint from '~/components/pages/Account/Authentication/LevelOne/ImportantPoint.vue';
 
 const IdentityInfo = defineAsyncComponent(() => import('~/components/pages/User/Level1/IdentityInfo.vue'));
 const UploadDocuments = defineAsyncComponent(() => import('~/components/pages/User/Level1/UploadDocuments.vue'));
@@ -39,8 +48,6 @@ definePageMeta({
 });
 
 const setNextStep = (step: number) => {
-	console.log(step);
-
 	steps.value[step].completed = true;
 	steps.value[step].current = false;
 

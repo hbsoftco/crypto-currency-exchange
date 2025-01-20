@@ -273,7 +273,7 @@ const faNumToEn = (faNum: string): number => {
 	return parseInt(enNum, 10) || 0;
 };
 
-const toPersianDate = (date: string, type: 'month' | 'full' | 'full-with-month' = 'full') => {
+const toPersianDate = (date: string, type: 'month' | 'full' | 'numeric-month' | 'full-with-month' = 'full') => {
 	try {
 		const datetime = new Date(date);
 
@@ -301,6 +301,9 @@ const toPersianDate = (date: string, type: 'month' | 'full' | 'full-with-month' 
 		}
 		else if (type === 'full') {
 			return `${day} ${monthName} ${year} - ${hours}:${minutes}:${seconds}`;
+		}
+		else if (type === 'numeric-month') {
+			return `${year}/${month}/${day}`;
 		}
 		else {
 			return `${formattedDate} - ${hours}:${minutes}:${seconds}`;

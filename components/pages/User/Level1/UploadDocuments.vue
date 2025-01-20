@@ -24,7 +24,7 @@
 				@on-drag-enter="handleDragEnter"
 				@on-drag-leave="handleDragLeave"
 			>
-				<FileUploader />
+				<FileUploader :file="docFile" />
 			</UiDropZone>
 		</div>
 
@@ -32,7 +32,8 @@
 			<UButton
 				size="lg"
 				block
-				:loading="loading"
+				:loading="submitLoading"
+				@click="submit"
 			>
 				{{ $t('confirmAndContinue') }}
 			</UButton>
@@ -61,13 +62,14 @@ const dto = ref({	name: '' });
 const dtoRules = {	name: { required: validations.required } };
 const v$ = useVuelidate(dtoRules, dto);
 
+const docFile = ref<File | null>(null);
 const handleFiles = (files: FileList) => {
 	const file = files[0];
 	if (file) {
 		const reader = new FileReader();
 		if (file.type.startsWith('image/')) {
 			reader.onload = () => {
-				uploadIdCard(file);
+				docFile.value = file;
 			};
 			reader.readAsDataURL(file);
 		}
@@ -82,18 +84,47 @@ const handleDragLeave = (event: DragEvent) => {
 	console.log('Drag Leave event:', event);
 };
 
+const submitLoading = ref<boolean>(false);
+const submit = async () => {
+	try {
+		v$.value.$touch();
+		if (v$.value.$invalid) {
+			return;
+		}
+
+		if (docFile.value) {
+			uploadIdCard(docFile.value);
+		}
+		else {
+			toast.add({
+				title: useT('error'),
+				description: useT('uploadDocFile'),
+				timeout: 5000,
+				color: 'red',
+			});
+		}
+	}
+	catch (error: any) {
+		console.error('Failed:', error);
+	}
+};
+
 const uploadIdCard = async (image: File) => {
 	try {
+		submitLoading.value = true;
+
 		await userRepo.uploadIdCard(image);
 
 		emit('set-next-step', 1);
 
 		toast.add({
-			title: useT('uploadAvatar'),
-			description: useT('avatarUploadSuccess'),
+			title: useT('uploadFile'),
+			description: useT('fileUploadSuccess'),
 			timeout: 5000,
 			color: 'green',
 		});
+
+		submitLoading.value = false;
 	}
 	catch (error) {
 		console.error('Error uploading file:', error);
@@ -105,6 +136,4 @@ const options = ref([
 	{ key: useT('passport'), value: useT('passport') },
 	{ key: useT('birthCertificate'), value: useT('birthCertificate') },
 ]);
-
-const loading = ref(false);
 </script>

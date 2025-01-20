@@ -91,7 +91,7 @@
 			<img
 				:src="image"
 				:alt="image"
-				class="w-36 h-36"
+				:class="imageClass"
 			>
 		</div>
 
@@ -167,10 +167,13 @@ import type { KeyValue } from '~/types/definitions/common.types';
 import type { MiniRoutine } from '~/types/definitions/system.types';
 
 interface PropsDefinition {
+	imageClass?: string;
 	image?: string;
 	tagType: string;
 }
-const props = defineProps<PropsDefinition>();
+const props = withDefaults(defineProps<PropsDefinition>(), {
+	imageClass: 'w-36 h-36',
+});
 
 const { $api } = useNuxtApp();
 const systemRepo = systemRepository($api);
