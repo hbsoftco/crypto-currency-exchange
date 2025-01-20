@@ -181,13 +181,10 @@
 import { useNumber } from '~/composables/useNumber';
 import { formatDateToIranTime } from '~/utils/date-time';
 import { userRepository } from '~/repositories/user.repository';
-import type { GetRewardReceivedListParams, KeyValue } from '~/types/base.types';
-import { Language } from '~/utils/enums/language.enum';
-import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
+import type { GetRewardReceivedListParams } from '~/types/base.types';
 import type { Reward } from '~/types/response/user.types';
 import { DepositType } from '~/utils/enums/deposit.enum';
-
-const baseDataStore = useBaseDataStore();
+import type { KeyValue } from '~/types/definitions/common.types';
 
 const fromDate = ref();
 const toDate = ref();
@@ -228,42 +225,41 @@ const isLoading = ref<boolean>(false);
 const response = await userRepo.getRewardReceivedList(params.value);
 const RewardList = ref<Reward[]>(response.result.rows);
 
-const findCurrencyById = (id: number): CurrencyBriefItem | null => {
-	let start = 0;
-	let end = baseDataStore.currencyBriefItems.length - 1;
+// const findCurrencyById = (id: number): CurrencyBriefItem | null => {
+// 	let start = 0;
+// 	let end = baseDataStore.currencyBriefItems.length - 1;
 
-	while (start <= end) {
-		const mid = Math.floor((start + end) / 2);
-		const currentItem = baseDataStore.currencyBriefItems[mid];
+// 	while (start <= end) {
+// 		const mid = Math.floor((start + end) / 2);
+// 		const currentItem = baseDataStore.currencyBriefItems[mid];
 
-		if (currentItem.id === id) {
-			return currentItem;
-		}
-		else if (currentItem.id < id) {
-			start = mid + 1;
-		}
-		else {
-			end = mid - 1;
-		}
-	}
+// 		if (currentItem.id === id) {
+// 			return currentItem;
+// 		}
+// 		else if (currentItem.id < id) {
+// 			start = mid + 1;
+// 		}
+// 		else {
+// 			end = mid - 1;
+// 		}
+// 	}
 
-	return null;
-};
+// 	return null;
+// };
 
 const loadReward = async () => {
 	try {
 		isLoading.value = true;
 		const response = await userRepo.getRewardReceivedList(params.value);
-		await baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
 
 		RewardList.value = response.result.rows;
 		totalCount.value = response.result.totalCount;
 
 		RewardList.value = RewardList.value.map((reward) => {
-			const currency = findCurrencyById(reward.currencyId);
+			// const currency = findCurrencyById(reward.currencyId);
 			return {
 				...reward,
-				currency: currency ? currency : null,
+				// currency: currency ? currency : null,
 			};
 		});
 

@@ -22,11 +22,6 @@
 <script setup lang="ts">
 import Header from '~/components/layouts/Default/Header.vue';
 import WalletMenu from '~/components/layouts/Wallet/WalletMenu.vue';
-import { Language } from '~/utils/enums/language.enum';
-
-const baseDataStore = useBaseDataStore();
-baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
-baseDataStore.fetchMarketBriefItems();
 
 const loginStore = useLoginStore();
 const signupStore = useSignupStore();

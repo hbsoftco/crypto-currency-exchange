@@ -203,13 +203,10 @@ import { useNumber } from '~/composables/useNumber';
 import { formatDateToIranTime } from '~/utils/date-time';
 import WithdrawDetailToman from '~/components/pages/Site/Wallet/Menu/History/Withdraw/WithdrawDetailToman.vue';
 import { withdrawRepository } from '~/repositories/withdraw.repository';
-import type { GetWithdrawParams, KeyValue } from '~/types/base.types';
+import type { GetWithdrawParams } from '~/types/base.types';
 import type { Withdraw } from '~/types/response/withdraw.type';
 import { DepositType } from '~/utils/enums/deposit.enum';
-import { Language } from '~/utils/enums/language.enum';
-import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
-
-const baseDataStore = useBaseDataStore();
+import type { KeyValue } from '~/types/definitions/common.types';
 
 const cryptoTypeItems = ref<KeyValue[]>([
 	{
@@ -254,11 +251,6 @@ const CurrencyTypeItems = ref<KeyValue[]>([
 const fromDate = ref();
 const toDate = ref();
 
-// const findCurrency = async (id: number) => {
-// 	const currency = await baseDataStore.findCurrencyById(id);
-// 	return currency;
-// };
-
 const cryptoTypeFilter = ref<KeyValue>();
 
 const { $api } = useNuxtApp();
@@ -280,42 +272,41 @@ const isLoading = ref<boolean>(false);
 const response = await WithdrawRepo.getWithdraw(params.value);
 const WithdrawList = ref<Withdraw[]>(response.result.rows);
 
-const findCurrencyById = (id: number): CurrencyBriefItem | null => {
-	let start = 0;
-	let end = baseDataStore.currencyBriefItems.length - 1;
+// const findCurrencyById = (id: number): CurrencyBriefItem | null => {
+// 	let start = 0;
+// 	let end = baseDataStore.currencyBriefItems.length - 1;
 
-	while (start <= end) {
-		const mid = Math.floor((start + end) / 2);
-		const currentItem = baseDataStore.currencyBriefItems[mid];
+// 	while (start <= end) {
+// 		const mid = Math.floor((start + end) / 2);
+// 		const currentItem = baseDataStore.currencyBriefItems[mid];
 
-		if (currentItem.id === id) {
-			return currentItem;
-		}
-		else if (currentItem.id < id) {
-			start = mid + 1;
-		}
-		else {
-			end = mid - 1;
-		}
-	}
+// 		if (currentItem.id === id) {
+// 			return currentItem;
+// 		}
+// 		else if (currentItem.id < id) {
+// 			start = mid + 1;
+// 		}
+// 		else {
+// 			end = mid - 1;
+// 		}
+// 	}
 
-	return null;
-};
+// 	return null;
+// };
 
 const loadWithdraws = async () => {
 	try {
 		isLoading.value = true;
 		const response = await WithdrawRepo.getWithdraw(params.value);
-		await baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
 
 		WithdrawList.value = response.result.rows;
 		totalCount.value = response.result.totalCount;
 
 		WithdrawList.value = WithdrawList.value.map((Withdraw) => {
-			const currency = findCurrencyById(Withdraw.currencyId);
+			// const currency = findCurrencyById(Withdraw.currencyId);
 			return {
 				...Withdraw,
-				currency: currency ? currency : null,
+				// currency: currency ? currency : null,
 			};
 		});
 

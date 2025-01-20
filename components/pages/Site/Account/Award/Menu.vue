@@ -37,18 +37,13 @@
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
-// import type { TagMenuResponse } from '~/types/response/tag-menu.types.js';
 import type { Tag } from '~/types/response/tag.types';
 
 const emit = defineEmits(['tag-selected']);
 
-const baseDataStore = useBaseDataStore();
+const tags = ref<Tag[]>([]);
 
-await baseDataStore.fetchTagItems();
-
-const tags = baseDataStore.tagItems;
-
-const selectedItem = ref(tags[0]);
+const selectedItem = ref(tags.value[0]);
 
 const selectItem = (item: Tag) => {
 	selectedItem.value = item;

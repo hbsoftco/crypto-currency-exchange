@@ -203,13 +203,10 @@ import { useNumber } from '~/composables/useNumber';
 import { formatDateToIranTime } from '~/utils/date-time';
 import DepositDetailToman from '~/components/pages/Site/Wallet/Menu/History/Deposit/DepositDetailToman.vue';
 import { depositRepository } from '~/repositories/deposit.repository';
-import type { GetDepositParams, KeyValue } from '~/types/base.types';
+import type { GetDepositParams } from '~/types/base.types';
 import type { Deposit } from '~/types/response/deposit.types';
 import { DepositType } from '~/utils/enums/deposit.enum';
-import { Language } from '~/utils/enums/language.enum';
-import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
-
-const baseDataStore = useBaseDataStore();
+import type { KeyValue } from '~/types/definitions/common.types';
 
 const cryptoTypeItems = ref<KeyValue[]>([
 	{
@@ -232,11 +229,6 @@ const cryptoTypeItems = ref<KeyValue[]>([
 
 const fromDate = ref();
 const toDate = ref();
-
-// const findCurrency = async (id: number) => {
-// 	const currency = await baseDataStore.findCurrencyById(id);
-// 	return currency;
-// };
 
 const cryptoTypeFilter = ref<KeyValue>();
 
@@ -278,42 +270,41 @@ const isLoading = ref<boolean>(false);
 const response = await depositRepo.getDeposit(params.value);
 const depositList = ref<Deposit[]>(response.result.rows);
 
-const findCurrencyById = (id: number): CurrencyBriefItem | null => {
-	let start = 0;
-	let end = baseDataStore.currencyBriefItems.length - 1;
+// const findCurrencyById = (id: number): CurrencyBriefItem | null => {
+// 	let start = 0;
+// 	let end = baseDataStore.currencyBriefItems.length - 1;
 
-	while (start <= end) {
-		const mid = Math.floor((start + end) / 2);
-		const currentItem = baseDataStore.currencyBriefItems[mid];
+// 	while (start <= end) {
+// 		const mid = Math.floor((start + end) / 2);
+// 		const currentItem = baseDataStore.currencyBriefItems[mid];
 
-		if (currentItem.id === id) {
-			return currentItem;
-		}
-		else if (currentItem.id < id) {
-			start = mid + 1;
-		}
-		else {
-			end = mid - 1;
-		}
-	}
+// 		if (currentItem.id === id) {
+// 			return currentItem;
+// 		}
+// 		else if (currentItem.id < id) {
+// 			start = mid + 1;
+// 		}
+// 		else {
+// 			end = mid - 1;
+// 		}
+// 	}
 
-	return null;
-};
+// 	return null;
+// };
 
 const loadDeposits = async () => {
 	try {
 		isLoading.value = true;
 		const response = await depositRepo.getDeposit(params.value);
-		await baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
 
 		depositList.value = response.result.rows;
 		totalCount.value = response.result.totalCount;
 
 		depositList.value = depositList.value.map((deposit) => {
-			const currency = findCurrencyById(deposit.currencyId);
+			// const currency = findCurrencyById(deposit.currencyId);
 			return {
 				...deposit,
-				currency: currency ? currency : null,
+				// currency: currency ? currency : null,
 			};
 		});
 

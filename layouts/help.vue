@@ -21,9 +21,4 @@
 <script setup lang="ts">
 import Header from '~/components/layouts/Default/Header.vue';
 import ProfileMenu from '~/components/layouts/Account/ProfileMenu.vue';
-import { Language } from '~/utils/enums/language.enum';
-
-const baseDataStore = useBaseDataStore();
-baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
-baseDataStore.fetchMarketBriefItems();
 </script>

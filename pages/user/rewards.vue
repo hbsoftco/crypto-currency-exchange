@@ -29,8 +29,6 @@ import AwardBox from '~/components/pages/Site/Account/Award/AwardBox.vue';
 import { rewardRepository } from '~/repositories/reward.repository';
 import type { GetExposedListParams } from '~/types/base.types';
 import type { Reward } from '~/types/response/reward.types';
-import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
-import { Language } from '~/utils/enums/language.enum';
 
 // import Menu from '~/components/pages/Site/Account/Award/Menu.vue';
 // import { baseDateRepository } from '~/repositories/base-date.repository';
@@ -40,7 +38,6 @@ import { Language } from '~/utils/enums/language.enum';
 const { $api } = useNuxtApp();
 const rewardRepo = rewardRepository($api);
 // const tagRepo = baseDateRepository($api);
-const baseDataStore = useBaseDataStore();
 
 const params = ref<GetExposedListParams>({
 	tagId: '',
@@ -51,40 +48,39 @@ const params = ref<GetExposedListParams>({
 
 const rewardList = ref<Reward[]>();
 const isLoading = ref<boolean>(false);
-const findCurrencyById = (id: number): CurrencyBriefItem | null => {
-	let start = 0;
-	let end = baseDataStore.currencyBriefItems.length - 1;
+// const findCurrencyById = (id: number): CurrencyBriefItem | null => {
+// 	let start = 0;
+// 	let end = baseDataStore.currencyBriefItems.length - 1;
 
-	while (start <= end) {
-		const mid = Math.floor((start + end) / 2);
-		const currentItem = baseDataStore.currencyBriefItems[mid];
+// 	while (start <= end) {
+// 		const mid = Math.floor((start + end) / 2);
+// 		const currentItem = baseDataStore.currencyBriefItems[mid];
 
-		if (currentItem.id === id) {
-			return currentItem;
-		}
-		else if (currentItem.id < id) {
-			start = mid + 1;
-		}
-		else {
-			end = mid - 1;
-		}
-	}
+// 		if (currentItem.id === id) {
+// 			return currentItem;
+// 		}
+// 		else if (currentItem.id < id) {
+// 			start = mid + 1;
+// 		}
+// 		else {
+// 			end = mid - 1;
+// 		}
+// 	}
 
-	return null;
-};
+// 	return null;
+// };
 const loadDeposits = async () => {
 	try {
 		isLoading.value = true;
 		const response = await rewardRepo.getExposedList(params.value);
-		await baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
 
 		rewardList.value = response.result.rows;
 
 		rewardList.value = rewardList.value.map((deposit) => {
-			const currency = findCurrencyById(deposit.currencyId);
+			// const currency = findCurrencyById(deposit.currencyId);
 			return {
 				...deposit,
-				currency: currency ? currency : null,
+				// currency: currency ? currency : null,
 			};
 		});
 

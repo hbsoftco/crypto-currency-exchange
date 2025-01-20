@@ -217,23 +217,15 @@
 import { useNumber } from '~/composables/useNumber';
 import { formatDateToIranTime } from '~/utils/date-time';
 import { assetRepository } from '~/repositories/asset.repository';
-import type { GetInternalReceiveParams, KeyValue } from '~/types/base.types';
+import type { GetInternalReceiveParams } from '~/types/base.types';
 import { DepositType } from '~/utils/enums/deposit.enum';
-import { Language } from '~/utils/enums/language.enum';
-import type { CurrencyBriefItem } from '~/types/response/brief-list.types';
 import type { InternalReceive } from '~/types/response/asset.types';
-
-const baseDataStore = useBaseDataStore();
+import type { KeyValue } from '~/types/definitions/common.types';
 
 const fromDate = ref();
 const toDate = ref();
 const source = ref('');
 const destination = ref('');
-
-// const findCurrency = async (id: number) => {
-// 	const currency = await baseDataStore.findCurrencyById(id);
-// 	return currency;
-// };
 
 const CurrencyTypeFilter = ref<KeyValue>();
 
@@ -275,42 +267,41 @@ const isLoading = ref<boolean>(false);
 const response = await assetRepo.getInternalReceiveList(params.value);
 const InternalReceiveList = ref<InternalReceive[]>(response.result.rows);
 
-const findCurrencyById = (id: number): CurrencyBriefItem | null => {
-	let start = 0;
-	let end = baseDataStore.currencyBriefItems.length - 1;
+// const findCurrencyById = (id: number): CurrencyBriefItem | null => {
+// 	let start = 0;
+// 	let end = baseDataStore.currencyBriefItems.length - 1;
 
-	while (start <= end) {
-		const mid = Math.floor((start + end) / 2);
-		const currentItem = baseDataStore.currencyBriefItems[mid];
+// 	while (start <= end) {
+// 		const mid = Math.floor((start + end) / 2);
+// 		const currentItem = baseDataStore.currencyBriefItems[mid];
 
-		if (currentItem.id === id) {
-			return currentItem;
-		}
-		else if (currentItem.id < id) {
-			start = mid + 1;
-		}
-		else {
-			end = mid - 1;
-		}
-	}
+// 		if (currentItem.id === id) {
+// 			return currentItem;
+// 		}
+// 		else if (currentItem.id < id) {
+// 			start = mid + 1;
+// 		}
+// 		else {
+// 			end = mid - 1;
+// 		}
+// 	}
 
-	return null;
-};
+// 	return null;
+// };
 
 const loadInternalReceive = async () => {
 	try {
 		isLoading.value = true;
 		const response = await assetRepo.getInternalReceiveList(params.value);
-		await baseDataStore.fetchCurrencyBriefItems(Language.PERSIAN);
 
 		InternalReceiveList.value = response.result.rows;
 		totalCount.value = response.result.totalCount;
 
 		InternalReceiveList.value = InternalReceiveList.value.map((internalReceive) => {
-			const currency = findCurrencyById(internalReceive.currencyId);
+			// const currency = findCurrencyById(internalReceive.currencyId);
 			return {
 				...internalReceive,
-				currency: currency ? currency : null,
+				// currency: currency ? currency : null,
 			};
 		});
 
