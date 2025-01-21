@@ -43,6 +43,7 @@ const { $api } = useNuxtApp();
 const userRepo = userRepository($api);
 
 const toast = useToast();
+const router = useRouter();
 
 const docFile = ref<File | null>(null);
 const handleFiles = (files: FileList) => {
@@ -70,7 +71,8 @@ const submitLoading = ref<boolean>(false);
 const submit = async () => {
 	try {
 		if (docFile.value) {
-			uploadSelfy1(docFile.value);
+			const compressedFile = await compressImageFile(docFile.value);
+			uploadSelfy1(compressedFile);
 		}
 		else {
 			toast.add({
@@ -101,6 +103,7 @@ const uploadSelfy1 = async (image: File) => {
 			color: 'green',
 		});
 
+		router.push('/user');
 		submitLoading.value = false;
 	}
 	catch (error) {

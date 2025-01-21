@@ -315,6 +315,88 @@ const toPersianDate = (date: string, type: 'month' | 'full' | 'numeric-month' | 
 	}
 };
 
+const compressImageFile = (
+	inputFile: File,
+	targetSizeKB: number = 20,
+): Promise<File> => {
+	const targetSizeBytes = targetSizeKB * 1024;
+
+	return new Promise((resolve, reject) => {
+		const reader = new FileReader();
+
+		reader.onload = (event) => {
+			if (!event.target?.result) {
+				reject('Error reading file.');
+				return;
+			}
+
+			const img = new Image();
+			img.onload = () => {
+				const canvas = document.createElement('canvas');
+				const ctx = canvas.getContext('2d');
+
+				if (!ctx) {
+					reject('Failed to create canvas context.');
+					return;
+				}
+
+				// Set canvas size to match the image
+				canvas.width = img.width;
+				canvas.height = img.height;
+
+				// Draw the image on the canvas
+				ctx.drawImage(img, 0, 0);
+
+				let compressionQuality = 1.0; // Start with highest quality
+				let compressedDataUrl: string | null = null;
+
+				// Compress the image in a loop until the target size is reached
+				do {
+					compressedDataUrl = canvas.toDataURL('image/jpeg', compressionQuality);
+					compressionQuality -= 0.05; // Reduce quality by 5% in each step
+				} while (
+					compressedDataUrl.length > targetSizeBytes
+					&& compressionQuality > 0
+				);
+
+				// Convert data URL back to a file
+				if (compressedDataUrl) {
+					const byteString = atob(compressedDataUrl.split(',')[1]);
+					const arrayBuffer = new Uint8Array(byteString.length);
+					for (let i = 0; i < byteString.length; i++) {
+						arrayBuffer[i] = byteString.charCodeAt(i);
+					}
+					const blob = new Blob([arrayBuffer], { type: 'image/jpeg' });
+
+					// Change the file name extension to .jpg
+					const fileNameWithoutExtension = inputFile.name.replace(/\.[^/.]+$/, ''); // Remove the original extension
+					const newFileName = `${fileNameWithoutExtension}.jpg`;
+
+					const compressedFile = new File([blob], newFileName, {
+						type: 'image/jpeg',
+					});
+					resolve(compressedFile);
+				}
+				else {
+					reject('Failed to compress image.');
+				}
+			};
+
+			img.onerror = () => {
+				reject('Failed to load image.');
+			};
+
+			img.src = event.target.result as string;
+		};
+
+		reader.onerror = () => {
+			reject('Error reading input file.');
+		};
+
+		reader.readAsDataURL(inputFile);
+	});
+};
+
 export {
 	slug,
 	bigNumber,
@@ -338,4 +420,5 @@ export {
 	convertToEnglishDigits,
 	convertPersianToEnglishNumber,
 	toPersianDate,
+	compressImageFile,
 };

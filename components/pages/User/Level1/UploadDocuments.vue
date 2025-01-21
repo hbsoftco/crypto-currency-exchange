@@ -93,7 +93,8 @@ const submit = async () => {
 		}
 
 		if (docFile.value) {
-			uploadIdCard(docFile.value);
+			const compressedFile = await compressImageFile(docFile.value);
+			uploadIdCard(compressedFile);
 		}
 		else {
 			toast.add({

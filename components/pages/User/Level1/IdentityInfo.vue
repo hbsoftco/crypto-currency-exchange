@@ -246,8 +246,6 @@ const getCountries = async () => {
 };
 
 const initUserData = () => {
-	console.log('۴ Current User:', authStore.getCurrentUser);
-
 	dto.value.name = getValueByKey(authStore.getCurrentUser, 'NAME') ?? '';
 	dto.value.family = getValueByKey(authStore.getCurrentUser, 'FAMILY') ?? '';
 	dto.value.natCode = getValueByKey(authStore.getCurrentUser, 'LIVE_NATCODE') ?? '';
