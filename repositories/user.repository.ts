@@ -5,8 +5,6 @@ import type { GetActivitiesListRes, GetAddressListRes, GetApiListRes, GetApiRes,
 	GetCommissionReceivedList, GetContactListResponse,
 	GetDeviceListRes,
 	GetDevLinkGenerateRes,
-	GetHolderLevelListRes,
-	GetHolderRes,
 	GetRewardReceivedListResponse,
 	GetStateTradeRes,
 	StoreApiRes,
@@ -29,7 +27,6 @@ import type {
 	GetRewardExposedParams,
 	GetRewardReceivedListParams,
 	GetTraderBestListParams,
-	GetTraderBriefParams,
 	getTypeListParams } from '~/types/base.types';
 import type {
 	GetTraderBestListResponse,
@@ -42,15 +39,17 @@ import type {
 	DeleteAccountDto,
 	SetApiAddDto,
 	SetApiEditDto,
-	SetCardPrintDto,
 	SetEmailDto,
 	SetMobileDto } from '~/types/dto/user.dto';
 import type { GetCommissionRes, GetInvitationListRes } from '~/types/response/referral.types';
 import type {
 	AppendTicketDto,
+	AssetTypeParams,
+	GetHolderRes,
 	ReferralBriefParams,
 	ResultResponse,
 	SetBasicDto,
+	SetCardPrintDto,
 	SetLiveDto,
 	SetNicknameDto,
 	StoreTicketDto,
@@ -104,8 +103,8 @@ type UserRepository = {
 	storeBankAccAdd: (params: AddCardBankSetDto) => Promise<CommonResponse>;
 	editCodeInvite: (params: CodeInviteDto) => Promise<CommonResponse>;
 	getTraderBestList: (params: GetTraderBestListParams) => Promise<GetTraderBestListResponse>;
-	getTraderBrief: (params: GetTraderBriefParams) => Promise<GetTraderBriefResponse>;
-	getTraderState: (params: GetTraderBriefParams) => Promise<GetStateTradeRes>;
+	getTraderBrief: (params: AssetTypeParams) => Promise<GetTraderBriefResponse>;
+	getTraderState: (params: AssetTypeParams) => Promise<GetStateTradeRes>;
 	getInvitation: (params: GetInvitationParams) => Promise<GetInvitationListRes>;
 	getCommissionReceived: (params: GetCommissionReceivedListParams) => Promise<GetCommissionRes>;
 	getDeviceList: (params: getDeviceListParams) => Promise<GetDeviceListRes>;
@@ -115,8 +114,8 @@ type UserRepository = {
 	getTypeList: (params: getTypeListParams) => Promise<KeyValueResponse>;
 	setEmail: (dto: SetEmailDto) => Promise<CommonResponse>;
 	storeSetMobile: (dto: SetMobileDto) => Promise<CommonResponse>;
-	getHolder: (params: GetTraderBriefParams) => Promise<GetHolderRes>;
-	getHolderLevelList: () => Promise<GetHolderLevelListRes>;
+	getHolder: (params: AssetTypeParams) => Promise<GetHolderRes>;
+	getHolderLevelList: () => Promise<UserResponse>;
 	storeCardPrint: (dto: SetCardPrintDto) => Promise<CommonResponse>;
 	getApiList: (params: getApiListParams) => Promise<GetApiListRes>;
 	getApi: (params: getApiParams) => Promise<GetApiRes>;
@@ -532,7 +531,7 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
-	async getTraderBrief(params: GetTraderBriefParams): Promise<GetTraderBriefResponse> {
+	async getTraderBrief(params: AssetTypeParams): Promise<GetTraderBriefResponse> {
 		const query = new URLSearchParams(
 			Object.entries(params)
 				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
@@ -546,7 +545,7 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
-	async getTraderState(params: GetTraderBriefParams): Promise<GetStateTradeRes> {
+	async getTraderState(params: AssetTypeParams): Promise<GetStateTradeRes> {
 		const query = new URLSearchParams(
 			Object.entries(params)
 				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
@@ -672,7 +671,7 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
-	async getHolder(params: GetTraderBriefParams): Promise<GetHolderRes> {
+	async getHolder(params: AssetTypeParams): Promise<GetHolderRes> {
 		const query = new URLSearchParams(
 			Object.entries(params)
 				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
@@ -686,9 +685,9 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
-	async getHolderLevelList(): Promise<GetHolderLevelListRes> {
+	async getHolderLevelList(): Promise<UserResponse> {
 		const url = '/v1/user/holder/levels_list';
-		const response = await fetch<GetHolderLevelListRes>(`${url}`, {
+		const response = await fetch<UserResponse>(`${url}`, {
 			noAuth: false,
 			method: 'GET',
 		} as CustomNitroFetchOptions);

@@ -8,13 +8,14 @@ type UserResponse = {
 		totalCount: number;
 		rows: Commission[] |
 		UserLevel[] |
-		Ticket[];
+		Ticket[] |
+		levelList[];
 	};
 };
 
 type ResultResponse = {
 	statusCode: number;
-	result: ReferralBrief | number;
+	result: ReferralBrief | number ;
 };
 
 type ReferralBrief = {
@@ -173,6 +174,56 @@ type SetLiveDto = {
 	livingCountryId: number | null;
 };
 
+type AssetTypeParams = {
+	id: string;
+	assetType: string;
+};
+
+type Level = {
+	indicator: number;
+	name: string;
+	valMax: number;
+	valMin: number;
+	logoUrl: string;
+};
+
+type Info = {
+	assetsTotal: string;
+	assetsInTrade: string;
+	assetsInHold: string;
+};
+
+type GetHolderRes = {
+	statusCode: number;
+	result: {
+		level: Level;
+		info: Info;
+	};
+};
+
+type levelList = {
+	levelId: number;
+	levelName: string;
+	imgLogoUrl: string;
+	imgBenefitsUrl: string;
+	discount: string;
+	condition: string;
+	header: string;
+	prize: string;
+	withdraw: string;
+	holdByUsdMin: number;
+	holdByUsdMax: number;
+	holdPeriodByDay: number;
+	indicator: number;
+};
+
+type SetCardPrintDto = {
+	address: string;
+	postalCode: string;
+	emergencyTelno: string;
+	printingMobileAllowed: boolean;
+};
+
 export type {
 	TraderCommissionListParams,
 	UserResponse,
@@ -195,4 +246,9 @@ export type {
 	ResultResponse,
 	ReferralBrief,
 	ReferralBriefParams,
+	AssetTypeParams,
+	Level,
+	Info,
+	GetHolderRes,
+	SetCardPrintDto,
 };

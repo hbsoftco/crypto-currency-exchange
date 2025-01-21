@@ -43,7 +43,7 @@
 							</div>
 						</div>
 						<ULink
-							to="/user/over-view/send-card"
+							to="/vip-card-request"
 							class="text-base font-bold text-primary-yellow-light dark:text-primary-yellow-dark"
 						>
 							{{ $t('requestSendCard') }}
@@ -129,7 +129,7 @@ import { userRepository } from '~/repositories/user.repository';
 import type { Level, levelList } from '~/types/response/user.types';
 import { useNumber } from '~/composables/useNumber';
 import { priceFormat, getValueByKey } from '~/utils/helpers';
-import type { GetTraderBriefParams } from '~/types/base.types';
+import type { AssetTypeParams } from '~/types/definitions/user.types';
 // import CardLevel from '~/components/pages/Site/Account/OverView/CardLevel.vue';
 
 definePageMeta({
@@ -162,7 +162,7 @@ const filteredLevelList = computed(() => {
 const briefLoading = ref<boolean>(false);
 const LevelItem = ref<Level>();
 
-const params = ref<GetTraderBriefParams>({
+const params = ref<AssetTypeParams>({
 	id: '3',
 	assetType: '',
 });

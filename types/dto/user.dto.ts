@@ -51,13 +51,6 @@ type SetMobileDto = {
 	v2FACode: string;
 };
 
-type SetCardPrintDto = {
-	address: string;
-	postalCode: string;
-	emergencyTelno: string;
-	printingMobileAllowed: boolean;
-};
-
 type SetApiAddDto = {
 	uvId?: number;
 	v2fId?: number;
@@ -88,7 +81,6 @@ export type {
 	DeleteAccountDto,
 	SetEmailDto,
 	SetMobileDto,
-	SetCardPrintDto,
 	SetApiAddDto,
 	SetApiEditDto,
 };

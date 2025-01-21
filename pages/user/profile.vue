@@ -202,7 +202,7 @@
 							</div> -->
 						</div>
 					</ULink>
-					<ULink to="/user/over-view/special-club">
+					<ULink to="/vip-program">
 						<div
 							class="flex items-center h-12 p-1 my-3 rounded bg-primary-yellow-light dark:bg-primary-yellow-dark"
 						>

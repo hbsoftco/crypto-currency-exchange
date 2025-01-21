@@ -98,13 +98,14 @@ import DepositFee from '~/components/pages/Site/Account/Fees/DepositFee.vue';
 import WithdrawalFee from '~/components/pages/Site/Account/Fees/WithdrawalFee.vue';
 import type { Commission, TraderBriefItem } from '~/types/response/trader.types';
 import { userRepository } from '~/repositories/user.repository';
-import type { DepositCoinListParams, GetTraderBriefParams } from '~/types/base.types';
+import type { DepositCoinListParams } from '~/types/base.types';
 import { depositRepository } from '~/repositories/deposit.repository';
 import { DepositType } from '~/utils/enums/deposit.enum';
 import type { DepositCoinItem } from '~/types/response/deposit.types';
 import { withdrawRepository } from '~/repositories/withdraw.repository';
 import type { WithdrawCoinItem } from '~/types/response/withdraw.type';
 import { MarketType } from '~/utils/enums/market.enum';
+import type { AssetTypeParams } from '~/types/definitions/user.types';
 
 definePageMeta({
 	layout: 'account',
@@ -116,7 +117,7 @@ const userRepo = userRepository($api);
 const depositRepo = depositRepository($api);
 const withdrawRepos = withdrawRepository($api);
 
-const traderBriefParams = ref<GetTraderBriefParams>({
+const traderBriefParams = ref<AssetTypeParams>({
 	assetType: useEnv('assetType'),
 	id: '1',
 });

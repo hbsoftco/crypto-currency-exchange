@@ -100,8 +100,8 @@ import IconEmail from '~/assets/svg-icons/profile/account/Id-card.svg';
 import IconMessage from '~/assets/svg-icons/menu/message.svg';
 import { userRepository } from '~/repositories/user.repository';
 import type { Level } from '~/types/response/user.types';
-import type { GetTraderBriefParams } from '~/types/base.types';
 import { getValueByKey } from '~/utils/helpers';
+import type { AssetTypeParams } from '~/types/definitions/user.types';
 
 const profileStore = useProfileStore();
 
@@ -111,7 +111,7 @@ const userRepo = userRepository($api);
 const briefLoading = ref<boolean>(false);
 const LevelItem = ref<Level>();
 
-const params = ref<GetTraderBriefParams>({
+const params = ref<AssetTypeParams>({
 	id: '3',
 	assetType: '',
 });

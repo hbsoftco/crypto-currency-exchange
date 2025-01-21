@@ -73,7 +73,7 @@
 					</div>
 
 					<ULink
-						to="/user/over-view/special-club"
+						to="/vip-program"
 					>
 						<div class="flex justify-start items-center bg-primary-yellow-light dark:bg-primary-yellow-dark rounded-full p-0.5 px-3">
 							<p class="dark:text-text-dark font-medium ml-2">

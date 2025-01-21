@@ -246,9 +246,8 @@ import Chart from '~/components/pages/Site/Account/Chart.vue';
 import IconArrowLeftActive from '~/assets/svg-icons/profile/arrow-left-active.svg';
 import IconClose from '~/assets/svg-icons/close.svg';
 import { userRepository } from '~/repositories/user.repository';
-import type { GetTraderBriefParams } from '~/types/base.types';
 import type { TraderBriefItem } from '~/types/response/trader.types';
-import type { UserLevel } from '~/types/definitions/user.types';
+import type { AssetTypeParams, UserLevel } from '~/types/definitions/user.types';
 
 const selectedButton = ref('ninety');
 definePageMeta({
@@ -259,7 +258,7 @@ definePageMeta({
 const { $api } = useNuxtApp();
 const userRepo = userRepository($api);
 
-const traderBriefParams = ref<GetTraderBriefParams>({
+const traderBriefParams = ref<AssetTypeParams>({
 	assetType: useEnv('assetType'),
 	id: '1',
 });

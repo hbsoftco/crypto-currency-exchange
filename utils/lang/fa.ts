@@ -1019,7 +1019,7 @@ const persian = {
 	requestSendCard: 'درخواست ارسال کارت ',
 	addressResidence: 'آدرس محل سکونت',
 	zipCode: 'کد پستی',
-	landLineNumber: 'شماره تلفن ثابت (اختیاری)',
+	landLineNumber: 'شماره تلفن تماس اضطراری',
 	printPhoneNumberusinessCard: 'چاپ شماره تلفن شما روی کارت ویزیت',
 	cardPrintSuccessfully: ' درخواست شما با موفقیت ثبت شد!',
 	registerCardPrint: 'ثبت درخواست ',

@@ -249,52 +249,6 @@ type GetActivitiesListRes = {
 	};
 };
 
-type Level = {
-	indicator: number;
-	name: string;
-	valMax: number;
-	valMin: number;
-	logoUrl: string;
-};
-
-type Info = {
-	assetsTotal: string;
-	assetsInTrade: string;
-	assetsInHold: string;
-};
-
-type GetHolderRes = {
-	statusCode: number;
-	result: {
-		level: Level;
-		info: Info;
-	};
-};
-
-type levelList = {
-	levelId: number;
-	levelName: string;
-	imgLogoUrl: string;
-	imgBenefitsUrl: string;
-	discount: string;
-	condition: string;
-	header: string;
-	prize: string;
-	withdraw: string;
-	holdByUsdMin: number;
-	holdByUsdMax: number;
-	holdPeriodByDay: number;
-	indicator: number;
-};
-
-type GetHolderLevelListRes = {
-	statusCode: number;
-	result: {
-		totalCount: number;
-		rows: levelList[];
-	};
-};
-
 type ApiList = {
 	uid: number;
 	user: string;
@@ -362,11 +316,6 @@ export type {
 	GetDevLinkGenerateRes,
 	GetActivitiesListRes,
 	ActivitiesList,
-	GetHolderRes,
-	GetHolderLevelListRes,
-	levelList,
-	Level,
-	Info,
 	GetApiListRes,
 	ApiList,
 	GetApiRes,

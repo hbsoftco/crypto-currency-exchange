@@ -166,11 +166,6 @@ type GetTraderBestListParams = {
 	assetType: string;
 };
 
-type GetTraderBriefParams = {
-	id: string;
-	assetType: string;
-};
-
 type GetHowBuyListParams = {
 	languageId: string;
 	tagId: string;
@@ -319,7 +314,6 @@ export type {
 	GetRecentListParams,
 	GetReferralParams,
 	GetInvitationParams,
-	GetTraderBriefParams,
 	DepositCoinListParams,
 	WithdrawCoinListParams,
 	getDeviceListParams,
