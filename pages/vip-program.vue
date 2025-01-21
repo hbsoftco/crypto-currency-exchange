@@ -1,136 +1,176 @@
 <template>
-	<div>
-		<UContainer class="my-20">
-			<div class="grid grid-cols-12 gap-4 my-4">
-				<div class="col-span-12 md:col-span-8">
-					<UiTitleWithBack :title="$t('bitlandSpecialClub')" />
-					<div class="flex items-center mt-4">
-						<div class="flex items-center ml-4">
-							<span class="text-2xl font-bold text-primary-yellow-light dark:text-primary-yellow-dark">{{ useNumber('1به1') }}</span>
-							<p class="text-sm font-normal mr-2">
-								{{ useNumber('۲۴/۷ سرویس مشتریان ویژه') }}
-							</p>
-						</div>
-						<div class="flex items-center">
-							<span class="text-2xl font-bold text-primary-yellow-light dark:text-primary-yellow-dark">۱۰ +</span>
-							<span class="text-sm font-normal mr-2">حقوق انحصاری</span>
-						</div>
+	<div
+		v-if="levelListLoading && loading"
+		class="p-4"
+	>
+		<UiLogoLoading />
+	</div>
+
+	<UContainer
+		v-else
+		class="my-8"
+	>
+		<section class="flex justify-between items-center mt-14">
+			<div>
+				<div class="flex justify-start items-center">
+					<div
+						class="md:bg-primary-gray-light bg-none md:dark:bg-primary-gray-dark rounded-full w-7 h-7 ml-6 p-1 cursor-pointer"
+						@click="goBack"
+					>
+						<UIcon
+							name="heroicons:chevron-right"
+							class="w-5 h-5 block"
+						/>
 					</div>
+					<h1 class="text-4xl font-black">
+						{{ $t('bitlandSpecialClub') }}
+					</h1>
 				</div>
-				<div class="col-span-12 md:col-span-4">
-					<div class="text-center">
-						<div class="relative">
-							<img
-								src="/images/profile/business_card.webp"
-								class="h-72"
-							>
-							<div class="absolute top-28 right-12 md:right-20">
-								<div class="flex items-center">
-									<img
-										:src="LevelItem?.logoUrl"
-										class="w-4 h-4"
-									>
-									<span class="mr-1 md:mr-4 text-sm md:text-lg font-normal md:font-bold text-primary-yellow-light dark:text-primary-yellow-dark">
-										{{ profileStore.profileLoading ? '...': getValueByKey(profileStore.userProfile, 'NAME') }}
-										{{ profileStore.profileLoading ? '...': getValueByKey(profileStore.userProfile, 'FAMILY') }}
-									</span>
-								</div>
-								<div>
-									<h5 class="text-xs md:text-base font-light md:font-semibold text-subtle-text-light dark:text-subtle-text-dark">
-										همراه <span class="text-sm md:text-lg font-normal md:font-bold text-primary-yellow-light dark:text-primary-yellow-dark">{{ LevelItem?.name }}</span> بیت لند
-									</h5>
-								</div>
-							</div>
-						</div>
-						<ULink
-							to="/vip-card-request"
-							class="text-base font-bold text-primary-yellow-light dark:text-primary-yellow-dark"
-						>
-							{{ $t('requestSendCard') }}
-						</ULink>
+				<div class="flex items-center mt-4">
+					<div class="flex items-center ml-4">
+						<span class="text-2xl font-bold text-primary-yellow-light dark:text-primary-yellow-dark">1به1</span>
+						<p class="text-sm font-normal mr-2 max-w-24 text-wrap">
+							{{ $t('specialCustomerService2') }}
+						</p>
+					</div>
+					<div class="flex items-center mr-8">
+						<span class="text-2xl font-bold text-primary-yellow-light dark:text-primary-yellow-dark">+ 10</span>
+						<span class="text-sm font-normal mr-2">{{ $t('exclusiveRights') }}</span>
 					</div>
 				</div>
 			</div>
-			<section>
-				<h2 class="text-base font-bold mb-6">
-					{{ $t('specialClubLevelKeyBenefits') }}
-				</h2>
-				<div>
-					<!-- <CardLevel
-						v-if="levelListItem"
-						:level-list-item="levelListItem"
-					/> -->
-				</div>
-			</section>
-
-			<section class="my-10">
-				<h3 class="text-base font-bold mb-6">
-					{{ $t('specialCustomerClubBenefitsCriteria') }}
-				</h3>
-				<table class="min-w-full p-6 text-right ">
-					<thead>
-						<tr class="text-center pb-2 bg-primary-gray-light dark:bg-primary-gray-dark border-b border-b-primary-gray-light dark:border-b-primary-gray-dark  text-subtle-text-light dark:text-subtle-text-dark">
-							<th class="py-4 text-sm font-normal">
-								{{ $t('typeClub') }}
-							</th>
-							<th class="py-4 text-sm font-normal">
-								{{ $t('numberDaysKeepAsset') }}
-							</th>
-							<th class="py-4 text-sm font-normal">
-								{{ $t('totalAssets') }}
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr
-							v-for="item in filteredLevelList"
-							:key="item.levelId"
-							class="py-8 odd:bg-hover2-light dark:odd:bg-hover2-dark text-right border-b-primary-gray-light dark:border-b-primary-gray-dark border-b "
+			<div>
+				<div class="text-center">
+					<div class="relative">
+						<img
+							src="/images/bg/ellipse_blue.svg"
+							class="h-auto absolute -top-20 -right-14 z-0"
 						>
-							<td class="py-1 text-sm font-medium text-center ">
-								{{ item.header }}
-							</td>
-							<td class="py-1 text-sm font-medium text-center ">
-								{{ useNumber(item.holdPeriodByDay) }}
-							</td>
-							<td class="py-1 text-sm font-medium text-center ">
-								USDT>{{ useNumber(priceFormat(item.holdByUsdMin)) }}
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</section>
-
-			<section>
-				<h3 class="text-base font-bold mb-6">
-					{{ $t('featuresSpecialCustomerClubBenefits') }}
-				</h3>
-				<div class="mb-10">
-					<p class="text-sm font-medium my-1">
-						{{ $t('featuresSpecialCustomerClubBenefitsOne') }}
-					</p>
-					<p class="text-sm font-medium my-1">
-						{{ $t('featuresSpecialCustomerClubBenefitsTwo') }}
-					</p>
-					<p class="text-sm font-medium my-1">
-						{{ $t('featuresSpecialCustomerClubBenefitsThree') }}
-					</p>
-					<p class="text-sm font-medium my-1">
-						{{ $t('featuresSpecialCustomerClubBenefitsFour') }}
-					</p>
+						<img
+							src="/images/profile/business_card.webp"
+							class="h-72 relative z-10"
+						>
+						<img
+							src="/images/bg/ellipse_white.svg"
+							class="h-auto absolute -bottom-20 -left-14 z-0"
+						>
+						<div class="absolute top-28 right-12 md:right-20 z-20">
+							<div class="flex items-center mb-3">
+								<img
+									:src="holderBrief?.level.logoUrl"
+									class="w-6 h-6"
+								>
+								<span class="mr-1 md:mr-2 text-sm font-normal md:font-bold text-primary-yellow-light dark:text-primary-yellow-dark">
+									{{ getValueByKey(authStore.getCurrentUser, 'NAME') ?? '...' }}
+									{{ getValueByKey(authStore.getCurrentUser, 'FAMILY') ?? '...' }}
+								</span>
+							</div>
+							<div>
+								<h5 class="text-sm font-light md:font-semibold text-subtle-text-light dark:text-subtle-text-dark">
+									<span>{{ $t('participant') }}</span>
+									<span class="text-sm px-1 font-normal md:font-bold text-primary-yellow-light dark:text-primary-yellow-dark">
+										{{ holderBrief?.level.name }}
+									</span>
+									<span>{{ $t('bitlandExchange') }}</span>
+								</h5>
+							</div>
+						</div>
+					</div>
+					<!-- end of visit card -->
+					<ULink
+						to="/vip-card-request"
+						class="text-base font-bold text-primary-yellow-light dark:text-primary-yellow-dark relative z-30"
+					>
+						{{ $t('requestSendCard') }}
+					</ULink>
+					<!-- end of link -->
 				</div>
-			</section>
-		</UContainer>
-	</div>
+			</div>
+		</section>
+
+		<section>
+			<h2 class="text-base font-bold mb-6">
+				{{ $t('specialClubLevelKeyBenefits') }}
+			</h2>
+			<div>
+				<CardLevel
+					v-if="levelList"
+					:level-list="levelList"
+				/>
+			</div>
+		</section>
+
+		<section class="my-10">
+			<h3 class="text-base font-bold mb-6">
+				{{ $t('specialCustomerClubBenefitsCriteria') }}
+			</h3>
+			<table class="min-w-full p-6 text-right rounded">
+				<thead>
+					<tr class="text-center pb-2 bg-primary-gray-light dark:bg-primary-gray-dark border-b border-b-primary-gray-light dark:border-b-primary-gray-dark  text-subtle-text-light dark:text-subtle-text-dark">
+						<th class="py-4 text-sm font-normal">
+							{{ $t('typeClub') }}
+						</th>
+						<th class="py-4 text-sm font-normal">
+							{{ $t('numberDaysKeepAsset') }}
+						</th>
+						<th class="py-4 text-sm font-normal">
+							{{ $t('totalAssets') }}
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr
+						v-for="item in levelList"
+						:key="item.levelId"
+						class="py-8 odd:bg-hover2-light dark:odd:bg-hover2-dark text-right border-b-primary-gray-light dark:border-b-primary-gray-dark border-b "
+					>
+						<td class="py-1 text-sm font-medium text-center ">
+							{{ item.header }}
+						</td>
+						<td class="py-1 text-sm font-medium text-center ">
+							{{ (item.holdPeriodByDay) }}
+						</td>
+						<td
+							class="py-1 text-sm font-medium text-center"
+							dir="ltr"
+						>
+							<span class="mr-0.5">≥</span>
+							<span>{{ (priceFormat(item.holdByUsdMin)) }}</span>
+							<span class="ml-1">USDT</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+
+		<section class="mb-0 md:mb-40">
+			<h3 class="text-base font-bold mb-6">
+				{{ $t('featuresSpecialCustomerClubBenefits') }}
+			</h3>
+			<div class="mb-10">
+				<p class="text-sm font-medium my-1">
+					{{ $t('featuresSpecialCustomerClubBenefitsOne') }}
+				</p>
+				<p class="text-sm font-medium my-1">
+					{{ $t('featuresSpecialCustomerClubBenefitsTwo') }}
+				</p>
+				<p class="text-sm font-medium my-1">
+					{{ $t('featuresSpecialCustomerClubBenefitsThree') }}
+				</p>
+				<p class="text-sm font-medium my-1">
+					{{ $t('featuresSpecialCustomerClubBenefitsFour') }}
+				</p>
+			</div>
+		</section>
+	</UContainer>
 </template>
 
 <script setup lang="ts">
 import { userRepository } from '~/repositories/user.repository';
-import type { Level, levelList } from '~/types/response/user.types';
-import { useNumber } from '~/composables/useNumber';
 import { priceFormat, getValueByKey } from '~/utils/helpers';
-import type { AssetTypeParams } from '~/types/definitions/user.types';
-// import CardLevel from '~/components/pages/Site/Account/OverView/CardLevel.vue';
+import type { AssetTypeParams, HolderBrief, Level } from '~/types/definitions/user.types';
+import CardLevel from '~/components/pages/User/CardLevel.vue';
+import { AssetType } from '~/utils/enums/asset.enum';
 
 definePageMeta({
 	layout: 'account-single',
@@ -139,14 +179,16 @@ definePageMeta({
 
 const { $api } = useNuxtApp();
 const userRepo = userRepository($api);
-const levelListLoading = ref<boolean>(false);
-const levelListItem = ref<levelList[]>();
 
-const getLevelList = async () => {
+const authStore = useAuthStore();
+
+const levelListLoading = ref<boolean>(true);
+const levelList = ref<Level[]>([]);
+const getHolderLevelList = async () => {
 	try {
 		levelListLoading.value = true;
 		const { result } = await userRepo.getHolderLevelList();
-		levelListItem.value = result.rows;
+		levelList.value = result.rows as Level[];
 		levelListLoading.value = false;
 	}
 	catch (error) {
@@ -155,38 +197,36 @@ const getLevelList = async () => {
 	}
 };
 
-const filteredLevelList = computed(() => {
-	return levelListItem.value ? levelListItem.value.filter((item) => item.levelId !== 1510100) : [];
-});
-
-const briefLoading = ref<boolean>(false);
-const LevelItem = ref<Level>();
-
+const loading = ref<boolean>(false);
+const holderBrief = ref<HolderBrief>();
 const params = ref<AssetTypeParams>({
 	id: '3',
-	assetType: '',
+	assetType: AssetType.Testnet,
 });
-
 const getHolderBrief = async () => {
 	try {
-		briefLoading.value = true;
-		const { result } = await userRepo.getHolder(params.value);
-		LevelItem.value = result.level;
-		briefLoading.value = false;
+		loading.value = true;
+		const { result } = await userRepo.getHolderBrief(params.value);
+		holderBrief.value = result as HolderBrief;
+
+		console.log(holderBrief.value);
+
+		loading.value = false;
 	}
 	catch (error) {
-		briefLoading.value = false;
+		loading.value = false;
 		console.log(error);
 	}
 };
 
-const profileStore = useProfileStore();
+const goBack = () => {
+	window.history.back();
+};
 
 onMounted(async () => {
 	await Promise.all([
-		getLevelList(),
+		getHolderLevelList(),
 		getHolderBrief(),
-		profileStore.fetchProfile(),
 	]);
 });
 </script>

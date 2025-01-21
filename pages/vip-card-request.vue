@@ -1,5 +1,15 @@
 <template>
-	<UContainer class="my-8">
+	<div
+		v-if="loading"
+		class="p-4"
+	>
+		<UiLogoLoading />
+	</div>
+
+	<UContainer
+		v-else
+		class="my-8"
+	>
 		<div class="my-4">
 			<UiTitleWithBack :title="$t('requestCardVisitPrint')" />
 		</div>
@@ -11,19 +21,23 @@
 						class="h-72"
 					>
 					<div class="absolute top-28 right-12 md:right-20">
-						<div class="flex items-center">
+						<div class="flex items-center mb-3">
 							<img
-								:src="levelItem?.logoUrl"
-								class="w-4 h-4"
+								:src="holderBrief?.level.logoUrl"
+								class="w-6 h-6"
 							>
-							<span class="mr-1 md:mr-4 text-sm md:text-lg font-normal md:font-bold text-primary-yellow-light dark:text-primary-yellow-dark">
+							<span class="mr-1 md:mr-2 text-sm font-normal md:font-bold text-primary-yellow-light dark:text-primary-yellow-dark">
 								{{ getValueByKey(authStore.getCurrentUser, 'NAME') ?? '...' }}
 								{{ getValueByKey(authStore.getCurrentUser, 'FAMILY') ?? '...' }}
 							</span>
 						</div>
 						<div>
-							<h5 class="text-xs md:text-base font-light md:font-semibold text-subtle-text-light dark:text-subtle-text-dark">
-								همراه <span class="text-sm md:text-lg font-normal md:font-bold text-primary-yellow-light dark:text-primary-yellow-dark">{{ levelItem?.name }}</span> بیت لند
+							<h5 class="text-sm font-light md:font-semibold text-subtle-text-light dark:text-subtle-text-dark">
+								<span>{{ $t('participant') }}</span>
+								<span class="text-sm px-1 font-normal md:font-bold text-primary-yellow-light dark:text-primary-yellow-dark">
+									{{ holderBrief?.level.name }}
+								</span>
+								<span>{{ $t('bitlandExchange') }}</span>
 							</h5>
 						</div>
 					</div>
@@ -105,7 +119,8 @@ import { getValueByKey } from '~/utils/helpers';
 import TextareaFieldInput from '~/components/forms/TextareaFieldInput.vue';
 import { TagType } from '~/utils/enums/help.enum';
 import SideGuideBox from '~/components/ui/SideGuideBox.vue';
-import type { AssetTypeParams, Level, SetCardPrintDto } from '~/types/definitions/user.types';
+import type { AssetTypeParams, HolderBrief, SetCardPrintDto } from '~/types/definitions/user.types';
+import { AssetType } from '~/utils/enums/asset.enum';
 
 definePageMeta({
 	layout: 'account-single',
@@ -118,23 +133,24 @@ const router = useRouter();
 const { $api } = useNuxtApp();
 const userRepo = userRepository($api);
 
-const berifLoading = ref<boolean>(false);
-const levelItem = ref<Level>();
-
+const loading = ref<boolean>(false);
+const holderBrief = ref<HolderBrief>();
 const params = ref<AssetTypeParams>({
 	id: '3',
-	assetType: '',
+	assetType: AssetType.Testnet,
 });
-
 const getHolderBrief = async () => {
 	try {
-		berifLoading.value = true;
-		const { result } = await userRepo.getHolder(params.value);
-		levelItem.value = result.level;
-		berifLoading.value = false;
+		loading.value = true;
+		const { result } = await userRepo.getHolderBrief(params.value);
+		holderBrief.value = result as HolderBrief;
+
+		console.log(holderBrief.value);
+
+		loading.value = false;
 	}
 	catch (error) {
-		berifLoading.value = false;
+		loading.value = false;
 		console.log(error);
 	}
 };

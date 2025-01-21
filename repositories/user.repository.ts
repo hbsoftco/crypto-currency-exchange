@@ -45,7 +45,6 @@ import type { GetCommissionRes, GetInvitationListRes } from '~/types/response/re
 import type {
 	AppendTicketDto,
 	AssetTypeParams,
-	GetHolderRes,
 	ReferralBriefParams,
 	ResultResponse,
 	SetBasicDto,
@@ -78,14 +77,16 @@ type UserRepository = {
 	closeTicket: (id: string) => Promise<CommonResponse>;
 	appendTicket: (dto: AppendTicketDto) => Promise<TicketResponse>;
 
-	// Others
-	getReferralBrief: (params: ReferralBriefParams) => Promise<ResultResponse>;
-
 	// Id-Auth
 	storeSetBasic: (dto: SetBasicDto) => Promise<CommonResponse>;
 	storeSetLive: (dto: SetLiveDto) => Promise<CommonResponse>;
 	uploadIdCard: (image: File) => Promise<CommonResponse>;
 	uploadSelfy1: (image: File) => Promise<CommonResponse>;
+
+	// Others
+	getReferralBrief: (params: ReferralBriefParams) => Promise<ResultResponse>;
+	getHolderBrief: (params: AssetTypeParams) => Promise<ResultResponse>;
+	getHolderLevelList: () => Promise<UserResponse>;
 	// OLD
 
 	getProfile: () => Promise<UserProfileResponse>;
@@ -114,8 +115,6 @@ type UserRepository = {
 	getTypeList: (params: getTypeListParams) => Promise<KeyValueResponse>;
 	setEmail: (dto: SetEmailDto) => Promise<CommonResponse>;
 	storeSetMobile: (dto: SetMobileDto) => Promise<CommonResponse>;
-	getHolder: (params: AssetTypeParams) => Promise<GetHolderRes>;
-	getHolderLevelList: () => Promise<UserResponse>;
 	storeCardPrint: (dto: SetCardPrintDto) => Promise<CommonResponse>;
 	getApiList: (params: getApiListParams) => Promise<GetApiListRes>;
 	getApi: (params: getApiParams) => Promise<GetApiRes>;
@@ -262,22 +261,6 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
-	// Others
-	async getReferralBrief(params: ReferralBriefParams): Promise<ResultResponse> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-
-		const url = '/v1/user/referral/brief';
-		const response = await fetch<ResultResponse>(`${url}?${query.toString()}`, {
-			noAuth: false,
-			apiName: url,
-			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
 	// Id-auth
 	async storeSetBasic(dto: SetBasicDto): Promise<CommonResponse> {
 		const url = `/v1/user/profile/set_basic`;
@@ -323,6 +306,44 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 			noAuth: false,
 			method: 'POST',
 			body: formData,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	// Others
+	async getReferralBrief(params: ReferralBriefParams): Promise<ResultResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/user/referral/brief';
+		const response = await fetch<ResultResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			apiName: url,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getHolderBrief(params: AssetTypeParams): Promise<ResultResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+		const url = `/v1/user/holder/brief`;
+		const response = await fetch<ResultResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getHolderLevelList(): Promise<UserResponse> {
+		const url = '/v1/user/holder/levels_list';
+		const response = await fetch<UserResponse>(`${url}`, {
+			noAuth: false,
+			method: 'GET',
 		} as CustomNitroFetchOptions);
 
 		return response;
@@ -667,29 +688,6 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 			apiName: url,
 			method: 'POST',
 			body: dto,
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getHolder(params: AssetTypeParams): Promise<GetHolderRes> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-		const url = `/v1/user/holder/brief`;
-		const response = await fetch<GetHolderRes>(`${url}?${query.toString()}`, {
-			noAuth: false,
-			apiName: url,
-			query: {},
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getHolderLevelList(): Promise<UserResponse> {
-		const url = '/v1/user/holder/levels_list';
-		const response = await fetch<UserResponse>(`${url}`, {
-			noAuth: false,
-			method: 'GET',
 		} as CustomNitroFetchOptions);
 
 		return response;

@@ -1186,6 +1186,10 @@ const persian = {
 	passport: 'پاسپورت',
 	birthCertificate: 'شناسنامه',
 	uploadDocFile: 'انتخاب فایل مدارک اجباری است!',
+	bitlandExchange: 'صرافی بیت‌لند',
+	participant: 'همراه',
+	exclusiveRights: 'حقوق انحصاری',
+	specialCustomerService2: '24/7 سرویس ویژه مشتریان',
 };
 
 export default persian;

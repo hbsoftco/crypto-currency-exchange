@@ -9,18 +9,19 @@ type UserResponse = {
 		rows: Commission[] |
 		UserLevel[] |
 		Ticket[] |
-		levelList[];
+		Level[];
 	};
 };
 
 type ResultResponse = {
 	statusCode: number;
-	result: ReferralBrief | number ;
+	result: ReferralBrief | HolderBrief;
 };
 
 type ReferralBrief = {
 	refCode: string;
-	config: { id: number;
+	config: {
+		id: number;
 		indicator: number;
 		name: string;
 		from: number;
@@ -29,7 +30,8 @@ type ReferralBrief = {
 			cid: number;
 			dPerc: number;
 			oPerc: number;
-		}; };
+		};
+	};
 	global: {
 		overallPayment: number;
 		receivers: number;
@@ -179,7 +181,7 @@ type AssetTypeParams = {
 	assetType: string;
 };
 
-type Level = {
+type HolderBriefLevel = {
 	indicator: number;
 	name: string;
 	valMax: number;
@@ -187,21 +189,18 @@ type Level = {
 	logoUrl: string;
 };
 
-type Info = {
+type HolderBriefInfo = {
 	assetsTotal: string;
 	assetsInTrade: string;
 	assetsInHold: string;
 };
 
-type GetHolderRes = {
-	statusCode: number;
-	result: {
-		level: Level;
-		info: Info;
-	};
+type HolderBrief = {
+	level: HolderBriefLevel;
+	info: HolderBriefInfo;
 };
 
-type levelList = {
+type Level = {
 	levelId: number;
 	levelName: string;
 	imgLogoUrl: string;
@@ -247,8 +246,7 @@ export type {
 	ReferralBrief,
 	ReferralBriefParams,
 	AssetTypeParams,
-	Level,
-	Info,
-	GetHolderRes,
 	SetCardPrintDto,
+	HolderBrief,
+	Level,
 };
