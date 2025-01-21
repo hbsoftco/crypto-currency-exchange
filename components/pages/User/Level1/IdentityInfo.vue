@@ -1,9 +1,8 @@
 <template>
-	<div>
+	<div v-if="!firsLoading">
 		<div class="mb-8">
 			<FormsFieldInput
 				id="name"
-				:key="dto.name"
 				v-model="dto.name"
 				type="text"
 				input-class="text-right"
@@ -19,7 +18,6 @@
 		<div class="mb-8">
 			<FormsFieldInput
 				id="family"
-				:key="dto.family"
 				v-model="dto.family"
 				type="text"
 				input-class="text-right"
@@ -35,9 +33,9 @@
 		<div class="mb-8">
 			<FormsFieldInput
 				id="birthDate"
-				:key="dto.birthDate"
 				v-model="dto.birthDate"
 				type="text"
+				:maxlength="10"
 				input-class="text-left"
 				label="birthDate"
 				placeholder="13--/--/--"
@@ -52,12 +50,13 @@
 		<div class="mb-8">
 			<FormsFieldInput
 				id="nationalID"
-				:key="dto.natCode"
 				v-model="dto.natCode"
 				type="text"
 				input-class="text-left"
 				label="nationalID10Char"
+				:maxlength="10"
 				placeholder=""
+				:number="true"
 				icon=""
 				dir="ltr"
 				color-type="transparent"
@@ -72,7 +71,6 @@
 		>
 			<DropDown
 				id="birthCountryId"
-				:key="dto.birthCountryId"
 				v-model="dto.birthCountryId"
 				:options="countries"
 				type="text"
@@ -94,7 +92,6 @@
 		>
 			<DropDown
 				id="country"
-				:key="dto.livingCountryId"
 				v-model="dto.livingCountryId"
 				:options="countries"
 				type="text"
@@ -113,7 +110,6 @@
 		<div class="mb-8 text-right">
 			<TextareaFieldInput
 				id="content"
-				:key="dto.livingAddress"
 				v-model="dto.livingAddress"
 				type="text"
 				input-class="text-right"
@@ -250,6 +246,8 @@ const getCountries = async () => {
 };
 
 const initUserData = () => {
+	console.log('۴ Current User:', authStore.getCurrentUser);
+
 	dto.value.name = getValueByKey(authStore.getCurrentUser, 'NAME') ?? '';
 	dto.value.family = getValueByKey(authStore.getCurrentUser, 'FAMILY') ?? '';
 	dto.value.natCode = getValueByKey(authStore.getCurrentUser, 'LIVE_NATCODE') ?? '';
@@ -257,10 +255,13 @@ const initUserData = () => {
 	dto.value.birthDate = toPersianDate(getValueByKey(authStore.getCurrentUser, 'BIRTH_DATE') ?? '', 'numeric-month');
 };
 
+const firsLoading = ref(true);
 onMounted(async () => {
 	await nextTick();
 	await authStore.fetchCurrentUser(false);
 	await initUserData();
 	await getCountries();
+
+	firsLoading.value = false;
 });
 </script>

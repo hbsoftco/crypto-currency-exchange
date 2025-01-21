@@ -27,6 +27,7 @@
 			:placeholder="placeholder"
 			:required="required"
 			:disabled="disabled"
+			:maxlength="maxlength"
 			@input="onInput"
 		>
 		<label
@@ -65,6 +66,7 @@ interface PropsDefinition {
 	colorType?: string;
 	errorMessage?: string;
 	mtClass?: string;
+	maxlength?: number;
 }
 
 const props = withDefaults(defineProps<PropsDefinition>(), {
