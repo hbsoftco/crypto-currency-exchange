@@ -11,6 +11,7 @@ enum TagType {
 	MOBILE_CHANGE = '487',
 	WB_CONTACT = '488',
 	WB_ADDRESS = '489',
+	CREATE_CARD = '536',
 }
 enum EntityType {
 	ANY = '0',

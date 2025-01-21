@@ -85,7 +85,9 @@
 					</div>
 				</div>
 				<div>
-					<ImportantPoint />
+					<SideGuideBox
+						:tag-type="TagType.CREATE_CARD"
+					/>
 				</div>
 			</div>
 		</UContainer>
@@ -95,27 +97,24 @@
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core';
 
-import ImportantPoint from '~/components/pages/Site/Account/OverView/ImportantPoint.vue';
 import { userRepository } from '~/repositories/user.repository';
-import type { getMiniRoutineParams, GetTraderBriefParams } from '~/types/base.types';
+import type { GetTraderBriefParams } from '~/types/base.types';
 import type { Level } from '~/types/response/user.types';
 import { getValueByKey } from '~/utils/helpers';
 import TextareaFieldInput from '~/components/forms/TextareaFieldInput.vue';
 import type { SetCardPrintDto } from '~/types/dto/user.dto';
-import type { Help } from '~/types/response/common.types';
-import { helpRepository } from '~/repositories/help.repository';
+import { TagType } from '~/utils/enums/help.enum';
+import SideGuideBox from '~/components/ui/SideGuideBox.vue';
 
 definePageMeta({
 	layout: 'account-single',
-	middleware: 'auth',
+	// middleware: 'auth',
 });
 
 const profileStore = useProfileStore();
 
 const { $api } = useNuxtApp();
 const userRepo = userRepository($api);
-
-const helpRepo = helpRepository($api);
 
 const berifLoading = ref<boolean>(false);
 const LevelItem = ref<Level>();
@@ -186,31 +185,10 @@ const submitCardPrint = async () => {
 		submitCardPrintLoading.value = false;
 	}
 };
-const helpLoading = ref<boolean>(false);
-const helpItem = ref<Help[]>();
-
-const paramsHelp = ref<getMiniRoutineParams>({
-	tagType: '536',
-});
-
-const getMiniRoutine = async () => {
-	try {
-		helpLoading.value = true;
-		const { result } = await helpRepo.getMiniRoutine(paramsHelp.value);
-		helpItem.value = result.faqs;
-		helpLoading.value = false;
-	}
-	catch (error) {
-		helpLoading.value = false;
-		console.log(error);
-	}
-};
-console.log('help------------', helpItem);
 
 onMounted(async () => {
 	await Promise.all([
 		getHolderBrief(),
-		getMiniRoutine(),
 	]);
 });
 </script>
