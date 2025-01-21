@@ -13,17 +13,17 @@
 					<div class="absolute top-28 right-12 md:right-20">
 						<div class="flex items-center">
 							<img
-								:src="LevelItem?.logoUrl"
+								:src="levelItem?.logoUrl"
 								class="w-4 h-4"
 							>
 							<span class="mr-1 md:mr-4 text-sm md:text-lg font-normal md:font-bold text-primary-yellow-light dark:text-primary-yellow-dark">
-								{{ profileStore.profileLoading ? '...': getValueByKey(profileStore.userProfile, 'NAME') }}
-								{{ profileStore.profileLoading ? '...': getValueByKey(profileStore.userProfile, 'FAMILY') }}
+								{{ getValueByKey(authStore.getCurrentUser, 'NAME') ?? '...' }}
+								{{ getValueByKey(authStore.getCurrentUser, 'FAMILY') ?? '...' }}
 							</span>
 						</div>
 						<div>
 							<h5 class="text-xs md:text-base font-light md:font-semibold text-subtle-text-light dark:text-subtle-text-dark">
-								همراه <span class="text-sm md:text-lg font-normal md:font-bold text-primary-yellow-light dark:text-primary-yellow-dark">{{ LevelItem?.name }}</span> بیت لند
+								همراه <span class="text-sm md:text-lg font-normal md:font-bold text-primary-yellow-light dark:text-primary-yellow-dark">{{ levelItem?.name }}</span> بیت لند
 							</h5>
 						</div>
 					</div>
@@ -51,7 +51,7 @@
 						input-class="text-left"
 						label="zipCode"
 						placeholder=""
-						icon="heroicons:phone"
+						icon="heroicons:envelope-solid"
 						dir="ltr"
 						color-type="transparent"
 						:error-message="v$.postalCode.$error? $t('fieldIsRequired') : ''"
@@ -112,14 +112,14 @@ definePageMeta({
 	middleware: 'auth',
 });
 
-const profileStore = useProfileStore();
+const authStore = useAuthStore();
 const router = useRouter();
 
 const { $api } = useNuxtApp();
 const userRepo = userRepository($api);
 
 const berifLoading = ref<boolean>(false);
-const LevelItem = ref<Level>();
+const levelItem = ref<Level>();
 
 const params = ref<AssetTypeParams>({
 	id: '3',
@@ -130,7 +130,7 @@ const getHolderBrief = async () => {
 	try {
 		berifLoading.value = true;
 		const { result } = await userRepo.getHolder(params.value);
-		LevelItem.value = result.level;
+		levelItem.value = result.level;
 		berifLoading.value = false;
 	}
 	catch (error) {
