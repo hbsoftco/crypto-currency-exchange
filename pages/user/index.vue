@@ -17,7 +17,7 @@
 			<div class="flex flex-col justify-center items-center md:block">
 				<div class="relative ml-4">
 					<div
-						class="bg-bg-secondary-gray-light dark:bg-secondary-gray-50 rounded-full mr-1 w-24 h-24 md:w-16 md:h-16 text-center flex justify-center items-center"
+						class="bg-bg-secondary-gray-light dark:bg-secondary-gray-50 rounded-full mr-1 w-32 h-32 md:w-16 md:h-16 text-center flex justify-center items-center"
 					>
 						<IconUserFill
 							v-if="!getValueByKey(authStore.getCurrentUser, 'AVATAR_URL')"
@@ -27,10 +27,10 @@
 							v-else
 							:src="getValueByKey(authStore.getCurrentUser, 'AVATAR_URL')!"
 							alt="user-avatar"
-							class="w-24 h-24 md:w-16 md:h-16 rounded-full"
+							class="w-32 h-32 md:w-16 md:h-16 rounded-full"
 						>
 					</div>
-					<div class="bg-primary-gray-light dark:bg-primary-gray-dark w-6 h-6 p-1 cursor-pointer shadow-sm rounded-full absolute right-0 bottom-0 flex justify-center items-center">
+					<div class="bg-primary-gray-light dark:bg-primary-gray-dark w-8 h-8 p-1 cursor-pointer shadow-sm rounded-full absolute right-2 bottom-0 flex justify-center items-center">
 						<UiDropZone
 							@on-transfer="handleFiles"
 							@on-drag-enter="handleDragEnter"
@@ -39,7 +39,7 @@
 							<template #default="{ dropZoneActive }">
 								<IconPencil
 									:class="{ 'dropzone-active': dropZoneActive }"
-									class="text-subtle-text-light dark:text-subtle-text-50 text-xl"
+									class="text-subtle-text-light dark:text-subtle-text-50 text-2xl"
 								/>
 							</template>
 						</UiDropZone>

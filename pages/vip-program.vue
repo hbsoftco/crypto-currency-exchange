@@ -96,7 +96,7 @@
 		</section>
 		<!-- Visit card and titles -->
 
-		<section class="px-1 md:px-0">
+		<section class="px-3 md:px-0">
 			<h2 class="text-base text-center md:text-right font-bold mb-6">
 				{{ $t('specialClubLevelKeyBenefits') }}
 			</h2>
@@ -109,7 +109,7 @@
 		</section>
 		<!-- Card levels slider -->
 
-		<section class="my-10 px-2 md:px-0">
+		<section class="my-10 px-4 md:px-0">
 			<h3 class="text-base font-bold mb-6">
 				{{ $t('specialCustomerClubBenefitsCriteria') }}
 			</h3>
@@ -152,7 +152,7 @@
 			</table>
 		</section>
 
-		<section class="mb-0 md:mb-40 px-2 md:px-0">
+		<section class="mb-0 md:mb-40 px-4 md:px-0">
 			<h3 class="text-base font-bold mb-6">
 				{{ $t('featuresSpecialCustomerClubBenefits') }}
 			</h3>

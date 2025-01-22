@@ -6,7 +6,7 @@
 ::-webkit-scrollbar {
     @apply w-2;
 }
- 
+
 /* Track */
 ::-webkit-scrollbar-track {
     @apply bg-primary-gray-light dark:bg-primary-gray-dark;
