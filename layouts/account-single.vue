@@ -5,8 +5,7 @@
 			class="hidden md:block"
 		/>
 		<MobileHeader
-			v-if="isMobile"
-			class="block md:hidden"
+			v-if="isMobile && !isSpecialRoute"
 		/>
 
 		<div class="min-h-[calc(100vh-20rem)] pt-16 md:pt-14">
@@ -14,8 +13,7 @@
 		</div>
 		<Footer v-if="!isMobile" />
 		<MobileFooter
-			v-if="isMobile"
-			class="block md:hidden"
+			v-if="isMobile && !isSpecialRoute"
 		/>
 		<UiToast />
 		<UModals />
@@ -32,6 +30,19 @@ const MobileHeader = defineAsyncComponent(() => import('~/components/layouts/Def
 const { $mobileDetect } = useNuxtApp();
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
+
+const route = useRoute();
+
+const isSpecialRoute = ref<boolean>(false);
+const specialRoutes = ref<string[]>([
+	'vip-program',
+]);
+
+watch(() => route.name, (newName) => {
+	console.log(route.name);
+
+	isSpecialRoute.value = specialRoutes.value.includes(String(newName));
+}, { deep: true, immediate: true });
 
 const loginStore = useLoginStore();
 const signupStore = useSignupStore();

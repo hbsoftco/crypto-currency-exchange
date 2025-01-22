@@ -36,7 +36,7 @@
 										v-if="showLock"
 										class="px-2 py-1 bg-white opacity-50 rounded-md mr-2"
 									>
-										<span class="text-xs font-normal text-black">این کارت برای شما قفل است</span>
+										<span class="text-xs font-normal text-black">{{ $t('thisCardIsLockedForYou') }}</span>
 									</div>
 								</div>
 								<div class="mt-1 text-subtle-text-light dark:text-subtle-text-light text-sm font-normal">
@@ -119,13 +119,13 @@
 								</h5>
 							</div>
 							<div class="my-1">
-								<UiProgressBar :progress="progressNum" />
+								<UiProgressBar :progress="Number(getValueByKey(authStore.getCurrentUser, 'VIP_LVL_POS'))" />
 							</div>
 							<div class="mb-6">
 								<h5 class="text-black dark:text-black text-sm font-medium">
 									ارزیابی دارایی ها در {{ levelList[1].holdPeriodByDay }} روز گذشته:
-									{{ profileStore.profileLoading ? '...': getValueByKey(profileStore.userProfile, 'VIP_LVL_POS') }}
-									دلار
+									{{ getValueByKey(authStore.getCurrentUser, 'VIP_LVL_POS') ?? '...' }}
+									{{ $t('dollar') }}
 								</h5>
 							</div>
 							<div class="grid grid-cols-2 gap-4">
@@ -183,7 +183,7 @@
 										v-if="showLockTwo"
 										class="px-2 py-1 bg-white opacity-50 rounded-md mr-2"
 									>
-										<span class="text-xs font-normal text-black">این کارت برای شما قفل است</span>
+										<span class="text-xs font-normal text-black">{{ $t('thisCardIsLockedForYou') }}</span>
 									</div>
 								</div>
 								<div class="mt-1 text-subtle-text-light dark:text-subtle-text-light text-sm font-normal">
@@ -266,13 +266,13 @@
 								</h5>
 							</div>
 							<div class="my-1">
-								<UiProgressBar :progress="progressNum" />
+								<UiProgressBar :progress="Number(getValueByKey(authStore.getCurrentUser, 'VIP_LVL_POS'))" />
 							</div>
 							<div class="mb-6">
 								<h5 class="text-black dark:text-black text-sm font-medium">
 									ارزیابی دارایی ها در {{ levelList[2].holdPeriodByDay }} روز گذشته:
-									{{ profileStore.profileLoading ? '...': getValueByKey(profileStore.userProfile, 'VIP_LVL_POS') }}
-									دلار
+									{{ getValueByKey(authStore.getCurrentUser, 'VIP_LVL_POS') ?? '...' }}
+									{{ $t('dollar') }}
 								</h5>
 							</div>
 							<div class="grid grid-cols-2 gap-4">
@@ -330,7 +330,7 @@
 										v-if="showLockThree"
 										class="px-2 py-1 bg-white opacity-50 rounded-md mr-2"
 									>
-										<span class="text-xs font-normal text-black">این کارت برای شما قفل است</span>
+										<span class="text-xs font-normal text-black">{{ $t('thisCardIsLockedForYou') }}</span>
 									</div>
 								</div>
 								<div class="mt-1 text-subtle-text-light dark:text-subtle-text-light text-sm font-normal">
@@ -413,13 +413,13 @@
 								</h5>
 							</div>
 							<div class="my-1">
-								<UiProgressBar :progress="progressNum" />
+								<UiProgressBar :progress="Number(getValueByKey(authStore.getCurrentUser, 'VIP_LVL_POS'))" />
 							</div>
 							<div class="mb-6">
 								<h5 class="text-black dark:text-black text-sm font-medium">
 									ارزیابی دارایی ها در {{ levelList[3].holdPeriodByDay }} روز گذشته:
-									{{ profileStore.profileLoading ? '...': getValueByKey(profileStore.userProfile, 'VIP_LVL_POS') }}
-									دلار
+									{{ getValueByKey(authStore.getCurrentUser, 'VIP_LVL_POS') ?? '...' }}
+									{{ $t('dollar') }}
 								</h5>
 							</div>
 							<div class="grid grid-cols-2 gap-4">
@@ -481,31 +481,38 @@ interface PropsDefinition {
 }
 const props = defineProps<PropsDefinition>();
 
+const { $mobileDetect } = useNuxtApp();
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
+
+const authStore = useAuthStore();
+
 const carouselConfig = {
 	itemsToShow: 3.5,
 	wrapAround: true,
+	breakpoints: {
+		300: { itemsToShow: 1 },
+		400: { itemsToShow: 1 },
+		500: { itemsToShow: 3 },
+	},
 };
 
-const profileStore = useProfileStore();
+onMounted(() => {
+	isMobile.value = !!mobileDetect.mobile();
+});
 
 const showLock = computed(() => {
-	const showBox = Number(getValueByKey(profileStore.userProfile, 'VIP_LVL_ID')) < Number(props.levelList[1].levelId);
-	return showBox;
+	return Number(getValueByKey(authStore.getCurrentUser, 'VIP_LVL_ID')) < Number(props.levelList[1].levelId);
 });
 
 const showLockTwo = computed(() => {
-	const showBox = Number(getValueByKey(profileStore.userProfile, 'VIP_LVL_ID')) < Number(props.levelList[2].levelId);
-	return showBox;
+	return Number(getValueByKey(authStore.getCurrentUser, 'VIP_LVL_ID')) < Number(props.levelList[2].levelId);
 });
 
 const showLockThree = computed(() => {
-	const showBox = Number(getValueByKey(profileStore.userProfile, 'VIP_LVL_ID')) < Number(props.levelList[3].levelId);
-	return showBox;
+	return Number(getValueByKey(authStore.getCurrentUser, 'VIP_LVL_ID')) < Number(props.levelList[3].levelId);
 });
-const progressNum = computed(() => {
-	const progrossItem = Number(getValueByKey(profileStore.userProfile, 'VIP_LVL_POS'));
-	return progrossItem;
-});
+
 const showDeposit = ref(false);
 
 const openDepositDetail = () => {

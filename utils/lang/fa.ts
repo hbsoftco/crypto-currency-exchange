@@ -1190,6 +1190,7 @@ const persian = {
 	participant: 'همراه',
 	exclusiveRights: 'حقوق انحصاری',
 	specialCustomerService2: '24/7 سرویس ویژه مشتریان',
+	thisCardIsLockedForYou: 'این کارت برای شما قفل است',
 };
 
 export default persian;

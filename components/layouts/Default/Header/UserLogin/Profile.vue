@@ -55,7 +55,7 @@
 							/>
 						</div>
 					</div>
-					<ULink to="#">
+					<ULink to="/vip-program">
 						<div class="flex justify-between items-center p-2 my-3 rounded bg-primary-yellow-light dark:bg-primary-yellow-dark">
 							<div class="flex items-center">
 								<div class="w-6 h-6 rounded p-1 bg-black ml-2">

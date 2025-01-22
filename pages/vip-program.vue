@@ -6,13 +6,20 @@
 		<UiLogoLoading />
 	</div>
 
-	<UContainer
+	<div
 		v-else
-		class="my-8"
+		class="my-0 md:my-8 mx-auto px-0 sm:px-6 lg:px-8 max-w-7xl overflow-hidden"
 	>
-		<section class="flex justify-between items-center mt-14">
+		<BackHeader
+			v-if="isMobile"
+			:title="$t('bitlandSpecialClub')"
+		/>
+		<section class="flex justify-between flex-col md:flex-row items-center mt-14 mb-10 md:mb-0">
 			<div>
-				<div class="flex justify-start items-center">
+				<div
+					v-if="!isMobile"
+					class="flex justify-start items-center"
+				>
 					<div
 						class="md:bg-primary-gray-light bg-none md:dark:bg-primary-gray-dark rounded-full w-7 h-7 ml-6 p-1 cursor-pointer"
 						@click="goBack"
@@ -26,35 +33,35 @@
 						{{ $t('bitlandSpecialClub') }}
 					</h1>
 				</div>
-				<div class="flex items-center mt-4">
+				<div class="flex items-center mt-0 md:mt-4 px-2 md:px-0 mb-16 md:mb-0">
 					<div class="flex items-center ml-4">
-						<span class="text-2xl font-bold text-primary-yellow-light dark:text-primary-yellow-dark">1به1</span>
+						<span class="text-xl md:text-2xl font-bold text-primary-yellow-light dark:text-primary-yellow-dark">{{ `1${$t('to')}1` }}</span>
 						<p class="text-sm font-normal mr-2 max-w-24 text-wrap">
 							{{ $t('specialCustomerService2') }}
 						</p>
 					</div>
 					<div class="flex items-center mr-8">
-						<span class="text-2xl font-bold text-primary-yellow-light dark:text-primary-yellow-dark">+ 10</span>
+						<span class="text-xl md:text-2xl font-bold text-primary-yellow-light dark:text-primary-yellow-dark">+ 10</span>
 						<span class="text-sm font-normal mr-2">{{ $t('exclusiveRights') }}</span>
 					</div>
 				</div>
 			</div>
 			<div>
 				<div class="text-center">
-					<div class="relative">
+					<div class="relative mb-8 px-3">
 						<img
 							src="/images/bg/ellipse_blue.svg"
 							class="h-auto absolute -top-20 -right-14 z-0"
 						>
 						<img
-							src="/images/profile/business_card.webp"
-							class="h-72 relative z-10"
+							src="/images/card.webp"
+							class="max-h-64 relative z-10"
 						>
 						<img
 							src="/images/bg/ellipse_white.svg"
 							class="h-auto absolute -bottom-20 -left-14 z-0"
 						>
-						<div class="absolute top-28 right-12 md:right-20 z-20">
+						<div class="absolute top-28 md:top-32 right-9 md:right-10 z-20">
 							<div class="flex items-center mb-3">
 								<img
 									:src="holderBrief?.level.logoUrl"
@@ -87,9 +94,10 @@
 				</div>
 			</div>
 		</section>
+		<!-- Visit card and titles -->
 
-		<section>
-			<h2 class="text-base font-bold mb-6">
+		<section class="px-1 md:px-0">
+			<h2 class="text-base text-center md:text-right font-bold mb-6">
 				{{ $t('specialClubLevelKeyBenefits') }}
 			</h2>
 			<div>
@@ -99,8 +107,9 @@
 				/>
 			</div>
 		</section>
+		<!-- Card levels slider -->
 
-		<section class="my-10">
+		<section class="my-10 px-2 md:px-0">
 			<h3 class="text-base font-bold mb-6">
 				{{ $t('specialCustomerClubBenefitsCriteria') }}
 			</h3>
@@ -143,7 +152,7 @@
 			</table>
 		</section>
 
-		<section class="mb-0 md:mb-40">
+		<section class="mb-0 md:mb-40 px-2 md:px-0">
 			<h3 class="text-base font-bold mb-6">
 				{{ $t('featuresSpecialCustomerClubBenefits') }}
 			</h3>
@@ -162,7 +171,7 @@
 				</p>
 			</div>
 		</section>
-	</UContainer>
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -171,14 +180,18 @@ import { priceFormat, getValueByKey } from '~/utils/helpers';
 import type { AssetTypeParams, HolderBrief, Level } from '~/types/definitions/user.types';
 import CardLevel from '~/components/pages/User/CardLevel.vue';
 import { AssetType } from '~/utils/enums/asset.enum';
+import BackHeader from '~/components/layouts/Default/Mobile/BackHeader.vue';
 
 definePageMeta({
 	layout: 'account-single',
 	middleware: 'auth',
 });
 
-const { $api } = useNuxtApp();
+const { $api, $mobileDetect } = useNuxtApp();
 const userRepo = userRepository($api);
+
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
 
 const authStore = useAuthStore();
 
@@ -209,8 +222,6 @@ const getHolderBrief = async () => {
 		const { result } = await userRepo.getHolderBrief(params.value);
 		holderBrief.value = result as HolderBrief;
 
-		console.log(holderBrief.value);
-
 		loading.value = false;
 	}
 	catch (error) {
@@ -224,6 +235,8 @@ const goBack = () => {
 };
 
 onMounted(async () => {
+	isMobile.value = !!mobileDetect.mobile();
+
 	await Promise.all([
 		getHolderLevelList(),
 		getHolderBrief(),
