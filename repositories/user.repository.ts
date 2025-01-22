@@ -3,7 +3,6 @@ import type { NitroFetchRequest, $Fetch } from 'nitropack';
 import type { GetActivitiesListRes, GetAddressListRes, GetApiListRes, GetApiRes, GetBankListResponse,
 	GetBestListResponse,
 	GetCommissionReceivedList, GetContactListResponse,
-	GetDeviceListRes,
 	GetDevLinkGenerateRes,
 	GetRewardReceivedListResponse,
 	GetStateTradeRes,
@@ -21,7 +20,6 @@ import type {
 	GetBankParams,
 	GetCommissionReceivedListParams,
 	GetContactListParams,
-	getDeviceListParams,
 	GetInvitationParams,
 	GetReferralBestListParams,
 	GetRewardExposedParams,
@@ -108,7 +106,6 @@ type UserRepository = {
 	getTraderState: (params: AssetTypeParams) => Promise<GetStateTradeRes>;
 	getInvitation: (params: GetInvitationParams) => Promise<GetInvitationListRes>;
 	getCommissionReceived: (params: GetCommissionReceivedListParams) => Promise<GetCommissionRes>;
-	getDeviceList: (params: getDeviceListParams) => Promise<GetDeviceListRes>;
 	deleteAccount: (dto: DeleteAccountDto) => Promise<CommonResponse>;
 	getDevLinkGenerate: () => Promise<GetDevLinkGenerateRes>;
 	getActivitiesList: (params: getActivitiesListParams) => Promise<GetActivitiesListRes>;
@@ -601,20 +598,6 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 		);
 		const url = `/v1/user/referral/commission_received_list`;
 		const response = await fetch<GetCommissionRes>(`${url}?${query.toString()}`, {
-			noAuth: false,
-			apiName: url,
-			query: {},
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getDeviceList(params: getDeviceListParams): Promise<GetDeviceListRes> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-		const url = `/v1/user/logs/device_list`;
-		const response = await fetch<GetDeviceListRes>(`${url}?${query.toString()}`, {
 			noAuth: false,
 			apiName: url,
 			query: {},

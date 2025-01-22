@@ -3,7 +3,8 @@ type SecurityListResponse = {
 	result: {
 		totalCount: number;
 		rows:
-		Notice [];
+			Notice [] |
+			Device [];
 	};
 };
 
@@ -135,6 +136,24 @@ type AntiPhishingDto = {
 	anitphishingPhrase: string;
 };
 
+// list device
+
+type DeviceListParams = {
+	from?: string;
+	to?: string;
+	pageNumber?: string;
+	pageSize?: string;
+};
+
+type Device = {
+	id: number;
+	iPv4: string;
+	iPv6: string;
+	device: string;
+	isExpired: boolean;
+	latestTime: string;
+	inactive: boolean;
+};
 export type {
 	SecurityListResponse,
 	SecurityResponse,
@@ -154,4 +173,6 @@ export type {
 	VerifyOutput,
 	WithdrawPinCodeDto,
 	AntiPhishingDto,
+	DeviceListParams,
+	Device,
 };
