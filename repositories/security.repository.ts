@@ -6,6 +6,7 @@ import type {
 	AntiPhishingDto,
 	ChangeEmailDto,
 	ChangePhoneDto,
+	DeviceListParams,
 	Disable2faDto,
 	Enable2faDto,
 	IdentificationDto,
@@ -38,6 +39,8 @@ type SecurityRepository = {
 	//
 	storeWithdrawPinCode: (dto: WithdrawPinCodeDto) => Promise<CommonResponse>;
 	storeAntiPhishing: (dto: AntiPhishingDto) => Promise<CommonResponse>;
+	// list-device
+	getDeviceList: (params: DeviceListParams) => Promise<SecurityListResponse>;
 };
 
 export const securityRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SecurityRepository => ({
@@ -205,6 +208,20 @@ export const securityRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): S
 			noAuth: false,
 			method: 'POST',
 			body,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	// list-device
+	async getDeviceList(params: DeviceListParams): Promise<SecurityListResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+		const url = `/v1/security/logs/device_list`;
+		const response = await fetch<SecurityListResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
 		} as CustomNitroFetchOptions);
 
 		return response;

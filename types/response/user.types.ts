@@ -205,23 +205,6 @@ type GetLevelsDataRes = {
 		rows: LevelRow[];
 	};
 };
-type DeviceItem = {
-	id: number;
-	iPv4: string;
-	iPv6: string;
-	device: string;
-	isExpired: boolean;
-	latestTime: string;
-	inactive: boolean;
-};
-
-type GetDeviceListRes = {
-	statusCode: number;
-	result: {
-		totalCount: number;
-		rows: DeviceItem[];
-	};
-};
 
 type GetDevLinkGenerateRes = {
 	statusCode: number;
@@ -311,8 +294,6 @@ export type {
 	GetStateTradeRes,
 	GetLevelsDataRes,
 	LevelRow,
-	GetDeviceListRes,
-	DeviceItem,
 	GetDevLinkGenerateRes,
 	GetActivitiesListRes,
 	ActivitiesList,

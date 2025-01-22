@@ -240,13 +240,6 @@ type GetInvitationParams = {
 	pageSize?: string;
 };
 
-type getDeviceListParams = {
-	from?: string;
-	to?: string;
-	pageNumber?: string;
-	pageSize?: string;
-};
-
 type GetReasonListParams = {
 	entityType?: string;
 	langId?: string;
@@ -316,7 +309,6 @@ export type {
 	GetInvitationParams,
 	DepositCoinListParams,
 	WithdrawCoinListParams,
-	getDeviceListParams,
 	GetReasonListParams,
 	getActivitiesListParams,
 	getTypeListParams,
