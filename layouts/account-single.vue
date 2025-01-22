@@ -37,6 +37,7 @@ const isSpecialRoute = ref<boolean>(false);
 const specialRoutes = ref<string[]>([
 	'vip-program',
 	'vip-card-request',
+	'user-id-auth-level1',
 ]);
 
 watch(() => route.name, (newName) => {
