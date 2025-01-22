@@ -8,7 +8,7 @@
 				:key="levelList[0].levelId"
 			>
 				<div
-					class="h-[39rem] md:h-[47.6rem] bg-gradient-to-b from-[#9e8334] to-white  relative py-8 px-4 text-right transition-all duration-200 rounded shadow-sm"
+					class="h-[39rem] md:h-[45rem] bg-gradient-to-b from-[#9e8334] to-white  relative py-8 px-4 text-right transition-all duration-200 rounded shadow-sm"
 					dir="rtl"
 				>
 					<DepositModal
@@ -48,63 +48,63 @@
 
 					<section>
 						<div class="grid grid-cols-3 gap-3 mt-5">
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconPersent class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ levelList[1].discount }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconKing class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('bitlandSpecialSymbol') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconGroup class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('specialPersonalServiceGroup') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconAddUser class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('bitlandInvestmentConsultant') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconSupport class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('specialCustomerService') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconAnalyze class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('bitlandAnalysisReport') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconCode class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('exclusiveApiService') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconDeposit class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('fastDepositWithdrawalChannels') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconUpper class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ levelList[1].withdraw }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconFriendly class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('bitlandAffiliateProgram') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconSendInvite class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('priorityInvitation') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconStar class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('priorityProductTesting') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconGift class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ levelList[1].prize }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconCoffee class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('bitlandPrivateSeminar') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconSymbol class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('shareProjectsQuality') }}</span>
 							</div>
@@ -155,7 +155,7 @@
 				:key="levelList[1].levelId"
 			>
 				<div
-					class="h-[39rem] md:h-[47.6rem] bg-gradient-to-b from-[#d8d8d7] to-white  relative py-8 px-4 text-right transition-all duration-200 rounded shadow-sm"
+					class="h-[39rem] md:h-[45rem] bg-gradient-to-b from-[#d8d8d7] to-white  relative py-8 px-4 text-right transition-all duration-200 rounded shadow-sm"
 					dir="rtl"
 				>
 					<DepositModal
@@ -195,63 +195,63 @@
 
 					<section dir="rtl">
 						<div class="grid grid-cols-3 gap-2 mt-5">
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconPersent class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ levelList[2].discount }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconKing class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('bitlandSpecialSymbol') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconGroup class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('specialPersonalServiceGroup') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconAddUser class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('bitlandInvestmentConsultant') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconSupport class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('specialCustomerService') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconAnalyze class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('bitlandAnalysisReport') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconCode class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('exclusiveApiService') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconDeposit class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('fastDepositWithdrawalChannels') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconUpper class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ levelList[2].withdraw }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconFriendly class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('bitlandAffiliateProgram') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconSendInvite class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('priorityInvitation') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconStar class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('priorityProductTesting') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconGift class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ levelList[2].prize }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconCoffee class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('bitlandPrivateSeminar') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconSymbol class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('shareProjectsQuality') }}</span>
 							</div>
@@ -302,7 +302,7 @@
 				:key="levelList[2].levelId"
 			>
 				<div
-					class="h-[39rem] md:h-[47.6rem] bg-gradient-to-b from-[#FFC000] to-white  relative py-8 px-4 text-right transition-all duration-200 rounded shadow-sm"
+					class="h-[39rem] md:h-[45rem] bg-gradient-to-b from-[#FFC000] to-white  relative py-8 px-4 text-right transition-all duration-200 rounded shadow-sm"
 					dir="rtl"
 				>
 					<DepositModal
@@ -342,63 +342,63 @@
 
 					<section>
 						<div class="grid grid-cols-3 gap-3 mt-5">
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconPersent class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ levelList[3].discount }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconKing class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('bitlandSpecialSymbol') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconGroup class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('specialPersonalServiceGroup') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconAddUser class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('bitlandInvestmentConsultant') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconSupport class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('specialCustomerService') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconAnalyze class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('bitlandAnalysisReport') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconCode class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('exclusiveApiService') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconDeposit class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('fastDepositWithdrawalChannels') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconUpper class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ levelList[3].withdraw }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconFriendly class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('bitlandAffiliateProgram') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconSendInvite class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('priorityInvitation') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconStar class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('priorityProductTesting') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconGift class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ levelList[3].prize }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconCoffee class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('bitlandPrivateSeminar') }}</span>
 							</div>
-							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-2">
+							<div class="text-black dark:text-black text-xs md:text-sm font-normal my-0 md:my-1 mx-0 md:mx-2">
 								<IconSymbol class="text-accent-blue text-lg md:text-xl" />
 								<span class="mt-2">{{ $t('shareProjectsQuality') }}</span>
 							</div>

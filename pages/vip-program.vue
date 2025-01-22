@@ -180,7 +180,8 @@ import { priceFormat, getValueByKey } from '~/utils/helpers';
 import type { AssetTypeParams, HolderBrief, Level } from '~/types/definitions/user.types';
 import CardLevel from '~/components/pages/User/CardLevel.vue';
 import { AssetType } from '~/utils/enums/asset.enum';
-import BackHeader from '~/components/layouts/Default/Mobile/BackHeader.vue';
+
+const BackHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/BackHeader.vue'));
 
 definePageMeta({
 	layout: 'account-single',
