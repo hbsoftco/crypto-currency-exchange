@@ -218,6 +218,8 @@ const submit = async () => {
 
 		emit('set-next-step', 0);
 
+		await authStore.fetchCurrentUser(true);
+
 		submitLoading.value = false;
 	}
 	catch (error: any) {

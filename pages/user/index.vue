@@ -30,7 +30,7 @@
 							class="w-32 h-32 md:w-16 md:h-16 rounded-full"
 						>
 					</div>
-					<div class="bg-primary-gray-light dark:bg-primary-gray-dark w-8 h-8 p-1 cursor-pointer shadow-sm rounded-full absolute right-2 bottom-0 flex justify-center items-center">
+					<div class="bg-primary-gray-light dark:bg-primary-gray-dark w-8 h-8 md:w-6 md:h-6 p-1 cursor-pointer shadow-sm rounded-full absolute right-2 md:right-0 bottom-0 flex justify-center items-center">
 						<UiDropZone
 							@on-transfer="handleFiles"
 							@on-drag-enter="handleDragEnter"
@@ -39,7 +39,7 @@
 							<template #default="{ dropZoneActive }">
 								<IconPencil
 									:class="{ 'dropzone-active': dropZoneActive }"
-									class="text-subtle-text-light dark:text-subtle-text-50 text-2xl"
+									class="text-subtle-text-light dark:text-subtle-text-50 text-2xl md:text-xl"
 								/>
 							</template>
 						</UiDropZone>
