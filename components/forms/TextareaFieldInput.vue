@@ -16,11 +16,12 @@
 			:placeholder="placeholder"
 			:required="required"
 			:disabled="disabled"
-			rows="4"
+			:rows="rows"
 			@input="onInput"
 		/>
 		<label
 			:for="id"
+			:dir="placeholderDir"
 			:class="[
 				'absolute text-sm font-medium duration-300 transform -translate-y-5 scale-78 top-3 origin-[0] cursor-text px-2',
 				colorTypeClass,
@@ -38,11 +39,12 @@
 </template>
 
 <script setup lang="ts">
-interface Props {
+interface PropsDefinition {
 	id: string;
 	modelValue: string;
 	label: string;
 	placeholder?: string;
+	placeholderDir?: 'rtl' | 'ltr';
 	required?: boolean;
 	disabled?: boolean;
 	inputClass?: string;
@@ -50,9 +52,13 @@ interface Props {
 	icon?: string;
 	colorType?: string;
 	errorMessage?: string;
+	rows?: string;
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<PropsDefinition>(), {
+	rows: '4',
+	placeholderDir: 'rtl',
+});
 
 interface EmitDefinition {
 	(event: 'update:modelValue', value: unknown): void;

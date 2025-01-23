@@ -121,7 +121,7 @@ const traderBriefParams = ref<AssetTypeParams>({
 	assetType: useEnv('assetType'),
 	id: '1',
 });
-const traderBriefItemLoading = ref<boolean>(false);
+const traderBriefItemLoading = ref<boolean>(true);
 const traderBriefItem = ref<TraderBriefItem>();
 const getTraderBrief = async () => {
 	try {
@@ -130,10 +130,10 @@ const getTraderBrief = async () => {
 		const { result } = await userRepo.getTraderBrief(traderBriefParams.value);
 
 		traderBriefItem.value = result;
-		traderBriefItemLoading.value = true;
+		traderBriefItemLoading.value = false;
 	}
 	catch (error) {
-		traderBriefItemLoading.value = true;
+		traderBriefItemLoading.value = false;
 		console.log(error);
 	}
 };
@@ -153,10 +153,10 @@ const getDepositCoinList = async () => {
 		const { result } = await depositRepo.getDepositCoinList(depositCoinListParams.value);
 
 		depositCoinItem.value = result.rows;
-		depositCoinListLoading.value = true;
+		depositCoinListLoading.value = false;
 	}
 	catch (error) {
-		depositCoinListLoading.value = true;
+		depositCoinListLoading.value = false;
 		console.log(error);
 	}
 };
@@ -167,7 +167,7 @@ const withdrawCoinListParams = ref<DepositCoinListParams>({
 	statement: '',
 	type: DepositType.CRYPTO,
 });
-const withdrawCoinListLoading = ref<boolean>(false);
+const withdrawCoinListLoading = ref<boolean>(true);
 const withdrawCoinItem = ref<WithdrawCoinItem[]>();
 const getWithdrawCoinList = async () => {
 	try {
@@ -176,15 +176,15 @@ const getWithdrawCoinList = async () => {
 		const { result } = await withdrawRepos.getWithdrawCoinList(withdrawCoinListParams.value);
 
 		withdrawCoinItem.value = result.rows;
-		withdrawCoinListLoading.value = true;
+		withdrawCoinListLoading.value = false;
 	}
 	catch (error) {
-		withdrawCoinListLoading.value = true;
+		withdrawCoinListLoading.value = false;
 		console.log(error);
 	}
 };
 
-const userTraderCommissionListLoading = ref<boolean>(false);
+const userTraderCommissionListLoading = ref<boolean>(true);
 const userTraderCommission = ref<Commission[]>();
 const getTraderCommissionList = async () => {
 	try {
@@ -195,10 +195,10 @@ const getTraderCommissionList = async () => {
 		userTraderCommission.value = result.rows as Commission[];
 		console.log('userTraderCommission.value', userTraderCommission.value);
 
-		userTraderCommissionListLoading.value = true;
+		userTraderCommissionListLoading.value = false;
 	}
 	catch (error) {
-		userTraderCommissionListLoading.value = true;
+		userTraderCommissionListLoading.value = false;
 		console.log(error);
 	}
 };

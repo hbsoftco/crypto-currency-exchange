@@ -346,7 +346,7 @@
 						<span class="text-sm mt-2">{{ $t('changeEmail') }}</span>
 					</ULink>
 					<ULink
-						to="/user/security/manage-white-list"
+						to="/user/security/white-list"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<img

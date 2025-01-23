@@ -10,7 +10,7 @@ type SecurityListResponse = {
 
 type SecurityResponse = {
 	statusCode: number;
-	result: Generate2fa | Identification;
+	result: Generate2fa | Identification | WhiteListIPs;
 };
 
 // 2fa
@@ -23,6 +23,11 @@ type Generate2fa = {
 		manualEntryKey: string;
 		qrCodeSetupImageUrl: string;
 	};
+};
+
+type WhiteListIPs = {
+	allowed: string[];
+	denied: string[];
 };
 
 type Enable2faDto = {
@@ -154,6 +159,14 @@ type Device = {
 	latestTime: string;
 	inactive: boolean;
 };
+
+type WhiteListIPsDto = {
+	verificationId: number | null;
+	verificationCode: string;
+	v2FACode: string | null;
+	lstIPsAllowed: string;
+};
+
 export type {
 	SecurityListResponse,
 	SecurityResponse,
@@ -175,4 +188,6 @@ export type {
 	AntiPhishingDto,
 	DeviceListParams,
 	Device,
+	WhiteListIPsDto,
+	WhiteListIPs,
 };

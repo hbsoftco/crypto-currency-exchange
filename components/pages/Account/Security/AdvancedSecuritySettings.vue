@@ -106,7 +106,7 @@
 				size="sm"
 				variant="ghost"
 				class="font-bold text-sm text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark"
-				to="/user/security/manage-white-list"
+				to="/user/security/white-list"
 			>
 				{{ $t("adjust") }}
 			</UButton>

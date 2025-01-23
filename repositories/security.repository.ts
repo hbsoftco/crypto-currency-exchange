@@ -15,6 +15,7 @@ import type {
 	SecurityListResponse,
 	SecurityResponse,
 	SetPasswordDto,
+	WhiteListIPsDto,
 	WithdrawPinCodeDto,
 } from '~/types/definitions/security.types';
 
@@ -36,9 +37,11 @@ type SecurityRepository = {
 	changePhone: (dto: ChangePhoneDto) => Promise<CommonResponse>;
 	changeEmail: (dto: ChangeEmailDto) => Promise<CommonResponse>;
 	storeSetPassword: (dto: SetPasswordDto) => Promise<CommonResponse>;
-	//
+	// Security
 	storeWithdrawPinCode: (dto: WithdrawPinCodeDto) => Promise<CommonResponse>;
 	storeAntiPhishing: (dto: AntiPhishingDto) => Promise<CommonResponse>;
+	getWhiteListIPs: () => Promise<SecurityResponse>;
+	storeWhiteListIPs: (dto: WhiteListIPsDto) => Promise<CommonResponse>;
 	// list-device
 	getDeviceList: (params: DeviceListParams) => Promise<SecurityListResponse>;
 };
@@ -185,7 +188,7 @@ export const securityRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): S
 
 		return response;
 	},
-	//
+	// Security
 	async storeWithdrawPinCode(dto: WithdrawPinCodeDto): Promise<CommonResponse> {
 		const url = `/v1/security/alter/withdraw_pincode_set`;
 		const { v2FACode, ...rest } = dto;
@@ -201,6 +204,27 @@ export const securityRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): S
 	},
 	async storeAntiPhishing(dto: AntiPhishingDto): Promise<CommonResponse> {
 		const url = `/v1/security/alter/antiphishing_phrase_set`;
+		const { v2FACode, ...rest } = dto;
+		const body = v2FACode ? dto : rest;
+
+		const response = await fetch<CommonResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getWhiteListIPs(): Promise<SecurityResponse> {
+		const url = `/v1/security/wbl/ips_get`;
+		const result = await fetch<SecurityResponse>(`${url}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+		return result;
+	},
+	async storeWhiteListIPs(dto: WhiteListIPsDto): Promise<CommonResponse> {
+		const url = `/v1/security/wbl/ips_set`;
 		const { v2FACode, ...rest } = dto;
 		const body = v2FACode ? dto : rest;
 
