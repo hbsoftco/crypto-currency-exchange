@@ -1,5 +1,8 @@
 <template>
-	<div class="p-4 bg-primary-gray-light dark:bg-primary-gray-dark rounded-md">
+	<div
+		:class="{ 'bg-primary-gray-light dark:bg-primary-gray-dark': !isMobile }"
+		class="p-0 md:p-4 rounded-md"
+	>
 		<div class="flex items-center">
 			<img
 				src="/images/svg/profile/shield.svg"
@@ -19,7 +22,7 @@
 				class="text-xs font-bold mr-1"
 				:style="{ color: currentSecurityLevelColor }"
 			>
-				{{ getValueByKey(profileStore.userProfile, "REF_LVL_NAME") }}
+				{{ getValueByKey(authStore.getCurrentUser, "REF_LVL_NAME") }}
 			</span>
 		</div>
 		<div class="mt-4 grid grid-cols-6 gap-4">
@@ -37,8 +40,16 @@
 <script setup lang="ts">
 import { getValueByKey } from '~/utils/helpers';
 
-const profileStore = useProfileStore();
-const securityLevelId = getValueByKey(profileStore.userProfile, 'SEC_LVL_ID');
+const { $mobileDetect } = useNuxtApp();
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
+
+onMounted(() => {
+	isMobile.value = !!mobileDetect.mobile();
+});
+
+const authStore = useAuthStore();
+const securityLevelId = getValueByKey(authStore.getCurrentUser, 'SEC_LVL_ID');
 
 type SecurityLevelItem = {
 	color: string;
