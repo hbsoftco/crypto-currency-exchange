@@ -207,6 +207,50 @@
 				</ULink>
 			</div>
 			<!-- withdraw-pin-code -->
+
+			<div class="mt-8">
+				<ULink
+					to="/user/security/white-list"
+					class="flex justify-between items-center"
+				>
+					<div class="flex justify-start items-center">
+						<img
+							src="/images/svg/profile/bullet.svg"
+							alt="message"
+							class="w-6 h-6"
+						>
+						<h3 class="text-sm font-bold mx-2">
+							{{ $t("ipWhitelist") }}
+						</h3>
+					</div>
+					<div>
+						<IconArrowLeft class="text-xl" />
+					</div>
+				</ULink>
+			</div>
+			<!-- ip white list -->
+
+			<div class="mt-8">
+				<ULink
+					to="/user/security/change-password"
+					class="flex justify-between items-center"
+				>
+					<div class="flex justify-start items-center">
+						<img
+							src="/images/svg/profile/lock.svg"
+							alt="message"
+							class="w-6 h-6"
+						>
+						<h3 class="text-sm font-bold mx-2">
+							{{ $t("loginPassword") }}
+						</h3>
+					</div>
+					<div>
+						<IconArrowLeft class="text-xl" />
+					</div>
+				</ULink>
+			</div>
+			<!-- ip white list -->
 		</div>
 	</div>
 	<!-- Mobile Mode -->

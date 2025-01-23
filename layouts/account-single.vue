@@ -41,6 +41,8 @@ const specialRoutes = ref<string[]>([
 	'user-id-auth-level2',
 	'user-security-change-email',
 	'user-security-change-phone',
+	'user-security-white-list',
+	'user-security-change-password',
 ]);
 
 watch(() => route.name, (newName) => {
