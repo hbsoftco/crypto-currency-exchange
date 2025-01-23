@@ -10,7 +10,7 @@
 		>
 			<UiTitleWithBack :title="$t('level1Authentication')" />
 		</div>
-		<div class="block md:flex justify-between rounded-none md:rounded-md mt-0 md:mt-8 mb-0 md:mb-4 py-6 md:py-10  px-1 md:px-20 bg-primary-gray-light dark:bg-primary-gray-dark">
+		<div class="block md:flex justify-between rounded-none md:rounded-md mt-0 md:mt-8 mb-0 md:mb-4 py-6 md:py-10 px-1 md:px-20 bg-primary-gray-light dark:bg-primary-gray-dark">
 			<div class="mt-0 md:mt-10 px-3 md:px-0">
 				<UiProgressStepper :steps="steps" />
 			</div>

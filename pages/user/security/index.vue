@@ -54,8 +54,12 @@
 				</div>
 
 				<div class="col-span-12 mt-4">
-					<div>
+					<div class="border-b border-primary-gray-light dark:border-primary-gray-dark pb-5">
 						<Login2FA />
+					</div>
+
+					<div class="py-7 border-b border-primary-gray-light dark:border-primary-gray-dark">
+						<AdvancedSecuritySettings />
 					</div>
 				</div>
 			</div>

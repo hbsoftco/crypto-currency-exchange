@@ -1,11 +1,19 @@
 <template>
-	<UContainer class="my-8">
-		<div class="my-4">
+	<div class="mx-auto px-0 sm:px-6 lg:px-8 max-w-7xl my-0 md:my-8">
+		<BackHeader
+			v-if="isMobile"
+			:title="$t('changeEmail')"
+		/>
+
+		<div
+			v-else
+			class="my-4"
+		>
 			<UiTitleWithBack :title="$t('changeEmail')" />
 		</div>
 		<section class="pb-0.5">
-			<div class="grid grid-cols-1 md:grid-cols-2 gap-20 rounded-md mt-8 mb-4 py-6 md:py-10 px-1 md:px-20 bg-primary-gray-light dark:bg-primary-gray-dark">
-				<div class="mt-10 w-full">
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-20 rounded-none md:rounded-md mt-0 md:mt-8 mb-0 md:mb-4 py-6 md:py-10 px-4 md:px-20 bg-primary-gray-light dark:bg-primary-gray-dark">
+				<div class="mt-6 md:mt-10 w-full">
 					<div class="mb-8">
 						<FormsFieldInput
 							id="emailAddressNew"
@@ -87,12 +95,12 @@
 						</UButton>
 					</div>
 				</div>
-				<div class="my-8">
+				<div class="my-0 md:my-8">
 					<SideGuideBox :tag-type="TagType.EMAIL_CHANGE" />
 				</div>
 			</div>
 		</section>
-	</UContainer>
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -105,12 +113,17 @@ import type { ChangeEmailDto } from '~/types/definitions/security.types';
 import { TagType } from '~/utils/enums/help.enum';
 import { SendType } from '~/utils/enums/user.enum';
 
+const BackHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/BackHeader.vue'));
+
 definePageMeta({
 	layout: 'account-single',
 	middleware: 'auth',
 });
 
-const { $api } = useNuxtApp();
+const { $mobileDetect, $api } = useNuxtApp();
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
+
 const securityRepo = securityRepository($api);
 const router = useRouter();
 
@@ -213,6 +226,8 @@ const resendCode = async () => {
 };
 
 onMounted(async () => {
+	isMobile.value = !!mobileDetect.mobile();
+
 	await checkMobileExist();
 	await Promise.all([
 		getIdentificationCode(),
