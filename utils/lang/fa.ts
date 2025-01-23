@@ -1194,6 +1194,7 @@ const persian = {
 	thisCardIsLockedForYou: 'این کارت برای شما قفل است',
 	finished: 'اتمام مراحل',
 	scan: 'اسکن',
+	openLink: 'باز کردن لینک',
 };
 
 export default persian;

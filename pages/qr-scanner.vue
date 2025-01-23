@@ -1,44 +1,47 @@
 <template>
-	<div>
-		<p>
-			از این بخش می‌توانید فقط QR Code را اسکن کنید.
-		</p>
+	<div class="p-8">
+		<BackHeader
+			:title="$t('scan')"
+		/>
+		<div class="mb-8">
+			<qrcode-stream
+				:constraints="constraints"
+				@error="onError"
+				@detect="onDetect"
+			/>
+		</div>
 
-		<p
+		<div
+			v-if="result"
+			class="text-center"
+		>
+			<p>{{ result }}</p>
+			<ULink :to="result">
+				{{ $t('openLink') }}
+			</ULink>
+		</div>
+
+		<div
 			v-if="error"
-			class="error"
+			class="text-accent-red"
 		>
 			{{ error }}
-		</p>
-		<p class="decode-result">
-			نتیجه اسکن: <b>{{ result }}</b>
-		</p>
-
-		<qrcode-stream
-			:constraints="constraints"
-			@error="onError"
-			@detect="onDetect"
-		/>
+		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-// نتیجه اسکن‌شده
-const result = ref('');
+const BackHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/BackHeader.vue'));
 
-// تنظیمات دوربین (پیش‌فرض دوربین پشت)
+const result = ref('');
+const error = ref('');
 const constraints = ref({ facingMode: 'environment' });
 
-// خطاها
-const error = ref('');
-
-// مدیریت رویداد تشخیص
 function onDetect(detectedCodes: any) {
 	console.log(detectedCodes);
 	result.value = detectedCodes[0]?.rawValue || 'کدی شناسایی نشد!';
 }
 
-// مدیریت خطاها
 function onError(err: any) {
 	error.value = `[${err.name}]: `;
 	if (err.name === 'NotAllowedError') {
@@ -55,14 +58,3 @@ function onError(err: any) {
 	}
 }
 </script>
-
-  <style scoped>
-  .error {
-    font-weight: bold;
-    color: red;
-  }
-  .decode-result {
-    font-size: 1.2rem;
-    margin-top: 1rem;
-  }
-  </style>
