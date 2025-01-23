@@ -14,11 +14,16 @@
 
 		<div
 			v-if="result"
-			class="text-center"
+			class="text-center w-full max-w-full"
 		>
-			<p>{{ result }}</p>
-			<ULink :to="result">
-				{{ $t('openLink') }}
+			<p class="text-wrap mb-4">
+				{{ result }}
+			</p>
+			<ULink
+				:to="result"
+				class="text-primary-yellow-light dark:text-primary-yellow-dark font-bold"
+			>
+				<span>{{ $t('openLink') }}</span>
 			</ULink>
 		</div>
 
