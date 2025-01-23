@@ -35,8 +35,10 @@ const detectedCodes = ref<any>([]);
 const cameraError = ref<any>(null);
 const activeCamera = ref<any>(null);
 
-const onDetect = (detectedCodes: any) => {
-	detectedCodes.value = detectedCodes;
+const onDetect = async (detectedCodes: any) => {
+	detectedCodes.value = JSON.stringify(
+		detectedCodes.map((code: { rawValue: any }) => code.rawValue),
+	);
 };
 
 const onCameraOn = () => {
