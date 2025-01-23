@@ -109,7 +109,7 @@
 							}"
 							class=" p-4 h-72 rounded-md"
 						>
-							<div class="flex pb-3 border-b border-primary-gray-light dark:border-primary-gray-dark">
+							<div class="flex items-center pb-3 border-b border-primary-gray-light dark:border-primary-gray-dark">
 								<span class="text-sm font-bold">
 									{{ item.name }}
 								</span>
@@ -319,7 +319,7 @@ const idAuthSteps = ref([
 			text: useT('upgradeLevel1User'),
 			link: '/user/id-auth/level1',
 		},
-		confirm: true,
+		confirm: false,
 	},
 	{
 		id: 'baseLevel',

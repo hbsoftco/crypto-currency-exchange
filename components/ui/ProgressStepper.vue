@@ -47,7 +47,7 @@
 			v-for="(step, index) in steps"
 			:key="index"
 			class="flex items-center w-full"
-			:style="{ flex: 1 }"
+			:style="{ flex: 1, flexGrow: index === steps.length - 1 ? 0 : 1 }"
 		>
 			<!-- Circle -->
 			<div
