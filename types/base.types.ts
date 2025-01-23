@@ -245,19 +245,6 @@ type GetReasonListParams = {
 	langId?: string;
 };
 
-type getActivitiesListParams = {
-	logTypeId?: string;
-	from?: string;
-	to?: string;
-	pageNumber?: string;
-	pageSize?: string;
-};
-
-type getTypeListParams = {
-	entityTypeId: string;
-	langId?: string;
-};
-
 type getApiListParams = {
 	srchKey?: string;
 	from?: string;
@@ -310,8 +297,6 @@ export type {
 	DepositCoinListParams,
 	WithdrawCoinListParams,
 	GetReasonListParams,
-	getActivitiesListParams,
-	getTypeListParams,
 	getApiListParams,
 	getApiParams,
 	GetCurrencyParams,

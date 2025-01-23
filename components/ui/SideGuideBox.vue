@@ -117,7 +117,7 @@
 				</div>
 				<ULink
 					class="text-xs font-normal"
-					to="/help-center"
+					to="/help"
 				>
 					{{ $t('showMore') }}
 				</ULink>
@@ -143,7 +143,7 @@
 				</div>
 				<ULink
 					class="text-xs font-normal"
-					to="/help-center"
+					to="/help"
 				>
 					{{ $t('showMore') }}
 				</ULink>

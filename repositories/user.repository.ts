@@ -1,6 +1,6 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { GetActivitiesListRes, GetAddressListRes, GetApiListRes, GetApiRes, GetBankListResponse,
+import type { GetAddressListRes, GetApiListRes, GetApiRes, GetBankListResponse,
 	GetBestListResponse,
 	GetCommissionReceivedList, GetContactListResponse,
 	GetDevLinkGenerateRes,
@@ -13,7 +13,6 @@ import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options
 import type {
 	DeleteAddressListParams,
 	DeleteContactListParams,
-	getActivitiesListParams,
 	GetAddressListParams,
 	getApiListParams,
 	getApiParams,
@@ -24,8 +23,7 @@ import type {
 	GetReferralBestListParams,
 	GetRewardExposedParams,
 	GetRewardReceivedListParams,
-	GetTraderBestListParams,
-	getTypeListParams } from '~/types/base.types';
+	GetTraderBestListParams } from '~/types/base.types';
 import type {
 	GetTraderBestListResponse,
 	GetTraderBriefResponse } from '~/types/response/trader.types';
@@ -109,8 +107,6 @@ type UserRepository = {
 	getCommissionReceived: (params: GetCommissionReceivedListParams) => Promise<GetCommissionRes>;
 	deleteAccount: (dto: DeleteAccountDto) => Promise<CommonResponse>;
 	getDevLinkGenerate: () => Promise<GetDevLinkGenerateRes>;
-	getActivitiesList: (params: getActivitiesListParams) => Promise<GetActivitiesListRes>;
-	getTypeList: (params: getTypeListParams) => Promise<KeyValueResponse>;
 	setEmail: (dto: SetEmailDto) => Promise<CommonResponse>;
 	storeSetMobile: (dto: SetMobileDto) => Promise<CommonResponse>;
 	storeCardPrint: (dto: SetCardPrintDto) => Promise<CommonResponse>;
@@ -636,34 +632,6 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 		const response = await fetch<GetDevLinkGenerateRes>(`${url}`, {
 			noAuth: false,
 			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getActivitiesList(params: getActivitiesListParams): Promise<GetActivitiesListRes> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-		const url = `/v1/user/logs/activities_list`;
-		const response = await fetch<GetActivitiesListRes>(`${url}?${query.toString()}`, {
-			noAuth: false,
-			apiName: url,
-			query: {},
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getTypeList(params: getTypeListParams): Promise<KeyValueResponse> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-		const url = `/v1/routine/common/type_list`;
-		const response = await fetch<KeyValueResponse>(`${url}?${query.toString()}`, {
-			noAuth: false,
-			apiName: url,
-			query: {},
 		} as CustomNitroFetchOptions);
 
 		return response;

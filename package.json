@@ -16,6 +16,7 @@
     "@iconify-json/simple-icons": "^1.1.114",
     "@nuxt/eslint": "^0.5.0",
     "@nuxt/ui": "^2.18.4",
+    "@nuxtjs/leaflet": "^1.2.6",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
     "comlink": "^4.4.1",

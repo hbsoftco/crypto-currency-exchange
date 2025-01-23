@@ -4,6 +4,7 @@ type SecurityListResponse = {
 		totalCount: number;
 		rows:
 			Notice [] |
+			Activity [] |
 			Device [];
 	};
 };
@@ -167,6 +168,37 @@ type WhiteListIPsDto = {
 	lstIPsAllowed: string;
 };
 
+type ActivitiesListParams = {
+	logTypeId?: string;
+	from?: string;
+	to?: string;
+	pageNumber?: string;
+	pageSize?: string;
+};
+
+type Activity = {
+	uid: number;
+	user: string;
+	typeId: number;
+	typeName: string;
+	logTime: string;
+	device: string;
+	iPv4: string;
+	iPv6: string;
+	city?: string;
+	country?: string;
+	countryCode?: string;
+	lat?: string;
+	lon?: string;
+	region?: string;
+	regionName?: string;
+};
+
+type TypeListParams = {
+	entityTypeId: string;
+	langId?: string;
+};
+
 export type {
 	SecurityListResponse,
 	SecurityResponse,
@@ -190,4 +222,7 @@ export type {
 	Device,
 	WhiteListIPsDto,
 	WhiteListIPs,
+	Activity,
+	ActivitiesListParams,
+	TypeListParams,
 };

@@ -213,24 +213,6 @@ type GetDevLinkGenerateRes = {
 		devLinkSecret: string;
 	};
 };
-type ActivitiesList = {
-	uid: number;
-	user: string;
-	typeId: number;
-	typeName: string;
-	logTime: string;
-	device: string;
-	iPv4: string;
-	iPv6: string;
-};
-
-type GetActivitiesListRes = {
-	statusCode: number;
-	result: {
-		totalCount: number;
-		rows: ActivitiesList[];
-	};
-};
 
 type ApiList = {
 	uid: number;
@@ -295,8 +277,6 @@ export type {
 	GetLevelsDataRes,
 	LevelRow,
 	GetDevLinkGenerateRes,
-	GetActivitiesListRes,
-	ActivitiesList,
 	GetApiListRes,
 	ApiList,
 	GetApiRes,

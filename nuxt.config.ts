@@ -37,6 +37,7 @@ export default defineNuxtConfig({
 		'nuxt-echarts',
 		'nuxt-vitalizer',
 		'@nuxtjs/web-vitals',
+		'@nuxtjs/leaflet',
 	],
 	pwa: {
 		strategies: sw ? 'injectManifest' : 'generateSW',

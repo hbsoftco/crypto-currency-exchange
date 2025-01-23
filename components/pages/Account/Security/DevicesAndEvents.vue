@@ -30,7 +30,7 @@
 				</p>
 			</div>
 			<UButton
-				to="/user/security/active-account"
+				to="/user/security/active-accounts"
 				color="gray"
 				class="text-black dark:text-white text-sm font-normal bg-hover-light dark:bg-hover-dark shadow-none border border-subtle-text-50"
 			>

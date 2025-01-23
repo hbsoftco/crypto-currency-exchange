@@ -3,6 +3,7 @@ import type { NitroFetchRequest, $Fetch } from 'nitropack';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import type { CommonResponse, KeyValueResponse } from '~/types/definitions/common.types';
 import type {
+	ActivitiesListParams,
 	AntiPhishingDto,
 	ChangeEmailDto,
 	ChangePhoneDto,
@@ -15,6 +16,7 @@ import type {
 	SecurityListResponse,
 	SecurityResponse,
 	SetPasswordDto,
+	TypeListParams,
 	WhiteListIPsDto,
 	WithdrawPinCodeDto,
 } from '~/types/definitions/security.types';
@@ -25,6 +27,7 @@ type SecurityRepository = {
 	getNoticeTypeList: () => Promise<KeyValueResponse>;
 	noticeReadAll: () => Promise<CommonResponse>;
 	noticeDeleteAll: () => Promise<CommonResponse>;
+	getTypeList: (params: TypeListParams) => Promise<KeyValueResponse>;
 	// 2fa
 	generate2fa: () => Promise<SecurityResponse>;
 	enable2fa: (dto: Enable2faDto) => Promise<CommonResponse>;
@@ -42,6 +45,7 @@ type SecurityRepository = {
 	storeAntiPhishing: (dto: AntiPhishingDto) => Promise<CommonResponse>;
 	getWhiteListIPs: () => Promise<SecurityResponse>;
 	storeWhiteListIPs: (dto: WhiteListIPsDto) => Promise<CommonResponse>;
+	getActivitiesList: (params: ActivitiesListParams) => Promise<SecurityListResponse>;
 	// list-device
 	getDeviceList: (params: DeviceListParams) => Promise<SecurityListResponse>;
 };
@@ -83,6 +87,19 @@ export const securityRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): S
 		const response = await fetch<CommonResponse>(`${url}`, {
 			noAuth: false,
 			method: 'DELETE',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getTypeList(params: TypeListParams): Promise<KeyValueResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+		const url = `/v1/system/common/type_list`;
+		const response = await fetch<KeyValueResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
 		} as CustomNitroFetchOptions);
 
 		return response;
@@ -232,6 +249,19 @@ export const securityRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): S
 			noAuth: false,
 			method: 'POST',
 			body,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getActivitiesList(params: ActivitiesListParams): Promise<SecurityListResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+		const url = `/v1/security/logs/activities_list`;
+		const response = await fetch<SecurityListResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
 		} as CustomNitroFetchOptions);
 
 		return response;
