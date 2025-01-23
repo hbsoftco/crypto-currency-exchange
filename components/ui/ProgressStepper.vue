@@ -71,10 +71,11 @@
 			<div
 				v-for="(step, index) in steps"
 				:key="index"
-				class="text-center"
-				:style="{ flex: 1 }"
+				class="text-right"
+				:style="{ flex: 1, flexGrow: index === steps.length - 1 ? 0 : 1 }"
 			>
 				<span
+					class="text-nowrap"
 					:class="[
 						'text-xs font-medium',
 						step.completed ? 'text-yellow-500' : step.current ? '' : 'text-gray-500',

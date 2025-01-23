@@ -15,16 +15,20 @@
 			/>
 		</div>
 
-		<section class="my-4 ">
+		<section class="my-4">
 			<div
 				v-if="!isMobile"
 				class="grid grid-cols-1 md:grid-cols-3 gap-4"
+				dir="ltr"
 			>
 				<template
 					v-for="item in idAuthSteps"
 					:key="item.id"
 				>
-					<div class="bg-hover-light dark:bg-hover-dark p-4 h-72 border border-primary-gray-light dark:border-primary-gray-dark rounded-md">
+					<div
+						dir="rtl"
+						class="bg-hover-light dark:bg-hover-dark p-4 h-72 border border-primary-gray-light dark:border-primary-gray-dark rounded-md"
+					>
 						<div class="flex pb-3 border-b border-primary-gray-light dark:border-primary-gray-dark">
 							<span class="text-sm font-bold">
 								{{ item.name }}
@@ -42,7 +46,7 @@
 								:key="step.name"
 								class="flex justify-between mt-4"
 							>
-								<span class="text-sm font-normal">{{ $t('identityInformation') }}</span>
+								<span class="text-sm font-normal">{{ step.name }}</span>
 								<div
 									:class="{
 										'bg-accent-blue text-white': item.confirm,
@@ -126,7 +130,7 @@
 									:key="step.name"
 									class="flex justify-between mt-4"
 								>
-									<span class="text-sm font-normal">{{ $t('identityInformation') }}</span>
+									<span class="text-sm font-normal">{{ step.name }}</span>
 									<div
 										:class="{
 											'bg-accent-blue text-white': step.confirm,

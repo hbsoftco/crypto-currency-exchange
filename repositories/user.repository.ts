@@ -80,6 +80,7 @@ type UserRepository = {
 	storeSetLive: (dto: SetLiveDto) => Promise<CommonResponse>;
 	uploadIdCard: (image: File) => Promise<CommonResponse>;
 	uploadSelfy1: (image: File) => Promise<CommonResponse>;
+	uploadSelfy2: (image: File) => Promise<CommonResponse>;
 
 	// Others
 	getReferralBrief: (params: ReferralBriefParams) => Promise<ResultResponse>;
@@ -298,6 +299,20 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 		formData.append('image', image);
 
 		const url = `/v1/upload/selfy1`;
+
+		const response = await fetch<CommonResponse>(`${url}?wloId=1`, {
+			noAuth: false,
+			method: 'POST',
+			body: formData,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async uploadSelfy2(image: File): Promise<CommonResponse> {
+		const formData = new FormData();
+		formData.append('image', image);
+
+		const url = `/v1/upload/selfy2`;
 
 		const response = await fetch<CommonResponse>(`${url}?wloId=1`, {
 			noAuth: false,

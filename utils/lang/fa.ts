@@ -486,6 +486,7 @@ const persian = {
 	identityInformation: 'اطلاعات هویتی',
 	uploadDocuments: 'بارگذاری مدارک',
 	uploadCommitmentLetter: 'بارگذاری تعهدنامه',
+	uploadCommitmentLetter2: 'بارگذاری تصویر تعهدنامه',
 	upgradeLevel1User: 'ارتقا سطح یک کاربری',
 	upgradeLevel2User: 'ارتقا سطح دو کاربری',
 	imageSecondCommitmentLetter: 'تصویر تعهد نامه دوم',
@@ -1191,6 +1192,7 @@ const persian = {
 	exclusiveRights: 'حقوق انحصاری',
 	specialCustomerService2: '24/7 سرویس ویژه مشتریان',
 	thisCardIsLockedForYou: 'این کارت برای شما قفل است',
+	finished: 'اتمام مراحل',
 };
 
 export default persian;

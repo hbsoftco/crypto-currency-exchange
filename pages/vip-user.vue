@@ -11,7 +11,7 @@
 						<div class="absolute top-28 right-12 md:right-20">
 							<div class="flex items-center">
 								<img
-									:src="LevelItem?.logoUrl"
+									:src="levelItem?.level.logoUrl"
 									class="w-4 h-4"
 								>
 								<span class="mr-1 md:mr-4 text-sm md:text-lg font-normal md:font-bold text-primary-yellow-light dark:text-primary-yellow-dark">
@@ -21,7 +21,7 @@
 							</div>
 							<div>
 								<h5 class="text-xs md:text-base font-light md:font-semibold text-subtle-text-light dark:text-subtle-text-dark">
-									همراه <span class="text-sm md:text-lg font-normal md:font-bold text-primary-yellow-light dark:text-primary-yellow-dark">{{ LevelItem?.name }}</span> بیت لند
+									همراه <span class="text-sm md:text-lg font-normal md:font-bold text-primary-yellow-light dark:text-primary-yellow-dark">{{ levelItem?.level.name }}</span> بیت لند
 								</h5>
 							</div>
 						</div>
@@ -54,7 +54,7 @@
 							</span>
 							<div class="flex">
 								<span class="text-base font-medium">{{ $t('level') }}</span>
-								<span class="text-base font-medium text-primary-yellow-light dark:text-primary-yellow-dark">{{ LevelItem?.name }}</span>
+								<span class="text-base font-medium text-primary-yellow-light dark:text-primary-yellow-dark">{{ levelItem?.level.name }}</span>
 							</div>
 						</div>
 
@@ -99,9 +99,8 @@ import IconPhone from '~/assets/svg-icons/profile/account/phone.svg';
 import IconEmail from '~/assets/svg-icons/profile/account/Id-card.svg';
 import IconMessage from '~/assets/svg-icons/menu/message.svg';
 import { userRepository } from '~/repositories/user.repository';
-import type { Level } from '~/types/response/user.types';
 import { getValueByKey } from '~/utils/helpers';
-import type { AssetTypeParams } from '~/types/definitions/user.types';
+import type { AssetTypeParams, HolderBrief } from '~/types/definitions/user.types';
 
 const profileStore = useProfileStore();
 
@@ -109,7 +108,7 @@ const { $api } = useNuxtApp();
 const userRepo = userRepository($api);
 
 const briefLoading = ref<boolean>(false);
-const LevelItem = ref<Level>();
+const levelItem = ref<HolderBrief>();
 
 const params = ref<AssetTypeParams>({
 	id: '3',
@@ -119,8 +118,8 @@ const params = ref<AssetTypeParams>({
 const getHolderBrief = async () => {
 	try {
 		briefLoading.value = true;
-		const { result } = await userRepo.getHolder(params.value);
-		LevelItem.value = result.level;
+		const { result } = await userRepo.getHolderBrief(params.value);
+		levelItem.value = result as HolderBrief;
 		briefLoading.value = false;
 	}
 	catch (error) {

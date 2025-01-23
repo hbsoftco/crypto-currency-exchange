@@ -39,8 +39,15 @@ interface EmitDefinition {
 }
 const emit = defineEmits<EmitDefinition>();
 
-const { $api } = useNuxtApp();
+const { $api, $mobileDetect } = useNuxtApp();
 const userRepo = userRepository($api);
+
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
+
+onMounted(() => {
+	isMobile.value = !!mobileDetect.mobile();
+});
 
 const toast = useToast();
 const router = useRouter();
@@ -103,7 +110,7 @@ const uploadSelfy1 = async (image: File) => {
 			color: 'green',
 		});
 
-		router.push('/user');
+		router.push(isMobile.value ? '/' : '/user');
 		submitLoading.value = false;
 	}
 	catch (error) {
