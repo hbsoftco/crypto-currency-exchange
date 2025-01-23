@@ -64,6 +64,10 @@
 					<div class="py-7 border-b border-primary-gray-light dark:border-primary-gray-dark">
 						<AdvancedSecuritySettings />
 					</div>
+
+					<div class="py-7 border-b border-primary-gray-light dark:border-primary-gray-dark">
+						<DevicesAndEvents />
+					</div>
 				</div>
 			</div>
 		</section>

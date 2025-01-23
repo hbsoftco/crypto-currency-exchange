@@ -18,10 +18,10 @@
 		>
 			<UiTitleWithBack :title="$t('accountActivities')" />
 		</div>
-		<section>
+		<section class="pt-4">
 			<div
 				style="height:30rem;"
-				class="w-full rounded"
+				class="w-full overflow-hidden rounded"
 			>
 				<LMap
 					ref="map"
@@ -204,7 +204,6 @@
 				</div>
 			</div>
 		</section>
-		{{ zoom }}
 	</div>
 </template>
 
