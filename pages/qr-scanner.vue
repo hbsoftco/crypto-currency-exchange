@@ -1,51 +1,68 @@
 <template>
-	<div class="p-8">
-		<BackHeader
-			:title="$t('scan')"
-		/>
+	<div>
+		<p>
+			از این بخش می‌توانید فقط QR Code را اسکن کنید.
+		</p>
 
-		<QrcodeStream
-			:formats="['qr_code', 'code_128']"
+		<p
+			v-if="error"
+			class="error"
+		>
+			{{ error }}
+		</p>
+		<p class="decode-result">
+			نتیجه اسکن: <b>{{ result }}</b>
+		</p>
+
+		<qrcode-stream
+			:constraints="constraints"
+			@error="onError"
 			@detect="onDetect"
-			@camera-on="onCameraOn"
-			@camera-error="onCameraError"
 		/>
-
-		<div v-if="detectedCodes.length">
-			<h3>نتایج اسکن:</h3>
-			<ul>
-				<li
-					v-for="(code, index) in detectedCodes"
-					:key="index"
-				>
-					{{ code.content }}
-				</li>
-			</ul>
-		</div>
-		<div>cameraError: {{ cameraError }}</div>
-		<div>activeCamera: {{ activeCamera }}</div>
-		<div>detectedCodes: {{ detectedCodes }}</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-const BackHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/BackHeader.vue'));
+// نتیجه اسکن‌شده
+const result = ref('');
 
-const detectedCodes = ref<any>([]);
-const cameraError = ref<any>(null);
-const activeCamera = ref<any>(null);
+// تنظیمات دوربین (پیش‌فرض دوربین پشت)
+const constraints = ref({ facingMode: 'environment' });
 
-const onDetect = async (detectedCodes: any) => {
-	detectedCodes.value = JSON.stringify(
-		detectedCodes.map((code: { rawValue: any }) => code.rawValue),
-	);
-};
+// خطاها
+const error = ref('');
 
-const onCameraOn = () => {
-	activeCamera.value = true;
-};
+// مدیریت رویداد تشخیص
+function onDetect(detectedCodes: any) {
+	console.log(detectedCodes);
+	result.value = detectedCodes[0]?.rawValue || 'کدی شناسایی نشد!';
+}
 
-const onCameraError = (error: any) => {
-	cameraError.value = error;
-};
+// مدیریت خطاها
+function onError(err: any) {
+	error.value = `[${err.name}]: `;
+	if (err.name === 'NotAllowedError') {
+		error.value += 'دسترسی به دوربین نیاز است.';
+	}
+	else if (err.name === 'NotFoundError') {
+		error.value += 'دوربینی یافت نشد.';
+	}
+	else if (err.name === 'NotSupportedError') {
+		error.value += 'استفاده از HTTPS یا localhost الزامی است.';
+	}
+	else {
+		error.value += err.message;
+	}
+}
 </script>
+
+  <style scoped>
+  .error {
+    font-weight: bold;
+    color: red;
+  }
+  .decode-result {
+    font-size: 1.2rem;
+    margin-top: 1rem;
+  }
+  </style>
