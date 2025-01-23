@@ -83,10 +83,11 @@
 
 			<div
 				v-else
-				dir="rtl"
+				dir="ltr"
 			>
 				<UCarousel
 					v-slot="{ item }"
+					ref="carouselRef"
 					:items="idAuthSteps"
 					:ui="{
 						item: 'w-full',
@@ -96,13 +97,18 @@
 					}"
 					class="rounded-lg"
 					indicators
-					dir="rtl"
 				>
 					<div
 						class="mx-2 w-full"
 						dir="rtl"
 					>
-						<div class="bg-hover-light dark:bg-hover-dark p-4 h-72 border border-primary-gray-light dark:border-primary-gray-dark rounded-md">
+						<div
+							:class="{
+								'border border-primary-gray-light dark:border-primary-gray-dark': !item.confirm,
+								'bg-hover-light dark:bg-hover-dark': item.confirm,
+							}"
+							class=" p-4 h-72 rounded-md"
+						>
 							<div class="flex pb-3 border-b border-primary-gray-light dark:border-primary-gray-dark">
 								<span class="text-sm font-bold">
 									{{ item.name }}
@@ -123,18 +129,18 @@
 									<span class="text-sm font-normal">{{ $t('identityInformation') }}</span>
 									<div
 										:class="{
-											'bg-accent-blue text-white': item.confirm,
+											'bg-accent-blue text-white': step.confirm,
 											'bg-primary-gray-light dark:bg-primary-gray-dark text-subtle-text-light dark:text-subtle-text-dark': !item.confirm,
 										}"
 										class="w-24 flex justify-center items-center py-1 px-2 rounded-2xl text-sm font-medium"
 									>
 										<img
-											v-if="item.confirm"
+											v-if="step.confirm"
 											src="/images/svg/confirm.svg"
 											alt="confirm"
 											class="w-4 h-4 ml-1"
 										>
-										{{ item.confirm ? $t('confirmed') : $t('notConfirmed') }}
+										{{ step.confirm ? $t('confirmed') : $t('notConfirmed') }}
 									</div>
 								</div>
 								<div
@@ -259,27 +265,36 @@ const { $mobileDetect } = useNuxtApp();
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
 
-onMounted(() => {
+const carouselRef = ref();
+
+onMounted(async () => {
 	isMobile.value = !!mobileDetect.mobile();
+
+	await nextTick();
+
+	setTimeout(() => {
+		if (!carouselRef.value) return;
+		return carouselRef.value.select(2);
+	}, 1);
 });
 
 const idAuthSteps = ref([
 	{
-		id: 'baseLevel',
-		name: useT('baseLevel'),
+		id: 'userLevel2',
+		name: useT('userLevel2'),
 		steps: [
 			{
-				name: useT('registerBitland'),
-				confirm: true,
+				name: useT('imageSecondCommitmentLetter'),
+				confirm: false,
 			},
 		],
 		button: {
-			show: null,
+			show: true,
 			disabled: true,
-			text: '',
-			link: '',
+			text: useT('upgradeLevel2User'),
+			link: '/user/id-auth/level2',
 		},
-		confirm: true,
+		confirm: false,
 	},
 	{
 		id: 'userLevel1',
@@ -304,24 +319,24 @@ const idAuthSteps = ref([
 			text: useT('upgradeLevel1User'),
 			link: '/user/id-auth/level1',
 		},
-		confirm: false,
+		confirm: true,
 	},
 	{
-		id: 'userLevel2',
-		name: useT('userLevel2'),
+		id: 'baseLevel',
+		name: useT('baseLevel'),
 		steps: [
 			{
-				name: useT('imageSecondCommitmentLetter'),
-				confirm: false,
+				name: useT('registerBitland'),
+				confirm: true,
 			},
 		],
 		button: {
-			show: true,
+			show: null,
 			disabled: true,
-			text: useT('upgradeLevel2User'),
-			link: '/user/id-auth/level2',
+			text: '',
+			link: '',
 		},
-		confirm: false,
+		confirm: true,
 	},
 ]);
 
