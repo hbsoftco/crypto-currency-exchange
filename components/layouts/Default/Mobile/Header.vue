@@ -9,6 +9,11 @@
 					<div class="flex-1 mx-2">
 						<Search />
 					</div>
+					<div class="mx-2">
+						<ULink to="/qr-scanner">
+							<IconScan class="text-3xl" />
+						</ULink>
+					</div>
 					<div>
 						<ULink to="/help">
 							<IconSupport class="text-3xl" />
@@ -29,6 +34,7 @@ import Notification from '~/components/layouts/Default/Header/UserLogin/Notifica
 import UserLogin from '~/components/layouts/Default/Mobile/Header/UserLogin.vue';
 import IconSupport from '~/assets/svg-icons/menu/support.svg';
 import Search from '~/components/layouts/Default/Mobile/Header/Search.vue';
+import IconScan from '~/assets/svg-icons/menu/scan.svg';
 // import Notif from '../Notif.vue';
 
 const authStore = useAuthStore();

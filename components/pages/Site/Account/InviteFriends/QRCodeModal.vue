@@ -52,10 +52,10 @@
 
 <script setup lang="ts">
 import IconClose from '~/assets/svg-icons/close.svg';
-import type { ReferralBriefItem } from '~/types/response/user.types';
+import type { ReferralBrief } from '~/types/definitions/user.types';
 
 interface PropsDefinition {
-	referralBrief: ReferralBriefItem;
+	referralBrief: ReferralBrief;
 }
 
 const props = defineProps<PropsDefinition>();

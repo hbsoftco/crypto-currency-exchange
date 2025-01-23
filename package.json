@@ -30,6 +30,7 @@
     "pinia": "^2.2.1",
     "sweetalert2": "^11.7.32",
     "vue": "latest",
+    "vue-qrcode-reader": "^5.7.0",
     "vue3-carousel": "^0.13.0",
     "vue3-infinite-slide-bar": "^1.0.4",
     "vue3-otp-input": "^0.5.21",

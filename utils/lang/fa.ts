@@ -1193,6 +1193,7 @@ const persian = {
 	specialCustomerService2: '24/7 سرویس ویژه مشتریان',
 	thisCardIsLockedForYou: 'این کارت برای شما قفل است',
 	finished: 'اتمام مراحل',
+	scan: 'اسکن',
 };
 
 export default persian;
