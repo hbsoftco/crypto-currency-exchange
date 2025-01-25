@@ -100,7 +100,7 @@ definePageMeta({
 	middleware: 'auth',
 });
 
-const { $api, $mobileDetect } = useNuxtApp();
+const { $api, $mobileDetect, $swal } = useNuxtApp();
 const systemRepo = systemRepository($api);
 const securityRepo = securityRepository($api);
 
@@ -110,6 +110,7 @@ const mobileDetect = $mobileDetect as MobileDetect;
 const authStore = useAuthStore();
 
 const router = useRouter();
+// const toast = useToast();
 
 const selected = ref(true);
 
@@ -123,10 +124,7 @@ const getReasonList = async () => {
 	try {
 		reasonListLoading.value = true;
 		const { result } = await systemRepo.getReasonList(reasonListParams.value);
-
-		console.log(result);
 		reasonItems.value = result as KeyValue[];
-		console.log(reasonItems.value);
 
 		reasonListLoading.value = false;
 	}
@@ -153,17 +151,28 @@ const submit = async () => {
 	v$.value.$touch();
 	if (v$.value.$invalid) return;
 
+	const confirmation = await $swal.fire({
+		title: useT('freezeAccount'),
+		text: useT('freezeAccountDescription'),
+		icon: 'warning',
+		showCancelButton: true,
+		confirmButtonText: useT('yesDoIt'),
+		cancelButtonText: useT('cancel'),
+	});
+
 	try {
-		loading.value = true;
-		await securityRepo.storeFreezeAccount({
-			reasonId: dto.value.reasonId,
-			password: btoa(dto.value.password),
-		});
+		if (confirmation.isConfirmed) {
+			loading.value = true;
+			await securityRepo.freezeAccount({
+				reasonId: dto.value.reasonId,
+				password: btoa(dto.value.password),
+			});
 
-		router.push('/');
+			router.push('/');
 
-		await authStore.fetchCurrentUser(true);
-		await authStore.clearAuthCredentials();
+			await authStore.fetchCurrentUser(true);
+			await authStore.clearAuthCredentials();
+		}
 	}
 	catch (error) {
 		console.log(error);

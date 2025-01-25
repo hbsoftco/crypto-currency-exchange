@@ -1033,6 +1033,8 @@ const persian = {
 	allNotificationsDeletedSuccessfully: 'همه اعلانات با موفقیت حذف شدند!',
 	readAllNotifications: 'خواندن همه اعلان‌ها',
 	readAllNotificationsDescription: 'آیا شما از خواندن همه اعلانات اطمینان دارید؟',
+	deleteAccountDescription: 'آیا شما از حذف اکانت خود اطمینان دارید؟',
+	freezeAccountDescription: 'آیا شما از فریز اکانت خود اطمینان دارید؟',
 	allNotificationsReadSuccessfully: 'همه اعلانات با موفقیت خوانده شدند!',
 	yesDoIt: 'بله، انجام بده!',
 	referralCode: 'کد دعوت',

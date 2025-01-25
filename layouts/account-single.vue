@@ -43,6 +43,7 @@ const specialRoutes = ref<string[]>([
 	'user-security-change-phone',
 	'user-security-white-list',
 	'user-security-freeze-account',
+	'user-security-delete-account',
 	'user-security-change-password',
 ]);
 

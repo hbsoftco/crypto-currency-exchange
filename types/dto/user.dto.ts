@@ -28,11 +28,6 @@ type CodeInviteDto = {
 	referralCode: string;
 };
 
-type DeleteAccountDto = {
-	reasonId: string;
-	password: string;
-};
-
 type SetEmailDto = {
 	uvIdEmailAddressOld: number;
 	uvCodeEmailAddressOld: string;
@@ -78,7 +73,6 @@ export type {
 	AddressSetDto,
 	AddCardBankSetDto,
 	CodeInviteDto,
-	DeleteAccountDto,
 	SetEmailDto,
 	SetMobileDto,
 	SetApiAddDto,

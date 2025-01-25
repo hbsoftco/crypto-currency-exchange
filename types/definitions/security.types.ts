@@ -147,6 +147,11 @@ type FreezeAccountDto = {
 	password: string;
 };
 
+type DeleteAccountDto = {
+	reasonId: number | string;
+	password: string;
+};
+
 // list device
 
 type DeviceListParams = {
@@ -231,4 +236,5 @@ export type {
 	ActivitiesListParams,
 	TypeListParams,
 	FreezeAccountDto,
+	DeleteAccountDto,
 };

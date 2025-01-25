@@ -7,6 +7,7 @@ import type {
 	AntiPhishingDto,
 	ChangeEmailDto,
 	ChangePhoneDto,
+	DeleteAccountDto,
 	DeviceListParams,
 	Disable2faDto,
 	Enable2faDto,
@@ -43,7 +44,8 @@ type SecurityRepository = {
 	storeSetPassword: (dto: SetPasswordDto) => Promise<CommonResponse>;
 	// Security
 	storeWithdrawPinCode: (dto: WithdrawPinCodeDto) => Promise<CommonResponse>;
-	storeFreezeAccount: (dto: FreezeAccountDto) => Promise<CommonResponse>;
+	freezeAccount: (dto: FreezeAccountDto) => Promise<CommonResponse>;
+	deleteAccount: (dto: DeleteAccountDto) => Promise<CommonResponse>;
 	storeAntiPhishing: (dto: AntiPhishingDto) => Promise<CommonResponse>;
 	getWhiteListIPs: () => Promise<SecurityResponse>;
 	storeWhiteListIPs: (dto: WhiteListIPsDto) => Promise<CommonResponse>;
@@ -221,9 +223,19 @@ export const securityRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): S
 
 		return response;
 	},
-	async storeFreezeAccount(dto: FreezeAccountDto): Promise<CommonResponse> {
+	async freezeAccount(dto: FreezeAccountDto): Promise<CommonResponse> {
 		const url = `/v1/security/account/freez`;
 
+		const response = await fetch<CommonResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async deleteAccount(dto: DeleteAccountDto): Promise<CommonResponse> {
+		const url = `/v1/security/account/delete`;
 		const response = await fetch<CommonResponse>(`${url}`, {
 			noAuth: false,
 			method: 'POST',

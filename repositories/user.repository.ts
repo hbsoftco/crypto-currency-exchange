@@ -32,7 +32,6 @@ import type {
 	AddressSetDto,
 	CodeInviteDto,
 	ContactSetDto,
-	DeleteAccountDto,
 	SetApiAddDto,
 	SetApiEditDto,
 	SetEmailDto,
@@ -105,7 +104,6 @@ type UserRepository = {
 	getTraderState: (params: AssetTypeParams) => Promise<GetStateTradeRes>;
 	getInvitation: (params: GetInvitationParams) => Promise<GetInvitationListRes>;
 	getCommissionReceived: (params: GetCommissionReceivedListParams) => Promise<GetCommissionRes>;
-	deleteAccount: (dto: DeleteAccountDto) => Promise<CommonResponse>;
 	getDevLinkGenerate: () => Promise<GetDevLinkGenerateRes>;
 	setEmail: (dto: SetEmailDto) => Promise<CommonResponse>;
 	storeSetMobile: (dto: SetMobileDto) => Promise<CommonResponse>;
@@ -612,17 +610,6 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 			noAuth: false,
 			apiName: url,
 			query: {},
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async deleteAccount(dto: DeleteAccountDto): Promise<CommonResponse> {
-		const url = `/v1/user/user/delete`;
-		const response = await fetch<CommonResponse>(`${url}`, {
-			noAuth: false,
-			apiName: url,
-			method: 'POST',
-			body: dto,
 		} as CustomNitroFetchOptions);
 
 		return response;
