@@ -14,7 +14,7 @@
 				</div>
 				<div class="w-full">
 					<h3 class="hidden md:block text-xl font-bold">
-						<h3>{{ $t('verification') }}</h3>
+						<span>{{ $t('verification') }}</span>
 					</h3>
 					<div class="flex justify-between items-center mt-6 px-4 py-3 bg-primary-gray-light dark:bg-primary-gray-dark rounded-md">
 						<div class="flex justify-start items-center">
