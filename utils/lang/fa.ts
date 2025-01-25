@@ -943,7 +943,7 @@ const persian = {
 	reasonAccountFreeze: 'دلیل فریز حساب',
 	iKnowFreeze: 'من متوجه فریز شدن حسابم هستم .',
 	confirmFreezeAccount: 'تایید برای فریز کردن حساب',
-	scanCodeTitr: 'به نرم افزار بیت لند بروید و کد  QR را اسکن کنید به صورت خودکار وارد حساب کاربری خود شوید.',
+	scanCodeTitle: 'به نرم افزار بیت لند بروید و کد  QR را اسکن کنید به صورت خودکار وارد حساب کاربری خود شوید.',
 	userDetails: 'مشخصات مخاطب',
 	deleteContact: 'حذف مخاطب',
 	newContactSuccess: 'مخاطب جدید با موفقیت ثبت شد',
@@ -1197,6 +1197,7 @@ const persian = {
 	finished: 'اتمام مراحل',
 	scan: 'اسکن',
 	openLink: 'باز کردن لینک',
+	linkNewDevice: 'لینک دستگاه جدید',
 };
 
 export default persian;

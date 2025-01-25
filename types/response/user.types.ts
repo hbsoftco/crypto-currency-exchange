@@ -206,14 +206,6 @@ type GetLevelsDataRes = {
 	};
 };
 
-type GetDevLinkGenerateRes = {
-	statusCode: number;
-	result: {
-		devLinkID: number;
-		devLinkSecret: string;
-	};
-};
-
 type ApiList = {
 	uid: number;
 	user: string;
@@ -276,7 +268,6 @@ export type {
 	GetStateTradeRes,
 	GetLevelsDataRes,
 	LevelRow,
-	GetDevLinkGenerateRes,
 	GetApiListRes,
 	ApiList,
 	GetApiRes,

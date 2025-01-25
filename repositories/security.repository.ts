@@ -50,8 +50,9 @@ type SecurityRepository = {
 	getWhiteListIPs: () => Promise<SecurityResponse>;
 	storeWhiteListIPs: (dto: WhiteListIPsDto) => Promise<CommonResponse>;
 	getActivitiesList: (params: ActivitiesListParams) => Promise<SecurityListResponse>;
-	// list-device
+	// devices
 	getDeviceList: (params: DeviceListParams) => Promise<SecurityListResponse>;
+	generateQrCodeDeviceLink: () => Promise<SecurityResponse>;
 };
 
 export const securityRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SecurityRepository => ({
@@ -291,7 +292,7 @@ export const securityRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): S
 
 		return response;
 	},
-	// list-device
+	// devices
 	async getDeviceList(params: DeviceListParams): Promise<SecurityListResponse> {
 		const query = new URLSearchParams(
 			Object.entries(params)
@@ -299,6 +300,15 @@ export const securityRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): S
 		);
 		const url = `/v1/security/logs/device_list`;
 		const response = await fetch<SecurityListResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async generateQrCodeDeviceLink(): Promise<SecurityResponse> {
+		const url = '/v1/security/account/devlink_qrc_generate';
+		const response = await fetch<SecurityResponse>(`${url}`, {
 			noAuth: false,
 			method: 'GET',
 		} as CustomNitroFetchOptions);

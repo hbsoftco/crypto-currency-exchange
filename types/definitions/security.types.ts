@@ -11,7 +11,10 @@ type SecurityListResponse = {
 
 type SecurityResponse = {
 	statusCode: number;
-	result: Generate2fa | Identification | WhiteListIPs;
+	result: Generate2fa |
+	Identification |
+	WhiteListIPs |
+	QrCodeDeviceLink;
 };
 
 // 2fa
@@ -152,7 +155,12 @@ type DeleteAccountDto = {
 	password: string;
 };
 
-// list device
+// devices
+
+type QrCodeDeviceLink = {
+	devLinkID: number;
+	devLinkSecret: string;
+};
 
 type DeviceListParams = {
 	from?: string;
@@ -237,4 +245,5 @@ export type {
 	TypeListParams,
 	FreezeAccountDto,
 	DeleteAccountDto,
+	QrCodeDeviceLink,
 };

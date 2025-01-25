@@ -1,28 +1,39 @@
 <template>
-	<div>
-		<VerificationModal
-			v-if="showDetail"
-			@close="closeDetail"
-		/>
+	<div v-if="deviceItemsLoading">
+		<UiLogoLoading />
+	</div>
+
+	<div v-else>
 		<BackHeader
 			v-if="isMobile"
 			:title="$t('deviceManagement')"
-		/>
+		>
+			<UButton
+				:loading="generateQrCodeLoading"
+				variant="link"
+				@click="deviceLink"
+			>
+				{{ $t('linkNewDevice') }}
+			</UButton>
+		</BackHeader>
 		<UContainer class="my-8">
 			<div
 				v-if="!isMobile"
 				class="my-4 flex justify-between"
 			>
 				<UiTitleWithBack :title="$t('deviceManagement')" />
-				<ULink
-					class="flex justify-between items-center py-2 px-4 border border-primary-gray-light dark:border-primary-gray-dark rounded-md"
-					@click="openDetail"
+				<UButton
+					color="white"
+					variant="solid"
+					class="font-normal"
+					:loading="generateQrCodeLoading"
+					@click="deviceLink"
 				>
 					<span class="text-base font-bold ml-1">
 						{{ $t('linkDevice') }}
 					</span>
-					<IconQrCode class="text-base text-subtle-text-light dark:text-subtle-text-dark" />
-				</ULink>
+					<IconQrCode class="text-3xl text-subtle-text-light dark:text-subtle-text-dark" />
+				</UButton>
 			</div>
 			<section>
 				<div>
@@ -57,7 +68,7 @@
 										class="text-nowrap text-xs font-normal py-2 px-4"
 										dir="ltr"
 										style="position: relative; overflow: hidden; max-width: 150px;"
-										title="{{ item.device }}"
+										:title="item.device"
 									>
 										<p
 											class="truncate"
@@ -169,15 +180,53 @@
 				</div>
 			</section>
 		</UContainer>
+
+		<UModal
+			v-model="isOpen"
+			fullscreen
+		>
+			<div
+				class="h-full flex flex-col items-center justify-center overflow-y-scroll"
+			>
+				<div
+					class=" w-full md:w-[20rem] flex flex-col justify-center items-center text-center rounded-md bg-background-light dark:bg-background-dark px-1 md:px-14 py-6 md:py-8"
+				>
+					<div class="w-full">
+						<div class="justify-center">
+							<span class="text-base font-bold">{{ $t('scanCodeTitle') }}</span>
+							<vue-qrcode
+								class="m-auto"
+								:value="getQrCodeInput"
+								:size="200"
+								:level="'H'"
+								:background="'#ffffff'"
+								:foreground="'#000000'"
+							/>
+						</div>
+						<h5 class="text-sm pt-4">
+							{{ `این کد بعد از ${countdown} ثانیه منقضی می‌شود.` }}
+						</h5>
+					</div>
+				</div>
+
+				<div class="mt-6">
+					<IconClose
+						class="text-4xl cursor-pointer"
+						@click="closeModal"
+					/>
+				</div>
+			</div>
+		</UModal>
 	</div>
 </template>
 
 <script setup lang="ts">
+import IconClose from '~/assets/svg-icons/close.svg';
 import IconQrCode from '~/assets/svg-icons/profile/qrCode.svg';
-import VerificationModal from '~/components/pages/Site/Account/Security/ManageDevice/VerificationModal.vue';
 import { isValidIPv6, isValidIPv4, toPersianDate } from '~/utils/helpers';
 import { securityRepository } from '~/repositories/security.repository';
-import type { Device, DeviceListParams } from '~/types/definitions/security.types';
+import type { Device, DeviceListParams, QrCodeDeviceLink } from '~/types/definitions/security.types';
+import type { QrCodeInput } from '~/types/definitions/common.types';
 
 const BackHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/BackHeader.vue'));
 
@@ -190,6 +239,91 @@ const { $api, $mobileDetect } = useNuxtApp();
 const securityRepo = securityRepository($api);
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
+
+const authStore = useAuthStore();
+
+const isOpen = ref(false);
+
+const countdown = ref(60);
+let countdownInterval: NodeJS.Timeout | undefined;
+const deviceLink = async () => {
+	try {
+		startCountdown();
+		await generateQrCode();
+	}
+	catch (error) {
+		console.log(error);
+	}
+};
+
+const stopIntervals = () => {
+	if (countdownInterval !== undefined) {
+		clearInterval(countdownInterval);
+	}
+};
+
+const startCountdown = async () => {
+	countdownInterval = setInterval(async () => {
+		if (countdown.value > 0) {
+			countdown.value -= 1;
+		}
+		else {
+			if (countdownInterval !== undefined) {
+				clearInterval(countdownInterval);
+			}
+
+			await generateQrCode();
+
+			countdown.value = 60;
+
+			startCountdown();
+		}
+	}, 1000);
+};
+
+watch(
+	() => isOpen,
+	async (newValue) => {
+		if (newValue) {
+			countdown.value = 60;
+			await generateQrCode();
+			startCountdown();
+		}
+		else {
+			stopIntervals();
+		}
+	},
+);
+
+const qrCodeInput = ref<QrCodeInput>({
+	id: '',
+	hash: '',
+	type: 'device_link',
+});
+const generateQrCodeLoading = ref<boolean>(false);
+const generateQrCode = async () => {
+	try {
+		generateQrCodeLoading.value = true;
+
+		const authData = authStore.getAuthCredentials();
+		if (!authData) return;
+
+		const { result } = await securityRepo.generateQrCodeDeviceLink();
+		const data = result as QrCodeDeviceLink;
+		qrCodeInput.value.id = String(data.devLinkID);
+		qrCodeInput.value.hash = md5WithUtf16LE(`${authData.password}${data.devLinkSecret}`);
+
+		isOpen.value = true;
+
+		generateQrCodeLoading.value = false;
+	}
+	catch (error: any) {
+		generateQrCodeLoading.value = false;
+		console.log(error);
+	}
+};
+
+const getQrCodeInput = computed(() => JSON.stringify(qrCodeInput.value));
 
 const params = ref<DeviceListParams>({
 	from: '',
@@ -216,19 +350,14 @@ const getDeviceList = async () => {
 const itemsPerPage = 20;
 const totalCount = ref(0);
 
-const showDetail = ref(false);
-
-const openDetail = () => {
-	showDetail.value = true;
-};
-
-const closeDetail = () => {
-	showDetail.value = false;
-};
-
 const onPageChange = async (newPage: number) => {
 	params.value.pageNumber = String(newPage);
 	await getDeviceList();
+};
+
+const closeModal = () => {
+	isOpen.value = false;
+	stopIntervals();
 };
 
 onMounted(async () => {

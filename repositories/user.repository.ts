@@ -3,7 +3,6 @@ import type { NitroFetchRequest, $Fetch } from 'nitropack';
 import type { GetAddressListRes, GetApiListRes, GetApiRes, GetBankListResponse,
 	GetBestListResponse,
 	GetCommissionReceivedList, GetContactListResponse,
-	GetDevLinkGenerateRes,
 	GetRewardReceivedListResponse,
 	GetStateTradeRes,
 	StoreApiRes,
@@ -104,7 +103,6 @@ type UserRepository = {
 	getTraderState: (params: AssetTypeParams) => Promise<GetStateTradeRes>;
 	getInvitation: (params: GetInvitationParams) => Promise<GetInvitationListRes>;
 	getCommissionReceived: (params: GetCommissionReceivedListParams) => Promise<GetCommissionRes>;
-	getDevLinkGenerate: () => Promise<GetDevLinkGenerateRes>;
 	setEmail: (dto: SetEmailDto) => Promise<CommonResponse>;
 	storeSetMobile: (dto: SetMobileDto) => Promise<CommonResponse>;
 	storeCardPrint: (dto: SetCardPrintDto) => Promise<CommonResponse>;
@@ -610,15 +608,6 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 			noAuth: false,
 			apiName: url,
 			query: {},
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getDevLinkGenerate(): Promise<GetDevLinkGenerateRes> {
-		const url = '/v1/user/user/devlink_qrc_generate';
-		const response = await fetch<GetDevLinkGenerateRes>(`${url}`, {
-			noAuth: false,
-			method: 'GET',
 		} as CustomNitroFetchOptions);
 
 		return response;
