@@ -162,7 +162,7 @@ const submit = async () => {
 
 		if (confirmation.isConfirmed) {
 			loading.value = true;
-			await securityRepo.freezeAccount({
+			await securityRepo.deleteAccount({
 				reasonId: dto.value.reasonId,
 				password: btoa(dto.value.password),
 			});
