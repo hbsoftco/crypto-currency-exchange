@@ -152,6 +152,11 @@ type StaffParams = {
 	profileTypeId: string;
 };
 
+type ReasonListParams = {
+	entityType?: string;
+	langId?: string;
+};
+
 type SystemParams = {
 	languageId: string;
 	tagId: string;
@@ -178,4 +183,5 @@ export type {
 	StaffParams,
 	SystemParams,
 	Country,
+	ReasonListParams,
 };

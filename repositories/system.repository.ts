@@ -2,7 +2,7 @@ import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import type { BaseLangGroupParams, BaseLangIdParams, CommonResponse, KeyValueResponse, SearchListParams } from '~/types/definitions/common.types';
-import type { SystemParams, MiniRoutineParams, StaffParams, SystemListResponse, SystemResponse } from '~/types/definitions/system.types';
+import type { SystemParams, MiniRoutineParams, StaffParams, SystemListResponse, SystemResponse, ReasonListParams } from '~/types/definitions/system.types';
 
 type SystemRepository = {
 	getSystemHelp: (params: BaseLangIdParams) => Promise<SystemResponse>;
@@ -20,6 +20,7 @@ type SystemRepository = {
 	getFAQList: (params: SystemParams) => Promise<SystemListResponse>;
 	getHowToBuyList: (params: SystemParams) => Promise<SystemListResponse>;
 	getCountryList: () => Promise<SystemResponse>;
+	getReasonList: (params: ReasonListParams) => Promise<KeyValueResponse>;
 };
 
 export const systemRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SystemRepository => ({
@@ -217,6 +218,20 @@ export const systemRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Sys
 		const url = '/v1/system/common/country_list';
 		const response = await fetch<SystemResponse>(`${url}`, {
 			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getReasonList(params: ReasonListParams): Promise<KeyValueResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/system/common/reason_list';
+		const response = await fetch<KeyValueResponse>(`${url}?${query.toString()}`, {
+			noAuth: true,
 			method: 'GET',
 		} as CustomNitroFetchOptions);
 

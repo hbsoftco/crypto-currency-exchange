@@ -142,6 +142,11 @@ type AntiPhishingDto = {
 	anitphishingPhrase: string;
 };
 
+type FreezeAccountDto = {
+	reasonId: number | string;
+	password: string;
+};
+
 // list device
 
 type DeviceListParams = {
@@ -225,4 +230,5 @@ export type {
 	Activity,
 	ActivitiesListParams,
 	TypeListParams,
+	FreezeAccountDto,
 };

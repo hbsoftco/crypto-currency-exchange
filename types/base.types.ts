@@ -240,11 +240,6 @@ type GetInvitationParams = {
 	pageSize?: string;
 };
 
-type GetReasonListParams = {
-	entityType?: string;
-	langId?: string;
-};
-
 type getApiListParams = {
 	srchKey?: string;
 	from?: string;
@@ -296,7 +291,6 @@ export type {
 	GetInvitationParams,
 	DepositCoinListParams,
 	WithdrawCoinListParams,
-	GetReasonListParams,
 	getApiListParams,
 	getApiParams,
 	GetCurrencyParams,

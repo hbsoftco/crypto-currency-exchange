@@ -42,6 +42,7 @@ const specialRoutes = ref<string[]>([
 	'user-security-change-email',
 	'user-security-change-phone',
 	'user-security-white-list',
+	'user-security-freeze-account',
 	'user-security-change-password',
 ]);
 

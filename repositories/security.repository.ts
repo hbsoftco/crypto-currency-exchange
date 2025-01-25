@@ -10,6 +10,7 @@ import type {
 	DeviceListParams,
 	Disable2faDto,
 	Enable2faDto,
+	FreezeAccountDto,
 	IdentificationDto,
 	IdentificationResendDto,
 	NoticeListParams,
@@ -42,6 +43,7 @@ type SecurityRepository = {
 	storeSetPassword: (dto: SetPasswordDto) => Promise<CommonResponse>;
 	// Security
 	storeWithdrawPinCode: (dto: WithdrawPinCodeDto) => Promise<CommonResponse>;
+	storeFreezeAccount: (dto: FreezeAccountDto) => Promise<CommonResponse>;
 	storeAntiPhishing: (dto: AntiPhishingDto) => Promise<CommonResponse>;
 	getWhiteListIPs: () => Promise<SecurityResponse>;
 	storeWhiteListIPs: (dto: WhiteListIPsDto) => Promise<CommonResponse>;
@@ -215,6 +217,17 @@ export const securityRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): S
 			noAuth: false,
 			method: 'POST',
 			body,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async storeFreezeAccount(dto: FreezeAccountDto): Promise<CommonResponse> {
+		const url = `/v1/security/account/freez`;
+
+		const response = await fetch<CommonResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body: dto,
 		} as CustomNitroFetchOptions);
 
 		return response;

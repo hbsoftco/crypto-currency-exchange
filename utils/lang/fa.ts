@@ -939,7 +939,7 @@ const persian = {
 	reasonAccountDeletion: 'دلیل حذف حساب',
 	errorMessage: 'پیام اخطار',
 	doYouSureFreeze: 'آیا مطمئن هستید که می خواهید حساب خود را فریز کنید ؟',
-	freezeAccountTilte: 'لطفاً دلیل فریز حساب خود را انتخاب کنید ',
+	freezeAccountTitle: 'لطفاً دلیل فریز حساب خود را انتخاب کنید ',
 	reasonAccountFreeze: 'دلیل فریز حساب',
 	iKnowFreeze: 'من متوجه فریز شدن حسابم هستم .',
 	confirmFreezeAccount: 'تایید برای فریز کردن حساب',

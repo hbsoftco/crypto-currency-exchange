@@ -1,4 +1,4 @@
-export enum EntityType {
+enum EntityType {
 	UserRegister = 1310131,
 	UserLogin = 1310231,
 	UserLogout = 1310331,
@@ -23,3 +23,17 @@ export enum EntityType {
 	UserUnfreeze = 2243151,
 	UserAssetManipulation = 2243161,
 }
+
+enum RejectReason {
+	Any = 0,
+	UserDocsRejectReason = 2130151,
+	WithdrawRejectReason = 2130161,
+	OrderRejectReason = 2130171,
+	FreezeReason = 2130181,
+	AccountDeleteReason = 2130191,
+};
+
+export {
+	RejectReason,
+	EntityType,
+};
