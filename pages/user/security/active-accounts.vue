@@ -20,8 +20,7 @@
 		</div>
 		<section class="pt-4">
 			<div
-				style="height:30rem;"
-				class="w-full overflow-hidden rounded"
+				class="w-full overflow-hidden rounded-none md:rounded h-[20rem] md:h-[30rem]"
 			>
 				<LMap
 					ref="map"
@@ -53,94 +52,99 @@
 		</section>
 		<section>
 			<div class="mt-6">
-				<div class="grid grid-cols-1 md:grid-cols-12 gap-[1px] items-center my-2">
-					<div class="ml-6 my-1 col-span-3">
-						<USelectMenu
-							v-model="CurrencyTypeFilter"
-							:options="typeItems"
-							:placeholder="$t('type')"
-							option-attribute="value"
-							:ui="{
-								background: '',
-								color: {
-									white: {
-										outline: ' bg-hover-light dark:bg-hover-dark',
+				<div class="px-4 md:px-0">
+					<div class="grid grid-cols-1 md:grid-cols-12 gap-[1px] items-center my-2">
+						<div class="ml-0 md:ml-6 my-1 col-span-12 md:col-span-3">
+							<USelectMenu
+								v-model="CurrencyTypeFilter"
+								:options="typeItems"
+								:placeholder="$t('type')"
+								option-attribute="value"
+								:ui="{
+									background: '',
+									color: {
+										white: {
+											outline: ' bg-hover-light dark:bg-hover-dark',
+										},
 									},
-								},
-							}"
-						/>
-					</div>
-					<!-- currencyType -->
+								}"
+							/>
+						</div>
+						<!-- currencyType -->
 
-					<div class="ml-6 my-1 col-span-3">
-						<UInput
-							id="fromDate"
-							v-model="fromDate"
-							color="white"
-							variant="outline"
-							:placeholder="$t('fromDate')"
-							readonly
-							class="cursor-pointer"
-							:ui="{
-								background: '',
-								color: {
-									white: {
-										outline: ' bg-hover-light dark:bg-hover-dark',
+						<div class="ml-0 md:ml-6 my-1 col-span-12 md:col-span-3">
+							<UInput
+								id="fromDate"
+								v-model="fromDate"
+								color="white"
+								variant="outline"
+								:placeholder="$t('fromDate')"
+								readonly
+								class="cursor-pointer"
+								:ui="{
+									background: '',
+									color: {
+										white: {
+											outline: ' bg-hover-light dark:bg-hover-dark',
+										},
 									},
-								},
-							}"
-						/>
-						<DatePicker
-							v-model="fromDate"
-							color="#FFC107"
-							simple
-							display-format="jYYYY/jMM/jDD"
-							format="YYYY/MM/DD"
-							element="fromDate"
-						/>
-					</div>
-					<!-- fromDate -->
+								}"
+							/>
+							<DatePicker
+								v-model="fromDate"
+								color="#FFC107"
+								simple
+								display-format="jYYYY/jMM/jDD"
+								format="YYYY/MM/DD"
+								element="fromDate"
+							/>
+						</div>
+						<!-- fromDate -->
 
-					<div class="ml-6 my-1 col-span-3">
-						<UInput
-							id="toDate"
-							v-model="toDate"
-							color="white"
-							variant="outline"
-							:placeholder="$t('toDate')"
-							readonly
-							class="cursor-pointer"
-							:ui="{
-								background: '',
-								color: {
-									white: {
-										outline: ' bg-hover-light dark:bg-hover-dark',
+						<div class="ml-0 md:ml-6 my-1 col-span-12 md:col-span-3">
+							<UInput
+								id="toDate"
+								v-model="toDate"
+								color="white"
+								variant="outline"
+								:placeholder="$t('toDate')"
+								readonly
+								class="cursor-pointer"
+								:ui="{
+									background: '',
+									color: {
+										white: {
+											outline: ' bg-hover-light dark:bg-hover-dark',
+										},
 									},
-								},
-							}"
-						/>
-						<DatePicker
-							v-model="toDate"
-							display-format="jYYYY/jMM/jDD"
-							color="#FFC107"
-							simple
-							format="YYYY/MM/DD"
-							element="toDate"
-						/>
-					</div>
-					<!-- toDate -->
+								}"
+							/>
+							<DatePicker
+								v-model="toDate"
+								display-format="jYYYY/jMM/jDD"
+								color="#FFC107"
+								simple
+								format="YYYY/MM/DD"
+								element="toDate"
+							/>
+						</div>
+						<!-- toDate -->
 
-					<div class="col-span-1">
-						<UButton
-							class="flex justify-center px-8 text-sm font-normal text-black dark:text-white hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-gray-light dark:border-primary-gray-dark"
-						>
-							{{ $t("search") }}
-						</UButton>
+						<div class="col-span-12 md:col-span-1">
+							<UButton
+								class="flex justify-center px-8 text-sm font-normal text-black dark:text-white hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-gray-light dark:border-primary-gray-dark"
+							>
+								{{ $t("search") }}
+							</UButton>
+						</div>
 					</div>
 				</div>
 
 				<div class="w-full">
-					<table class="min-w-full py-6 text-right">
+					<table
+						v-if="!isMobile"
+						class="min-w-full py-6 text-right"
+					>
 						<thead>
 							<tr class="pb-2 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark">
 								<th
@@ -186,20 +190,105 @@
 							</tr>
 						</tbody>
 					</table>
+
+					<div
+						v-else
+						class="px-4"
+					>
+						<div
+							v-for="item in activitiesList"
+							:key="item.logTime"
+							class="bg-primary-gray-light dark:bg-primary-gray-dark rounded-sm my-2 p-4"
+						>
+							<div class="flex justify-between items-center">
+								<p class="text-nowrap text-sm font-normal">
+									{{ $t('type') }}
+								</p>
+								<div
+									class="text-nowrap text-xs font-normal py-2 px-0 md:px-4"
+									dir="ltr"
+									style="position: relative; overflow: hidden; max-width: 150px;"
+									:title="item.typeName"
+								>
+									<p
+										class="truncate"
+										style="text-overflow: ellipsis; white-space: nowrap;"
+									>
+										{{ item.typeName }}
+									</p>
+								</div>
+							</div>
+							<!-- TypeName -->
+
+							<div class="flex justify-between items-center">
+								<p class="text-nowrap text-sm font-normal">
+									{{ $t('device') }}
+								</p>
+								<div
+									class="text-nowrap text-xs font-normal py-2 px-0 md:px-4"
+									dir="ltr"
+									style="position: relative; overflow: hidden; max-width: 150px;"
+									:title="item.device"
+								>
+									<p
+										class="truncate"
+										style="text-overflow: ellipsis; white-space: nowrap;"
+									>
+										{{ item.device }}
+									</p>
+								</div>
+							</div>
+							<!-- Device -->
+
+							<div class="flex justify-between items-center">
+								<p class="text-nowrap text-sm font-normal">
+									{{ $t('addressIp') }}
+								</p>
+								<div
+									class="text-nowrap text-xs font-normal py-2 px-0 md:px-4"
+									dir="ltr"
+									style="position: relative; overflow: hidden; max-width: 150px;"
+									:title="checkIP(item.iPv4, item.iPv6)"
+								>
+									<p
+										class="truncate"
+										style="text-overflow: ellipsis; white-space: nowrap;"
+									>
+										{{ checkIP(item.iPv4, item.iPv6) }}
+									</p>
+								</div>
+							</div>
+							<!-- AddressIP -->
+
+							<div class="flex justify-between items-center">
+								<p class="text-nowrap text-sm font-normal">
+									{{ $t('place') }}
+								</p>
+								<div
+									class="text-nowrap text-xs font-normal py-2 pr-10"
+									dir="ltr"
+								>
+									<p>
+										{{ item.country }}
+									</p>
+								</div>
+							</div>
+							<!-- Country -->
+						</div>
+					</div>
 				</div>
 				<div class="flex justify-center py-4">
 					<UPagination
-						:model-value="10"
-						:page-count="20"
-						:total="40"
+						v-if="totalCount > itemsPerPage"
+						:model-value="Number(params.pageNumber)"
+						:page-count="Number(params.pageNumber)"
+						:total="totalCount"
+						:to="(page: number) => ({
+							query: { page },
+						})"
 						:max="6"
-						size="xl"
-						ul-class="flex space-x-2 bg-blue-500 border-none"
-						li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500 px-3"
-						button-class-base="flex items-center justify-center w-full h-full transition-colors duration-200"
-						button-class-inactive="bg-green-700 hover:bg-gray-600"
-						button-class-active="bg-blue-500"
-						class="my-14"
+						size="sm"
+						@update:model-value="onPageChange"
 					/>
 				</div>
 			</div>
@@ -262,8 +351,13 @@ const getTypeList = async () => {
 	}
 };
 
-// const itemsPerPage = 20;
+const itemsPerPage = 20;
 const totalCount = ref(0);
+const currentPage = ref(1);
+
+function onPageChange(newPage: number) {
+	currentPage.value = newPage;
+}
 
 const params = ref<ActivitiesListParams>({
 	logTypeId: '',

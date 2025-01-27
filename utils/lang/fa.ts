@@ -1199,6 +1199,7 @@ const persian = {
 	openLink: 'باز کردن لینک',
 	linkNewDevice: 'لینک دستگاه جدید',
 	isNotValidIP: 'لیست IPها معتبر نیست!',
+	device: 'دستگاه',
 };
 
 export default persian;

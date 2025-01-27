@@ -65,7 +65,7 @@
 									class="py-3 px-4 odd:bg-hover2-light dark:odd:bg-hover2-dark border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"
 								>
 									<td
-										class="text-nowrap text-xs font-normal py-2 px-4"
+										class="text-nowrap text-xs font-normal py-2 px-0 md:px-4"
 										dir="ltr"
 										style="position: relative; overflow: hidden; max-width: 150px;"
 										:title="item.device"
@@ -109,7 +109,7 @@
 										{{ $t('devices') }}
 									</p>
 									<div
-										class="text-nowrap text-xs font-normal py-2 px-4"
+										class="text-nowrap text-xs font-normal py-2 px-0 md:px-4"
 										dir="ltr"
 										style="position: relative; overflow: hidden; max-width: 150px;"
 										title="{{ item.device }}"
