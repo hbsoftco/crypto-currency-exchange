@@ -126,6 +126,11 @@ const isValidIPv4 = (ip: string): boolean => {
 	return regex.test(ip);
 };
 
+const formatIPs = (input: string): string => {
+	const ips = input.split('\n').map((ip) => ip.trim());
+	return ips.join(',');
+};
+
 const capitalizer = (string: string): string => {
 	return string.charAt(0).toUpperCase() + string.slice(1);
 };
@@ -421,4 +426,5 @@ export {
 	convertPersianToEnglishNumber,
 	toPersianDate,
 	compressImageFile,
+	formatIPs,
 };

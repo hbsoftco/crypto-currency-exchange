@@ -48,6 +48,7 @@ type SecurityRepository = {
 	deleteAccount: (dto: DeleteAccountDto) => Promise<CommonResponse>;
 	storeAntiPhishing: (dto: AntiPhishingDto) => Promise<CommonResponse>;
 	getWhiteListIPs: () => Promise<SecurityResponse>;
+	whatismyip: () => Promise<SecurityResponse>;
 	storeWhiteListIPs: (dto: WhiteListIPsDto) => Promise<CommonResponse>;
 	getActivitiesList: (params: ActivitiesListParams) => Promise<SecurityListResponse>;
 	// devices
@@ -260,6 +261,14 @@ export const securityRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): S
 	},
 	async getWhiteListIPs(): Promise<SecurityResponse> {
 		const url = `/v1/security/wbl/ips_get`;
+		const result = await fetch<SecurityResponse>(`${url}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+		return result;
+	},
+	async whatismyip(): Promise<SecurityResponse> {
+		const url = `/v1/security/account/whatismyip`;
 		const result = await fetch<SecurityResponse>(`${url}`, {
 			noAuth: false,
 			method: 'GET',

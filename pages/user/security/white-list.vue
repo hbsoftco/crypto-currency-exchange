@@ -1,5 +1,12 @@
 <template>
-	<div class="mx-auto px-0 sm:px-6 lg:px-8 max-w-7xl my-0 md:my-8">
+	<div v-if="whiteListIPsLoading">
+		<UiLogoLoading />
+	</div>
+
+	<div
+		v-else
+		class="mx-auto px-0 sm:px-6 lg:px-8 max-w-7xl my-0 md:my-8"
+	>
 		<BackHeader
 			v-if="isMobile"
 			:title="$t('manageWhiteListIp')"
@@ -26,7 +33,11 @@
 							dir="ltr"
 							color-type="transparent"
 							rows="8"
-							:error-message="v$.lstIPsAllowed.$error? $t('fieldIsRequired') : ''"
+							:error-message="
+								v$.lstIPsAllowed.$error
+									? (v$.lstIPsAllowed.required.$response ? $t('isNotValidIP') : $t('fieldIsRequired'))
+									: ''
+							"
 						/>
 					</div>
 					<div>
@@ -59,6 +70,7 @@
 
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core';
+import { helpers } from '@vuelidate/validators';
 
 import TextareaFieldInput from '~/components/forms/TextareaFieldInput.vue';
 import SideGuideBox from '~/components/ui/SideGuideBox.vue';
@@ -85,6 +97,17 @@ const router = useRouter();
 
 const isOpenVerifyModal = ref(false);
 
+const isValidIP = helpers.withMessage(
+	() => useT('validation.invalidIP'),
+	(value: string) => {
+		if (!value) return true;
+		const ipRegex
+      = /^(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}$/;
+		const ips = value.split('\n').map((ip) => ip.trim());
+		return ips.every((ip) => ipRegex.test(ip));
+	},
+);
+
 const dto = ref<WhiteListIPsDto>({
 	verificationId: null,
 	verificationCode: '',
@@ -95,7 +118,7 @@ const dto = ref<WhiteListIPsDto>({
 const dtoRules = {
 	verificationId: { },
 	verificationCode: { },
-	lstIPsAllowed: { required: validations.required },
+	lstIPsAllowed: { required: validations.required, isValidIP },
 	v2FACode: { },
 };
 
@@ -115,7 +138,7 @@ const submit = async (event: VerifyOutput) => {
 
 	loading.value = true;
 	try {
-		await securityRepo.storeWhiteListIPs(dto.value);
+		await securityRepo.storeWhiteListIPs({ ...dto.value, lstIPsAllowed: formatIPs(dto.value.lstIPsAllowed) });
 
 		router.push('/user/security');
 		await authStore.fetchCurrentUser(true);
@@ -135,7 +158,10 @@ const getWhiteListIPs = async () => {
 		const { result } = await securityRepo.getWhiteListIPs();
 
 		whiteListIPs.value = result as WhiteListIPs;
-		// dto.value.lstIPsAllowed = whiteListIPs.value.allowed;
+
+		if (whiteListIPs.value.allowed.length) {
+			dto.value.lstIPsAllowed = whiteListIPs.value.allowed.join('\n');
+		}
 
 		whiteListIPsLoading.value = false;
 	}
