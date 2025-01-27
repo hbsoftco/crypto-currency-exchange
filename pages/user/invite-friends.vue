@@ -18,7 +18,14 @@
 		/>
 		<UContainer>
 			<section>
-				<div class="my-6 block md:hidden">
+				<BackHeader
+					v-if="isMobile"
+					:title="$t('inviteFriends')"
+				/>
+				<div
+					v-else
+					class="my-6"
+				>
 					<UiTitleWithBack
 						:title="$t('inviteFriends')"
 						:back-btn="true"
@@ -40,6 +47,7 @@
 					>
 				</div>
 			</section>
+			<!-- Banner and titles -->
 
 			<section>
 				<div class=" my-16 border-none md:border border-primary-gray-light dark:border-primary-gray-dark rounded-md ">
@@ -56,7 +64,7 @@
 								dir="ltr"
 							>
 								<p class="truncate text-ellipsis overflow-hidden pr-6">
-									{{ useNumber(String(referralBrief?.refCode)) }}
+									{{ (String(referralBrief?.refCode)) }}
 								</p>
 								<div class="flex justify-between">
 									<IconEdit
@@ -92,18 +100,20 @@
 								</div>
 							</div>
 						</div>
-						<div class="flex justify-between py-2 md:pb-0">
-							<UButton
-								class="text-base font-medium px-12 py-1 h-12 mx-3 text-center"
-								to=""
-								@click.prevent="openModalInviteFriends"
-							>
-								{{ $t("inviteFriends") }}
-							</UButton>
+						<div class="flex justify-between py-2 md:pb-0 gap-2">
+							<div class="flex-1">
+								<UButton
+									block
+									class="text-base font-medium px-12 py-1 h-12 text-center"
+									@click="openModalInviteFriends"
+								>
+									{{ $t("inviteFriends") }}
+								</UButton>
+							</div>
 							<div class="w-12 h-12 bg-primary-gray-light dark:bg-primary-gray-dark flex justify-center items-center cursor-pointer rounded-md">
 								<IconQrCode
 									class="text-3xl"
-									@click.prevent="openQRCode"
+									@click="openQRCode"
 								/>
 							</div>
 						</div>
@@ -111,7 +121,10 @@
 					<div class="px-1 md:p-4 pt-4">
 						<div class="flex justify-between">
 							<h5>{{ $t('howDoesWork') }}</h5>
-							<ULink class="flex items-center">
+							<ULink
+								class="flex items-center"
+								to="/help"
+							>
 								<span class="text-sm font-medium text-primary-yellow-light dark:text-primary-yellow-dark">{{ $t('bonusRules') }}</span>
 								<IconArrowLeft class="text-base mr-2 text-primary-yellow-light dark:text-primary-yellow-dark" />
 							</ULink>
@@ -179,41 +192,41 @@
 					<div class="flex ml-1 md:ml-10 items-center">
 						<div class="w-1 h-4 ml-1 md:ml-2 bg-primary-yellow-light dark:bg-primary-yellow-dark" />
 						<span class="text-xs md:text-sm font-medium text-subtle-text-light dark:text-subtle-text-dark">{{ $t('directCommissionPercentage') }}: </span>
-						<span class="text-xs md:text-base font-bold mr-0 md:mr-1">{{ useNumber(String(referralBrief?.config.percentages.dPerc)) }}%</span>
+						<span class="text-xs md:text-base font-bold mr-0 md:mr-1">{{ (String(referralBrief?.config.percentages.dPerc)) }}%</span>
 					</div>
 					<div class="flex">
 						<span class="text-xs md:text-sm font-medium text-subtle-text-light dark:text-subtle-text-dark">{{ $t('percentageTreeCommission') }}: </span>
-						<span class="text-xs md:text-base font-bold mr-0 md:mr-1">{{ useNumber(String(referralBrief?.config.percentages.oPerc)) }}%</span>
+						<span class="text-xs md:text-base font-bold mr-0 md:mr-1">{{ (String(referralBrief?.config.percentages.oPerc)) }}%</span>
 					</div>
 				</div>
 				<div class="flex justify-between">
 					<div>
-						<span class="text-base font-bold">{{ $t('level') }} {{ useNumber(nowInvite) }} </span>
+						<span class="text-base font-bold">{{ $t('level') }} {{ (nowInvite) }} </span>
 
 						<!-- <div class="text-xs font-normal">
-							<span class="ml-1">{{ $t('commissionLevel') }}:</span><span>{{ useNumber('30') }}%</span>
+							<span class="ml-1">{{ $t('commissionLevel') }}:</span><span>{{ ('30') }}%</span>
 						</div> -->
 					</div>
 					<div>
-						<span class="text-base font-bold">{{ $t('level') }} {{ useNumber(String(referralBrief?.config.indicator)) }}</span>
+						<span class="text-base font-bold">{{ $t('level') }} {{ (String(referralBrief?.config.indicator)) }}</span>
 
 						<div class="text-xs font-normal">
 							<span class="ml-1">{{ $t('commissionLevel') }}:</span>
-							<span>{{ useNumber(String(referralBrief?.config.percentages.dPerc)) }}%</span>
+							<span>{{ (String(referralBrief?.config.percentages.dPerc)) }}%</span>
 						</div>
 					</div>
 				</div>
 				<div class="my-4">
-					<UiProgressBar :progress="referralBrief?.coDirectActive" />
+					<UiProgressBar :progress="referralBrief?.coDirectActive ?? 0" />
 				</div>
 				<div class="flex justify-between pb-4 px-4">
 					<div class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
-						<span class="ml-1">{{ $t('user') }}</span>
-						<span>{{ useNumber(String(referralBrief?.config.to)) }}</span>
+						<span class="ml-1">{{ referralBrief?.config.to }}</span>
+						<span>{{ $t('user') }}</span>
 					</div>
 					<div class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
-						<span class="ml-1">{{ $t('user') }}</span>
-						<span>{{ useNumber(String(referralBrief?.config.from)) }}</span>
+						<span class="ml-1">{{ referralBrief?.config.from }}</span>
+						<span>{{ $t('user') }}</span>
 					</div>
 				</div>
 				<div class="text-subtle-text-light dark:text-subtle-text-dark text-sm font-normal">
@@ -222,9 +235,9 @@
 						class="text-subtle-text-light dark:text-subtle-text-dark text-sm font-normal"
 					>
 						شما
-						<span>{{ useNumber(String(referralBrief?.coDirectActive)) }}</span> نفر تاکنون به بیت لند دعوت کرده‌اید، تعداد
-						<span>{{ useNumber(String(mustInvite)) }}</span> نفر دیگر دعوت کنید تا به سطح
-						<span>{{ useNumber(String(nowInvite)) }}</span> ارتقا یابید.
+						<span>{{ referralBrief?.coDirectActive }}</span> نفر تاکنون به بیت لند دعوت کرده‌اید، تعداد
+						<span>{{ mustInvite }}</span> نفر دیگر دعوت کنید تا به سطح
+						<span>{{ nowInvite }}</span> ارتقا یابید.
 					</p>
 				</div>
 			</section>
@@ -234,11 +247,11 @@
 					<div class="py-6 px-1 md:px-12 ml-1 md:ml-28">
 						<div class="flex flex-col border-b border-primary-gray-light dark:border-primary-gray-dark pb-4">
 							<span class="text-xl font-bold mb-6 text-subtle-text-light dark:text-subtle-text-dark">{{ $t('allInvitees') }}</span>
-							<span class="text-4xl font-extrabold text-primary-yellow-light dark:text-primary-yellow-dark">{{ useNumber(priceFormat(String(referralBrief?.global.receivers))) }}</span>
+							<span class="text-4xl font-extrabold text-primary-yellow-light dark:text-primary-yellow-dark">{{ (priceFormat(String(referralBrief?.global.receivers))) }}</span>
 						</div>
 						<div>
 							<span class="flex flex-col text-xl font-bold mb-6 text-subtle-text-light dark:text-subtle-text-dark pt-4">{{ $t('totalCommissionPaid') }}</span>
-							<span class="text-4xl font-extrabold text-primary-yellow-light dark:text-primary-yellow-dark">{{ useNumber(priceFormat(String(referralBrief?.global.overallPayment))) }} {{ $t('toman') }}</span>
+							<span class="text-4xl font-extrabold text-primary-yellow-light dark:text-primary-yellow-dark">{{ (priceFormat(String(referralBrief?.global.overallPayment))) }} {{ $t('toman') }}</span>
 						</div>
 					</div>
 					<div>
@@ -273,16 +286,17 @@ import IconUser from '~/assets/svg-icons/profile/user.svg';
 import IconGift from '~/assets/svg-icons/gift.svg';
 import IconArrowUp from '~/assets/svg-icons/menu/arrow-up.svg';
 import IconArrowDown from '~/assets/svg-icons/menu/arrow-down.svg';
-import { useNumber } from '~/composables/useNumber';
-import ModalInviteFriends from '~/components/pages/Site/Account/InviteFriends/ModalInviteFriends.vue';
-import EditCodeInviteFriends from '~/components/pages/Site/Account/InviteFriends/EditCodeInviteFriends.vue';
+import ModalInviteFriends from '~/components/pages/User/InviteFriends/ModalInviteFriends.vue';
+import EditCodeInviteFriends from '~/components/pages/User/InviteFriends/EditCodeInviteFriends.vue';
 import IconEdit from '~/assets/svg-icons/profile/edit.svg';
-import InvitationHistoryTable from '~/components/pages/Site/Account/InviteFriends/InvitationHistoryTable.vue';
-import InvitationCommissionHistoryTable from '~/components/pages/Site/Account/InviteFriends/InvitationCommissionHistoryTable.vue';
-import Dashboard from '~/components/pages/Site/Account/InviteFriends/Dashboard.vue';
+import InvitationHistoryTable from '~/components/pages/User/InviteFriends/InvitationHistoryTable.vue';
+import InvitationCommissionHistoryTable from '~/components/pages/User/InviteFriends/InvitationCommissionHistoryTable.vue';
+import Dashboard from '~/components/pages/User/InviteFriends/Dashboard.vue';
 import { userRepository } from '~/repositories/user.repository';
-import type { ReferralBriefItem } from '~/types/response/user.types';
-import QRCodeModal from '~/components/pages/Site/Account/InviteFriends/QRCodeModal.vue';
+import QRCodeModal from '~/components/pages/User/InviteFriends/QRCodeModal.vue';
+import type { ReferralBrief } from '~/types/definitions/user.types';
+
+const BackHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/BackHeader.vue'));
 
 definePageMeta({
 	layout: 'account-single',
@@ -290,17 +304,20 @@ definePageMeta({
 });
 const { copyText } = useClipboard();
 
-const { $api } = useNuxtApp();
+const { $api, $mobileDetect } = useNuxtApp();
 const userRepo = userRepository($api);
 
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
+
 const referralBriefLoading = ref<boolean>(false);
-const referralBrief = ref<ReferralBriefItem>();
+const referralBrief = ref<ReferralBrief>();
 const getReferralBrief = async () => {
 	try {
 		referralBriefLoading.value = true;
 
-		const { result } = await userRepo.getReferralBrief('3');
-		referralBrief.value = result;
+		const { result } = await userRepo.getReferralBrief({ assessmentCurrencyId: '3' });
+		referralBrief.value = result as ReferralBrief;
 		referralBriefLoading.value = false;
 	}
 	catch (error) {
@@ -322,6 +339,8 @@ const nowInvite = computed(() => {
 });
 
 onMounted(async () => {
+	isMobile.value = !!mobileDetect.mobile();
+
 	await Promise.all([
 		getReferralBrief(),
 	]);

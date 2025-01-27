@@ -47,6 +47,7 @@ const specialRoutes = ref<string[]>([
 	'user-security-change-password',
 	'user-security-active-accounts',
 	'user-security-2fa',
+	'user-invite-friends',
 ]);
 
 watch(() => route.name, (newName) => {

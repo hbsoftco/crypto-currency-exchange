@@ -49,7 +49,7 @@
 				</div>
 				<div class="mt-6">
 					<IconClose
-						class="text-4xl hidden md:block"
+						class="text-4xl cursor-pointer"
 						@click="closeModal(false)"
 					/>
 				</div>

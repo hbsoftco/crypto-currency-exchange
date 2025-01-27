@@ -8,7 +8,7 @@
 				class="h-full flex flex-col items-center justify-center overflow-y-scroll"
 			>
 				<div
-					class=" w-full md:w-[30rem] flex justify-center items-center text-center rounded-md bg-background-light dark:bg-background-dark px-1 md:px-14 py-6 md:py-8"
+					class="w-full md:w-[20rem] flex justify-center items-center text-center rounded-md bg-background-light dark:bg-background-dark px-1 md:px-14 py-6 md:py-8"
 				>
 					<div class="w-full">
 						<div class="w-full">
@@ -57,13 +57,10 @@ import type { ReferralBrief } from '~/types/definitions/user.types';
 interface PropsDefinition {
 	referralBrief: ReferralBrief;
 }
-
 const props = defineProps<PropsDefinition>();
 
 const codeQr = props.referralBrief.refCode;
-const link = ref<string>('https://bitland.io/auth/sign-up?inviter=');
-
-const linkQR = link.value + codeQr;
+const linkQR = useEnv('referralLink') + codeQr;
 
 const isOpen = ref(true);
 interface EmitDefinition {
