@@ -252,7 +252,10 @@ const initUserData = () => {
 	dto.value.family = getValueByKey(authStore.getCurrentUser, 'FAMILY') ?? '';
 	dto.value.natCode = getValueByKey(authStore.getCurrentUser, 'LIVE_NATCODE') ?? '';
 	dto.value.livingAddress = getValueByKey(authStore.getCurrentUser, 'LIVE_ADDRESS') ?? '';
-	dto.value.birthDate = toPersianDate(getValueByKey(authStore.getCurrentUser, 'BIRTH_DATE') ?? '', 'numeric-month');
+
+	if (getValueByKey(authStore.getCurrentUser, 'BIRTH_DATE')) {
+		dto.value.birthDate = toPersianDate(getValueByKey(authStore.getCurrentUser, 'BIRTH_DATE') ?? '', 'numeric-month');
+	}
 };
 
 const firsLoading = ref(true);

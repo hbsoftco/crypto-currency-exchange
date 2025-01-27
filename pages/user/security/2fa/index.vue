@@ -39,7 +39,7 @@
 						<StepFour v-if="twoFaStore.guidanceSteps[3].isActive" />
 					</div>
 				</div>
-				<div class="my-0 md:my-8">
+				<div class="my-0 md:my-8 px-4 md:px-0">
 					<SideGuideBox
 						:tag-type="TagType.V2FA"
 						image="/images/svg/profile/google-authenticator.svg"
