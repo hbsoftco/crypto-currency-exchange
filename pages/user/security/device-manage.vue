@@ -189,11 +189,13 @@
 				class="h-full flex flex-col items-center justify-center overflow-y-scroll"
 			>
 				<div
-					class=" w-full md:w-[20rem] flex flex-col justify-center items-center text-center rounded-md bg-background-light dark:bg-background-dark px-1 md:px-14 py-6 md:py-8"
+					class=" w-full md:w-[20rem] flex flex-col justify-center items-center text-center rounded-md bg-background-light dark:bg-background-dark px-6 md:px-12 py-6 md:py-8"
 				>
 					<div class="w-full">
 						<div class="justify-center">
-							<span class="text-base font-bold">{{ $t('scanCodeTitle') }}</span>
+							<div class="text-base font-bold mb-4">
+								{{ $t('scanCodeTitle') }}
+							</div>
 							<vue-qrcode
 								class="m-auto"
 								:value="getQrCodeInput"

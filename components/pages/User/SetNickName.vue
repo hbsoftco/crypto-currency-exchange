@@ -43,7 +43,7 @@
 
 			<div class="mt-6">
 				<IconClose
-					class="text-4xl hidden md:block cursor-pointer"
+					class="text-4xl cursor-pointer"
 					@click="closeModal()"
 				/>
 			</div>

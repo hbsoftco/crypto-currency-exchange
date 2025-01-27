@@ -1,28 +1,30 @@
 <template>
 	<div>
-		<div>
-			<span class="text-base font-medium">{{ $t('stepOne') }}</span>
-		</div>
-		<div class="my-12">
-			<p class="text-sm font-normal">
-				{{ $t('stepOneForm') }}
-			</p>
+		<div class="hidden md:block">
+			<div>
+				<span class="text-base font-medium">{{ $t('stepOne') }}</span>
+			</div>
+			<div class="my-12">
+				<p class="text-sm font-normal">
+					{{ $t('stepOneForm') }}
+				</p>
+			</div>
 		</div>
 		<div class="mb-6">
 			<span class="text-sm font-bold">
 				{{ $t('guideVideos') }}
 			</span>
 		</div>
-		<div class="block md:flex justify-between">
-			<ULink class="flex justify-center items-center px-6 py-3 border border-primary-yellow-light dark:border-primary-yellow-dark rounded-md">
+		<div class="flex justify-between">
+			<ULink class="flex justify-center items-center px-2 md:px-6 py-2 md:py-3 border border-primary-yellow-light dark:border-primary-yellow-dark rounded-md">
 				<span class="text-nowrap text-sm font-bold ml-2">app store</span>
 				<IconVideo class="text-base " />
 			</ULink>
-			<ULink class="flex justify-center my-1 md:my-0 mx-0 md:mx-4 items-center px-6 py-3 border border-primary-yellow-light dark:border-primary-yellow-dark rounded-md">
+			<ULink class="flex justify-center items-center px-2 md:px-6 py-2 md:py-3 border border-primary-yellow-light dark:border-primary-yellow-dark rounded-md">
 				<span class="text-nowrap text-sm font-bold ml-2">app store</span>
 				<IconVideo class="text-base " />
 			</ULink>
-			<ULink class="flex justify-center items-center px-6 py-3 border border-primary-yellow-light dark:border-primary-yellow-dark rounded-md">
+			<ULink class="flex justify-center items-center px-2 md:px-6 py-2 md:py-3 border border-primary-yellow-light dark:border-primary-yellow-dark rounded-md">
 				<span class="text-nowrap text-sm font-bold ml-2">app store</span>
 				<IconVideo class="text-base " />
 			</ULink>

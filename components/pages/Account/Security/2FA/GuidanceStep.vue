@@ -1,5 +1,6 @@
 <template>
 	<div
+		v-if="!isMobile || isActive"
 		class="p-4 border border-primary-gray-light dark:border-primary-gray-dark rounded-md"
 		:class="[isActive? 'bg-hover-light dark:bg-hover-dark': '']"
 	>
@@ -33,4 +34,12 @@
 import type { GuidanceStep } from '~/types/definitions/security.types';
 
 defineProps<GuidanceStep>();
+
+const { $mobileDetect } = useNuxtApp();
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
+
+onMounted(() => {
+	isMobile.value = !!mobileDetect.mobile();
+});
 </script>

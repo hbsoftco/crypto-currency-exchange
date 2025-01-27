@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div>
+		<div class="hidden md:block">
 			<span class="text-base font-medium">{{ $t('stepThree') }}</span>
 		</div>
 		<div class="my-12">
