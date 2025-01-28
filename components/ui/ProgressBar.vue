@@ -6,15 +6,15 @@
 		<!-- Progress Bar Container -->
 		<div class="w-full bg-gray-700 h-4 rounded-full">
 			<div
-				class="bg-yellow-400 border-4 border-yellow-500 h-full flex items-center relative rounded-l-full"
+				class="progress-bar bg-yellow-400 border-4 border-yellow-500 h-full flex items-center relative rounded-l-full"
 				:style="{ width: `${progress}%` }"
 			>
 				<!-- Image at the head of progress bar -->
-				<img
+				<!-- <img
 					src="/images/svg/train.svg"
 					alt="Progress"
 					class="absolute w-12 h-12 -right-12"
-				>
+				> -->
 			</div>
 		</div>
 
@@ -35,3 +35,17 @@ withDefaults(defineProps<PropsDefinition>(), {
 	progress: 0,
 });
 </script>
+
+<style scoped>
+.progress-bar::after {
+	content: "";
+    position: absolute;
+    width: 3rem;
+    height: 1.5rem;
+    background-image: url(/images/svg/train.svg);
+    background-repeat: no-repeat;
+    top: 0.3rem;
+    transform: translateY(-50%);
+    right: -3.1rem;
+}
+</style>

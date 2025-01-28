@@ -118,6 +118,8 @@ const mobileDetect = $mobileDetect as MobileDetect;
 
 const securityRepo = securityRepository($api);
 
+const authStore = useAuthStore();
+
 const router = useRouter();
 
 const isOpenVerifyModal = ref(false);
@@ -161,6 +163,8 @@ const submit = async (event: VerifyOutput) => {
 			passwordNew: btoa(setPasswordDto.value.passwordNew),
 			passwordOld: btoa(setPasswordDto.value.passwordOld),
 		});
+
+		await authStore.setPassword(setPasswordDto.value.passwordNew);
 
 		router.push('/user/security');
 	}
