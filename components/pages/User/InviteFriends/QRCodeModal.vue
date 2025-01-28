@@ -8,7 +8,7 @@
 				class="h-full flex flex-col items-center justify-center overflow-y-scroll"
 			>
 				<div
-					class="w-full md:w-[20rem] flex justify-center items-center text-center rounded-md bg-background-light dark:bg-background-dark px-1 md:px-14 py-6 md:py-8"
+					class="w-full md:w-[20rem] flex justify-center items-center text-center rounded-md bg-background-light dark:bg-background-dark px-4 md:px-14 py-3 md:py-8"
 				>
 					<div class="w-full">
 						<div class="w-full">
@@ -21,10 +21,6 @@
 								<h3 class="text-base font-medium">
 									{{ $t('inviteFriends') }}
 								</h3>
-								<IconClose
-									class="text-3xl"
-									@click="closeModal(false)"
-								/>
 							</div>
 						</div>
 						<div class="flex justify-center my-4">

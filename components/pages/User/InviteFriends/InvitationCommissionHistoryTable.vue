@@ -1,7 +1,7 @@
 <template>
 	<section class="mb-12">
-		<div class="md:border border-primary-gray-light dark:border-primary-gray-dark rounded-md ">
-			<div class="py-8 px-1 md:px-6 block md:flex justify-between md:border-b border-primary-gray-light dark:border-primary-gray-dark ">
+		<div class="md:border border-primary-gray-light dark:border-primary-gray-dark rounded-md">
+			<div class="py-8 px-1 md:px-6 block md:flex justify-between md:border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<div class="flex">
 					<span class="text-base font-bold ml-2 mb-2 md:mb-0">
 						{{ $t('historyInvitationCommission') }}
@@ -30,7 +30,7 @@
 					<!-- MarketType -->
 				</div>
 			</div>
-			<div class="py-6 px-1 md:px-8">
+			<div class="py-0 px-1 md:px-8">
 				<div class="hidden md:block">
 					<table class=" min-w-full py-6 my-2 text-right">
 						<thead>
@@ -79,7 +79,7 @@
 									{{ item.perc }}
 								</td>
 								<td class="text-sm font-normal py-2">
-									{{ item.tFee }}
+									{{ priceFormat(item.amount) }} TMN
 								</td>
 							</tr>
 						</tbody>
@@ -94,19 +94,15 @@
 					:key="item.tid"
 				>
 					<div class="block md:hidden my-2 py-2 px-4 bg-hover-light dark:bg-hover-dark">
-						<div class="flex">
-							<div class="bg-subtle-text-light dark:bg-subtle-text-dark rounded-full w-8 h-8 flex items-center justify-center ml-4">
-								<IconUserInvite
-									class="text-[1.7rem] text-white dark:text-black"
-								/>
+						<div class="flex justify-between">
+							<div class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
+								{{ $t('subSet') }}
 							</div>
-							<div>
-								<div class="text-sm font-normal border-b border-primary-gray-light dark:border-primary-gray-dark">
-									{{ $t('userCode') }}
-								</div>
-								<div class="text-sm font-normal">
-									{{ item.tuid }}
-								</div>
+							<div
+								class="text-sm font-medium"
+								dir="ltr"
+							>
+								{{ item.tUser }}
 							</div>
 						</div>
 						<div class="flex justify-between py-1">
@@ -130,7 +126,7 @@
 								{{ $t('feeAmount') }}
 							</div>
 							<div class="text-sm font-medium">
-								{{ item.tFee }}
+								{{ priceFormat(item.amount) }} TMN
 							</div>
 						</div>
 					</div>
@@ -157,8 +153,7 @@
 </template>
 
 <script setup lang="ts">
-import IconUserInvite from '~/assets/svg-icons/menu/user-fill.svg';
-import { toPersianDate } from '~/utils/helpers';
+import { toPersianDate, priceFormat } from '~/utils/helpers';
 import { userRepository } from '~/repositories/user.repository';
 import { MarketType } from '~/utils/enums/market.enum';
 import type { KeyValue } from '~/types/definitions/common.types';

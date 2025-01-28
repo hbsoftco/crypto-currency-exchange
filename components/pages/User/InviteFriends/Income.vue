@@ -1,5 +1,5 @@
 <template>
-	<section class="py-12">
+	<section class="py-0 md:py-12">
 		<div class="md:border border-primary-gray-light dark:border-primary-gray-dark rounded-md">
 			<div class="block md:flex items-center justify-between my-8 px-0 md:px-8 border-none md:border border-primary-gray-light dark:border-primary-gray-dark">
 				<div class="flex">
@@ -23,7 +23,7 @@
 					</div>
 				</div>
 				<div class="block md:flex">
-					<div class="w-72 ml-8 my-8 md:my-0 px-4 py-2 bg-hover-light dark:bg-hover-dark rounded-md shadow-md">
+					<div class="w-full md:w-72 ml-8 my-8 md:my-0 px-4 py-2 bg-hover-light dark:bg-hover-dark rounded-md shadow-md">
 						<div class="flex border-b border-primary-gray-light dark:border-primary-gray-dark pb-4">
 							<img
 								src="/images/profile/money.png"
@@ -34,14 +34,19 @@
 								{{ $t('totalIncome') }}
 							</span>
 						</div>
-						<div class="flex justify-between pt-4 py-8">
+						<div
+							class="flex justify-between pt-4 py-8"
+							:title="String(referralBrief?.subject.coLY)"
+						>
 							<span class="text-sm font-medium text-subtle-text-light dark:text-subtle-text-dark">
 								{{ $t('toman') }}
 							</span>
-							<span class="text-sm font-medium">{{ dateFilter?.key }}</span>
+							<span
+								class="text-sm font-medium"
+							>{{ dateFilter?.key }}</span>
 						</div>
 					</div>
-					<div class="w-72 px-4 py-2 bg-hover-light dark:bg-hover-dark rounded-md shadow-md">
+					<div class="w-full md:w-72 px-4 py-2 bg-hover-light dark:bg-hover-dark rounded-md shadow-md">
 						<div class="flex border-b border-primary-gray-light dark:border-primary-gray-dark pb-4">
 							<IconUserInvite class="ml-1 text-2xl text-primary-yellow-light dark:text-primary-yellow-dark " />
 							<span class="text-base font-bold text-subtle-text-light dark:text-subtle-text-dark">

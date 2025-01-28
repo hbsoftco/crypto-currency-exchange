@@ -1,5 +1,5 @@
 <template>
-	<section class="mb-12">
+	<section class="mb-0 md:mb-12">
 		<div class="md:border border-primary-gray-light dark:border-primary-gray-dark rounded-md ">
 			<div class="py-8 px-1 md:px-6 block md:flex justify-between md:border-b border-primary-gray-light dark:border-primary-gray-dark ">
 				<div class="flex">
@@ -178,7 +178,6 @@ const inviteList = ref<Invite[]>();
 const itemsPerPage = 20;
 const totalCount = ref(0);
 
-const sortModeFilter = ref<KeyValue>();
 const sortModeItems = ref<KeyValue[]>([
 	{
 		key: '',
@@ -201,6 +200,7 @@ const sortModeItems = ref<KeyValue[]>([
 		value: useT('highestIncome'),
 	},
 ]);
+const sortModeFilter = ref<KeyValue>(sortModeItems.value[1]);
 
 const referralModeFilter = ref<KeyValue>();
 const referralModeItems = ref<KeyValue[]>([
@@ -220,7 +220,7 @@ const referralModeItems = ref<KeyValue[]>([
 
 const params = ref<InvitationListParams>({
 	getMode: '',
-	sortMode: '',
+	sortMode: sortModeItems.value[1].key,
 	assessmentCurrencyId: '3',
 	pageNumber: '1',
 	pageSize: '20',

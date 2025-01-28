@@ -33,10 +33,10 @@
 				</div>
 				<div class="my-2 flex flex-col-reverse md:flex md:flex-row justify-between items-center">
 					<div>
-						<h1 class="text-2xl md:text-4xl font-extrabold leading-loose">
+						<h1 class="text-2xl md:text-4xl font-extrabold md:leading-loose">
 							<span class="text-primary-yellow-light dark:text-primary-yellow-dark">بیت لند</span> ، تنها صرافی در ایران با کسب درآمد تا پنج سطح
 						</h1>
-						<h3 class="text-base font-bold mt-8">
+						<h3 class="text-sm md:text-base font-bold mt-8">
 							تا ۵۰% کمیسیون در هر معامله از زیر مجموعه های خود دریافت کنید.
 						</h3>
 					</div>
@@ -50,7 +50,7 @@
 			<!-- Banner and titles -->
 
 			<section>
-				<div class=" my-16 border-none md:border border-primary-gray-light dark:border-primary-gray-dark rounded-md ">
+				<div class="my-8 md:my-16 border-none md:border border-primary-gray-light dark:border-primary-gray-dark rounded-md ">
 					<div class="block md:flex items-center justify-between px-1 md:px-14 py-4 border-b border-primary-gray-light dark:border-primary-gray-dark ">
 						<div>
 							<div class="flex pb-2 md:pb-0">
@@ -202,10 +202,6 @@
 				<div class="flex justify-between">
 					<div>
 						<span class="text-base font-bold">{{ $t('level') }} {{ (nowInvite) }} </span>
-
-						<!-- <div class="text-xs font-normal">
-							<span class="ml-1">{{ $t('commissionLevel') }}:</span><span>{{ ('30') }}%</span>
-						</div> -->
 					</div>
 					<div>
 						<span class="text-base font-bold">{{ $t('level') }} {{ (String(referralBrief?.config.indicator)) }}</span>
@@ -246,12 +242,20 @@
 				<div class="flex justify-center items-center">
 					<div class="py-6 px-1 md:px-12 ml-1 md:ml-28">
 						<div class="flex flex-col border-b border-primary-gray-light dark:border-primary-gray-dark pb-4">
-							<span class="text-xl font-bold mb-6 text-subtle-text-light dark:text-subtle-text-dark">{{ $t('allInvitees') }}</span>
-							<span class="text-4xl font-extrabold text-primary-yellow-light dark:text-primary-yellow-dark">{{ (priceFormat(String(referralBrief?.global.receivers))) }}</span>
+							<span class="text-lg md:text-xl font-bold mb-2 md:mb-6 text-subtle-text-light dark:text-subtle-text-dark">
+								{{ $t('allInvitees') }}
+							</span>
+							<span class="text-xl md:text-4xl font-extrabold text-primary-yellow-light dark:text-primary-yellow-dark">
+								{{ (priceFormat(String(referralBrief?.global.receivers))) }}
+							</span>
 						</div>
 						<div>
-							<span class="flex flex-col text-xl font-bold mb-6 text-subtle-text-light dark:text-subtle-text-dark pt-4">{{ $t('totalCommissionPaid') }}</span>
-							<span class="text-4xl font-extrabold text-primary-yellow-light dark:text-primary-yellow-dark">{{ (priceFormat(String(referralBrief?.global.overallPayment))) }} {{ $t('toman') }}</span>
+							<span class="flex flex-col text-xl font-bold mb-2 md:mb-6 text-subtle-text-light dark:text-subtle-text-dark pt-4">
+								{{ $t('totalCommissionPaid') }}
+							</span>
+							<span class="text-xl md:text-4xl font-extrabold text-primary-yellow-light dark:text-primary-yellow-dark">
+								{{ (priceFormat(String(referralBrief?.global.overallPayment))) }} {{ $t('toman') }}
+							</span>
 						</div>
 					</div>
 					<div>
@@ -338,8 +342,21 @@ const nowInvite = computed(() => {
 	return config + 1;
 });
 
+const showDescription = ref(true);
+
+const toggleDescription = () => {
+	showDescription.value = !showDescription.value;
+};
+
 onMounted(async () => {
 	isMobile.value = !!mobileDetect.mobile();
+
+	if (isMobile.value) {
+		showDescription.value = false;
+	}
+	else {
+		showDescription.value = true;
+	}
 
 	await Promise.all([
 		getReferralBrief(),
@@ -372,10 +389,5 @@ const openQRCode = () => {
 
 const closeQRCode = () => {
 	showQRCode.value = false;
-};
-const showDescription = ref(true);
-
-const toggleDescription = () => {
-	showDescription.value = !showDescription.value;
 };
 </script>
