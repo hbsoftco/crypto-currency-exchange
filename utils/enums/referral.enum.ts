@@ -1,10 +1,10 @@
-export enum GetMode {
+export enum ReferralMode {
 	Any = 0,
 	Directs = 11,
 	Indirects = 21,
 }
 
-export enum SortMode {
+export enum ReferralSortMode {
 	LatestInvitation = 11,
 	OldestInvitation = 13,
 	HighestIncome = 23,

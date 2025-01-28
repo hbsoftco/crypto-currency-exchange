@@ -9,6 +9,8 @@ type UserResponse = {
 		rows: Commission[] |
 		UserLevel[] |
 		Ticket[] |
+		Invite[] |
+		InviteCommission[] |
 		Level[];
 	};
 };
@@ -52,8 +54,48 @@ type ReferralBrief = {
 	coIndirectInactive: number;
 };
 
+// Referral
 type ReferralBriefParams = {
 	assessmentCurrencyId: string;
+};
+
+type InvitationListParams = {
+	getMode?: string;
+	sortMode?: string;
+	assessmentCurrencyId: string;
+	pageNumber?: string;
+	pageSize?: string;
+};
+
+type InviteCommissionParams = {
+	marketType: string;
+	from: string;
+	to: string;
+	pageNumber: string;
+	pageSize: string;
+};
+
+type Invite = {
+	uid: number;
+	user: string;
+	regTime: string;
+	income: number;
+};
+
+type InviteCommission = {
+	tid: number;
+	mid: number;
+	mSymbol: string;
+	ruid: number;
+	cid: number;
+	cSymbol: string;
+	tuid: number;
+	tUser: string;
+	tValue: number;
+	tFee: number;
+	tTime: string;
+	perc: string;
+	amount: string;
 };
 
 type UserLevel = {
@@ -249,4 +291,8 @@ export type {
 	SetCardPrintDto,
 	HolderBrief,
 	Level,
+	InvitationListParams,
+	Invite,
+	InviteCommission,
+	InviteCommissionParams,
 };

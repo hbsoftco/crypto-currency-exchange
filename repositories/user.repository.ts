@@ -2,7 +2,7 @@ import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
 import type { GetAddressListRes, GetApiListRes, GetApiRes, GetBankListResponse,
 	GetBestListResponse,
-	GetCommissionReceivedList, GetContactListResponse,
+	GetContactListResponse,
 	GetRewardReceivedListResponse,
 	GetStateTradeRes,
 	StoreApiRes,
@@ -16,9 +16,7 @@ import type {
 	getApiListParams,
 	getApiParams,
 	GetBankParams,
-	GetCommissionReceivedListParams,
 	GetContactListParams,
-	GetInvitationParams,
 	GetReferralBestListParams,
 	GetRewardExposedParams,
 	GetRewardReceivedListParams,
@@ -35,10 +33,11 @@ import type {
 	SetApiEditDto,
 	SetEmailDto,
 	SetMobileDto } from '~/types/dto/user.dto';
-import type { GetCommissionRes, GetInvitationListRes } from '~/types/response/referral.types';
 import type {
 	AppendTicketDto,
 	AssetTypeParams,
+	InvitationListParams,
+	InviteCommissionParams,
 	ReferralBriefParams,
 	ResultResponse,
 	SetBasicDto,
@@ -78,14 +77,17 @@ type UserRepository = {
 	uploadSelfy1: (image: File) => Promise<CommonResponse>;
 	uploadSelfy2: (image: File) => Promise<CommonResponse>;
 
-	// Others
+	// Referral
 	getReferralBrief: (params: ReferralBriefParams) => Promise<ResultResponse>;
+	getInvitationList: (params: InvitationListParams) => Promise<UserResponse>;
+	getInvitationCommission: (params: InviteCommissionParams) => Promise<UserResponse>;
+
+	// Others
 	getHolderBrief: (params: AssetTypeParams) => Promise<ResultResponse>;
 	getHolderLevelList: () => Promise<UserResponse>;
 	// OLD
 
 	getProfile: () => Promise<UserProfileResponse>;
-	getCommissionReceivedList: (params: GetCommissionReceivedListParams) => Promise<GetCommissionReceivedList>;
 	getRewardReceivedList: (params: GetRewardReceivedListParams) => Promise<GetRewardReceivedListResponse>;
 	getBankAccList: (params: GetBankParams) => Promise<GetBankListResponse>;
 	getReferralBestList: (params: GetReferralBestListParams) => Promise<GetBestListResponse>;
@@ -101,8 +103,6 @@ type UserRepository = {
 	getTraderBestList: (params: GetTraderBestListParams) => Promise<GetTraderBestListResponse>;
 	getTraderBrief: (params: AssetTypeParams) => Promise<GetTraderBriefResponse>;
 	getTraderState: (params: AssetTypeParams) => Promise<GetStateTradeRes>;
-	getInvitation: (params: GetInvitationParams) => Promise<GetInvitationListRes>;
-	getCommissionReceived: (params: GetCommissionReceivedListParams) => Promise<GetCommissionRes>;
 	setEmail: (dto: SetEmailDto) => Promise<CommonResponse>;
 	storeSetMobile: (dto: SetMobileDto) => Promise<CommonResponse>;
 	storeCardPrint: (dto: SetCardPrintDto) => Promise<CommonResponse>;
@@ -314,7 +314,7 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
-	// Others
+	// Referral
 	async getReferralBrief(params: ReferralBriefParams): Promise<ResultResponse> {
 		const query = new URLSearchParams(
 			Object.entries(params)
@@ -330,6 +330,34 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
+	async getInvitationList(params: InvitationListParams): Promise<UserResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+		const url = `/v1/user/referral/invitation_list`;
+		const response = await fetch<UserResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getInvitationCommission(params: InviteCommissionParams): Promise<UserResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+		const url = `/v1/user/referral/commission_received_list`;
+		const response = await fetch<UserResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			apiName: url,
+			query: {},
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	// Others
 	async getHolderBrief(params: AssetTypeParams): Promise<ResultResponse> {
 		const query = new URLSearchParams(
 			Object.entries(params)
@@ -355,22 +383,6 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 	// Old
 	async getProfile(): Promise<UserProfileResponse> {
 		return fetch<UserProfileResponse>('/v1/currency/routine/tag_list');
-	},
-	async getCommissionReceivedList(params: GetCommissionReceivedListParams): Promise<GetCommissionReceivedList> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-
-		const url = '/v1/user/referral/commission_received_list';
-		const response = await fetch<GetCommissionReceivedList>(`${url}?${query.toString()}`, {
-			noAuth: false,
-			apiName: url,
-			queryParams: params,
-			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
 	},
 	async getRewardReceivedList(params: GetRewardReceivedListParams): Promise<GetRewardReceivedListResponse> {
 		const query = new URLSearchParams(
@@ -580,34 +592,6 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 		const response = await fetch<GetStateTradeRes>(`${url}?${query.toString()}`, {
 			noAuth: false,
 			apiName: url,
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getInvitation(params: GetInvitationParams): Promise<GetInvitationListRes> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-		const url = `/v1/user/referral/invitation_list`;
-		const response = await fetch<GetInvitationListRes>(`${url}?${query.toString()}`, {
-			noAuth: false,
-			apiName: url,
-			query: {},
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getCommissionReceived(params: GetCommissionReceivedListParams): Promise<GetCommissionRes> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-		const url = `/v1/user/referral/commission_received_list`;
-		const response = await fetch<GetCommissionRes>(`${url}?${query.toString()}`, {
-			noAuth: false,
-			apiName: url,
-			query: {},
 		} as CustomNitroFetchOptions);
 
 		return response;

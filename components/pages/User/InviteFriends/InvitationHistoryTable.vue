@@ -6,13 +6,12 @@
 					<span class="text-base font-bold ml-2 mb-2 md:mb-0">
 						{{ $t('invitationHistory') }}
 					</span>
-					<IconQuestion class="text-2xl" />
 				</div>
 				<div class="w-full md:w-auto flex justify-between">
 					<div class="my-1">
 						<USelectMenu
-							v-model="SortModeFilter"
-							:options="SortModeItems"
+							v-model="sortModeFilter"
+							:options="sortModeItems"
 							:placeholder="$t('all')"
 							option-attribute="value"
 							class="w-auto md:w-44"
@@ -32,8 +31,8 @@
 
 					<div class="my-1 mx-0 md:mx-2">
 						<USelectMenu
-							v-model="GetModeFilter"
-							:options="GetModeItems"
+							v-model="referralModeFilter"
+							:options="referralModeItems"
 							:placeholder="$t('all')"
 							option-attribute="value"
 							class="w-auto md:w-44"
@@ -51,9 +50,6 @@
 						/>
 					</div>
 					<!-- GetMode -->
-					<!-- <div class="py-2 px-4 border border-primary-gray-light dark:border-primary-gray-dark rounded-md">
-						<IconNote />
-					</div> -->
 				</div>
 			</div>
 			<div class="py-6 px-1 md:px-8">
@@ -85,23 +81,27 @@
 									<span
 										dir="ltr"
 										class="text-left"
-									>{{ useNumber(row.user) }}</span>
+									>{{ row.user }}</span>
 								</td>
 								<td class="text-sm font-normal py-2">
-									{{ useNumber(row.uid) }}
+									{{ row.uid }}
 								</td>
 								<td class="text-sm font-normal py-2">
 									<span
 										dir="ltr"
 										class="text-left"
-									>{{ useNumber(formatDateToIranTime(row.regTime)) }}</span>
+									>{{ toPersianDate(row.regTime, 'full-with-month') }}</span>
 								</td>
 								<td class="text-sm font-normal py-2">
-									{{ useNumber(row.income) }}
+									{{ row.income }}
 								</td>
 							</tr>
 						</tbody>
 					</table>
+
+					<template v-if="!inviteList?.length">
+						<UiNothingToShow />
+					</template>
 				</div>
 				<div
 					v-for="row in inviteList"
@@ -119,7 +119,7 @@
 									{{ row.user }}
 								</div>
 								<div class="text-sm font-normal">
-									{{ useNumber(row.uid) }}
+									{{ row.uid }}
 								</div>
 							</div>
 						</div>
@@ -128,7 +128,7 @@
 								{{ $t('invitationTime') }}
 							</div>
 							<div class="text-sm font-medium">
-								{{ useNumber(formatDateToIranTime(row.regTime)) }}
+								{{ (toPersianDate(row.regTime, 'full-with-month')) }}
 							</div>
 						</div>
 						<div class="flex justify-between">
@@ -136,24 +136,24 @@
 								{{ $t('feeReceived') }}
 							</div>
 							<div class="text-sm font-medium">
-								{{ useNumber(row.income) }}
+								{{ row.income }}
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="flex justify-center py-4">
+				<div
+					v-if="totalCount > itemsPerPage"
+					class="flex justify-center py-4"
+				>
 					<UPagination
-						:model-value="20"
-						:page-count="20"
-						:total="20"
+						:model-value="params.pageNumber"
+						:page-count="params.pageSize"
+						:total="totalCount"
+						:to="(page: number) => ({
+							query: { page },
+						})"
 						:max="6"
-						size="xl"
-						ul-class="flex space-x-2 bg-blue-500 border-none"
-						li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500 px-3"
-						button-class-base="flex items-center justify-center w-full h-full transition-colors duration-200"
-						button-class-inactive="bg-green-700 hover:bg-gray-600"
-						button-class-active="bg-blue-500"
-						class="my-14"
+						size="sm"
 						@update:model-value="onPageChange"
 					/>
 				</div>
@@ -163,69 +163,73 @@
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
 import IconUserInvite from '~/assets/svg-icons/menu/user-fill.svg';
-import { formatDateToIranTime } from '~/utils/date-time';
-// import IconNote from '~/assets/svg-icons/profile/note.svg';
-import IconQuestion from '~/assets/svg-icons/profile/question.svg';
+import { toPersianDate } from '~/utils/helpers';
 import { userRepository } from '~/repositories/user.repository';
-import type { InviteList } from '~/types/response/referral.types';
-import type { GetInvitationParams, KeyValue } from '~/types/base.types';
-import { GetMode, SortMode } from '~/utils/enums/referral.enum';
+import { ReferralSortMode, ReferralMode } from '~/utils/enums/referral.enum';
+import type { KeyValue } from '~/types/definitions/common.types';
+import type { InvitationListParams, Invite } from '~/types/definitions/user.types';
 
 const { $api } = useNuxtApp();
 const userRepo = userRepository($api);
-const inviteList = ref<InviteList[]>();
-const currentPage = ref<number>(1);
 
-const SortModeFilter = ref<KeyValue>();
-const SortModeItems = ref<KeyValue[]>([
-	{
-		key: String(SortMode.LatestInvitation),
-		value: useT('LatestInvitation'),
-	},
-	{
-		key: String(SortMode.OldestInvitation),
-		value: useT('OldestInvitation'),
-	},
-	{
-		key: String(SortMode.LowestIncome),
-		value: useT('LowestIncome'),
-	},
-	{
-		key: String(SortMode.HighestIncome),
-		value: useT('HighestIncome'),
-	},
-]);
+const inviteList = ref<Invite[]>();
 
-const GetModeFilter = ref<KeyValue>();
-const GetModeItems = ref<KeyValue[]>([
+const itemsPerPage = 20;
+const totalCount = ref(0);
+
+const sortModeFilter = ref<KeyValue>();
+const sortModeItems = ref<KeyValue[]>([
 	{
-		key: String(GetMode.Any),
+		key: '',
 		value: useT('all'),
 	},
 	{
-		key: String(GetMode.Directs),
+		key: String(ReferralSortMode.LatestInvitation),
+		value: useT('latestInvitation'),
+	},
+	{
+		key: String(ReferralSortMode.OldestInvitation),
+		value: useT('oldestInvitation'),
+	},
+	{
+		key: String(ReferralSortMode.LowestIncome),
+		value: useT('lowestIncome'),
+	},
+	{
+		key: String(ReferralSortMode.HighestIncome),
+		value: useT('highestIncome'),
+	},
+]);
+
+const referralModeFilter = ref<KeyValue>();
+const referralModeItems = ref<KeyValue[]>([
+	{
+		key: String(ReferralMode.Any),
+		value: useT('all'),
+	},
+	{
+		key: String(ReferralMode.Directs),
 		value: useT('direct'),
 	},
 	{
-		key: String(GetMode.Indirects),
+		key: String(ReferralMode.Indirects),
 		value: useT('inDirect'),
 	},
 ]);
 
-const params = ref<GetInvitationParams>({
+const params = ref<InvitationListParams>({
 	getMode: '',
 	sortMode: '',
 	assessmentCurrencyId: '3',
 	pageNumber: '1',
 	pageSize: '20',
 });
-const getCommissionList = async () => {
+const getInvitationList = async () => {
 	try {
-		const { result } = await userRepo.getInvitation(params.value);
-		inviteList.value = result.rows;
-		currentPage.value = result.totalCount;
+		const { result } = await userRepo.getInvitationList(params.value);
+		inviteList.value = result.rows as Invite[];
+		totalCount.value = result.totalCount;
 	}
 	catch (error) {
 		console.log(error);
@@ -234,20 +238,22 @@ const getCommissionList = async () => {
 
 onMounted(async () => {
 	await Promise.all([
-		getCommissionList(),
+		getInvitationList(),
 	]);
 });
 
 const applyFilters = async () => {
-	params.value.sortMode = SortModeFilter.value ? SortModeFilter.value.key : '';
-	await getCommissionList();
+	params.value.sortMode = sortModeFilter.value ? sortModeFilter.value.key : '';
+	await getInvitationList();
 };
 
 const applyFiltersMode = async () => {
-	params.value.getMode = GetModeFilter.value ? GetModeFilter.value.key : '';
-	await getCommissionList();
+	params.value.getMode = referralModeFilter.value ? referralModeFilter.value.key : '';
+	await getInvitationList();
 };
-function onPageChange(newPage: number) {
-	currentPage.value = newPage;
-}
+const onPageChange = async (newPage: string) => {
+	params.value.pageNumber = newPage;
+
+	await getInvitationList();
+};
 </script>

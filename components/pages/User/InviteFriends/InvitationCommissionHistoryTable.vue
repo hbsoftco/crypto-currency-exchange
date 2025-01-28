@@ -6,13 +6,12 @@
 					<span class="text-base font-bold ml-2 mb-2 md:mb-0">
 						{{ $t('historyInvitationCommission') }}
 					</span>
-					<IconQuestion class="text-2xl" />
 				</div>
 				<div class="flex justify-between">
 					<div class="my-1 mx-2">
 						<USelectMenu
-							v-model="MarketTypeFilter"
-							:options="MarketTypeItems"
+							v-model="marketTypeFilter"
+							:options="marketTypeItems"
 							:placeholder="$t('all')"
 							class="w-auto md:w-44"
 							option-attribute="value"
@@ -29,9 +28,6 @@
 						/>
 					</div>
 					<!-- MarketType -->
-					<!-- <div class="py-2 px-4 border border-primary-gray-light dark:border-primary-gray-dark rounded-md">
-						<IconNote />
-					</div> -->
 				</div>
 			</div>
 			<div class="py-6 px-1 md:px-8">
@@ -66,26 +62,32 @@
 									<span
 										dir="ltr"
 										class="text-left"
-									>{{ useNumber(item.tUser) }}</span>
+									>{{ item.tUser }}</span>
 								</td>
 								<td class="text-sm font-normal py-2">
-									{{ useNumber(item.tuid) }}
+									{{ item.tuid }}
 								</td>
 								<td class="text-sm font-normal py-2">
 									<span
 										dir="ltr"
 										class="text-left"
-									>{{ useNumber(formatDateToIranTime(item.tTime)) }}</span>
+									>
+										{{ toPersianDate(item.tTime, 'full-with-month') }}
+									</span>
 								</td>
 								<td class="text-sm font-normal py-2">
-									{{ useNumber(item.perc) }}
+									{{ item.perc }}
 								</td>
 								<td class="text-sm font-normal py-2">
-									{{ useNumber(item.tFee) }}
+									{{ item.tFee }}
 								</td>
 							</tr>
 						</tbody>
 					</table>
+
+					<template v-if="!commissionList?.length">
+						<UiNothingToShow />
+					</template>
 				</div>
 				<div
 					v-for="item in commissionList"
@@ -112,7 +114,7 @@
 								{{ $t('tradingTime') }}
 							</div>
 							<div class="text-sm font-medium">
-								{{ useNumber(formatDateToIranTime(item.tTime)) }}
+								{{ toPersianDate(item.tTime, 'full-with-month') }}
 							</div>
 						</div>
 						<div class="flex justify-between">
@@ -120,7 +122,7 @@
 								{{ $t('feePercentage') }}
 							</div>
 							<div class="text-sm font-medium">
-								{{ useNumber(item.perc) }}
+								{{ item.perc }}
 							</div>
 						</div>
 						<div class="flex justify-between">
@@ -128,24 +130,24 @@
 								{{ $t('feeAmount') }}
 							</div>
 							<div class="text-sm font-medium">
-								{{ useNumber(item.tFee) }}
+								{{ item.tFee }}
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="flex justify-center py-4">
+				<div
+					v-if="totalCount > itemsPerPage"
+					class="flex justify-center py-4"
+				>
 					<UPagination
-						:model-value="20"
-						:page-count="20"
-						:total="20"
+						:model-value="params.pageNumber"
+						:page-count="params.pageSize"
+						:total="totalCount"
+						:to="(page: number) => ({
+							query: { page },
+						})"
 						:max="6"
-						size="xl"
-						ul-class="flex space-x-2 bg-blue-500 border-none"
-						li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500 px-3"
-						button-class-base="flex items-center justify-center w-full h-full transition-colors duration-200"
-						button-class-inactive="bg-green-700 hover:bg-gray-600"
-						button-class-active="bg-blue-500"
-						class="my-14"
+						size="sm"
 						@update:model-value="onPageChange"
 					/>
 				</div>
@@ -156,22 +158,20 @@
 
 <script setup lang="ts">
 import IconUserInvite from '~/assets/svg-icons/menu/user-fill.svg';
-import { useNumber } from '~/composables/useNumber';
-import { formatDateToIranTime } from '~/utils/date-time';
-import type { CommissionList } from '~/types/response/referral.types';
-// import IconNote from '~/assets/svg-icons/profile/note.svg';
-import IconQuestion from '~/assets/svg-icons/profile/question.svg';
-import type { GetCommissionReceivedListParams, KeyValue } from '~/types/base.types';
+import { toPersianDate } from '~/utils/helpers';
 import { userRepository } from '~/repositories/user.repository';
 import { MarketType } from '~/utils/enums/market.enum';
+import type { KeyValue } from '~/types/definitions/common.types';
+import type { InviteCommission, InviteCommissionParams } from '~/types/definitions/user.types';
 
 const { $api } = useNuxtApp();
 const userRepo = userRepository($api);
-const commissionList = ref<CommissionList[]>();
-const currentPage = ref<number>(1);
-const MarketTypeFilter = ref<KeyValue>();
 
-const MarketTypeItems = ref<KeyValue[]>([
+const itemsPerPage = 20;
+const totalCount = ref(0);
+
+const marketTypeFilter = ref<KeyValue>();
+const marketTypeItems = ref<KeyValue[]>([
 	{
 		key: '',
 		value: useT('all'),
@@ -185,18 +185,19 @@ const MarketTypeItems = ref<KeyValue[]>([
 		value: useT('futures'),
 	},
 ]);
-const params = ref<GetCommissionReceivedListParams>({
+const params = ref<InviteCommissionParams>({
 	marketType: '',
 	from: '',
 	to: '',
 	pageNumber: '1',
-	pageSize: '100',
+	pageSize: '20',
 });
-const getCommissionList = async () => {
+const commissionList = ref<InviteCommission[]>();
+const getInvitationCommission = async () => {
 	try {
-		const { result } = await userRepo.getCommissionReceived(params.value);
-		commissionList.value = result.rows;
-		currentPage.value = result.totalCount;
+		const { result } = await userRepo.getInvitationCommission(params.value);
+		commissionList.value = result.rows as InviteCommission[];
+		totalCount.value = result.totalCount;
 	}
 	catch (error: any) {
 		if (error.response._data.statusCode === -1110000) {
@@ -206,17 +207,19 @@ const getCommissionList = async () => {
 };
 
 const applyFilters = async () => {
-	params.value.marketType = MarketTypeFilter.value ? MarketTypeFilter.value.key : '';
-	await getCommissionList();
+	params.value.marketType = marketTypeFilter.value ? marketTypeFilter.value.key : '';
+	await getInvitationCommission();
 };
 
 onMounted(async () => {
 	await Promise.all([
-		getCommissionList(),
+		getInvitationCommission(),
 	]);
 });
 
-function onPageChange(newPage: number) {
-	currentPage.value = newPage;
-}
+const onPageChange = async (newPage: string) => {
+	params.value.pageNumber = newPage;
+
+	await getInvitationCommission();
+};
 </script>

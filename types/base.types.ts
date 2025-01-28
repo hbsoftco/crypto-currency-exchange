@@ -86,14 +86,6 @@ type GetInternalReceiveParams = {
 	pageSize: string;
 };
 
-type GetCommissionReceivedListParams = {
-	marketType: string;
-	from: string;
-	to: string;
-	pageNumber: string;
-	pageSize: string;
-};
-
 type GetMiscellaneousListParams = {
 	assetType: string;
 	currencyId: string;
@@ -232,14 +224,6 @@ type GetReferralParams = {
 	assessmentCurrencyId: string;
 };
 
-type GetInvitationParams = {
-	getMode?: string;
-	sortMode?: string;
-	assessmentCurrencyId: string;
-	pageNumber?: string;
-	pageSize?: string;
-};
-
 type getApiListParams = {
 	srchKey?: string;
 	from?: string;
@@ -272,7 +256,6 @@ export type {
 	GetDepositParams,
 	GetTraderBestListParams,
 	GetInternalReceiveParams,
-	GetCommissionReceivedListParams,
 	GetMiscellaneousListParams,
 	GetRewardReceivedListParams,
 	GetWithdrawParams,
@@ -288,7 +271,6 @@ export type {
 	GetAssetBoxParams,
 	GetRecentListParams,
 	GetReferralParams,
-	GetInvitationParams,
 	DepositCoinListParams,
 	WithdrawCoinListParams,
 	getApiListParams,

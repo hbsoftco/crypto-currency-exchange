@@ -56,7 +56,7 @@
 					<div class="grid grid-cols-1 md:grid-cols-12 gap-[1px] items-center my-2">
 						<div class="ml-0 md:ml-6 my-1 col-span-12 md:col-span-3">
 							<USelectMenu
-								v-model="CurrencyTypeFilter"
+								v-model="currencyTypeFilter"
 								:options="typeItems"
 								:placeholder="$t('type')"
 								option-attribute="value"
@@ -280,8 +280,8 @@
 				<div class="flex justify-center py-4">
 					<UPagination
 						v-if="totalCount > itemsPerPage"
-						:model-value="Number(params.pageNumber)"
-						:page-count="Number(params.pageNumber)"
+						:model-value="params.pageNumber"
+						:page-count="params.pageSize"
 						:total="totalCount"
 						:to="(page: number) => ({
 							query: { page },
@@ -353,11 +353,12 @@ const getTypeList = async () => {
 
 const itemsPerPage = 20;
 const totalCount = ref(0);
-const currentPage = ref(1);
 
-function onPageChange(newPage: number) {
-	currentPage.value = newPage;
-}
+const onPageChange = async (newPage: string) => {
+	params.value.pageNumber = newPage;
+
+	await getActivitiesList();
+};
 
 const params = ref<ActivitiesListParams>({
 	logTypeId: '',
@@ -418,5 +419,5 @@ onMounted(async () => {
 
 const fromDate = ref();
 const toDate = ref();
-const CurrencyTypeFilter = ref<KeyValue>();
+const currencyTypeFilter = ref<KeyValue>();
 </script>

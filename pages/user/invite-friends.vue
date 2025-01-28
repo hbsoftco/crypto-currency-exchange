@@ -264,7 +264,7 @@
 				</div>
 			</section>
 
-			<Dashboard
+			<Income
 				v-if="referralBrief"
 				:referral-brief="referralBrief"
 			/>
@@ -291,7 +291,7 @@ import EditCodeInviteFriends from '~/components/pages/User/InviteFriends/EditCod
 import IconEdit from '~/assets/svg-icons/profile/edit.svg';
 import InvitationHistoryTable from '~/components/pages/User/InviteFriends/InvitationHistoryTable.vue';
 import InvitationCommissionHistoryTable from '~/components/pages/User/InviteFriends/InvitationCommissionHistoryTable.vue';
-import Dashboard from '~/components/pages/User/InviteFriends/Dashboard.vue';
+import Income from '~/components/pages/User/InviteFriends/Income.vue';
 import { userRepository } from '~/repositories/user.repository';
 import QRCodeModal from '~/components/pages/User/InviteFriends/QRCodeModal.vue';
 import type { ReferralBrief } from '~/types/definitions/user.types';
