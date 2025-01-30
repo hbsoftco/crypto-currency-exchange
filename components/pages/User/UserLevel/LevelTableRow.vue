@@ -62,8 +62,5 @@ interface PropsDefinition {
 	imageSrc: string;
 	isActive?: boolean;
 }
-
-const props = defineProps<PropsDefinition>();
-
-console.log('props.isActive', props.isActive);
+defineProps<PropsDefinition>();
 </script>

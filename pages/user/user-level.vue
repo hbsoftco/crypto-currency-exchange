@@ -1,36 +1,97 @@
 <template>
-	<div class="p-5">
-		<section class="block md:flex justify-between my-0 md:mb-4">
+	<div v-if="traderBriefLoading">
+		<UiLogoLoading />
+	</div>
+
+	<div
+		v-else
+		class="p-0 md:p-5"
+	>
+		<section class="flex flex-col-reverse md:flex-row justify-between my-0 md:mb-4">
 			<div>
-				<div class=" my-0 md:my-4">
+				<BackHeader
+					v-if="isMobile"
+					:title="$t('userLevel')"
+				/>
+				<div
+					v-else
+					class="my-0 md:my-4"
+				>
 					<UiTitleWithBack :title="$t('userLevel')" />
 				</div>
-				<p class=" w-auto md:w-96 text-justify text-base font-medium mt-4 md:mt-6">
-					سطح کارمزد معاملات بر اساس حجم معامله‌های ۹۰ روز گذشته شما در هر پایه بازار محاسبه می‌شود.
+
+				<p
+					v-if="!isMobile"
+					class=" w-auto md:w-96 text-justify text-base font-medium mt-4 md:mt-6"
+				>
+					{{ $t('userLevelTopDescription') }}
 				</p>
+
 				<div class="flex mt-10">
-					<div class="w-[28.375rem] relative bg-primary-gray-light dark:bg-primary-gray-dark py-12 px-4 rounded-r-md overflow-hidden">
-						<p class="mb-4 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
-							حجم معاملات ۳۰ روزه شما
+					<div class="w-[30rem] relative bg-primary-gray-light dark:bg-primary-gray-dark py-12 px-2 md:px-4 md:rounded-r-md overflow-hidden">
+						<p
+							:class="[chartCurrentItem === 90 ? 'text-primary-yellow-light  dark:text-primary-yellow-dark' : 'text-subtle-text-light dark:text-subtle-text-dark']"
+							class="cursor-pointer mb-4 text-sm font-normal"
+							@click="getChartData(90)"
+						>
+							{{ $t('transaction90Day') }}
 						</p>
-						<p class="mb-4 text-sm font-normal text-primary-yellow-light  dark:text-primary-yellow-dark">
-							حجم معاملات ۹۰ روزه شما
+						<p
+							:class="[chartCurrentItem === 30 ? 'text-primary-yellow-light  dark:text-primary-yellow-dark' : 'text-subtle-text-light dark:text-subtle-text-dark']"
+							class="cursor-pointer mb-4 text-sm font-normal"
+							@click="getChartData(30)"
+						>
+							{{ $t('transaction30Day') }}
 						</p>
-						<p class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
-							حجم معاملات ۱۸۰ روزه شما
+						<p
+							:class="[chartCurrentItem === 180 ? 'text-primary-yellow-light  dark:text-primary-yellow-dark' : 'text-subtle-text-light dark:text-subtle-text-dark']"
+							class="cursor-pointer mb-4 text-sm font-normal"
+							@click="getChartData(180)"
+						>
+							{{ $t('transaction180Day') }}
 						</p>
-						<div class="absolute -top-16 -left-10 w-80 h-80 flex justify-center items-center border-4 border-accent-green bg-hover-light dark:bg-hover-dark rounded-full">
-							<Chart />
+						<!--  -->
+						<div class="absolute -top-10 md:-top-24 -left-[6rem] md:-left-[6.5rem] pl-[3.7rem] w-72 h-72 md:w-96 md:h-96 flex justify-center items-center border-4 border-accent-green bg-hover-light dark:bg-hover-dark rounded-full">
+							<div class="relative w-full h-48 mx-8">
+								<VChart
+									:option="chartOptions"
+									class="w-full h-40 md:h-48"
+								/>
+								<div class="absolute top-[8.5rem] md:top-32 left-7">
+									<div>
+										<span class="text-xs font-bold">{{ traderBrief?.level.valMin }}</span>
+									</div>
+									<div>
+										<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('dollar') }}</span>
+									</div>
+								</div>
+								<div class="absolute top-[8.5rem] md:top-32 right-2 md:right-auto">
+									<div>
+										<span class="text-xs font-bold">{{ traderBrief?.level.valMax }}</span>
+									</div>
+									<div>
+										<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('dollar') }}</span>
+									</div>
+								</div>
+							</div>
+							<!-- Chart -->
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<div class="ml-0 md:ml-40 mt-10">
+			<div class="ml-0 md:ml-40 mt-0 px-4 md:px-0">
+				<p
+					v-if="isMobile"
+					class="w-auto text-justify text-base font-medium mb-4"
+				>
+					{{ $t('userLevelTopDescription') }}
+				</p>
+
 				<img
-					:src="traderBriefItem?.level.logoUrl"
+					:src="traderBrief?.level.logoUrl"
 					alt="icon user level"
-					class="w-full md:w-[19.313rem] h-[21.063rem] mb-2 "
+					class="w-52 md:w-[19.313rem] h-auto md:h-[18rem] mb-2 m-auto"
 				>
 				<div class="flex justify-between bg-hover-light dark:bg-hover-dark rounded-lg p-2">
 					<div>
@@ -45,267 +106,150 @@
 							class="w-4 h-4"
 						>
 						<div>
-							<span class="text-sm font-bold mr-1">{{ traderBriefItem?.level.name }}</span>
+							<span class="text-sm font-bold mr-1">{{ traderBrief?.level.name }}</span>
 						</div>
 					</div>
 				</div>
 			</div>
 		</section>
 
-		<section class="py-4 px-0 md:px-8 mb-4 border-t md:border border-primary-gray-light dark:border-primary-gray-dark rounded-md">
-			<h2 class="text-xl font-bold px-4 mb-4">
-				{{ $t('yourTotalStatisticsTransactions') }}
-			</h2>
-			<div class="flex justify-center md:justify-start mb-12">
-				<button
-					:class="[
-						'text-sm font-normal p-2 border rounded-md',
-						selectedButton === 'thirty'
-							? 'text-primary-yellow-light font-bold border-primary-yellow-light'
-							: 'text-subtle-text-light dark:text-subtle-text-dark border-subtle-text-light dark:border-subtle-text-dark',
-					]"
-					@click="selectedButton = 'thirty'"
-				>
-					{{ $t('thirtyDaysHavePassed') }}
-				</button>
-				<button
-					:class="[
-						'text-sm font-normal p-2 border mx-1 md:mx-6 rounded-md',
-						selectedButton === 'ninety'
-							? 'text-primary-yellow-light font-bold border-primary-yellow-light'
-							: 'text-subtle-text-light dark:text-subtle-text-dark border-subtle-text-light dark:border-subtle-text-dark',
-					]"
-					@click="selectedButton = 'ninety'"
-				>
-					{{ $t('nintyDaysHavePassed') }}
-				</button>
-				<button
-					:class="[
-						'text-sm font-normal p-2 border rounded-md',
-						selectedButton === 'oneHundredEighty'
-							? 'text-primary-yellow-light font-bold border-primary-yellow-light'
-							: 'text-subtle-text-light dark:text-subtle-text-dark border-subtle-text-light dark:border-subtle-text-dark',
-					]"
-					@click="selectedButton = 'oneHundredEighty'"
-				>
-					{{ $t('oneHundredEightyDaysHavePassed') }}
-				</button>
-			</div>
-			<table class="w-full">
-				<thead>
-					<tr class="py-2 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark">
-						<th class="text-sm font-bold py-2">
-							{{ $t('currencyName') }}
-						</th>
-						<th class="text-sm font-bold py-2">
-							{{ $t('totalNumberTransactions') }}
-						</th>
-						<th class="hidden md:block text-sm font-bold py-2">
-							{{ $t('totalVolumeTransactions') }}
-						</th>
-						<th class="text-sm font-bold py-2">
-							{{ $t('dollarValueTransactions') }}
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr class="py-3 text-center border-b border-b-primary-gray-light dark:border-b-primary-gray-dark">
-						<td class="text-sm font-normal py-3">
-							بیت کوین
-						</td>
-						<td class="text-sm font-normal py-3">
-							{{ useNumber('456') }}
-						</td>
-						<td class="hidden md:block text-sm font-normal py-3">
-							{{ useNumber('2') }} BTC
-						</td>
-						<td class="text-sm font-normal py-3">
-							{{ useNumber('456') }}
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</section>
+		<TotalUserTransactions />
 
-		<section class="py-4 px-0 md:px-8 mb-4 border-none md:border border-primary-gray-light dark:border-primary-gray-dark rounded-md">
-			<h3 class="text-xl font-bold px-4 mb-4">
-				{{ $t('userLevelRatingTable') }}
-			</h3>
-			<div class="hidden md:block">
-				<div v-if="traderBriefItemLoading && levelListLoading">
-					{{ $t('isLoading') }} ...
-				</div>
-				<table
-					v-else
-					class="min-w-full mt-6"
-				>
-					<thead>
-						<!-- <tr class="hidden md:block py-3 text-right border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"> -->
-						<tr class="py-3 text-right border-b border-b-primary-gray-light dark:border-b-primary-gray-dark">
-							<th class="text-sm font-bold py-3">
-								{{ $t('level') }}
-							</th>
-							<th class="text-sm font-bold py-3">
-								{{ $t('conditions') }}
-							</th>
-							<th class="text-sm font-bold py-3">
-								{{ $t('awards') }}
-							</th>
-							<th class="text-sm font-bold py-3" />
-						</tr>
-					</thead>
-					<tbody>
-						<TableRow
-							v-for="item in levelList"
-							:key="item.levelId"
-							:level="item.header"
-							:condition="item.condition"
-							:award="item.prize"
-							:icon-src="item.imgLogoUrl"
-							:image-src="item.imgBenefitsUrl"
-							:is-active="findIndicator(item.indicator)"
-						/>
-					</tbody>
-				</table>
-			</div>
-			<div
-				v-for="item in levelList"
-				:key="item.levelId"
-				class="block md:hidden"
-			>
-				<div
-					class="bg-hover-light dark:bg-hover-dark rounded-md my-4 py-4 px-3"
-				>
-					<div>
-						<div class="flex justify-between items-center">
-							<div class="flex items-center">
-								<div
-									v-if="findIndicator(item.indicator)"
-								>
-									<IconArrowLeftActive class="text-primary-yellow-light dark:text-primary-yellow-dark text-base" />
-								</div>
-								<span :class="[findIndicator(item.indicator) ? 'mr-1 text-primary-yellow-light dark:text-primary-yellow-dark text-xs font-normal' : 'text-subtle-text-light dark:text-subtle-text-dark text-xs font-normal']">
-									{{ item.header }}
-								</span>
-							</div>
-							<div
-								v-if="findIndicator(item.indicator)"
-							>
-								<img
-									src="/images/svg/confirm.svg"
-									alt="confirm"
-									class="w-4 h-4"
-								>
-							</div>
-						</div>
-						<div class="flex justify-center px-16 py-8">
-							<img
-								:src="item.imgLogoUrl"
-								alt="icon"
-							>
-						</div>
-						<div class="flex justify-start">
-							<span
-								class="text-base font-medium py-2"
-								:class="[findIndicator(item.indicator) ? 'text-primary-yellow-light dark:text-primary-yellow-dark' : 'text-black dark:text-white']"
-							>
-								{{ item.condition }}
-							</span>
-						</div>
-						<div class="flex justify-between items-center">
-							<span
-								class="text-base font-medium"
-								:class="[findIndicator(item.indicator) ? 'text-primary-yellow-light dark:text-primary-yellow-dark' : 'text-black dark:text-white']"
-							>
-								{{ item.prize ? item.prize : $t('noAward') }}
-							</span>
-							<div>
-								<template v-if="findIndicator(item.indicator)">
-									<IconClose class="text-4xl" />
-								</template>
-								<template v-else>
-									<img
-										:src="item.imgBenefitsUrl"
-										alt="icon"
-										class="w-12 h-12"
-									>
-								</template>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
+		<UserLevels
+			v-if="traderBrief"
+			:trader-brief="traderBrief"
+		/>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
-import TableRow from '~/components/pages/Site/Account/UserLevel/TableRow.vue';
-import Chart from '~/components/pages/Site/Account/Chart.vue';
-import IconArrowLeftActive from '~/assets/svg-icons/profile/arrow-left-active.svg';
-import IconClose from '~/assets/svg-icons/close.svg';
 import { userRepository } from '~/repositories/user.repository';
-import type { TraderBriefItem } from '~/types/response/trader.types';
-import type { AssetTypeParams, UserLevel } from '~/types/definitions/user.types';
+import type { AssetTypeParams, TraderBrief } from '~/types/definitions/user.types';
+import TotalUserTransactions from '~/components/pages/User/UserLevel/TotalUserTransactions.vue';
+import UserLevels from '~/components/pages/User/UserLevel/UserLevels.vue';
 
-const selectedButton = ref('ninety');
+const BackHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/BackHeader.vue'));
+
 definePageMeta({
 	layout: 'account',
 	middleware: 'auth',
 });
 
-const { $api } = useNuxtApp();
+const { $mobileDetect, $api } = useNuxtApp();
 const userRepo = userRepository($api);
 
-const traderBriefParams = ref<AssetTypeParams>({
-	assetType: useEnv('assetType'),
-	id: '1',
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
+
+const chartOptions = ref({
+	title: {
+		text: '',
+		left: 'center',
+		top: '45%',
+		right: 0,
+		backgroundColor: '#ffffff54',
+		borderColor: '#fcfcfc89',
+		borderWidth: 0.5,
+		padding: [5, 12, 5, 12],
+		borderRadius: 15,
+		textStyle: {
+			color: '#fff',
+			fontSize: 12,
+			fontWeight: 'bold',
+			fontFamily: 'dana',
+		},
+	},
+	series: [
+		{
+			name: '',
+			type: 'pie',
+			startAngle: 0,
+			radius: ['0%', '75%'],
+			center: ['50%', '50%'],
+			avoidLabelOverlap: false,
+			label: { show: false },
+			labelLine: { show: false },
+			itemStyle: { borderRadius: 0, color: '#c23531' },
+			data: [
+				{
+					value: 0,
+					itemStyle: { color: '#ffa000' },
+					name: '',
+					emphasis: {
+						scale: true,
+						scaleSize: 0,
+						itemStyle: { shadowBlur: 0, shadowOffsetX: 0 },
+					},
+				},
+				{
+					value: 0,
+					itemStyle: { color: '#4b4b4b' },
+					name: '',
+					emphasis: {
+						scale: true,
+						scaleSize: 0,
+						itemStyle: { shadowBlur: 0, shadowOffsetX: 0 },
+					},
+				},
+			].sort(function (a, b) {
+				return a.value - b.value;
+			}),
+		},
+	],
 });
-const traderBriefItemLoading = ref<boolean>(false);
-const traderBriefItem = ref<TraderBriefItem>();
+
+const params = ref<AssetTypeParams>({
+	assetType: useEnv('assetType'),
+	id: '3',
+});
+const traderBriefLoading = ref<boolean>(true);
+const traderBrief = ref<TraderBrief>();
 const getTraderBrief = async () => {
 	try {
-		traderBriefItemLoading.value = true;
+		traderBriefLoading.value = true;
 
-		const { result } = await userRepo.getTraderBrief(traderBriefParams.value);
+		const { result } = await userRepo.getTraderBrief(params.value);
+		traderBrief.value = result as TraderBrief;
 
-		traderBriefItem.value = result;
-		traderBriefItemLoading.value = true;
+		await getChartData(30);
+
+		traderBriefLoading.value = false;
 	}
 	catch (error) {
-		traderBriefItemLoading.value = true;
+		traderBriefLoading.value = false;
 		console.log(error);
 	}
 };
 
-const levelListLoading = ref<boolean>(false);
-const levelList = ref<UserLevel[]>();
-const getLevelList = async () => {
-	try {
-		levelListLoading.value = true;
-		const { result } = await userRepo.getLevelsList();
-		levelList.value = result.rows as UserLevel[];
-		levelListLoading.value = false;
-	}
-	catch (error) {
-		levelListLoading.value = false;
-		console.log(error);
-	}
-};
+const chartCurrentItem = ref(30);
+const getChartData = (day: number) => {
+	chartCurrentItem.value = day;
 
-const findIndicator = (indicator: number) => {
-	if (traderBriefItem.value?.level.indicator === indicator) {
-		return (traderBriefItem.value?.level.indicator === indicator);
-	}
+	if (!traderBrief.value) return;
 
-	return false;
+	if (day === 30) {
+		chartOptions.value.title.text = `${traderBrief.value?.spot.vasmL1M} ${useT('dollar')}`;
+
+		chartOptions.value.series[0].data[0].value = traderBrief.value?.spot.vasmL1M;
+		chartOptions.value.series[0].data[1].value = 1000 - traderBrief.value?.spot.vasmL1M;
+	}
+	else if (day === 90) {
+		chartOptions.value.title.text = `${traderBrief.value?.spot.vasmL3M} ${useT('dollar')}`;
+
+		chartOptions.value.series[0].data[0].value = traderBrief.value?.spot.vasmL3M;
+		chartOptions.value.series[0].data[1].value = 1000 - traderBrief.value?.spot.vasmL3M;
+	}
+	else {
+		chartOptions.value.title.text = `${traderBrief.value?.spot.vasmL6M} ${useT('dollar')}`;
+
+		chartOptions.value.series[0].data[0].value = traderBrief.value?.spot.vasmL6M;
+		chartOptions.value.series[0].data[1].value = 1000 - traderBrief.value?.spot.vasmL6M;
+	}
 };
 
 onMounted(async () => {
-	await Promise.all([
-		getTraderBrief(),
-		getLevelList(),
-	]);
+	isMobile.value = !!mobileDetect.mobile();
+
+	await getTraderBrief();
 });
 </script>

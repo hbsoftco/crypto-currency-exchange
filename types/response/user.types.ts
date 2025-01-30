@@ -150,37 +150,6 @@ type GetAddressListRes = {
 	};
 };
 
-type GetStateTradeRes = {
-	statusCode: number;
-	result: {
-		cid: number;
-		spot_CoL1M: number;
-		spot_CoL3M: number;
-		spot_CoL6M: number;
-		spot_CoLY: number;
-		spot_VusdL1M: number;
-		spot_VusdL3M: number;
-		spot_VusdL6M: number;
-		spot_VusdLY: number;
-		spot_VasmL1M: number;
-		spot_VasmL3M: number;
-		spot_VasmL6M: number;
-		spot_VasmLY: number;
-		futures_CoL1M: number;
-		futures_CoL3M: number;
-		futures_CoL6M: number;
-		futures_CoLY: number;
-		futures_VusdL1M: number;
-		futures_VusdL3M: number;
-		futures_VusdL6M: number;
-		futures_VusdLY: number;
-		futures_VasmL1M: number;
-		futures_VasmL3M: number;
-		futures_VasmL6M: number;
-		futures_VasmLY: number;
-	};
-};
-
 type LevelRow = {
 	levelId: number;
 	levelName: string;
@@ -265,7 +234,6 @@ export type {
 	GetAddressListRes,
 	AddressList,
 	UserContact,
-	GetStateTradeRes,
 	GetLevelsDataRes,
 	LevelRow,
 	GetApiListRes,

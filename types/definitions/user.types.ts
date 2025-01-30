@@ -1,3 +1,5 @@
+import type { CurrencyBrief } from './currency.types';
+
 type TraderCommissionListParams = {
 	marketType: string;
 };
@@ -17,7 +19,10 @@ type UserResponse = {
 
 type ResultResponse = {
 	statusCode: number;
-	result: ReferralBrief | HolderBrief;
+	result: ReferralBrief |
+	HolderBrief |
+	TraderState[] |
+	TraderBrief;
 };
 
 type ReferralBrief = {
@@ -52,6 +57,66 @@ type ReferralBrief = {
 	coDirectInactive: number;
 	coIndirectActive: number;
 	coIndirectInactive: number;
+};
+
+// Trader
+type TraderBrief = {
+	level: {
+		indicator: number;
+		name: string;
+		valMax: number;
+		valMin: number;
+		logoUrl: string;
+	};
+	spot: {
+		coL1M: number;
+		coL3M: number;
+		coL6M: number;
+		coLY: number;
+		vasmL1M: number;
+		vasmL3M: number;
+		vasmL6M: number;
+		vasmLY: number;
+	};
+	futures: {
+		coL1M: number;
+		coL3M: number;
+		coL6M: number;
+		coLY: number;
+		vasmL1M: number;
+		vasmL3M: number;
+		vasmL6M: number;
+		vasmLY: number;
+	};
+};
+
+type TraderState = {
+	cid: number;
+	spot_CoL1M: number;
+	spot_CoL3M: number;
+	spot_CoL6M: number;
+	spot_CoLY: number;
+	spot_VusdL1M: number;
+	spot_VusdL3M: number;
+	spot_VusdL6M: number;
+	spot_VusdLY: number;
+	spot_VasmL1M: number;
+	spot_VasmL3M: number;
+	spot_VasmL6M: number;
+	spot_VasmLY: number;
+	futures_CoL1M: number;
+	futures_CoL3M: number;
+	futures_CoL6M: number;
+	futures_CoLY: number;
+	futures_VusdL1M: number;
+	futures_VusdL3M: number;
+	futures_VusdL6M: number;
+	futures_VusdLY: number;
+	futures_VasmL1M: number;
+	futures_VasmL3M: number;
+	futures_VasmL6M: number;
+	futures_VasmLY: number;
+	currency?: CurrencyBrief;
 };
 
 // Referral
@@ -295,4 +360,6 @@ export type {
 	Invite,
 	InviteCommission,
 	InviteCommissionParams,
+	TraderBrief,
+	TraderState,
 };

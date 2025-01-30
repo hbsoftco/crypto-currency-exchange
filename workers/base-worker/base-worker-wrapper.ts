@@ -7,6 +7,7 @@ import type { MarketBrief, MarketL16, MarketL21, MarketL46, MarketL47, MarketL51
 import type { Quote } from '~/types/definitions/quote.types';
 import type { SystemRoot } from '~/types/definitions/system.types';
 import type { Tag } from '~/types/definitions/tag.types';
+import type { TraderState } from '~/types/definitions/user.types';
 
 interface BaseWorker {
 	// Currencies
@@ -17,6 +18,7 @@ interface BaseWorker {
 	addCurrencyToMarketsL47: (baseUrl: string, markets: | MarketL47[]) => Promise<MarketL47[]>;
 	addCurrencyToMarketStates: (baseUrl: string, markets: | MarketState[]) => Promise<MarketState[]>;
 	addCurrencyToAsset: (baseUrl: string, assets: | Asset[]) => Promise<Asset[]>;
+	addCurrencyToTraderStates: (baseUrl: string, states: | TraderState[]) => Promise<TraderState[]>;
 	fetchCurrencyBriefItems: (baseUrl: string) => Promise<CurrencyBrief[] | []>;
 	findCurrencyById: (id: number, baseUrl: string) => Promise<CurrencyBrief | null>;
 	findCurrenciesByIds: (ids: number[], baseUrl: string) => Promise<CurrencyBrief[] | []>;

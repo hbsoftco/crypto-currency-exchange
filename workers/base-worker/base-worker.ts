@@ -16,6 +16,7 @@ import type { Tag } from '~/types/definitions/tag.types';
 import type { Asset } from '~/types/definitions/asset.types';
 import { MarketType } from '~/utils/enums/market.enum';
 import type { SystemRoot } from '~/types/definitions/system.types';
+import type { TraderState } from '~/types/definitions/user.types';
 
 let currencyBriefItems: CurrencyBrief[] = [];
 let marketBriefItems: MarketBrief[] = [];
@@ -258,6 +259,22 @@ const addCurrencyToAsset = async (baseUrl: string, assets: Asset[]) => {
 		const currency = await findCurrencyById(asset.currencyId, baseUrl);
 		return {
 			...asset,
+			currency,
+		};
+	}));
+
+	return result;
+};
+
+const addCurrencyToTraderStates = async (baseUrl: string, states: TraderState[]) => {
+	if (!currencyBriefItems.length) {
+		await fetchCurrencyBriefItems(baseUrl);
+	}
+
+	const result = await Promise.all(states.map(async (state) => {
+		const currency = await findCurrencyById(state.cid, baseUrl);
+		return {
+			...state,
 			currency,
 		};
 	}));
@@ -740,6 +757,7 @@ Comlink.expose({
 	// Currencies
 	addCurrencyToMarkets,
 	addCurrencyToAsset,
+	addCurrencyToTraderStates,
 	addCurrencyToMarketsL16,
 	addCurrencyToMarketsL51,
 	addCurrencyToMarketsL46,

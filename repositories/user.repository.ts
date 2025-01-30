@@ -4,7 +4,6 @@ import type { GetAddressListRes, GetApiListRes, GetApiRes, GetBankListResponse,
 	GetBestListResponse,
 	GetContactListResponse,
 	GetRewardReceivedListResponse,
-	GetStateTradeRes,
 	StoreApiRes,
 	UserProfileResponse } from '../types/response/user.types';
 
@@ -22,8 +21,7 @@ import type {
 	GetRewardReceivedListParams,
 	GetTraderBestListParams } from '~/types/base.types';
 import type {
-	GetTraderBestListResponse,
-	GetTraderBriefResponse } from '~/types/response/trader.types';
+	GetTraderBestListResponse } from '~/types/response/trader.types';
 import type {
 	AddCardBankSetDto,
 	AddressSetDto,
@@ -53,8 +51,11 @@ import type {
 import type { CommonResponse, KeyValueResponse } from '~/types/definitions/common.types';
 
 type UserRepository = {
+	// Trader
 	getTraderCommissionList: (params: TraderCommissionListParams) => Promise<UserResponse>;
 	getLevelsList: () => Promise<UserResponse>;
+	getTraderBrief: (params: AssetTypeParams) => Promise<ResultResponse>;
+	getTraderState: (params: AssetTypeParams) => Promise<ResultResponse>;
 
 	// Profile
 	setNickname: (dto: SetNicknameDto) => Promise<CommonResponse>;
@@ -101,8 +102,6 @@ type UserRepository = {
 	storeBankAccAdd: (params: AddCardBankSetDto) => Promise<CommonResponse>;
 	editCodeInvite: (params: CodeInviteDto) => Promise<CommonResponse>;
 	getTraderBestList: (params: GetTraderBestListParams) => Promise<GetTraderBestListResponse>;
-	getTraderBrief: (params: AssetTypeParams) => Promise<GetTraderBriefResponse>;
-	getTraderState: (params: AssetTypeParams) => Promise<GetStateTradeRes>;
 	setEmail: (dto: SetEmailDto) => Promise<CommonResponse>;
 	storeSetMobile: (dto: SetMobileDto) => Promise<CommonResponse>;
 	storeCardPrint: (dto: SetCardPrintDto) => Promise<CommonResponse>;
@@ -114,6 +113,7 @@ type UserRepository = {
 };
 
 export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserRepository => ({
+	// Trader
 	async getTraderCommissionList(params: TraderCommissionListParams): Promise<UserResponse> {
 		const query = new URLSearchParams(
 			Object.entries(params)
@@ -133,6 +133,34 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 		const response = await fetch<UserResponse>(`${url}`, {
 			noAuth: false,
 			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getTraderBrief(params: AssetTypeParams): Promise<ResultResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/user/trader/brief';
+		const response = await fetch<ResultResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getTraderState(params: AssetTypeParams): Promise<ResultResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/user/trader/stats';
+		const response = await fetch<ResultResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			apiName: url,
 		} as CustomNitroFetchOptions);
 
 		return response;
@@ -562,34 +590,6 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		const url = '/v1/user/trader/best_list';
 		const response = await fetch<GetTraderBestListResponse>(`${url}?${query.toString()}`, {
-			noAuth: false,
-			apiName: url,
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getTraderBrief(params: AssetTypeParams): Promise<GetTraderBriefResponse> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-
-		const url = '/v1/user/trader/brief';
-		const response = await fetch<GetTraderBriefResponse>(`${url}?${query.toString()}`, {
-			noAuth: false,
-			apiName: url,
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getTraderState(params: AssetTypeParams): Promise<GetStateTradeRes> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-
-		const url = '/v1/user/trader/stats';
-		const response = await fetch<GetStateTradeRes>(`${url}?${query.toString()}`, {
 			noAuth: false,
 			apiName: url,
 		} as CustomNitroFetchOptions);
