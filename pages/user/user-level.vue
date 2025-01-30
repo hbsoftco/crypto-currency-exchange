@@ -15,7 +15,7 @@
 				/>
 				<div
 					v-else
-					class="my-0 md:my-4"
+					class="mb-6"
 				>
 					<UiTitleWithBack :title="$t('userLevel')" />
 				</div>

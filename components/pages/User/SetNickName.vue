@@ -3,9 +3,7 @@
 		v-model="isOpen"
 		fullscreen
 	>
-		<div
-			class="h-full flex flex-col items-center justify-center overflow-y-scroll"
-		>
+		<div class="h-full flex flex-col items-center justify-center overflow-y-scroll">
 			<div
 				class=" w-full md:w-[30rem] flex flex-col justify-center items-center text-center rounded-md bg-background-light dark:bg-background-dark px-1 md:px-14 py-6 md:py-8"
 			>

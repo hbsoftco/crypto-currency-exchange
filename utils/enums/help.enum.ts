@@ -13,6 +13,7 @@ enum TagType {
 	WB_ADDRESS = '489',
 	CREATE_CARD = '536',
 }
+
 enum EntityType {
 	ANY = '0',
 	USER_Docs_REJECT_REASON = '2130151',
@@ -21,7 +22,17 @@ enum EntityType {
 	FREEZE_REASON = '2130181',
 	ACCOUNT_DELETE_REASON = '2130191',
 }
+
+enum TagCategory {
+	CURRENCY_TAGS = '2200151',
+	EXCHANGE_MARKET_TAGS = '2200161',
+	PRIZE_TAGS = '2200371',
+	GUIDANCE_TAGS = '2200411',
+	ANNOUNCEMENT_TAGS = '2200511',
+}
+
 export {
 	TagType,
 	EntityType,
+	TagCategory,
 };

@@ -13,6 +13,7 @@ type UserResponse = {
 		Ticket[] |
 		Invite[] |
 		InviteCommission[] |
+		Reward[] |
 		Level[];
 	};
 };
@@ -58,6 +59,47 @@ type ReferralBrief = {
 	coIndirectActive: number;
 	coIndirectInactive: number;
 };
+
+type Reward = {
+	id: number;
+	logoUrl: string;
+	currencyId: number;
+	assetTypeId: number;
+	amount: number;
+	expireAfter: string;
+	usageCountMax: number;
+	usageLeverageMax: number;
+	briefDesc: string;
+	fullDesc: string;
+	header: string;
+	prizeTitle: string;
+	reason: string;
+	progressPerc: number;
+	coAllocated: number;
+	iDsToOpen: string;
+	currency?: CurrencyBrief;
+};
+
+// type Reward = {
+// 	id: number;
+// 	prizeId: number;
+// 	uid: number;
+// 	user: string;
+// 	currencyId: number;
+// 	assetTypeId: number;
+// 	amountAllocated: number;
+// 	amountTakenBack: number;
+// 	briefDesc: string;
+// 	fullDesc: string;
+// 	header: string;
+// 	prizeTitle: string;
+// 	reason: string;
+// 	allocateTime: string;
+// 	openTime: string;
+// 	timeToUseAfterOpen: string;
+// 	expireTimeForNotOpening: string;
+// 	currency?: CurrencyBrief;
+// };
 
 // Trader
 type TraderBrief = {
@@ -330,6 +372,10 @@ type SetCardPrintDto = {
 	printingMobileAllowed: boolean;
 };
 
+type RewardParams = {
+	tagId: string;
+};
+
 export type {
 	TraderCommissionListParams,
 	UserResponse,
@@ -362,4 +408,6 @@ export type {
 	InviteCommissionParams,
 	TraderBrief,
 	TraderState,
+	RewardParams,
+	Reward,
 };

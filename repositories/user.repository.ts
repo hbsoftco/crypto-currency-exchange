@@ -3,7 +3,6 @@ import type { NitroFetchRequest, $Fetch } from 'nitropack';
 import type { GetAddressListRes, GetApiListRes, GetApiRes, GetBankListResponse,
 	GetBestListResponse,
 	GetContactListResponse,
-	GetRewardReceivedListResponse,
 	StoreApiRes,
 	UserProfileResponse } from '../types/response/user.types';
 
@@ -17,8 +16,7 @@ import type {
 	GetBankParams,
 	GetContactListParams,
 	GetReferralBestListParams,
-	GetRewardExposedParams,
-	GetRewardReceivedListParams,
+	// GetRewardReceivedListParams,
 	GetTraderBestListParams } from '~/types/base.types';
 import type {
 	GetTraderBestListResponse } from '~/types/response/trader.types';
@@ -38,6 +36,7 @@ import type {
 	InviteCommissionParams,
 	ReferralBriefParams,
 	ResultResponse,
+	RewardParams,
 	SetBasicDto,
 	SetCardPrintDto,
 	SetLiveDto,
@@ -86,13 +85,14 @@ type UserRepository = {
 	// Others
 	getHolderBrief: (params: AssetTypeParams) => Promise<ResultResponse>;
 	getHolderLevelList: () => Promise<UserResponse>;
+	getRewardList: (params: RewardParams) => Promise<UserResponse>;
+
 	// OLD
 
 	getProfile: () => Promise<UserProfileResponse>;
-	getRewardReceivedList: (params: GetRewardReceivedListParams) => Promise<GetRewardReceivedListResponse>;
+	// getRewardReceivedList: (params: GetRewardReceivedListParams) => Promise<GetRewardReceivedListResponse>;
 	getBankAccList: (params: GetBankParams) => Promise<GetBankListResponse>;
 	getReferralBestList: (params: GetReferralBestListParams) => Promise<GetBestListResponse>;
-	getRewardExposedList: (params: GetRewardExposedParams) => Promise<GetRewardReceivedListResponse>;
 	getContactList: (params: GetContactListParams) => Promise<GetContactListResponse>;
 	storeContact: (params: ContactSetDto) => Promise<CommonResponse>;
 	deleteContact: (params: DeleteContactListParams) => Promise<CommonResponse>;
@@ -408,26 +408,40 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
-	// Old
-	async getProfile(): Promise<UserProfileResponse> {
-		return fetch<UserProfileResponse>('/v1/currency/routine/tag_list');
-	},
-	async getRewardReceivedList(params: GetRewardReceivedListParams): Promise<GetRewardReceivedListResponse> {
+	async getRewardList(params: RewardParams): Promise<UserResponse> {
 		const query = new URLSearchParams(
 			Object.entries(params)
 				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
 		);
 
-		const url = '/v1/user/reward/received_list';
-		const response = await fetch<GetRewardReceivedListResponse>(`${url}?${query.toString()}`, {
+		const url = '/v1/user/reward/exposed_list';
+		const response = await fetch<UserResponse>(`${url}?${query.toString()}`, {
 			noAuth: false,
-			apiName: url,
-			queryParams: params,
 			method: 'GET',
 		} as CustomNitroFetchOptions);
 
 		return response;
 	},
+	// Old
+	async getProfile(): Promise<UserProfileResponse> {
+		return fetch<UserProfileResponse>('/v1/currency/routine/tag_list');
+	},
+	// async getRewardReceivedList(params: GetRewardReceivedListParams): Promise<GetRewardReceivedListResponse> {
+	// 	const query = new URLSearchParams(
+	// 		Object.entries(params)
+	// 			.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+	// 	);
+
+	// 	const url = '/v1/user/reward/received_list';
+	// 	const response = await fetch<GetRewardReceivedListResponse>(`${url}?${query.toString()}`, {
+	// 		noAuth: false,
+	// 		apiName: url,
+	// 		queryParams: params,
+	// 		method: 'GET',
+	// 	} as CustomNitroFetchOptions);
+
+	// 	return response;
+	// },
 	async getBankAccList(params: GetBankParams): Promise<GetBankListResponse> {
 		const query = new URLSearchParams(
 			Object.entries(params)
@@ -463,22 +477,6 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		const url = '/v1/user/referral/best_list';
 		const response = await fetch<GetBestListResponse>(`${url}?${query.toString()}`, {
-			noAuth: false,
-			apiName: url,
-			queryParams: params,
-			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getRewardExposedList(params: GetRewardExposedParams): Promise<GetRewardReceivedListResponse> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-
-		const url = '/v1/user/reward/exposed_list';
-		const response = await fetch<GetRewardReceivedListResponse>(`${url}?${query.toString()}`, {
 			noAuth: false,
 			apiName: url,
 			queryParams: params,

@@ -37,14 +37,6 @@ type GetAssetListParams = {
 	pageSize?: string;
 };
 
-type GetExposedListParams = {
-	tagId?: string;
-};
-
-type GetTagListParams = {
-	tagType?: string;
-};
-
 type GetMarketStatusParams = {
 	rowCount: number;
 };
@@ -148,10 +140,6 @@ type GetReferralBestListParams = {
 	assessmentCurrencyId: string;
 };
 
-type GetRewardExposedParams = {
-	tagId: string;
-};
-
 type GetTraderBestListParams = {
 	id: string;
 	periodCo: string;
@@ -242,7 +230,6 @@ type GetCurrencyParams = {
 };
 export type {
 	GetReferralBestListParams,
-	GetRewardExposedParams,
 	GetPinParams,
 	GetRootListParams,
 	GetLanguageParams,
@@ -250,8 +237,6 @@ export type {
 	GetMarketStatusParams,
 	getTradesListParams,
 	GetAssetListParams,
-	GetExposedListParams,
-	GetTagListParams,
 	GetTradeListParams,
 	GetDepositParams,
 	GetTraderBestListParams,

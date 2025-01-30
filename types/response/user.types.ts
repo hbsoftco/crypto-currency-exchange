@@ -34,35 +34,6 @@ type GetCommissionReceivedList = {
 	};
 };
 
-type Reward = {
-	id: number;
-	prizeId: number;
-	uid: number;
-	user: string;
-	currencyId: number;
-	assetTypeId: number;
-	amountAllocated: number;
-	amountTakenBack: number;
-	briefDesc: string;
-	fullDesc: string;
-	header: string;
-	prizeTitle: string;
-	reason: string;
-	allocateTime: string;
-	openTime: string;
-	timeToUseAfterOpen: string;
-	expireTimeForNotOpening: string;
-	currency?: CurrencyBriefItem | null;
-};
-
-type GetRewardReceivedListResponse = {
-	statusCode: number;
-	result: {
-		totalCount: number;
-		rows: Reward[];
-	};
-};
-
 type Bank = {
 	id: number;
 	uid: number;
@@ -225,8 +196,6 @@ export type {
 	UserProfileResponse,
 	GetCommissionReceivedList,
 	Received,
-	GetRewardReceivedListResponse,
-	Reward,
 	GetBankListResponse,
 	Bank,
 	GetContactListResponse,

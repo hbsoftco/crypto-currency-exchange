@@ -1,10 +1,47 @@
 <template>
 	<div>
-		<AwardDetail
-			v-if="showDetail"
-			:reward="reward"
-			@close="closeDetail"
-		/>
+		<UModal
+			v-model="showDetail"
+			fullscreen
+		>
+			<div
+				class="h-full flex flex-col items-center justify-center"
+			>
+				<div
+					class=" w-full md:w-[45rem] flex flex-col justify-center items-center text-center rounded-md bg-background-light dark:bg-background-dark px-2 md:px-14 py-6 md:py-8 mt-20"
+				>
+					<div class="block md:hidden w-full">
+						<div class="flex justify-between items-center">
+							<h3 class="text-base font-medium">
+								{{ $t("yourAward") }}
+							</h3>
+						</div>
+					</div>
+					<h4
+						class="hidden md:block text-center text-4xl font-black text-primary-yellow-light dark:text-primary-yellow-dark"
+					>
+						{{ $t("congratulations") }}
+					</h4>
+					<img
+						src="/images/profile/Award-modal.png"
+						alt="award"
+						class="w-full md:w-80 h-80 text-center"
+					>
+					<div class="flex">
+						<p class="text-base font-bold text-white text-center">
+							{{ reward.prizeTitle }}
+						</p>
+						<p class="text-base font-bold text-white text-center">
+							{{ $t('awardText') }}
+						</p>
+					</div>
+				</div>
+				<IconClose
+					class="text-4xl cursor-pointer"
+					@click="showDetail=false"
+				/>
+			</div>
+		</UModal>
 
 		<AwardShow
 			v-if="showAward"
@@ -13,7 +50,7 @@
 		/>
 
 		<div
-			class="relative bg-hover-light dark:bg-hover-dark px-4 rounded-md"
+			class="relative bg-hover-light dark:bg-hover-dark px-4 rounded-md min-h-[11.25rem]"
 		>
 			<div
 				v-if="reward.progressPerc > 0"
@@ -25,7 +62,7 @@
 						:style="{ width: `${reward.progressPerc}%` }"
 					/>
 				</div>
-				<span class="absolute left-2 top-2 px-2 text-primary-yellow-light dark:text-primary-yellow-dark py-1">{{ useNumber(reward.progressPerc) }}%</span>
+				<span class="absolute left-2 top-2 px-2 text-primary-yellow-light dark:text-primary-yellow-dark py-1">{{ (reward.progressPerc) }}%</span>
 			</div>
 
 			<div class="flex item-center py-4">
@@ -38,7 +75,7 @@
 				<div class="">
 					<h4
 						v-if="reward.header"
-						class="text-base font-bold"
+						class="text-base font-bold mb-2"
 					>
 						{{ reward.header }}
 					</h4>
@@ -52,7 +89,7 @@
 								<UiTimerCounter :expire-after="reward.expireAfter" />
 							</template>
 							<template v-else>
-								<span class="text-red-600">{{ $t("expired") }}</span>
+								<span>{{ $t("expired") }}</span>
 							</template>
 						</span>
 						<IconClock class="text-base" />
@@ -78,9 +115,9 @@
 					class=" bg-secondary-gray-light dark:bg-secondary-gray-dark px-2 md:px-9"
 					@click="openAward"
 				>
-					<span class="text-sm font-bold text-dark dark:text-white">{{
-						$t("moreDetail")
-					}}</span>
+					<span class="text-sm font-bold text-dark dark:text-white">
+						{{ $t("moreDetail") }}
+					</span>
 				</UButton>
 
 				<ULink
@@ -102,17 +139,15 @@
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
 import IconAwards from '~/assets/svg-icons/menu/quick-menu/awards.svg';
 import IconClock from '~/assets/svg-icons/profile/clock.svg';
-import AwardShow from '~/components/pages/Site/Account/Award/AwardShow.vue';
-import AwardDetail from '~/components/pages/Site/Account/Award/AwardDetail.vue';
-import type { Reward } from '~/types/response/reward.types';
+import IconClose from '~/assets/svg-icons/close.svg';
+import AwardShow from '~/components/pages/User/Reward/AwardShow.vue';
+import type { Reward } from '~/types/definitions/user.types';
 
 interface PropsDefinition {
 	reward: Reward;
 }
-
 const props = defineProps<PropsDefinition>();
 
 const showDetail = ref(false);
@@ -120,10 +155,6 @@ const showAward = ref(false);
 
 const openDetail = () => {
 	showDetail.value = true;
-};
-
-const closeDetail = () => {
-	showDetail.value = false;
 };
 
 const openAward = () => {
@@ -139,5 +170,3 @@ const isExpired = computed(() => {
 	return props.reward.expireAfter && new Date(props.reward.expireAfter) < now;
 });
 </script>
-
-<style scoped></style>

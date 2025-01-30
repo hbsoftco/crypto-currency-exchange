@@ -21,6 +21,7 @@ type SystemRepository = {
 	getHowToBuyList: (params: SystemParams) => Promise<SystemListResponse>;
 	getCountryList: () => Promise<SystemResponse>;
 	getReasonList: (params: ReasonListParams) => Promise<KeyValueResponse>;
+	getTagList: (params: MiniRoutineParams) => Promise<KeyValueResponse>;
 };
 
 export const systemRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SystemRepository => ({
@@ -235,6 +236,19 @@ export const systemRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Sys
 			method: 'GET',
 		} as CustomNitroFetchOptions);
 
+		return response;
+	},
+	async getTagList(params: MiniRoutineParams): Promise<KeyValueResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/system/common/tag_list';
+		const response = await fetch<KeyValueResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
 		return response;
 	},
 });
