@@ -115,38 +115,31 @@
 import { useNumber } from '~/composables/useNumber';
 import IconCopy from '~/assets/svg-icons/menu/copy.svg';
 import { userRepository } from '~/repositories/user.repository';
-import type { ApiList } from '~/types/response/user.types';
-import type { getApiListParams } from '~/types/base.types';
+import type { API, APIParams } from '~/types/definitions/user.types';
 
 definePageMeta({
 	layout: 'account',
 	middleware: 'auth',
 });
-const rows = ref([
-	{ id: 1, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
-	{ id: 2, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
-	{ id: 3, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
-	{ id: 4, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
-]);
 
 const { $api } = useNuxtApp();
 const userRepo = userRepository($api);
-const apiListLoading = ref<boolean>(false);
-const apiListItem = ref<ApiList[]>();
 
-const params = ref<getApiListParams>({
+const params = ref<APIParams>({
 	srchKey: '',
 	from: '',
 	to: '',
 	pageNumber: '1',
 	pageSize: '20',
 });
-
+const apiListItem = ref<API[]>([]);
+const apiListLoading = ref<boolean>(true);
 const getApiList = async () => {
 	try {
 		apiListLoading.value = true;
 		const { result } = await userRepo.getApiList(params.value);
-		apiListItem.value = result.rows;
+		apiListItem.value = result.rows as API[];
+
 		apiListLoading.value = false;
 	}
 	catch (error) {
@@ -155,7 +148,12 @@ const getApiList = async () => {
 	}
 };
 
-console.log('apiListItem**************************************', apiListItem);
+const rows = ref([
+	{ id: 1, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
+	{ id: 2, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
+	{ id: 3, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
+	{ id: 4, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
+]);
 
 onMounted(async () => {
 	await getApiList();

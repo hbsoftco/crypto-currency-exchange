@@ -117,13 +117,13 @@
 						v-else-if="item.key === 'depositFee'"
 						class="space-y-3"
 					>
-						<DepositFee />
+						<DepositFeeList />
 					</div>
 					<div
 						v-else-if="item.key === 'withdrawalFee'"
 						class="space-y-3"
 					>
-						<WithdrawalFee />
+						<WithdrawalFeeList />
 					</div>
 				</template>
 			</UTabs>
@@ -133,15 +133,9 @@
 
 <script setup lang="ts">
 import TransactionFees from '~/components/pages/User/Fees/TransactionFees.vue';
-import DepositFee from '~/components/pages/Site/Account/Fees/DepositFee.vue';
-import WithdrawalFee from '~/components/pages/Site/Account/Fees/WithdrawalFee.vue';
+import DepositFeeList from '~/components/pages/User/Fees/DepositFeeList.vue';
+import WithdrawalFeeList from '~/components/pages/User/Fees/WithdrawalFeeList.vue';
 import { userRepository } from '~/repositories/user.repository';
-import type { DepositCoinListParams } from '~/types/base.types';
-import { depositRepository } from '~/repositories/deposit.repository';
-import { DepositType } from '~/utils/enums/deposit.enum';
-import type { DepositCoinItem } from '~/types/response/deposit.types';
-import { withdrawRepository } from '~/repositories/withdraw.repository';
-import type { WithdrawCoinItem } from '~/types/response/withdraw.type';
 import type { AssetTypeParams, TraderBrief } from '~/types/definitions/user.types';
 
 const BackHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/BackHeader.vue'));
@@ -153,8 +147,6 @@ definePageMeta({
 
 const { $mobileDetect, $api } = useNuxtApp();
 const userRepo = userRepository($api);
-const depositRepo = depositRepository($api);
-const withdrawRepos = withdrawRepository($api);
 
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
@@ -268,58 +260,8 @@ const getTraderBrief = async () => {
 onMounted(async () => {
 	isMobile.value = !!mobileDetect.mobile();
 
-	await Promise.all([
-		getTraderBrief(),
-		getDepositCoinList(),
-		getWithdrawCoinList(),
-	]);
+	await getTraderBrief();
 });
-
-const depositCoinListParams = ref<DepositCoinListParams>({
-	pageNumber: '1',
-	pageSize: '20',
-	statement: '',
-	type: DepositType.CRYPTO,
-});
-const depositCoinListLoading = ref<boolean>(false);
-const depositCoinItem = ref<DepositCoinItem[]>();
-const getDepositCoinList = async () => {
-	try {
-		depositCoinListLoading.value = true;
-
-		const { result } = await depositRepo.getDepositCoinList(depositCoinListParams.value);
-
-		depositCoinItem.value = result.rows;
-		depositCoinListLoading.value = false;
-	}
-	catch (error) {
-		depositCoinListLoading.value = false;
-		console.log(error);
-	}
-};
-
-const withdrawCoinListParams = ref<DepositCoinListParams>({
-	pageNumber: '1',
-	pageSize: '20',
-	statement: '',
-	type: DepositType.CRYPTO,
-});
-const withdrawCoinListLoading = ref<boolean>(true);
-const withdrawCoinItem = ref<WithdrawCoinItem[]>();
-const getWithdrawCoinList = async () => {
-	try {
-		withdrawCoinListLoading.value = true;
-
-		const { result } = await withdrawRepos.getWithdrawCoinList(withdrawCoinListParams.value);
-
-		withdrawCoinItem.value = result.rows;
-		withdrawCoinListLoading.value = false;
-	}
-	catch (error) {
-		withdrawCoinListLoading.value = false;
-		console.log(error);
-	}
-};
 
 const items = [
 	{

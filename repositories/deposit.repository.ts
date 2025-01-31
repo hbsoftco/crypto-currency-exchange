@@ -5,10 +5,12 @@ import type { DepositCoinListParams, GetDepositAddressParams, GetDepositParams }
 import type { DepositResult, GetAddressListResponse, GetAddressRevokeRes, getDepositCoinListRes } from '~/types/response/deposit.types';
 import type { ClaimDto } from '~/types/dto/deposit.dto';
 import type { CommonResponse } from '~/types/response/common.types';
+import type { DepositCoinFeesParams, DepositListResponse } from '~/types/definitions/deposit.types';
 
 type DepositRepository = {
+	getDepositCoinFees: (params: DepositCoinFeesParams) => Promise<DepositListResponse>;
+	// Old
 	getDepositCoinList: (params: DepositCoinListParams) => Promise<getDepositCoinListRes>;
-	// Olds
 	getDeposit: (params: GetDepositParams) => Promise<DepositResult>;
 	getDepositAddress: (params: GetDepositAddressParams) => Promise<GetAddressListResponse>;
 	getDepositAddressRevoke: (id: string) => Promise<GetAddressRevokeRes>;
@@ -18,6 +20,20 @@ type DepositRepository = {
 };
 
 export const depositRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): DepositRepository => ({
+	async getDepositCoinFees(params: DepositCoinFeesParams): Promise<DepositListResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/deposit/crypto/coin_agg_list';
+		const response = await fetch<DepositListResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+		return response;
+	},
+	// Old
 	async getDepositCoinList(params: DepositCoinListParams): Promise<getDepositCoinListRes> {
 		const query = new URLSearchParams(
 			Object.entries(params)

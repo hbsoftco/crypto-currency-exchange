@@ -14,6 +14,7 @@ type UserResponse = {
 		Invite[] |
 		InviteCommission[] |
 		Reward[] |
+		API[] |
 		Level[];
 	};
 };
@@ -376,6 +377,28 @@ type RewardParams = {
 	tagId: string;
 };
 
+// Manage API
+type APIParams = {
+	srchKey?: string;
+	from?: string;
+	to?: string;
+	pageNumber?: string;
+	pageSize?: string;
+};
+
+type API = {
+	uid: number;
+	user: string;
+	apiName: string;
+	apiKey: string;
+	expireTime: string;
+	regTime: string;
+	restrictedMarkets: number[];
+	restrictedIPs: string;
+	permissions: string;
+	disabled: boolean;
+};
+
 export type {
 	TraderCommissionListParams,
 	UserResponse,
@@ -410,4 +433,7 @@ export type {
 	TraderState,
 	RewardParams,
 	Reward,
+	// Manage API
+	APIParams,
+	API,
 };

@@ -1,13 +1,12 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { GetApiListRes, GetApiRes, GetBankListResponse,
+import type { GetApiRes, GetBankListResponse,
 	GetBestListResponse,
 	StoreApiRes,
 	UserProfileResponse } from '../types/response/user.types';
 
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import type {
-	getApiListParams,
 	getApiParams,
 	GetBankParams,
 	GetReferralBestListParams,
@@ -23,6 +22,7 @@ import type {
 	SetEmailDto,
 	SetMobileDto } from '~/types/dto/user.dto';
 import type {
+	APIParams,
 	AppendTicketDto,
 	AssetTypeParams,
 	InvitationListParams,
@@ -80,6 +80,9 @@ type UserRepository = {
 	getHolderLevelList: () => Promise<UserResponse>;
 	getRewardList: (params: RewardParams) => Promise<UserResponse>;
 
+	// Manage API
+	getApiList: (params: APIParams) => Promise<UserResponse>;
+
 	// OLD
 
 	getProfile: () => Promise<UserProfileResponse>;
@@ -92,7 +95,6 @@ type UserRepository = {
 	setEmail: (dto: SetEmailDto) => Promise<CommonResponse>;
 	storeSetMobile: (dto: SetMobileDto) => Promise<CommonResponse>;
 	storeCardPrint: (dto: SetCardPrintDto) => Promise<CommonResponse>;
-	getApiList: (params: getApiListParams) => Promise<GetApiListRes>;
 	getApi: (params: getApiParams) => Promise<GetApiRes>;
 	storeApiAdd: (dto: SetApiAddDto) => Promise<StoreApiRes>;
 	storeApiEdit: (dto: SetApiEditDto) => Promise<StoreApiRes>;
@@ -409,6 +411,21 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
+	// Manage API
+	async getApiList(params: APIParams): Promise<UserResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+		const url = `/v1/user/apiexch/key_list`;
+		const response = await fetch<UserResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			apiName: url,
+			query: {},
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
 	// Old
 	async getProfile(): Promise<UserProfileResponse> {
 		return fetch<UserProfileResponse>('/v1/currency/routine/tag_list');
@@ -526,20 +543,6 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 			apiName: url,
 			method: 'POST',
 			body: dto,
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getApiList(params: getApiListParams): Promise<GetApiListRes> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-		const url = `/v1/user/apiexch/list`;
-		const response = await fetch<GetApiListRes>(`${url}?${query.toString()}`, {
-			noAuth: false,
-			apiName: url,
-			query: {},
 		} as CustomNitroFetchOptions);
 
 		return response;

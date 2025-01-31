@@ -191,14 +191,6 @@ type GetReferralParams = {
 	assessmentCurrencyId: string;
 };
 
-type getApiListParams = {
-	srchKey?: string;
-	from?: string;
-	to?: string;
-	pageNumber?: string;
-	pageSize?: string;
-};
-
 type getApiParams = {
 	apiKey: string;
 };
@@ -233,7 +225,6 @@ export type {
 	GetReferralParams,
 	DepositCoinListParams,
 	WithdrawCoinListParams,
-	getApiListParams,
 	getApiParams,
 	GetCurrencyParams,
 };

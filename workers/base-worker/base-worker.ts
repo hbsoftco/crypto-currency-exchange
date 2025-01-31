@@ -17,6 +17,7 @@ import type { Asset } from '~/types/definitions/asset.types';
 import { MarketType } from '~/utils/enums/market.enum';
 import type { SystemRoot } from '~/types/definitions/system.types';
 import type { Reward, TraderState } from '~/types/definitions/user.types';
+import type { DepositCoinFee } from '~/types/definitions/deposit.types';
 
 let currencyBriefItems: CurrencyBrief[] = [];
 let marketBriefItems: MarketBrief[] = [];
@@ -289,6 +290,38 @@ const addCurrencyToReward = async (baseUrl: string, items: Reward[]) => {
 
 	const result = await Promise.all(items.map(async (item) => {
 		const currency = await findCurrencyById(item.currencyId, baseUrl);
+		return {
+			...item,
+			currency,
+		};
+	}));
+
+	return result;
+};
+
+const addCurrencyToDepositFee = async (baseUrl: string, items: DepositCoinFee[]) => {
+	if (!currencyBriefItems.length) {
+		await fetchCurrencyBriefItems(baseUrl);
+	}
+
+	const result = await Promise.all(items.map(async (item) => {
+		const currency = await findCurrencyById(item.cid, baseUrl);
+		return {
+			...item,
+			currency,
+		};
+	}));
+
+	return result;
+};
+
+const addCurrencyToWithdrawCoinFee = async (baseUrl: string, items: DepositCoinFee[]) => {
+	if (!currencyBriefItems.length) {
+		await fetchCurrencyBriefItems(baseUrl);
+	}
+
+	const result = await Promise.all(items.map(async (item) => {
+		const currency = await findCurrencyById(item.cid, baseUrl);
 		return {
 			...item,
 			currency,
@@ -775,6 +808,8 @@ Comlink.expose({
 	addCurrencyToAsset,
 	addCurrencyToTraderStates,
 	addCurrencyToReward,
+	addCurrencyToDepositFee,
+	addCurrencyToWithdrawCoinFee,
 	addCurrencyToMarketsL16,
 	addCurrencyToMarketsL51,
 	addCurrencyToMarketsL46,

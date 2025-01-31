@@ -151,7 +151,7 @@
 </template>
 
 <script setup lang="ts">
-import TableWithdrawalFeesRow from '~/components/pages/Site/Account/Fees/TableWithdrawalFeesRow.vue';
+import TableWithdrawalFeesRow from '~/components/pages/User/Fees/TableWithdrawalFeesRow.vue';
 import IconInfo from '~/assets/svg-icons/info.svg';
 
 const tableData = ref([

@@ -135,7 +135,7 @@
 </template>
 
 <script setup lang="ts">
-import TableFeesRow from '~/components/pages/Site/Account/Fees/TableFeesRow.vue';
+import TableFeesRow from '~/components/pages/User/Fees/TableFeesRow.vue';
 import IconInfo from '~/assets/svg-icons/info.svg';
 
 const tableData = ref([

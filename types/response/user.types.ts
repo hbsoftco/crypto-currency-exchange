@@ -108,27 +108,6 @@ type GetLevelsDataRes = {
 	};
 };
 
-type ApiList = {
-	uid: number;
-	user: string;
-	apiName: string;
-	apiKey: string;
-	expireTime: string;
-	regTime: string;
-	restrictedMarkets: number[];
-	restrictedIPs: string;
-	permissions: string;
-	disabled: boolean;
-};
-
-type GetApiListRes = {
-	statusCode: number;
-	result: {
-		totalCount: number;
-		rows: ApiList[];
-	};
-};
-
 type GetApiRes = {
 	statusCode: number;
 	result: {
@@ -163,8 +142,6 @@ export type {
 	GetBestListResponse,
 	GetLevelsDataRes,
 	LevelRow,
-	GetApiListRes,
-	ApiList,
 	GetApiRes,
 	StoreApiRes,
 };
