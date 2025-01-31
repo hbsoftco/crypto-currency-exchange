@@ -1,6 +1,6 @@
 <template>
 	<div class="p-5">
-		<section class="block md:flex justify-between my-0 md:mb-4">
+		<section class="block md:flex items-end justify-between my-0 md:mb-4">
 			<div>
 				<div class="my-1 md:my-4">
 					<UiTitleWithBack :title="$t('yourFeeLevel')" />
@@ -8,41 +8,66 @@
 				<p class=" w-auto md:w-96 text-base font-medium mt-6">
 					{{ $t('feeLevelCalculation') }}
 				</p>
-				<div class="flex items-center mt-10">
-					<div class="w-[28.375rem] relative bg-primary-gray-light dark:bg-primary-gray-dark py-20 px-4 rounded-r-md overflow-hidden">
-						<p class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
-							{{ $t('your90DayTradingVolume') }}
+
+				<div class="flex mt-10">
+					<div class="w-[30rem] relative bg-primary-gray-light dark:bg-primary-gray-dark py-12 px-2 md:px-4 md:rounded-r-md overflow-hidden">
+						<p
+							:class="[chartCurrentItem === 90 ? 'text-primary-yellow-light  dark:text-primary-yellow-dark' : 'text-subtle-text-light dark:text-subtle-text-dark']"
+							class="cursor-pointer mb-4 text-sm font-normal"
+							@click="getChartData(90)"
+						>
+							{{ $t('transaction90Day') }}
 						</p>
-						<div class="absolute -top-16 -left-10 w-80 h-80 flex justify-center items-center border-4 border-accent-green bg-hover-light dark:bg-hover-dark rounded-full">
-							<!-- <Chart /> -->
+						<p
+							:class="[chartCurrentItem === 30 ? 'text-primary-yellow-light  dark:text-primary-yellow-dark' : 'text-subtle-text-light dark:text-subtle-text-dark']"
+							class="cursor-pointer mb-4 text-sm font-normal"
+							@click="getChartData(30)"
+						>
+							{{ $t('transaction30Day') }}
+						</p>
+						<p
+							:class="[chartCurrentItem === 180 ? 'text-primary-yellow-light  dark:text-primary-yellow-dark' : 'text-subtle-text-light dark:text-subtle-text-dark']"
+							class="cursor-pointer mb-4 text-sm font-normal"
+							@click="getChartData(180)"
+						>
+							{{ $t('transaction180Day') }}
+						</p>
+						<!--  -->
+						<div class="absolute -top-10 md:-top-24 -left-[6rem] md:-left-[6.5rem] pl-[3.7rem] w-72 h-72 md:w-96 md:h-96 flex justify-center items-center border-4 border-accent-green bg-hover-light dark:bg-hover-dark rounded-full">
+							<div class="relative w-full h-48 mx-8">
+								<VChart
+									:option="chartOptions"
+									class="w-full h-40 md:h-48"
+								/>
+								<div class="absolute top-[8.5rem] md:top-32 left-7">
+									<div>
+										<span class="text-xs font-bold">{{ traderBrief?.level.valMin }}</span>
+									</div>
+									<div>
+										<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('dollar') }}</span>
+									</div>
+								</div>
+								<div class="absolute top-[8.5rem] md:top-32 right-2 md:right-auto">
+									<div>
+										<span class="text-xs font-bold">{{ traderBrief?.level.valMax }}</span>
+									</div>
+									<div>
+										<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('dollar') }}</span>
+									</div>
+								</div>
+							</div>
+							<!-- Chart -->
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<div class="ml-0 md:ml-40  hidden md:block">
+			<div class="ml-0 md:ml-40  hidden md:flex">
 				<img
 					src="/images/profile/fees.png"
 					alt="icon fees"
-					class="w-[19.313rem] h-[21.063rem] mb-2"
+					class="w-[22rem] h-auto"
 				>
-				<div class="flex justify-between bg-hover-light dark:bg-hover-dark rounded-lg p-2">
-					<div>
-						<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
-							{{ $t('yourCurrentLevel') }}
-						</span>
-					</div>
-					<div class="flex items-center">
-						<img
-							src="/images/svg/confirm.svg"
-							alt="confirm"
-							class="w-4 h-4"
-						>
-						<div>
-							<span class="text-sm font-bold mr-1">سطح ماهی</span>
-						</div>
-					</div>
-				</div>
 			</div>
 		</section>
 
@@ -68,10 +93,10 @@
 				</template>
 				<template #item="{ item }">
 					<div
-						v-if="item.key === 'transactionFees' && userTraderCommission?.length"
+						v-if="item.key === 'transactionFees'"
 						class="space-y-3"
 					>
-						<TransactionFees :commission="userTraderCommission || []" />
+						<TransactionFees />
 					</div>
 					<div
 						v-else-if="item.key === 'depositFee'"
@@ -92,11 +117,9 @@
 </template>
 
 <script setup lang="ts">
-// import Chart from '~/components/pages/Site/Account/Chart.vue';
-import TransactionFees from '~/components/pages/Site/Account/Fees/TransactionFees.vue';
+import TransactionFees from '~/components/pages/User/Fees/TransactionFees.vue';
 import DepositFee from '~/components/pages/Site/Account/Fees/DepositFee.vue';
 import WithdrawalFee from '~/components/pages/Site/Account/Fees/WithdrawalFee.vue';
-import type { Commission } from '~/types/response/trader.types';
 import { userRepository } from '~/repositories/user.repository';
 import type { DepositCoinListParams } from '~/types/base.types';
 import { depositRepository } from '~/repositories/deposit.repository';
@@ -104,7 +127,6 @@ import { DepositType } from '~/utils/enums/deposit.enum';
 import type { DepositCoinItem } from '~/types/response/deposit.types';
 import { withdrawRepository } from '~/repositories/withdraw.repository';
 import type { WithdrawCoinItem } from '~/types/response/withdraw.type';
-import { MarketType } from '~/utils/enums/market.enum';
 import type { AssetTypeParams, TraderBrief } from '~/types/definitions/user.types';
 
 definePageMeta({
@@ -117,26 +139,119 @@ const userRepo = userRepository($api);
 const depositRepo = depositRepository($api);
 const withdrawRepos = withdrawRepository($api);
 
-const traderBriefParams = ref<AssetTypeParams>({
-	assetType: useEnv('assetType'),
-	id: '1',
+const chartOptions = ref({
+	title: {
+		text: '',
+		left: 'center',
+		top: '45%',
+		right: 0,
+		backgroundColor: '#ffffff54',
+		borderColor: '#fcfcfc89',
+		borderWidth: 0.5,
+		padding: [5, 12, 5, 12],
+		borderRadius: 15,
+		textStyle: {
+			color: '#fff',
+			fontSize: 12,
+			fontWeight: 'bold',
+			fontFamily: 'dana',
+		},
+	},
+	series: [
+		{
+			name: '',
+			type: 'pie',
+			startAngle: 0,
+			radius: ['0%', '75%'],
+			center: ['50%', '50%'],
+			avoidLabelOverlap: false,
+			label: { show: false },
+			labelLine: { show: false },
+			itemStyle: { borderRadius: 0, color: '#c23531' },
+			data: [
+				{
+					value: 0,
+					itemStyle: { color: '#ffa000' },
+					name: '',
+					emphasis: {
+						scale: true,
+						scaleSize: 0,
+						itemStyle: { shadowBlur: 0, shadowOffsetX: 0 },
+					},
+				},
+				{
+					value: 0,
+					itemStyle: { color: '#4b4b4b' },
+					name: '',
+					emphasis: {
+						scale: true,
+						scaleSize: 0,
+						itemStyle: { shadowBlur: 0, shadowOffsetX: 0 },
+					},
+				},
+			].sort(function (a, b) {
+				return a.value - b.value;
+			}),
+		},
+	],
 });
-const traderBriefItemLoading = ref<boolean>(true);
-const traderBriefItem = ref<TraderBrief>();
+
+const chartCurrentItem = ref(30);
+const getChartData = (day: number) => {
+	chartCurrentItem.value = day;
+
+	if (!traderBrief.value) return;
+
+	if (day === 30) {
+		chartOptions.value.title.text = `${traderBrief.value?.spot.vasmL1M} ${useT('dollar')}`;
+
+		chartOptions.value.series[0].data[0].value = traderBrief.value?.spot.vasmL1M;
+		chartOptions.value.series[0].data[1].value = 1000 - traderBrief.value?.spot.vasmL1M;
+	}
+	else if (day === 90) {
+		chartOptions.value.title.text = `${traderBrief.value?.spot.vasmL3M} ${useT('dollar')}`;
+
+		chartOptions.value.series[0].data[0].value = traderBrief.value?.spot.vasmL3M;
+		chartOptions.value.series[0].data[1].value = 1000 - traderBrief.value?.spot.vasmL3M;
+	}
+	else {
+		chartOptions.value.title.text = `${traderBrief.value?.spot.vasmL6M} ${useT('dollar')}`;
+
+		chartOptions.value.series[0].data[0].value = traderBrief.value?.spot.vasmL6M;
+		chartOptions.value.series[0].data[1].value = 1000 - traderBrief.value?.spot.vasmL6M;
+	}
+};
+
+const params = ref<AssetTypeParams>({
+	assetType: useEnv('assetType'),
+	id: '3',
+});
+const traderBriefLoading = ref<boolean>(true);
+const traderBrief = ref<TraderBrief>();
 const getTraderBrief = async () => {
 	try {
-		traderBriefItemLoading.value = true;
+		traderBriefLoading.value = true;
 
-		const { result } = await userRepo.getTraderBrief(traderBriefParams.value);
+		const { result } = await userRepo.getTraderBrief(params.value);
+		traderBrief.value = result as TraderBrief;
 
-		traderBriefItem.value = result as TraderBrief;
-		traderBriefItemLoading.value = false;
+		await getChartData(30);
+
+		traderBriefLoading.value = false;
 	}
 	catch (error) {
-		traderBriefItemLoading.value = false;
+		traderBriefLoading.value = false;
 		console.log(error);
 	}
 };
+
+onMounted(async () => {
+	await Promise.all([
+		getTraderBrief(),
+		getDepositCoinList(),
+		getWithdrawCoinList(),
+	]);
+});
 
 const depositCoinListParams = ref<DepositCoinListParams>({
 	pageNumber: '1',
@@ -183,34 +298,6 @@ const getWithdrawCoinList = async () => {
 		console.log(error);
 	}
 };
-
-const userTraderCommissionListLoading = ref<boolean>(true);
-const userTraderCommission = ref<Commission[]>();
-const getTraderCommissionList = async () => {
-	try {
-		userTraderCommissionListLoading.value = true;
-
-		const { result } = await userRepo.getTraderCommissionList({ marketType: String(MarketType.SPOT) });
-
-		userTraderCommission.value = result.rows as Commission[];
-		console.log('userTraderCommission.value', userTraderCommission.value);
-
-		userTraderCommissionListLoading.value = false;
-	}
-	catch (error) {
-		userTraderCommissionListLoading.value = false;
-		console.log(error);
-	}
-};
-
-onMounted(async () => {
-	await Promise.all([
-		getTraderBrief(),
-		getDepositCoinList(),
-		getWithdrawCoinList(),
-		getTraderCommissionList(),
-	]);
-});
 
 const items = [
 	{

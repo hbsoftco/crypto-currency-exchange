@@ -7,16 +7,31 @@ import type { ClaimDto } from '~/types/dto/deposit.dto';
 import type { CommonResponse } from '~/types/response/common.types';
 
 type DepositRepository = {
+	getDepositCoinList: (params: DepositCoinListParams) => Promise<getDepositCoinListRes>;
+	// Olds
 	getDeposit: (params: GetDepositParams) => Promise<DepositResult>;
 	getDepositAddress: (params: GetDepositAddressParams) => Promise<GetAddressListResponse>;
 	getDepositAddressRevoke: (id: string) => Promise<GetAddressRevokeRes>;
 	getDepositAddressExtend: (id: string) => Promise<GetAddressRevokeRes>;
-	getDepositCoinList: (params: DepositCoinListParams) => Promise<getDepositCoinListRes>;
 	storeDepositClaim: (dto: ClaimDto) => Promise<CommonResponse>;
 
 };
 
 export const depositRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): DepositRepository => ({
+	async getDepositCoinList(params: DepositCoinListParams): Promise<getDepositCoinListRes> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/deposit/common/coin_list';
+		const response = await fetch<getDepositCoinListRes>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+		return response;
+	},
+	//
 	async getDeposit(params: GetDepositParams): Promise<DepositResult> {
 		const query = new URLSearchParams(
 			Object.entries(params)
@@ -70,19 +85,6 @@ export const depositRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): De
 
 		const url = '/v1/deposit/crypto/address_extend';
 		const response = await fetch<GetAddressRevokeRes>(`${url}?${query.toString()}`, {
-			noAuth: false,
-			method: 'GET',
-		} as CustomNitroFetchOptions);
-		return response;
-	},
-	async getDepositCoinList(params: DepositCoinListParams): Promise<getDepositCoinListRes> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-
-		const url = '/v1/deposit/common/coin_list';
-		const response = await fetch<getDepositCoinListRes>(`${url}?${query.toString()}`, {
 			noAuth: false,
 			method: 'GET',
 		} as CustomNitroFetchOptions);

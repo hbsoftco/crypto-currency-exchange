@@ -1204,6 +1204,9 @@ const persian = {
 	transaction30Day: 'حجم معاملات 30 روزه شما',
 	transaction90Day: 'حجم معاملات 90 روزه شما',
 	transaction180Day: 'حجم معاملات 180 روزه شما',
+	spotTMN: 'اسپات - تومان',
+	spotUSDT: 'اسپات - تتر',
+	futuresUSDT: 'فیوچرز - تتر',
 };
 
 export default persian;
