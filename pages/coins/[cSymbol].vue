@@ -216,7 +216,7 @@ const getCurrencyInfo = async () => {
 
 		publicSocketStore.addMarketIds([findMarket[0].id, TMNMarket[0].id]);
 
-		currencyInfo.value = result;
+		currencyInfo.value = result as Currency;
 		currencyInfo.value.currency = currency.value;
 		currencyInfoLoading.value = false;
 	}

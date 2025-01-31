@@ -1,24 +1,5 @@
 import type { KeyValue } from '../definitions/common.types';
 
-type ContactSetDto = {
-	verificationId: number;
-	verificationCode: string ;
-	v2FACode?: string;
-	emailAddressOrMobile: string;
-	description: string;
-};
-
-type AddressSetDto = {
-	verificationId: number;
-	verificationCode: string ;
-	v2FACode?: string;
-	blockchainId: number;
-	address: string;
-	description: string;
-	memo: string;
-	coldWallet: boolean;
-};
-
 type AddCardBankSetDto = {
 	bankAccountTypeId: number;
 	cardNo: string;
@@ -69,8 +50,6 @@ type SetApiEditDto = {
 	countDaysValid?: number;
 };
 export type {
-	ContactSetDto,
-	AddressSetDto,
 	AddCardBankSetDto,
 	CodeInviteDto,
 	SetEmailDto,

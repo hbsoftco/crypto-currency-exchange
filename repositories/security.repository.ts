@@ -4,10 +4,16 @@ import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options
 import type { CommonResponse, KeyValueResponse } from '~/types/definitions/common.types';
 import type {
 	ActivitiesListParams,
+	AddressDto,
+	AddressListParams,
 	AntiPhishingDto,
 	ChangeEmailDto,
 	ChangePhoneDto,
+	ContactDto,
+	ContactListParams,
 	DeleteAccountDto,
+	DeleteAddressParams,
+	DeleteContactParams,
 	DeviceListParams,
 	Disable2faDto,
 	Enable2faDto,
@@ -51,9 +57,16 @@ type SecurityRepository = {
 	whatismyip: () => Promise<SecurityResponse>;
 	storeWhiteListIPs: (dto: WhiteListIPsDto) => Promise<CommonResponse>;
 	getActivitiesList: (params: ActivitiesListParams) => Promise<SecurityListResponse>;
-	// devices
+	// Devices
 	getDeviceList: (params: DeviceListParams) => Promise<SecurityListResponse>;
 	generateQrCodeDeviceLink: () => Promise<SecurityResponse>;
+	// White List
+	storeAddress: (params: AddressDto) => Promise<CommonResponse>;
+	getAddressList: (params: AddressListParams) => Promise<SecurityListResponse>;
+	deleteAddress: (params: DeleteAddressParams) => Promise<CommonResponse>;
+	getContactList: (params: ContactListParams) => Promise<SecurityListResponse>;
+	storeContact: (params: ContactDto) => Promise<CommonResponse>;
+	deleteContact: (params: DeleteContactParams) => Promise<CommonResponse>;
 };
 
 export const securityRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SecurityRepository => ({
@@ -301,7 +314,7 @@ export const securityRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): S
 
 		return response;
 	},
-	// devices
+	// Devices
 	async getDeviceList(params: DeviceListParams): Promise<SecurityListResponse> {
 		const query = new URLSearchParams(
 			Object.entries(params)
@@ -320,6 +333,83 @@ export const securityRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): S
 		const response = await fetch<SecurityResponse>(`${url}`, {
 			noAuth: false,
 			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	// White List
+	async storeAddress(dto: AddressDto): Promise<CommonResponse> {
+		const url = `/v1/security/wbl/address_set`;
+		const response = await fetch<CommonResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getAddressList(params: AddressListParams): Promise<SecurityListResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/security/wbl/address_list';
+		const response = await fetch<SecurityListResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async deleteAddress(params: DeleteAddressParams): Promise<CommonResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = `/v1/security/wbl/address_delete`;
+		const response = await fetch<CommonResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'DELETE',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getContactList(params: ContactListParams): Promise<SecurityListResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/security/wbl/contact_list';
+		const response = await fetch<SecurityListResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async storeContact(dto: ContactDto): Promise<CommonResponse> {
+		const url = `/v1/security/wbl/contact_set`;
+		const response = await fetch<CommonResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async deleteContact(params: DeleteContactParams): Promise<CommonResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = `/v1/security/wbl/contact_delete`;
+		const response = await fetch<CommonResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'DELETE',
 		} as CustomNitroFetchOptions);
 
 		return response;

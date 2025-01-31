@@ -12,12 +12,17 @@ type CurrencyBrief = {
 
 type CurrencyResponse = {
 	statusCode: number;
-	result: Currency;
+	result: Currency | NetBlockchain[];
 };
 
 type CurrencyInfoParams = {
 	id: string;
 	languageId: string;
+};
+
+type NetBlockchain = {
+	blockchainId: string;
+	blockchainName: string;
 };
 
 type Currency = {
@@ -60,4 +65,5 @@ export type {
 	CurrencyBrief,
 	CurrencyResponse,
 	CurrencyInfoParams,
+	NetBlockchain,
 };

@@ -160,27 +160,6 @@ type GetSubjectLiveChatParams = {
 	group: string;
 };
 
-type GetContactListParams = {
-	statement: string;
-	pageNumber: string;
-	pageSize: string;
-};
-
-type DeleteContactListParams = {
-	contactUserId: string;
-};
-
-type GetAddressListParams = {
-	srchBlockchainId: string;
-	searchStatement?: string;
-	pageNumber?: string;
-	pageSize?: string;
-};
-
-type DeleteAddressListParams = {
-	withdrawId: string;
-};
-
 type GetPanelListParams = {
 	pnlCourseId: string;
 	currencyId?: string;
@@ -248,10 +227,6 @@ export type {
 	GetDepositAddressParams,
 	GetHowBuyListParams,
 	GetSubjectLiveChatParams,
-	GetContactListParams,
-	DeleteContactListParams,
-	GetAddressListParams,
-	DeleteAddressListParams,
 	GetPanelListParams,
 	GetAssetBoxParams,
 	GetRecentListParams,

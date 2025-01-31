@@ -43,7 +43,7 @@
 							<td class="text-sm font-normal py-2 text-accent-red flex items-center cursor-pointer">
 								<span
 									class="cursor-pointer"
-									@click="openDeleteModal(String(row.contactUID))"
+									@click="deleteContact(row.contactUID)"
 								>
 									{{ $t('delete') }}
 									<UIcon
@@ -55,11 +55,17 @@
 						</tr>
 					</tbody>
 				</table>
+
+				<template v-if="!contactList.length && !contactListLoading">
+					<UiNothingToShow />
+				</template>
+
 				<div class="flex justify-center py-4">
 					<UPagination
-						:model-value="20"
-						:page-count="20"
-						:total="20"
+						v-if="totalCount > itemsPerPage"
+						:model-value="Number(params.pageNumber)"
+						:page-count="Number(params.pageSize)"
+						:total="totalCount"
 						:max="6"
 						size="xl"
 						ul-class="flex space-x-2 bg-blue-500 border-none"
@@ -77,93 +83,87 @@
 </template>
 
 <script setup lang="ts">
-import ConfirmModal from '~/components/ui/ConfirmModal.vue';
-import { userRepository } from '~/repositories/user.repository';
-import type { GetContactListParams } from '~/types/base.types';
-import type { UserContact } from '~/types/response/user.types';
+import { securityRepository } from '~/repositories/security.repository';
+import type { Contact, ContactListParams } from '~/types/definitions/security.types';
 
-const { $api } = useNuxtApp();
-const userRepo = userRepository($api);
+const { $mobileDetect, $api, $swal } = useNuxtApp();
+const securityRepo = securityRepository($api);
+
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
 
 const toast = useToast();
-const modal = useModal();
 
-const currentPage = ref<number>(1);
+const totalCount = ref(0);
+const itemsPerPage = 20;
 
-const contactList = ref<UserContact[]>();
-
-const params = ref<GetContactListParams>({
+const params = ref<ContactListParams>({
 	statement: '',
 	pageNumber: '1',
 	pageSize: '20',
 });
-
+const contactList = ref<Contact[]>([]);
+const contactListLoading = ref<boolean>(true);
 const getContactList = async () => {
 	try {
-		const { result } = await userRepo.getContactList(params.value);
-		contactList.value = result.rows;
-		currentPage.value = result.totalCount;
+		contactListLoading.value = true;
+
+		const { result } = await securityRepo.getContactList(params.value);
+		contactList.value = result.rows as Contact[];
+		totalCount.value = result.totalCount;
+
+		contactListLoading.value = false;
 	}
 	catch (error) {
+		contactListLoading.value = false;
 		console.log(error);
 	}
 };
 
 const deleteContactLoading = ref<boolean>(false);
-const deleteContact = async (id: string) => {
+const deleteContact = async (id: number) => {
 	try {
-		deleteContactLoading.value = true;
-
-		await userRepo.deleteContact({ contactUserId: id });
-
-		toast.add({
-			title: useT('operationSuccess'),
-			id: 'modal-success',
-			timeout: 5000,
-			color: 'green',
-		});
-
-		await getContactList();
-		modal.close();
-
-		deleteContactLoading.value = false;
-	}
-	catch (error) {
-		deleteContactLoading.value = false;
-		console.log(error);
-	}
-};
-
-const openDeleteModal = (id: string) => {
-	try {
-		modal.open(ConfirmModal, {
-			onSuccess() {
-				deleteContact(id);
-			},
-
-			successBtn: useT('yesDeleteIt'),
-			closeBtn: useT('cancelAction'),
+		const confirmation = await $swal.fire({
 			title: useT('deleteContact'),
-			body: useT('areYouSure'),
-			successLoadingBtn: deleteContactLoading.value,
-			overlay: true,
-
-			onClose() {
-				modal.close();
-			},
+			text: useT('areYouSure'),
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: useT('yesDoIt'),
+			cancelButtonText: useT('cancel'),
 		});
+
+		if (confirmation.isConfirmed) {
+			deleteContactLoading.value = true;
+
+			await securityRepo.deleteContact({ contactUserId: String(id) });
+
+			toast.add({
+				title: useT('operationSuccess'),
+				id: 'modal-success',
+				timeout: 5000,
+				color: 'green',
+			});
+
+			await getContactList();
+
+			deleteContactLoading.value = false;
+		}
 	}
 	catch (error) {
+		deleteContactLoading.value = false;
 		console.log(error);
 	}
 };
+
 onMounted(async () => {
-	await Promise.all([
-		getContactList(),
-	]);
+	isMobile.value = !!mobileDetect.mobile();
+
+	await getContactList();
 });
 
-function onPageChange(newPage: number) {
-	currentPage.value = newPage;
-}
+const onPageChange = async (newPage: string) => {
+	params.value.pageNumber = newPage;
+
+	await getContactList();
+};
 </script>

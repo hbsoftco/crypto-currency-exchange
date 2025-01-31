@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import type { BestListUser } from '~/types/response/user.types';
-import InvitersTableRow from '~/components/pages/Site/Account/TopUser/InvitersTableRow.vue';
+import InvitersTableRow from '~/components/pages/User/TopUser/InvitersTableRow.vue';
 
 interface PropsDefinition {
 	users: BestListUser[];

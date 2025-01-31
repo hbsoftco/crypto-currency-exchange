@@ -5,6 +5,8 @@ type SecurityListResponse = {
 		rows:
 			Notice [] |
 			Activity [] |
+			Address [] |
+			Contact [] |
 			Device [];
 	};
 };
@@ -155,8 +157,70 @@ type DeleteAccountDto = {
 	password: string;
 };
 
-// devices
+// White list
+type AddressDto = {
+	verificationId: number;
+	verificationCode: string ;
+	v2FACode: string | null;
+	blockchainId: number;
+	address: string;
+	description: string;
+	memo: string;
+	coldWallet: boolean;
+};
 
+type AddressListParams = {
+	srchBlockchainId: string;
+	searchStatement?: string;
+	pageNumber?: string;
+	pageSize?: string;
+};
+
+type Address = {
+	id: number;
+	uid: number;
+	user: string;
+	blockchainId: number;
+	blockchainName: string;
+	desc: string;
+	coldWallet: string;
+	address: string;
+	memo: string;
+	allowed: boolean;
+};
+
+type DeleteAddressParams = {
+	withdrawId: string;
+};
+
+type ContactListParams = {
+	statement: string;
+	pageNumber: string;
+	pageSize: string;
+};
+
+type Contact = {
+	uid: number;
+	user: string;
+	contactUID: number;
+	contactName: string;
+	allowed: boolean;
+	desc: string;
+};
+
+type ContactDto = {
+	verificationId: number;
+	verificationCode: string ;
+	v2FACode: string | null;
+	emailAddressOrMobile: string;
+	description: string;
+};
+
+type DeleteContactParams = {
+	contactUserId: string;
+};
+
+// devices
 type QrCodeDeviceLink = {
 	devLinkID: number;
 	devLinkSecret: string;
@@ -246,4 +310,12 @@ export type {
 	FreezeAccountDto,
 	DeleteAccountDto,
 	QrCodeDeviceLink,
+	AddressDto,
+	AddressListParams,
+	Address,
+	DeleteAddressParams,
+	ContactListParams,
+	Contact,
+	ContactDto,
+	DeleteContactParams,
 };

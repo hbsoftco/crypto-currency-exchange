@@ -199,12 +199,12 @@
 
 <script setup lang="ts">
 import ImageCover from '~/components/pages/ImageCover.vue';
-import InvitersTable from '~/components/pages/Site/Account/TopUser/InvitersTable.vue';
-import TradersTable from '~/components/pages/Site/Account/TopUser/TradersTable.vue';
+import InvitersTable from '~/components/pages/User/TopUser/InvitersTable.vue';
+import TradersTable from '~/components/pages/User/TopUser/TradersTable.vue';
 import { userRepository } from '~/repositories/user.repository';
 import type { GetReferralBestListParams, GetRewardExposedParams, GetTraderBestListParams } from '~/types/base.types';
 import type { BesetTraderItem } from '~/types/response/trader.types';
-import type { BestReferralItem, Reward } from '~/types/response/user.types';
+import type { BestReferralItem } from '~/types/response/user.types';
 
 definePageMeta({
 	layout: 'account',

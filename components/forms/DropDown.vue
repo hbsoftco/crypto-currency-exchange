@@ -57,11 +57,11 @@
 <script setup lang="ts">
 import IconArrowDown from '~/assets/svg-icons/arrow-down-red.svg';
 import type { KeyValue } from '~/types/definitions/common.types';
-import type { NetBlockchainItem } from '~/types/response/currency.types';
+import type { NetBlockchain } from '~/types/definitions/currency.types';
 
 interface PropsDefinition {
 	modelValue: string | number;
-	options: KeyValue[] | NetBlockchainItem[];
+	options: KeyValue[] | NetBlockchain[];
 	label: string;
 	placeholder?: string;
 	required?: boolean;
@@ -78,8 +78,8 @@ const props = withDefaults(defineProps<PropsDefinition>(), {
 const emit = defineEmits(['update:modelValue']);
 
 const selected = ref(props.modelValue);
-const selectedOption = ref<KeyValue | NetBlockchainItem>();
-const options = ref<KeyValue[] | NetBlockchainItem[]>(props.options || []);
+const selectedOption = ref<KeyValue | NetBlockchain>();
+const options = ref<KeyValue[] | NetBlockchain[]>(props.options || []);
 
 watch(
 	() => props.modelValue,
@@ -88,7 +88,7 @@ watch(
 	},
 );
 
-const updateSelected = (value: KeyValue | NetBlockchainItem) => {
+const updateSelected = (value: KeyValue | NetBlockchain) => {
 	selectedOption.value = value;
 	if ('key' in value) {
 		selected.value = value.value;

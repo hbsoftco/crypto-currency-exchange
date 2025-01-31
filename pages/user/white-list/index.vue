@@ -42,8 +42,8 @@
 </template>
 
 <script setup lang="ts">
-import AddressManagement from '~/components/pages/Site/Account/WhiteList/AddressManagement.vue';
-import ContactManagement from '~/components/pages/Site/Account/WhiteList/ContactManagement.vue';
+import AddressManagement from '~/components/pages/User/WhiteList/AddressManagement.vue';
+import ContactManagement from '~/components/pages/User/WhiteList/ContactManagement.vue';
 
 definePageMeta({
 	layout: 'account',

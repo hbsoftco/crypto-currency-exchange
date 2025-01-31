@@ -1,20 +1,15 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { GetAddressListRes, GetApiListRes, GetApiRes, GetBankListResponse,
+import type { GetApiListRes, GetApiRes, GetBankListResponse,
 	GetBestListResponse,
-	GetContactListResponse,
 	StoreApiRes,
 	UserProfileResponse } from '../types/response/user.types';
 
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import type {
-	DeleteAddressListParams,
-	DeleteContactListParams,
-	GetAddressListParams,
 	getApiListParams,
 	getApiParams,
 	GetBankParams,
-	GetContactListParams,
 	GetReferralBestListParams,
 	// GetRewardReceivedListParams,
 	GetTraderBestListParams } from '~/types/base.types';
@@ -22,9 +17,7 @@ import type {
 	GetTraderBestListResponse } from '~/types/response/trader.types';
 import type {
 	AddCardBankSetDto,
-	AddressSetDto,
 	CodeInviteDto,
-	ContactSetDto,
 	SetApiAddDto,
 	SetApiEditDto,
 	SetEmailDto,
@@ -93,12 +86,6 @@ type UserRepository = {
 	// getRewardReceivedList: (params: GetRewardReceivedListParams) => Promise<GetRewardReceivedListResponse>;
 	getBankAccList: (params: GetBankParams) => Promise<GetBankListResponse>;
 	getReferralBestList: (params: GetReferralBestListParams) => Promise<GetBestListResponse>;
-	getContactList: (params: GetContactListParams) => Promise<GetContactListResponse>;
-	storeContact: (params: ContactSetDto) => Promise<CommonResponse>;
-	deleteContact: (params: DeleteContactListParams) => Promise<CommonResponse>;
-	getAddressList: (params: GetAddressListParams) => Promise<GetAddressListRes>;
-	storeAddress: (params: AddressSetDto) => Promise<CommonResponse>;
-	deleteAddress: (params: DeleteAddressListParams) => Promise<CommonResponse>;
 	storeBankAccAdd: (params: AddCardBankSetDto) => Promise<CommonResponse>;
 	editCodeInvite: (params: CodeInviteDto) => Promise<CommonResponse>;
 	getTraderBestList: (params: GetTraderBestListParams) => Promise<GetTraderBestListResponse>;
@@ -481,90 +468,6 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 			apiName: url,
 			queryParams: params,
 			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getContactList(params: GetContactListParams): Promise<GetContactListResponse> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-
-		const url = '/v1/user/wbl/contact_list';
-		const response = await fetch<GetContactListResponse>(`${url}?${query.toString()}`, {
-			noAuth: false,
-			apiName: url,
-			queryParams: params,
-			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async storeContact(dto: ContactSetDto): Promise<CommonResponse> {
-		const url = `/v1/user/wbl/contact_set`;
-		const response = await fetch<CommonResponse>(`${url}`, {
-			noAuth: false,
-			apiName: url,
-			method: 'POST',
-			body: dto,
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async deleteContact(params: DeleteContactListParams): Promise<CommonResponse> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-
-		const url = `/v1/user/wbl/contact_delete`;
-		const response = await fetch<CommonResponse>(`${url}?${query.toString()}`, {
-			noAuth: false,
-			apiName: url,
-			method: 'DELETE',
-			queryParams: params,
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getAddressList(params: GetAddressListParams): Promise<GetAddressListRes> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-
-		const url = '/v1/user/wbl/address_list';
-		const response = await fetch<GetAddressListRes>(`${url}?${query.toString()}`, {
-			noAuth: false,
-			apiName: url,
-			queryParams: params,
-			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async storeAddress(dto: AddressSetDto): Promise<CommonResponse> {
-		const url = `/v1/user/wbl/address_set`;
-		const response = await fetch<CommonResponse>(`${url}`, {
-			noAuth: false,
-			apiName: url,
-			method: 'POST',
-			body: dto,
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async deleteAddress(params: DeleteAddressListParams): Promise<CommonResponse> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-
-		const url = `/v1/user/wbl/address_delete`;
-		const response = await fetch<CommonResponse>(`${url}?${query.toString()}`, {
-			noAuth: false,
-			method: 'DELETE',
 		} as CustomNitroFetchOptions);
 
 		return response;

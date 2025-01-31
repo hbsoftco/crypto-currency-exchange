@@ -2,12 +2,10 @@ import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import type { CurrencyInfoParams, CurrencyResponse } from '~/types/definitions/currency.types';
-import type { NetBlockchainListResponse } from '~/types/response/currency.types';
 
 type CurrencyRepository = {
 	getCurrencyInfo: (params: CurrencyInfoParams) => Promise<CurrencyResponse>;
-
-	getNetBlockchainList: () => Promise<NetBlockchainListResponse>;
+	getNetBlockchainList: () => Promise<CurrencyResponse>;
 };
 
 export const currencyRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): CurrencyRepository => ({
@@ -24,10 +22,9 @@ export const currencyRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): C
 
 		return response;
 	},
-
-	async getNetBlockchainList(): Promise<NetBlockchainListResponse> {
+	async getNetBlockchainList(): Promise<CurrencyResponse> {
 		const url = 'v1/currency/routine/net_blockchain_list';
-		const response = await fetch<NetBlockchainListResponse>(`${url}`, {
+		const response = await fetch<CurrencyResponse>(`${url}`, {
 			noAuth: true,
 		} as CustomNitroFetchOptions);
 

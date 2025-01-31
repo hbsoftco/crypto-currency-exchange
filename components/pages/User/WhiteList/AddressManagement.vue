@@ -70,7 +70,7 @@
 							<td class="text-sm font-normal py-2 text-accent-red flex items-center">
 								<span
 									class="cursor-pointer"
-									@click="openDeleteModal(String(row.id))"
+									@click="deleteAddress(row.id)"
 								>
 									{{ $t('delete') }}
 									<UIcon
@@ -82,11 +82,17 @@
 						</tr>
 					</tbody>
 				</table>
+
+				<template v-if="!addressList.length && !addressListLoading">
+					<UiNothingToShow />
+				</template>
+
 				<div class="flex justify-center py-4">
 					<UPagination
-						:model-value="20"
-						:page-count="20"
-						:total="20"
+						v-if="totalCount > itemsPerPage"
+						:model-value="Number(params.pageNumber)"
+						:page-count="Number(params.pageSize)"
+						:total="totalCount"
 						:max="6"
 						size="xl"
 						ul-class="flex space-x-2 bg-blue-500 border-none"
@@ -104,33 +110,115 @@
 </template>
 
 <script setup lang="ts">
-import ConfirmModal from '~/components/ui/ConfirmModal.vue';
 import { currencyRepository } from '~/repositories/currency.repository';
-import { userRepository } from '~/repositories/user.repository';
-import type { GetAddressListParams } from '~/types/base.types';
-import type { NetBlockchainItem } from '~/types/response/currency.types';
-import type { AddressList } from '~/types/response/user.types';
+import { securityRepository } from '~/repositories/security.repository';
+import type { NetBlockchain } from '~/types/definitions/currency.types';
+import type { Address, AddressListParams } from '~/types/definitions/security.types';
 
-const { $api } = useNuxtApp();
-const userRepo = userRepository($api);
+const { $mobileDetect, $api, $swal } = useNuxtApp();
+const securityRepo = securityRepository($api);
 const currencyRepo = currencyRepository($api);
 
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
+
 const toast = useToast();
-const modal = useModal();
 
-const currentPage = ref<number>(1);
+const totalCount = ref(0);
+const itemsPerPage = 20;
 
-const addressList = ref<AddressList[]>();
-
-const params = ref<GetAddressListParams>({
+const params = ref<AddressListParams>({
 	srchBlockchainId: '',
 	searchStatement: '',
-	pageNumber: '',
-	pageSize: '',
+	pageNumber: '1',
+	pageSize: '20',
+});
+const addressList = ref<Address[]>([]);
+const addressListLoading = ref<boolean>(true);
+const getAddressList = async () => {
+	try {
+		addressListLoading.value = true;
+		const { result } = await securityRepo.getAddressList(params.value);
+		addressList.value = result.rows as Address[];
+
+		totalCount.value = result.totalCount;
+
+		addressListLoading.value = false;
+	}
+	catch (error) {
+		addressListLoading.value = false;
+		console.log(error);
+	}
+};
+
+const netBlockchainListLoading = ref<boolean>(true);
+const netBlockchainList = ref<NetBlockchain[]>([]);
+const getNetBlockchainList = async () => {
+	try {
+		netBlockchainListLoading.value = true;
+
+		const { result } = await currencyRepo.getNetBlockchainList();
+
+		netBlockchainList.value = [
+			{
+				blockchainId: '',
+				blockchainName: useT('all'),
+			},
+			...(result as NetBlockchain[]),
+		];
+		netBlockchainListLoading.value = false;
+	}
+	catch (error) {
+		netBlockchainListLoading.value = false;
+		console.log(error);
+	}
+};
+
+const deleteAddressLoading = ref<boolean>(false);
+const deleteAddress = async (id: number) => {
+	try {
+		const confirmation = await $swal.fire({
+			title: useT('deleteAddress'),
+			text: useT('areYouSure'),
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: useT('yesDoIt'),
+			cancelButtonText: useT('cancel'),
+		});
+
+		if (confirmation.isConfirmed) {
+			deleteAddressLoading.value = true;
+
+			await securityRepo.deleteAddress({ withdrawId: String(id) });
+
+			toast.add({
+				title: useT('operationSuccess'),
+				id: 'modal-success',
+				timeout: 5000,
+				color: 'green',
+			});
+
+			await getAddressList();
+
+			deleteAddressLoading.value = false;
+		}
+	}
+	catch (error) {
+		deleteAddressLoading.value = false;
+		console.log(error);
+	}
+};
+
+onMounted(async () => {
+	isMobile.value = !!mobileDetect.mobile();
+
+	await Promise.all([
+		getAddressList(),
+		getNetBlockchainList(),
+	]);
 });
 
 const srchBlockchain = ref();
-
 watch(
 	() => srchBlockchain.value,
 	async (newParams) => {
@@ -140,92 +228,9 @@ watch(
 	{ deep: true },
 );
 
-const getAddressList = async () => {
-	try {
-		const { result } = await userRepo.getAddressList(params.value);
+const onPageChange = async (newPage: string) => {
+	params.value.pageNumber = newPage;
 
-		addressList.value = result.rows;
-		currentPage.value = result.totalCount;
-	}
-	catch (error) {
-		console.log(error);
-	}
+	await getAddressList();
 };
-
-const netBlockchainListLoading = ref<boolean>(false);
-const netBlockchainList = ref<NetBlockchainItem[]>([]);
-const getNetBlockchainList = async () => {
-	try {
-		netBlockchainListLoading.value = true;
-
-		const { result } = await currencyRepo.getNetBlockchainList();
-
-		netBlockchainList.value = result;
-		netBlockchainListLoading.value = true;
-	}
-	catch (error) {
-		netBlockchainListLoading.value = true;
-		console.log(error);
-	}
-};
-
-const deleteAddressLoading = ref<boolean>(false);
-const deleteAddress = async (id: string) => {
-	try {
-		deleteAddressLoading.value = true;
-
-		await userRepo.deleteAddress({ withdrawId: id });
-
-		toast.add({
-			title: useT('operationSuccess'),
-			id: 'modal-success',
-			timeout: 5000,
-			color: 'green',
-		});
-
-		await getAddressList();
-		modal.close();
-
-		deleteAddressLoading.value = false;
-	}
-	catch (error) {
-		deleteAddressLoading.value = false;
-		console.log(error);
-	}
-};
-
-const openDeleteModal = (id: string) => {
-	try {
-		modal.open(ConfirmModal, {
-			onSuccess() {
-				deleteAddress(id);
-			},
-
-			successBtn: useT('yesDeleteIt'),
-			closeBtn: useT('cancelAction'),
-			title: useT('deleteAddress'),
-			body: useT('areYouSure'),
-			successLoadingBtn: deleteAddressLoading.value,
-			overlay: true,
-
-			onClose() {
-				modal.close();
-			},
-		});
-	}
-	catch (error) {
-		console.log(error);
-	}
-};
-
-onMounted(async () => {
-	await Promise.all([
-		getAddressList(),
-		getNetBlockchainList(),
-	]);
-});
-
-function onPageChange(newPage: number) {
-	currentPage.value = newPage;
-}
 </script>

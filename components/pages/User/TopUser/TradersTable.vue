@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import TradersTableRow from '~/components/pages/Site/Account/TopUser/TradersTableRow.vue';
+import TradersTableRow from '~/components/pages/User/TopUser/TradersTableRow.vue';
 import type { BestListTrader } from '~/types/response/trader.types';
 
 interface PropsDefinition {
