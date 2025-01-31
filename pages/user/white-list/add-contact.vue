@@ -5,7 +5,10 @@
 			:title="$t('addContact')"
 		/>
 
-		<div class="flex justify-between">
+		<div
+			v-else
+			class="flex justify-between"
+		>
 			<div class="my-4">
 				<UiTitleWithBack :title="$t('addContact')" />
 			</div>

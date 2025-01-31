@@ -1,10 +1,18 @@
 <template>
-	<div class="p-5">
+	<div class="p-0 md:p-5">
 		<section>
-			<div class="mb-4">
+			<BackHeader
+				v-if="isMobile"
+				:title="$t('whiteListManagement')"
+			/>
+
+			<div
+				v-else
+				class="mb-4"
+			>
 				<UiTitleWithBack :title="$t('whiteListManagement')" />
 			</div>
-			<div class="border border-primary-gray-light dark:border-primary-gray-dark rounded-md">
+			<div class="border-none md:border border-primary-gray-light dark:border-primary-gray-dark rounded-md">
 				<UTabs
 					:items="items"
 					:ui="{
@@ -26,7 +34,7 @@
 						>{{ $t(item.label) }}</span>
 					</template>
 					<template #item="{ item }">
-						<div class="border-t border-t-primary-gray-light dark:border-t-primary-gray-dark px-2">
+						<div class="border-t-0 md:border-t border-t-primary-gray-light dark:border-t-primary-gray-dark px-2">
 							<div v-if="item.key === 'addressManagement'">
 								<AddressManagement />
 							</div>
@@ -45,23 +53,31 @@
 import AddressManagement from '~/components/pages/User/WhiteList/AddressManagement.vue';
 import ContactManagement from '~/components/pages/User/WhiteList/ContactManagement.vue';
 
+const BackHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/BackHeader.vue'));
+
 definePageMeta({
 	layout: 'account',
 	middleware: 'auth',
+});
+
+const { $mobileDetect } = useNuxtApp();
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
+
+onMounted(() => {
+	isMobile.value = !!mobileDetect.mobile();
 });
 
 const items = [
 	{
 		key: 'addressManagement',
 		label: 'addressManagement',
-		content: 'This is the content shown for Tab1',
+		content: '',
 	},
 	{
 		key: 'contactManagement',
 		label: 'contactManagement',
-		content: 'And, this is the content for Tab2',
+		content: '',
 	},
 ];
 </script>
-
-<style scoped></style>
