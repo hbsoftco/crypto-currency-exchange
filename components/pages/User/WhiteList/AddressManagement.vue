@@ -15,6 +15,7 @@
 					searchable
 					:searchable-placeholder="$t('search')"
 					option-attribute="blockchainName"
+					:size="isMobile? 'lg': 'sm'"
 					:ui="{
 						background: '',
 						color: {

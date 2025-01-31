@@ -9,9 +9,9 @@
 		<div class="flex justify-between py-0 md:py-2">
 			<div class="ml-0 md:ml-6 my-1 w-full md:w-44">
 				<UInput
-					v-model:model-value="params.statement"
+					v-model:model-value="search"
 					icon="i-heroicons-magnifying-glass-20-solid"
-					size="sm"
+					:size="isMobile? 'lg': 'sm'"
 					color="white"
 					:trailing="false"
 					:placeholder="$t('search')"
@@ -226,6 +226,20 @@ onMounted(async () => {
 	isMobile.value = !!mobileDetect.mobile();
 
 	await getContactList();
+});
+
+let searchTimeout: ReturnType<typeof setTimeout> | null = null;
+const search = ref('');
+watch(search, (newValue) => {
+	if (searchTimeout) {
+		clearTimeout(searchTimeout);
+	}
+
+	searchTimeout = setTimeout(async () => {
+		params.value.statement = newValue;
+
+		await getContactList();
+	}, 2000);
 });
 
 const onPageChange = async (newPage: string) => {
