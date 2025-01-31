@@ -108,7 +108,7 @@
 				<UPagination
 					v-if="totalCount > itemsPerPage"
 					:model-value="marketsPageStore.params.pageNumber"
-					:page-count="marketsPageStore.params.pageNumber"
+					:page-count="marketsPageStore.params.pageSize"
 					:total="totalCount"
 					:to="(page: number) => ({
 						query: { page },

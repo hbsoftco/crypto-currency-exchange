@@ -115,7 +115,7 @@ export const useMarketsPageStore = defineStore('marketsPage', () => {
 		tagTypeId: '',
 		searchStatement: '',
 		pageNumber: 1,
-		pageSize: '20',
+		pageSize: 20,
 	});
 
 	const futuresSelectedSortModeFilter = ref({
