@@ -173,9 +173,11 @@
 				<UiNothingToShow />
 			</template>
 
-			<div class="flex justify-center py-4">
+			<div
+				v-if="totalCount > itemsPerPage"
+				class="flex justify-center py-4"
+			>
 				<UPagination
-					v-if="totalCount > itemsPerPage"
 					:model-value="Number(params.pageNumber)"
 					:page-count="Number(params.pageSize)"
 					:total="totalCount"

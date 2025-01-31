@@ -1,6 +1,21 @@
 <!-- eslint-disable vue/no-v-html -->
 <template>
-	<div class="block md:flex justify-start">
+	<div v-if="notificationStore.noticeListLoading">
+		<UiLogoLoading />
+	</div>
+	<div
+		v-else
+		class="block md:flex justify-start"
+	>
+		<BackHeader
+			v-if="isMobile"
+			:title="$t('notification')"
+		>
+			<IconDelete
+				class="text-3xl text-accent-red dark:text-accent-red cursor-pointer"
+				@click="noticeDeleteAll()"
+			/>
+		</BackHeader>
 		<aside class="w-full md:w-[16.25rem] p-2 border-none md:border-l border-primary-gray-light dark:border-primary-gray-dark">
 			<div class="px-0 md:px-2 py-4 md:py-28 w-auto">
 				<div class="text-sm font-normal mb-4 ">
@@ -25,7 +40,7 @@
 				</div>
 			</div>
 		</aside>
-		<main class="w-full p-5">
+		<main class="w-full p-0 md:p-5">
 			<div class="ml-9 w-full p-4">
 				<div class="hidden md:flex justify-between py-4">
 					<h1 class="text-xl font-bold">
@@ -43,10 +58,7 @@
 						</UButton>
 					</div>
 				</div>
-				<div v-if="notificationStore.noticeListLoading">
-					<UiLogoLoading />
-				</div>
-				<div v-else>
+				<div>
 					<div
 						v-for="(notif, index) in notificationStore.getNoticeList"
 						:key="index"
@@ -73,7 +85,10 @@
 							</div>
 						</div>
 					</div>
-					<div class="flex justify-center py-4">
+					<div
+						v-if="notificationStore.getNoticeListTotalCount > 20"
+						class="flex justify-center py-4"
+					>
 						<UPagination
 							:to="(page: number) => ({
 								query: { page },
@@ -82,7 +97,7 @@
 							:page-count="20"
 							:total="notificationStore.getNoticeListTotalCount"
 							:max="6"
-							size="xl"
+							size="sm"
 							ul-class="flex space-x-2 bg-blue-500 border-none"
 							li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500 px-3"
 							button-class-base="flex items-center justify-center w-full h-full transition-colors duration-200"
@@ -105,20 +120,26 @@ import IconMessage from '~/assets/svg-icons/menu/message.svg';
 import { useNumber } from '~/composables/useNumber';
 import type { UPagination } from '#build/components';
 import { securityRepository } from '~/repositories/security.repository';
+import IconDelete from '~/assets/svg-icons/profile/Delete.svg';
+
+const BackHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/BackHeader.vue'));
 
 definePageMeta({
 	layout: 'account-single',
 	middleware: 'auth',
 });
 
-const { $api, $swal } = useNuxtApp();
+const { $api, $swal, $mobileDetect } = useNuxtApp();
 const securityRepo = securityRepository($api);
+
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
 
 const toast = useToast();
 
 const notificationStore = useNotificationStore();
 
-const noticeDeleteAllLoading = ref<boolean>(true);
+const noticeDeleteAllLoading = ref<boolean>(false);
 const noticeDeleteAll = async () => {
 	const confirmation = await $swal.fire({
 		title: useT('deleteAllNotifications'),
@@ -167,6 +188,8 @@ const onPageChange = async (newPage: number) => {
 };
 
 onMounted(async () => {
+	isMobile.value = !!mobileDetect.mobile();
+
 	await Promise.all([
 		notificationStore.fetchNoticeList(),
 		notificationStore.fetchNoticeTypeList(),
