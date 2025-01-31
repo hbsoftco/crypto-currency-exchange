@@ -14,7 +14,7 @@
 							{{ $t('your90DayTradingVolume') }}
 						</p>
 						<div class="absolute -top-16 -left-10 w-80 h-80 flex justify-center items-center border-4 border-accent-green bg-hover-light dark:bg-hover-dark rounded-full">
-							<Chart />
+							<!-- <Chart /> -->
 						</div>
 					</div>
 				</div>
@@ -92,11 +92,11 @@
 </template>
 
 <script setup lang="ts">
-import Chart from '~/components/pages/Site/Account/Chart.vue';
+// import Chart from '~/components/pages/Site/Account/Chart.vue';
 import TransactionFees from '~/components/pages/Site/Account/Fees/TransactionFees.vue';
 import DepositFee from '~/components/pages/Site/Account/Fees/DepositFee.vue';
 import WithdrawalFee from '~/components/pages/Site/Account/Fees/WithdrawalFee.vue';
-import type { Commission, TraderBriefItem } from '~/types/response/trader.types';
+import type { Commission } from '~/types/response/trader.types';
 import { userRepository } from '~/repositories/user.repository';
 import type { DepositCoinListParams } from '~/types/base.types';
 import { depositRepository } from '~/repositories/deposit.repository';
@@ -105,7 +105,7 @@ import type { DepositCoinItem } from '~/types/response/deposit.types';
 import { withdrawRepository } from '~/repositories/withdraw.repository';
 import type { WithdrawCoinItem } from '~/types/response/withdraw.type';
 import { MarketType } from '~/utils/enums/market.enum';
-import type { AssetTypeParams } from '~/types/definitions/user.types';
+import type { AssetTypeParams, TraderBrief } from '~/types/definitions/user.types';
 
 definePageMeta({
 	layout: 'account',
@@ -122,14 +122,14 @@ const traderBriefParams = ref<AssetTypeParams>({
 	id: '1',
 });
 const traderBriefItemLoading = ref<boolean>(true);
-const traderBriefItem = ref<TraderBriefItem>();
+const traderBriefItem = ref<TraderBrief>();
 const getTraderBrief = async () => {
 	try {
 		traderBriefItemLoading.value = true;
 
 		const { result } = await userRepo.getTraderBrief(traderBriefParams.value);
 
-		traderBriefItem.value = result;
+		traderBriefItem.value = result as TraderBrief;
 		traderBriefItemLoading.value = false;
 	}
 	catch (error) {
