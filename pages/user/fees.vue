@@ -1,8 +1,23 @@
 <template>
-	<div class="p-5">
+	<div v-if="traderBriefLoading">
+		<UiLogoLoading />
+	</div>
+
+	<div
+		v-else
+		class="p-5"
+	>
 		<section class="block md:flex items-end justify-between my-0 md:mb-4">
 			<div>
-				<div class="my-1 md:my-4">
+				<BackHeader
+					v-if="isMobile"
+					:title="$t('yourFeeLevel')"
+				/>
+
+				<div
+					v-else
+					class="mb-6"
+				>
 					<UiTitleWithBack :title="$t('yourFeeLevel')" />
 				</div>
 				<p class=" w-auto md:w-96 text-base font-medium mt-6">
@@ -129,15 +144,20 @@ import { withdrawRepository } from '~/repositories/withdraw.repository';
 import type { WithdrawCoinItem } from '~/types/response/withdraw.type';
 import type { AssetTypeParams, TraderBrief } from '~/types/definitions/user.types';
 
+const BackHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/BackHeader.vue'));
+
 definePageMeta({
 	layout: 'account',
 	middleware: 'auth',
 });
 
-const { $api } = useNuxtApp();
+const { $mobileDetect, $api } = useNuxtApp();
 const userRepo = userRepository($api);
 const depositRepo = depositRepository($api);
 const withdrawRepos = withdrawRepository($api);
+
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
 
 const chartOptions = ref({
 	title: {
@@ -246,6 +266,8 @@ const getTraderBrief = async () => {
 };
 
 onMounted(async () => {
+	isMobile.value = !!mobileDetect.mobile();
+
 	await Promise.all([
 		getTraderBrief(),
 		getDepositCoinList(),
