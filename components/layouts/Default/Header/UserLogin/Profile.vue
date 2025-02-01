@@ -203,7 +203,7 @@
 							</ULink>
 						</li>
 						<!-- awards -->
-						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark hover:bg-hover2-light dark:hover:bg-hover2-dark">
+						<!-- <li class="border-b border-primary-gray-light dark:border-primary-gray-dark hover:bg-hover2-light dark:hover:bg-hover2-dark">
 							<ULink
 								to="/user/top-users"
 								class="flex justify-between items-center w-full py-2.5"
@@ -217,7 +217,7 @@
 									</p>
 								</div>
 							</ULink>
-						</li>
+						</li> -->
 						<!-- topUsers -->
 						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark hover:bg-hover2-light dark:hover:bg-hover2-dark">
 							<ULink
@@ -289,7 +289,7 @@ import IconUserLevel from '~/assets/svg-icons/menu/quick-menu/user-level.svg';
 import IconManageAPI from '~/assets/svg-icons/menu/api.svg';
 import IconInviteFriends from '~/assets/svg-icons/menu/invite-friends.svg';
 import IconAwards from '~/assets/svg-icons/menu/quick-menu/awards.svg';
-import IconTopUsers from '~/assets/svg-icons/menu/quick-menu/top-users.svg';
+// import IconTopUsers from '~/assets/svg-icons/menu/quick-menu/top-users.svg';
 import IconWhiteList from '~/assets/svg-icons/menu/white-list.svg';
 import IconSetting from '~/assets/svg-icons/menu/setting.svg';
 import IconExit from '~/assets/svg-icons/menu/exit.svg';

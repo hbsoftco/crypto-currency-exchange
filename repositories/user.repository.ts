@@ -78,7 +78,6 @@ type UserRepository = {
 
 	// Manage API
 	getApiList: (params: ApiParams) => Promise<UserResponse>;
-	getApiPointInfo: (params: ApiKeyParams) => Promise<ResultResponse>;
 	getApiPermissionList: () => Promise<KeyValueResponse>;
 	storeApiPoint: (dto: ApiDto) => Promise<ResultResponse>;
 	editApiPoint: (dto: ApiDto) => Promise<ResultResponse>;
@@ -412,24 +411,11 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 			Object.entries(params)
 				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
 		);
-		const url = `/v1/user/apiexch/key_list`;
+		const url = `/v1/user/apiexch/list`;
 		const response = await fetch<UserResponse>(`${url}?${query.toString()}`, {
 			noAuth: false,
 			apiName: url,
 			query: {},
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getApiPointInfo(params: ApiKeyParams): Promise<ResultResponse> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-		const url = `/v1/user/apiexch/key_get`;
-		const response = await fetch<ResultResponse>(`${url}?${query.toString()}`, {
-			noAuth: false,
-			apiName: url,
 		} as CustomNitroFetchOptions);
 
 		return response;
