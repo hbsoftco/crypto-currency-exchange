@@ -60,7 +60,7 @@
 									<span class="text-sm font-medium">{{ $t('transfer') }}</span>
 								</ULink>
 								<ULink
-									to="/user/settings"
+									to="/user/preference"
 									class="flex flex-col justify-center text-center items-center"
 								>
 									<div class="flex items-center justify-center bg-hover-light dark:bg-hover-dark w-10 h-10 rounded-full">

@@ -117,7 +117,7 @@ const menuItems = [
 		name: 'rewardsBonuses',
 		description: useT('userActivityIncentives'),
 		icon: IconAwards,
-		url: '/user/rewards',
+		url: '/user/reward',
 
 	},
 	{

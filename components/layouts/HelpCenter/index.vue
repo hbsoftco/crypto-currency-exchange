@@ -130,7 +130,7 @@
 			<!-- awards -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
-					to="/user/rewards"
+					to="/user/reward"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
 					active-class="text-active"
 				>
@@ -166,7 +166,7 @@
 			<!-- settings -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
-					to="/user/settings"
+					to="/user/preference"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
 					active-class="text-active"
 				>

@@ -245,7 +245,7 @@
 				</h4>
 				‌<div class="grid grid-cols-3 gap-1">
 					<ULink
-						to="/user/settings"
+						to="/user/preference"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<IconSetting

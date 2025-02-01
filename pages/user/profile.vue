@@ -39,7 +39,7 @@
 						class="border-b border-primary-gray-light dark:border-primary-gray-dark"
 					>
 						<ULink
-							to="/user/settings"
+							to="/user/preference"
 							class="flex justify-between items-center w-full py-3"
 						>
 							<div class="flex justify-start items-center">
@@ -177,7 +177,7 @@
 					</div>
 				</div>
 				<div class="grid grid-cols-2 gap-1">
-					<ULink to="/user/rewards">
+					<ULink to="/user/reward">
 						<div
 							class="flex items-center h-12 p-1 my-3 rounded bg-transparent dark:bg-transparent text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark hover:text-text-light hover:dark:text-text-light"
 						>
@@ -331,7 +331,7 @@
 					<!-- security -->
 					<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 						<ULink
-							to="/user/settings"
+							to="/user/preference"
 							class="flex justify-between items-center w-full py-3"
 						>
 							<div class="flex justify-start items-center">
