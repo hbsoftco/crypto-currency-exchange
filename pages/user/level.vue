@@ -125,8 +125,8 @@
 <script setup lang="ts">
 import { userRepository } from '~/repositories/user.repository';
 import type { AssetTypeParams, TraderBrief } from '~/types/definitions/user.types';
-import TotalUserTransactions from '~/components/pages/User/UserLevel/TotalUserTransactions.vue';
-import UserLevels from '~/components/pages/User/UserLevel/UserLevels.vue';
+import TotalUserTransactions from '~/components/pages/User/Level/TotalUserTransactions.vue';
+import UserLevels from '~/components/pages/User/Level/UserLevels.vue';
 
 const BackHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/BackHeader.vue'));
 

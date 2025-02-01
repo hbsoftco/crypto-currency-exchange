@@ -264,7 +264,7 @@
 					<!-- authentication -->
 					<li class="border-b border-primary-gray-light dark:border-primary-gray-dark mt-0">
 						<ULink
-							to="/user/user-level"
+							to="/user/level"
 							class="flex justify-between items-center w-full py-3"
 						>
 							<div class="flex justify-start items-center">

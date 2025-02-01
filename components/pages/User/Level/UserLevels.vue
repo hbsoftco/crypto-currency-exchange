@@ -112,7 +112,7 @@
 </template>
 
 <script setup lang="ts">
-import LevelTableRow from '~/components/pages/User/UserLevel/LevelTableRow.vue';
+import LevelTableRow from '~/components/pages/User/Level/LevelTableRow.vue';
 import IconArrowLeftActive from '~/assets/svg-icons/profile/arrow-left-active.svg';
 import IconClose from '~/assets/svg-icons/close.svg';
 import { userRepository } from '~/repositories/user.repository';

@@ -138,7 +138,7 @@ const menuItems = [
 		name: 'profitLoss',
 		description: useT('systemAnalysis'),
 		icon: IconUserLevel,
-		url: '/user/user-level',
+		url: '/user/level',
 
 	},
 	{
@@ -152,7 +152,7 @@ const menuItems = [
 		name: 'marketStats',
 		description: useT('marketStatus'),
 		icon: IconUserLevel,
-		url: '/user/user-level',
+		url: '/user/level',
 	},
 	{
 		name: 'withdrawToman',
@@ -172,14 +172,14 @@ const menuItems = [
 		name: 'userLevel',
 		description: useT('userLevelDetails'),
 		icon: IconUserLevel,
-		url: '/user/user-level',
+		url: '/user/level',
 
 	},
 	{
 		name: 'myFriends',
 		description: useT('referralIncomeStatus'),
 		icon: IconInviteFriends,
-		url: '/user/user-level',
+		url: '/user/level',
 
 	},
 ];
