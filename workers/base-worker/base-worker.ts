@@ -746,6 +746,31 @@ const searchMarkets = async (
 	return count ? uniqueResults.slice(0, count) : uniqueResults;
 };
 
+const searchAllMarkets = async (
+	baseUrl: string,
+	search: string,
+	count?: number,
+): Promise<MarketBrief[] | []> => {
+	if (!currencyBriefItems.length) {
+		await fetchCurrencyBriefItems(baseUrl);
+	}
+
+	if (!marketBriefItems.length) {
+		await fetchMarketBriefItems(baseUrl);
+	}
+
+	const searchLower = search.toLowerCase();
+
+	const filteredMarkets = marketBriefItems
+		.filter((market) => market.mSymbol.toLowerCase().includes(searchLower))
+		.map((market) => ({
+			...market,
+			currency: currencyBriefItems.find((currency) => currency.id === market.cbId) || null,
+		}));
+
+	return count ? filteredMarkets.slice(0, count) : filteredMarkets;
+};
+
 // Other
 const SearchSuggestionItems = async (baseUrl: string, query: string): Promise<SuggestionItems> => {
 	if (!currencyBriefItems.length) {
@@ -831,6 +856,7 @@ Comlink.expose({
 	findMarketsByCurrencyId,
 	findMarketById,
 	searchMarkets,
+	searchAllMarkets,
 	// Other
 	SearchSuggestionItems,
 	fetchSnapshotData,

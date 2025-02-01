@@ -32,6 +32,7 @@
 		>
 		<label
 			:for="id"
+			:dir="placeholderDir"
 			:class="[
 				'absolute text-sm font-medium duration-300 transform -translate-y-5 scale-78 top-3 origin-[0] cursor-text px-2',
 				colorTypeClass,
@@ -57,6 +58,7 @@ interface PropsDefinition {
 	type?: string;
 	label: string;
 	placeholder?: string;
+	placeholderDir?: 'rtl' | 'ltr';
 	required?: boolean;
 	number?: boolean;
 	disabled?: boolean;
@@ -71,6 +73,7 @@ interface PropsDefinition {
 
 const props = withDefaults(defineProps<PropsDefinition>(), {
 	mtClass: 'mt-8',
+	placeholderDir: 'rtl',
 });
 
 interface EmitDefinition {

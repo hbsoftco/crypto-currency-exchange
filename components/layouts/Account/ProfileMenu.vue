@@ -94,7 +94,7 @@
 			<!-- manageAPI -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
-					to="/user/manage-api"
+					to="/user/apikeys"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
 					active-class="text-active"
 				>

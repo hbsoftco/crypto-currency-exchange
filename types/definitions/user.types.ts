@@ -1,4 +1,4 @@
-import type { KeyValue } from './common.types';
+import type { KeyBool } from './common.types';
 import type { CurrencyBrief } from './currency.types';
 
 type TraderCommissionListParams = {
@@ -403,15 +403,16 @@ type Api = {
 };
 
 type ApiDto = {
-	uvId: number | null;
-	v2fId: number | null;
+	verificationId: number | null;
+	verificationCode: string | null;
+	v2fCode: string | null;
 	apiKey?: string;
 	passPhrase: string;
 	appName: string;
-	iPsAsArray: string | null;
+	iPsAsArray: string;
 	marketIDsAsArray: string | null;
-	permissions: KeyValue[] | null;
-	countDaysValid: number | null;
+	permissions: KeyBool[] | null;
+	countDaysValid: number | string;
 };
 
 type ApiKeyParams = {

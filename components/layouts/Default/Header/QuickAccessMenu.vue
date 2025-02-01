@@ -165,7 +165,7 @@ const menuItems = [
 		name: 'createAPI',
 		description: useT('createAccessKeys'),
 		icon: IconCreateAPI,
-		url: '/user/manage-api/new-api',
+		url: '/user/apikeys/add',
 
 	},
 	{

@@ -20,7 +20,7 @@
 							{{ $t('addressSelect') }}
 						</h3>
 						<div class="w-full md:w-96">
-							<SearchCrypto
+							<FormsFieldInput
 								id="phoneOrEmail"
 								v-model="phoneOrEmail"
 								type="text"
@@ -74,9 +74,7 @@
 </template>
 
 <script setup lang="ts">
-// import { useNumber } from '~/composables/useNumber';
 import IconClose from '~/assets/svg-icons/close.svg';
-import SearchCrypto from '~/components/forms/SearchCrypto.vue';
 
 const phoneOrEmail = ref('');
 const rows = ref([

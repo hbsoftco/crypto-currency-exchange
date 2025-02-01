@@ -40,6 +40,7 @@ interface BaseWorker {
 	findMarketById: (id: number, baseUrl: string) => Promise<MarketBrief | null>;
 	findMarketsByCurrencyId: (baseUrl: string, cid: number, typeId?: number) => Promise<MarketBrief[] | []>;
 	searchMarkets: (baseUrl: string, search: string, count?: number) => Promise<MarketBrief[] | []>;
+	searchAllMarkets: (baseUrl: string, search: string, count?: number) => Promise<MarketBrief[] | []>;
 	// Other
 	SearchSuggestionItems: (baseUrl: string, query: string) => Promise<SuggestionItems>;
 	fetchCommissionList: (baseUrl: string, marketType: number) => Promise<void>;

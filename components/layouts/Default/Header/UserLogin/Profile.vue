@@ -157,7 +157,7 @@
 						<!-- userLevel -->
 						<li class="border-b border-primary-gray-light dark:border-primary-gray-dark hover:bg-hover2-light dark:hover:bg-hover2-dark">
 							<ULink
-								to="/user/manage-api"
+								to="/user/apikeys"
 								class="flex justify-between items-center w-full py-2.5"
 							>
 								<div class="flex justify-start items-center">

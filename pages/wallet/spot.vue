@@ -135,7 +135,7 @@
 							<UToggle v-model="selected" />
 						</div>
 						<div class="w-full md:w-96">
-							<SearchCrypto
+							<FormsFieldInput
 								id="phoneOrEmail"
 								v-model="phoneOrEmail"
 								type="text"
@@ -275,7 +275,6 @@ import IconArrowUpGreen from '~/assets/svg-icons/arrow-up-green.svg';
 import IconMoney from '~/assets/svg-icons/wallet/money.svg';
 import { useNumber } from '~/composables/useNumber';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
-import SearchCrypto from '~/components/forms/SearchCrypto.vue';
 import WithdrawalModal from '~/components/pages/Site/Wallet/Menu/WithdrawalModal.vue';
 import DepositModal from '~/components/pages/Site/Wallet/Menu/DepositModal.vue';
 import TransferModal from '~/components/pages/Site/Wallet/Menu/TransferModal.vue';

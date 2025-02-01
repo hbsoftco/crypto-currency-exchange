@@ -3,6 +3,17 @@ type KeyValue = {
 	value: string;
 };
 
+type KeyValueBool = {
+	key: string;
+	value: string;
+	check: boolean;
+};
+
+type KeyBool = {
+	key: string;
+	value: boolean;
+};
+
 type CommonResponse = {
 	statusCode: number;
 	result: string;
@@ -46,4 +57,6 @@ export type {
 	KeyValue,
 	QrCodeInput,
 	SearchListParams,
+	KeyValueBool,
+	KeyBool,
 };

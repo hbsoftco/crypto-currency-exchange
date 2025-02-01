@@ -14,7 +14,7 @@
 				<UButton
 					size="lg"
 					class="text-base font-extrabold py-3 px-12 text-center"
-					to="/user/manage-api/new-api"
+					to="/user/apikeys/add"
 				>
 					{{ $t('createNewApi') }}
 				</UButton>
@@ -52,8 +52,8 @@
 				</thead>
 				<tbody>
 					<tr
-						v-for="row in rows"
-						:key="row.id"
+						v-for="row in apiList"
+						:key="row.apiKey"
 						class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"
 					>
 						<td class="text-sm font-normal py-2">
@@ -131,13 +131,13 @@ const params = ref<ApiParams>({
 	pageNumber: '1',
 	pageSize: '20',
 });
-const apiListItem = ref<Api[]>([]);
+const apiList = ref<Api[]>([]);
 const apiListLoading = ref<boolean>(true);
 const getApiList = async () => {
 	try {
 		apiListLoading.value = true;
 		const { result } = await userRepo.getApiList(params.value);
-		apiListItem.value = result.rows as Api[];
+		apiList.value = result.rows as Api[];
 
 		apiListLoading.value = false;
 	}
@@ -147,14 +147,15 @@ const getApiList = async () => {
 	}
 };
 
-const rows = ref([
-	// { id: 1, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
-	// { id: 2, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
-	// { id: 3, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
-	// { id: 4, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
-]);
-
 onMounted(async () => {
 	await getApiList();
 });
+
+// Old
+// const rows = ref([
+// 	{ id: 1, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
+// 	{ id: 2, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
+// 	{ id: 3, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
+// 	{ id: 4, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
+// ]);
 </script>
