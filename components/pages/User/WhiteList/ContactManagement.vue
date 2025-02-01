@@ -21,7 +21,7 @@
 				v-if="!isMobile"
 				size="lg"
 				class="text-base font-medium px-6 py-2"
-				to="/user/white-list/add-contact"
+				to="/user/wbl/contact/add"
 			>
 				{{ $t("addContact") }}
 			</UButton>
@@ -116,7 +116,7 @@
 						size="lg"
 						block
 						class="text-base font-medium px-6 py-2"
-						to="/user/white-list/add-contact"
+						to="/user/wbl/contact/add"
 					>
 						{{ $t("addContact") }}
 					</UButton>

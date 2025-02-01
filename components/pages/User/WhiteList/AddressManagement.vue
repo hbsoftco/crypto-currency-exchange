@@ -30,7 +30,7 @@
 				v-if="!isMobile"
 				size="lg"
 				class="text-base font-medium px-6 py-2"
-				to="/user/white-list/add-address"
+				to="/user/wbl/address/add"
 			>
 				{{ $t("addWhiteAddress") }}
 			</UButton>
@@ -162,7 +162,7 @@
 						size="lg"
 						block
 						class="text-base font-medium px-6 py-2"
-						to="/user/white-list/add-address"
+						to="/user/wbl/address/add"
 					>
 						{{ $t("addWhiteAddress") }}
 					</UButton>

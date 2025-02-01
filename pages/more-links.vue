@@ -357,7 +357,7 @@
 						<span class="text-sm mt-2">{{ $t('listAllowedIps') }}</span>
 					</ULink>
 					<ULink
-						to="/user/white-list"
+						to="/user/wbl"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<img
@@ -368,7 +368,7 @@
 						<span class="text-sm mt-2">{{ $t('authorizedAddresses') }}</span>
 					</ULink>
 					<ULink
-						to="/user/white-list"
+						to="/user/wbl"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<IconInviteFriends class=" text-primary-yellow-light dark:text-primary-yellow-dark text-2xl" />

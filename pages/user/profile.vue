@@ -363,7 +363,7 @@
 					<!-- manageAPI -->
 					<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 						<ULink
-							to="/user/white-list"
+							to="/user/wbl"
 							class="flex justify-between items-center w-full py-3"
 						>
 							<div class="flex justify-start items-center">

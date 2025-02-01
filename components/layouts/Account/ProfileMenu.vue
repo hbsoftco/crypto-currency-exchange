@@ -184,7 +184,7 @@
 			<!-- whiteList -->
 			<li>
 				<ULink
-					to="/user/white-list"
+					to="/user/wbl"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
 					active-class="text-active"
 				>

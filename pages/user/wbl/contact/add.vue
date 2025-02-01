@@ -159,7 +159,7 @@ const submit = async (event: VerifyOutput) => {
 		});
 
 		loading.value = false;
-		router.push('/user/white-list');
+		router.push('/user/wbl');
 	}
 	catch (error) {
 		loading.value = false;
