@@ -43,7 +43,7 @@
 				<span class="text-sm">{{ $t('fees') }}</span>
 			</ULink>
 			<ULink
-				to="/user/invite-friends"
+				to="/user/invitation"
 				class="flex flex-col justify-center items-center  mb-4"
 			>
 				<img

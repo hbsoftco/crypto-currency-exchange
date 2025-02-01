@@ -112,7 +112,7 @@ const submitcodeInvite = async () => {
 		});
 
 		codeInviteLoading.value = false;
-		router.push('/user/invite-friends');
+		router.push('/user/invitation');
 	}
 	catch (error) {
 		codeInviteLoading.value = false;

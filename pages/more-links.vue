@@ -254,7 +254,7 @@
 						<span class="text-sm mt-2">{{ $t('setting') }}</span>
 					</ULink>
 					<ULink
-						to="/user/invite-friends"
+						to="/user/invitation"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<IconInviteFriends
