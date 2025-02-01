@@ -1,3 +1,4 @@
+import type { KeyValue } from './common.types';
 import type { CurrencyBrief } from './currency.types';
 
 type TraderCommissionListParams = {
@@ -14,7 +15,7 @@ type UserResponse = {
 		Invite[] |
 		InviteCommission[] |
 		Reward[] |
-		API[] |
+		Api[] |
 		Level[];
 	};
 };
@@ -22,6 +23,8 @@ type UserResponse = {
 type ResultResponse = {
 	statusCode: number;
 	result: ReferralBrief |
+	ApiCredentials |
+	ApiPointInfo |
 	HolderBrief |
 	TraderState[] |
 	TraderBrief;
@@ -378,7 +381,7 @@ type RewardParams = {
 };
 
 // Manage API
-type APIParams = {
+type ApiParams = {
 	srchKey?: string;
 	from?: string;
 	to?: string;
@@ -386,7 +389,7 @@ type APIParams = {
 	pageSize?: string;
 };
 
-type API = {
+type Api = {
 	uid: number;
 	user: string;
 	apiName: string;
@@ -397,6 +400,37 @@ type API = {
 	restrictedIPs: string;
 	permissions: string;
 	disabled: boolean;
+};
+
+type ApiDto = {
+	uvId: number | null;
+	v2fId: number | null;
+	apiKey?: string;
+	passPhrase: string;
+	appName: string;
+	iPsAsArray: string | null;
+	marketIDsAsArray: string | null;
+	permissions: KeyValue[] | null;
+	countDaysValid: number | null;
+};
+
+type ApiKeyParams = {
+	apiKey: string;
+};
+
+type ApiCredentials = {
+	apiKey: string;
+	secretKey: string;
+	expireTime: string;
+};
+
+type ApiPointInfo = {
+	uid: number;
+	apiKey: string;
+	passPhraseHash: string;
+	apiSecret: string;
+	wlstIPv4s: string;
+	wlstIPv6s: string;
 };
 
 export type {
@@ -434,6 +468,10 @@ export type {
 	RewardParams,
 	Reward,
 	// Manage API
-	APIParams,
-	API,
+	ApiParams,
+	Api,
+	ApiDto,
+	ApiCredentials,
+	ApiKeyParams,
+	ApiPointInfo,
 };

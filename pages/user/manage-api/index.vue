@@ -57,25 +57,25 @@
 						class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"
 					>
 						<td class="text-sm font-normal py-2">
-							{{ row.name }}
+							<!-- {{ row.name }} -->
 						</td>
 						<td class="text-sm font-normal py-2">
 							<div class="flex items-center">
 								<IconCopy class="text-sm ml-1 cursor-pointer" />
-								{{ useNumber(row.apiKey) }}
+								<!-- {{ useNumber(row.apiKey) }} -->
 							</div>
 						</td>
 						<td class="text-sm font-normal py-2">
-							{{ useNumber(row.access) }}
+							<!-- {{ useNumber(row.access) }} -->
 						</td>
 						<td class="text-sm font-normal py-2">
-							{{ useNumber(row.ip) }}
+							<!-- {{ useNumber(row.ip) }} -->
 						</td>
 						<td class="text-sm font-normal py-2">
-							{{ useNumber(row.createTime) }}
+							<!-- {{ useNumber(row.createTime) }} -->
 						</td>
 						<td class="text-sm font-normal py-2">
-							{{ useNumber(row.expire) }}
+							<!-- {{ useNumber(row.expire) }} -->
 						</td>
 						<td class="flex">
 							<div class="mx-2">
@@ -112,10 +112,9 @@
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
 import IconCopy from '~/assets/svg-icons/menu/copy.svg';
 import { userRepository } from '~/repositories/user.repository';
-import type { API, APIParams } from '~/types/definitions/user.types';
+import type { Api, ApiParams } from '~/types/definitions/user.types';
 
 definePageMeta({
 	layout: 'account',
@@ -125,20 +124,20 @@ definePageMeta({
 const { $api } = useNuxtApp();
 const userRepo = userRepository($api);
 
-const params = ref<APIParams>({
+const params = ref<ApiParams>({
 	srchKey: '',
 	from: '',
 	to: '',
 	pageNumber: '1',
 	pageSize: '20',
 });
-const apiListItem = ref<API[]>([]);
+const apiListItem = ref<Api[]>([]);
 const apiListLoading = ref<boolean>(true);
 const getApiList = async () => {
 	try {
 		apiListLoading.value = true;
 		const { result } = await userRepo.getApiList(params.value);
-		apiListItem.value = result.rows as API[];
+		apiListItem.value = result.rows as Api[];
 
 		apiListLoading.value = false;
 	}
@@ -149,10 +148,10 @@ const getApiList = async () => {
 };
 
 const rows = ref([
-	{ id: 1, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
-	{ id: 2, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
-	{ id: 3, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
-	{ id: 4, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
+	// { id: 1, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
+	// { id: 2, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
+	// { id: 3, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
+	// { id: 4, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
 ]);
 
 onMounted(async () => {

@@ -1,5 +1,3 @@
-import type { KeyValue } from '../definitions/common.types';
-
 type AddCardBankSetDto = {
 	bankAccountTypeId: number;
 	cardNo: string;
@@ -27,33 +25,9 @@ type SetMobileDto = {
 	v2FACode: string;
 };
 
-type SetApiAddDto = {
-	uvId?: number;
-	v2fId?: number;
-	passPhrase: string;
-	appName: string;
-	iPsAsArray?: string;
-	marketIDsAsArray?: string;
-	permissions?: KeyValue[];
-	countDaysValid?: number;
-};
-
-type SetApiEditDto = {
-	uvId?: number;
-	v2fId?: number;
-	apiKey: string;
-	passPhrase: string;
-	appName: string;
-	iPsAsArray?: string;
-	marketIDsAsArray?: string;
-	permissions?: KeyValue[];
-	countDaysValid?: number;
-};
 export type {
 	AddCardBankSetDto,
 	CodeInviteDto,
 	SetEmailDto,
 	SetMobileDto,
-	SetApiAddDto,
-	SetApiEditDto,
 };

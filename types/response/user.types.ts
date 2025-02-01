@@ -1,14 +1,5 @@
 import type { CurrencyBriefItem } from './brief-list.types';
 
-type UserProfileResponse = {
-	statusCode: number;
-	result: {
-		wloId: number;
-		userId: number;
-		verificationId: number;
-	};
-};
-
 type Received = {
 	tid: number;
 	mid: number;
@@ -108,33 +99,9 @@ type GetLevelsDataRes = {
 	};
 };
 
-type GetApiRes = {
-	statusCode: number;
-	result: {
-		uid: number;
-		apiKey: string;
-		passPhraseHash: string;
-		apiSecret: string;
-		wlstIPv4s: string;
-		wlstIPv6s: string;
-
-	};
-};
-
-type StoreApiRes = {
-	statusCode: number;
-	result: {
-		apiKey: string;
-		secretKey: string;
-		expireTime: string;
-
-	};
-};
-
 export type {
 	BestListUser,
 	BestReferralItem,
-	UserProfileResponse,
 	GetCommissionReceivedList,
 	Received,
 	GetBankListResponse,
@@ -142,6 +109,4 @@ export type {
 	GetBestListResponse,
 	GetLevelsDataRes,
 	LevelRow,
-	GetApiRes,
-	StoreApiRes,
 };
