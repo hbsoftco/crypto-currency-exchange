@@ -22,7 +22,7 @@
 
 				<p
 					v-if="!isMobile"
-					class=" w-auto md:w-96 text-justify text-base font-medium mt-4 md:mt-6"
+					class="w-auto md:w-96 text-justify text-base font-medium mt-4 md:mt-6"
 				>
 					{{ $t('userLevelTopDescription') }}
 				</p>

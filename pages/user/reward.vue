@@ -108,8 +108,6 @@ const getRewardList = async () => {
 			result.rows as Reward[],
 		);
 
-		console.log(rewards.value);
-
 		rewardsLoading.value = false;
 	}
 	catch (error) {

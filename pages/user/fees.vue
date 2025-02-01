@@ -5,7 +5,7 @@
 
 	<div
 		v-else
-		class="p-5"
+		class="p-0 md:p-5"
 	>
 		<section class="block md:flex items-end justify-between my-0 md:mb-4">
 			<div>
@@ -20,11 +20,11 @@
 				>
 					<UiTitleWithBack :title="$t('yourFeeLevel')" />
 				</div>
-				<p class=" w-auto md:w-96 text-base font-medium mt-6">
+				<p class=" w-auto md:w-96 text-sm md:text-base font-medium mt-0 md:mt-6 px-4 md:px-0">
 					{{ $t('feeLevelCalculation') }}
 				</p>
 
-				<div class="flex mt-10">
+				<div class="flex mt-5 md:mt-10">
 					<div class="w-[30rem] relative bg-primary-gray-light dark:bg-primary-gray-dark py-12 px-2 md:px-4 md:rounded-r-md overflow-hidden">
 						<p
 							:class="[chartCurrentItem === 90 ? 'text-primary-yellow-light  dark:text-primary-yellow-dark' : 'text-subtle-text-light dark:text-subtle-text-dark']"
@@ -86,13 +86,13 @@
 			</div>
 		</section>
 
-		<section class="py-4 px-0 md:px-8 rounded-md border-none md:border border-primary-gray-light dark:border-primary-gray-dark">
+		<section class="py-8 md:py-4 px-0 md:px-8 rounded-md border-none md:border border-primary-gray-light dark:border-primary-gray-dark">
 			<UTabs
 				:items="items"
 				:ui="
 					{
 						list: {
-							background: 'bg-primary-gray-light dark:bg-primary-gray-dark md:bg-background-light md:dark:bg-background-dark',
+							background: 'w-full md:w-auto bg-primary-gray-light dark:bg-primary-gray-dark md:bg-background-light md:dark:bg-background-dark',
 							tab: {
 								active: 'text-gray-900 dark:text-white bg-secondary-gray-light dark:bg-secondary-gray-dark',
 								inactive: 'text-gray-500 dark:text-gray-400',
@@ -102,7 +102,7 @@
 			>
 				<template #default="{ item, selected }">
 					<span
-						class="truncate text-xs font-extralight md:font-bold md:text-base"
+						class="truncate text-sm font-extralight md:font-bold md:text-base"
 						:class="[selected && 'text-primary-yellow-light dark:text-primary-yellow-dark border-none border-b-primary-gray', !selected && 'text-black dark:text-white']"
 					>{{ $t(item.label) }}</span>
 				</template>

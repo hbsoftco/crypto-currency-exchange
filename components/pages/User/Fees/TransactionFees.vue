@@ -43,16 +43,16 @@
 			<table class="min-w-full py-6 text-right">
 				<thead>
 					<tr class="pb-2 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark">
-						<th class="pb-2 text-sm font-bold px-2">
+						<th class="pb-2 text-sm font-bold px-2 w-24 max-w-24 md:w-auto text-center md:text-right">
 							{{ $t('userLevel') }}
 						</th>
-						<th class="pb-2 text-sm font-bold">
+						<th class="pb-2 w-44 max-w-44 md:w-auto text-center md:text-right text-sm font-bold">
 							{{ $t('tradingVolumeLast90Days') }}
 						</th>
-						<th class="pb-2 text-sm font-bold">
+						<th class="pb-2 text-sm font-bold pr-4 md:pr-0">
 							{{ $t('makerTaker') }}
 						</th>
-						<th class="pb-2 text-sm font-bold">
+						<th class="pb-2 text-sm font-bold hidden md:block">
 							{{ $t('maximumWithdrawal') }}
 						</th>
 					</tr>
@@ -66,14 +66,14 @@
 						<td class="text-sm font-normal py-2 px-2">
 							{{ row.header }}
 						</td>
-						<td class="text-sm font-normal py-2">
-							{{ useNumber(row.condition) }}
+						<td class="text-sm w-44 max-w-44 md:w-auto text-center md:text-right font-normal py-2">
+							{{ row.condition }}
 						</td>
-						<td class="text-sm font-normal py-2">
-							{{ useNumber(row.maker) }} / {{ useNumber(row.taker) }}
+						<td class="text-sm font-normal py-2 pr-4 md:pr-0">
+							{{ row.maker }} / {{ row.taker }}
 						</td>
-						<td class="text-sm font-normal py-2">
-							<span dir="ltr">{{ useNumber(row.withdraw) }}</span>
+						<td class="text-sm font-normal py-2 hidden md:block">
+							<span dir="ltr">{{ (row.withdraw) }}</span>
 						</td>
 					</tr>
 				</tbody>
@@ -83,7 +83,6 @@
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
 import { userRepository } from '~/repositories/user.repository';
 import type { Commission } from '~/types/definitions/user.types';
 import { MarketType } from '~/utils/enums/market.enum';
