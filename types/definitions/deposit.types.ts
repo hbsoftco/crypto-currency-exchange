@@ -9,7 +9,7 @@ type DepositCoinFeesParams = {
 type DepositCoinFee = {
 	cid: number;
 	currency?: CurrencyBrief;
-	deposit: DepositFee;
+	deposit: DepositFee[];
 };
 
 type DepositFee = {
