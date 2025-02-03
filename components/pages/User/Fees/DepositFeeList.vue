@@ -31,7 +31,12 @@
 			</div>
 			<!-- Search Statement -->
 		</div>
-		<div>
+
+		<div v-if="depositCoinFeesLoading">
+			<UiLogoLoading />
+		</div>
+
+		<div v-else>
 			<div v-if="!isMobile">
 				<table
 					class="min-w-full bg-background-light dark:bg-background-dark text-text-dark dark:text-text-light"
@@ -47,10 +52,16 @@
 								{{ $t("networkType") }}
 							</th>
 							<th class="text-sm font-bold py-3">
-								{{ $t("minimumDepositAmount") }}
+								{{ $t("confirmationCo") }}
+							</th>
+							<th class="text-sm font-bold py-3">
+								ContractId
 							</th>
 							<th class="text-sm font-bold py-3">
 								{{ $t("networkStatus") }}
+							</th>
+							<th class="text-sm text-center font-bold py-3">
+								{{ $t("moreDetail") }}
 							</th>
 						</tr>
 					</thead>
@@ -66,61 +77,99 @@
 									<img
 										:src="`https://api-bitland.site/media/currency/${item?.currency?.cSymbol}.png`"
 										alt="icon"
-										class="w-8 h-8 ml-1"
+										class="w-8 h-8 ml-2"
+										@error="handleImageError"
 									>
 									<div class="text-right">
 										<div
 											class="border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"
 										>
-											<span class="text-base font-medium">
+											<span class="text-sm font-medium">
 												{{ item.currency?.cName }}
 											</span>
 										</div>
 										<div>
-											<span class="text-base font-medium">{{ item.currency?.cSymbol }}</span>
+											<span class="text-sm font-medium">{{ item.currency?.cSymbol }}</span>
 										</div>
 									</div>
 								</div>
 							</td>
+							<!-- logo -->
 
-							<td class="py-2">
-								<!-- <div
-									v-for="(networkType, index) in props.networkTypes"
+							<td class="py-1">
+								<div
+									v-for="(row, index) in item.deposit.slice(0, 3)"
 									:key="index"
+									class="text-sm"
+									dir="ltr"
 								>
-									{{ networkType }}
-								</div> -->
+									{{ row.netName }}
+								</div>
 							</td>
+							<!-- netName -->
 
-							<td class="py-2">
-								<!-- <div
-									v-for="(amount, index) in props.minimumDepositAmounts"
+							<td class="py-1">
+								<div
+									v-for="(row, index) in item.deposit.slice(0, 3)"
 									:key="index"
+									class="text-sm"
+									dir="ltr"
 								>
-									{{ amount }}
-								</div> -->
+									{{ row.confirmationCo }}
+								</div>
 							</td>
+							<!-- confirmationCo -->
 
-							<td class="py-2">
-								<!-- <div
-									v-for="(status, index) in props.networkStatuses"
+							<td class="py-1">
+								<div
+									v-for="(row, index) in item.deposit.slice(0, 3)"
 									:key="index"
+									class="text-sm cursor-pointer"
+									dir="ltr"
+									@click="copyText(row.contractId)"
 								>
-									<span :class="status === 'active' ? 'text-green-500' : 'text-red-500'">
-										{{ status === "active" ? $t("active") : $t("inactive") }}
+									<span :title="row.contractId">
+										{{ formatContractId(row.contractId) }}
 									</span>
-								</div> -->
+								</div>
+							</td>
+							<!-- contractId -->
+
+							<td class="py-1">
+								<div
+									v-for="(row, index) in item.deposit.slice(0, 3)"
+									:key="index"
+									dir="ltr"
+								>
+									<span
+										class="text-sm"
+										:class="row.enabled ? 'text-green-500' : 'text-red-500'"
+									>
+										{{ row.enabled ? $t("active") : $t("inactive") }}
+									</span>
+								</div>
+							</td>
+							<!-- enabled -->
+
+							<td class="py-2 text-center">
+								<div class="flex items-center h-full justify-center">
+									<IconInfo
+										class="text-2xl cursor-pointer text-primary-yellow-light dark:text-primary-yellow-dark"
+									/>
+								</div>
 							</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
+			<!-- Desktop -->
 
 			<div v-else>
 				<div
 					v-for="(item, index) in depositCoinFees"
 					:key="index"
 					class="bg-hover2-light dark:bg-hover2-dark rounded-none md:rounded-md py-1 my-2 px-2"
+					@click="openSlideover(item)"
 				>
 					<div class="my-2">
 						<div class="flex items-center mb-2">
@@ -128,6 +177,7 @@
 								:src="`https://api-bitland.site/media/currency/${item?.currency?.cSymbol}.png`"
 								alt="icon"
 								class="w-8 h-8 ml-1"
+								@error="handleImageError"
 							>
 							<div class="text-right mr-2">
 								<div
@@ -160,23 +210,127 @@
 										v-else
 										class="text-xl text-subtle-text-light dark:text-subtle-text-dark"
 									/>
-									<span class="pl-1 text-xs text-nowrap text-ellipsis overflow-hidden truncate w-full max-w-full">{{ deposit.netName }}</span>
+									<span class="pl-1 text-xs text-nowrap text-ellipsis overflow-hidden truncate w-full max-w-full">
+										{{ deposit.netName }}
+									</span>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
+
+				<USlideover
+					v-model="openSlide"
+					prevent-close
+					side="bottom"
+					:ui="{
+						height: 'h-screen max-h-[31.5rem]',
+					}"
+				>
+					<UCard
+						class="flex flex-col flex-1"
+						:ui="{ body: {
+								base: 'flex-1',
+								padding: 'p-0',
+							},
+							ring: '' }"
+					>
+						<template #header>
+							<div class="flex items-center justify-between">
+								<h3 class="text-base font-normal leading-6 text-gray-900 dark:text-white flex">
+									<img
+										v-if="openSlideData?.currency?.cName"
+										:src="`https://api-bitland.site/media/currency/${openSlideData?.currency.cSymbol}.png`"
+										:alt="openSlideData?.currency.cName"
+										class="w-6 h-6 rounded-full ml-1"
+										format="webp"
+										densities="x1"
+										@error="handleImageError"
+									>
+									<span class="mr-1">{{ openSlideData?.currency?.cName }} (USDT)</span>
+								</h3>
+								<UButton
+									color="gray"
+									variant="ghost"
+									icon="i-heroicons-x-mark-20-solid"
+									class="-my-1 outline-none"
+									@click="openSlide=false"
+								/>
+							</div>
+						</template>
+						<!-- header -->
+
+						<div class="pt-2 max-h-[28rem] min-h-72 overflow-y-scroll pr-4 pl-1">
+							<div class="p-1">
+								<div
+									v-for="(item, index) in openSlideData?.deposit"
+									:key="`${item.contractId}_${index}`"
+									class="flex justify-between mb-4 border-b border-primary-gray-light dark:border-primary-gray-700 pb-4"
+								>
+									<div class="space-y-2">
+										<div class="text-nowrap text-xs">
+											{{ $t('networkType') }}
+										</div>
+										<div class="text-nowrap text-xs">
+											{{ $t('contractId') }}
+										</div>
+									</div>
+									<div
+										class="pl-1 space-y-2"
+										dir="ltr"
+									>
+										<div class="w-full flex justify-start items-center">
+											<IconCheckOn
+												v-if="item.enabled"
+												class="text-xl text-subtle-text-light dark:text-subtle-text-dark"
+											/>
+											<IconCheckOff
+												v-else
+												class="text-xl text-subtle-text-light dark:text-subtle-text-dark"
+											/>
+											<span class="pl-1 text-xs text-nowrap text-ellipsis overflow-hidden truncate w-full max-w-full">
+												{{ item.netName }}
+											</span>
+										</div>
+										<div
+											class="text-xs"
+											@click="copyText(item.contractId)"
+										>
+											{{ formatContractId(item.contractId) }}
+										</div>
+									</div>
+								</div>
+								<!-- end item -->
+							</div>
+						</div>
+					</UCard>
+				</USlideover>
+			</div>
+			<!-- Mobile -->
+
+			<div class="flex justify-center py-4">
+				<UPagination
+					v-if="totalCount > 20"
+					:model-value="Number(depositCoinListParams.pageNumber)"
+					:page-count="Number(depositCoinListParams.pageSize)"
+					:total="totalCount"
+					:max="6"
+					size="sm"
+					@update:model-value="onPageChange"
+				/>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
+import IconInfo from '~/assets/svg-icons/info.svg';
 import IconCheckOff from '~/assets/svg-icons/ic_check_off.svg';
 import IconCheckOn from '~/assets/svg-icons/ic_check_on.svg';
 import { depositRepository } from '~/repositories/deposit.repository';
 import type { DepositCoinFee, DepositCoinFeesParams } from '~/types/definitions/deposit.types';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
+import { formatContractId, handleImageError } from '~/utils/helpers';
 
 const { $mobileDetect, $api } = useNuxtApp();
 const depositRepo = depositRepository($api);
@@ -184,7 +338,32 @@ const depositRepo = depositRepository($api);
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
 
+const totalCount = ref(0);
+
+const openSlide = ref<boolean>(false);
+const openSlideData = ref<DepositCoinFee | null>(null);
+const openSlideover = (deposit: DepositCoinFee) => {
+	openSlideData.value = deposit;
+
+	openSlide.value = true;
+};
+
+const { copyText } = useClipboard();
 const worker = useBaseWorker();
+
+let searchTimeout: ReturnType<typeof setTimeout> | null = null;
+const search = ref('');
+watch(search, (newValue) => {
+	if (searchTimeout) {
+		clearTimeout(searchTimeout);
+	}
+
+	searchTimeout = setTimeout(async () => {
+		depositCoinListParams.value.statement = newValue;
+
+		await getDepositCoinFees();
+	}, 2000);
+});
 
 const depositCoinListParams = ref<DepositCoinFeesParams>({
 	pageNumber: '1',
@@ -202,7 +381,16 @@ const getDepositCoinFees = async () => {
 			useEnv('apiBaseUrl'),
 			result.rows as DepositCoinFee[],
 		);
-		console.log(depositCoinFees.value);
+
+		depositCoinFees.value = depositCoinFees.value.map((fee) => ({
+			...fee,
+			deposit: fee.deposit.sort((a, b) => {
+				if (a.enabled === b.enabled) return 0;
+				return a.enabled ? -1 : 1;
+			}),
+		}));
+
+		totalCount.value = result.totalCount;
 
 		depositCoinFeesLoading.value = false;
 	}
@@ -218,5 +406,8 @@ onMounted(async () => {
 	await getDepositCoinFees();
 });
 
-const search = ref('');
+const onPageChange = async (newPage: number) => {
+	depositCoinListParams.value.pageNumber = String(newPage);
+	await getDepositCoinFees();
+};
 </script>

@@ -402,7 +402,17 @@ const compressImageFile = (
 	});
 };
 
+const formatContractId = (contractId: string): string => {
+	if (contractId.length > 20) {
+		const firstPart = contractId.slice(0, 10);
+		const lastPart = contractId.slice(-10);
+		return `${firstPart}...${lastPart}`;
+	}
+	return contractId;
+};
+
 export {
+	formatContractId,
 	slug,
 	bigNumber,
 	formatBigNumber,

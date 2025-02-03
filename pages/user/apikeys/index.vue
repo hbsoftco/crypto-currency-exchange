@@ -20,6 +20,11 @@
 				</UButton>
 			</div>
 		</section>
+
+		<div v-if="apiListLoading">
+			<UiLogoLoading />
+		</div>
+
 		<section class="hidden md:block py-4 px-8  border  border-primary-gray-light dark:border-primary-gray-dark rounded-md">
 			<h2 class="text-base font-bold mb-3">
 				{{ $t('apiKeyRecords') }}
@@ -62,7 +67,10 @@
 						</td>
 						<td class="text-sm font-normal py-2">
 							<div class="flex items-center">
-								<IconCopy class="text-xl cursor-pointer" />
+								<IconCopy
+									class="text-xl cursor-pointer"
+									@click="copyText(row.apiKey)"
+								/>
 								<span class="pr-2">{{ row.apiKey }}</span>
 							</div>
 						</td>
@@ -96,6 +104,8 @@
 				</tbody>
 			</table>
 		</section>
+		<!-- Desktop -->
+
 		<section class="block md:hidden text-center">
 			<div class="my-1">
 				<UiTitleWithBack :title="$t('manageAPI')" />
@@ -115,6 +125,7 @@
 				{{ $t('goBackHomePage') }}
 			</UButton>
 		</section>
+		<!-- Mobile -->
 	</div>
 </template>
 
@@ -132,6 +143,7 @@ definePageMeta({
 const { $api, $swal } = useNuxtApp();
 const userRepo = userRepository($api);
 
+const { copyText } = useClipboard();
 const toast = useToast();
 
 const params = ref<ApiParams>({

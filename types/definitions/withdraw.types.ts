@@ -9,7 +9,7 @@ type WithdrawCoinFeesParams = {
 type WithdrawCoinFee = {
 	cid: number;
 	currency?: CurrencyBrief;
-	withdraw: WithdrawFee;
+	withdraw: WithdrawFee[];
 };
 
 type WithdrawFee = {
@@ -23,6 +23,8 @@ type WithdrawFee = {
 	fee: number;
 	percentage: number;
 	note: string;
+	min: number;
+	max: number;
 };
 
 type WithdrawListResponse = {

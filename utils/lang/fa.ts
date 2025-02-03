@@ -325,7 +325,7 @@ const persian = {
 	action: 'عملیات',
 	edit: 'ویرایش',
 	delete: 'حذف',
-	moreDetail: 'جزییات بیشتر',
+	moreDetail: 'جزئیات بیشتر',
 	congratulations: 'تبریک !',
 	awardText: 'به شما تخصیص داده شد',
 	yourAward: 'جایزه شما',
@@ -425,6 +425,7 @@ const persian = {
 	newCurrencies: 'ارز های جدید',
 	startTradingAt: 'شروع معامله در',
 	minimumWithdrawalAmount: 'حداقل میزان برداشت',
+	maximumWithdrawalAmount: 'حداکثر میزان برداشت',
 	apiText: 'به منظور حفظ امنیت بیشتر برای دسترسی به این بخش لطفا از طریق مرورگر دسکتاپ اقدام فرمایید. ',
 	goBackHomePage: 'بازگشت به صفحه اصلی',
 	marketsAvailableApiKey: 'بازارهای در دسترس کلید API',
@@ -1217,6 +1218,7 @@ const persian = {
 	add: 'افزودن',
 	alreadySelected: 'این بازار قبلا اضافه شده است!',
 	deleteApi: 'حذف API',
+	confirmationCo: 'تعداد تایید بلاکچین',
 };
 
 export default persian;
