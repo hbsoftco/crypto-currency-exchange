@@ -24,7 +24,7 @@
 			<!-- end of change numbers -->
 		</section>
 
-		<section class="my-4 py-4 px-8 border border-primary-gray-light dark:border-primary-gray-dark rounded">
+		<section class="hidden md:block my-4 py-4 px-8 border border-primary-gray-light dark:border-primary-gray-dark rounded">
 			<div class="my-4  border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<div class=" pb-4">
 					<span class="text-base font-bold">{{ $t('tradingGraphicalInterface') }}</span>

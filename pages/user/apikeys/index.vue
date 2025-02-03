@@ -107,9 +107,7 @@
 		<!-- Desktop -->
 
 		<section class="block md:hidden text-center">
-			<div class="my-1">
-				<UiTitleWithBack :title="$t('manageAPI')" />
-			</div>
+			<BackHeader :title="$t('manageAPI')" />
 			<img
 				src="/images/profile/api.png"
 				alt="api"
@@ -120,6 +118,7 @@
 			</p>
 			<UButton
 				size="lg"
+				to="/"
 				class="text-base font-extrabold py-3 px-12 text-center my-16"
 			>
 				{{ $t('goBackHomePage') }}
@@ -134,6 +133,8 @@ import { toPersianDate } from '~/utils/helpers';
 import IconCopy from '~/assets/svg-icons/menu/copy.svg';
 import { userRepository } from '~/repositories/user.repository';
 import type { Api, ApiParams } from '~/types/definitions/user.types';
+
+const BackHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/BackHeader.vue'));
 
 definePageMeta({
 	layout: 'account',

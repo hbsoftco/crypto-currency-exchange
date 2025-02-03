@@ -40,7 +40,6 @@
 								label="activeUntil"
 								placeholder=""
 								icon=""
-								color-type="transparent"
 								:error-message="v$.countDaysValid.$error? $t('fieldIsRequired') : ''"
 							/>
 						</div>

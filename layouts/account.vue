@@ -58,6 +58,7 @@ const specialRoutes = ref<string[]>([
 	'user-white-list',
 	'user-rewards',
 	'user-fees',
+	'user-apikeys',
 	'user',
 ]);
 
