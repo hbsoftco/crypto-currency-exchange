@@ -601,6 +601,7 @@ const persian = {
 	addBankInformationTitr: 'در صورت ثبت نشدن کارت بانکی خود به پشتیبانی آنلاین پیام بدهید.',
 	cardNumber‌Bank: 'شماره کارت بانکی',
 	validityDate: 'تاریخ اعتبار',
+	expireTime: 'تاریخ انقضا',
 	extension: 'تمدید',
 	invalidate: 'باطل کردن',
 	depositClaim: 'ادعای واریز',
@@ -1215,6 +1216,7 @@ const persian = {
 	allAccess: 'همه دسترسی‌ها',
 	add: 'افزودن',
 	alreadySelected: 'این بازار قبلا اضافه شده است!',
+	deleteApi: 'حذف API',
 };
 
 export default persian;

@@ -43,7 +43,8 @@
 							{{ $t('createTime') }}
 						</th>
 						<th class="pb-2 text-sm font-bold">
-							{{ $t('dayUntilExpiration') }}
+							<!-- {{ $t('dayUntilExpiration') }} -->
+							{{ $t('expireTime') }}
 						</th>
 						<th class="pb-2 text-sm font-bold">
 							{{ $t('action') }}
@@ -57,31 +58,37 @@
 						class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"
 					>
 						<td class="text-sm font-normal py-2">
-							<!-- {{ row.name }} -->
+							{{ row.apiName }}
 						</td>
 						<td class="text-sm font-normal py-2">
 							<div class="flex items-center">
-								<IconCopy class="text-sm ml-1 cursor-pointer" />
-								<!-- {{ useNumber(row.apiKey) }} -->
+								<IconCopy class="text-xl cursor-pointer" />
+								<span class="pr-2">{{ row.apiKey }}</span>
 							</div>
 						</td>
 						<td class="text-sm font-normal py-2">
 							<!-- {{ useNumber(row.access) }} -->
 						</td>
 						<td class="text-sm font-normal py-2">
-							<!-- {{ useNumber(row.ip) }} -->
+							{{ row.restrictedIPs }}
 						</td>
-						<td class="text-sm font-normal py-2">
-							<!-- {{ useNumber(row.createTime) }} -->
+						<td
+							class="text-sm font-normal py-2"
+							dir="ltr"
+						>
+							{{ toPersianDate(row.regTime, 'full-with-month') }}
 						</td>
-						<td class="text-sm font-normal py-2">
-							<!-- {{ useNumber(row.expire) }} -->
+						<td
+							class="text-sm font-normal py-2"
+							dir="ltr"
+						>
+							{{ toPersianDate(row.expireTime, 'full-with-month') }}
 						</td>
 						<td class="flex">
-							<div class="mx-2">
+							<!-- <div class="mx-2">
 								<span class="text-subtle-text-light dark:text-subtle-text-dark text-xs font-normal cursor-pointer">{{ $t('edit') }}</span>
-							</div>
-							<div>
+							</div> -->
+							<div @click="deleteApi(row.apiKey)">
 								<span class="text-accent-red text-xs font-normal cursor-pointer">{{ $t('delete') }}</span>
 							</div>
 						</td>
@@ -112,6 +119,7 @@
 </template>
 
 <script setup lang="ts">
+import { toPersianDate } from '~/utils/helpers';
 import IconCopy from '~/assets/svg-icons/menu/copy.svg';
 import { userRepository } from '~/repositories/user.repository';
 import type { Api, ApiParams } from '~/types/definitions/user.types';
@@ -121,8 +129,10 @@ definePageMeta({
 	middleware: 'auth',
 });
 
-const { $api } = useNuxtApp();
+const { $api, $swal } = useNuxtApp();
 const userRepo = userRepository($api);
+
+const toast = useToast();
 
 const params = ref<ApiParams>({
 	srchKey: '',
@@ -147,15 +157,42 @@ const getApiList = async () => {
 	}
 };
 
+const deleteApiLoading = ref<boolean>(false);
+const deleteApi = async (apiKey: string) => {
+	try {
+		const confirmation = await $swal.fire({
+			title: useT('deleteApi'),
+			text: useT('areYouSure'),
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: useT('yesDoIt'),
+			cancelButtonText: useT('cancel'),
+		});
+
+		if (confirmation.isConfirmed) {
+			deleteApiLoading.value = true;
+
+			await userRepo.deleteApi({ apiKey });
+
+			toast.add({
+				title: useT('operationSuccess'),
+				id: 'modal-success',
+				timeout: 5000,
+				color: 'green',
+			});
+
+			await getApiList();
+
+			deleteApiLoading.value = false;
+		}
+	}
+	catch (error) {
+		deleteApiLoading.value = false;
+		console.log(error);
+	}
+};
+
 onMounted(async () => {
 	await getApiList();
 });
-
-// Old
-// const rows = ref([
-// 	{ id: 1, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
-// 	{ id: 2, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
-// 	{ id: 3, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
-// 	{ id: 4, name: 'بیت لند ۱', apiKey: '6486461631', access: 'schvksvcdsjhcvdsjds35ds15151', ip: '99.4589.2554', createTime: '۱۴۰۱/۰۳/۲۱- ۱۴:۱۳', expire: '۱۴' },
-// ]);
 </script>

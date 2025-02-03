@@ -55,7 +55,7 @@
 					</URadioGroup>
 				</div>
 			</div>
-			<div class="my-4  border-b border-primary-gray-light dark:border-primary-gray-dark">
+			<!-- <div class="my-4  border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<div class="flex mb-3">
 					<span class="text-sm font-bold mr-2">{{ $t('showOrderBook') }}</span>
 				</div>
@@ -82,10 +82,10 @@
 						}"
 					/>
 				</div>
-			</div>
+			</div> -->
 		</section>
 
-		<section class="my-4 py-4 px-8 border border-primary-gray-light dark:border-primary-gray-dark rounded">
+		<!-- <section class="my-4 py-4 px-8 border border-primary-gray-light dark:border-primary-gray-dark rounded">
 			<div
 				class="cursor-pointer flex justify-between items-center"
 			>
@@ -116,13 +116,13 @@
 					</div>
 				</div>
 			</div>
-		</section>
+		</section> -->
 	</div>
 </template>
 
 <script setup lang="ts">
 import IconScreen from '~/assets/svg-icons/profile/screen.svg';
-import IconNotification from '~/assets/svg-icons/menu/notification.svg';
+// import IconNotification from '~/assets/svg-icons/menu/notification.svg';
 import BackHeader from '~/components/layouts/Default/Mobile/BackHeader.vue';
 
 definePageMeta({
@@ -138,46 +138,46 @@ onMounted(() => {
 	isMobile.value = !!mobileDetect.mobile();
 });
 
-const showOrderBook = [
-	{
-		value: 'cumulativeNumberValue',
-		label: useT('cumulativeNumberValue'),
-	},
-	{
-		value: 'numberValue',
-		label: useT('numberValue'),
-	},
-	{
-		value: 'quantityCumulativeAmount',
-		label: useT('quantityCumulativeAmount'),
-	},
-];
+// const showOrderBook = [
+// 	{
+// 		value: 'cumulativeNumberValue',
+// 		label: useT('cumulativeNumberValue'),
+// 	},
+// 	{
+// 		value: 'numberValue',
+// 		label: useT('numberValue'),
+// 	},
+// 	{
+// 		value: 'quantityCumulativeAmount',
+// 		label: useT('quantityCumulativeAmount'),
+// 	},
+// ];
 
-const basisDisplayMarkets = [
-	{
-		value: 'priceChangePriority',
-		label: useT('priceChangePriority'),
-	},
-	{
-		value: 'volume',
-		label: useT('volume'),
-	},
-];
+// const basisDisplayMarkets = [
+// 	{
+// 		value: 'priceChangePriority',
+// 		label: useT('priceChangePriority'),
+// 	},
+// 	{
+// 		value: 'volume',
+// 		label: useT('volume'),
+// 	},
+// ];
 
-const notification = [
-	{
-		value: 'all',
-		label: useT('all'),
-	},
-	{
-		value: 'onlyImportant',
-		label: useT('onlyImportant'),
-	},
-	{
-		value: 'none',
-		label: useT('none'),
-	},
-];
+// const notification = [
+// 	{
+// 		value: 'all',
+// 		label: useT('all'),
+// 	},
+// 	{
+// 		value: 'onlyImportant',
+// 		label: useT('onlyImportant'),
+// 	},
+// 	{
+// 		value: 'none',
+// 		label: useT('none'),
+// 	},
+// ];
 
 const trading = [
 	{
@@ -197,8 +197,8 @@ const trading = [
 	},
 ];
 
-const selectedShowOrderBook = ref('cumulativeNumberValue');
-const selectedBasisDisplayMarkets = ref('priceChangePriority');
-const selectedNotification = ref('all');
+// const selectedShowOrderBook = ref('cumulativeNumberValue');
+// const selectedBasisDisplayMarkets = ref('priceChangePriority');
+// const selectedNotification = ref('all');
 const selectedSpotThemeType = ref('classic');
 </script>
