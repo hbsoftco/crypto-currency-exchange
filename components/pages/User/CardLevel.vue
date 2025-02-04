@@ -158,10 +158,10 @@
 					class="h-[39rem] md:h-[45rem] bg-gradient-to-b from-[#d8d8d7] to-white  relative py-8 px-4 text-right transition-all duration-200 rounded shadow-sm"
 					dir="rtl"
 				>
-					<DepositModal
+					<!-- <DepositModal
 						v-if="showDeposit"
 						@close="closeDepositDetail"
-					/>
+					/> -->
 					<div class="absolute left-2">
 						<img
 							:src="'/images/profile/vip.svg'"
@@ -473,7 +473,7 @@ import IconGift from '~/assets/svg-icons/profile/account/gift.svg';
 import IconCoffee from '~/assets/svg-icons/profile/account/coffee.svg';
 import IconSymbol from '~/assets/svg-icons/profile/account/symbol.svg';
 import { getValueByKey } from '~/utils/helpers';
-import DepositModal from '~/components/pages/Site/Wallet/Menu/DepositModal.vue';
+// import DepositModal from '~/components/pages/Site/Wallet/Menu/DepositModal.vue';
 import type { Level } from '~/types/definitions/user.types';
 
 interface PropsDefinition {
