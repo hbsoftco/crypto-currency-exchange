@@ -90,48 +90,12 @@ type GetPortfolioRes = {
 	};
 };
 
-type BoxItem = {
-	boxId: number;
-	boxName: string;
-	usdValue: string;
-	q1Value: string;
-	q2Value: string;
-	q3Value: string;
-};
-
-type GetBoxRes = {
-	statusCode: number;
-	result: BoxItem[];
-};
-
-type RecentItem = {
-	id: number;
-	isOutput: boolean;
-	factorNo: string;
-	txCode: string;
-	currencyId: number;
-	value: string;
-	doneTime: string;
-};
-
-type GetRecentListRes = {
-	statusCode: number;
-	result: {
-		totalCount: number;
-		rows: RecentItem[];
-	};
-};
-
 export type {
 	GetAssetListResponse,
 	AssetItem,
-	RecentItem,
 	GetInternalReceiveListResponse,
 	GetMiscellaneousListResponse,
 	InternalReceive,
 	MiscellaneousList,
-	BoxItem,
 	GetPortfolioRes,
-	GetBoxRes,
-	GetRecentListRes,
 };

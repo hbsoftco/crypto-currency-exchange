@@ -253,7 +253,7 @@
 							</h6>
 
 							<ULink
-								to="/wallet/over-view"
+								to="/assets/overview"
 								class="text-sm text-primary-yellow-light dark:text-primary-yellow-dark font-medium"
 							>
 								{{ $t('assetDetails') }}

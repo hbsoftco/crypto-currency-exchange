@@ -589,9 +589,10 @@ const persian = {
 	listRecentTransactions: 'لیست اخرین تراکنش‌ها',
 	typeActivity: 'نوع فعالیت',
 	date1: 'تاریخ',
+	availableAssets: 'دارایی دردسترس',
 	removable: 'قابل برداشت',
-	lockedSpot: 'قفل شده در اسپات',
-	lockedVitDra: 'قفل شده در ویت درا',
+	lockedSpot: 'قفل شده در معاملات اسپات',
+	lockedWithdraw: 'قفل شده در برداشت',
 	bitlandOffer: 'پیشنهاد بیت لند',
 	bitlandOfferText: 'بیت لند، محصول شرکت عصر زراندیشان آراد از گروه شرکت های مطرح در حوزه فناوری اطلاعات و ارتباطات، مدیریت مالی و سرمایه گذاری و حقوقی به همراه تیمی از خبرگان حوزه ارز دیجیتال و فناوری است',
 	bank: 'بانک',
@@ -1222,6 +1223,12 @@ const persian = {
 	checkingFiles: 'درحال بررسی مدارک',
 	checkingFilesDescription: 'کاربرگرامی، شما از قبل مدارکی آپلود کرده اید، امکان تغییر در مدارک تا زمان بررسی مدارک قبلی امکان پذیر نمی باشد.',
 	addNewApi: 'ثبت api جدید',
+	availableMargin: 'مارجین دردسترس',
+	openPositionsMargin: 'مارجین پوزیشن های باز',
+	openPositionsValue: 'ارزش پوزیشن های باز',
+	pendingOrders: 'سفارشات پر نشده (Pending)',
+	unrealizedPnL: 'سودوزیاد محقق نشده',
+	maintenanceMargin: 'مارجین نگهداری',
 };
 
 export default persian;

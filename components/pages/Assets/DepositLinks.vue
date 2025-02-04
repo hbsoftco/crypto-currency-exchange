@@ -1,5 +1,13 @@
 <template>
-	<div>
+	<span>
+		<UButton
+			class="flex items-center py-2 px-3 bg-hover-light dark:bg-hover-dark hover:bg-hover-light dark:hover:bg-hover-dark cursor-pointer"
+			@click="isOpen=true"
+		>
+			<span class="text-sm font-medium ml-1 text-black dark:text-white">{{ $t('deposit') }}</span>
+			<IconArrowUpGreen class="text-xl text-accent-green" />
+		</UButton>
+
 		<UModal
 			v-model="isOpen"
 			fullscreen
@@ -57,25 +65,16 @@
 				</div>
 				<IconClose
 					class="text-4xl hidden md:block cursor-pointer"
-					@click="closeModal(false)"
+					@click="isOpen=false"
 				/>
 			</div>
 		</UModal>
-	</div>
+	</span>
 </template>
 
 <script setup lang="ts">
-// import { useNumber } from '~/composables/useNumber';
+import IconArrowUpGreen from '~/assets/svg-icons/arrow-up-green.svg';
 import IconClose from '~/assets/svg-icons/close.svg';
 
-const isOpen = ref(true);
-interface EmitDefinition {
-	(event: 'close', value: boolean): void;
-}
-
-const emit = defineEmits<EmitDefinition>();
-
-const closeModal = async (value: boolean) => {
-	emit('close', value);
-};
+const isOpen = ref(false);
 </script>

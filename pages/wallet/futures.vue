@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 definePageMeta({
-	layout: 'wallet',
+	layout: 'asset',
 	middleware: 'auth',
 });
 </script>

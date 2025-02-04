@@ -18,16 +18,16 @@
 		</thead>
 		<tbody>
 			<tr
-				v-for="row in recentList"
+				v-for="row in assetRecentList"
 				:key="row.id"
 				class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark odd:bg-hover2-light dark:odd:bg-hover2-dark even:bg-background-light dark:even:bg-background-dark"
 			>
 				<td class="text-sm font-normal py-2 px-2">
-					{{ useNumber(row.doneTime) }}
+					{{ row.doneTime }}
 				</td>
 				<td class="text-sm font-normal py-2">
 					<div>
-						<span>{{ useNumber(row.value) }}</span>
+						<span>{{ row.value }}</span>
 						<span class="text-subtle-text-light dark:text-subtle-text-dark mr-1">
 							{{ $t('toman') }}
 						</span>
@@ -60,28 +60,26 @@
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
 import { assetRepository } from '~/repositories/asset.repository';
-import type { GetRecentListParams } from '~/types/base.types';
-import type { RecentItem } from '~/types/response/asset.types';
+import type { AssetRecent, AssetRecentListParams } from '~/types/definitions/asset.types';
 
 const { $api } = useNuxtApp();
 const assetRepo = assetRepository($api);
 
-const params = ref<GetRecentListParams>({
+const params = ref<AssetRecentListParams>({
 	type: '',
 	directionType: '',
-	rowCount: '',
+	rowCount: '3',
 });
 
-const recentListLoading = ref<boolean>(false);
-const recentList = ref<RecentItem[]>([]);
-const getRecentList = async () => {
+const assetRecentListLoading = ref<boolean>(false);
+const assetRecentList = ref<AssetRecent[]>([]);
+const getAssetRecentList = async () => {
 	try {
-		recentListLoading.value = true;
-		const { result } = await assetRepo.getRecentList(params.value);
-		recentList.value = result.rows;
-		recentListLoading.value = true;
+		assetRecentListLoading.value = true;
+		const { result } = await assetRepo.getAssetRecentList(params.value);
+		assetRecentList.value = result.rows as AssetRecent[];
+		assetRecentListLoading.value = true;
 	}
 	catch (error) {
 		console.log(error);
@@ -89,6 +87,6 @@ const getRecentList = async () => {
 };
 
 onMounted(async () => {
-	await getRecentList();
+	await getAssetRecentList();
 });
 </script>

@@ -1,5 +1,13 @@
 <template>
-	<div>
+	<span>
+		<UButton
+			class="flex items-center py-2 px-3 bg-hover-light dark:bg-hover-dark hover:bg-hover-light dark:hover:bg-hover-dark cursor-pointer"
+			@click="isOpen= true"
+		>
+			<span class="text-sm font-medium ml-1 text-black dark:text-white">{{ $t('transfer') }}</span>
+			<IconMoney class="text-xl text-accent-blue" />
+		</UButton>
+
 		<UModal
 			v-model="isOpen"
 			fullscreen
@@ -76,7 +84,7 @@
 							<div class="flex items-center">
 								<div>
 									<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('inventory') }}:</span>
-									<span class="mr-1 text-xs font-normal text-left">{{ useNumber('0 BTC') }}</span>
+									<span class="mr-1 text-xs font-normal text-left">{{ '0 BTC' }}</span>
 								</div>
 								<UButton
 									class="mr-2 text-primary-yellow-light hover:bg-hover-light dark:hover:bg-hover-dark dark:text-primary-yellow-dark bg-hover-light dark:bg-hover-dark text-xs font-bold"
@@ -107,28 +115,20 @@
 				</div>
 				<IconClose
 					class="text-4xl hidden md:block cursor-pointer"
-					@click="closeModal(false)"
+					@click="isOpen=false"
 				/>
 			</div>
 		</UModal>
-	</div>
+	</span>
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
 import IconClose from '~/assets/svg-icons/close.svg';
 import IconChange from '~/assets/svg-icons/trade/change.svg';
+import IconMoney from '~/assets/svg-icons/wallet/money.svg';
 
-const isOpen = ref(true);
-interface EmitDefinition {
-	(event: 'close', value: boolean): void;
-}
+const isOpen = ref(false);
 
-const emit = defineEmits<EmitDefinition>();
-
-const closeModal = async (value: boolean) => {
-	emit('close', value);
-};
 const market = ['بازار', 'Arlene Mccoy', 'Devon Webb', 'Tom Cook', 'Tanya Fox', 'Hellen Schmidt', 'Caroline Schultz', 'Mason Heaney', 'Claudie Smitham', 'Emil Schaefer'];
 
 const selectedMarket = ref(market[0]);

@@ -276,7 +276,7 @@ const getAssetList = async () => {
 
 		assetList.value = await worker.addCurrencyToAsset(
 			useEnv('apiBaseUrl'),
-			result.rows,
+			result.rows as Asset[],
 		);
 		assetListLoading.value = false;
 	}

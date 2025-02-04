@@ -1,17 +1,5 @@
 <template>
 	<div>
-		<WithdrawalModal
-			v-if="showWithdrawal"
-			@close="closeWithdrawalDetail"
-		/>
-		<DepositModal
-			v-if="showDeposit"
-			@close="closeDepositDetail"
-		/>
-		<TransferModal
-			v-if="showTransfer"
-			@close="closeTransferDetail"
-		/>
 		<section class="mx-4 my-5 ">
 			<div class="grid grid-cols-1 md:grid-cols-2">
 				<div class="flex items-center">
@@ -21,31 +9,14 @@
 					<IconEye class="text-xl cursor-pointer" />
 				</div>
 
-				<div class="flex justify-center md:justify-end mt-4 md:mt-0">
-					<UButton
-						class="flex items-center  py-1 px-3 bg-hover-light dark:bg-hover-dark cursor-pointer"
-						@click="openDepositDetail"
-					>
-						<span class="text-sm font-medium ml-1 text-black dark:text-white">{{ $t('deposit') }}</span>
-						<IconArrowUpGreen class="text-accent-green" />
-					</UButton>
-					<UButton
-						class="flex items-center  py-1 px-3 bg-hover-light dark:bg-hover-dark mx-2 cursor-pointer"
-						@click="openWithdrawalDetail"
-					>
-						<span class="text-sm font-medium ml-1 text-black dark:text-white">{{ $t('pickedUp') }}</span>
-						<IconArrowDownRed class="text-accent-red" />
-					</UButton>
-					<UButton
-						class="flex items-center py-1 px-3 bg-hover-light dark:bg-hover-dark cursor-pointer"
-						@click="openTransferDetail"
-					>
-						<span class="text-sm font-medium ml-1 text-black dark:text-white">{{ $t('transfer') }}</span>
-						<IconMoney class="text-accent-blue" />
-					</UButton>
+				<div class="flex justify-center md:justify-end mt-4 md:mt-0 gap-3">
+					<DepositLinks />
+					<WithdrawLinks />
+					<Transfer />
 				</div>
 			</div>
 		</section>
+		<!-- Title and Action Links -->
 
 		<section>
 			<div class="block md:flex justify-between px-4 py-8">
@@ -53,7 +24,7 @@
 					<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('totalAssets') }}</span>
 					<div class="flex justify-end  text-left my-2">
 						<p class="text-base font-bold">
-							{{ useNumber('۲۵.۰۰۰.۰۰۰') }}
+							{{ ('۲۵.۰۰۰.۰۰۰') }}
 						</p>
 						<p class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-1">
 							{{ $t('toman') }}
@@ -61,10 +32,10 @@
 					</div>
 					<div class="flex justify-end  text-left my-2">
 						<p class="text-base font-bold">
-							{{ useNumber('۲۵.۰۰۰.۰۰۰') }}
+							{{ ('۲۵.۰۰۰.۰۰۰') }}
 						</p>
 						<p class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-1">
-							{{ $t('USD') }}
+							USD
 						</p>
 					</div>
 				</div>
@@ -72,7 +43,7 @@
 					<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('totalAssets') }}</span>
 					<div class="flex justify-end  text-left my-2">
 						<p class="text-base font-bold">
-							{{ useNumber('۲۵.۰۰۰.۰۰۰') }}
+							{{ ('۲۵.۰۰۰.۰۰۰') }}
 						</p>
 						<p class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-1">
 							{{ $t('toman') }}
@@ -80,10 +51,10 @@
 					</div>
 					<div class="flex justify-end  text-left my-2">
 						<p class="text-base font-bold">
-							{{ useNumber('۲۵.۰۰۰.۰۰۰') }}
+							{{ ('۲۵.۰۰۰.۰۰۰') }}
 						</p>
 						<p class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-1">
-							{{ $t('USD') }}
+							USD
 						</p>
 					</div>
 				</div>
@@ -92,7 +63,7 @@
 						<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">{{ $t('todayprofitLoss') }}</span>
 						<div class="flex justify-end  text-left my-2">
 							<p class="text-base font-bold">
-								{{ useNumber('۲۵.۰۰۰.۰۰۰') }}
+								{{ ('۲۵.۰۰۰.۰۰۰') }}
 							</p>
 							<p class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-1">
 								{{ $t('toman') }}
@@ -102,7 +73,7 @@
 							class="flex justify-end  text-left my-2 "
 						>
 							<span class="text-base font-bold text-accent-green">
-								{{ useNumber('۰/۰۹') }}
+								{{ ('۰/۰۹') }}
 							</span>
 							<IconArrowUpGreen class="text-accent-green" />
 						</div>
@@ -201,26 +172,26 @@
 									</div>
 								</td>
 								<td class="text-nowrap text-base font-medium py-2">
-									{{ useNumber(row.totalInventory) }}
+									{{ (row.totalInventory) }}
 									<div class="flex text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
 										<span>~</span>
-										<span>{{ useNumber(' ۱.۵') }}</span>
+										<span>{{ (' ۱.۵') }}</span>
 										<span>{{ $t('میلیارد تومان') }}</span>
 									</div>
 								</td>
 								<td class="text-nowrap text-base font-medium py-2">
-									{{ useNumber(row.locked) }}
+									{{ (row.locked) }}
 									<div class="flex text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
 										<span>~</span>
-										<span>{{ useNumber(' ۱.۵') }}</span>
+										<span>{{ (' ۱.۵') }}</span>
 										<span>{{ $t('میلیارد تومان') }}</span>
 									</div>
 								</td>
 								<td class="text-nowrap text-base font-medium py-2">
-									<span>{{ useNumber(row.removable) }}</span>
+									<span>{{ (row.removable) }}</span>
 									<div class="flex text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
 										<span>~</span>
-										<span>{{ useNumber(' ۱.۵') }}</span>
+										<span>{{ (' ۱.۵') }}</span>
 										<span>{{ $t('میلیارد تومان') }}</span>
 									</div>
 								</td>
@@ -270,17 +241,17 @@
 
 <script setup lang="ts">
 import IconEye from '~/assets/svg-icons/wallet/eye.svg';
-import IconArrowDownRed from '~/assets/svg-icons/arrow-down-red.svg';
 import IconArrowUpGreen from '~/assets/svg-icons/arrow-up-green.svg';
-import IconMoney from '~/assets/svg-icons/wallet/money.svg';
-import { useNumber } from '~/composables/useNumber';
 import IconArrowLeft from '~/assets/svg-icons/menu/arrow-left.svg';
-import WithdrawalModal from '~/components/pages/Site/Wallet/Menu/WithdrawalModal.vue';
-import DepositModal from '~/components/pages/Site/Wallet/Menu/DepositModal.vue';
-import TransferModal from '~/components/pages/Site/Wallet/Menu/TransferModal.vue';
+import Transfer from '~/components/pages/Assets/Transfer.vue';
+import WithdrawLinks from '~/components/pages/Assets/WithdrawLinks.vue';
+import DepositLinks from '~/components/pages/Assets/DepositLinks.vue';
+// import WithdrawalModal from '~/components/pages/Site/Wallet/Menu/WithdrawalModal.vue';
+// import DepositModal from '~/components/pages/Site/Wallet/Menu/DepositModal.vue';
+// import TransferModal from '~/components/pages/Site/Wallet/Menu/TransferModal.vue';
 
 definePageMeta({
-	layout: 'wallet',
+	layout: 'asset',
 	middleware: 'auth',
 });
 const selected = ref(false);
@@ -304,31 +275,4 @@ const currentPage = ref(1);
 function onPageChange(newPage: number) {
 	currentPage.value = newPage;
 }
-const showDeposit = ref(false);
-const showWithdrawal = ref(false);
-const showTransfer = ref(false);
-
-const openWithdrawalDetail = () => {
-	showWithdrawal.value = true;
-};
-
-const closeWithdrawalDetail = () => {
-	showWithdrawal.value = false;
-};
-
-const openDepositDetail = () => {
-	showDeposit.value = true;
-};
-
-const closeDepositDetail = () => {
-	showDeposit.value = false;
-};
-
-const openTransferDetail = () => {
-	showTransfer.value = true;
-};
-
-const closeTransferDetail = () => {
-	showTransfer.value = false;
-};
 </script>

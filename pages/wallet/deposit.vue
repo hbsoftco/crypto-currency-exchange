@@ -34,7 +34,7 @@ import FormDeposit from '~/components/pages/Site/Wallet/Deposit/FormDeposit.vue'
 import Table from '~/components/pages/Site/Wallet/Deposit/Table.vue';
 
 definePageMeta({
-	layout: 'wallet',
+	layout: 'asset',
 	middleware: 'auth',
 });
 </script>

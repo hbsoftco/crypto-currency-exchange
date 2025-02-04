@@ -1,10 +1,10 @@
 <template>
 	<div class="p-4">
 		<ul class="flex flex-col">
-			<!-- showOverView -->
+			<!-- Overview Menu -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
-					to="/wallet/over-view"
+					to="/assets/overview"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
 					active-class="text-active"
 				>
@@ -18,10 +18,11 @@
 					</div>
 				</ULink>
 			</li>
-			<!-- showSpot -->
+
+			<!-- Spot Menu -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
-					to="/wallet/spot"
+					to="/assets/spot"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
 					active-class="text-active"
 				>
@@ -35,6 +36,7 @@
 					</div>
 				</ULink>
 			</li>
+
 			<!-- showFutures -->
 			<!-- <li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
@@ -69,7 +71,7 @@
 					</div>
 				</ULink>
 			</li>
-			<!-- showprofitLoss -->
+			<!-- showProfitLoss -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
 					to="/wallet/profit-loss"

@@ -198,7 +198,7 @@ import type { Crypto } from '~/types/response/deposit.types';
 import { DepositType } from '~/utils/enums/deposit.enum';
 
 definePageMeta({
-	layout: 'wallet',
+	layout: 'asset',
 	middleware: 'auth',
 });
 const { $api } = useNuxtApp();

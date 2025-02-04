@@ -171,22 +171,6 @@ type GetPanelListParams = {
 	pageSize?: string;
 };
 
-type GetAssetBoxParams = {
-	q1CurrencyId: string;
-	q2CurrencyId?: string;
-	q3CurrencyId?: string;
-	maskedInfo?: string;
-	assetType: string;
-	boxMode: string;
-	miniAssetMode: string;
-};
-
-type GetRecentListParams = {
-	type: string;
-	directionType: string;
-	rowCount: string;
-};
-
 type GetReferralParams = {
 	assessmentCurrencyId: string;
 };
@@ -216,8 +200,6 @@ export type {
 	GetHowBuyListParams,
 	GetSubjectLiveChatParams,
 	GetPanelListParams,
-	GetAssetBoxParams,
-	GetRecentListParams,
 	GetReferralParams,
 	DepositCoinListParams,
 	WithdrawCoinListParams,

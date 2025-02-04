@@ -17,7 +17,7 @@
 							class="p-2 bg-background-light dark:bg-background-dark rounded-lg"
 						>
 							<ULink
-								to="/wallet/over-view"
+								to="/assets/overview"
 								class="flex justify-start items-center"
 							>
 								<IconWallet class="text-2xl text-subtle-text-50 dark:text-subtle-text-50 mb-0 w-6 h-6 ml-2" />
@@ -32,7 +32,7 @@
 								<span
 									v-if="assetTotal?.totalOnQ1"
 									class="text-base font-bold"
-								>{{ useNumber(priceFormat(assetTotal?.totalOnQ1)) }}</span>
+								>{{ (priceFormat(assetTotal?.totalOnQ1)) }}</span>
 							</div>
 							<div class="flex items-center justify-end p-1">
 								<span
@@ -41,7 +41,7 @@
 								<span
 									v-if="assetTotal?.totalOnQ2"
 									class="text-base font-bold ml-2"
-								>{{ useNumber(priceFormat(assetTotal?.totalOnQ2)) }}</span>
+								>{{ (priceFormat(assetTotal?.totalOnQ2)) }}</span>
 								<span>=</span>
 							</div>
 						</div>
@@ -83,7 +83,7 @@
 											class="text-xl dark:text-subtle-text-50 ml-2"
 										/>
 										<div class="mr-2">
-											<span class="text-xs font-bold">{{
+											<span class="text-sm font-semibold">{{
 												$t(item.name)
 											}}</span>
 										</div>
@@ -99,7 +99,6 @@
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
 import IconWallet from '~/assets/svg-icons/menu/wallet.svg';
 import IconArrowDownRed from '~/assets/svg-icons/arrow-down-red.svg';
 import IconArrowUpGreen from '~/assets/svg-icons/arrow-up-green.svg';
@@ -118,7 +117,7 @@ const menuItems = [
 	{
 		name: 'overView',
 		icon: IconOverView,
-		url: '/wallet/over-view',
+		url: '/assets/overview',
 	},
 	{
 		name: 'assets',

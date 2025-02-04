@@ -82,7 +82,7 @@ import IconPdf from '~/assets/svg-icons/wallet/pdf.svg';
 import Withdraw from '~/components/pages/Site/Wallet/Menu/History/Withdraw/index.vue';
 
 definePageMeta({
-	layout: 'wallet',
+	layout: 'asset',
 	middleware: 'auth',
 });
 

@@ -73,7 +73,7 @@ import type { GetBankParams } from '~/types/base.types';
 import type { Bank } from '~/types/response/user.types';
 
 definePageMeta({
-	layout: 'wallet',
+	layout: 'asset',
 	middleware: 'auth',
 });
 

@@ -1,11 +1,13 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { GetAssetBoxParams, GetInternalReceiveParams, GetMiscellaneousListParams, GetPanelListParams, GetRecentListParams } from '~/types/base.types';
+import type { GetInternalReceiveParams, GetMiscellaneousListParams, GetPanelListParams } from '~/types/base.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
-import type { GetAssetListResponse, GetBoxRes, GetInternalReceiveListResponse, GetMiscellaneousListResponse, GetPortfolioRes, GetRecentListRes } from '~/types/response/asset.types';
+import type { GetAssetListResponse, GetInternalReceiveListResponse, GetMiscellaneousListResponse, GetPortfolioRes } from '~/types/response/asset.types';
 import type {
+	AssetBoxBriefParams,
 	AssetListParams,
 	AssetListResponse,
+	AssetRecentListParams,
 	AssetResponse,
 	AssetTotalParams,
 
@@ -14,12 +16,12 @@ import type {
 type AssetRepository = {
 	getAssetList: (params: AssetListParams) => Promise<AssetListResponse>;
 	getAssetTotal: (params: AssetTotalParams) => Promise<AssetResponse>;
+	getAssetBoxBrief: (params: AssetBoxBriefParams) => Promise<AssetResponse>;
+	getAssetRecentList: (params: AssetRecentListParams) => Promise<AssetListResponse>;
 	//
 	getInternalReceiveList: (params: GetInternalReceiveParams) => Promise<GetInternalReceiveListResponse>;
 	getMiscellaneousList: (params: GetMiscellaneousListParams) => Promise<GetMiscellaneousListResponse>;
 	getSpotPanelList: (params: GetPanelListParams) => Promise<GetPortfolioRes>;
-	getSpotBox: (params: GetAssetBoxParams) => Promise<GetBoxRes>;
-	getRecentList: (params: GetRecentListParams) => Promise<GetRecentListRes>;
 };
 
 export const assetRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AssetRepository => ({
@@ -45,6 +47,34 @@ export const assetRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Asse
 
 		const url = '/v1/asset/box/asset_total';
 		const response = await fetch<AssetResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getAssetBoxBrief(params: AssetBoxBriefParams): Promise<AssetResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/asset/box/brief';
+		const response = await fetch<AssetResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getAssetRecentList(params: AssetRecentListParams): Promise<AssetListResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/asset/common/tx_recent_list';
+		const response = await fetch<AssetListResponse>(`${url}?${query.toString()}`, {
 			noAuth: false,
 			method: 'GET',
 		} as CustomNitroFetchOptions);
@@ -96,34 +126,6 @@ export const assetRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Asse
 			noAuth: false,
 			apiName: url,
 			queryParams: params,
-			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getSpotBox(params: GetAssetBoxParams): Promise<GetBoxRes> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-
-		const url = '/v1/asset/box/brief';
-		const response = await fetch<GetBoxRes>(`${url}?${query.toString()}`, {
-			noAuth: false,
-			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getRecentList(params: GetRecentListParams): Promise<GetRecentListRes> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-
-		const url = '/v1/asset/common/tx_recent_list';
-		const response = await fetch<GetRecentListRes>(`${url}?${query.toString()}`, {
-			noAuth: false,
 			method: 'GET',
 		} as CustomNitroFetchOptions);
 
