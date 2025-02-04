@@ -1,10 +1,9 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { GetBankListResponse, GetBestListResponse } from '../types/response/user.types';
+import type { GetBestListResponse } from '../types/response/user.types';
 
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import type {
-	GetBankParams,
 	GetReferralBestListParams,
 	// GetRewardReceivedListParams,
 	GetTraderBestListParams } from '~/types/base.types';
@@ -21,6 +20,7 @@ import type {
 	ApiParams,
 	AppendTicketDto,
 	AssetTypeParams,
+	BankAccountListParams,
 	InvitationListParams,
 	InviteCommissionParams,
 	ReferralBriefParams,
@@ -83,9 +83,11 @@ type UserRepository = {
 	editApiPoint: (dto: ApiDto) => Promise<ResultResponse>;
 	deleteApi: (params: ApiKeyParams) => Promise<CommonResponse>;
 
+	// Assets
+	getBankAccountList: (params: BankAccountListParams) => Promise<UserResponse>;
+
 	// OLD
 	// getRewardReceivedList: (params: GetRewardReceivedListParams) => Promise<GetRewardReceivedListResponse>;
-	getBankAccList: (params: GetBankParams) => Promise<GetBankListResponse>;
 	getReferralBestList: (params: GetReferralBestListParams) => Promise<GetBestListResponse>;
 	storeBankAccAdd: (params: AddCardBankSetDto) => Promise<CommonResponse>;
 	editCodeInvite: (params: CodeInviteDto) => Promise<CommonResponse>;
@@ -463,6 +465,21 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
+	// Assets
+	async getBankAccountList(params: BankAccountListParams): Promise<UserResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/user/bank/acc_list';
+		const response = await fetch<UserResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
 	// Old
 	// async getRewardReceivedList(params: GetRewardReceivedListParams): Promise<GetRewardReceivedListResponse> {
 	// 	const query = new URLSearchParams(
@@ -480,22 +497,6 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 	// 	return response;
 	// },
-	async getBankAccList(params: GetBankParams): Promise<GetBankListResponse> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-
-		const url = '/v1/user/bank/acc_list';
-		const response = await fetch<GetBankListResponse>(`${url}?${query.toString()}`, {
-			noAuth: false,
-			apiName: url,
-			queryParams: params,
-			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
 	async storeBankAccAdd(dto: AddCardBankSetDto): Promise<CommonResponse> {
 		const url = `/v1/user/bank/acc_add`;
 		const response = await fetch<CommonResponse>(`${url}`, {

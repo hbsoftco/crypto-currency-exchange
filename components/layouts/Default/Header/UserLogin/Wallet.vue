@@ -122,7 +122,7 @@ const menuItems = [
 	{
 		name: 'assets',
 		icon: IconAssets,
-		url: '/wallet/deposit-addresses',
+		url: '/assets/crypto-addresses',
 	},
 	{
 		name: 'history',

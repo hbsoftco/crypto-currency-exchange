@@ -110,7 +110,7 @@ const menuItems = [
 		name: 'banking',
 		description: useT('manageDepositAccounts'),
 		icon: IconBankAccounts,
-		url: '/wallet/bank-cards',
+		url: '/assets/fiat-accounts',
 
 	},
 	{

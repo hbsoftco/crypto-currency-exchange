@@ -38,33 +38,6 @@ type DepositResult = {
 	};
 };
 
-type Crypto = {
-	reqId: number;
-	addressId: number;
-	typeId: number;
-	typeName: string;
-	netId: number;
-	netName: string;
-	wloId: number;
-	wloName: string;
-	uidOwner: number;
-	userOwner: string;
-	address: string;
-	memo: string;
-	regTime: string;
-	expirationTime: string;
-	takenTime: string;
-	allocationTime: string;
-};
-
-type GetAddressListResponse = {
-	statusCode: number;
-	result: {
-		totalCount: number;
-		rows: Crypto[];
-	};
-};
-
 type AddressRevokeItem = {
 	reqId: number;
 	addressId: number;
@@ -113,8 +86,6 @@ type getDepositCoinListRes = {
 export type {
 	DepositResult,
 	Deposit,
-	GetAddressListResponse,
-	Crypto,
 	GetAddressRevokeRes,
 	DepositCoinItem,
 	getDepositCoinListRes,

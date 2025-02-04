@@ -91,7 +91,7 @@
 			<!-- showDepositAddresses -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
-					to="/wallet/deposit-addresses"
+					to="/assets/crypto-addresses"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
 					active-class="text-active"
 				>
@@ -108,7 +108,7 @@
 			<!-- showBankCards -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
-					to="/wallet/bank-cards"
+					to="/assets/fiat-accounts"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
 					active-class="text-active"
 				>

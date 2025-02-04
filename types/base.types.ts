@@ -105,22 +105,6 @@ type GetWithdrawParams = {
 	pageSize: string;
 };
 
-type GetBankParams = {
-	typeId: string;
-	statement: string;
-	pageNumber: string;
-	pageSize: string;
-};
-
-type GetDepositAddressParams = {
-	netId: string;
-	statement: string;
-	from: string;
-	to: string;
-	pageNumber: string;
-	pageSize: string;
-};
-
 type DepositCoinListParams = {
 	type: string;
 	statement: string;
@@ -195,8 +179,6 @@ export type {
 	GetMiscellaneousListParams,
 	GetRewardReceivedListParams,
 	GetWithdrawParams,
-	GetBankParams,
-	GetDepositAddressParams,
 	GetHowBuyListParams,
 	GetSubjectLiveChatParams,
 	GetPanelListParams,

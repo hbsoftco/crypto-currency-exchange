@@ -1,15 +1,17 @@
 <template>
-	<div>
-		<Invalidate
-			v-if="showDetail"
-			@close="closeDetail"
-		/>
-		<DepositClaim
-			v-if="showDepositClaim"
-			@close="closeDepositClaim"
-		/>
+	<div
+		v-if="depositCryptoAddressListLoading"
+		class="py-4 p-3 md:p-5"
+	>
+		<UiLogoLoading />
+	</div>
+
+	<div
+		v-else
+		class="py-4 p-3 md:p-5"
+	>
 		<section>
-			<div class="p-4 border-b border-primary-gray-light dark:border-primary-gray-dark">
+			<div class="pb-4 pt-1 border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<h1 class="text-xl font-bold">
 					{{ $t('depositAddresses') }}
 				</h1>
@@ -17,7 +19,7 @@
 			<div class="grid grid-cols-1 md:grid-cols-12 gap-[1px] items-center my-2">
 				<div class="ml-6 my-1 col-span-2">
 					<USelectMenu
-						v-model="netTypeFilter"
+						v-model="networkType"
 						:options="netTypeItems"
 						:placeholder="$t('networkType')"
 						option-attribute="value"
@@ -100,7 +102,7 @@
 					</UButton>
 				</div>
 			</div>
-			<div class="w-full overflow-y-scroll">
+			<div class="w-full">
 				<table class="min-w-full py-6 text-right">
 					<thead>
 						<tr class="pb-2 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark">
@@ -116,7 +118,7 @@
 							<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-2">
 								{{ $t('address') }}
 							</th>
-							<th class="text-sm font-normal  py-2" />
+							<th class="text-sm font-normal py-2" />
 						</tr>
 					</thead>
 					<tbody>
@@ -125,37 +127,46 @@
 							:key="index"
 							class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"
 						>
-							<td class="text-nowrap text-xs font-normal pt-2">
-								{{ $t(item.netName) }}
+							<td class="text-nowrap text-xs font-normal">
+								{{ item.netName }}
 							</td>
-							<td class="text-nowrap text-xs font-normal pt-2">
-								{{ useNumber(formatDateToIranTime(item.takenTime)) }}
+							<td
+								class="text-nowrap text-xs font-normal"
+							>
+								<span dir="ltr">{{ toPersianDate(item.allocationTime, 'full-with-month') }}</span>
+								<span class="mx-2">{{ $t('upTo') }}</span>
+								<span dir="ltr">{{ toPersianDate(item.expirationTime, 'full-with-month') }}</span>
 							</td>
-							<td class="text-nowrap text-xs font-normal pt-2">
-								<!-- {{ useNumber(item.status) }} -->فعال
+							<td class="text-nowrap text-xs font-normal">
+								<!-- {{ item. }} -->
 							</td>
-							<td class="text-nowrap text-xs font-normal pt-2">
+							<td class="text-nowrap text-xs font-normal">
 								<div class="flex">
-									<IconQrCode class="text-base text-subtle-text-light dark:text-subtle-text-dark" />
-									<span class="w-32 truncate">{{ useNumber(item.address) }}</span>
+									<IconQrCode class="text-2xl text-subtle-text-light dark:text-subtle-text-dark" />
+									<span
+										:title="item.address"
+										dir="ltr"
+										class="w-32 py-1 truncate pr-2 cursor-pointer"
+										@click="copyText(item.address)"
+									>{{ (item.address) }}</span>
 								</div>
 							</td>
 							<td
 								class="text-xs font-normal py-2  text-primary-yellow-light dark:text-primary-yellow-dark"
 							>
 								<span
-									class="px-4 cursor-pointer text-nowrap"
+									class="px-4 cursor-pointer text-nowrap inline-block"
 								>
 									{{ $t('extension') }}
 								</span>
 								<span
-									class="px-4 cursor-pointer text-nowrap border-x border-primary-gray-light dark:border-primary-gray-dark"
+									class="px-4 cursor-pointer inline-block text-nowrap border-x border-primary-gray-light dark:border-primary-gray-dark"
 									@click="openDetail"
 								>
 									{{ $t('invalidate') }}
 								</span>
 								<span
-									class="px-4 cursor-pointer text-nowrap "
+									class="px-4 cursor-pointer inline-block text-nowrap"
 									@click="openDepositClaim"
 								>
 									{{ $t('depositClaim') }}
@@ -183,38 +194,41 @@
 				/>
 			</div>
 		</section>
+
+		<Invalidate
+			v-if="showDetail"
+			@close="closeDetail"
+		/>
+		<DepositClaim
+			v-if="showDepositClaim"
+			@close="closeDepositClaim"
+		/>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
-import { formatDateToIranTime } from '~/utils/date-time';
+import { toPersianDate } from '~/utils/helpers';
 import IconQrCode from '~/assets/svg-icons/profile/qrCode.svg';
 import DepositClaim from '~/components/pages/Site/Wallet/Menu/Deposit/DepositClaim.vue';
 import Invalidate from '~/components/pages/Site/Wallet/Menu/Deposit/Invalidate.vue';
 import { depositRepository } from '~/repositories/deposit.repository';
-import type { GetDepositAddressParams, KeyValue } from '~/types/base.types';
-import type { Crypto } from '~/types/response/deposit.types';
 import { DepositType } from '~/utils/enums/deposit.enum';
+import type { KeyValue } from '~/types/definitions/common.types';
+import type { CryptoAddress, DepositCryptoAddressParams } from '~/types/definitions/deposit.types';
 
 definePageMeta({
 	layout: 'asset',
 	middleware: 'auth',
 });
-const { $api } = useNuxtApp();
+const { $api, $mobileDetect } = useNuxtApp();
 const depositRepo = depositRepository($api);
-const totalCount = ref(0);
-const netTypeItems = ref<KeyValue[]>([
-	{
-		key: DepositType.ANY,
-		value: useT('all'),
-	},
-]);
-const netTypeFilter = ref<KeyValue>();
 
-const fromDate = ref();
-const toDate = ref();
-const params = ref<GetDepositAddressParams>({
+const isMobile = ref(false);
+const mobileDetect = $mobileDetect as MobileDetect;
+
+const { copyText } = useClipboard();
+
+const params = ref<DepositCryptoAddressParams>({
 	netId: '',
 	statement: '',
 	from: '',
@@ -222,9 +236,43 @@ const params = ref<GetDepositAddressParams>({
 	pageNumber: '1',
 	pageSize: '20',
 });
-const response = await depositRepo.getDepositAddress(params.value);
+const depositCryptoAddressListLoading = ref<boolean>(true);
+const depositCryptoAddressList = ref<CryptoAddress[]>([]);
+const getDepositCryptoAddress = async () => {
+	try {
+		depositCryptoAddressListLoading.value = true;
+		const { result } = await depositRepo.getDepositCryptoAddress(params.value);
 
-const depositList = ref<Crypto[]>(response.result.rows);
+		depositCryptoAddressList.value = result.rows as CryptoAddress[];
+		depositCryptoAddressListLoading.value = false;
+	}
+	catch (error) {
+		console.log(error);
+		depositCryptoAddressListLoading.value = false;
+	}
+};
+
+onMounted(async () => {
+	isMobile.value = !!mobileDetect.mobile();
+
+	await Promise.all([
+		getDepositCryptoAddress(),
+	]);
+});
+
+const totalCount = ref(0);
+const netTypeItems = ref<KeyValue[]>([
+	{
+		key: DepositType.ANY,
+		value: useT('all'),
+	},
+]);
+const networkType = ref<KeyValue>();
+
+const fromDate = ref();
+const toDate = ref();
+
+const depositList = ref<CryptoAddress[]>([]);
 
 const showDetail = ref(false);
 const showDepositClaim = ref(false);
@@ -246,17 +294,17 @@ const closeDepositClaim = () => {
 };
 const fetchDepositList = async () => {
 	try {
-		const { result } = await depositRepo.getDepositAddress(params.value);
+		const { result } = await depositRepo.getDepositCryptoAddress(params.value);
 
 		totalCount.value = result.totalCount;
-		depositList.value = result.rows;
+		depositList.value = result.rows as CryptoAddress[];
 	}
 	catch (error) {
 		console.error('Error fetching trades:', error);
 	}
 };
 const applyFilters = async () => {
-	params.value.netId = netTypeFilter.value ? netTypeFilter.value.key : '';
+	params.value.netId = networkType.value ? networkType.value.key : '';
 	params.value.from = fromDate.value;
 	params.value.to = toDate.value;
 

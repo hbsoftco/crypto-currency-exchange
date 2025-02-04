@@ -44,14 +44,14 @@
 						<span class="text-sm mt-2">{{ $t('history') }}</span>
 					</ULink>
 					<ULink
-						to="/wallet/bank-cards"
+						to="/assets/fiat-accounts"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<IconBank class=" text-primary-yellow-light dark:text-primary-yellow-dark text-2xl" />
 						<span class="text-sm mt-2">{{ $t('bankCards') }}</span>
 					</ULink>
 					<ULink
-						to="/wallet/deposit-addresses"
+						to="/assets/crypto-addresses"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<IconPostal class=" text-primary-yellow-light dark:text-primary-yellow-dark text-2xl" />
@@ -67,7 +67,7 @@
 				</h4>
 				‌<div class="grid grid-cols-3 gap-1">
 					<ULink
-						to="/wallet/bank-cards"
+						to="/assets/fiat-accounts"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<IconBank class=" text-primary-yellow-light dark:text-primary-yellow-dark text-2xl" />

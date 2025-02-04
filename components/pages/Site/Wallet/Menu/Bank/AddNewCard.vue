@@ -107,7 +107,7 @@ const storeCard = async () => {
 		});
 
 		storeCardLoading.value = false;
-		router.push('/wallet/bank-cards');
+		router.push('/assets/fiat-accounts');
 	}
 	catch (error) {
 		storeCardLoading.value = false;

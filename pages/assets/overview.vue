@@ -141,15 +141,6 @@ definePageMeta({
 const { $api } = useNuxtApp();
 const assetRepo = assetRepository($api);
 
-const assetBoxBriefParams = ref<AssetBoxBriefParams>({
-	q1CurrencyId: '1',
-	q2CurrencyId: '',
-	maskedInfo: 'false',
-	assetType: useEnv('assetType'),
-	boxMode: String(BoxMode.Any),
-	miniAssetMode: String(MiniAssetMode.Any),
-});
-
 const balance = ref<Balance>({
 	total: {
 		TMN: 0,
@@ -209,6 +200,14 @@ const balance = ref<Balance>({
 	},
 });
 
+const assetBoxBriefParams = ref<AssetBoxBriefParams>({
+	q1CurrencyId: '1',
+	q2CurrencyId: '',
+	maskedInfo: 'false',
+	assetType: useEnv('assetType'),
+	boxMode: String(BoxMode.Any),
+	miniAssetMode: String(MiniAssetMode.Any),
+});
 const assetBoxBriefLoading = ref<boolean>(true);
 const assetBoxBrief = ref<AssetBoxBrief[]>();
 const getAssetBoxBrief = async () => {

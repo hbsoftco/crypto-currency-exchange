@@ -1229,6 +1229,7 @@ const persian = {
 	pendingOrders: 'سفارشات پر نشده (Pending)',
 	unrealizedPnL: 'سودوزیاد محقق نشده',
 	maintenanceMargin: 'مارجین نگهداری',
+	upTo: 'تا',
 };
 
 export default persian;

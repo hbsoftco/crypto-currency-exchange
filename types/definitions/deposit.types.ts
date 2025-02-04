@@ -25,11 +25,39 @@ type DepositFee = {
 	note: string;
 };
 
+type DepositCryptoAddressParams = {
+	netId: string;
+	statement: string;
+	from: string;
+	to: string;
+	pageNumber: string;
+	pageSize: string;
+};
+
+type CryptoAddress = {
+	reqId: number;
+	addressId: number;
+	typeId: number;
+	typeName: string;
+	netId: number;
+	netName: string;
+	wloId: number;
+	wloName: string;
+	uidOwner: number;
+	userOwner: string;
+	address: string;
+	memo: string;
+	regTime: string;
+	expirationTime: string;
+	takenTime: string;
+	allocationTime: string;
+};
+
 type DepositListResponse = {
 	statusCode: number;
 	result: {
 		totalCount: number;
-		rows: DepositCoinFee[];
+		rows: DepositCoinFee[] | CryptoAddress[];
 	};
 };
 
@@ -37,4 +65,6 @@ export type {
 	DepositListResponse,
 	DepositCoinFeesParams,
 	DepositCoinFee,
+	DepositCryptoAddressParams,
+	CryptoAddress,
 };

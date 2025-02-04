@@ -16,6 +16,7 @@ type UserResponse = {
 		InviteCommission[] |
 		Reward[] |
 		Api[] |
+		BankAccount[] |
 		Level[];
 	};
 };
@@ -434,6 +435,28 @@ type ApiPointInfo = {
 	wlstIPv6s: string;
 };
 
+// Assets
+type BankAccountListParams = {
+	typeId: string;
+	statement: string;
+	pageNumber: string;
+	pageSize: string;
+};
+
+type BankAccount = {
+	id: number;
+	uid: number;
+	user: string;
+	stateId: number;
+	stateName: string;
+	typeId: number;
+	typeName: string;
+	regTime: string;
+	bankName: string;
+	iban: string;
+	cardNo: string;
+};
+
 export type {
 	TraderCommissionListParams,
 	UserResponse,
@@ -475,4 +498,7 @@ export type {
 	ApiCredentials,
 	ApiKeyParams,
 	ApiPointInfo,
+	// Assets
+	BankAccountListParams,
+	BankAccount,
 };

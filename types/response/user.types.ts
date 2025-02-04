@@ -25,28 +25,6 @@ type GetCommissionReceivedList = {
 	};
 };
 
-type Bank = {
-	id: number;
-	uid: number;
-	user: string;
-	stateId: number;
-	stateName: string;
-	typeId: number;
-	typeName: string;
-	regTime: string;
-	bankName: string;
-	iban: string;
-	cardNo: string;
-};
-
-type GetBankListResponse = {
-	statusCode: number;
-	result: {
-		totalCount: number;
-		rows: Bank[];
-	};
-};
-
 type BestListUser = {
 	uid: number;
 	user: string;
@@ -104,8 +82,6 @@ export type {
 	BestReferralItem,
 	GetCommissionReceivedList,
 	Received,
-	GetBankListResponse,
-	Bank,
 	GetBestListResponse,
 	GetLevelsDataRes,
 	LevelRow,
