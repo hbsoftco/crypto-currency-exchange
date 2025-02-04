@@ -1219,6 +1219,9 @@ const persian = {
 	alreadySelected: 'این بازار قبلا اضافه شده است!',
 	deleteApi: 'حذف API',
 	confirmationCo: 'تعداد تایید بلاکچین',
+	checkingFiles: 'درحال بررسی مدارک',
+	checkingFilesDescription: 'کاربرگرامی، شما از قبل مدارکی آپلود کرده اید، امکان تغییر در مدارک تا زمان بررسی مدارک قبلی امکان پذیر نمی باشد.',
+	addNewApi: 'ثبت api جدید',
 };
 
 export default persian;

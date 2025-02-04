@@ -211,20 +211,32 @@
 						</p>
 					</div>
 					<div class="text-right">
-						<UiSeeMore
-							v-if="getValueByKey(authStore.getCurrentUser, 'KYC_LVL_ID') === '0' "
-							link="/user/id-auth/level1"
-							align="text-right"
-							py="py-2"
-							text="upgradeToLevelOne"
-						/>
-						<UiSeeMore
-							v-else-if="getValueByKey(authStore.getCurrentUser, 'KYC_LVL_ID') === '1' "
-							link="/user/id-auth/level2"
-							align="text-right"
-							py="py-2"
-							text="upgradeToLevelTwo"
-						/>
+						<div v-if="getValueByKey(authStore.getCurrentUser, 'KYC_CHECKING') === '1'">
+							<UiSeeMore
+								link="/user"
+								align="text-right"
+								py="py-2"
+								text="upgradeToLevelOne"
+								@click="showCheckingMessage()"
+							/>
+						</div>
+
+						<div v-else>
+							<UiSeeMore
+								v-if="getValueByKey(authStore.getCurrentUser, 'KYC_LVL_ID') === '0' "
+								link="/user/id-auth/level1"
+								align="text-right"
+								py="py-2"
+								text="upgradeToLevelOne"
+							/>
+							<UiSeeMore
+								v-else-if="getValueByKey(authStore.getCurrentUser, 'KYC_LVL_ID') === '1' "
+								link="/user/id-auth/level2"
+								align="text-right"
+								py="py-2"
+								text="upgradeToLevelTwo"
+							/>
+						</div>
 					</div>
 				</div>
 
@@ -489,6 +501,15 @@ const handleDragEnter = (event: DragEvent) => {
 
 const handleDragLeave = (event: DragEvent) => {
 	console.log('Drag Leave event:', event);
+};
+
+const showCheckingMessage = () => {
+	toast.add({
+		title: useT('checkingFiles'),
+		description: useT('checkingFilesDescription'),
+		timeout: 5000,
+		color: 'yellow',
+	});
 };
 
 const isAssetVisible = ref(false);

@@ -59,7 +59,10 @@ const { $mobileDetect } = useNuxtApp();
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
 
-onMounted(() => {
+const authStore = useAuthStore();
+
+onMounted(async () => {
+	await authStore.fetchCurrentUser(true);
 	isMobile.value = !!mobileDetect.mobile();
 });
 

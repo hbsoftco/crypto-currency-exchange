@@ -243,7 +243,7 @@
 			<UiVerifyModal
 				v-if="isOpenVerifyModal"
 				v-model="isOpenVerifyModal"
-				:title="$t('pinCodeWithdrawal')"
+				:title="$t('addNewApi')"
 				:submit-loading="loading"
 				@confirm="submit($event)"
 			/>
