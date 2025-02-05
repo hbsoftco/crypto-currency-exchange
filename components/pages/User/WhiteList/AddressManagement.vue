@@ -11,11 +11,11 @@
 				<USelectMenu
 					v-model="srchBlockchain"
 					:options="netBlockchainList"
+					size="lg"
 					:placeholder="$t('networkType')"
 					searchable
 					:searchable-placeholder="$t('search')"
 					option-attribute="blockchainName"
-					:size="isMobile? 'lg': 'sm'"
 					:ui="{
 						background: '',
 						color: {

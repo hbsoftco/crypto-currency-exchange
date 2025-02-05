@@ -600,7 +600,7 @@ const persian = {
 	shabaNumber: 'شماره شبا',
 	addNewCard: 'افزودن کارت جدید',
 	addBankInformation: 'افزودن اطلاعات بانکی',
-	addBankInformationTitr: 'در صورت ثبت نشدن کارت بانکی خود به پشتیبانی آنلاین پیام بدهید.',
+	addBankInformationTitle: 'در صورت ثبت نشدن کارت بانکی خود به پشتیبانی آنلاین پیام بدهید.',
 	cardNumber‌Bank: 'شماره کارت بانکی',
 	validityDate: 'تاریخ اعتبار',
 	expireTime: 'تاریخ انقضا',
@@ -1230,6 +1230,7 @@ const persian = {
 	unrealizedPnL: 'سودوزیاد محقق نشده',
 	maintenanceMargin: 'مارجین نگهداری',
 	upTo: 'تا',
+	deleteBankAccount: 'حذف اطلاعات بانکی',
 };
 
 export default persian;

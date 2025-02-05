@@ -10,7 +10,6 @@ import type {
 import type {
 	GetTraderBestListResponse } from '~/types/response/trader.types';
 import type {
-	AddCardBankSetDto,
 	CodeInviteDto,
 	SetEmailDto,
 	SetMobileDto } from '~/types/dto/user.dto';
@@ -20,7 +19,9 @@ import type {
 	ApiParams,
 	AppendTicketDto,
 	AssetTypeParams,
+	BankAccountDto,
 	BankAccountListParams,
+	DeleteBankAccountParams,
 	InvitationListParams,
 	InviteCommissionParams,
 	ReferralBriefParams,
@@ -85,11 +86,12 @@ type UserRepository = {
 
 	// Assets
 	getBankAccountList: (params: BankAccountListParams) => Promise<UserResponse>;
+	storeBankAccount: (params: BankAccountDto) => Promise<CommonResponse>;
+	deleteBankAccount: (params: DeleteBankAccountParams) => Promise<CommonResponse>;
 
 	// OLD
 	// getRewardReceivedList: (params: GetRewardReceivedListParams) => Promise<GetRewardReceivedListResponse>;
 	getReferralBestList: (params: GetReferralBestListParams) => Promise<GetBestListResponse>;
-	storeBankAccAdd: (params: AddCardBankSetDto) => Promise<CommonResponse>;
 	editCodeInvite: (params: CodeInviteDto) => Promise<CommonResponse>;
 	getTraderBestList: (params: GetTraderBestListParams) => Promise<GetTraderBestListResponse>;
 	setEmail: (dto: SetEmailDto) => Promise<CommonResponse>;
@@ -480,6 +482,30 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
+	async storeBankAccount(dto: BankAccountDto): Promise<CommonResponse> {
+		const url = `/v1/user/bank/acc_add`;
+		const response = await fetch<CommonResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async deleteBankAccount(params: DeleteBankAccountParams): Promise<CommonResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = `/v1/user/bank/acc_delete`;
+		const response = await fetch<CommonResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'DELETE',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
 	// Old
 	// async getRewardReceivedList(params: GetRewardReceivedListParams): Promise<GetRewardReceivedListResponse> {
 	// 	const query = new URLSearchParams(
@@ -497,17 +523,6 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 	// 	return response;
 	// },
-	async storeBankAccAdd(dto: AddCardBankSetDto): Promise<CommonResponse> {
-		const url = `/v1/user/bank/acc_add`;
-		const response = await fetch<CommonResponse>(`${url}`, {
-			noAuth: false,
-			apiName: url,
-			method: 'POST',
-			body: dto,
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
 	async getReferralBestList(params: GetReferralBestListParams): Promise<GetBestListResponse> {
 		const query = new URLSearchParams(
 			Object.entries(params)

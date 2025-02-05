@@ -1,8 +1,3 @@
-type AddCardBankSetDto = {
-	bankAccountTypeId: number;
-	cardNo: string;
-};
-
 type CodeInviteDto = {
 	referralCode: string;
 };
@@ -26,7 +21,6 @@ type SetMobileDto = {
 };
 
 export type {
-	AddCardBankSetDto,
 	CodeInviteDto,
 	SetEmailDto,
 	SetMobileDto,

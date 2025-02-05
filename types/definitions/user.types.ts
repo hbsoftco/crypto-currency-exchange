@@ -443,6 +443,12 @@ type BankAccountListParams = {
 	pageSize: string;
 };
 
+type BankAccountDto = {
+	bankAccountTypeId: number;
+	cardNo: string;
+	ownerName?: string;
+};
+
 type BankAccount = {
 	id: number;
 	uid: number;
@@ -455,6 +461,10 @@ type BankAccount = {
 	bankName: string;
 	iban: string;
 	cardNo: string;
+};
+
+type DeleteBankAccountParams = {
+	bankAccountId: string;
 };
 
 export type {
@@ -501,4 +511,6 @@ export type {
 	// Assets
 	BankAccountListParams,
 	BankAccount,
+	BankAccountDto,
+	DeleteBankAccountParams,
 };

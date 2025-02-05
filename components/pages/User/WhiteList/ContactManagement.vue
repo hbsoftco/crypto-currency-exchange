@@ -11,7 +11,7 @@
 				<UInput
 					v-model:model-value="search"
 					icon="i-heroicons-magnifying-glass-20-solid"
-					:size="isMobile? 'lg': 'sm'"
+					size="lg"
 					color="white"
 					:trailing="false"
 					:placeholder="$t('search')"

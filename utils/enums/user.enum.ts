@@ -9,6 +9,10 @@ export enum SendType {
 	SMS = 33,
 }
 
+export enum BankAccountType {
+	IRANIAN_BANKS = 1310131,
+}
+
 export enum ActionType {
 	USER_REGISTER = '1310131',
 	USER_LOGIN = '1310231',

@@ -1,6 +1,6 @@
 <template>
 	<div
-		v-if="depositCryptoAddressListLoading"
+		v-if="depositCryptoAddressListLoading || netBlockchainListLoading"
 		class="py-4 p-3 md:p-5"
 	>
 		<UiLogoLoading />
@@ -20,14 +20,17 @@
 				<div class="ml-6 my-1 col-span-2">
 					<USelectMenu
 						v-model="networkType"
-						:options="netTypeItems"
+						:options="netBlockchainList"
+						size="lg"
 						:placeholder="$t('networkType')"
-						option-attribute="value"
+						searchable
+						:searchable-placeholder="$t('search')"
+						option-attribute="blockchainName"
 						:ui="{
 							background: '',
 							color: {
 								white: {
-									outline: ' bg-hover-light dark:bg-hover-dark',
+									outline: 'bg-hover-light dark:bg-hover-dark',
 								},
 							},
 						}"
@@ -39,6 +42,7 @@
 					<UInput
 						id="fromDate"
 						v-model="fromDate"
+						size="lg"
 						color="white"
 						variant="outline"
 						:placeholder="$t('fromDate')"
@@ -69,6 +73,7 @@
 						id="toDate"
 						v-model="toDate"
 						color="white"
+						size="lg"
 						variant="outline"
 						:placeholder="$t('toDate')"
 						readonly
@@ -95,6 +100,7 @@
 
 				<div class="col-span-1">
 					<UButton
+						size="lg"
 						class="flex justify-center px-8 text-sm font-normal text-black dark:text-white hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-gray-light dark:border-primary-gray-dark"
 						@click="applyFilters"
 					>
@@ -123,7 +129,7 @@
 					</thead>
 					<tbody>
 						<tr
-							v-for="(item, index) in depositList"
+							v-for="(item, index) in depositCryptoAddressList"
 							:key="index"
 							class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"
 						>
@@ -152,7 +158,7 @@
 								</div>
 							</td>
 							<td
-								class="text-xs font-normal py-2  text-primary-yellow-light dark:text-primary-yellow-dark"
+								class="text-sm font-normal py-2  text-primary-yellow-light dark:text-primary-yellow-dark"
 							>
 								<span
 									class="px-4 cursor-pointer text-nowrap inline-block"
@@ -177,7 +183,10 @@
 				</table>
 			</div>
 
-			<div class="flex justify-center py-4">
+			<div
+				v-if="totalCount > 20"
+				class="flex justify-center py-4"
+			>
 				<UPagination
 					:model-value="Number(params.pageNumber)"
 					:page-count="20"
@@ -212,9 +221,10 @@ import IconQrCode from '~/assets/svg-icons/profile/qrCode.svg';
 import DepositClaim from '~/components/pages/Site/Wallet/Menu/Deposit/DepositClaim.vue';
 import Invalidate from '~/components/pages/Site/Wallet/Menu/Deposit/Invalidate.vue';
 import { depositRepository } from '~/repositories/deposit.repository';
-import { DepositType } from '~/utils/enums/deposit.enum';
+import { currencyRepository } from '~/repositories/currency.repository';
 import type { KeyValue } from '~/types/definitions/common.types';
 import type { CryptoAddress, DepositCryptoAddressParams } from '~/types/definitions/deposit.types';
+import type { NetBlockchain } from '~/types/definitions/currency.types';
 
 definePageMeta({
 	layout: 'asset',
@@ -222,9 +232,12 @@ definePageMeta({
 });
 const { $api, $mobileDetect } = useNuxtApp();
 const depositRepo = depositRepository($api);
+const currencyRepo = currencyRepository($api);
 
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
+
+const totalCount = ref(0);
 
 const { copyText } = useClipboard();
 
@@ -244,6 +257,7 @@ const getDepositCryptoAddress = async () => {
 		const { result } = await depositRepo.getDepositCryptoAddress(params.value);
 
 		depositCryptoAddressList.value = result.rows as CryptoAddress[];
+		totalCount.value = result.totalCount;
 		depositCryptoAddressListLoading.value = false;
 	}
 	catch (error) {
@@ -252,27 +266,55 @@ const getDepositCryptoAddress = async () => {
 	}
 };
 
+const onPageChange = async (newPage: number) => {
+	params.value.pageNumber = newPage.toString();
+	await getDepositCryptoAddress();
+};
+
+const applyFilters = async () => {
+	params.value.netId = networkType.value ? networkType.value.key : '';
+	params.value.from = fromDate.value;
+	params.value.to = toDate.value;
+
+	await getDepositCryptoAddress();
+};
+
+const netBlockchainListLoading = ref<boolean>(true);
+const netBlockchainList = ref<NetBlockchain[]>([]);
+const getNetBlockchainList = async () => {
+	try {
+		netBlockchainListLoading.value = true;
+
+		const { result } = await currencyRepo.getNetBlockchainList();
+
+		netBlockchainList.value = [
+			{
+				blockchainId: '',
+				blockchainName: useT('all'),
+			},
+			...(result as NetBlockchain[]),
+		];
+		netBlockchainListLoading.value = false;
+	}
+	catch (error) {
+		netBlockchainListLoading.value = false;
+		console.log(error);
+	}
+};
+
 onMounted(async () => {
 	isMobile.value = !!mobileDetect.mobile();
 
 	await Promise.all([
 		getDepositCryptoAddress(),
+		getNetBlockchainList(),
 	]);
 });
 
-const totalCount = ref(0);
-const netTypeItems = ref<KeyValue[]>([
-	{
-		key: DepositType.ANY,
-		value: useT('all'),
-	},
-]);
 const networkType = ref<KeyValue>();
 
 const fromDate = ref();
 const toDate = ref();
-
-const depositList = ref<CryptoAddress[]>([]);
 
 const showDetail = ref(false);
 const showDepositClaim = ref(false);
@@ -291,30 +333,5 @@ const openDepositClaim = () => {
 
 const closeDepositClaim = () => {
 	showDepositClaim.value = false;
-};
-const fetchDepositList = async () => {
-	try {
-		const { result } = await depositRepo.getDepositCryptoAddress(params.value);
-
-		totalCount.value = result.totalCount;
-		depositList.value = result.rows as CryptoAddress[];
-	}
-	catch (error) {
-		console.error('Error fetching trades:', error);
-	}
-};
-const applyFilters = async () => {
-	params.value.netId = networkType.value ? networkType.value.key : '';
-	params.value.from = fromDate.value;
-	params.value.to = toDate.value;
-
-	await fetchDepositList();
-};
-onMounted(async () => {
-	await fetchDepositList();
-});
-const onPageChange = async (newPage: number) => {
-	params.value.pageNumber = newPage.toString();
-	await fetchDepositList();
 };
 </script>

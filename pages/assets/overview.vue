@@ -325,8 +325,6 @@ const getAssetBoxBrief = async () => {
 		balance.value.futures.USD = parseFloat(totalFuturesUsd.toFixed(1));
 		balance.value.futures.items = futuresItems;
 
-		console.log(balance.value);
-
 		assetBoxBriefLoading.value = false;
 	}
 	catch (error) {

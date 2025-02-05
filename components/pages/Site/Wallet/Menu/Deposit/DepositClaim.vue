@@ -21,7 +21,7 @@
 						{{ $t("depositClaimRegistration") }}
 					</h4>
 					<p class="text-base font-medium mt-4">
-						{{ $t('addBankInformationTitr') }}
+						{{ $t('addBankInformationTitle') }}
 					</p>
 					<div class=" w-full">
 						<OtpFieldInput
