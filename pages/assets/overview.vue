@@ -72,7 +72,7 @@
 						</div>
 						<div class="flex justify-start">
 							<UiSeeMore
-								link="/wallet/history"
+								link="/assets/history"
 								text="showMore"
 							/>
 						</div>
@@ -124,7 +124,7 @@
 import IconWallet from '~/assets/svg-icons/menu/wallet.svg';
 import RecentTransactionsList from '~/components/pages/Assets/RecentTransactionsList.vue';
 import SpotAccordion from '~/components/pages/Assets/Overview/SpotAccordion.vue';
-import FutureAccordion from '~/components/pages/Wallet/Overview/FutureAccordion.vue';
+import FutureAccordion from '~/components/pages/Assets/Overview/FutureAccordion.vue';
 import { assetRepository } from '~/repositories/asset.repository';
 import type { AssetBoxBrief, AssetBoxBriefParams, Balance } from '~/types/definitions/asset.types';
 import { AssetBox, BoxMode, MiniAssetMode } from '~/utils/enums/asset.enum';
@@ -132,7 +132,7 @@ import Transfer from '~/components/pages/Assets/Transfer.vue';
 import WithdrawLinks from '~/components/pages/Assets/WithdrawLinks.vue';
 import DepositLinks from '~/components/pages/Assets/DepositLinks.vue';
 import { priceFormat } from '~/utils/helpers';
-// handleImageError
+
 definePageMeta({
 	layout: 'asset',
 	middleware: 'auth',

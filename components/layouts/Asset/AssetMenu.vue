@@ -10,7 +10,7 @@
 				>
 					<div class="flex justify-start items-center">
 						<div class="ml-2">
-							<IconSalary class="text-base" />
+							<IconSalary class="text-xl" />
 						</div>
 						<span class="mb-0 text-base font-medium">
 							{{ $t('overView') }}
@@ -28,7 +28,7 @@
 				>
 					<div class="flex justify-start items-center">
 						<div class="ml-2">
-							<IconBudget class="text-base" />
+							<IconBudget class="text-xl" />
 						</div>
 						<span class="mb-0 text-base font-medium">
 							{{ $t('spot') }}
@@ -46,7 +46,7 @@
 				>
 					<div class="flex justify-start items-center">
 						<div class="ml-2">
-							<IconAnalytics class="text-base" />
+							<IconAnalytics class="text-xl" />
 						</div>
 						<span class="mb-0 text-base font-medium">
 							{{ $t('futures') }}
@@ -57,13 +57,13 @@
 			<!-- showHistory -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
-					to="/wallet/history"
+					to="/assets/history"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
 					active-class="text-active"
 				>
 					<div class="flex justify-start items-center">
 						<div class="ml-2">
-							<IconDate class="text-base" />
+							<IconDate class="text-xl" />
 						</div>
 						<span class="mb-0 text-base font-medium">
 							{{ $t('history') }}
@@ -74,13 +74,13 @@
 			<!-- showProfitLoss -->
 			<li class="border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<ULink
-					to="/wallet/profit-loss"
+					to="/assets/analysis"
 					class="flex justify-between items-center w-full py-3.5 text-subtle-text-light dark:text-subtle-text-50"
 					active-class="text-active"
 				>
 					<div class="flex justify-start items-center">
 						<div class="ml-2">
-							<IconAnalytics class="text-base" />
+							<IconAnalytics class="text-xl" />
 						</div>
 						<span class="mb-0 text-base font-medium">
 							{{ $t('profitLoss') }}
@@ -97,7 +97,7 @@
 				>
 					<div class="flex justify-start items-center">
 						<div class="ml-2">
-							<IconPostal class="text-base" />
+							<IconPostal class="text-xl" />
 						</div>
 						<span class="mb-0 text-base font-medium">
 							{{ $t('depositAddresses') }}
@@ -114,7 +114,7 @@
 				>
 					<div class="flex justify-start items-center">
 						<div class="ml-2">
-							<IconWallet class="text-base" />
+							<IconWallet class="text-xl" />
 						</div>
 						<span class="mb-0 text-base font-medium">
 							{{ $t('bankCards') }}

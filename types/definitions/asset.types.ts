@@ -10,7 +10,7 @@ type AssetListResponse = {
 
 type AssetResponse = {
 	statusCode: number;
-	result: AssetTotal | AssetBoxBrief[];
+	result: AssetTotal | AssetBoxBrief[] | AssetSpotPNL;
 };
 
 type AssetTotalParams = {
@@ -74,6 +74,20 @@ type AssetRecentListParams = {
 	rowCount: string;
 };
 
+type AssetSpotPNLTotalParams = {
+	pnlCourseId: string;
+	q1CurrencyId: string;
+	q2CurrencyId: string;
+	q3CurrencyId: string;
+};
+
+type AssetSpotPNL = {
+	pnlPercentage: number;
+	pnlOnQ1: string;
+	pnlOnQ2: string;
+	pnlOnQ3: string;
+};
+
 type AssetRecent = {
 	id: number;
 	isOutput: boolean;
@@ -134,4 +148,6 @@ export type {
 	FuturesItems,
 	SpotItems,
 	CurrencyBalance,
+	AssetSpotPNLTotalParams,
+	AssetSpotPNL,
 };

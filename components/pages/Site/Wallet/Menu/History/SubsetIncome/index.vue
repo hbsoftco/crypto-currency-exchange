@@ -150,7 +150,7 @@
 import { useNumber } from '~/composables/useNumber';
 import { formatDateToIranTime } from '~/utils/date-time';
 import { userRepository } from '~/repositories/user.repository';
-import type { GetCommissionReceivedListParams } from '~/types/base.types';
+// import type { GetCommissionReceivedListParams } from '~/types/base.types';
 import type { Received } from '~/types/response/user.types';
 
 const fromDate = ref();
@@ -170,8 +170,9 @@ const params = ref<GetCommissionReceivedListParams>({
 const totalCount = ref(0);
 const isLoading = ref<boolean>(false);
 
-const response = await userRepo.getCommissionReceivedList(params.value);
-const ReceivedList = ref<Received[]>(response.result.rows);
+// const response = await userRepo.getCommissionReceivedList(params.value);
+// const ReceivedList = ref<Received[]>(response.result.rows);
+const ReceivedList = ref<Received[]>([]);
 
 // const findCurrencyById = (id: number): CurrencyBriefItem | null => {
 // 	let start = 0;
@@ -198,10 +199,10 @@ const ReceivedList = ref<Received[]>(response.result.rows);
 const loadReceived = async () => {
 	try {
 		isLoading.value = true;
-		const response = await userRepo.getCommissionReceivedList(params.value);
+		// const response = await userRepo.getCommissionReceivedList(params.value);
 
-		ReceivedList.value = response.result.rows;
-		totalCount.value = response.result.totalCount;
+		// ReceivedList.value = response.result.rows;
+		// totalCount.value = response.result.totalCount;
 
 		ReceivedList.value = ReceivedList.value.map((received) => {
 			// const currency = findCurrencyById(received.cid);
@@ -219,8 +220,8 @@ const loadReceived = async () => {
 };
 
 const applyFilters = async () => {
-	params.value.from = fromDate.value;
-	params.value.to = toDate.value;
+	// params.value.from = fromDate.value;
+	// params.value.to = toDate.value;
 
 	await loadReceived();
 };
@@ -230,7 +231,7 @@ onMounted(async () => {
 });
 
 const onPageChange = async (newPage: number) => {
-	params.value.pageNumber = newPage.toString();
+	// params.value.pageNumber = newPage.toString();
 	await loadReceived();
 };
 </script>

@@ -9,6 +9,7 @@ import type {
 	AssetListResponse,
 	AssetRecentListParams,
 	AssetResponse,
+	AssetSpotPNLTotalParams,
 	AssetTotalParams,
 
 } from '~/types/definitions/asset.types';
@@ -18,6 +19,8 @@ type AssetRepository = {
 	getAssetTotal: (params: AssetTotalParams) => Promise<AssetResponse>;
 	getAssetBoxBrief: (params: AssetBoxBriefParams) => Promise<AssetResponse>;
 	getAssetRecentList: (params: AssetRecentListParams) => Promise<AssetListResponse>;
+	getAssetSpotPNLTotal: (params: AssetSpotPNLTotalParams) => Promise<AssetResponse>;
+
 	//
 	getInternalReceiveList: (params: GetInternalReceiveParams) => Promise<GetInternalReceiveListResponse>;
 	getMiscellaneousList: (params: GetMiscellaneousListParams) => Promise<GetMiscellaneousListResponse>;
@@ -75,6 +78,20 @@ export const assetRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Asse
 
 		const url = '/v1/asset/common/tx_recent_list';
 		const response = await fetch<AssetListResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getAssetSpotPNLTotal(params: AssetSpotPNLTotalParams): Promise<AssetResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/asset/spot/pnl_total';
+		const response = await fetch<AssetResponse>(`${url}?${query.toString()}`, {
 			noAuth: false,
 			method: 'GET',
 		} as CustomNitroFetchOptions);

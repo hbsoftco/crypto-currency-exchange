@@ -145,7 +145,7 @@ const menuItems = [
 		name: 'depositWithdrawalHistory',
 		description: useT('transactionsDetails'),
 		icon: IconDepositWithdrawalHistory,
-		url: '/wallet/history',
+		url: '/assets/history',
 
 	},
 	{

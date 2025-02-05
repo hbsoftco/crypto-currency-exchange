@@ -106,7 +106,15 @@ export default defineNuxtConfig({
 	echarts: {
 		ssr: false,
 		renderer: ['canvas', 'svg'],
-		charts: ['BarChart', 'LineChart', 'PieChart', 'FunnelChart', 'GaugeChart'],
+		charts: [
+			'BarChart',
+			'LineChart',
+			'PieChart',
+			'FunnelChart',
+			'GaugeChart',
+			'ScatterChart',
+			'TreemapChart',
+		],
 		components: [
 			'LegendComponent',
 			'TitleComponent',
@@ -115,6 +123,7 @@ export default defineNuxtConfig({
 			'TooltipComponent',
 			'ToolboxComponent',
 			'GraphicComponent',
+			'VisualMapComponent',
 		],
 	},
 	eslint: {

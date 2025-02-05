@@ -222,8 +222,8 @@ const params = ref<GetRewardReceivedListParams>({
 const totalCount = ref(0);
 const isLoading = ref<boolean>(false);
 
-const response = await userRepo.getRewardReceivedList(params.value);
-const RewardList = ref<Reward[]>(response.result.rows);
+// const response = await userRepo.getRewardReceivedList(params.value);
+const RewardList = ref<Reward[]>([]);
 
 // const findCurrencyById = (id: number): CurrencyBriefItem | null => {
 // 	let start = 0;
@@ -250,10 +250,10 @@ const RewardList = ref<Reward[]>(response.result.rows);
 const loadReward = async () => {
 	try {
 		isLoading.value = true;
-		const response = await userRepo.getRewardReceivedList(params.value);
+		// const response = await userRepo.getRewardReceivedList(params.value);
 
-		RewardList.value = response.result.rows;
-		totalCount.value = response.result.totalCount;
+		// RewardList.value = response.result.rows;
+		// totalCount.value = response.result.totalCount;
 
 		RewardList.value = RewardList.value.map((reward) => {
 			// const currency = findCurrencyById(reward.currencyId);

@@ -39,12 +39,10 @@
 				<div
 					class="w-80 h-80"
 				>
-					<ClientOnly>
-						<VChart
-							:option="neutralPieOptions"
-							class="w-full h-80"
-						/>
-					</ClientOnly>
+					<VChart
+						:option="neutralPieOptions"
+						class="w-full h-80"
+					/>
 				</div>
 			</div>
 			<div class="col-span-8">
@@ -52,8 +50,8 @@
 					<table class="min-w-full w-full py-6 text-right">
 						<thead>
 							<tr class="bg-primary-gray-light dark:bg-primary-gray-dark rounded-t">
-								<th class="text-xs font-normal py-2 rounded-tr" />
-								<th class="text-xs font-normal py-2">
+								<th class="text-xs font-normal py-2 rounded-tr max-w-96 w-96" />
+								<th class="text-xs font-normal py-2 max-w-96 w-96">
 									{{ $t('tomanValue') }}
 								</th>
 								<th class="text-xs font-normal py-2 rounded-tl">
@@ -65,7 +63,7 @@
 							<tr
 								class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark last:border-none"
 							>
-								<td class="text-sm font-normal py-4 px-4">
+								<td class="text-sm font-normal py-4 px-4 max-w-96 w-96">
 									{{ $t('availableAssets') }}
 								</td>
 								<td class="text-sm font-normal py-4">

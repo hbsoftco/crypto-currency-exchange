@@ -127,12 +127,12 @@ const menuItems = [
 	{
 		name: 'history',
 		icon: IconHistory,
-		url: '/wallet/history',
+		url: '/assets/history',
 	},
 	{
 		name: 'portfolio',
 		icon: IconPortfolio,
-		url: '/wallet/profit-loss',
+		url: '/assets/analysis',
 	},
 ];
 </script>

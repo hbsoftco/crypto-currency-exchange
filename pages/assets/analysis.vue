@@ -1,6 +1,16 @@
 <template>
-	<div>
-		<div class="p-4 border-b border-primary-gray-light dark:border-primary-gray-dark">
+	<div
+		v-if="false"
+		class="py-4 p-3 md:p-5"
+	>
+		<UiLogoLoading />
+	</div>
+
+	<div
+		v-else
+		class="py-4 p-3 md:p-5"
+	>
+		<div class="pb-4 pt-1 border-b border-primary-gray-light dark:border-primary-gray-dark">
 			<h1 class="text-xl font-bold">
 				{{ $t('depositAddresses') }}
 			</h1>
@@ -30,7 +40,7 @@
 				<template #item="{ item }">
 					<div class="border-t border-t-primary-gray-light dark:border-t-primary-gray-dark p-2">
 						<div v-if="item.key === 'spot'">
-							<Spot />
+							<SpotInfo />
 						</div>
 						<div v-else-if="item.key === 'futures'">
 							dee
@@ -43,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import Spot from '~/components/pages/Site/Wallet/Menu/ProfitLoss/Spot/index.vue';
+import SpotInfo from '~/components/pages/Assets/Analysis/SpotInfo.vue';
 
 definePageMeta({
 	layout: 'asset',

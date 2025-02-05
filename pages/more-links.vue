@@ -36,7 +36,7 @@
 						<span class="text-sm mt-2">{{ $t('depositToman') }}</span>
 					</ULink>
 					<ULink
-						to="/wallet/history"
+						to="/assets/history"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<IconDate class=" text-primary-yellow-light dark:text-primary-yellow-dark text-2xl" />
@@ -107,7 +107,7 @@
 						<span class="text-sm mt-2">{{ $t('withdrawToman') }}</span>
 					</ULink>
 					<ULink
-						to="/wallet/history"
+						to="/assets/history"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<IconDate class=" text-primary-yellow-light dark:text-primary-yellow-dark text-2xl" />
@@ -212,7 +212,7 @@
 						<span class="text-sm mt-2">{{ $t('wallet') }}</span>
 					</ULink>
 					<ULink
-						to="/wallet/profit-loss"
+						to="/assets/analysis"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<IconAnalytics class=" text-primary-yellow-light dark:text-primary-yellow-dark text-2xl" />

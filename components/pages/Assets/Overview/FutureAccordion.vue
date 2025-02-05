@@ -11,10 +11,10 @@
 							dir="ltr"
 							class="text-base"
 						>
-							{{ balance.futures.USD }} USD
+							{{ balance.futures.items.futures_overall_balance.USD }} USD
 						</p>
 						<p class="text-sm text-subtle-text-light dark:text-subtle-text-dark">
-							{{ `${priceFormat(balance.futures.TMN)} ${$t('toman')}` }}
+							{{ `${priceFormat(balance.futures.items.futures_overall_balance.TMN)} ${$t('toman')}` }}
 						</p>
 					</div>
 				</div>
@@ -50,8 +50,8 @@
 					<table class="min-w-full w-full py-6 text-right">
 						<thead>
 							<tr class="bg-primary-gray-light dark:bg-primary-gray-dark rounded-t">
-								<th class="text-xs font-normal py-2 rounded-tr" />
-								<th class="text-xs font-normal py-2">
+								<th class="text-xs font-normal py-2 rounded-tr max-w-96 w-96" />
+								<th class="text-xs font-normal py-2 max-w-96 w-96">
 									{{ $t('tomanValue') }}
 								</th>
 								<th class="text-xs font-normal py-2 rounded-tl">
@@ -162,10 +162,8 @@ const neutralPieOptions = computed(() => ({
 			data: [
 				{ value: props.balance.futures.items.futures_available_margin.USD, name: useT('availableMargin') },
 				{ value: props.balance.futures.items.futures_init_margin.USD, name: useT('openPositionsMargin') },
-				{ value: props.balance.futures.items.futures_position_value.USD, name: useT('openPositionsValue') },
 				{ value: props.balance.futures.items.futures_pending_order.USD, name: useT('pendingOrders') },
 				{ value: props.balance.futures.items.futures_unrealized_pnl.USD, name: useT('unrealizedPnL') },
-				{ value: props.balance.futures.items.futures_maintenance_margin.USD, name: useT('maintenanceMargin') },
 			],
 		},
 	],

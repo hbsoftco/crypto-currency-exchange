@@ -630,7 +630,7 @@ const persian = {
 	trackingCode: 'کد رهگیری',
 	totalAssets: 'کل دارایی',
 	assetsAvailable: 'دارایی در دسترس',
-	todayprofitLoss: 'سود و زیان امروز',
+	todayProfitLoss: 'سود و زیان امروز',
 	generalAnalysis: 'آنالیز کلی',
 	myAssets: 'دارایی های من',
 	removeSmallCurrencies: 'حذف ارز های اندک',
