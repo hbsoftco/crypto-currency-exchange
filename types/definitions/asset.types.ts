@@ -4,13 +4,13 @@ type AssetListResponse = {
 	statusCode: number;
 	result: {
 		totalCount: number;
-		rows: Asset[] | AssetRecent[];
+		rows: Asset[] | AssetRecent[] | AssetSpotPnlAgg[];
 	};
 };
 
 type AssetResponse = {
 	statusCode: number;
-	result: AssetTotal | AssetBoxBrief[] | AssetSpotPNL;
+	result: AssetTotal | AssetBoxBrief[] | AssetSpotPnl | AssetInOutTotal;
 };
 
 type AssetTotalParams = {
@@ -20,6 +20,46 @@ type AssetTotalParams = {
 	assetType?: string;
 	boxMode?: string;
 	miniAssetMode?: string;
+};
+
+type AssetInOutTotalParams = {
+	q1CurrencyId?: string;
+	q2CurrencyId?: string;
+	q3CurrencyId?: string;
+	dateFrom?: string;
+	dateTo?: string;
+};
+
+type AssetSpotPnlAggListParams = {
+	pnlCourseId: string;
+	from?: string;
+	to?: string;
+	sortMode?: string;
+};
+
+type AssetSpotPnlAgg = {
+	pcid: number;
+	pcName: string;
+	wloId: number;
+	wloName: string;
+	cid: number;
+	cSymbol: string;
+	boughtCostUsd: number;
+	soldIncomeUsd: number;
+	latestPnlAvgPerc: number;
+	latestPnlBasedAvgInUsd: number;
+	usdIndexPrice: string;
+};
+
+type AssetInOutTotal = {
+	depositCo: string;
+	depositOnQ1: string;
+	depositOnQ2: string;
+	depositOnQ3: string;
+	withdrawCo: string;
+	withdrawOnQ1: string;
+	withdrawOnQ2: string;
+	withdrawOnQ3: string;
 };
 
 type AssetBoxBrief = {
@@ -74,14 +114,14 @@ type AssetRecentListParams = {
 	rowCount: string;
 };
 
-type AssetSpotPNLTotalParams = {
+type AssetSpotPnlTotalParams = {
 	pnlCourseId: string;
 	q1CurrencyId: string;
 	q2CurrencyId: string;
-	q3CurrencyId: string;
+	q3CurrencyId?: string;
 };
 
-type AssetSpotPNL = {
+type AssetSpotPnl = {
 	pnlPercentage: number;
 	pnlOnQ1: string;
 	pnlOnQ2: string;
@@ -133,6 +173,20 @@ type Balance = {
 	};
 };
 
+type TopCard = {
+	iconIndex: number;
+	iconBgColor: string;
+	title: string;
+	percentage: string;
+	percentageStatus: boolean;
+	seeMoreStatus: boolean;
+	seeMoreLink: string;
+	countStatus: boolean;
+	count: string;
+	TMN: string;
+	USD: string;
+};
+
 export type {
 	Asset,
 	AssetTotal,
@@ -148,6 +202,11 @@ export type {
 	FuturesItems,
 	SpotItems,
 	CurrencyBalance,
-	AssetSpotPNLTotalParams,
-	AssetSpotPNL,
+	AssetSpotPnlTotalParams,
+	AssetSpotPnl,
+	AssetInOutTotalParams,
+	AssetSpotPnlAggListParams,
+	AssetSpotPnlAgg,
+	AssetInOutTotal,
+	TopCard,
 };

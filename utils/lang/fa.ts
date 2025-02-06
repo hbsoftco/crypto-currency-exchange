@@ -660,7 +660,8 @@ const persian = {
 	totalPurchaseCost: 'کل هزینه خرید',
 	pointHead: 'نقطه سر به سر',
 	momentaryValue: 'ارزش لحظه ای',
-	amountProfitLoss: 'میزان سود وزیان',
+	amountProfitLoss: 'میزان سود و زیان',
+	amountCurrenciesProfitLoss: 'میزان سود و زیان ارزها',
 	weeklyProfitLoss: 'سود و زیان هفتگی',
 	mapAssets: 'نقشه دارایی های من',
 	howDeposit: 'چطور واریز کنم ؟',
@@ -1231,6 +1232,12 @@ const persian = {
 	maintenanceMargin: 'مارجین نگهداری',
 	upTo: 'تا',
 	deleteBankAccount: 'حذف اطلاعات بانکی',
+	case: 'مورد',
+	allAssets: 'همه دارایی‌ها',
+	mostWorthless: 'بی‌ارزش‌ترین',
+	mostBeneficial: 'سودمندترین',
+	highestIncome2: 'بیشترین درآمد',
+	mostExpensive: 'گرانترین',
 };
 
 export default persian;

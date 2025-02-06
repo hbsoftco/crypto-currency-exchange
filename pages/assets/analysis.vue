@@ -53,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import SpotInfo from '~/components/pages/Assets/Analysis/SpotInfo.vue';
+import SpotInfo from '~/components/pages/Assets/Analysis/Spot/SpotInfo.vue';
 
 definePageMeta({
 	layout: 'asset',

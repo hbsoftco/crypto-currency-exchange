@@ -1,6 +1,6 @@
 <template>
 	<div
-		v-if="assetBoxBriefLoading || assetListLoading || assetSpotPNLTotalLoading"
+		v-if="assetBoxBriefLoading || assetListLoading || assetSpotPnlTotalLoading"
 		class="py-4 p-3 md:p-5"
 	>
 		<UiLogoLoading />
@@ -79,11 +79,11 @@
 							{{ $t('todayProfitLoss') }}
 						</span>
 						<div
-							v-if="assetSpotPNLTotalParams.q1CurrencyId === '1'"
+							v-if="assetSpotPnlTotalParams.q1CurrencyId === '1'"
 							class="flex justify-end items-center text-left my-2"
 						>
 							<p class="text-base font-bold">
-								{{ isAssetVisible ? priceFormat((assetSpotPNLTotal?.pnlOnQ1) ?? '0') : '***' }}
+								{{ isAssetVisible ? priceFormat((assetSpotPnlTotal?.pnlOnQ1) ?? '0') : '***' }}
 							</p>
 							<p class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark px-1">
 								{{ $t('toman') }}
@@ -98,18 +98,18 @@
 								USD
 							</p>
 							<p class="text-base font-bold">
-								{{ isAssetVisible ? priceFormat((assetSpotPNLTotal?.pnlOnQ1) ?? '0') : '***' }}
+								{{ isAssetVisible ? priceFormat((assetSpotPnlTotal?.pnlOnQ1) ?? '0') : '***' }}
 							</p>
 						</div>
 						<div
-							v-if="assetSpotPNLTotal?.pnlPercentage"
+							v-if="assetSpotPnlTotal?.pnlPercentage"
 							class="flex justify-end  text-left my-2"
 						>
 							<template v-if="isAssetVisible">
 								<UiChangeIndicator
 									pl="pl-0"
 									size="text-xs md:text-sm"
-									:change="parseFloat(priceFormat(assetSpotPNLTotal?.pnlPercentage))"
+									:change="parseFloat(priceFormat(assetSpotPnlTotal?.pnlPercentage))"
 									:icon="true"
 								/>
 							</template>
@@ -355,7 +355,7 @@ import Transfer from '~/components/pages/Assets/Transfer.vue';
 import WithdrawLinks from '~/components/pages/Assets/WithdrawLinks.vue';
 import DepositLinks from '~/components/pages/Assets/DepositLinks.vue';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
-import type { Asset, AssetBoxBrief, AssetBoxBriefParams, AssetListParams, AssetSpotPNL, AssetSpotPNLTotalParams, Balance } from '~/types/definitions/asset.types';
+import type { Asset, AssetBoxBrief, AssetBoxBriefParams, AssetListParams, AssetSpotPnl, AssetSpotPnlTotalParams, Balance } from '~/types/definitions/asset.types';
 import { AssetBox, BoxMode, MiniAssetMode } from '~/utils/enums/asset.enum';
 import { assetRepository } from '~/repositories/asset.repository';
 import { handleImageError, priceFormat } from '~/utils/helpers';
@@ -623,35 +623,35 @@ const getAssetList = async () => {
 	}
 };
 
-const assetSpotPNLTotalParams = ref<AssetSpotPNLTotalParams>({
+const assetSpotPnlTotalParams = ref<AssetSpotPnlTotalParams>({
 	pnlCourseId: '2',
 	q1CurrencyId: '1',
 	q2CurrencyId: '',
 	q3CurrencyId: '',
 });
-const assetSpotPNLTotal = ref<AssetSpotPNL>();
-const assetSpotPNLTotalLoading = ref<boolean>(true);
-const getAssetSpotPNLTotal = async () => {
+const assetSpotPnlTotal = ref<AssetSpotPnl>();
+const assetSpotPnlTotalLoading = ref<boolean>(true);
+const getAssetSpotPnlTotal = async () => {
 	try {
-		assetSpotPNLTotalLoading.value = true;
-		const { result } = await assetRepo.getAssetSpotPNLTotal(assetSpotPNLTotalParams.value);
+		assetSpotPnlTotalLoading.value = true;
+		const { result } = await assetRepo.getAssetSpotPnlTotal(assetSpotPnlTotalParams.value);
 
-		assetSpotPNLTotal.value = result as AssetSpotPNL;
-		assetSpotPNLTotalLoading.value = false;
+		assetSpotPnlTotal.value = result as AssetSpotPnl;
+		assetSpotPnlTotalLoading.value = false;
 	}
 	catch (error) {
 		console.log(error);
-		assetSpotPNLTotalLoading.value = false;
+		assetSpotPnlTotalLoading.value = false;
 	}
 };
 
 watch(() => assetListParams.value.assessmentCurrencyId, async (newValue) => {
 	if (newValue) {
-		assetSpotPNLTotalParams.value.q1CurrencyId = newValue;
+		assetSpotPnlTotalParams.value.q1CurrencyId = newValue;
 
 		await Promise.all([
 			getAssetList(),
-			getAssetSpotPNLTotal(),
+			getAssetSpotPnlTotal(),
 		]);
 	}
 });
@@ -664,7 +664,7 @@ onMounted(async () => {
 	await Promise.all([
 		getAssetList(),
 		getAssetBoxBrief(),
-		getAssetSpotPNLTotal(),
+		getAssetSpotPnlTotal(),
 	]);
 });
 

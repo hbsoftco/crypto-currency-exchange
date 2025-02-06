@@ -21,6 +21,14 @@ enum BoxSortMode {
 	ByValue = '21',
 }
 
+enum PnlSortMode {
+	None = '0',
+	MostWorthless = '21',
+	MostBeneficial = '11',
+	HighestIncome = '41',
+	MostExpensive = '31',
+}
+
 enum MiniAssetMode {
 	Any = '0',
 	NoMiniAsset = '11',
@@ -47,4 +55,5 @@ export {
 	BoxSortMode,
 	MiniAssetMode,
 	AssetBox,
+	PnlSortMode,
 };
