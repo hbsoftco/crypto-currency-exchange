@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<div class="flex justify-between mb-11">
-			<p class="text-sm font-bold text-subtle-text-light dark:text-subtle-text-dark">
+		<div class="flex justify-between mb-6">
+			<p class="text-lg font-extrabold text-subtle-text-light dark:text-subtle-text-dark">
 				{{ $t('amountCurrenciesProfitLoss') }}
 			</p>
 			<div class="w-48">

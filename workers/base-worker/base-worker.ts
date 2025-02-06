@@ -256,11 +256,19 @@ const addCurrencyToAsset = async (baseUrl: string, assets: Asset[]) => {
 		await fetchCurrencyBriefItems(baseUrl);
 	}
 
+	if (!marketBriefItems.length) {
+		await fetchMarketBriefItems(baseUrl);
+	}
+
 	const result = await Promise.all(assets.map(async (asset) => {
 		const currency = await findCurrencyById(asset.currencyId, baseUrl);
+		const markets = await findMarketsByCurrencyId(baseUrl, asset.currencyId);
+
 		return {
 			...asset,
+			percentage: '0',
 			currency,
+			markets,
 		};
 	}));
 

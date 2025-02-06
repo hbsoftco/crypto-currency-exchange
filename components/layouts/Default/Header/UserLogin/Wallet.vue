@@ -102,10 +102,11 @@
 import IconWallet from '~/assets/svg-icons/menu/wallet.svg';
 import IconArrowDownRed from '~/assets/svg-icons/arrow-down-red.svg';
 import IconArrowUpGreen from '~/assets/svg-icons/arrow-up-green.svg';
-import IconOverView from '~/assets/svg-icons/menu/overview.svg';
-import IconAssets from '~/assets/svg-icons/menu/quick-menu/quick-trade.svg';
-import IconHistory from '~/assets/svg-icons/menu/quick-menu/transaction-history.svg';
-import IconPortfolio from '~/assets/svg-icons/menu/quick-menu/portfolio.svg';
+import IconSalary from '~/assets/svg-icons/spot/salary.svg';
+import IconBudget from '~/assets/svg-icons/wallet/budget.svg';
+import IconAnalytics from '~/assets/svg-icons/spot/analytics.svg';
+import IconDate from '~/assets/svg-icons/menu/quick-menu/transaction-history.svg';
+import IconPostal from '~/assets/svg-icons/wallet/postal.svg';
 import { priceFormat } from '~/utils/helpers';
 
 const assetTotal = ref();
@@ -116,23 +117,33 @@ onMounted(async () => {
 const menuItems = [
 	{
 		name: 'overView',
-		icon: IconOverView,
+		icon: IconSalary,
 		url: '/assets/overview',
 	},
 	{
-		name: 'assets',
-		icon: IconAssets,
-		url: '/assets/crypto-addresses',
+		name: 'spot',
+		icon: IconBudget,
+		url: '/assets/spot',
 	},
 	{
 		name: 'history',
-		icon: IconHistory,
+		icon: IconDate,
 		url: '/assets/history',
 	},
 	{
-		name: 'portfolio',
-		icon: IconPortfolio,
+		name: 'profitLoss',
+		icon: IconAnalytics,
 		url: '/assets/analysis',
+	},
+	{
+		name: 'depositAddresses',
+		icon: IconPostal,
+		url: '/assets/crypto-addresses',
+	},
+	{
+		name: 'bankCards',
+		icon: IconWallet,
+		url: '/assets/fiat-accounts',
 	},
 ];
 </script>

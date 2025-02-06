@@ -7,7 +7,7 @@
 	</div>
 
 	<div v-else>
-		<div class="grid grid-cols-1 md:grid-cols-4 gap-4 my-8">
+		<div class="grid grid-cols-1 md:grid-cols-4 gap-4 my-8 mb-24">
 			<div
 				v-for="(item, index) in topCards"
 				:key="index"
@@ -79,29 +79,38 @@
 				</div>
 			</div>
 		</div>
-		<div class="my-20">
+		<div class="my-10">
 			<PnlChart />
 		</div>
-		<div class="my-8">
-			<TablePortfolio />
+		<div class="mb-8">
+			<PnlTables />
 		</div>
 		<div class="my-8">
-			<MapAssets />
+			<AssetsChart />
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { priceFormat } from '~/utils/helpers';
+import PnlTables from '~/components/pages/Assets/Analysis/Spot/PnlTables.vue';
 import PnlChart from '~/components/pages/Assets/Analysis/Spot/PnlChart.vue';
-import TablePortfolio from '~/components/pages/Site/Wallet/Menu/ProfitLoss/Spot/Portfolio/index.vue';
+// import TablePortfolio from '~/components/pages/Site/Wallet/Menu/ProfitLoss/Spot/Portfolio/index.vue';
 import IconBank from '~/assets/svg-icons/wallet/bank.svg';
 import IconCurrencyDeposit from '~/assets/svg-icons/menu/quick-menu/currency-deposit.svg';
 import IconWithdrawToman from '~/assets/svg-icons/menu/quick-menu/withdraw-toman.svg';
 import IconProfitLoss from '~/assets/svg-icons/wallet/wallet-upload.svg';
-import MapAssets from '~/components/pages/Assets/Analysis/Spot/MapAssets.vue';
+import AssetsChart from '~/components/pages/Assets/Analysis/Spot/AssetsChart.vue';
 import { assetRepository } from '~/repositories/asset.repository';
-import type { AssetInOutTotal, AssetInOutTotalParams, AssetSpotPnl, AssetSpotPnlTotalParams, AssetTotal, AssetTotalParams, TopCard } from '~/types/definitions/asset.types';
+import type {
+	AssetInOutTotal,
+	AssetInOutTotalParams,
+	AssetSpotPnl,
+	AssetSpotPnlTotalParams,
+	AssetTotal,
+	AssetTotalParams,
+	TopCard,
+} from '~/types/definitions/asset.types';
 
 const { $api } = useNuxtApp();
 const assetRepo = assetRepository($api);

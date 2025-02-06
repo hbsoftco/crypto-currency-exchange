@@ -1,4 +1,5 @@
 import type { CurrencyBrief } from './currency.types';
+import type { MarketBrief } from './market.types';
 
 type AssetListResponse = {
 	statusCode: number;
@@ -93,7 +94,9 @@ type Asset = {
 	qLocked: string;
 	aAvailable: string;
 	aLocked: string;
+	percentage?: string;
 	currency?: CurrencyBrief;
+	markets?: MarketBrief[];
 };
 
 type AssetListParams = {

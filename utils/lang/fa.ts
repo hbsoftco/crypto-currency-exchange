@@ -663,7 +663,7 @@ const persian = {
 	amountProfitLoss: 'میزان سود و زیان',
 	amountCurrenciesProfitLoss: 'میزان سود و زیان ارزها',
 	weeklyProfitLoss: 'سود و زیان هفتگی',
-	mapAssets: 'نقشه دارایی های من',
+	mapAssets: 'نقشه دارایی‌های من',
 	howDeposit: 'چطور واریز کنم ؟',
 	howWithdraw: 'چطور برداشت کنم ؟',
 	chooseCurrency: 'انتخاب رمز ارز',
@@ -1238,6 +1238,9 @@ const persian = {
 	mostBeneficial: 'سودمندترین',
 	highestIncome2: 'بیشترین درآمد',
 	mostExpensive: 'گرانترین',
+	pnlTable: 'جدول سود و زیان',
+	latest: 'آخرین',
+	showType: 'نحوه نمایش',
 };
 
 export default persian;
