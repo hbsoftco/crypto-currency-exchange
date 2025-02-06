@@ -152,6 +152,7 @@ watch(
 					const findMarket = assetList.value[index].markets?.find((market) => market.id === marketId);
 					if (findMarket) {
 						assetList.value[index].percentage = updatedMarket.data.p;
+						assetList.value[index].price = updatedMarket.data.i;
 					}
 				});
 			});
@@ -165,20 +166,17 @@ onMounted(async () => {
 	await getAssetList();
 });
 
-const previousPrices: Record<number, number> = {};
-
 const treemapData = computed(() => {
 	return assetList.value.map((asset) => {
 		const currentPrice = parseFloat(asset.aAvailable) || 0;
 		const color = getColorTreeMapSlice(Number(asset.percentage));
-
-		previousPrices[asset.currencyId] = currentPrice;
 
 		return {
 			name: asset.currency?.cName || 'Unknown',
 			id: `asset-${asset.currencyId}`,
 			value: [currentPrice, parseFloat(asset.qAvailable)],
 			quote: asset.currency?.cSymbol || 'Unknown',
+			asset,
 			itemStyle: { color },
 		};
 	});
@@ -199,10 +197,59 @@ const treemapOptions = computed(() => ({
 	title: { show: false },
 	grid: { left: '5%', right: '5%', top: '10%' },
 	tooltip: {
-		formatter: function (info: any) {
-			const value = info.value;
-			const amount = value[0] ? value[0] + ' USDT' : '-';
-			return `<div class="tooltip-title">${info.name}</div> مقدار: ${amount}`;
+		formatter: function (params: any) {
+			const isPositive = params.data.asset.percentage > 0;
+			const className = isPositive ? 'text-accent-green' : 'text-accent-red';
+
+			return `
+					<div class="text-black dark:text-black py-1 text-sm" dir="rtl">
+						<div class="flex justify-between mb-1">
+							<div class="text-black dark:text-black font-dana">${useT('coin')}</div>
+							<div class="text-black dark:text-black font-dana mr-6">
+								${params.data.name}
+							</div>
+						</div>
+						<div class="flex items-center justify-between mb-1">
+							<div class="text-black dark:text-black font-dana">${useT('available')}</div>
+							<div class="text-black dark:text-black flex mr-4 text-xs">
+								<span>USDT</span>
+								<span class="mr-1 font-dana">
+									(${useNumber(priceFormat(String(params.data.asset.aAvailable)))})
+								</span>
+								<span class="mr-1 font-dana">
+									${useNumber(priceFormat(String(params.data.asset.qAvailable)))}
+								</span>
+							</div>
+						</div>
+						<div class="flex items-center justify-between mb-1">
+							<div class="text-black dark:text-black font-dana">${useT('locked')}</div>
+							<div class="text-black dark:text-black flex mr-4 text-xs">
+								<span>USDT</span>
+								<span class="mr-1 font-dana">
+									(${useNumber(priceFormat(String(params.data.asset.aLocked)))})
+								</span>
+								<span class="mr-1 font-dana">
+									${useNumber(priceFormat(String(params.data.asset.qLocked)))}
+								</span>
+							</div>
+						</div>
+						<div class="flex items-center justify-between mb-1">
+							<div class="text-black dark:text-black font-dana">${useT('priceInDollar')}</div>
+							<div class="text-black dark:text-black flex mr-4 text-xs">
+								<span>USDT</span>
+								<span class="mr-1 font-dana">
+									${useNumber(priceFormat(String(params.data.asset.price)))}
+								</span>
+							</div>
+						</div>
+						<div class="flex items-center justify-between mb-1">
+							<div class="text-black dark:text-black font-dana">${useT('todayChangePercent')}</div>
+							<div class="text-black dark:text-black flex mr-4 text-xs" dir="ltr">
+								<span class="${className}">${isPositive ? '+' : ''}${useNumber(params.data.asset.percentage)}%</span>
+							</div>
+						</div>
+					</div>
+				`;
 		},
 	},
 	series: [{

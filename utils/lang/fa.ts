@@ -1241,6 +1241,8 @@ const persian = {
 	pnlTable: 'جدول سود و زیان',
 	latest: 'آخرین',
 	showType: 'نحوه نمایش',
+	available: 'در دسترس',
+	todayChangePercent: 'درصد تغییر امروز',
 };
 
 export default persian;

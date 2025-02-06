@@ -95,6 +95,7 @@ type Asset = {
 	aAvailable: string;
 	aLocked: string;
 	percentage?: string;
+	price?: string;
 	currency?: CurrencyBrief;
 	markets?: MarketBrief[];
 };
