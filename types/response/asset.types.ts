@@ -38,35 +38,9 @@ type GetInternalReceiveListResponse = {
 	};
 };
 
-type MiscellaneousList = {
-	logTypeId: number;
-	logTypeName: string;
-	logTypeIsRaising: boolean;
-	boxTypeId: number;
-	boxTypeName: string;
-	uidIssuer: number;
-	uidAffected: number;
-	cid: number;
-	value: string;
-	balanceAfter: string;
-	time: string;
-	description: string;
-	currency?: CurrencyBriefItem | null;
-};
-
-type GetMiscellaneousListResponse = {
-	statusCode: number;
-	result: {
-		totalCount: number;
-		rows: MiscellaneousList[];
-	};
-};
-
 export type {
 	GetAssetListResponse,
 	AssetItem,
 	GetInternalReceiveListResponse,
-	GetMiscellaneousListResponse,
 	InternalReceive,
-	MiscellaneousList,
 };

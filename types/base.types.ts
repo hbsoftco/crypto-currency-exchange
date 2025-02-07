@@ -68,23 +68,6 @@ type GetInternalReceiveParams = {
 	pageSize: string;
 };
 
-type GetMiscellaneousListParams = {
-	assetType: string;
-	currencyId: string;
-	from: string;
-	to: string;
-	pageNumber: string;
-	pageSize: string;
-};
-
-type GetRewardReceivedListParams = {
-	currencyId: string;
-	from: string;
-	to: string;
-	pageNumber: string;
-	pageSize: string;
-};
-
 type GetWithdrawParams = {
 	type?: string;
 	currencyId: string;
@@ -154,8 +137,6 @@ export type {
 	GetTradeListParams,
 	GetTraderBestListParams,
 	GetInternalReceiveParams,
-	GetMiscellaneousListParams,
-	GetRewardReceivedListParams,
 	GetWithdrawParams,
 	GetHowBuyListParams,
 	GetSubjectLiveChatParams,

@@ -1,29 +1,6 @@
 <template>
 	<div>
-		<DepositDetailToman
-			v-if="showDetail"
-			@close="closeDetail"
-		/>
 		<div class="grid grid-cols-1 md:grid-cols-12 gap-[1px] items-center my-2">
-			<div class="ml-6 my-1 col-span-2">
-				<USelectMenu
-					v-model="type"
-					size="lg"
-					:options="typeItems"
-					:placeholder="$t('type')"
-					option-attribute="value"
-					:ui="{
-						background: '',
-						color: {
-							white: {
-								outline: ' bg-hover-light dark:bg-hover-dark',
-							},
-						},
-					}"
-				/>
-			</div>
-			<!-- type -->
-
 			<div class="ml-6 my-1 col-span-2">
 				<div class="flex-1">
 					<USelectMenu
@@ -127,26 +104,6 @@
 			</div>
 			<!-- toDate -->
 
-			<div class="ml-6 my-1 col-span-2">
-				<UInput
-					id="invoiceNumber"
-					v-model:model-value="searchInput"
-					size="lg"
-					color="white"
-					variant="outline"
-					:placeholder="$t('search')"
-					:ui="{
-						background: '',
-						color: {
-							white: {
-								outline: ' bg-hover-light dark:bg-hover-dark',
-							},
-						},
-					}"
-				/>
-			</div>
-			<!-- search -->
-
 			<div class="col-span-1">
 				<UButton
 					size="lg"
@@ -158,150 +115,54 @@
 			</div>
 		</div>
 		<div class="w-full">
-			<div v-if="depositTransactionsLoading">
-				<UiLogoLoading />
-			</div>
-
-			<table
-				v-else
-				class="min-w-full py-6 text-right"
-			>
+			<table class="min-w-full py-6 text-right">
 				<thead>
 					<tr class="pb-2 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark">
 						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark py-5">
 							{{ $t('date') }}
 						</th>
-						<!-- date -->
 						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5">
-							{{ $t('invoiceNumber') }}
+							{{ $t('currency2') }}
 						</th>
-						<!-- invoiceNumber -->
-						<th class="pl-10 text-nowrap text-left text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5">
+						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5">
 							{{ $t('amount') }}
 						</th>
-						<!-- amount -->
-						<th class="text-nowrap pr-10 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5">
-							{{ $t('status') }}
+						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5">
+							{{ $t('reason') }}
 						</th>
-						<!-- status -->
-						<th
-							v-if="columnsType.key === DepositType.FIAT"
-							class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5"
-						>
-							{{ $t('shabaOrigin') }}
-						</th>
-						<!-- shabaOrigin FIAT -->
-						<th
-							v-if="columnsType.key === DepositType.CRYPTO"
-							class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5"
-						>
-							{{ $t('network') }}
-						</th>
-						<!-- network CRYPTO -->
-						<th
-							v-if="columnsType.key === DepositType.CRYPTO"
-							class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5"
-						>
-							TxHash
-						</th>
-						<!-- TxHash CRYPTO -->
-						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5" />
 					</tr>
 				</thead>
 				<tbody>
 					<tr
-						v-for="(item, index) in depositTransactions"
+						v-for="(item, index) in rewardReceivedList"
 						:key="index"
 						class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"
 					>
-						<td class="text-nowrap text-sm font-normal py-2">
-							<span dir="ltr">
-								{{ toPersianDate(item.txTime, 'full-with-month') }}
-							</span>
+						<td class="text-nowrap text-xs font-normal py-2">
+							{{ useNumber(formatDateToIranTime(item.openTime)) }}
 						</td>
-						<!-- txTime -->
-						<td class="text-nowrap text-sm font-normal py-2">
-							<span dir="ltr">{{ item.factorNo }}</span>
-						</td>
-						<!-- factorNo -->
-						<td class="text-nowrap text-sm font-normal py-2">
-							<div
-								class="flex items-center ml-10"
-								dir="ltr"
-							>
+						<td class="text-nowrap text-xs font-normal py-2">
+							<div class="flex">
 								<img
 									:src="`https://api-bitland.site/media/currency/${item.currency?.cSymbol}.png`"
 									:alt="item.currency?.cName"
-									class="w-6 h-6 rounded-full"
+									class="w-4 h-4 rounded-full"
 								>
-								<span
-									dir="ltr"
-									class="ml-2"
-								>
-									{{ priceFormat(item.txValue) }} {{ item.currency?.cSymbol }}
-								</span>
+								<span class="mr-1">{{ item.currency?.cName }}</span>
 							</div>
 						</td>
-						<!-- cSymbol -->
-						<td class="text-nowrap text-sm font-normal py-2 pr-10">
-							{{ item.stateName }}
+						<td class="text-nowrap text-xs font-normal py-2">
+							{{ useNumber(item.amountAllocated) }}
 						</td>
-						<!-- stateName -->
-						<td
-							v-if="columnsType.key === DepositType.FIAT"
-							class="text-nowrap text-sm font-normal py-2"
-						>
-							<span
-								dir="ltr"
-								class="cursor-pointer"
-								:title="item.bankIban"
-								@click="copyText(item.bankIban)"
-							>
-								{{ formatContractId(item.bankIban) }}
-							</span>
-						</td>
-						<!-- bankIban FIAT -->
-						<td
-							v-if="columnsType.key === DepositType.CRYPTO"
-							class="text-nowrap text-sm font-normal py-2"
-						>
-							{{ item.blockchainName }}
-						</td>
-						<!-- blockchainName CRYPTO -->
-						<td
-							v-if="columnsType.key === DepositType.CRYPTO"
-							class="text-nowrap text-sm font-normal py-2"
-						>
-							<a
-								v-if="item.txExplorerUrl"
-								:href="item.txExplorerUrl"
-								dir="ltr"
-								class="cursor-pointer"
-								:title="item.txCode"
-								target="_blank"
-							>
-								{{ formatContractId(item.txCode) }}
-							</a>
-							<span
-								v-else
-								dir="ltr"
-							>
-								{{ formatContractId(item.txCode) }}
-							</span>
-						</td>
-						<!-- txCode CRYPTO -->
-						<td class="text-nowrap text-sm font-normal py-2">
-							<UButton
-								class="text-sm font-medium px-3 py-1.5 text-center bg-transparent-light dark:bg-transparency-dark text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark hover:text-text-light hover:dark:text-text-light"
-								to=""
-								@click="openDetail"
-							>
-								{{ $t("moreDetail") }}
-							</UButton>
+						<td class="text-nowrap text-xs font-normal py-2">
+							{{ $t(item.reason) }}
 						</td>
 					</tr>
 				</tbody>
 			</table>
+			<template v-if="!rewardReceivedList.length && !rewardReceivedLoading">
+				<UiNothingToShow />
+			</template>
 		</div>
 		<div
 			v-if="totalCount > 20"
@@ -326,47 +187,47 @@
 </template>
 
 <script setup lang="ts">
-import { toPersianDate, priceFormat, formatContractId } from '~/utils/helpers';
-import DepositDetailToman from '~/components/pages/Site/Wallet/Menu/History/Deposit/DepositDetailToman.vue';
-import { depositRepository } from '~/repositories/deposit.repository';
-import { DepositType } from '~/utils/enums/deposit.enum';
-import type { KeyValue } from '~/types/definitions/common.types';
-import type { DepositTransaction, DepositTransactionsParams } from '~/types/definitions/deposit.types';
+import { useNumber } from '~/composables/useNumber';
+import { formatDateToIranTime } from '~/utils/date-time';
+import { userRepository } from '~/repositories/user.repository';
+import type { RewardReceived, RewardReceivedListParams } from '~/types/definitions/user.types';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
 
 const { $mobileDetect, $api } = useNuxtApp();
-const depositRepo = depositRepository($api);
+const userRepo = userRepository($api);
 
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
 
-const { copyText } = useClipboard();
 const worker = useBaseWorker();
 
 const totalCount = ref(0);
 
-const typeItems = ref<KeyValue[]>([
-	{
-		key: DepositType.ANY,
-		value: useT('all'),
-	},
-	{
-		key: DepositType.CRYPTO,
-		value: useT('crypto'),
-	},
-	{
-		key: DepositType.FIAT,
-		value: useT('fiat'),
-	},
-	{
-		key: DepositType.INTERNAL,
-		value: useT('internal'),
-	},
-]);
+const params = ref<RewardReceivedListParams>({
+	currencyId: '',
+	from: '',
+	to: '',
+	pageNumber: '1',
+	pageSize: '20',
+});
+const rewardReceivedLoading = ref<boolean>(false);
+const rewardReceivedList = ref<RewardReceived[]>([]);
+const getRewardReceivedList = async () => {
+	try {
+		rewardReceivedLoading.value = true;
+		const { result } = await userRepo.getRewardReceivedList(params.value);
 
-const columnsType = ref<KeyValue>(typeItems.value[0]);
-const type = ref<KeyValue>(typeItems.value[0]);
+		rewardReceivedList.value = result.rows as RewardReceived[];
+		totalCount.value = result.totalCount;
+
+		rewardReceivedLoading.value = false;
+	}
+	catch (error) {
+		console.log(error);
+		rewardReceivedLoading.value = false;
+	}
+};
 
 const filteredCurrencies = ref<CurrencyBrief[]>();
 const selectedCurrency = ref<CurrencyBrief>();
@@ -400,54 +261,7 @@ const search = async (q: string) => {
 	return filteredCurrencies.value || [];
 };
 
-const params = ref<DepositTransactionsParams>({
-	type: DepositType.ANY,
-	currencyId: '',
-	statement: '',
-	from: '',
-	to: '',
-	pageNumber: '1',
-	pageSize: '20',
-});
-const depositTransactionsLoading = ref<boolean>(true);
-const depositTransactions = ref<DepositTransaction[]>([]);
-const getDepositTransactions = async () => {
-	try {
-		depositTransactionsLoading.value = true;
-
-		const { result } = await depositRepo.getDepositTransactions(params.value);
-		depositTransactions.value = await worker.addCurrencyToList(
-			useEnv('apiBaseUrl'),
-			result.rows as DepositTransaction[],
-			'currencyId',
-		);
-
-		totalCount.value = result.totalCount;
-		columnsType.value = type.value;
-
-		depositTransactionsLoading.value = false;
-	}
-	catch (error) {
-		depositTransactionsLoading.value = false;
-		console.log(error);
-	}
-};
-
-onMounted(async () => {
-	isMobile.value = !!mobileDetect.mobile();
-
-	await getDepositTransactions();
-	await initCurrencies();
-});
-
-const onPageChange = async (newPage: number) => {
-	params.value.pageNumber = String(newPage);
-
-	await getDepositTransactions();
-};
-
 const applyFilters = async () => {
-	params.value.type = type.value ? type.value.key : '';
 	params.value.from = fromDate.value;
 	params.value.to = toDate.value;
 
@@ -455,22 +269,8 @@ const applyFilters = async () => {
 		params.value.currencyId = String(selectedCurrency.value.id);
 	}
 
-	await getDepositTransactions();
+	await getRewardReceivedList();
 };
-
-let searchTimeout: ReturnType<typeof setTimeout> | null = null;
-const searchInput = ref('');
-watch(searchInput, (newValue) => {
-	if (searchTimeout) {
-		clearTimeout(searchTimeout);
-	}
-
-	searchTimeout = setTimeout(async () => {
-		params.value.statement = newValue;
-
-		await getDepositTransactions();
-	}, 2000);
-});
 
 const toDate = ref();
 const internalToDate = ref();
@@ -574,15 +374,16 @@ const validateDate = (field: string) => {
 		internalToDate.value = '';
 	}
 };
+onMounted(async () => {
+	isMobile.value = !!mobileDetect.mobile();
 
-//  Old
+	await getRewardReceivedList();
+	await initCurrencies();
+});
 
-const showDetail = ref(false);
-const openDetail = () => {
-	showDetail.value = true;
-};
+const onPageChange = async (newPage: number) => {
+	params.value.pageNumber = newPage.toString();
 
-const closeDetail = () => {
-	showDetail.value = false;
+	await getRewardReceivedList();
 };
 </script>

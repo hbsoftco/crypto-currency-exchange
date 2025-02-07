@@ -72,6 +72,7 @@ type UserRepository = {
 	getReferralBrief: (params: ReferralBriefParams) => Promise<ResultResponse>;
 	getInvitationList: (params: InvitationListParams) => Promise<UserResponse>;
 	getInvitationCommission: (params: InviteCommissionParams) => Promise<UserResponse>;
+	openPrize: (id: number) => Promise<CommonResponse>;
 
 	// Others
 	getHolderBrief: (params: AssetTypeParams) => Promise<ResultResponse>;
@@ -89,7 +90,7 @@ type UserRepository = {
 	getBankAccountList: (params: BankAccountListParams) => Promise<UserResponse>;
 	storeBankAccount: (params: BankAccountDto) => Promise<CommonResponse>;
 	deleteBankAccount: (params: DeleteBankAccountParams) => Promise<CommonResponse>;
-	getRewardReceivedList: (params: RewardReceivedListParams) => Promise<ResultResponse>;
+	getRewardReceivedList: (params: RewardReceivedListParams) => Promise<UserResponse>;
 
 	// OLD
 	getReferralBestList: (params: GetReferralBestListParams) => Promise<GetBestListResponse>;
@@ -373,6 +374,16 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
+	async openPrize(id: number): Promise<CommonResponse> {
+		const url = `/v1/user/reward/open`;
+		const response = await fetch<CommonResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body: { id },
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
 	// Others
 	async getHolderBrief(params: AssetTypeParams): Promise<ResultResponse> {
 		const query = new URLSearchParams(
@@ -507,14 +518,14 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
-	async getRewardReceivedList(params: RewardReceivedListParams): Promise<ResultResponse> {
+	async getRewardReceivedList(params: RewardReceivedListParams): Promise<UserResponse> {
 		const query = new URLSearchParams(
 			Object.entries(params)
 				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
 		);
 
 		const url = '/v1/user/reward/received_list';
-		const response = await fetch<ResultResponse>(`${url}?${query.toString()}`, {
+		const response = await fetch<UserResponse>(`${url}?${query.toString()}`, {
 			noAuth: false,
 			method: 'GET',
 		} as CustomNitroFetchOptions);

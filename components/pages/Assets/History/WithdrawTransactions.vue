@@ -329,7 +329,7 @@
 				:page-count="20"
 				:total="totalCount"
 				:max="6"
-				size="xl"
+				size="sm"
 				ul-class="flex space-x-2 bg-blue-500 border-none"
 				li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500 px-3"
 				button-class-base="flex items-center justify-center w-full h-full transition-colors duration-200"

@@ -50,7 +50,7 @@
 
 <script setup lang="ts">
 import { useNumber } from '~/composables/useNumber';
-import type { Tag } from '~/types/response/tag.types';
+import type { Tag } from '~/types/definitions/tag.types';
 
 interface PropsDefinition {
 	tags: Tag[];

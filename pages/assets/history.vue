@@ -35,41 +35,43 @@
 						>{{ $t(item.label) }}</span>
 					</template>
 					<template #item="{ item }">
-						<div
-							v-if="item.key === 'deposit'"
-							class="space-y-3"
-						>
-							<DepositTransactions />
-						</div>
-						<div
-							v-else-if="item.key === 'pickedUp'"
-							class="space-y-3"
-						>
-							<WithdrawTransactions />
-						</div>
-						<div
-							v-else-if="item.key === 'transfer'"
-							class="space-y-3"
-						>
+						<div class="border-t border-primary-gray-light dark:border-primary-gray-dark">
+							<div
+								v-if="item.key === 'deposit'"
+								class="space-y-3"
+							>
+								<DepositTransactions />
+							</div>
+							<div
+								v-else-if="item.key === 'pickedUp'"
+								class="space-y-3"
+							>
+								<WithdrawTransactions />
+							</div>
+							<div
+								v-else-if="item.key === 'transfer'"
+								class="space-y-3"
+							>
 							<!-- <Transfer /> -->
-						</div>
-						<div
-							v-else-if="item.key === 'subsetIncome'"
-							class="space-y-3"
-						>
-							<SubTeamIncomeTransactions />
-						</div>
-						<div
-							v-else-if="item.key === 'awards'"
-							class="space-y-3"
-						>
-							<!-- <Award /> -->
-						</div>
-						<div
-							v-else-if="item.key === 'other'"
-							class="space-y-3"
-						>
+							</div>
+							<div
+								v-else-if="item.key === 'subsetIncome'"
+								class="space-y-3"
+							>
+								<SubTeamIncomeTransactions />
+							</div>
+							<div
+								v-else-if="item.key === 'awards'"
+								class="space-y-3"
+							>
+								<RewardTransactions />
+							</div>
+							<div
+								v-else-if="item.key === 'other'"
+								class="space-y-3"
+							>
 							<!-- <Other /> -->
+							</div>
 						</div>
 					</template>
 				</UTabs>
@@ -84,6 +86,7 @@
 
 <script setup lang="ts">
 // import IconPdf from '~/assets/svg-icons/wallet/pdf.svg';
+import RewardTransactions from '~/components/pages/Assets/History/RewardTransactions.vue';
 import DepositTransactions from '~/components/pages/Assets/History/DepositTransactions.vue';
 import WithdrawTransactions from '~/components/pages/Assets/History/WithdrawTransactions.vue';
 import SubTeamIncomeTransactions from '~/components/pages/Assets/History/SubTeamIncomeTransactions.vue';

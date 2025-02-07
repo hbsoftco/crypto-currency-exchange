@@ -87,7 +87,6 @@ const isOpen = ref(true);
 interface EmitDefinition {
 	(event: 'close', value: boolean): void;
 }
-
 const emit = defineEmits<EmitDefinition>();
 
 const closeModal = async (value: boolean) => {

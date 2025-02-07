@@ -5,7 +5,7 @@ type AssetListResponse = {
 	statusCode: number;
 	result: {
 		totalCount: number;
-		rows: Asset[] | AssetRecent[] | AssetSpotPnlAgg[] | Portfolio[];
+		rows: Asset[] | AssetRecent[] | AssetSpotPnlAgg[] | Portfolio[] | Miscellaneous[];
 	};
 };
 
@@ -47,6 +47,15 @@ type AssetSpotPnlListParams = {
 	sortMode?: string;
 	pageNumber?: string;
 	pageSize?: string;
+};
+
+type MiscellaneousListParams = {
+	assetType: string;
+	currencyId: string;
+	from: string;
+	to: string;
+	pageNumber: string;
+	pageSize: string;
 };
 
 type Portfolio = {
@@ -230,6 +239,22 @@ type TopCard = {
 	USD: string;
 };
 
+type Miscellaneous = {
+	logTypeId: number;
+	logTypeName: string;
+	logTypeIsRaising: boolean;
+	boxTypeId: number;
+	boxTypeName: string;
+	uidIssuer: number;
+	uidAffected: number;
+	cid: number;
+	value: string;
+	balanceAfter: string;
+	time: string;
+	description: string;
+	currency?: CurrencyBrief;
+};
+
 export type {
 	Asset,
 	AssetTotal,
@@ -255,4 +280,6 @@ export type {
 	AssetSpotPnlListParams,
 	Portfolio,
 	LatestWeek,
+	MiscellaneousListParams,
+	Miscellaneous,
 };

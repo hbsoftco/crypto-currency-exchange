@@ -98,10 +98,14 @@
 							{{ item.ruid }}
 						</td>
 						<td class="text-nowrap text-xs font-normal py-2">
-							{{ (formatDateToIranTime(item.tTime)) }}
+							<span dir="ltr">
+								{{ toPersianDate(item.tTime, 'full-with-month') }}
+							</span>
 						</td>
 						<td class="text-nowrap text-xs font-normal py-2">
-							{{ (formatDateToIranTime(item.tTime)) }}
+							<span dir="ltr">
+								{{ toPersianDate(item.tTime, 'full-with-month') }}
+							</span>
 						</td>
 						<td class="text-nowrap text-xs font-normal py-2">
 							{{ (item.perc) }}
@@ -122,7 +126,7 @@
 				:page-count="20"
 				:total="totalCount"
 				:max="6"
-				size="xl"
+				size="sm"
 				ul-class="flex space-x-2 bg-blue-500 border-none"
 				li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500 px-3"
 				button-class-base="flex items-center justify-center w-full h-full transition-colors duration-200"
@@ -136,7 +140,7 @@
 </template>
 
 <script setup lang="ts">
-import { formatDateToIranTime } from '~/utils/date-time';
+import { toPersianDate } from '~/utils/helpers';
 import { userRepository } from '~/repositories/user.repository';
 import type { InviteCommission, InviteCommissionParams } from '~/types/definitions/user.types';
 

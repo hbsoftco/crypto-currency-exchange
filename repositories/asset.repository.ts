@@ -1,8 +1,8 @@
 import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
-import type { GetInternalReceiveParams, GetMiscellaneousListParams } from '~/types/base.types';
+import type { GetInternalReceiveParams } from '~/types/base.types';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
-import type { GetAssetListResponse, GetInternalReceiveListResponse, GetMiscellaneousListResponse } from '~/types/response/asset.types';
+import type { GetAssetListResponse, GetInternalReceiveListResponse } from '~/types/response/asset.types';
 import type {
 	AssetBoxBriefParams,
 	AssetInOutTotalParams,
@@ -14,6 +14,7 @@ import type {
 	AssetSpotPnlListParams,
 	AssetSpotPnlTotalParams,
 	AssetTotalParams,
+	MiscellaneousListParams,
 
 } from '~/types/definitions/asset.types';
 
@@ -26,10 +27,10 @@ type AssetRepository = {
 	getAssetInOutTotal: (params: AssetInOutTotalParams) => Promise<AssetResponse>;
 	getAssetSpotPnlAggList: (params: AssetSpotPnlAggListParams) => Promise<AssetListResponse>;
 	getAssetSpotPnlList: (params: AssetSpotPnlListParams) => Promise<AssetListResponse>;
+	getMiscellaneousList: (params: MiscellaneousListParams) => Promise<AssetListResponse>;
 
 	//
 	getInternalReceiveList: (params: GetInternalReceiveParams) => Promise<GetInternalReceiveListResponse>;
-	getMiscellaneousList: (params: GetMiscellaneousListParams) => Promise<GetMiscellaneousListResponse>;
 };
 
 export const assetRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): AssetRepository => ({
@@ -145,6 +146,20 @@ export const assetRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Asse
 
 		return response;
 	},
+	async getMiscellaneousList(params: MiscellaneousListParams): Promise<AssetListResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/asset/common/miscellaneous_list';
+		const response = await fetch<AssetListResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
 
 	// OLD
 	async getInternalReceiveList(params: GetInternalReceiveParams): Promise<GetInternalReceiveListResponse> {
@@ -158,20 +173,6 @@ export const assetRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Asse
 			noAuth: false,
 			apiName: url,
 			queryParams: params,
-			method: 'GET',
-		} as CustomNitroFetchOptions);
-
-		return response;
-	},
-	async getMiscellaneousList(params: GetMiscellaneousListParams): Promise<GetMiscellaneousListResponse> {
-		const query = new URLSearchParams(
-			Object.entries(params)
-				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-		);
-
-		const url = '/v1/asset/common/miscellaneous_list';
-		const response = await fetch<GetMiscellaneousListResponse>(`${url}?${query.toString()}`, {
-			noAuth: false,
 			method: 'GET',
 		} as CustomNitroFetchOptions);
 

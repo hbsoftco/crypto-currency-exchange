@@ -17,6 +17,7 @@ type UserResponse = {
 		Reward[] |
 		Api[] |
 		BankAccount[] |
+		RewardReceived[] |
 		Level[];
 	};
 };
@@ -28,7 +29,6 @@ type ResultResponse = {
 	ApiPointInfo |
 	HolderBrief |
 	TraderState[] |
-	RewardReceived[] |
 	TraderBrief;
 };
 

@@ -8,7 +8,7 @@
 				class="h-full flex flex-col items-center justify-center"
 			>
 				<div
-					class=" w-full md:w-[45rem] flex flex-col justify-center items-center text-center rounded-md bg-background-light dark:bg-background-dark px-2 md:px-14 py-6 md:py-8 mt-20"
+					class="mb-4 w-full md:w-[45rem] flex flex-col justify-center items-center text-center rounded-md bg-background-light dark:bg-background-dark px-2 md:px-14 py-6 md:py-8 mt-20"
 				>
 					<div class="block md:hidden w-full">
 						<div class="flex justify-between items-center">
@@ -99,12 +99,12 @@
 
 			<div
 
-				class="pb-6 flex item-center flex-row-reverse justify-start text-sm font-normal"
+				class="pb-4 flex item-center flex-row-reverse justify-start text-sm font-normal"
 			>
 				<img
 					:src="`https://api-bitland.site/media/currency/${reward.currency?.cSymbol}.png`"
 					:alt="reward.currency?.cName"
-					class="w-4 h-4 rounded-full mr-2"
+					class="w-6 h-6 rounded-full mr-2"
 				>
 				<span v-if="reward.prizeTitle">{{ reward.prizeTitle }}</span>
 			</div>
@@ -120,9 +120,10 @@
 					</span>
 				</UButton>
 
-				<ULink
+				<div
 					v-if="JSON.parse(reward.iDsToOpen).length"
-					@click.prevent="openDetail"
+					class="cursor-pointer"
+					@click.prevent="openPrize(JSON.parse(reward.iDsToOpen))"
 				>
 					<div class="relative">
 						<IconAwards class=" text-3xl text-primary-yellow-light dark:text-primary-yellow-dark" />
@@ -132,7 +133,7 @@
 							{{ JSON.parse(reward.iDsToOpen).length }}
 						</p>
 					</div>
-				</ULink>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -144,11 +145,45 @@ import IconClock from '~/assets/svg-icons/profile/clock.svg';
 import IconClose from '~/assets/svg-icons/close.svg';
 import AwardShow from '~/components/pages/User/Reward/AwardShow.vue';
 import type { Reward } from '~/types/definitions/user.types';
+import { userRepository } from '~/repositories/user.repository';
 
 interface PropsDefinition {
 	reward: Reward;
 }
 const props = defineProps<PropsDefinition>();
+
+interface EmitDefinition {
+	(event: 'refetch'): void;
+}
+const emit = defineEmits<EmitDefinition>();
+
+const { $api } = useNuxtApp();
+const userRepo = userRepository($api);
+
+const toast = useToast();
+
+const rewardLoading = ref<boolean>(true);
+const openPrize = async (ids: number[]) => {
+	try {
+		rewardLoading.value = true;
+
+		await userRepo.openPrize(ids[0]);
+		openDetail();
+		emit('refetch');
+
+		rewardLoading.value = false;
+	}
+	catch (error: any) {
+		rewardLoading.value = false;
+		toast.add({
+			title: useT('error'),
+			description: error.response._data.message,
+			timeout: 5000,
+			color: 'red',
+		});
+		console.log(error);
+	}
+};
 
 const showDetail = ref(false);
 const showAward = ref(false);

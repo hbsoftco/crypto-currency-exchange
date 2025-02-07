@@ -63,6 +63,7 @@
 					v-for="(reward, index) in rewards"
 					:key="index"
 					:reward="reward"
+					@refetch="getRewardList()"
 				/>
 			</div>
 		</section>
