@@ -3,10 +3,15 @@ import type { NitroFetchRequest, $Fetch } from 'nitropack';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import type { GetWithdrawParams, WithdrawCoinListParams } from '~/types/base.types';
 import type { GetCurrencyInfoResponse, getWithdrawCoinListRes, GetWithdrawResponse } from '~/types/response/withdraw.type';
-import type { WithdrawCoinFeesParams, WithdrawListResponse } from '~/types/definitions/withdraw.types';
+import type {
+	WithdrawCoinFeesParams,
+	WithdrawListResponse,
+	WithdrawTransactionsParams,
+} from '~/types/definitions/withdraw.types';
 
 type WithdrawRepository = {
 	getWithdrawCoinFees: (params: WithdrawCoinFeesParams) => Promise<WithdrawListResponse>;
+	getWithdrawTransactions: (params: WithdrawTransactionsParams) => Promise<WithdrawListResponse>;
 	// Old
 	getWithdraw: (params: GetWithdrawParams) => Promise<GetWithdrawResponse>;
 	getWithdrawCoinList: (params: WithdrawCoinListParams) => Promise<getWithdrawCoinListRes>;
@@ -25,6 +30,20 @@ export const withdrawRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): W
 			noAuth: false,
 			method: 'GET',
 		} as CustomNitroFetchOptions);
+		return response;
+	},
+	async getWithdrawTransactions(params: WithdrawTransactionsParams): Promise<WithdrawListResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/withdraw/common/tx_list';
+		const response = await fetch<WithdrawListResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
 		return response;
 	},
 

@@ -136,8 +136,8 @@
 					class="flex justify-center py-4"
 				>
 					<UPagination
-						:model-value="params.pageNumber"
-						:page-count="params.pageSize"
+						:model-value="Number(params.pageNumber)"
+						:page-count="Number(params.pageSize)"
 						:total="totalCount"
 						:to="(page: number) => ({
 							query: { page },

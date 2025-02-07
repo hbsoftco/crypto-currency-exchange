@@ -28,6 +28,7 @@ type ResultResponse = {
 	ApiPointInfo |
 	HolderBrief |
 	TraderState[] |
+	RewardReceived[] |
 	TraderBrief;
 };
 
@@ -85,26 +86,28 @@ type Reward = {
 	currency?: CurrencyBrief;
 };
 
-// type Reward = {
-// 	id: number;
-// 	prizeId: number;
-// 	uid: number;
-// 	user: string;
-// 	currencyId: number;
-// 	assetTypeId: number;
-// 	amountAllocated: number;
-// 	amountTakenBack: number;
-// 	briefDesc: string;
-// 	fullDesc: string;
-// 	header: string;
-// 	prizeTitle: string;
-// 	reason: string;
-// 	allocateTime: string;
-// 	openTime: string;
-// 	timeToUseAfterOpen: string;
-// 	expireTimeForNotOpening: string;
-// 	currency?: CurrencyBrief;
-// };
+type RewardReceived = {
+	id: number;
+	stateId: number;
+	stateName: string;
+	prizeId: number;
+	uid: number;
+	user: string;
+	currencyId: number;
+	assetTypeId: number;
+	assetTypeName: string;
+	amountAllocated: number;
+	briefDesc: string;
+	fullDesc: string;
+	header: string;
+	prizeTitle: string;
+	reason: string;
+	allocateTime: string;
+	openTime: string;
+	timeToUseAfterOpen: string;
+	expireTimeForNotOpening: string;
+	currency?: CurrencyBrief;
+};
 
 // Trader
 type TraderBrief = {
@@ -467,6 +470,14 @@ type DeleteBankAccountParams = {
 	bankAccountId: string;
 };
 
+type RewardReceivedListParams = {
+	currencyId: string;
+	from: string;
+	to: string;
+	pageNumber: string;
+	pageSize: string;
+};
+
 export type {
 	TraderCommissionListParams,
 	UserResponse,
@@ -513,4 +524,6 @@ export type {
 	BankAccount,
 	BankAccountDto,
 	DeleteBankAccountParams,
+	RewardReceived,
+	RewardReceivedListParams,
 };

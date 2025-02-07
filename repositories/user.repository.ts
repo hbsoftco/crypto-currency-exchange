@@ -27,6 +27,7 @@ import type {
 	ReferralBriefParams,
 	ResultResponse,
 	RewardParams,
+	RewardReceivedListParams,
 	SetBasicDto,
 	SetCardPrintDto,
 	SetLiveDto,
@@ -88,9 +89,9 @@ type UserRepository = {
 	getBankAccountList: (params: BankAccountListParams) => Promise<UserResponse>;
 	storeBankAccount: (params: BankAccountDto) => Promise<CommonResponse>;
 	deleteBankAccount: (params: DeleteBankAccountParams) => Promise<CommonResponse>;
+	getRewardReceivedList: (params: RewardReceivedListParams) => Promise<ResultResponse>;
 
 	// OLD
-	// getRewardReceivedList: (params: GetRewardReceivedListParams) => Promise<GetRewardReceivedListResponse>;
 	getReferralBestList: (params: GetReferralBestListParams) => Promise<GetBestListResponse>;
 	editCodeInvite: (params: CodeInviteDto) => Promise<CommonResponse>;
 	getTraderBestList: (params: GetTraderBestListParams) => Promise<GetTraderBestListResponse>;
@@ -506,23 +507,21 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		return response;
 	},
+	async getRewardReceivedList(params: RewardReceivedListParams): Promise<ResultResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/user/reward/received_list';
+		const response = await fetch<ResultResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
 	// Old
-	// async getRewardReceivedList(params: GetRewardReceivedListParams): Promise<GetRewardReceivedListResponse> {
-	// 	const query = new URLSearchParams(
-	// 		Object.entries(params)
-	// 			.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
-	// 	);
-
-	// 	const url = '/v1/user/reward/received_list';
-	// 	const response = await fetch<GetRewardReceivedListResponse>(`${url}?${query.toString()}`, {
-	// 		noAuth: false,
-	// 		apiName: url,
-	// 		queryParams: params,
-	// 		method: 'GET',
-	// 	} as CustomNitroFetchOptions);
-
-	// 	return response;
-	// },
 	async getReferralBestList(params: GetReferralBestListParams): Promise<GetBestListResponse> {
 		const query = new URLSearchParams(
 			Object.entries(params)

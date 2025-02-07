@@ -16,7 +16,7 @@
 					{{ $t('history') }}
 				</h1>
 			</div>
-			<div class="relative">
+			<div class="relative pt-4">
 				<UTabs
 					:items="items"
 					:ui="{
@@ -39,13 +39,13 @@
 							v-if="item.key === 'deposit'"
 							class="space-y-3"
 						>
-							<Deposit />
+							<DepositTransactions />
 						</div>
 						<div
 							v-else-if="item.key === 'pickedUp'"
 							class="space-y-3"
 						>
-							<!-- <Withdraw /> -->
+							<WithdrawTransactions />
 						</div>
 						<div
 							v-else-if="item.key === 'transfer'"
@@ -57,7 +57,7 @@
 							v-else-if="item.key === 'subsetIncome'"
 							class="space-y-3"
 						>
-							<!-- <SubsetIncome /> -->
+							<SubTeamIncomeTransactions />
 						</div>
 						<div
 							v-else-if="item.key === 'awards'"
@@ -84,7 +84,9 @@
 
 <script setup lang="ts">
 // import IconPdf from '~/assets/svg-icons/wallet/pdf.svg';
-import Deposit from '~/components/pages/Assets/History/DepositTransactions.vue';
+import DepositTransactions from '~/components/pages/Assets/History/DepositTransactions.vue';
+import WithdrawTransactions from '~/components/pages/Assets/History/WithdrawTransactions.vue';
+import SubTeamIncomeTransactions from '~/components/pages/Assets/History/SubTeamIncomeTransactions.vue';
 // import SubsetIncome from '~/components/pages/Site/Wallet/Menu/History/SubsetIncome/index.vue';
 // import Award from '~/components/pages/Site/Wallet/Menu/History/Award/index.vue';
 // import Other from '~/components/pages/Site/Wallet/Menu/History/Other/index.vue';

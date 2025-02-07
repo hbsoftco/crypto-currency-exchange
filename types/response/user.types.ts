@@ -1,30 +1,3 @@
-import type { CurrencyBriefItem } from './brief-list.types';
-
-type Received = {
-	tid: number;
-	mid: number;
-	mSymbol: string;
-	ruid: number;
-	cid: number;
-	cSymbol: string;
-	tuid: number;
-	tUser: string;
-	tValue: number;
-	tFee: number;
-	tTime: string;
-	perc: string;
-	amount: string;
-	currency?: CurrencyBriefItem | null;
-};
-
-type GetCommissionReceivedList = {
-	statusCode: number;
-	result: {
-		totalCount: number;
-		rows: Received[];
-	};
-};
-
 type BestListUser = {
 	uid: number;
 	user: string;
@@ -80,8 +53,6 @@ type GetLevelsDataRes = {
 export type {
 	BestListUser,
 	BestReferralItem,
-	GetCommissionReceivedList,
-	Received,
 	GetBestListResponse,
 	GetLevelsDataRes,
 	LevelRow,
