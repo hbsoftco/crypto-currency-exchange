@@ -1248,6 +1248,7 @@ const persian = {
 	profitAndLoss: 'سود و زیان',
 	lastWeek: 'هفته گذشته',
 	shabaOrigin: 'شبای مبدا',
+	fund: 'صندوق',
 };
 
 export default persian;

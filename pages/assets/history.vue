@@ -70,7 +70,7 @@
 								v-else-if="item.key === 'other'"
 								class="space-y-3"
 							>
-							<!-- <Other /> -->
+								<MiscellaneousTransactions />
 							</div>
 						</div>
 					</template>
@@ -90,6 +90,7 @@ import RewardTransactions from '~/components/pages/Assets/History/RewardTransact
 import DepositTransactions from '~/components/pages/Assets/History/DepositTransactions.vue';
 import WithdrawTransactions from '~/components/pages/Assets/History/WithdrawTransactions.vue';
 import SubTeamIncomeTransactions from '~/components/pages/Assets/History/SubTeamIncomeTransactions.vue';
+import MiscellaneousTransactions from '~/components/pages/Assets/History/MiscellaneousTransactions.vue';
 // import SubsetIncome from '~/components/pages/Site/Wallet/Menu/History/SubsetIncome/index.vue';
 // import Award from '~/components/pages/Site/Wallet/Menu/History/Award/index.vue';
 // import Other from '~/components/pages/Site/Wallet/Menu/History/Other/index.vue';

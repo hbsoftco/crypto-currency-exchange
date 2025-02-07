@@ -2,6 +2,25 @@
 	<div>
 		<div class="grid grid-cols-1 md:grid-cols-12 gap-[1px] items-center my-2">
 			<div class="ml-6 my-1 col-span-2">
+				<USelectMenu
+					v-model="type"
+					size="lg"
+					:options="typeItems"
+					:placeholder="$t('type')"
+					option-attribute="value"
+					:ui="{
+						background: '',
+						color: {
+							white: {
+								outline: ' bg-hover-light dark:bg-hover-dark',
+							},
+						},
+					}"
+				/>
+			</div>
+			<!-- type -->
+
+			<div class="ml-6 my-1 col-span-2">
 				<div class="flex-1">
 					<USelectMenu
 						v-model="selectedCurrency"
@@ -130,41 +149,44 @@
 						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5">
 							{{ $t('reason') }}
 						</th>
+						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5">
+							{{ $t('fund') }}
+						</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr
-						v-for="(item, index) in rewardReceivedList"
+						v-for="(item, index) in miscellaneousList"
 						:key="index"
 						class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"
 					>
 						<td class="text-nowrap text-xs font-normal py-2">
 							<span dir="ltr">
-								{{ toPersianDate(item.allocateTime, 'full-with-month') }}
+								{{ toPersianDate(item.time, 'full-with-month') }}
 							</span>
 						</td>
 						<td class="text-nowrap text-xs font-normal py-2">
-							<div class="flex items-center">
+							<div class="flex">
 								<img
 									:src="`https://api-bitland.site/media/currency/${item.currency?.cSymbol}.png`"
 									:alt="item.currency?.cName"
-									class="w-4 h-5"
+									class="w-6 h-6 rounded-full"
 								>
 								<span class="mr-1">{{ item.currency?.cName }}</span>
 							</div>
 						</td>
 						<td class="text-nowrap text-xs font-normal py-2">
-							{{ item.amountAllocated }}
+							{{ priceFormat(item.value) }}
 						</td>
 						<td class="text-nowrap text-xs font-normal py-2">
-							{{ $t(item.reason) }}
+							{{ item.logTypeName }}
+						</td>
+						<td class="text-nowrap text-xs font-normal py-2">
+							{{ item.boxTypeName }}
 						</td>
 					</tr>
 				</tbody>
 			</table>
-			<template v-if="!rewardReceivedList.length && !rewardReceivedLoading">
-				<UiNothingToShow />
-			</template>
 		</div>
 		<div
 			v-if="totalCount > 20"
@@ -189,16 +211,17 @@
 </template>
 
 <script setup lang="ts">
-// import { formatDateToIranTime } from '~/utils/date-time';
-// priceFormat
-import { toPersianDate } from '~/utils/helpers';
-import { userRepository } from '~/repositories/user.repository';
-import type { RewardReceived, RewardReceivedListParams } from '~/types/definitions/user.types';
+import { toPersianDate, priceFormat } from '~/utils/helpers';
+import { assetRepository } from '~/repositories/asset.repository';
+import type { Miscellaneous, MiscellaneousListParams } from '~/types/definitions/asset.types';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
+import type { KeyValue } from '~/types/definitions/common.types';
+import { DepositType } from '~/utils/enums/deposit.enum';
+import { AssetType } from '~/utils/enums/asset.enum';
 
 const { $mobileDetect, $api } = useNuxtApp();
-const userRepo = userRepository($api);
+const assetRepo = assetRepository($api);
 
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
@@ -207,32 +230,57 @@ const worker = useBaseWorker();
 
 const totalCount = ref(0);
 
-const params = ref<RewardReceivedListParams>({
+const typeItems = ref<KeyValue[]>([
+	{
+		key: DepositType.ANY,
+		value: useT('all'),
+	},
+	{
+		key: DepositType.CRYPTO,
+		value: useT('crypto'),
+	},
+	{
+		key: DepositType.FIAT,
+		value: useT('fiat'),
+	},
+	{
+		key: DepositType.INTERNAL,
+		value: useT('internal'),
+	},
+]);
+
+const columnsType = ref<KeyValue>(typeItems.value[0]);
+const type = ref<KeyValue>(typeItems.value[0]);
+
+const params = ref<MiscellaneousListParams>({
+	assetType: AssetType.Testnet,
 	currencyId: '',
 	from: '',
 	to: '',
 	pageNumber: '1',
 	pageSize: '20',
 });
-const rewardReceivedLoading = ref<boolean>(false);
-const rewardReceivedList = ref<RewardReceived[]>([]);
-const getRewardReceivedList = async () => {
+const miscellaneousListLoading = ref<boolean>(true);
+const miscellaneousList = ref<Miscellaneous[]>([]);
+const getMiscellaneousList = async () => {
 	try {
-		rewardReceivedLoading.value = true;
-		const { result } = await userRepo.getRewardReceivedList(params.value);
+		miscellaneousListLoading.value = true;
+		const { result } = await assetRepo.getMiscellaneousList(params.value);
 
-		rewardReceivedList.value = await worker.addCurrencyToList(
+		miscellaneousList.value = await worker.addCurrencyToList(
 			useEnv('apiBaseUrl'),
-			result.rows as RewardReceived[],
-			'currencyId',
+			result.rows as Miscellaneous[],
+			'cid',
 		);
 		totalCount.value = result.totalCount;
 
-		rewardReceivedLoading.value = false;
+		columnsType.value = type.value;
+
+		miscellaneousListLoading.value = false;
 	}
 	catch (error) {
 		console.log(error);
-		rewardReceivedLoading.value = false;
+		miscellaneousListLoading.value = false;
 	}
 };
 
@@ -269,6 +317,7 @@ const search = async (q: string) => {
 };
 
 const applyFilters = async () => {
+	// params.value.assetType = type.value ? type.value.key : '';
 	params.value.from = fromDate.value;
 	params.value.to = toDate.value;
 
@@ -276,8 +325,15 @@ const applyFilters = async () => {
 		params.value.currencyId = String(selectedCurrency.value.id);
 	}
 
-	await getRewardReceivedList();
+	await getMiscellaneousList();
 };
+
+onMounted(async () => {
+	isMobile.value = !!mobileDetect.mobile();
+
+	await getMiscellaneousList();
+	await initCurrencies();
+});
 
 const toDate = ref();
 const internalToDate = ref();
@@ -382,16 +438,9 @@ const validateDate = (field: string) => {
 	}
 };
 
-onMounted(async () => {
-	isMobile.value = !!mobileDetect.mobile();
-
-	await getRewardReceivedList();
-	await initCurrencies();
-});
-
 const onPageChange = async (newPage: number) => {
 	params.value.pageNumber = newPage.toString();
 
-	await getRewardReceivedList();
+	await getMiscellaneousList();
 };
 </script>
