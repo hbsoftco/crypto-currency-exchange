@@ -106,7 +106,9 @@
 								dir="ltr"
 								class="text-sm"
 							>
-								<span class="pr-1">{{ priceFormat(item.soldAvgPriceInUsd, true) }} $</span>
+								<span class="pr-1">
+									{{ priceFormat(item.soldAvgPriceInUsd, true) }} $
+								</span>
 							</div>
 						</div>
 					</td>
@@ -137,7 +139,7 @@
 					</td>
 					<!-- latestPnlBasedAvgInUsd$ (latestPnlAvgPerc%) -->
 					<td class="text-nowrap text-base font-medium py-2">
-						<!-- 111 -->
+						<WeeklyChart :data="item.latestWeek || []" />
 					</td>
 				</tr>
 			</tbody>
@@ -149,11 +151,10 @@
 <script setup lang="ts">
 import { handleImageError, priceFormat, formatBigNumber } from '~/utils/helpers';
 import type { Portfolio } from '~/types/definitions/asset.types';
+import WeeklyChart from '~/components/pages/Assets/Analysis/Spot/WeeklyChart.vue';
 
 interface PropsDefinition {
 	items: Portfolio[];
 }
-
-// const props = defineProps<PropsDefinition>();
 defineProps<PropsDefinition>();
 </script>

@@ -64,10 +64,17 @@ type Portfolio = {
 	latestPnlAvgPerc: number;
 	latestPnlBasedAvgInUsd: number;
 	latestWeekAsJson: string;
+	latestWeek?: LatestWeek[];
 	startedTime: string;
 	finishedTime: string;
 	usdIndexPrice: string;
 	currency?: CurrencyBrief;
+};
+
+type LatestWeek = {
+	d: string;
+	p: number;
+	v: number;
 };
 
 type AssetSpotPnlAgg = {
@@ -247,4 +254,5 @@ export type {
 	TopCard,
 	AssetSpotPnlListParams,
 	Portfolio,
+	LatestWeek,
 };

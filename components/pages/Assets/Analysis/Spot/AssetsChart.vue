@@ -130,9 +130,6 @@ const getAssetList = async () => {
 			.filter((id): id is number => id !== undefined);
 
 		await publicSocketStore.addMarketIds(socketMarketIds.value);
-
-		console.log(assetList.value);
-
 		assetListLoading.value = false;
 	}
 	catch (error) {
@@ -257,7 +254,7 @@ const treemapOptions = computed(() => ({
 		},
 	},
 	series: [{
-		name: '',
+		name: 'Assets',
 		type: 'treemap',
 		label: {
 			show: true,
@@ -274,6 +271,9 @@ const treemapOptions = computed(() => ({
 		zoomToNodeRatio: 0.8,
 		nodeClick: false,
 		colorMappingBy: 'id',
+		breadcrumb: {
+			show: false,
+		},
 	}],
 }));
 </script>

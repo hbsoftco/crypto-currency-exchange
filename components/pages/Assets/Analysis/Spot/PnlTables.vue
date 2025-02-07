@@ -7,6 +7,7 @@
 		</div>
 		<div class="relative">
 			<UTabs
+				v-model="tabItem"
 				:items="items"
 				dir="rtl"
 				class="text-right"
@@ -20,6 +21,7 @@
 						},
 					},
 				}"
+				@change="checkItem($event)"
 			>
 				<template #default="{ item, selected }">
 					<span
@@ -33,13 +35,19 @@
 							v-if="item.key === 'active'"
 							class="pt-6"
 						>
-							<PnlActiveTable :items="assetSpotPnlList" />
+							<PnlTable :items="assetSpotPnlActiveList" />
 						</div>
-						<div v-else-if="item.key === 'history'">
-							history
+						<div
+							v-else-if="item.key === 'history'"
+							class="pt-6"
+						>
+							<PnlTable :items="assetSpotPnlHistoryList" />
 						</div>
-						<div v-else-if="item.key === 'latest'">
-							latest
+						<div
+							v-else-if="item.key === 'latest'"
+							class="pt-6"
+						>
+							<PnlTable :items="assetSpotPnlLatestList" />
 						</div>
 					</div>
 				</template>
@@ -72,7 +80,7 @@ import type { AssetSpotPnlListParams, Portfolio } from '~/types/definitions/asse
 import type { KeyValue } from '~/types/definitions/common.types';
 import { PnlFilterMode, PnlSortMode } from '~/utils/enums/asset.enum';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
-import PnlActiveTable from '~/components/pages/Assets/Analysis/Spot/PnlActiveTable.vue';
+import PnlTable from '~/components/pages/Assets/Analysis/Spot/PnlTable.vue';
 
 const { $api } = useNuxtApp();
 const assetRepo = assetRepository($api);
@@ -88,8 +96,11 @@ const params = ref<AssetSpotPnlListParams>({
 	pageNumber: '1',
 	pageSize: '20',
 });
-const assetSpotPnlListLoading = ref<boolean>(false);
+const assetSpotPnlListLoading = ref<boolean>(true);
 const assetSpotPnlList = ref<Portfolio[]>([]);
+const assetSpotPnlActiveList = ref<Portfolio[]>([]);
+const assetSpotPnlHistoryList = ref<Portfolio[]>([]);
+const assetSpotPnlLatestList = ref<Portfolio[]>([]);
 const getAssetSpotPnlList = async () => {
 	try {
 		assetSpotPnlListLoading.value = true;
@@ -99,6 +110,15 @@ const getAssetSpotPnlList = async () => {
 			result.rows as Portfolio[],
 		);
 
+		if (params.value.filterMode === PnlFilterMode.Open) {
+			assetSpotPnlActiveList.value = assetSpotPnlList.value;
+		}
+		else if (params.value.filterMode === PnlFilterMode.Finished) {
+			assetSpotPnlHistoryList.value = assetSpotPnlList.value;
+		}
+		else {
+			assetSpotPnlLatestList.value = assetSpotPnlList.value;
+		}
 		console.log(assetSpotPnlList.value);
 
 		assetSpotPnlListLoading.value = false;
@@ -139,4 +159,29 @@ const typeItems = ref<KeyValue[]>([
 ]);
 
 const selectedType = ref(typeItems.value[0].value);
+
+watch(() => selectedType.value, async (newValue) => {
+	if (newValue) {
+		params.value.sortMode = newValue.key;
+
+		await Promise.all([
+			getAssetSpotPnlList(),
+		]);
+	}
+});
+
+const tabItem = ref();
+const checkItem = async (event: any) => {
+	if (event === 0) {
+		params.value.filterMode = PnlFilterMode.Open;
+	}
+	else if (event === 1) {
+		params.value.filterMode = PnlFilterMode.Finished;
+	}
+	else {
+		params.value.filterMode = PnlFilterMode.Latest;
+	}
+
+	await getAssetSpotPnlList();
+};
 </script>

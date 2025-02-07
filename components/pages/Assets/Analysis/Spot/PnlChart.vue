@@ -71,6 +71,16 @@ const typeItems = ref<KeyValue[]>([
 
 const selectedType = ref(typeItems.value[0].value);
 
+watch(() => selectedType.value, async (newValue) => {
+	if (newValue) {
+		params.value.sortMode = newValue.key;
+
+		await Promise.all([
+			getAssetSpotPnlAggList(),
+		]);
+	}
+});
+
 const neutralPieOptions = computed(() => {
 	const sortedData = [...assetSpotPnlAggList.value]
 		.sort((a, b) => a.latestPnlAvgPerc - b.latestPnlAvgPerc)

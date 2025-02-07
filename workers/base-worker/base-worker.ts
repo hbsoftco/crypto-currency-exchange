@@ -316,6 +316,7 @@ const addCurrencyToPortfolio = async (baseUrl: string, items: Portfolio[]) => {
 		const currency = await findCurrencyById(item.cid, baseUrl);
 		return {
 			...item,
+			latestWeek: JSON.parse(item.latestWeekAsJson),
 			currency,
 		};
 	}));
