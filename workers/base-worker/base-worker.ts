@@ -307,6 +307,22 @@ const addCurrencyToReward = async (baseUrl: string, items: Reward[]) => {
 	return result;
 };
 
+const addCurrencyToList = async (baseUrl: string, items: any[], currencyParam: string) => {
+	if (!currencyBriefItems.length) {
+		await fetchCurrencyBriefItems(baseUrl);
+	}
+
+	const result = await Promise.all(items.map(async (item) => {
+		const currency = await findCurrencyById(item[currencyParam], baseUrl);
+		return {
+			...item,
+			currency,
+		};
+	}));
+
+	return result;
+};
+
 const addCurrencyToPortfolio = async (baseUrl: string, items: Portfolio[]) => {
 	if (!currencyBriefItems.length) {
 		await fetchCurrencyBriefItems(baseUrl);
@@ -854,6 +870,7 @@ const addCurrenciesHelpToBuyList = async (baseUrl: string, items: SystemRoot[]):
 
 Comlink.expose({
 	// Currencies
+	addCurrencyToList,
 	addCurrencyToMarkets,
 	addCurrencyToAsset,
 	addCurrencyToTraderStates,

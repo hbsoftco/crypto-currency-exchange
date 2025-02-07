@@ -1,7 +1,7 @@
 enum DepositType {
 	ANY = '0',
-	CRYPTO = '11',
-	FIAT = '21',
+	CRYPTO = '21',
+	FIAT = '11',
 	INTERNAL = '31',
 }
 

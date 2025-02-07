@@ -20,6 +20,7 @@ interface BaseWorker {
 	addCurrencyToMarketsL47: (baseUrl: string, markets: | MarketL47[]) => Promise<MarketL47[]>;
 	addCurrencyToMarketStates: (baseUrl: string, markets: | MarketState[]) => Promise<MarketState[]>;
 	addCurrencyToAsset: (baseUrl: string, assets: | Asset[]) => Promise<Asset[]>;
+	addCurrencyToList: (baseUrl: string, assets: | any[], currencyParam: string) => Promise<any[]>;
 	addCurrencyToPortfolio: (baseUrl: string, items: | Portfolio[]) => Promise<Portfolio[]>;
 	addCurrencyToTraderStates: (baseUrl: string, states: | TraderState[]) => Promise<TraderState[]>;
 	addCurrencyToReward: (baseUrl: string, states: | Reward[]) => Promise<Reward[]>;

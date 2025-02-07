@@ -53,11 +53,51 @@ type CryptoAddress = {
 	allocationTime: string;
 };
 
+type DepositTransaction = {
+	id: number;
+	uidIssuer: number;
+	userIssuer: string;
+	uidReceiver: number;
+	userReceiver: string;
+	typeId: number;
+	typeName: string;
+	stateId: number;
+	stateName: string;
+	factorNo: string;
+	currencyId: number;
+	txCode: string;
+	txExplorerUrl: string;
+	txTime: string;
+	txVrfTime: string;
+	txValue: string;
+	address: string;
+	memo: string;
+	blockchainId: number;
+	blockchainName: string;
+	bankAccId: number;
+	bankName: string;
+	bankCard: string;
+	bankIban: string;
+	companyId: number;
+	companyName: string;
+	currency?: CurrencyBrief | null;
+};
+
+type DepositTransactionsParams = {
+	type?: string;
+	currencyId: string;
+	statement: string;
+	from: string;
+	to: string;
+	pageNumber: string;
+	pageSize: string;
+};
+
 type DepositListResponse = {
 	statusCode: number;
 	result: {
 		totalCount: number;
-		rows: DepositCoinFee[] | CryptoAddress[];
+		rows: DepositCoinFee[] | CryptoAddress[] | DepositTransaction[];
 	};
 };
 
@@ -67,4 +107,6 @@ export type {
 	DepositCoinFee,
 	DepositCryptoAddressParams,
 	CryptoAddress,
+	DepositTransaction,
+	DepositTransactionsParams,
 };

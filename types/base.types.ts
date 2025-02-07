@@ -58,16 +58,6 @@ type GetTradeListParams = {
 	pageSize: string;
 };
 
-type GetDepositParams = {
-	type?: string;
-	currencyId: string;
-	statement: string;
-	from: string;
-	to: string;
-	pageNumber: string;
-	pageSize: string;
-};
-
 type GetInternalReceiveParams = {
 	currencyId: string;
 	source: string;
@@ -162,7 +152,6 @@ export type {
 	getTradesListParams,
 	GetAssetListParams,
 	GetTradeListParams,
-	GetDepositParams,
 	GetTraderBestListParams,
 	GetInternalReceiveParams,
 	GetMiscellaneousListParams,

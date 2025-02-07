@@ -1,7 +1,17 @@
 <template>
-	<div>
+	<div
+		v-if="false"
+		class="py-4 p-3 md:p-5"
+	>
+		<UiLogoLoading />
+	</div>
+
+	<div
+		v-else
+		class="py-4 p-3 md:p-5"
+	>
 		<section>
-			<div class="p-4 border-b border-primary-gray-light dark:border-primary-gray-dark">
+			<div class="pb-4 pt-1 border-b border-primary-gray-light dark:border-primary-gray-dark">
 				<h1 class="text-xl font-bold">
 					{{ $t('history') }}
 				</h1>
@@ -35,51 +45,51 @@
 							v-else-if="item.key === 'pickedUp'"
 							class="space-y-3"
 						>
-							<Withdraw />
+							<!-- <Withdraw /> -->
 						</div>
 						<div
 							v-else-if="item.key === 'transfer'"
 							class="space-y-3"
 						>
-							<Transfer />
+							<!-- <Transfer /> -->
 						</div>
 						<div
 							v-else-if="item.key === 'subsetIncome'"
 							class="space-y-3"
 						>
-							<SubsetIncome />
+							<!-- <SubsetIncome /> -->
 						</div>
 						<div
 							v-else-if="item.key === 'awards'"
 							class="space-y-3"
 						>
-							<Award />
+							<!-- <Award /> -->
 						</div>
 						<div
 							v-else-if="item.key === 'other'"
 							class="space-y-3"
 						>
-							<Other />
+							<!-- <Other /> -->
 						</div>
 					</template>
 				</UTabs>
 
-				<div class="absolute left-4 top-3">
+				<!-- <div class="absolute left-4 top-3">
 					<IconPdf class="text-2xl text-subtle-text-light dark:text-subtle-text-dark cursor-pointer " />
-				</div>
+				</div> -->
 			</div>
 		</section>
 	</div>
 </template>
 
 <script setup lang="ts">
-import SubsetIncome from '~/components/pages/Site/Wallet/Menu/History/SubsetIncome/index.vue';
-import Award from '~/components/pages/Site/Wallet/Menu/History/Award/index.vue';
-import Other from '~/components/pages/Site/Wallet/Menu/History/Other/index.vue';
-import Transfer from '~/components/pages/Site/Wallet/Menu/History/Transfer/index.vue';
-import Deposit from '~/components/pages/Site/Wallet/Menu/History/Deposit/index.vue';
-import IconPdf from '~/assets/svg-icons/wallet/pdf.svg';
-import Withdraw from '~/components/pages/Site/Wallet/Menu/History/Withdraw/index.vue';
+// import IconPdf from '~/assets/svg-icons/wallet/pdf.svg';
+import Deposit from '~/components/pages/Assets/History/DepositTransactions.vue';
+// import SubsetIncome from '~/components/pages/Site/Wallet/Menu/History/SubsetIncome/index.vue';
+// import Award from '~/components/pages/Site/Wallet/Menu/History/Award/index.vue';
+// import Other from '~/components/pages/Site/Wallet/Menu/History/Other/index.vue';
+// import Transfer from '~/components/pages/Site/Wallet/Menu/History/Transfer/index.vue';
+// import Withdraw from '~/components/pages/Site/Wallet/Menu/History/Withdraw/index.vue';
 
 definePageMeta({
 	layout: 'asset',

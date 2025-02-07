@@ -1247,6 +1247,7 @@ const persian = {
 	sellPrice: 'قیمت فروش',
 	profitAndLoss: 'سود و زیان',
 	lastWeek: 'هفته گذشته',
+	shabaOrigin: 'شبای مبدا',
 };
 
 export default persian;
