@@ -43,7 +43,6 @@ const params = ref<AssetSpotPnlAggListParams>({
 	pnlCourseId: '2',
 	sortMode: '0',
 });
-
 const assetSpotPnlAggListLoading = ref<boolean>(false);
 const assetSpotPnlAggList = ref<AssetSpotPnlAgg[]>([]);
 const getAssetSpotPnlAggList = async () => {

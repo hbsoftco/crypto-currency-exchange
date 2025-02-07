@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="mb-20">
 		<div class="py-4 border-b border-primary-gray-light dark:border-primary-gray-dark">
 			<p class="text-lg font-extrabold text-subtle-text-light dark:text-subtle-text-dark">
 				{{ $t('pnlTable') }}
@@ -29,8 +29,11 @@
 				</template>
 				<template #item="{ item }">
 					<div class="p-2">
-						<div v-if="item.key === 'active'">
-							active
+						<div
+							v-if="item.key === 'active'"
+							class="pt-6"
+						>
+							<PnlActiveTable :items="assetSpotPnlList" />
 						</div>
 						<div v-else-if="item.key === 'history'">
 							history
@@ -64,8 +67,50 @@
 </template>
 
 <script setup lang="ts">
+import { assetRepository } from '~/repositories/asset.repository';
+import type { AssetSpotPnlListParams, Portfolio } from '~/types/definitions/asset.types';
 import type { KeyValue } from '~/types/definitions/common.types';
-import { PnlSortMode } from '~/utils/enums/asset.enum';
+import { PnlFilterMode, PnlSortMode } from '~/utils/enums/asset.enum';
+import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
+import PnlActiveTable from '~/components/pages/Assets/Analysis/Spot/PnlActiveTable.vue';
+
+const { $api } = useNuxtApp();
+const assetRepo = assetRepository($api);
+
+const worker = useBaseWorker();
+
+const params = ref<AssetSpotPnlListParams>({
+	pnlCourseId: '2',
+	sortMode: PnlSortMode.None,
+	from: '',
+	to: '',
+	filterMode: PnlFilterMode.Open,
+	pageNumber: '1',
+	pageSize: '20',
+});
+const assetSpotPnlListLoading = ref<boolean>(false);
+const assetSpotPnlList = ref<Portfolio[]>([]);
+const getAssetSpotPnlList = async () => {
+	try {
+		assetSpotPnlListLoading.value = true;
+		const { result } = await assetRepo.getAssetSpotPnlList(params.value);
+		assetSpotPnlList.value = await worker.addCurrencyToPortfolio(
+			useEnv('apiBaseUrl'),
+			result.rows as Portfolio[],
+		);
+
+		console.log(assetSpotPnlList.value);
+
+		assetSpotPnlListLoading.value = false;
+	}
+	catch (error) {
+		console.log(error);
+	}
+};
+
+onMounted(async () => {
+	await getAssetSpotPnlList();
+});
 
 const items = [
 	{

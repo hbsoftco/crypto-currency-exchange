@@ -144,17 +144,6 @@ type GetSubjectLiveChatParams = {
 	group: string;
 };
 
-type GetPanelListParams = {
-	pnlCourseId: string;
-	currencyId?: string;
-	from?: string;
-	to?: string;
-	filterMode?: string;
-	sortMode?: string;
-	pageNumber?: string;
-	pageSize?: string;
-};
-
 type GetReferralParams = {
 	assessmentCurrencyId: string;
 };
@@ -181,7 +170,6 @@ export type {
 	GetWithdrawParams,
 	GetHowBuyListParams,
 	GetSubjectLiveChatParams,
-	GetPanelListParams,
 	GetReferralParams,
 	DepositCoinListParams,
 	WithdrawCoinListParams,

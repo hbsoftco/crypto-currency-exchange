@@ -29,6 +29,13 @@ enum PnlSortMode {
 	MostExpensive = '31',
 }
 
+enum PnlFilterMode {
+	Any = '0',
+	Open = '11',
+	Finished = '21',
+	Latest = '41',
+}
+
 enum MiniAssetMode {
 	Any = '0',
 	NoMiniAsset = '11',
@@ -56,4 +63,5 @@ export {
 	MiniAssetMode,
 	AssetBox,
 	PnlSortMode,
+	PnlFilterMode,
 };

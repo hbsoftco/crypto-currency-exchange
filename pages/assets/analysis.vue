@@ -43,7 +43,7 @@
 							<SpotInfo />
 						</div>
 						<div v-else-if="item.key === 'futures'">
-							dee
+							Futures
 						</div>
 					</div>
 				</template>

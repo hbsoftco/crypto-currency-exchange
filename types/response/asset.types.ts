@@ -62,34 +62,6 @@ type GetMiscellaneousListResponse = {
 	};
 };
 
-type PortfolioItem = {
-	pid: number;
-	pcid: number;
-	pcName: string;
-	cid: number;
-	cSymbol: string;
-	boughtQnt: string;
-	boughtAvgPriceInUsd: string;
-	boughtCostUsd: number;
-	soldQnt: string;
-	soldAvgPriceInUsd: string;
-	soldIncomeUsd: number;
-	latestPnlAvgPerc: number;
-	latestPnlBasedAvgInUsd: number;
-	latestWeekAsJson: string;
-	startedTime: string;
-	finishedTime: string;
-	usdIndexPrice: string;
-};
-
-type GetPortfolioRes = {
-	statusCode: number;
-	result: {
-		totalCount: number;
-		rows: PortfolioItem[];
-	};
-};
-
 export type {
 	GetAssetListResponse,
 	AssetItem,
@@ -97,5 +69,4 @@ export type {
 	GetMiscellaneousListResponse,
 	InternalReceive,
 	MiscellaneousList,
-	GetPortfolioRes,
 };

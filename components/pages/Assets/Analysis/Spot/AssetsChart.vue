@@ -47,7 +47,7 @@
 					v-for="item in boxColors"
 					:key="item.id"
 					:class="item.color"
-					class="h-9 w-12 text-center flex justify-center items-center text-sm font-semibold rounded"
+					class="h-9 w-12 text-center flex justify-center items-center text-sm font-semibold rounded text-white"
 					dir="ltr"
 				>
 					{{ item.text }}
@@ -168,7 +168,11 @@ onMounted(async () => {
 
 const treemapData = computed(() => {
 	return assetList.value.map((asset) => {
-		const currentPrice = parseFloat(asset.aAvailable) || 0;
+		let currentPrice = parseFloat(asset.aAvailable) || 0;
+
+		if (selected.value === 'volume') {
+			currentPrice = parseFloat(asset.qAvailable) || 0;
+		}
 		const color = getColorTreeMapSlice(Number(asset.percentage));
 
 		return {
@@ -226,10 +230,10 @@ const treemapOptions = computed(() => ({
 							<div class="text-black dark:text-black flex mr-4 text-xs">
 								<span>USDT</span>
 								<span class="mr-1 font-dana">
-									(${useNumber(priceFormat(String(params.data.asset.aLocked)))})
+									(${useNumber(priceFormat(String(params.data.asset.aLocked ?? 0)))})
 								</span>
 								<span class="mr-1 font-dana">
-									${useNumber(priceFormat(String(params.data.asset.qLocked)))}
+									${useNumber(priceFormat(String(params.data.asset.qLocked ?? 0)))}
 								</span>
 							</div>
 						</div>
@@ -238,7 +242,7 @@ const treemapOptions = computed(() => ({
 							<div class="text-black dark:text-black flex mr-4 text-xs">
 								<span>USDT</span>
 								<span class="mr-1 font-dana">
-									${useNumber(priceFormat(String(params.data.asset.price)))}
+									${useNumber(priceFormat(String(params.data.asset.price ?? 0)))}
 								</span>
 							</div>
 						</div>
@@ -260,7 +264,7 @@ const treemapOptions = computed(() => ({
 			fontFamily: 'dana',
 			fontWeight: 'bold',
 			formatter: function (params: any) {
-				return `${params.name} \n\n ${params.value[1]} ${params.data.quote}`;
+				return `${params.name} \n\n ${priceFormat(params.value[1])} ${params.data.quote}`;
 			},
 		},
 		itemStyle: { borderColor: '#fff', borderWidth: 0.2 },

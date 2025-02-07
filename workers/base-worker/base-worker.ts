@@ -13,7 +13,7 @@ import type { MarketBrief, MarketL16, MarketL21, MarketL46, MarketL47, MarketL51
 import type { Quote } from '~/types/definitions/quote.types';
 import type { SuggestionItems } from '~/types/definitions/header/search.types';
 import type { Tag } from '~/types/definitions/tag.types';
-import type { Asset } from '~/types/definitions/asset.types';
+import type { Asset, Portfolio } from '~/types/definitions/asset.types';
 import { MarketType } from '~/utils/enums/market.enum';
 import type { SystemRoot } from '~/types/definitions/system.types';
 import type { Reward, TraderState } from '~/types/definitions/user.types';
@@ -298,6 +298,22 @@ const addCurrencyToReward = async (baseUrl: string, items: Reward[]) => {
 
 	const result = await Promise.all(items.map(async (item) => {
 		const currency = await findCurrencyById(item.currencyId, baseUrl);
+		return {
+			...item,
+			currency,
+		};
+	}));
+
+	return result;
+};
+
+const addCurrencyToPortfolio = async (baseUrl: string, items: Portfolio[]) => {
+	if (!currencyBriefItems.length) {
+		await fetchCurrencyBriefItems(baseUrl);
+	}
+
+	const result = await Promise.all(items.map(async (item) => {
+		const currency = await findCurrencyById(item.cid, baseUrl);
 		return {
 			...item,
 			currency,
@@ -841,6 +857,7 @@ Comlink.expose({
 	addCurrencyToAsset,
 	addCurrencyToTraderStates,
 	addCurrencyToReward,
+	addCurrencyToPortfolio,
 	addCurrencyToDepositFee,
 	addCurrencyToWithdrawCoinFee,
 	addCurrencyToMarketsL16,

@@ -1,6 +1,6 @@
 import * as Comlink from 'comlink';
 
-import type { Asset } from '~/types/definitions/asset.types';
+import type { Asset, Portfolio } from '~/types/definitions/asset.types';
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
 import type { DepositCoinFee } from '~/types/definitions/deposit.types';
 import type { SuggestionItems } from '~/types/definitions/header/search.types';
@@ -20,6 +20,7 @@ interface BaseWorker {
 	addCurrencyToMarketsL47: (baseUrl: string, markets: | MarketL47[]) => Promise<MarketL47[]>;
 	addCurrencyToMarketStates: (baseUrl: string, markets: | MarketState[]) => Promise<MarketState[]>;
 	addCurrencyToAsset: (baseUrl: string, assets: | Asset[]) => Promise<Asset[]>;
+	addCurrencyToPortfolio: (baseUrl: string, items: | Portfolio[]) => Promise<Portfolio[]>;
 	addCurrencyToTraderStates: (baseUrl: string, states: | TraderState[]) => Promise<TraderState[]>;
 	addCurrencyToReward: (baseUrl: string, states: | Reward[]) => Promise<Reward[]>;
 	addCurrencyToDepositFee: (baseUrl: string, states: | DepositCoinFee[]) => Promise<DepositCoinFee[]>;

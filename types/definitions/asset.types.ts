@@ -5,7 +5,7 @@ type AssetListResponse = {
 	statusCode: number;
 	result: {
 		totalCount: number;
-		rows: Asset[] | AssetRecent[] | AssetSpotPnlAgg[];
+		rows: Asset[] | AssetRecent[] | AssetSpotPnlAgg[] | Portfolio[];
 	};
 };
 
@@ -36,6 +36,38 @@ type AssetSpotPnlAggListParams = {
 	from?: string;
 	to?: string;
 	sortMode?: string;
+};
+
+type AssetSpotPnlListParams = {
+	pnlCourseId: string;
+	currencyId?: string;
+	from?: string;
+	to?: string;
+	filterMode?: string;
+	sortMode?: string;
+	pageNumber?: string;
+	pageSize?: string;
+};
+
+type Portfolio = {
+	pid: number;
+	pcid: number;
+	pcName: string;
+	cid: number;
+	cSymbol: string;
+	boughtQnt: string;
+	boughtAvgPriceInUsd: string;
+	boughtCostUsd: number;
+	soldQnt: string;
+	soldAvgPriceInUsd: string;
+	soldIncomeUsd: number;
+	latestPnlAvgPerc: number;
+	latestPnlBasedAvgInUsd: number;
+	latestWeekAsJson: string;
+	startedTime: string;
+	finishedTime: string;
+	usdIndexPrice: string;
+	currency?: CurrencyBrief;
 };
 
 type AssetSpotPnlAgg = {
@@ -213,4 +245,6 @@ export type {
 	AssetSpotPnlAgg,
 	AssetInOutTotal,
 	TopCard,
+	AssetSpotPnlListParams,
+	Portfolio,
 };

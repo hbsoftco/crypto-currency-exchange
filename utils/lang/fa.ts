@@ -1243,6 +1243,10 @@ const persian = {
 	showType: 'نحوه نمایش',
 	available: 'در دسترس',
 	todayChangePercent: 'درصد تغییر امروز',
+	buyPrice: 'قیمت خرید',
+	sellPrice: 'قیمت فروش',
+	profitAndLoss: 'سود و زیان',
+	lastWeek: 'هفته گذشته',
 };
 
 export default persian;
