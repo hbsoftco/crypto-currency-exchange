@@ -85,11 +85,17 @@
 		</section>
 
 		<section class="mt-10 mb-2">
-			<SpotAccordion :balance="balance" />
+			<SpotAccordion
+				:progress-bar-value="spotProgressBarValue"
+				:balance="balance"
+			/>
 		</section>
 
 		<section class="mb-10">
-			<FutureAccordion :balance="balance" />
+			<FutureAccordion
+				:progress-bar-value="futuresProgressBarValue"
+				:balance="balance"
+			/>
 		</section>
 
 		<!-- <section class="my-10">
@@ -199,6 +205,10 @@ const balance = ref<Balance>({
 		},
 	},
 });
+
+const maximumValue = ref(0);
+const spotProgressBarValue = ref(0);
+const futuresProgressBarValue = ref(0);
 
 const assetBoxBriefParams = ref<AssetBoxBriefParams>({
 	q1CurrencyId: '1',
@@ -324,6 +334,10 @@ const getAssetBoxBrief = async () => {
 		balance.value.futures.TMN = totalFuturesQ1;
 		balance.value.futures.USD = parseFloat(totalFuturesUsd.toFixed(1));
 		balance.value.futures.items = futuresItems;
+
+		maximumValue.value = (balance.value.total.USD) + ((balance.value.total.USD) * 0.1);
+		spotProgressBarValue.value = (balance.value.spot.USD / maximumValue.value) * 100;
+		futuresProgressBarValue.value = (balance.value.futures.USD / maximumValue.value) * 100;
 
 		assetBoxBriefLoading.value = false;
 	}

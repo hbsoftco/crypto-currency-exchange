@@ -27,8 +27,8 @@
 				</div>
 			</div>
 			<div
-				class=" bg-primary-yellow-light dark:bg-primary-yellow-dark h-1.5 rounded-l-sm"
-				style="width: 30%;"
+				class=" bg-primary-yellow-light dark:bg-primary-yellow-dark h-1 rounded-l-sm"
+				:style="`width: ${progressBarValue}%;`"
 			/>
 		</div>
 		<div
@@ -149,6 +149,7 @@ import type { Balance } from '~/types/definitions/asset.types';
 
 interface PropsDefinition {
 	balance: Balance;
+	progressBarValue: number;
 }
 const props = defineProps<PropsDefinition>();
 

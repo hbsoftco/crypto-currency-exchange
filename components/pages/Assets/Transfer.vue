@@ -100,6 +100,7 @@
 						<!-- selectedSecondType -->
 					</div>
 					<div
+						v-if="selectedCurrency"
 						class="w-full mt-4"
 						dir="ltr"
 					>
@@ -378,7 +379,8 @@ const secondSelect = ref<KeyValue[]>([
 	{ value: useT('futures'), key: AssetBoxType.Futures },
 ]);
 
-const selectedCurrency = ref<any>();
+const selectedCurrency = ref<any>(null);
+
 const selectedFirstType = ref<KeyValue>(firstSelect.value[0]);
 const selectedSecondType = ref<KeyValue>(firstSelect.value[1]);
 
@@ -403,7 +405,9 @@ const getAssetInterBoxOptions = async () => {
 					'key',
 				);
 
-				selectedCurrency.value = spotOptions.value[0];
+				if (spotOptions.value.length) {
+					selectedCurrency.value = spotOptions.value[0];
+				}
 			}
 			else if (item.boxId === Number(AssetBoxType.Futures)) {
 				futuresOptions.value = await worker.addCurrencyToList(
@@ -411,6 +415,10 @@ const getAssetInterBoxOptions = async () => {
 					item.assets,
 					'key',
 				);
+
+				// if (futuresOptions.value.length) {
+				// 	selectedCurrency.value = futuresOptions.value[0];
+				// }
 			}
 		}
 
@@ -447,13 +455,6 @@ watch(selectedFirstType, (newValue) => {
 			(option) => option.key !== newValue.key,
 		) || secondSelect.value[0];
 		isSyncing.value = false;
-	}
-
-	if (selectedFirstType.value.key === AssetBoxType.Main) {
-		selectedCurrency.value = spotOptions.value[0];
-	}
-	else {
-		selectedCurrency.value = futuresOptions.value[0];
 	}
 });
 
