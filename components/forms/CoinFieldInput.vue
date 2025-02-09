@@ -7,8 +7,9 @@
 		<div
 			:class="[
 				errorMessage? 'border-accent-red focus:border-accent-red' : 'border-transparent  focus:border-primary-yellow-light dark:focus:border-primary-yellow-dark',
+				height,
 			]"
-			class="h-10 w-full border bg-primary-gray-light dark:bg-primary-gray-dark rounded flex justify-between px-4 py-1 items-center"
+			class="w-full border bg-primary-gray-light dark:bg-primary-gray-dark rounded flex justify-between px-4 items-center"
 			dir="ltr"
 		>
 			<div>
@@ -76,11 +77,13 @@ interface PropsDefinition {
 	unitSize?: string;
 	readonly?: boolean;
 	errorMessage?: string;
+	height?: string;
 	options?: string[];
 }
 
 const props = withDefaults(defineProps<PropsDefinition>(), {
 	readonly: false,
+	height: 'h-10',
 });
 
 interface EmitDefinition {

@@ -148,9 +148,9 @@
 								<img
 									:src="`https://api-bitland.site/media/currency/${item.currency?.cSymbol}.png`"
 									:alt="item.currency?.cName"
-									class="w-4 h-5"
+									class="w-5 h-5"
 								>
-								<span class="mr-1">{{ item.currency?.cName }}</span>
+								<span class="mr-2">{{ item.currency?.cName }}</span>
 							</div>
 						</td>
 						<td class="text-nowrap text-xs font-normal py-2">

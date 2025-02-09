@@ -6,6 +6,7 @@ import type { GetAssetListResponse, GetInternalReceiveListResponse } from '~/typ
 import type {
 	AssetBoxBriefParams,
 	AssetInOutTotalParams,
+	AssetInterBoxOptionsParams,
 	AssetListParams,
 	AssetListResponse,
 	AssetRecentListParams,
@@ -15,8 +16,9 @@ import type {
 	AssetSpotPnlTotalParams,
 	AssetTotalParams,
 	MiscellaneousListParams,
-
+	TransferBalanceDto,
 } from '~/types/definitions/asset.types';
+import type { CommonResponse } from '~/types/definitions/common.types';
 
 type AssetRepository = {
 	getAssetList: (params: AssetListParams) => Promise<AssetListResponse>;
@@ -28,7 +30,8 @@ type AssetRepository = {
 	getAssetSpotPnlAggList: (params: AssetSpotPnlAggListParams) => Promise<AssetListResponse>;
 	getAssetSpotPnlList: (params: AssetSpotPnlListParams) => Promise<AssetListResponse>;
 	getMiscellaneousList: (params: MiscellaneousListParams) => Promise<AssetListResponse>;
-
+	getAssetInterBoxOptions: (params: AssetInterBoxOptionsParams) => Promise<AssetResponse>;
+	transferBalance: (dto: TransferBalanceDto) => Promise<CommonResponse>;
 	//
 	getInternalReceiveList: (params: GetInternalReceiveParams) => Promise<GetInternalReceiveListResponse>;
 };
@@ -156,6 +159,30 @@ export const assetRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Asse
 		const response = await fetch<AssetListResponse>(`${url}?${query.toString()}`, {
 			noAuth: false,
 			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getAssetInterBoxOptions(params: AssetInterBoxOptionsParams): Promise<AssetResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/asset/interbox/options_list';
+		const response = await fetch<AssetResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async transferBalance(dto: TransferBalanceDto): Promise<CommonResponse> {
+		const url = `/v1/asset/interbox/transfer`;
+		const response = await fetch<CommonResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body: dto,
 		} as CustomNitroFetchOptions);
 
 		return response;

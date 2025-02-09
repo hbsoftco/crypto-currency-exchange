@@ -59,3 +59,7 @@ input[type=number] {
     text-align: right;
   }
 }
+
+.selected-currency button {
+	@apply border-none ring-0 focus:border-none focus:ring-0;
+}

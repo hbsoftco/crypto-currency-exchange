@@ -1,3 +1,4 @@
+import type { KeyValue } from './common.types';
 import type { CurrencyBrief } from './currency.types';
 import type { MarketBrief } from './market.types';
 
@@ -11,7 +12,7 @@ type AssetListResponse = {
 
 type AssetResponse = {
 	statusCode: number;
-	result: AssetTotal | AssetBoxBrief[] | AssetSpotPnl | AssetInOutTotal;
+	result: AssetTotal | AssetBoxBrief[] | AssetSpotPnl | AssetInOutTotal | AssetOption[];
 };
 
 type AssetTotalParams = {
@@ -239,6 +240,10 @@ type TopCard = {
 	USD: string;
 };
 
+type AssetInterBoxOptionsParams = {
+	assetTypeId: string;
+};
+
 type Miscellaneous = {
 	logTypeId: number;
 	logTypeName: string;
@@ -253,6 +258,20 @@ type Miscellaneous = {
 	time: string;
 	description: string;
 	currency?: CurrencyBrief;
+};
+
+type AssetOption = {
+	boxId: number;
+	boxName: number;
+	assets: KeyValue[];
+};
+
+type TransferBalanceDto = {
+	assetType: string;
+	sourceBoxTypeId: string;
+	destinationBoxTypeId: string;
+	value: string;
+	currencyId: number | null;
 };
 
 export type {
@@ -282,4 +301,7 @@ export type {
 	LatestWeek,
 	MiscellaneousListParams,
 	Miscellaneous,
+	AssetInterBoxOptionsParams,
+	AssetOption,
+	TransferBalanceDto,
 };

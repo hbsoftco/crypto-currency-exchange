@@ -56,6 +56,16 @@ enum AssetBox {
 	FUTURES_MAINTENANCE_MARGIN = 1710181,
 }
 
+enum AssetBoxType {
+	Main = '1311111',
+	Giveaway = '1312111',
+	Margin = '1510121',
+	Futures = '1710151',
+	WLOFiatCredit = '2310211',
+	WLOCosts = '2310311',
+	WLOIncome = '2310611',
+}
+
 export {
 	AssetType,
 	BoxMode,
@@ -64,4 +74,5 @@ export {
 	AssetBox,
 	PnlSortMode,
 	PnlFilterMode,
+	AssetBoxType,
 };

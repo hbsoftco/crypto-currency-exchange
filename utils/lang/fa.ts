@@ -1249,6 +1249,8 @@ const persian = {
 	lastWeek: 'هفته گذشته',
 	shabaOrigin: 'شبای مبدا',
 	fund: 'صندوق',
+	priceMoreThenBalance: 'مبلغ بیشتر از موجودی است!',
+	transferSuccessfully: 'انتفال با موفقیت انجام شد!',
 };
 
 export default persian;
