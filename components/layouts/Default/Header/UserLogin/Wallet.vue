@@ -50,7 +50,7 @@
 								color="white"
 								variant="ghost"
 								class="px-11 ml-1 font-medium text-sm border-primary-gray-light dark:border-primary-gray-dark border"
-								to="/wallet/deposit"
+								to="/assets/deposit"
 							>
 								{{ $t("deposit") }}
 								<IconArrowUpGreen class="text-accent-green" />

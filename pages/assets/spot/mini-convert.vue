@@ -38,15 +38,15 @@
 
 		<section class="flex pb-2 justify-between items-center mt-10 border-b border-primary-gray-light dark:border-primary-gray-dark">
 			<div class="flex justify-start">
-				<div class="ml-4">
+				<div class="ml-4 text-subtle-text-light dark:text-subtle-text-dark">
 					<span>{{ $t('receipt') }}:</span>
-					<span>10000000</span>
-					<span>{{ $t('toman') }}</span>
+					<span class="mr-1 font-bold text-text-light dark:text-text-light">{{ priceFormat(totalReceipt) }}</span>
+					<span class="mr-1 font-bold text-text-light dark:text-text-light">{{ $t('toman') }}</span>
 				</div>
-				<div class="ml-4">
+				<div class="ml-4 text-subtle-text-light dark:text-subtle-text-dark">
 					<span>{{ $t('fee') }}:</span>
-					<span>10000000</span>
-					<span>{{ $t('toman') }}</span>
+					<span class="mr-1">{{ priceFormat(totalFee) }}</span>
+					<span class="mr-1">{{ $t('toman') }}</span>
 				</div>
 			</div>
 			<div class="text-center">
@@ -78,8 +78,8 @@
 								{{ $t('receipt') }}
 							</div>
 							<div>
-								<span>10000000</span>
-								<span>{{ $t('toman') }}</span>
+								<span class="mr-1">{{ priceFormat(totalReceipt) }}</span>
+								<span class="mr-1">{{ $t('toman') }}</span>
 							</div>
 						</div>
 						<div class="flex justify-between mb-4">
@@ -87,8 +87,8 @@
 								{{ $t('fee') }}
 							</div>
 							<div>
-								<span>10000000</span>
-								<span>{{ $t('toman') }}</span>
+								<span class="mr-1">{{ priceFormat(totalFee) }}</span>
+								<span class="mr-1">{{ $t('toman') }}</span>
 							</div>
 						</div>
 						<p class="text-subtle-text-light dark:text-subtle-text-dark">
@@ -99,6 +99,8 @@
 								size="lg"
 								class="text-nowrap text-base font-medium px-10 py-2"
 								block
+								:loading="submitLoading"
+								:disabled="submitLoading"
 								@click="submit"
 							>
 								{{ $t("convert") }}
@@ -235,7 +237,7 @@ const totalCount = ref(0);
 
 const convertMiniAssetParams = ref<ConvertMiniAssetDto>({
 	assetType: useEnv('assetType'),
-	desCurrencyId: 0,
+	desCurrencyId: 1,
 });
 const submitLoading = ref<boolean>(false);
 const submit = async () => {
@@ -244,17 +246,23 @@ const submit = async () => {
 		await spotRepo.convertMiniAsset(convertMiniAssetParams.value);
 
 		toast.add({
-			title: useT('registerOrder'),
+			title: useT('convert'),
 			description: useT('operationSuccess'),
 			timeout: 5000,
 			color: 'green',
 		});
 
+		isOpen.value = false;
 		submitLoading.value = false;
 	}
-	catch (error) {
-		console.log(error);
+	catch (error: any) {
 		submitLoading.value = false;
+		toast.add({
+			title: useT('convert'),
+			description: error.response._data.message,
+			timeout: 5000,
+			color: 'red',
+		});
 	}
 };
 
@@ -287,6 +295,12 @@ const getAssetList = async () => {
 		assetListLoading.value = false;
 	}
 };
+
+const totalReceipt = computed(() =>
+	Math.floor(assetList.value.reduce((sum, asset) => sum + Number(asset.aAvailable), 0)),
+);
+
+const totalFee = computed(() => Math.floor(totalReceipt.value * 0.01));
 
 const loading = ref<boolean>(false);
 const holderBrief = ref<HolderBrief>();

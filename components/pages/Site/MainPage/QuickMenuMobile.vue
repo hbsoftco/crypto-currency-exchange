@@ -2,7 +2,7 @@
 	<div>
 		<div class="grid grid-cols-2 gap-4 mt-10">
 			<UButton
-				to="/wallet/deposit"
+				to="/assets/deposit"
 				size="lg"
 				class="flex justify-center bg-hover2-light dark:bg-hover2-dark px-0 md:px-9"
 			>

@@ -20,7 +20,7 @@
 						<span class="text-sm mt-2">{{ $t('possibleCurrencies') }}</span>
 					</ULink>
 					<ULink
-						to="/wallet/deposit"
+						to="/assets/deposit"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<IconArrowUpGreen class=" text-primary-yellow-light dark:text-primary-yellow-dark text-2xl" />

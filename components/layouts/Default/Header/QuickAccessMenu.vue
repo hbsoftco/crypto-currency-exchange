@@ -76,7 +76,7 @@ const menuItems = [
 		name: 'depositCrypto',
 		description: useT('transferToWallet'),
 		icon: IconCurrencyDeposit,
-		url: '/wallet/deposit',
+		url: '/assets/deposit',
 	},
 	{
 		name: 'fees',
