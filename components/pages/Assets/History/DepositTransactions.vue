@@ -296,8 +296,7 @@
 						<!-- txCode CRYPTO -->
 						<td class="text-nowrap text-sm font-normal py-2">
 							<UButton
-								class="text-sm font-medium px-3 py-1.5 text-center bg-transparent-light dark:bg-transparency-dark text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark hover:text-text-light hover:dark:text-text-light"
-								to=""
+								class="text-sm font-medium px-3 py-1.5 text-center bg-transparent-light dark:bg-transparency-dark text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark hover:text-text-light hover:dark:text-text-dark"
 								@click="openDepositDetails(item)"
 							>
 								{{ $t("moreDetail") }}

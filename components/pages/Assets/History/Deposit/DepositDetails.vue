@@ -45,21 +45,26 @@
 
 					<div class="flex justify-between my-4">
 						<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
-							{{ $t('cryptocurrency') }}
+							{{ $t('amount') }}
 						</span>
-						<span class="text-sm font-bold">{{ item?.currency?.cSymbol }}</span>
+						<div
+							class="flex items-center"
+							dir="ltr"
+						>
+							<img
+								:src="`https://api-bitland.site/media/currency/${item?.currency?.cSymbol}.png`"
+								:alt="item?.currency?.cName"
+								class="w-6 h-6 rounded-full"
+							>
+							<span
+								dir="ltr"
+								class="ml-2 text-sm font-bold"
+							>
+								{{ priceFormat(String(item?.txValue)) }} {{ item?.currency?.cSymbol }}
+							</span>
+						</div>
 					</div>
-					<!-- cryptocurrency -->
-
-					<div class="flex justify-between my-4">
-						<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark">
-							{{ $t('price2') }}
-						</span>
-						<span class="text-sm font-bold">
-							{{ priceFormat(item?.txValue ?? 0) }}
-						</span>
-					</div>
-					<!-- price -->
+					<!-- amount -->
 
 					<div
 						v-if="item && item.blockchainName"

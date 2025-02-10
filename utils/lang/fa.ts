@@ -622,6 +622,7 @@ const persian = {
 	invoiceNumber: 'شماره فاکتور',
 	currencyType: 'نوع ارز',
 	cryptocurrencyDepositDetails: 'جزییات واریز رمزارز',
+	cryptocurrencyWithdrawDetails: 'جزییات برداشت رمزارز',
 	destinationAddress: 'آدرس مقصد',
 	TXID: 'TXID',
 	getAddress: 'دریافت آدرس',
@@ -1261,6 +1262,9 @@ const persian = {
 	importantNotice: 'اخطار مهم',
 	areYouSureRevokeAddress: 'آیا از باطل کردن این آدرس اطمینان دارید؟',
 	areYouSureExtendAddress: 'آیا مایل به تمدید آدرس مورد نظر هستید؟',
+	performDate: 'تاریخ اجرا',
+	confirmDate: 'تاریخ تایید',
+	registerDate: 'تاریخ ثبت',
 
 };
 

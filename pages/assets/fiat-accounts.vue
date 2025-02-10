@@ -47,10 +47,10 @@
 							:key="index"
 							class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"
 						>
-							<td class="text-nowrap text-xs font-normal py-2">
+							<td class="text-nowrap text-sm font-normal py-2">
 								{{ $t(item.bankName) }}
 							</td>
-							<td class="text-nowrap text-xs font-normal py-2">
+							<td class="text-nowrap text-sm font-normal py-2">
 								<span
 									class="cursor-pointer"
 									@click="copyText(item.cardNo)"
@@ -58,7 +58,7 @@
 									{{ (item.cardNo) }}
 								</span>
 							</td>
-							<td class="text-nowrap text-xs font-normal py-2">
+							<td class="text-nowrap text-sm font-normal py-2">
 								<span
 									class="cursor-pointer"
 									@click="copyText(item.iban)"
@@ -67,7 +67,7 @@
 								</span>
 							</td>
 							<td
-								class="text-xs font-normal py-2  text-accent-red"
+								class="text-sm font-normal py-2  text-accent-red"
 							>
 								<span
 									class="px-4 cursor-pointer border-r border-primary-gray-light dark:border-primary-gray-dark"

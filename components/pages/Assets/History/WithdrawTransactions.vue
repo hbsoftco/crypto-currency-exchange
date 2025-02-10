@@ -309,9 +309,8 @@
 						<!-- txCode CRYPTO -->
 						<td class="text-nowrap text-sm font-normal py-2">
 							<UButton
-								class="text-sm font-medium px-3 py-1.5 text-center bg-transparent-light dark:bg-transparency-dark text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark hover:text-text-light hover:dark:text-text-light"
-								to=""
-								@click="openDetail"
+								class="text-sm font-medium px-3 py-1.5 text-center bg-transparent-light dark:bg-transparency-dark text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark hover:text-text-light hover:dark:text-text-dark"
+								@click="openDepositDetails(item)"
 							>
 								{{ $t("moreDetail") }}
 							</UButton>
@@ -339,12 +338,17 @@
 				@update:model-value="onPageChange"
 			/>
 		</div>
+
+		<WithdrawDetails
+			v-model="withdrawDetailModal"
+			:item="withdrawDetail"
+		/>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { toPersianDate, priceFormat, formatContractId } from '~/utils/helpers';
-// import DepositDetailToman from '~/components/pages/Site/Wallet/Menu/History/Deposit/DepositDetailToman.vue';
+import WithdrawDetails from '~/components/pages/Assets/History/Withdraw/WithdrawDetails.vue';
 import { DepositType } from '~/utils/enums/deposit.enum';
 import type { KeyValue } from '~/types/definitions/common.types';
 import type { DepositTransactionsParams } from '~/types/definitions/deposit.types';
@@ -416,6 +420,15 @@ const search = async (q: string) => {
 
 	searchLoading.value = false;
 	return filteredCurrencies.value || [];
+};
+
+const withdrawDetail = ref<WithdrawTransaction | null>(null);
+const withdrawDetailModal = ref(false);
+const openDepositDetails = (item: WithdrawTransaction) => {
+	// if (item.typeId === OutputDepositType.CRYPTO) {
+	withdrawDetail.value = item;
+	withdrawDetailModal.value = true;
+	// }
 };
 
 const params = ref<DepositTransactionsParams>({
@@ -592,15 +605,4 @@ const validateDate = (field: string) => {
 		internalToDate.value = '';
 	}
 };
-
-//  Old
-
-const showDetail = ref(false);
-const openDetail = () => {
-	showDetail.value = true;
-};
-
-// const closeDetail = () => {
-// 	showDetail.value = false;
-// };
 </script>

@@ -100,7 +100,7 @@
 				<table class="min-w-full py-6 text-right">
 					<thead>
 						<tr class="pb-2 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark">
-							<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark py-2">
+							<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark py-2 pr-2">
 								{{ $t('network') }}
 							</th>
 							<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-2">
@@ -119,9 +119,9 @@
 						<tr
 							v-for="(item, index) in depositCryptoAddressList"
 							:key="index"
-							class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"
+							class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark odd:bg-hover2-light dark:odd:bg-hover2-dark even:bg-background-light dark:even:bg-background-dark"
 						>
-							<td class="text-nowrap text-sm font-normal">
+							<td class="text-nowrap text-sm font-normal pr-2">
 								{{ item.netName }}
 							</td>
 							<td
