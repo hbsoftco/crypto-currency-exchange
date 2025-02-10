@@ -1254,6 +1254,11 @@ const persian = {
 	convertToToman: 'تبدیل به تومان',
 	convertToTomanDescription: 'این اطلاعات متغییر می باشد و ته مانده اصلی تابع قیمت لحظه ای بازار بوده و در هنگام ثبت معامله دریافتی نهایی مشخص خواهد شد.',
 	convert: 'تبدیل',
+	price2: 'مبلغ',
+	depositAddress: 'آدرس واریز',
+	transactionCode2: 'کد تراکنش (TxHash / TxID)',
+	pleaseEnterTransactionCode: 'لطفا کد تراکنش را بدون لینک وارد نمایید.',
+
 };
 
 export default persian;

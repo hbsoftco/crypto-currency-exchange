@@ -3,25 +3,25 @@ import type { NitroFetchRequest, $Fetch } from 'nitropack';
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import type { DepositCoinListParams } from '~/types/base.types';
 import type { GetAddressRevokeRes, getDepositCoinListRes } from '~/types/response/deposit.types';
-import type { ClaimDto } from '~/types/dto/deposit.dto';
-import type { CommonResponse } from '~/types/response/common.types';
 import type {
+	DepositClaimDto,
 	DepositCoinFeesParams,
 	DepositCryptoAddressParams,
 	DepositListResponse,
 	DepositTransactionsParams,
 } from '~/types/definitions/deposit.types';
+import type { CommonResponse } from '~/types/definitions/common.types';
 
 type DepositRepository = {
 	getDepositCoinFees: (params: DepositCoinFeesParams) => Promise<DepositListResponse>;
 	getDepositCryptoAddress: (params: DepositCryptoAddressParams) => Promise<DepositListResponse>;
 	getDepositTransactions: (params: DepositTransactionsParams) => Promise<DepositListResponse>;
+	storeDepositClaim: (dto: DepositClaimDto) => Promise<CommonResponse>;
 
 	// Old
 	getDepositCoinList: (params: DepositCoinListParams) => Promise<getDepositCoinListRes>;
 	getDepositAddressRevoke: (id: string) => Promise<GetAddressRevokeRes>;
 	getDepositAddressExtend: (id: string) => Promise<GetAddressRevokeRes>;
-	storeDepositClaim: (dto: ClaimDto) => Promise<CommonResponse>;
 
 };
 
@@ -67,6 +67,16 @@ export const depositRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): De
 
 		return response;
 	},
+	async storeDepositClaim(dto: DepositClaimDto): Promise<CommonResponse> {
+		const url = `/v1/deposit/crypto/claim`;
+		const response = await fetch<CommonResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
 
 	// Old
 	async getDepositCoinList(params: DepositCoinListParams): Promise<getDepositCoinListRes> {
@@ -107,17 +117,6 @@ export const depositRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): De
 			noAuth: false,
 			method: 'GET',
 		} as CustomNitroFetchOptions);
-		return response;
-	},
-	async storeDepositClaim(dto: ClaimDto): Promise<CommonResponse> {
-		const url = ` /v1/deposit/crypto/claim`;
-		const response = await fetch<CommonResponse>(`${url}`, {
-			noAuth: false,
-			apiName: url,
-			method: 'POST',
-			body: dto,
-		} as CustomNitroFetchOptions);
-
 		return response;
 	},
 });

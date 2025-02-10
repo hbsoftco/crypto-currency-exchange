@@ -157,7 +157,7 @@
 							{{ item.amountAllocated }}
 						</td>
 						<td class="text-nowrap text-xs font-normal py-2">
-							{{ $t(item.reason) }}
+							{{ item.reason }}
 						</td>
 					</tr>
 				</tbody>

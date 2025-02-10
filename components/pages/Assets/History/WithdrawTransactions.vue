@@ -1,9 +1,9 @@
 <template>
 	<div>
-		<DepositDetailToman
+		<!-- <DepositDetailToman
 			v-if="showDetail"
 			@close="closeDetail"
-		/>
+		/> -->
 		<div class="grid grid-cols-1 md:grid-cols-12 gap-[1px] items-center my-2">
 			<div class="ml-6 my-1 col-span-2">
 				<USelectMenu
@@ -344,7 +344,7 @@
 
 <script setup lang="ts">
 import { toPersianDate, priceFormat, formatContractId } from '~/utils/helpers';
-import DepositDetailToman from '~/components/pages/Site/Wallet/Menu/History/Deposit/DepositDetailToman.vue';
+// import DepositDetailToman from '~/components/pages/Site/Wallet/Menu/History/Deposit/DepositDetailToman.vue';
 import { DepositType } from '~/utils/enums/deposit.enum';
 import type { KeyValue } from '~/types/definitions/common.types';
 import type { DepositTransactionsParams } from '~/types/definitions/deposit.types';
@@ -600,7 +600,7 @@ const openDetail = () => {
 	showDetail.value = true;
 };
 
-const closeDetail = () => {
-	showDetail.value = false;
-};
+// const closeDetail = () => {
+// 	showDetail.value = false;
+// };
 </script>

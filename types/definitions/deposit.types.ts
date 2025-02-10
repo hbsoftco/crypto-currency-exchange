@@ -101,6 +101,11 @@ type DepositListResponse = {
 	};
 };
 
+type DepositClaimDto = {
+	id: number | null;
+	txCode: string;
+};
+
 export type {
 	DepositListResponse,
 	DepositCoinFeesParams,
@@ -109,4 +114,5 @@ export type {
 	CryptoAddress,
 	DepositTransaction,
 	DepositTransactionsParams,
+	DepositClaimDto,
 };

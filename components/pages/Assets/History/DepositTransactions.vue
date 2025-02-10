@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<DepositDetailToman
+		<TMNDepositDetails
 			v-if="showDetail"
 			@close="closeDetail"
 		/>
@@ -244,7 +244,11 @@
 						</td>
 						<!-- cSymbol -->
 						<td class="text-nowrap text-sm font-normal py-2 pr-10">
-							{{ item.stateName }}
+							<span
+								:class="{ 'text-accent-green': item?.stateId === DepositStatus.SUCCEEDED }"
+							>
+								{{ item?.stateName }}
+							</span>
 						</td>
 						<!-- stateName -->
 						<td
@@ -294,7 +298,7 @@
 							<UButton
 								class="text-sm font-medium px-3 py-1.5 text-center bg-transparent-light dark:bg-transparency-dark text-primary-yellow-light dark:text-primary-yellow-dark border border-primary-yellow-light dark:border-primary-yellow-dark hover:text-text-light hover:dark:text-text-light"
 								to=""
-								@click="openDetail"
+								@click="openDepositDetails(item)"
 							>
 								{{ $t("moreDetail") }}
 							</UButton>
@@ -322,14 +326,20 @@
 				@update:model-value="onPageChange"
 			/>
 		</div>
+
+		<DepositDetails
+			v-model="depositDetailModal"
+			:item="depositDetail"
+		/>
 	</div>
 </template>
 
 <script setup lang="ts">
+import TMNDepositDetails from '~/components/pages/Assets/History/Deposit/TMNDepositDetails.vue';
+import DepositDetails from '~/components/pages/Assets/History/Deposit/DepositDetails.vue';
 import { toPersianDate, priceFormat, formatContractId } from '~/utils/helpers';
-import DepositDetailToman from '~/components/pages/Site/Wallet/Menu/History/Deposit/DepositDetailToman.vue';
 import { depositRepository } from '~/repositories/deposit.repository';
-import { DepositType } from '~/utils/enums/deposit.enum';
+import { DepositStatus, DepositType, OutputDepositType } from '~/utils/enums/deposit.enum';
 import type { KeyValue } from '~/types/definitions/common.types';
 import type { DepositTransaction, DepositTransactionsParams } from '~/types/definitions/deposit.types';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
@@ -398,6 +408,15 @@ const search = async (q: string) => {
 
 	searchLoading.value = false;
 	return filteredCurrencies.value || [];
+};
+
+const depositDetail = ref<DepositTransaction | null>(null);
+const depositDetailModal = ref(false);
+const openDepositDetails = (item: DepositTransaction) => {
+	if (item.typeId === OutputDepositType.CRYPTO) {
+		depositDetail.value = item;
+		depositDetailModal.value = true;
+	}
 };
 
 const params = ref<DepositTransactionsParams>({
@@ -578,9 +597,6 @@ const validateDate = (field: string) => {
 //  Old
 
 const showDetail = ref(false);
-const openDetail = () => {
-	showDetail.value = true;
-};
 
 const closeDetail = () => {
 	showDetail.value = false;

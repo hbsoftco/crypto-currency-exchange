@@ -133,28 +133,30 @@
 							:key="index"
 							class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"
 						>
-							<td class="text-nowrap text-xs font-normal">
+							<td class="text-nowrap text-sm font-normal">
 								{{ item.netName }}
 							</td>
 							<td
-								class="text-nowrap text-xs font-normal"
+								class="text-nowrap text-sm font-normal"
 							>
 								<span dir="ltr">{{ toPersianDate(item.allocationTime, 'full-with-month') }}</span>
 								<span class="mx-2">{{ $t('upTo') }}</span>
 								<span dir="ltr">{{ toPersianDate(item.expirationTime, 'full-with-month') }}</span>
 							</td>
-							<td class="text-nowrap text-xs font-normal">
+							<td class="text-nowrap text-sm font-normal">
 								<!-- {{ item. }} -->
 							</td>
-							<td class="text-nowrap text-xs font-normal">
+							<td class="text-nowrap text-sm font-normal">
 								<div class="flex">
 									<IconQrCode class="text-2xl text-subtle-text-light dark:text-subtle-text-dark" />
 									<span
 										:title="item.address"
 										dir="ltr"
-										class="w-32 py-1 truncate pr-2 cursor-pointer"
+										class="py-1 pr-2 cursor-pointer"
 										@click="copyText(item.address)"
-									>{{ (item.address) }}</span>
+									>
+										{{ formatContractId(item.address) }}
+									</span>
 								</div>
 							</td>
 							<td
@@ -173,7 +175,7 @@
 								</span>
 								<span
 									class="px-4 cursor-pointer inline-block text-nowrap"
-									@click="openDepositClaim"
+									@click="openDepositClaim(item)"
 								>
 									{{ $t('depositClaim') }}
 								</span>
@@ -209,16 +211,16 @@
 			@close="closeDetail"
 		/>
 		<DepositClaim
-			v-if="showDepositClaim"
-			@close="closeDepositClaim"
+			v-model="depositClaimModal"
+			:item="depositClaim"
 		/>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { toPersianDate } from '~/utils/helpers';
+import { toPersianDate, formatContractId } from '~/utils/helpers';
 import IconQrCode from '~/assets/svg-icons/profile/qrCode.svg';
-import DepositClaim from '~/components/pages/Site/Wallet/Menu/Deposit/DepositClaim.vue';
+import DepositClaim from '~/components/pages/Assets/CryptoAddresses/DepositClaim.vue';
 import Invalidate from '~/components/pages/Site/Wallet/Menu/Deposit/Invalidate.vue';
 import { depositRepository } from '~/repositories/deposit.repository';
 import { currencyRepository } from '~/repositories/currency.repository';
@@ -240,6 +242,13 @@ const mobileDetect = $mobileDetect as MobileDetect;
 const totalCount = ref(0);
 
 const { copyText } = useClipboard();
+
+const depositClaim = ref<CryptoAddress | null>(null);
+const depositClaimModal = ref(false);
+const openDepositClaim = (item: CryptoAddress) => {
+	depositClaim.value = item;
+	depositClaimModal.value = true;
+};
 
 const params = ref<DepositCryptoAddressParams>({
 	netId: '',
@@ -317,7 +326,6 @@ const fromDate = ref();
 const toDate = ref();
 
 const showDetail = ref(false);
-const showDepositClaim = ref(false);
 
 const openDetail = () => {
 	showDetail.value = true;
@@ -325,13 +333,5 @@ const openDetail = () => {
 
 const closeDetail = () => {
 	showDetail.value = false;
-};
-
-const openDepositClaim = () => {
-	showDepositClaim.value = true;
-};
-
-const closeDepositClaim = () => {
-	showDepositClaim.value = false;
 };
 </script>
