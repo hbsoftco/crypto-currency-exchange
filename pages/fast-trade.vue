@@ -390,9 +390,15 @@ const finalSubmit = async () => {
 
 		submitOrderLoading.value = false;
 	}
-	catch (error) {
-		console.log(error);
+	catch (error: any) {
 		submitOrderLoading.value = false;
+
+		toast.add({
+			title: useT('error'),
+			description: error.response._data.message,
+			timeout: 5000,
+			color: 'red',
+		});
 	}
 };
 

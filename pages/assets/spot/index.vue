@@ -161,7 +161,7 @@
 						</div>
 						<div class="flex justify-start px-6">
 							<UiSeeMore
-								link="/"
+								link="/assets/spot/mini-convert"
 								text="convertingBalancesTomans"
 							/>
 						</div>
