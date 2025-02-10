@@ -106,6 +106,10 @@ type DepositClaimDto = {
 	txCode: string;
 };
 
+type RevokeDepositAddressParams = {
+	id: string;
+};
+
 export type {
 	DepositListResponse,
 	DepositCoinFeesParams,
@@ -115,4 +119,5 @@ export type {
 	DepositTransaction,
 	DepositTransactionsParams,
 	DepositClaimDto,
+	RevokeDepositAddressParams,
 };

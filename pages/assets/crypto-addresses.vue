@@ -39,26 +39,20 @@
 				<!-- networkType -->
 
 				<div class="ml-6 my-1 col-span-2">
-					<UInput
+					<input
 						id="fromDate"
 						v-model="fromDate"
-						size="lg"
+						dir="ltr"
 						color="white"
-						variant="outline"
 						:placeholder="$t('fromDate')"
-						readonly
-						class="cursor-pointer"
-						:ui="{
-							background: '',
-							color: {
-								white: {
-									outline: ' bg-hover-light dark:bg-hover-dark',
-								},
-							},
-						}"
-					/>
+						class="rtl-placeholder w-full text-left relative block disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0 form-input rounded-md placeholder-gray-400 dark:placeholder-gray-500 text-sm px-2.5 py-2.5 shadow-sm text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 bg-hover-light dark:bg-hover-dark"
+						@input="handleDateInput('fromDate')"
+						@blur="validateDate('fromDate')"
+					>
 					<DatePicker
+						v-if="isMobile"
 						v-model="fromDate"
+						size="lg"
 						color="#FFC107"
 						simple
 						display-format="jYYYY/jMM/jDD"
@@ -69,27 +63,21 @@
 				<!-- fromDate -->
 
 				<div class="ml-6 my-1 col-span-2">
-					<UInput
+					<input
 						id="toDate"
 						v-model="toDate"
+						dir="ltr"
 						color="white"
-						size="lg"
-						variant="outline"
 						:placeholder="$t('toDate')"
-						readonly
-						class="cursor-pointer"
-						:ui="{
-							background: '',
-							color: {
-								white: {
-									outline: ' bg-hover-light dark:bg-hover-dark',
-								},
-							},
-						}"
-					/>
+						class="rtl-placeholder w-full text-left relative block disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0 form-input rounded-md placeholder-gray-400 dark:placeholder-gray-500 text-sm px-2.5 py-2.5 shadow-sm text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 bg-hover-light dark:bg-hover-dark"
+						@input="handleDateInput('toDate')"
+						@blur="validateDate('toDate')"
+					>
 					<DatePicker
+						v-if="isMobile"
 						v-model="toDate"
 						display-format="jYYYY/jMM/jDD"
+						size="lg"
 						color="#FFC107"
 						simple
 						format="YYYY/MM/DD"
@@ -144,11 +132,22 @@
 								<span dir="ltr">{{ toPersianDate(item.expirationTime, 'full-with-month') }}</span>
 							</td>
 							<td class="text-nowrap text-sm font-normal">
-								<!-- {{ item. }} -->
+								<span
+									v-if="!item.takenTime"
+									class="text-accent-green dark:text-accent-green"
+								>
+									{{ $t('active') }}
+								</span>
+								<span
+									v-else
+									class="text-accent-red dark:text-accent-red"
+								>
+									{{ $t('inactive') }}
+								</span>
 							</td>
 							<td class="text-nowrap text-sm font-normal">
-								<div class="flex">
-									<IconQrCode class="text-2xl text-subtle-text-light dark:text-subtle-text-dark" />
+								<div class="flex items-center">
+									<IconQrCode class="cursor-pointer text-3xl text-subtle-text-light dark:text-subtle-text-dark" />
 									<span
 										:title="item.address"
 										dir="ltr"
@@ -160,21 +159,36 @@
 								</div>
 							</td>
 							<td
-								class="text-sm font-normal py-2  text-primary-yellow-light dark:text-primary-yellow-dark"
+								class="text-sm font-normal py-2"
 							>
-								<span
-									class="px-4 cursor-pointer text-nowrap inline-block"
-								>
-									{{ $t('extension') }}
+								<span v-if="!item.takenTime">
+									<span
+										class="text-primary-yellow-light dark:text-primary-yellow-dark px-4 cursor-pointer text-nowrap inline-block"
+										@click="extendAddress(item)"
+									>
+										{{ $t('extension') }}
+									</span>
+									<span
+										class="text-primary-yellow-light dark:text-primary-yellow-dark px-4 cursor-pointer inline-block text-nowrap border-x border-primary-gray-light dark:border-primary-gray-dark"
+										@click="revokeAddress(item)"
+									>
+										{{ $t('invalidate') }}
+									</span>
+								</span>
+								<span v-else>
+									<span
+										class="text-subtle-text-light dark:text-subtle-text-dark px-4 cursor-not-allowed text-nowrap inline-block"
+									>
+										{{ $t('extension') }}
+									</span>
+									<span
+										class="text-subtle-text-light dark:text-subtle-text-dark px-4 cursor-not-allowed inline-block text-nowrap border-x border-primary-gray-light dark:border-primary-gray-dark"
+									>
+										{{ $t('invalidate') }}
+									</span>
 								</span>
 								<span
-									class="px-4 cursor-pointer inline-block text-nowrap border-x border-primary-gray-light dark:border-primary-gray-dark"
-									@click="openDetail"
-								>
-									{{ $t('invalidate') }}
-								</span>
-								<span
-									class="px-4 cursor-pointer inline-block text-nowrap"
+									class="px-4 cursor-pointer inline-block text-nowrap text-primary-yellow-light dark:text-primary-yellow-dark"
 									@click="openDepositClaim(item)"
 								>
 									{{ $t('depositClaim') }}
@@ -206,10 +220,10 @@
 			</div>
 		</section>
 
-		<Invalidate
+		<!-- <Invalidate
 			v-if="showDetail"
 			@close="closeDetail"
-		/>
+		/> -->
 		<DepositClaim
 			v-model="depositClaimModal"
 			:item="depositClaim"
@@ -221,7 +235,7 @@
 import { toPersianDate, formatContractId } from '~/utils/helpers';
 import IconQrCode from '~/assets/svg-icons/profile/qrCode.svg';
 import DepositClaim from '~/components/pages/Assets/CryptoAddresses/DepositClaim.vue';
-import Invalidate from '~/components/pages/Site/Wallet/Menu/Deposit/Invalidate.vue';
+// import Invalidate from '~/components/pages/Site/Wallet/Menu/Deposit/Invalidate.vue';
 import { depositRepository } from '~/repositories/deposit.repository';
 import { currencyRepository } from '~/repositories/currency.repository';
 import type { KeyValue } from '~/types/definitions/common.types';
@@ -232,7 +246,7 @@ definePageMeta({
 	layout: 'asset',
 	middleware: 'auth',
 });
-const { $api, $mobileDetect } = useNuxtApp();
+const { $api, $mobileDetect, $swal } = useNuxtApp();
 const depositRepo = depositRepository($api);
 const currencyRepo = currencyRepository($api);
 
@@ -242,6 +256,7 @@ const mobileDetect = $mobileDetect as MobileDetect;
 const totalCount = ref(0);
 
 const { copyText } = useClipboard();
+const toast = useToast();
 
 const depositClaim = ref<CryptoAddress | null>(null);
 const depositClaimModal = ref(false);
@@ -320,18 +335,188 @@ onMounted(async () => {
 	]);
 });
 
-const networkType = ref<KeyValue>();
+const revokeAddressLoading = ref<boolean>(false);
+const revokeAddress = async (item: CryptoAddress) => {
+	try {
+		const confirmation = await $swal.fire({
+			title: useT('importantNotice'),
+			text: useT('areYouSureRevokeAddress'),
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: useT('yesDoIt'),
+			cancelButtonText: useT('cancel'),
+		});
 
-const fromDate = ref();
-const toDate = ref();
+		if (confirmation.isConfirmed) {
+			revokeAddressLoading.value = true;
 
-const showDetail = ref(false);
+			await depositRepo.revokeDepositAddress({ id: String(item.reqId) });
 
-const openDetail = () => {
-	showDetail.value = true;
+			toast.add({
+				title: useT('operationSuccess'),
+				id: 'modal-success',
+				timeout: 5000,
+				color: 'green',
+			});
+
+			await getDepositCryptoAddress();
+
+			revokeAddressLoading.value = false;
+		}
+	}
+	catch (error: any) {
+		revokeAddressLoading.value = false;
+		toast.add({
+			title: useT('error'),
+			description: error.response._data.message,
+			timeout: 5000,
+			color: 'red',
+		});
+	}
 };
 
-const closeDetail = () => {
-	showDetail.value = false;
+const extendAddressLoading = ref<boolean>(false);
+const extendAddress = async (item: CryptoAddress) => {
+	try {
+		const confirmation = await $swal.fire({
+			title: useT('importantNotice'),
+			text: useT('areYouSureExtendAddress'),
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: useT('yesDoIt'),
+			cancelButtonText: useT('cancel'),
+		});
+
+		if (confirmation.isConfirmed) {
+			extendAddressLoading.value = true;
+
+			await depositRepo.extendDepositAddress({ id: String(item.reqId) });
+
+			toast.add({
+				title: useT('operationSuccess'),
+				id: 'modal-success',
+				timeout: 5000,
+				color: 'green',
+			});
+
+			await getDepositCryptoAddress();
+
+			extendAddressLoading.value = false;
+		}
+	}
+	catch (error: any) {
+		extendAddressLoading.value = false;
+		toast.add({
+			title: useT('error'),
+			description: error.response._data.message,
+			timeout: 5000,
+			color: 'red',
+		});
+	}
+};
+
+const networkType = ref<KeyValue>();
+
+const toDate = ref();
+const internalToDate = ref();
+const fromDate = ref();
+const internalFromDate = ref();
+
+const handleDateInput = (field: string) => {
+	try {
+		const value = field === 'fromDate' ? fromDate.value : toDate.value;
+
+		let sanitized = value.replace(/[^0-9۰-۹/]/g, '');
+		const normalized = sanitized.replace(/[۰-۹]/g, (c: string) => String.fromCharCode(c.charCodeAt(0) - 1728));
+
+		const isPersian = /[\u0600-\u06FF]/.test(sanitized);
+
+		if (sanitized.length >= 5 && sanitized[4] !== '/') {
+			sanitized = sanitized.slice(0, 4) + '/' + sanitized.slice(4);
+		}
+		if (sanitized.length >= 8) {
+			const firstSlashIndex = sanitized.indexOf('/');
+			const secondSlashIndex = sanitized.indexOf('/', firstSlashIndex + 1);
+
+			if (firstSlashIndex !== -1 && secondSlashIndex !== -1) {
+				const date = sanitized.split('/');
+
+				if (date[1].length === 1) {
+					date[1] = (isPersian ? '۰' : '0') + date[1];
+				}
+				else {
+					let checker = date[1];
+
+					if (isPersian) {
+						checker = convertPersianToEnglishNumber(checker);
+
+						if (checker > 12) {
+							date[1] = '۱۲';
+						}
+					}
+					else {
+						if (checker > 12) {
+							date[1] = '12';
+						}
+					}
+				}
+
+				sanitized = `${date[0]}/${date[1]}/${date[2]}`;
+			}
+			else if (sanitized[7] !== '/') {
+				sanitized = sanitized.slice(0, 7) + '/' + sanitized.slice(7);
+			}
+		}
+
+		if (field === 'fromDate') {
+			fromDate.value = sanitized;
+			internalFromDate.value = normalized;
+		}
+		else {
+			toDate.value = sanitized;
+			internalToDate.value = normalized;
+		}
+	}
+	catch (error) {
+		console.log(error);
+	}
+};
+
+const validateDate = (field: string) => {
+	const value = field === 'fromDate' ? fromDate.value : toDate.value;
+
+	if (!value) return;
+
+	let sanitized = value.replace(/[^0-9۰-۹/]/g, '');
+	sanitized = sanitized.replace(/[۰-۹]/g, (c: string) => String.fromCharCode(c.charCodeAt(0) - 1728));
+
+	const parts = sanitized.split('/');
+	if (parts.length === 3) {
+		const year = parts[0];
+		const month = parts[1];
+		const day = parts[2];
+
+		const dateRegex = /^(?<year>\d{4})\/(?<month>\d{1,2})\/(?<day>\d{1,2})$/;
+		const normalized = `${year}/${month}/${day}`;
+
+		if (dateRegex.test(normalized)) {
+			if (field === 'fromDate') {
+				internalFromDate.value = normalized;
+			}
+			else {
+				internalToDate.value = normalized;
+			}
+			return;
+		}
+	}
+
+	if (field === 'fromDate') {
+		fromDate.value = '';
+		internalFromDate.value = '';
+	}
+	else {
+		toDate.value = '';
+		internalToDate.value = '';
+	}
 };
 </script>

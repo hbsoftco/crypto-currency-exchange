@@ -1258,6 +1258,9 @@ const persian = {
 	depositAddress: 'آدرس واریز',
 	transactionCode2: 'کد تراکنش (TxHash / TxID)',
 	pleaseEnterTransactionCode: 'لطفا کد تراکنش را بدون لینک وارد نمایید.',
+	importantNotice: 'اخطار مهم',
+	areYouSureRevokeAddress: 'آیا از باطل کردن این آدرس اطمینان دارید؟',
+	areYouSureExtendAddress: 'آیا مایل به تمدید آدرس مورد نظر هستید؟',
 
 };
 

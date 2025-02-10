@@ -316,7 +316,7 @@ const toPersianDate = (date: string, type: 'month' | 'full' | 'numeric-month' | 
 	}
 	catch (error) {
 		console.log('Invalid timestamp:', error);
-		return 'تاریخ نامعتبر است';
+		return '---';
 	}
 };
 

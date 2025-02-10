@@ -1,27 +1,3 @@
-type AddressRevokeItem = {
-	reqId: number;
-	addressId: number;
-	typeId: number;
-	typeName: string;
-	netId: number;
-	netName: string;
-	wloId: number;
-	wloName: string;
-	uidOwner: number;
-	userOwner: string;
-	address: string;
-	memo: string;
-	regTime: string;
-	expirationTime: string;
-	takenTime: string;
-	allocationTime: string;
-};
-
-type GetAddressRevokeRes = {
-	statusCode: number;
-	result: AddressRevokeItem;
-};
-
 type DepositCoinItem = {
 	cid: number;
 	chainId: number;
@@ -44,7 +20,6 @@ type getDepositCoinListRes = {
 };
 
 export type {
-	GetAddressRevokeRes,
 	DepositCoinItem,
 	getDepositCoinListRes,
 };
