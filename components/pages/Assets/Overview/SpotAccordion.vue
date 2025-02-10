@@ -11,7 +11,7 @@
 							dir="ltr"
 							class="text-base"
 						>
-							{{ balance.spot.USD }} USD
+							{{ priceFormat(balance.spot.USD) }} USD
 						</p>
 						<p class="text-sm text-subtle-text-light dark:text-subtle-text-dark">
 							{{ `${priceFormat(balance.spot.TMN)} ${$t('toman')}` }}

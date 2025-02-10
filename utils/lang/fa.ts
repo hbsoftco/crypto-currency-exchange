@@ -1251,6 +1251,9 @@ const persian = {
 	fund: 'صندوق',
 	priceMoreThenBalance: 'مبلغ بیشتر از موجودی است!',
 	transferSuccessfully: 'انتفال با موفقیت انجام شد!',
+	convertToToman: 'تبدیل به تومان',
+	convertToTomanDescription: 'این اطلاعات متغییر می باشد و ته مانده اصلی تابع قیمت لحظه ای بازار بوده و در هنگام ثبت معامله دریافتی نهایی مشخص خواهد شد.',
+	convert: 'تبدیل',
 };
 
 export default persian;

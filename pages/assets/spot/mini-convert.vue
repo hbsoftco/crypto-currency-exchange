@@ -53,12 +53,65 @@
 				<UButton
 					size="lg"
 					class="text-nowrap text-base font-medium px-10 py-2"
-					to=""
+					@click="isOpen= true"
 				>
 					{{ $t("confirm") }}
 				</UButton>
 			</div>
 		</section>
+
+		<UModal
+			v-model="isOpen"
+			fullscreen
+		>
+			<div class="h-full flex flex-col items-center justify-center">
+				<div
+					class="flex flex-col justify-center items-center rounded-md bg-background-light dark:bg-background-dark px-2 md:px-20 py-6 md:py-14 mb-0 md:mb-6 my-32 md:my-0 mx-1 md:mx-32"
+				>
+					<h4 class="hidden md:block text-center text-2xl font-bold mb-6">
+						{{ $t("convertToToman") }}
+					</h4>
+
+					<div class="bg-primary-gray-light dark:bg-primary-gray-dark w-[25rem] p-4 rounded-md text-sm">
+						<div class="flex justify-between mb-4">
+							<div class="text-subtle-text-light dark:text-subtle-text-dark">
+								{{ $t('receipt') }}
+							</div>
+							<div>
+								<span>10000000</span>
+								<span>{{ $t('toman') }}</span>
+							</div>
+						</div>
+						<div class="flex justify-between mb-4">
+							<div class="text-subtle-text-light dark:text-subtle-text-dark">
+								{{ $t('fee') }}
+							</div>
+							<div>
+								<span>10000000</span>
+								<span>{{ $t('toman') }}</span>
+							</div>
+						</div>
+						<p class="text-subtle-text-light dark:text-subtle-text-dark">
+							{{ $t('convertToTomanDescription') }}
+						</p>
+						<div class="mt-4">
+							<UButton
+								size="lg"
+								class="text-nowrap text-base font-medium px-10 py-2"
+								block
+								@click="submit"
+							>
+								{{ $t("convert") }}
+							</UButton>
+						</div>
+					</div>
+				</div>
+				<IconClose
+					class="text-4xl hidden md:block cursor-pointer"
+					@click="isOpen=false"
+				/>
+			</div>
+		</UModal>
 
 		<section class="my-10 px-4 md:px-0">
 			<div class="w-full">
@@ -70,9 +123,6 @@
 							</th>
 							<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-2">
 								{{ $t('balance') }}
-							</th>
-							<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-2">
-								{{ $t('tomanValue') }}
 							</th>
 						</tr>
 					</thead>
@@ -106,31 +156,14 @@
 							</td>
 							<td class="text-nowrap text-base font-medium py-2">
 								<div>
-									<!-- <div>
-										<span class="pr-1">{{ calculateTotalCurrency(asset) }}</span>
-										<span>{{ asset.currency?.cSymbol }}</span>
-									</div>
-									<div
-										dir="ltr"
-										class="text-subtle-text-light dark:text-subtle-text-dark text-sm"
-									>
-										<span class="pr-1">{{ priceFormat(calculateTotalQuote(asset)) }}</span>
-										<span>{{ `${assetListParams.assessmentCurrencyId === '1' ? 'TMN' : 'USDT'}` }}</span>
-									</div> -->
-								</div>
-							</td>
-							<td class="text-nowrap text-base font-medium py-2">
-								<div>
 									<div>
-										<span class="pr-1">{{ asset.qLocked }}</span>
-										<span>{{ asset.currency?.cSymbol }}</span>
+										<span class="pr-1">{{ priceFormat(asset.qAvailable) }}</span>
 									</div>
 									<div
 										dir="ltr"
 										class="text-subtle-text-light dark:text-subtle-text-dark text-sm"
 									>
-										<span class="pr-1">{{ priceFormat(asset.aLocked) }}</span>
-										<span>{{ `${assetListParams.assessmentCurrencyId === '1' ? 'TMN' : 'USDT'}` }}</span>
+										<span class="pr-1">{{ priceFormat(asset.aAvailable) }}</span>
 									</div>
 								</div>
 							</td>
@@ -174,6 +207,9 @@ import { AssetType, BoxMode, MiniAssetMode } from '~/utils/enums/asset.enum';
 import { assetRepository } from '~/repositories/asset.repository';
 import type { Asset, AssetListParams } from '~/types/definitions/asset.types';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
+import IconClose from '~/assets/svg-icons/close.svg';
+import { spotRepository } from '~/repositories/spot.repository';
+import type { ConvertMiniAssetDto } from '~/types/definitions/spot.types';
 
 const BackHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/BackHeader.vue'));
 
@@ -185,13 +221,42 @@ definePageMeta({
 const { $api, $mobileDetect } = useNuxtApp();
 const userRepo = userRepository($api);
 const assetRepo = assetRepository($api);
+const spotRepo = spotRepository($api);
 
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
 
 const worker = useBaseWorker();
 
+const toast = useToast();
+
+const isOpen = ref(false);
 const totalCount = ref(0);
+
+const convertMiniAssetParams = ref<ConvertMiniAssetDto>({
+	assetType: useEnv('assetType'),
+	desCurrencyId: 0,
+});
+const submitLoading = ref<boolean>(false);
+const submit = async () => {
+	try {
+		submitLoading.value = true;
+		await spotRepo.convertMiniAsset(convertMiniAssetParams.value);
+
+		toast.add({
+			title: useT('registerOrder'),
+			description: useT('operationSuccess'),
+			timeout: 5000,
+			color: 'green',
+		});
+
+		submitLoading.value = false;
+	}
+	catch (error) {
+		console.log(error);
+		submitLoading.value = false;
+	}
+};
 
 const assetListParams = ref<AssetListParams>({
 	assessmentCurrencyId: '1',

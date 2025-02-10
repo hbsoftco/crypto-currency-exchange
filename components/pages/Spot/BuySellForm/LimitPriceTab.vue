@@ -282,7 +282,6 @@ const orderMarketParams = ref<StoreOrderLimitDto>({
 	tifType: '',
 	maxLifespanBySecond: null,
 });
-
 const submitOrderLoading = ref<boolean>(false);
 const finalSubmit = async () => {
 	try {

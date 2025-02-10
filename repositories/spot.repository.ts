@@ -2,6 +2,7 @@ import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import type {
+	ConvertMiniAssetDto,
 	DeleteOpenOrderDto,
 	KLineParams,
 	KLineResponse,
@@ -32,6 +33,7 @@ type SpotRepository = {
 	getSnapshot: (params: SnapshotParams) => Promise<SnapshotResponse>;
 	storeOrderStopMarket: (dto: StoreOrderStopMarketDto) => Promise<CommonResponse>;
 	storeOrderStopInstant: (dto: StoreOrderStopInstantDto) => Promise<CommonResponse>;
+	convertMiniAsset: (dto: ConvertMiniAssetDto) => Promise<CommonResponse>;
 };
 
 export const spotRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SpotRepository => ({
@@ -169,6 +171,16 @@ export const spotRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SpotR
 	},
 	async storeOrderStopInstant(dto: StoreOrderStopInstantDto): Promise<CommonResponse> {
 		const url = `/v1/spot/order/stop_instant`;
+		const response = await fetch<CommonResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async convertMiniAsset(dto: ConvertMiniAssetDto): Promise<CommonResponse> {
+		const url = `/v1/spot/order/miniasset`;
 		const response = await fetch<CommonResponse>(`${url}`, {
 			noAuth: false,
 			method: 'POST',

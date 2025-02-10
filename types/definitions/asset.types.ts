@@ -189,6 +189,7 @@ type AssetRecent = {
 	currencyId: number;
 	value: string;
 	doneTime: string;
+	currency?: CurrencyBrief;
 };
 
 type CurrencyBalance = {

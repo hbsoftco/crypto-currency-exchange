@@ -11,7 +11,7 @@
 							dir="ltr"
 							class="text-base"
 						>
-							{{ balance.futures.items.futures_overall_balance.USD }} USD
+							{{ priceFormat(balance.futures.items.futures_overall_balance.USD) }} USD
 						</p>
 						<p class="text-sm text-subtle-text-light dark:text-subtle-text-dark">
 							{{ `${priceFormat(balance.futures.items.futures_overall_balance.TMN)} ${$t('toman')}` }}

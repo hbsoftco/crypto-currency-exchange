@@ -293,6 +293,11 @@ type StoreCoinToCoinDto = {
 	srcQnt: string;
 };
 
+type ConvertMiniAssetDto = {
+	desCurrencyId: number;
+	assetType: string;
+};
+
 type DeleteOpenOrderDto = {
 	id: number;
 };
@@ -301,6 +306,7 @@ type SpotThemeType = 'classic' | 'standard' | 'vertical';
 type TypeTrade = 'buy' | 'sell';
 
 export type {
+	ConvertMiniAssetDto,
 	TypeTrade,
 	SpotThemeType,
 	KLineParams,
