@@ -97,8 +97,25 @@ type DepositListResponse = {
 	statusCode: number;
 	result: {
 		totalCount: number;
-		rows: DepositCoinFee[] | CryptoAddress[] | DepositTransaction[];
+		rows: DepositCoinFee[] |
+		CryptoAddress[] |
+		DepositTransaction[] |
+		DepositCurrency[] |
+		DepositCoin[];
 	};
+};
+
+type DepositCoin = {
+	cid: number;
+	chainId: number;
+	netId: number;
+	netName: string;
+	memoable: boolean;
+	contractId: string;
+	depositEnabled: boolean;
+	depositFee: number;
+	depositCostPerc: number;
+	depositNote: string;
 };
 
 type DepositClaimDto = {
@@ -108,6 +125,40 @@ type DepositClaimDto = {
 
 type RevokeDepositAddressParams = {
 	id: string;
+};
+
+type DepositCoinListParams = {
+	type: string;
+	statement: string;
+	pageNumber: string;
+	pageSize: string;
+};
+
+type DepositCryptoNetwork = {
+	enabled: boolean;
+	chainId: number;
+	netId: number;
+	netName: string;
+	memoable: boolean;
+	contractId: string;
+	confirmationCo: number;
+	fee: number;
+	percentage: number;
+	note: string;
+};
+
+type DepositFiatNetwork = {
+	enabled: boolean;
+	fee: number;
+	percentage: number;
+	note: string;
+};
+
+type DepositCurrency = {
+	cid: number;
+	currency?: CurrencyBrief;
+	networks?: DepositCryptoNetwork[];
+	bankOperator?: DepositFiatNetwork[];
 };
 
 export type {
@@ -120,4 +171,8 @@ export type {
 	DepositTransactionsParams,
 	DepositClaimDto,
 	RevokeDepositAddressParams,
+	DepositCoinListParams,
+	DepositCoin,
+	DepositCryptoNetwork,
+	DepositCurrency,
 };

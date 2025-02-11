@@ -72,12 +72,69 @@ type WithdrawFee = {
 	max: number;
 };
 
+type WithdrawCoinListParams = {
+	type: string;
+	statement: string;
+	pageNumber: string;
+	pageSize: string;
+};
+
+type WithdrawCoin = {
+	cid: number;
+	chainId: number;
+	netId: number;
+	netName: string;
+	withdrawEnabled: boolean;
+	memoable: boolean;
+	contractId: string;
+	withdrawFee: number;
+	withdrawCostPerc: number;
+	withdrawMin: number;
+	withdrawMax: number;
+	withdrawNote: string;
+};
+
 type WithdrawListResponse = {
 	statusCode: number;
 	result: {
 		totalCount: number;
-		rows: WithdrawCoinFee[] | WithdrawTransaction[];
+		rows: WithdrawCoinFee[] |
+		WithdrawCoin[] |
+		WithdrawCurrency[] |
+		WithdrawTransaction[];
 	};
+};
+
+type WithdrawCurrency = {
+	cid: number;
+	withdrawable: string;
+	currency?: CurrencyBrief;
+	networks?: WithdrawCryptoNetwork[];
+	bankOperator?: WithdrawFiatNetwork[];
+};
+
+type WithdrawFiatNetwork = {
+	enabled: boolean;
+	fee: number;
+	percentage: number;
+	note: string;
+	min: number;
+	max: number;
+};
+
+type WithdrawCryptoNetwork = {
+	enabled: boolean;
+	chainId: number;
+	netId: number;
+	netName: string;
+	memoable: boolean;
+	contractId: string;
+	confirmationCo: number;
+	fee: number;
+	percentage: number;
+	note: string;
+	min: number;
+	max: number;
 };
 
 export type {
@@ -86,4 +143,7 @@ export type {
 	WithdrawCoinFee,
 	WithdrawTransactionsParams,
 	WithdrawTransaction,
+	WithdrawCryptoNetwork,
+	WithdrawFiatNetwork,
+	WithdrawCoinListParams,
 };

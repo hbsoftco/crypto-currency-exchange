@@ -203,8 +203,6 @@ import { useNumber } from '~/composables/useNumber';
 import { formatDateToIranTime } from '~/utils/date-time';
 import WithdrawDetailToman from '~/components/pages/Site/Wallet/Menu/History/Withdraw/WithdrawDetailToman.vue';
 import { withdrawRepository } from '~/repositories/withdraw.repository';
-import type { GetWithdrawParams } from '~/types/base.types';
-import type { Withdraw } from '~/types/response/withdraw.type';
 import { DepositType } from '~/utils/enums/deposit.enum';
 import type { KeyValue } from '~/types/definitions/common.types';
 
@@ -269,7 +267,7 @@ const params = ref<GetWithdrawParams>({
 const totalCount = ref(0);
 const isLoading = ref<boolean>(false);
 
-const response = await WithdrawRepo.getWithdraw(params.value);
+const response = await WithdrawRepo.getWithdrawTransactions(params.value);
 const WithdrawList = ref<Withdraw[]>(response.result.rows);
 
 // const findCurrencyById = (id: number): CurrencyBriefItem | null => {
@@ -297,7 +295,7 @@ const WithdrawList = ref<Withdraw[]>(response.result.rows);
 const loadWithdraws = async () => {
 	try {
 		isLoading.value = true;
-		const response = await WithdrawRepo.getWithdraw(params.value);
+		const response = await WithdrawRepo.getWithdrawTransactions(params.value);
 
 		WithdrawList.value = response.result.rows;
 		totalCount.value = response.result.totalCount;

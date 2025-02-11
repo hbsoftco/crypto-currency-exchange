@@ -1,93 +1,9 @@
-type GetPinParams = {
-	languageId: number;
-	group?: string;
-};
-
-type GetRootListParams = {
-	languageId: string;
-	group: string;
-};
-
-type GetLanguageParams = {
-	languageId: number;
-};
-
-type getTradesListParams = {
-	marketId?: string;
-	symbol?: string;
-	orderSide: string;
-	orderType?: string;
-	assetType?: string;
-	uniqueTag?: string;
-	from?: string;
-	to?: string;
-	pageNumber?: string;
-	pageSize?: string;
-};
-
-type GetAssetListParams = {
-	statement?: string;
-	assessmentCurrencyId?: string;
-	assetType: string;
-	boxMode?: string;
-	boxSortMode?: string;
-	miniAssetMode?: string;
-	currencyIDs?: string;
-	pageNumber?: string;
-	pageSize?: string;
-};
-
-type GetMarketStatusParams = {
-	rowCount: number;
-};
-
-type GetUserTraderCommissionListParams = {
-	marketType: string;
-};
-
-type GetTradeListParams = {
-	marketId: string;
-	symbol: string;
-	orderSide: string;
-	orderType: string;
-	assetType: string;
-	uniqueTag: string;
-	from: string;
-	to: string;
-	pageNumber: string;
-	pageSize: string;
-};
-
 type GetInternalReceiveParams = {
 	currencyId: string;
 	source: string;
 	destination: string;
 	from: string;
 	to: string;
-	pageNumber: string;
-	pageSize: string;
-};
-
-type GetWithdrawParams = {
-	type?: string;
-	currencyId: string;
-	statement: string;
-	from: string;
-	to: string;
-	pageNumber: string;
-	pageSize: string;
-};
-
-type DepositCoinListParams = {
-	type: string;
-	statement: string;
-	pageNumber: string;
-	pageSize: string;
-};
-
-type WithdrawCoinListParams = {
-	type: string;
-	statement: string;
 	pageNumber: string;
 	pageSize: string;
 };
@@ -117,31 +33,10 @@ type GetSubjectLiveChatParams = {
 	group: string;
 };
 
-type GetReferralParams = {
-	assessmentCurrencyId: string;
-};
-
-type GetCurrencyParams = {
-	languageId: string;
-	id: string;
-};
 export type {
 	GetReferralBestListParams,
-	GetPinParams,
-	GetRootListParams,
-	GetLanguageParams,
-	GetUserTraderCommissionListParams,
-	GetMarketStatusParams,
-	getTradesListParams,
-	GetAssetListParams,
-	GetTradeListParams,
 	GetTraderBestListParams,
 	GetInternalReceiveParams,
-	GetWithdrawParams,
 	GetHowBuyListParams,
 	GetSubjectLiveChatParams,
-	GetReferralParams,
-	DepositCoinListParams,
-	WithdrawCoinListParams,
-	GetCurrencyParams,
 };

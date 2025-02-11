@@ -2,7 +2,15 @@ import type { NitroFetchRequest, $Fetch } from 'nitropack';
 
 import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options.types';
 import type { BaseLangGroupParams, BaseLangIdParams, CommonResponse, KeyValueResponse, SearchListParams } from '~/types/definitions/common.types';
-import type { SystemParams, MiniRoutineParams, StaffParams, SystemListResponse, SystemResponse, ReasonListParams } from '~/types/definitions/system.types';
+import type {
+	SystemParams,
+	MiniRoutineParams,
+	StaffParams,
+	SystemListResponse,
+	SystemResponse,
+	ReasonListParams,
+	HelpParams,
+} from '~/types/definitions/system.types';
 
 type SystemRepository = {
 	getSystemHelp: (params: BaseLangIdParams) => Promise<SystemResponse>;
@@ -22,6 +30,8 @@ type SystemRepository = {
 	getCountryList: () => Promise<SystemResponse>;
 	getReasonList: (params: ReasonListParams) => Promise<KeyValueResponse>;
 	getTagList: (params: MiniRoutineParams) => Promise<KeyValueResponse>;
+	getDepositHelp: (params: HelpParams) => Promise<SystemResponse>;
+	getWithdrawHelp: (params: HelpParams) => Promise<SystemResponse>;
 };
 
 export const systemRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): SystemRepository => ({
@@ -249,6 +259,34 @@ export const systemRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Sys
 			noAuth: false,
 			method: 'GET',
 		} as CustomNitroFetchOptions);
+		return response;
+	},
+	async getDepositHelp(params: HelpParams): Promise<SystemResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/system/help/mini_deposit';
+		const response = await fetch<SystemResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getWithdrawHelp(params: HelpParams): Promise<SystemResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/system/help/mini_withdraw';
+		const response = await fetch<SystemResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
 		return response;
 	},
 });

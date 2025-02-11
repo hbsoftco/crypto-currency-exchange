@@ -130,6 +130,11 @@ type MiniRoutineParams = {
 	tagType: string;
 };
 
+type HelpParams = {
+	type: string;
+	currencyId: string;
+};
+
 type MiniRoutine = {
 	tips: KeyValue[];
 	faqs: KeyValue[];
@@ -184,4 +189,5 @@ export type {
 	SystemParams,
 	Country,
 	ReasonListParams,
+	HelpParams,
 };
