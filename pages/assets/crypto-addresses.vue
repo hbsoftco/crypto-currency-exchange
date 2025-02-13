@@ -8,7 +8,7 @@
 
 	<div
 		v-else
-		class="py-4 p-3 md:p-5"
+		class="py-4 mb-16 p-3 md:p-5"
 	>
 		<section>
 			<div class="pb-4 pt-1 border-b border-primary-gray-light dark:border-primary-gray-dark">
@@ -96,6 +96,8 @@
 					</UButton>
 				</div>
 			</div>
+			<!-- Filters -->
+
 			<div class="w-full">
 				<table class="min-w-full py-6 text-right">
 					<thead>
@@ -147,7 +149,10 @@
 							</td>
 							<td class="text-nowrap text-sm font-normal">
 								<div class="flex items-center">
-									<IconQrCode class="cursor-pointer text-3xl text-subtle-text-light dark:text-subtle-text-dark" />
+									<IconQrCode
+										class="cursor-pointer text-3xl text-subtle-text-light dark:text-subtle-text-dark"
+										@click="openDepositQrCode(item)"
+									/>
 									<span
 										:title="item.address"
 										dir="ltr"
@@ -198,6 +203,7 @@
 					</tbody>
 				</table>
 			</div>
+			<!-- Table Data -->
 
 			<div
 				v-if="totalCount > 20"
@@ -208,7 +214,7 @@
 					:page-count="20"
 					:total="totalCount"
 					:max="6"
-					size="xl"
+					size="sm"
 					ul-class="flex space-x-2 bg-blue-500 border-none"
 					li-class="flex items-center justify-center w-8 h-8 rounded-full text-white bg-blue-500 px-3"
 					button-class-base="flex items-center justify-center w-full h-full transition-colors duration-200"
@@ -218,12 +224,13 @@
 					@update:model-value="onPageChange"
 				/>
 			</div>
+			<!-- Pagination -->
 		</section>
 
-		<!-- <Invalidate
-			v-if="showDetail"
-			@close="closeDetail"
-		/> -->
+		<GenerateQrCode
+			v-model="depositQrCodeModal"
+			:item="depositQrCode"
+		/>
 		<DepositClaim
 			v-model="depositClaimModal"
 			:item="depositClaim"
@@ -235,7 +242,7 @@
 import { toPersianDate, formatContractId } from '~/utils/helpers';
 import IconQrCode from '~/assets/svg-icons/profile/qrCode.svg';
 import DepositClaim from '~/components/pages/Assets/CryptoAddresses/DepositClaim.vue';
-// import Invalidate from '~/components/pages/Site/Wallet/Menu/Deposit/Invalidate.vue';
+import GenerateQrCode from '~/components/pages/Assets/CryptoAddresses/GenerateQrCode.vue';
 import { depositRepository } from '~/repositories/deposit.repository';
 import { currencyRepository } from '~/repositories/currency.repository';
 import type { KeyValue } from '~/types/definitions/common.types';
@@ -246,6 +253,7 @@ definePageMeta({
 	layout: 'asset',
 	middleware: 'auth',
 });
+
 const { $api, $mobileDetect, $swal } = useNuxtApp();
 const depositRepo = depositRepository($api);
 const currencyRepo = currencyRepository($api);
@@ -263,6 +271,13 @@ const depositClaimModal = ref(false);
 const openDepositClaim = (item: CryptoAddress) => {
 	depositClaim.value = item;
 	depositClaimModal.value = true;
+};
+
+const depositQrCode = ref<CryptoAddress | null>(null);
+const depositQrCodeModal = ref(false);
+const openDepositQrCode = (item: CryptoAddress) => {
+	depositQrCode.value = item;
+	depositQrCodeModal.value = true;
 };
 
 const params = ref<DepositCryptoAddressParams>({

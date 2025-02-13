@@ -36,12 +36,16 @@
 					<div class="mt-6">
 						<div class="flex items-center">
 							<IconWallet class="text-xl text-subtle-text-light dark:text-subtle-text-dark" />
-							<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark mr-2">{{ $t('estimatedInventory') }}</span>
+							<span class="text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark mr-2">
+								{{ $t('estimatedInventory') }}
+							</span>
 						</div>
 						<!-- Balance Title -->
 
 						<div class="flex justify-between mt-4">
-							<span class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark">{{ $t('tomanValue') }}</span>
+							<span class="text-base font-medium text-subtle-text-light dark:text-subtle-text-dark">
+								{{ $t('tomanValue') }}
+							</span>
 							<div class="flex items-center">
 								<span class="text-base font-medium ml-1">
 									{{ isAssetVisible ? priceFormat(balance.total.TMN) : '***' }}

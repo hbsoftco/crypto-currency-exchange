@@ -30,18 +30,18 @@
 									class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark ml-2"
 								>{{ $t("toman") }}</span>
 								<span
-									v-if="assetTotal?.totalOnQ1"
-									class="text-base font-bold"
-								>{{ (priceFormat(assetTotal?.totalOnQ1)) }}</span>
+									v-if="balance.total.TMN"
+									class="text-base font-semibold"
+								>{{ (priceFormat(balance.total.TMN)) }}</span>
 							</div>
 							<div class="flex items-center justify-end p-1">
 								<span
 									class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark ml-2"
 								>USD</span>
 								<span
-									v-if="assetTotal?.totalOnQ2"
-									class="text-base font-bold ml-2"
-								>{{ (priceFormat(assetTotal?.totalOnQ2)) }}</span>
+									v-if="balance.total.USD"
+									class="text-base font-semibold ml-2"
+								>{{ (priceFormat(balance.total.USD)) }}</span>
 								<span>=</span>
 							</div>
 						</div>
@@ -108,10 +108,60 @@ import IconAnalytics from '~/assets/svg-icons/spot/analytics.svg';
 import IconDate from '~/assets/svg-icons/menu/quick-menu/transaction-history.svg';
 import IconPostal from '~/assets/svg-icons/wallet/postal.svg';
 import { priceFormat } from '~/utils/helpers';
+import type { AssetBoxBrief, AssetBoxBriefParams } from '~/types/definitions/asset.types';
+import { BoxMode, MiniAssetMode } from '~/utils/enums/asset.enum';
+import { assetRepository } from '~/repositories/asset.repository';
 
-const assetTotal = ref();
+const { $api } = useNuxtApp();
+const assetRepo = assetRepository($api);
+
+const balance = ref({
+	total: {
+		TMN: 0,
+		USD: 0,
+	},
+});
+
+const assetBoxBriefParams = ref<AssetBoxBriefParams>({
+	q1CurrencyId: '1',
+	q2CurrencyId: '',
+	maskedInfo: 'false',
+	assetType: useEnv('assetType'),
+	boxMode: String(BoxMode.Any),
+	miniAssetMode: String(MiniAssetMode.Any),
+});
+const assetBoxBriefLoading = ref<boolean>(true);
+const assetBoxBrief = ref<AssetBoxBrief[]>();
+const getAssetBoxBrief = async () => {
+	try {
+		assetBoxBriefLoading.value = true;
+		const { result } = await assetRepo.getAssetBoxBrief(assetBoxBriefParams.value);
+		assetBoxBrief.value = result as AssetBoxBrief[];
+
+		let totalQ1Value = 0;
+		let totalUsdValue = 0;
+
+		assetBoxBrief.value.forEach((item) => {
+			const q1Value = parseFloat(item.q1Value);
+			const usdValue = parseFloat(item.usdValue);
+
+			totalQ1Value += q1Value;
+			totalUsdValue += usdValue;
+		});
+
+		balance.value.total.TMN = totalQ1Value;
+		balance.value.total.USD = parseFloat(totalUsdValue.toFixed(1));
+
+		assetBoxBriefLoading.value = false;
+	}
+	catch (error) {
+		console.log(error);
+		assetBoxBriefLoading.value = false;
+	}
+};
 
 onMounted(async () => {
+	await getAssetBoxBrief();
 });
 
 const menuItems = [
