@@ -21,32 +21,55 @@
 				</div>
 			</div>
 
-			<table class="min-w-full pb-6 text-right">
+			<table
+				class="min-w-full py-6 text-right"
+			>
 				<thead>
 					<tr class="pb-2 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark">
-						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark py-4">
+						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark py-5">
 							{{ $t('date') }}
 						</th>
 						<!-- date -->
-						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-4">
+						<th class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5">
 							{{ $t('invoiceNumber') }}
 						</th>
 						<!-- invoiceNumber -->
-						<th class="pl-10 text-nowrap text-left text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-4">
+						<th class="pl-10 text-nowrap text-left text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5">
 							{{ $t('amount') }}
 						</th>
 						<!-- amount -->
-						<th class="text-nowrap pr-10 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-4">
+						<th class="text-nowrap pr-10 text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5">
 							{{ $t('status') }}
 						</th>
-					<!-- status -->
+						<!-- status -->
+						<th
+							v-if="columnsType === DepositType.FIAT"
+							class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5"
+						>
+							{{ $t('shabaOrigin') }}
+						</th>
+						<!-- shabaOrigin FIAT -->
+						<th
+							v-if="columnsType === DepositType.CRYPTO"
+							class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5"
+						>
+							{{ $t('network') }}
+						</th>
+						<!-- network CRYPTO -->
+						<th
+							v-if="columnsType === DepositType.CRYPTO"
+							class="text-nowrap text-sm font-normal text-subtle-text-light dark:text-subtle-text-dark  py-5"
+						>
+							TxHash
+						</th>
+						<!-- TxHash CRYPTO -->
 					</tr>
 				</thead>
 				<tbody>
 					<tr
 						v-for="(item, index) in depositTransactions"
 						:key="index"
-						class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark odd:bg-hover2-light dark:odd:bg-hover2-dark even:bg-background-light dark:even:bg-background-dark"
+						class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"
 					>
 						<td class="text-nowrap text-sm font-normal py-2">
 							<span dir="ltr">
@@ -84,7 +107,50 @@
 								{{ item?.stateName }}
 							</span>
 						</td>
-					<!-- stateName -->
+						<!-- stateName -->
+						<td
+							v-if="columnsType === DepositType.FIAT"
+							class="text-nowrap text-sm font-normal py-2"
+						>
+							<span
+								dir="ltr"
+								class="cursor-pointer"
+								:title="item.bankIban"
+								@click="copyText(item.bankIban)"
+							>
+								{{ formatContractId(item.bankIban) }}
+							</span>
+						</td>
+						<!-- bankIban FIAT -->
+						<td
+							v-if="columnsType === DepositType.CRYPTO"
+							class="text-nowrap text-sm font-normal py-2"
+						>
+							{{ item.blockchainName }}
+						</td>
+						<!-- blockchainName CRYPTO -->
+						<td
+							v-if="columnsType === DepositType.CRYPTO"
+							class="text-nowrap text-sm font-normal py-2"
+						>
+							<a
+								v-if="item.txExplorerUrl"
+								:href="item.txExplorerUrl"
+								dir="ltr"
+								class="cursor-pointer"
+								:title="item.txCode"
+								target="_blank"
+							>
+								{{ formatContractId(item.txCode) }}
+							</a>
+							<span
+								v-else
+								dir="ltr"
+							>
+								{{ formatContractId(item.txCode) }}
+							</span>
+						</td>
+						<!-- txCode CRYPTO -->
 					</tr>
 				</tbody>
 			</table>
@@ -93,11 +159,16 @@
 </template>
 
 <script setup lang="ts">
-import { toPersianDate, priceFormat } from '~/utils/helpers';
+import { toPersianDate, priceFormat, formatContractId } from '~/utils/helpers';
 import { depositRepository } from '~/repositories/deposit.repository';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 import type { DepositTransaction, DepositTransactionsParams } from '~/types/definitions/deposit.types';
 import { DepositStatus, DepositType } from '~/utils/enums/deposit.enum';
+
+interface PropsDefinition {
+	columnsType: string;
+}
+const props = defineProps<PropsDefinition>();
 
 const { $mobileDetect, $api } = useNuxtApp();
 const depositRepo = depositRepository($api);
@@ -105,10 +176,11 @@ const depositRepo = depositRepository($api);
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
 
+const { copyText } = useClipboard();
 const worker = useBaseWorker();
 
 const params = ref<DepositTransactionsParams>({
-	type: DepositType.ANY,
+	type: props.columnsType,
 	currencyId: '',
 	statement: '',
 	from: '',

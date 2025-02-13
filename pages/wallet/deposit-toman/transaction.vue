@@ -27,8 +27,8 @@
 </template>
 
 <script setup lang="ts">
-import SuccessfulTransaction from '~/components/pages/Site/Wallet/DepositToman/SuccessfulTransaction.vue';
-import NotSuccessfulTransaction from '~/components/pages/Site/Wallet/DepositToman/NotSuccessfulTransaction.vue';
+import SuccessfulTransaction from '~/components/pages/Assets/Deposit/SuccessfulTransaction.vue';
+import NotSuccessfulTransaction from '~/components/pages/Assets/Deposit/NotSuccessfulTransaction.vue';
 import Table from '~/components/pages/Site/Wallet/DepositToman/Table.vue';
 
 definePageMeta({

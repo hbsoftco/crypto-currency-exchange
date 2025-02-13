@@ -21,6 +21,7 @@ import type {
 	AssetTypeParams,
 	BankAccountDto,
 	BankAccountListParams,
+	BankAccountDpiListParams,
 	DeleteBankAccountParams,
 	InvitationListParams,
 	InviteCommissionParams,
@@ -91,6 +92,8 @@ type UserRepository = {
 	storeBankAccount: (params: BankAccountDto) => Promise<CommonResponse>;
 	deleteBankAccount: (params: DeleteBankAccountParams) => Promise<CommonResponse>;
 	getRewardReceivedList: (params: RewardReceivedListParams) => Promise<UserResponse>;
+	getBankAccountDpiList: (params: BankAccountDpiListParams) => Promise<UserResponse>;
+	getBankAccountDpiRequest: () => Promise<UserResponse>;
 
 	// OLD
 	getReferralBestList: (params: GetReferralBestListParams) => Promise<GetBestListResponse>;
@@ -526,6 +529,29 @@ export const userRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): UserR
 
 		const url = '/v1/user/reward/received_list';
 		const response = await fetch<UserResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getBankAccountDpiList(params: BankAccountDpiListParams): Promise<UserResponse> {
+		const query = new URLSearchParams(
+			Object.entries(params)
+				.filter(([_, value]) => value !== undefined && value !== '' && value !== null),
+		);
+
+		const url = '/v1/user/bank/dpi_list';
+		const response = await fetch<UserResponse>(`${url}?${query.toString()}`, {
+			noAuth: false,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getBankAccountDpiRequest(): Promise<UserResponse> {
+		const url = '/v1/user/bank/dpi_request';
+		const response = await fetch<UserResponse>(`${url}`, {
 			noAuth: false,
 			method: 'GET',
 		} as CustomNitroFetchOptions);

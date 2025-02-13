@@ -46,6 +46,7 @@
 					:key="item.key"
 				>
 					<UiTransferGuideBox
+						:show-numbers="true"
 						:step="item.step"
 						:title="item.title"
 						:description="item.description"
@@ -361,7 +362,7 @@
 		<!-- Deposit -->
 
 		<section class="py-8">
-			<RecentDepositTransactionsTable />
+			<RecentDepositTransactionsTable :columns-type="DepositType.ANY" />
 		</section>
 		<!-- List -->
 	</div>
@@ -427,7 +428,7 @@ const submit = async () => {
 	}
 	catch (error: any) {
 		toast.add({
-			title: useT('deposit'),
+			title: useT('error'),
 			description: error.response._data.message,
 			timeout: 5000,
 			color: 'red',

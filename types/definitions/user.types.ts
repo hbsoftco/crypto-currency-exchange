@@ -17,6 +17,7 @@ type UserResponse = {
 		Reward[] |
 		Api[] |
 		BankAccount[] |
+		BankAccountDpi[] |
 		RewardReceived[] |
 		Level[];
 	};
@@ -466,6 +467,20 @@ type BankAccount = {
 	cardNo: string;
 };
 
+type BankAccountDpi = {
+	id: number;
+	uid: number;
+	user: string;
+	compID: number;
+	compName: string;
+	regTime: string;
+	destDepositId: string;
+	destBankName: string;
+	destIban: string;
+	destAccName: string;
+	disabled: boolean;
+};
+
 type DeleteBankAccountParams = {
 	bankAccountId: string;
 };
@@ -474,6 +489,13 @@ type RewardReceivedListParams = {
 	currencyId: string;
 	from: string;
 	to: string;
+	pageNumber: string;
+	pageSize: string;
+};
+
+type BankAccountDpiListParams = {
+	companyId: string;
+	statement: string;
 	pageNumber: string;
 	pageSize: string;
 };
@@ -520,8 +542,10 @@ export type {
 	ApiKeyParams,
 	ApiPointInfo,
 	// Assets
+	BankAccountDpiListParams,
 	BankAccountListParams,
 	BankAccount,
+	BankAccountDpi,
 	BankAccountDto,
 	DeleteBankAccountParams,
 	RewardReceived,
