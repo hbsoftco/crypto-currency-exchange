@@ -22,7 +22,7 @@
 				inputClass,
 				icon? 'pl-10': '',
 				' block px-2.5 pb-2.5 pt-3 w-full text-sm text-text-dark dark:text-text-light bg-transparent rounded-lg border appearance-none focus:outline-none focus:ring-0 peer',
-				errorMessage? 'border-accent-red focus:border-accent-red' : 'border-secondary-gray-light  focus:border-primary-yellow-light dark:focus:border-primary-yellow-dark',
+				errorMessage? 'border-accent-red focus:border-accent-red' : 'border-secondary-gray-light dark:border-secondary-gray-dark  focus:border-primary-yellow-light dark:focus:border-primary-yellow-dark',
 			]"
 			:placeholder="placeholder"
 			:required="required"
