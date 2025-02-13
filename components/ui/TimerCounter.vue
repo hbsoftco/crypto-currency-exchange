@@ -4,28 +4,27 @@
 			class=""
 			dir="ltr"
 		>
-			<div>
-				<strong>{{ useNumber(formatNumber(countdown.days)) }}:</strong>
-				<strong class="ml-2 w-6 inline-block">{{ useNumber(formatNumber(countdown.hours)) }}:</strong>
-				<strong class="ml-2 w-6 inline-block">{{ useNumber(formatNumber(countdown.minutes)) }}:</strong>
+			<div :class="color">
+				<strong>{{ (formatNumber(countdown.days)) }}:</strong>
+				<strong class="ml-0 w-6 inline-block">{{ formatNumber(countdown.hours) }}:</strong>
+				<strong class="ml-0 w-6 inline-block">{{ formatNumber(countdown.minutes) }}:</strong>
 				<strong
 					:key="'seconds-' + countdown.seconds"
-					class="ml-2 w-6 inline-block animate-slideUp"
-				>{{ useNumber(formatNumber(countdown.seconds)) }}</strong>
+					class="ml-0 w-6 inline-block animate-slideUp"
+				>{{ (formatNumber(countdown.seconds)) }}</strong>
 			</div>
-			<!-- middle row number -->
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { useNumber } from '~/composables/useNumber';
-
 interface PropsDefinition {
 	expireAfter: string;
+	color?: string;
 }
 const props = withDefaults(defineProps<PropsDefinition>(), {
 	expireAfter: '2024-10-13T00:00:00',
+	color: '',
 });
 const targetDate = new Date(props.expireAfter);
 

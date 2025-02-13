@@ -3,6 +3,7 @@ import * as Comlink from 'comlink';
 import { loadFromCache, saveToCache } from '~/utils/indexeddb';
 import {
 	CACHE_KEY_CURRENCY_BRIEF_ITEMS,
+	CACHE_KEY_DEPOSIT_CRYPTO_NETWORKS,
 	CACHE_KEY_FUTURES_QUOTE_ITEMS,
 	CACHE_KEY_MARKET_BRIEF_ITEMS,
 	CACHE_KEY_QUOTE_ITEMS,
@@ -17,7 +18,7 @@ import type { Asset, Portfolio } from '~/types/definitions/asset.types';
 import { MarketType } from '~/utils/enums/market.enum';
 import type { SystemRoot } from '~/types/definitions/system.types';
 import type { Reward, TraderState } from '~/types/definitions/user.types';
-import type { DepositCoinFee } from '~/types/definitions/deposit.types';
+import type { DepositCoinFee, DepositCurrency, WorkerDepositNetwork } from '~/types/definitions/deposit.types';
 
 let currencyBriefItems: CurrencyBrief[] = [];
 let marketBriefItems: MarketBrief[] = [];
@@ -868,6 +869,33 @@ const addCurrenciesHelpToBuyList = async (baseUrl: string, items: SystemRoot[]):
 	return result;
 };
 
+const findDepositCurrencyNetworksByCurrencyId = async (currencyId: number): Promise<WorkerDepositNetwork | null> => {
+	try {
+		const networks = await loadFromCache<DepositCurrency[]>(CACHE_KEY_DEPOSIT_CRYPTO_NETWORKS);
+		if (networks && networks.length > 0) {
+			const data = networks.find((item) => (item.cid === currencyId));
+			if (data) {
+				const networks = data.networks?.map((item) => ({ value: item.netName, key: item.netId.toString() })) ?? null;
+
+				if (networks?.length) {
+					return {
+						networks,
+						fullData: data,
+					};
+				}
+			}
+
+			return null;
+		}
+
+		return null;
+	}
+	catch (error) {
+		console.log(error);
+		return null;
+	}
+};
+
 Comlink.expose({
 	// Currencies
 	addCurrencyToList,
@@ -904,4 +932,5 @@ Comlink.expose({
 	SearchSuggestionItems,
 	fetchSnapshotData,
 	addCurrenciesHelpToBuyList,
+	findDepositCurrencyNetworksByCurrencyId,
 });

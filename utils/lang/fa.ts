@@ -1265,7 +1265,20 @@ const persian = {
 	performDate: 'تاریخ اجرا',
 	confirmDate: 'تاریخ تایید',
 	registerDate: 'تاریخ ثبت',
-
+	currencyName2: 'نام رمز ارز',
+	depositAddress2: 'آدرس سپرده',
+	createNewDepositAddress: 'ایجاد آدرس واریز جدید',
+	manageOldDepositAddress: 'مدیریت آدرس های واریز قبلی',
+	atLeastDepositPrice: 'حداقل مبلغ واریز',
+	atLeastConfirmNetwork: 'حداقل تایید شبکه',
+	depositNeedSecurityVerification: 'آیا به تایید امنیتی آدرس واریز احتیاج دارید؟',
+	or: 'یا',
+	sentToYourEmailCheckIt: 'آدرس دریافتی شما ایمیل شد، لطفا ایمیل خود را چک کنید!',
+	noticeMessageDeposit: 'اخطار مهم: واریز رمز ارز بعد از منقضی شدن آدرس موجب از دست رفتن دارایی شما می‌شود!',
+	generateAddress: 'تولید آدرس',
+	confirmNetwork: 'تایید شبکه',
+	fixedNetworkFee: 'کارمزد ثابت شبکه',
+	networkPercentageFee: 'کارمزد درصد شبکه',
 };
 
 export default persian;

@@ -1,6 +1,6 @@
 <template>
 	<div
-		v-if="miniRoutineLoading"
+		v-if="loading"
 		class="p-6 w-full md:w-[25.5rem] bg-background-light dark:bg-background-dark rounded-md"
 	>
 		<div class="flex">
@@ -169,10 +169,14 @@ import type { MiniRoutine } from '~/types/definitions/system.types';
 interface PropsDefinition {
 	imageClass?: string;
 	image?: string;
-	tagType: string;
+	tagType?: string;
+	fetchType?: 'Withdraw' | 'Deposit' | 'Normal';
+	currencyId?: string;
+	type?: string;
 }
 const props = withDefaults(defineProps<PropsDefinition>(), {
 	imageClass: 'w-36 h-36',
+	fetchType: 'Normal',
 });
 
 const { $api } = useNuxtApp();
@@ -181,11 +185,14 @@ const systemRepo = systemRepository($api);
 const tips = ref<KeyValue[]>();
 const faqs = ref<KeyValue[]>();
 const helps = ref<KeyValue[]>();
+
 const miniRoutine = ref<MiniRoutine>();
-const miniRoutineLoading = ref<boolean>(true);
+const loading = ref<boolean>(true);
+
 const getSystemMiniRoutine = async () => {
-	miniRoutineLoading.value = true;
+	loading.value = true;
 	try {
+		if (!props.tagType) return;
 		const { result } = await systemRepo.getSystemMiniRoutine({ tagType: props.tagType });
 
 		miniRoutine.value = result as MiniRoutine;
@@ -197,13 +204,59 @@ const getSystemMiniRoutine = async () => {
 		console.log(error);
 	}
 	finally {
-		miniRoutineLoading.value = false;
+		loading.value = false;
+	}
+};
+
+const getDepositHelp = async () => {
+	loading.value = true;
+	try {
+		if (!props.currencyId || !props.type) return;
+		const { result } = await systemRepo.getDepositHelp({ currencyId: props.currencyId, type: props.type });
+
+		miniRoutine.value = result as MiniRoutine;
+		tips.value = miniRoutine.value.tips;
+		faqs.value = miniRoutine.value.faqs;
+		helps.value = miniRoutine.value.helps;
+	}
+	catch (error) {
+		console.log(error);
+	}
+	finally {
+		loading.value = false;
+	}
+};
+
+const getWithdrawHelp = async () => {
+	loading.value = true;
+	try {
+		if (!props.currencyId || !props.type) return;
+		const { result } = await systemRepo.getWithdrawHelp({ currencyId: props.currencyId, type: props.type });
+
+		miniRoutine.value = result as MiniRoutine;
+		tips.value = miniRoutine.value.tips;
+		faqs.value = miniRoutine.value.faqs;
+		helps.value = miniRoutine.value.helps;
+	}
+	catch (error) {
+		console.log(error);
+	}
+	finally {
+		loading.value = false;
 	}
 };
 
 onMounted(async () => {
-	await Promise.all([
-		getSystemMiniRoutine(),
-	]);
+	await nextTick();
+
+	if (props.fetchType === 'Normal') {
+		await getSystemMiniRoutine();
+	}
+	else if (props.fetchType === 'Deposit') {
+		await getDepositHelp();
+	}
+	else {
+		await getWithdrawHelp();
+	}
 });
 </script>

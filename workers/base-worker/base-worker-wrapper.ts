@@ -2,7 +2,7 @@ import * as Comlink from 'comlink';
 
 import type { Asset, Portfolio } from '~/types/definitions/asset.types';
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
-import type { DepositCoinFee } from '~/types/definitions/deposit.types';
+import type { DepositCoinFee, WorkerDepositNetwork } from '~/types/definitions/deposit.types';
 import type { SuggestionItems } from '~/types/definitions/header/search.types';
 import type { MarketBrief, MarketL16, MarketL21, MarketL46, MarketL47, MarketL51, MarketState } from '~/types/definitions/market.types';
 import type { Quote } from '~/types/definitions/quote.types';
@@ -48,6 +48,7 @@ interface BaseWorker {
 	fetchCommissionList: (baseUrl: string, marketType: number) => Promise<void>;
 	fetchSnapshotData: (baseUrl: string, market: string, currency: string, quote: string) => Promise<any>;
 	addCurrenciesHelpToBuyList: (baseUrl: string, items: SystemRoot[]) => Promise<any>;
+	findDepositCurrencyNetworksByCurrencyId: (currencyId: number) => Promise<WorkerDepositNetwork | null>;
 }
 
 let worker: Worker | null = null;

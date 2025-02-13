@@ -8,3 +8,5 @@ export const CACHE_KEY_CURRENT_USER = 'currentUser';
 export const CACHE_KEY_FOOTER_ITEMS = 'footerItems';
 export const CACHE_KEY_COMMISSION_LIST = 'commissionList';
 export const CACHE_KEY_USER_LEVELS = 'userLevels';
+export const CACHE_KEY_DEPOSIT_CRYPTO_NETWORKS = 'depositCryptoNetworks';
+export const CACHE_KEY_DEPOSIT_FIAT_NETWORKS = 'depositFiatNetworks';

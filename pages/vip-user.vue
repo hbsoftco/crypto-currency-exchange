@@ -15,8 +15,8 @@
 									class="w-4 h-4"
 								>
 								<span class="mr-1 md:mr-4 text-sm md:text-lg font-normal md:font-bold text-primary-yellow-light dark:text-primary-yellow-dark">
-									{{ profileStore.profileLoading ? '...': getValueByKey(profileStore.userProfile, 'NAME') }}
-									{{ profileStore.profileLoading ? '...': getValueByKey(profileStore.userProfile, 'FAMILY') }}
+									{{ getValueByKey(authStore.getCurrentUser, 'NAME') ?? '...' }}
+									{{ getValueByKey(authStore.getCurrentUser, 'FAMILY') ?? '...' }}
 								</span>
 							</div>
 							<div>
@@ -34,23 +34,22 @@
 								class="bg-bg-secondary-gray-light dark:bg-secondary-gray-50 rounded-full mr-1 w-20 h-20 text-center flex justify-center items-center"
 							>
 								<IconUserFill
-									v-if="!getValueByKey(profileStore.userProfile, 'NICKNAME')"
+									v-if="!getValueByKey(authStore.getCurrentUser, 'NICKNAME')"
 									class="text-black text-7xl"
 								/>
 								<img
 									v-else
-									:src="getValueByKey(profileStore.userProfile, 'AVATAR_URL') || ''"
+									:src="getValueByKey(authStore.getCurrentUser, 'AVATAR_URL') || ''"
 									alt="user-avatar"
 									class="w-16 h-16 rounded-full"
 								>
-								<!-- {{ getValueByKey(profileStore.userProfile, 'AVATAR_URL') }} -->
+								<!-- {{ getValueByKey(authStore.getCurrentUser, 'AVATAR_URL') ?? '...' }} -->
 							</div>
 						</div>
 						<div class="flex justify-between items-center px-8 py-10">
 							<span class="text-2xl font-bold">
-								{{ profileStore.profileLoading ? '...': getValueByKey(profileStore.userProfile, 'NAME') }}
-								{{ profileStore.profileLoading ? '...': getValueByKey(profileStore.userProfile, 'FAMILY') }}
-
+								{{ getValueByKey(authStore.getCurrentUser, 'NAME') ?? '...' }}
+								{{ getValueByKey(authStore.getCurrentUser, 'FAMILY') ?? '...' }}
 							</span>
 							<div class="flex">
 								<span class="text-base font-medium">{{ $t('level') }}</span>
@@ -62,19 +61,19 @@
 							<div class="flex items-center">
 								<IconEmail class="text-base" />
 								<span class="text-base font-medium mr-1">
-									{{ profileStore.profileLoading ? '...': getValueByKey(profileStore.userProfile, 'UID') }}
+									{{ getValueByKey(authStore.getCurrentUser, 'UID') ?? '...' }}
 								</span>
 							</div>
 							<div class="flex items-center my-4">
 								<IconMessage class="text-base" />
 								<span class="text-base font-medium mr-1">
-									{{ profileStore.profileLoading ? '...': getValueByKey(profileStore.userProfile, 'EMAIL') }}
+									{{ getValueByKey(authStore.getCurrentUser, 'EMAIL') ?? '...' }}
 								</span>
 							</div>
 							<div class="flex items-center">
 								<IconPhone class="text-base" />
 								<span class="text-base font-medium mr-1">
-									{{ profileStore.profileLoading ? '...': getValueByKey(profileStore.userProfile, 'MOBILE') }}
+									{{ getValueByKey(authStore.getCurrentUser, 'MOBILE') ?? '...' }}
 								</span>
 							</div>
 						</div>
@@ -102,7 +101,7 @@ import { userRepository } from '~/repositories/user.repository';
 import { getValueByKey } from '~/utils/helpers';
 import type { AssetTypeParams, HolderBrief } from '~/types/definitions/user.types';
 
-const profileStore = useProfileStore();
+const authStore = useAuthStore();
 
 const { $api } = useNuxtApp();
 const userRepo = userRepository($api);

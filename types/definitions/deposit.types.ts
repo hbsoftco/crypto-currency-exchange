@@ -1,3 +1,4 @@
+import type { KeyValue } from './common.types';
 import type { CurrencyBrief } from './currency.types';
 
 type DepositCoinFeesParams = {
@@ -93,18 +94,6 @@ type DepositTransactionsParams = {
 	pageSize: string;
 };
 
-type DepositListResponse = {
-	statusCode: number;
-	result: {
-		totalCount: number;
-		rows: DepositCoinFee[] |
-		CryptoAddress[] |
-		DepositTransaction[] |
-		DepositCurrency[] |
-		DepositCoin[];
-	};
-};
-
 type DepositCoin = {
 	cid: number;
 	chainId: number;
@@ -123,6 +112,20 @@ type DepositClaimDto = {
 	txCode: string;
 };
 
+type DepositCryptoRequestDto = {
+	currencyId: number | null;
+	blockchainProtocolId: number | string;
+	addressTypeId: number | null;
+	tag?: string | null;
+};
+
+type DepositCryptoRequest = {
+	reqId: number;
+	publicAddress: string;
+	memo: string;
+	expirationTime: string;
+};
+
 type RevokeDepositAddressParams = {
 	id: string;
 };
@@ -132,6 +135,10 @@ type DepositCoinListParams = {
 	statement: string;
 	pageNumber: string;
 	pageSize: string;
+};
+
+type SendDepositAddressToEmailParams = {
+	id: string;
 };
 
 type DepositCryptoNetwork = {
@@ -161,8 +168,31 @@ type DepositCurrency = {
 	bankOperator?: DepositFiatNetwork[];
 };
 
+type WorkerDepositNetwork = {
+	networks: KeyValue[] | null;
+	fullData: DepositCurrency | null;
+};
+
+type DepositListResponse = {
+	statusCode: number;
+	result: {
+		totalCount: number;
+		rows: DepositCoinFee[] |
+		CryptoAddress[] |
+		DepositTransaction[] |
+		DepositCurrency[] |
+		DepositCoin[];
+	};
+};
+
+type DepositResponse = {
+	statusCode: number;
+	result: DepositCryptoRequest;
+};
+
 export type {
 	DepositListResponse,
+	DepositResponse,
 	DepositCoinFeesParams,
 	DepositCoinFee,
 	DepositCryptoAddressParams,
@@ -175,4 +205,8 @@ export type {
 	DepositCoin,
 	DepositCryptoNetwork,
 	DepositCurrency,
+	DepositCryptoRequestDto,
+	DepositCryptoRequest,
+	SendDepositAddressToEmailParams,
+	WorkerDepositNetwork,
 };
