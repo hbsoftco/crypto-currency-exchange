@@ -296,7 +296,7 @@ const onPageChange = async (newPage: number) => {
 };
 
 const applyFilters = async () => {
-	params.value.netId = networkType.value ? networkType.value.key : '';
+	params.value.netId = networkType.value ? networkType.value.blockchainId : '';
 	params.value.from = fromDate.value;
 	params.value.to = toDate.value;
 

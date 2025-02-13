@@ -1,4 +1,5 @@
 type KeyValue = {
+	[x: string]: string;
 	key: string;
 	value: string;
 };
