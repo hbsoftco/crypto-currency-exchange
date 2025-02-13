@@ -16,7 +16,7 @@
 				>
 			</UButton>
 			<UButton
-				to="/wallet/deposit-toman"
+				to="/assets/fiat-deposit"
 				size="lg"
 				class="flex justify-center bg-hover2-light dark:bg-hover2-dark px-0 md:px-9"
 			>

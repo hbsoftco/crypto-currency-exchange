@@ -131,7 +131,7 @@ const menuItems = [
 		name: 'depositToman',
 		description: useT('addRialBalance'),
 		icon: IconDepositToman,
-		url: '/wallet/deposit-toman',
+		url: '/assets/fiat-deposit',
 
 	},
 	{

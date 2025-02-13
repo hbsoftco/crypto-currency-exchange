@@ -50,7 +50,7 @@
 		</ULink>
 		<div class="flex lg:my-2 2xl:my-8">
 			<UButton
-				to="/wallet/deposit-toman"
+				to="/assets/fiat-deposit"
 				class="px-20 font-bold text-sm ml-1"
 				size="lg"
 			>

@@ -23,6 +23,7 @@ type SystemRepository = {
 	getSystemTreeList: (params: BaseLangGroupParams) => Promise<SystemListResponse>;
 	getSearchList: (params: SearchListParams) => Promise<SystemListResponse>;
 	getSocialNetList: () => Promise<KeyValueResponse>;
+	getSystemTime: () => Promise<CommonResponse>;
 	getStaffCheck: (params: StaffParams) => Promise<CommonResponse>;
 	getSubjectList: (params: BaseLangGroupParams) => Promise<SystemListResponse>;
 	getFAQList: (params: SystemParams) => Promise<SystemListResponse>;
@@ -164,6 +165,15 @@ export const systemRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): Sys
 	async getSocialNetList(): Promise<KeyValueResponse> {
 		const url = '/v1/system/support/social_net_list';
 		const response = await fetch<KeyValueResponse>(`${url}`, {
+			noAuth: true,
+			method: 'GET',
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async getSystemTime(): Promise<CommonResponse> {
+		const url = '/v1/system/common/time';
+		const response = await fetch<CommonResponse>(`${url}`, {
 			noAuth: true,
 			method: 'GET',
 		} as CustomNitroFetchOptions);

@@ -28,7 +28,7 @@
 						<span class="text-sm mt-2">{{ $t('cryptoDeposit') }}</span>
 					</ULink>
 					<ULink
-						to="/wallet/deposit-toman"
+						to="/assets/fiat-deposit"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<IconSalary class=" text-primary-yellow-light dark:text-primary-yellow-dark text-2xl" />

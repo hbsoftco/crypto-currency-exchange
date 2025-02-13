@@ -97,7 +97,7 @@
 										class="w-6 h-6 rounded-full"
 										@error="handleImageError"
 									>
-									<span class="mr-2 font-medium">{{ selectedCurrency?.cSymbol }} ({{ selectedCurrency?.cName }})</span>
+									<span class="mr-2 font-medium">{{ selectedCurrency?.cName }}</span>
 								</div>
 
 								<IconArrowDown
@@ -171,6 +171,38 @@
 										class="flex flex-col items-start pt-2 justify-center"
 									>
 										<div
+											v-if="depositCryptoRequest?.memo"
+											class="w-full border-b mb-6 border-opacity-50 border-secondary-gray-light dark:border-secondary-gray-dark"
+										>
+											<div>
+												<vue-qrcode
+													class="m-auto"
+													:value="depositCryptoRequest?.memo"
+													:size="100"
+													:level="'H'"
+													:background="'#ffffff'"
+													:foreground="'#000000'"
+												/>
+											</div>
+											<div>
+												<p class="text-subtle-text-light dark:text-subtle-text-dark mt-4">
+													<span>Memo/tag</span>
+												</p>
+												<p
+													dir="ltr"
+													class="w-full flex justify-center items-start break-all my-5 text-base font-semibold"
+												>
+													<IconCopy
+														class="cursor-pointer text-2xl m-auto"
+														@click="copyText(depositCryptoRequest?.memo)"
+													/>
+													<span class="ml-1">{{ depositCryptoRequest?.memo }}</span>
+												</p>
+											</div>
+										</div>
+										<!-- memo -->
+
+										<div
 											v-if="depositCryptoRequest?.publicAddress"
 											class="w-full"
 										>
@@ -190,7 +222,7 @@
 												</p>
 												<p
 													dir="ltr"
-													class="w-full flex justify-center items-start break-all my-2 text-base font-semibold"
+													class="w-full flex justify-center items-start break-all my-5 text-base font-semibold"
 												>
 													<IconCopy
 														class="cursor-pointer text-2xl m-auto"
@@ -201,40 +233,14 @@
 											</div>
 										</div>
 										<!-- public address -->
-
-										<div
-											v-if="depositCryptoRequest?.memo"
-											class="w-full"
-										>
-											<div>
-												<p class="text-subtle-text-light dark:text-subtle-text-dark mt-4">
-													<span>Memo/tag</span>
-												</p>
-												<p
-													dir="ltr"
-													class="w-full flex justify-center items-start break-all my-2 text-base font-semibold"
-												>
-													<IconCopy
-														class="cursor-pointer text-2xl m-auto"
-														@click="copyText(depositCryptoRequest?.memo)"
-													/>
-													<span class="ml-1">{{ depositCryptoRequest?.memo }}</span>
-												</p>
-											</div>
-										</div>
-										<!-- memo -->
 									</div>
 
 									<div class="flex justify-center mt-5">
 										<span>این آدرس بعد از</span>
-										<span
-											v-if="systemTime"
-											class="mx-2"
-										>
+										<span class="mx-2">
 											<UiTimerCounter
 												color="text-primary-yellow-light dark:text-primary-yellow-dark"
 												:expire-after="depositCryptoRequest.expirationTime"
-												:start-time="systemTime"
 											/>
 										</span>
 										<span>منقضی می‌شود.</span>
@@ -259,7 +265,7 @@
 								<!-- atLeastDepositPrice -->
 
 								<div
-									v-if="selectedNetworksFullData"
+									v-if="(selectedNetworksFullData?.confirmationCo ?? 0) > 0"
 									class="flex justify-between mt-2"
 								>
 									<div>
@@ -268,8 +274,8 @@
 										</span>
 									</div>
 									<div>
-										<span>{{ (selectedNetworksFullData?.confirmationCo ?? 0) }} </span>
-										<span class="mr-1">{{ $t('confirmNetwork') }}</span>
+										<span>{{ selectedNetworksFullData?.confirmationCo }} </span>
+										<span>{{ $t('confirmNetwork') }}</span>
 									</div>
 								</div>
 								<!-- atLeastConfirmNetwork -->
@@ -382,7 +388,6 @@ import type { CurrencyBrief } from '~/types/definitions/currency.types';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 import { handleImageError, formatContractId } from '~/utils/helpers';
 import type { KeyValue } from '~/types/definitions/common.types';
-import { systemRepository } from '~/repositories/system.repository';
 
 const BackHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/BackHeader.vue'));
 
@@ -393,7 +398,6 @@ definePageMeta({
 
 const { $api, $mobileDetect } = useNuxtApp();
 const depositRepo = depositRepository($api);
-const systemRepo = systemRepository($api);
 
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
@@ -423,7 +427,7 @@ const submit = async () => {
 			color: 'green',
 		});
 
-		updateStepStatus(3);
+		updateStepStatus(2);
 	}
 	catch (error: any) {
 		toast.add({
@@ -435,17 +439,6 @@ const submit = async () => {
 	}
 	finally {
 		submitLoading.value = false;
-	}
-};
-
-const systemTime = ref<string>('');
-const getSystemTime = async () => {
-	try {
-		const { result } = await systemRepo.getSystemTime();
-		systemTime.value = result;
-	}
-	catch (error) {
-		console.log(error);
 	}
 };
 
@@ -583,11 +576,8 @@ onMounted(async () => {
 	updateStepStatus(1);
 	await nextTick();
 
-	await Promise.all([
-		getDepositNetworks(),
-		getSystemTime(),
-		initCurrencies(),
-	]);
+	await getDepositNetworks();
+	await initCurrencies();
 });
 
 const updateStepStatus = (index: number) => {

@@ -20,6 +20,7 @@
 <script setup lang="ts">
 interface PropsDefinition {
 	expireAfter: string;
+	startTime?: string;
 	color?: string;
 }
 const props = withDefaults(defineProps<PropsDefinition>(), {
@@ -37,7 +38,11 @@ const countdown = ref({
 
 const calculateCountdown = () => {
 	const now = new Date();
-	const timeDifference = targetDate.getTime() - now.getTime();
+	const startDate = props.startTime ? new Date(props.startTime) : now;
+	const elapsedTime = now.getTime() - startDate.getTime();
+	const adjustedTargetDate = new Date(targetDate.getTime() - elapsedTime);
+
+	const timeDifference = adjustedTargetDate.getTime() - now.getTime();
 
 	if (timeDifference > 0) {
 		countdown.value = {
