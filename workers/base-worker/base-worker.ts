@@ -126,6 +126,32 @@ const findCurrencyBycSymbol = async (cSymbol: string, baseUrl: string): Promise<
 	return currency || null;
 };
 
+const searchDepositCryptoCurrencies = async (
+	search: string,
+	count: number,
+	baseUrl: string,
+): Promise<CurrencyBrief[] | null> => {
+	const depositCryptoCurrencies = await loadFromCache<DepositCurrency[]>(CACHE_KEY_DEPOSIT_CRYPTO_NETWORKS);
+	const currencies: CurrencyBrief[] = [];
+
+	if (depositCryptoCurrencies && depositCryptoCurrencies.length > 0) {
+		for (const item of depositCryptoCurrencies) {
+			const currency = await findCurrencyById(item.cid, baseUrl);
+			if (currency) {
+				currencies.push(currency);
+			}
+		}
+	}
+
+	const filteredCurrencies = currencies.filter(
+		(currency) =>
+			(currency.cName.toLowerCase().includes(search.toLowerCase())
+			|| currency.cSymbol.toLowerCase().includes(search.toLowerCase())),
+	);
+
+	return filteredCurrencies.length > 0 ? filteredCurrencies.slice(0, count) : [];
+};
+
 const searchCurrencies = async (
 	search: string,
 	count: number,
@@ -917,6 +943,7 @@ Comlink.expose({
 	findCurrencyBycSymbol,
 	searchCurrencies,
 	getReadyCurrencyWithIndex,
+	searchDepositCryptoCurrencies,
 	// Quotes
 	fetchFuturesQuoteItems,
 	fetchSpotQuoteItems,

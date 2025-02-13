@@ -46,7 +46,7 @@
 					<tr
 						v-for="(item, index) in depositTransactions"
 						:key="index"
-						class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark"
+						class="py-3 border-b border-b-primary-gray-light dark:border-b-primary-gray-dark odd:bg-hover2-light dark:odd:bg-hover2-dark even:bg-background-light dark:even:bg-background-dark"
 					>
 						<td class="text-nowrap text-sm font-normal py-2">
 							<span dir="ltr">
@@ -114,7 +114,7 @@ const params = ref<DepositTransactionsParams>({
 	from: '',
 	to: '',
 	pageNumber: '1',
-	pageSize: '6',
+	pageSize: '5',
 });
 const depositTransactionsLoading = ref<boolean>(true);
 const depositTransactions = ref<DepositTransaction[]>([]);

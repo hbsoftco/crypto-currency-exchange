@@ -1,5 +1,11 @@
 <template>
-	<div class="mx-auto px-0 sm:px-6 lg:px-8 max-w-7xl my-0 md:my-8">
+	<div v-if="netWorksLoading">
+		<UiLogoLoading />
+	</div>
+	<div
+		v-else
+		class="mx-auto px-0 sm:px-6 lg:px-8 max-w-7xl my-0 md:my-8"
+	>
 		<BackHeader
 			v-if="isMobile"
 			:title="$t('deposit')"
@@ -166,7 +172,7 @@
 									>
 										<div
 											v-if="depositCryptoRequest?.memo"
-											class="w-full border-b mb-6 border-secondary-gray-light dark:border-secondary-gray-dark"
+											class="w-full border-b mb-6 border-opacity-50 border-secondary-gray-light dark:border-secondary-gray-dark"
 										>
 											<div>
 												<vue-qrcode
@@ -180,10 +186,7 @@
 											</div>
 											<div>
 												<p class="text-subtle-text-light dark:text-subtle-text-dark mt-4">
-													<span>{{ $t('address') }}: </span>
-												</p>
-												<p class="w-full break-all my-5 font-semibold">
-													Memo/tag
+													<span>Memo/tag</span>
 												</p>
 												<p
 													dir="ltr"
@@ -215,8 +218,7 @@
 											</div>
 											<div class="text-center">
 												<p class="text-subtle-text-light dark:text-subtle-text-dark mt-4">
-													<span>{{ $t('address') }}: </span>
-													<span>{{ networkSelected?.value }}</span>
+													<span>{{ $t('address') }} </span>
 												</p>
 												<p
 													dir="ltr"
@@ -279,7 +281,7 @@
 								<!-- atLeastConfirmNetwork -->
 
 								<div
-									v-if="selectedNetworksFullData"
+									v-if="selectedNetworksFullData && selectedNetworksFullData.contractId"
 									class="flex justify-between mt-2"
 								>
 									<div>
@@ -288,7 +290,10 @@
 										</span>
 									</div>
 									<div>
-										<span @click="copyText(selectedNetworksFullData?.contractId)">
+										<span
+											class="cursor-pointer"
+											@click="copyText(selectedNetworksFullData?.contractId)"
+										>
 											{{ formatContractId(selectedNetworksFullData?.contractId) }}
 										</span>
 									</div>
@@ -296,7 +301,7 @@
 								<!-- contractId -->
 
 								<div
-									v-if="selectedNetworksFullData"
+									v-if="selectedNetworksFullData && selectedNetworksFullData.fee"
 									class="flex justify-between mt-2"
 								>
 									<div>
@@ -313,7 +318,7 @@
 								<!-- fixedNetworkFee -->
 
 								<div
-									v-if="selectedNetworksFullData"
+									v-if="selectedNetworksFullData && selectedNetworksFullData.percentage"
 									class="flex justify-between mt-2"
 								>
 									<div>
@@ -330,7 +335,7 @@
 								<!-- networkPercentageFee -->
 
 								<div
-									v-if="selectedNetworksFullData"
+									v-if="selectedNetworksFullData && selectedNetworksFullData.note"
 									class="flex justify-between mt-2"
 								>
 									<div>
@@ -508,6 +513,7 @@ watch(() => selectedCurrency.value, async (newValue) => {
 	networkItems.value = [];
 	network.value = '';
 	if (newValue?.id !== undefined) {
+		selectedNetworksFullData.value = null;
 		const networks = await worker.findDepositCurrencyNetworksByCurrencyId(newValue.id);
 		networkItems.value = networks?.networks ? networks.networks : [];
 		networksFullData.value = networks?.fullData ? networks.fullData : null;
@@ -524,8 +530,9 @@ watch(() => selectedCurrency.value, async (newValue) => {
 const networkSelected = ref<KeyValue | null>();
 watch(() => dto.value.blockchainProtocolId, async (newValue) => {
 	if (newValue) {
+		selectedNetworksFullData.value = null;
 		networkSelected.value = networkItems.value.find((item) => item.key === newValue);
-		selectedNetworksFullData.value = networksFullData.value?.networks?.find((item) => item.netId === newValue);
+		selectedNetworksFullData.value = networksFullData.value?.networks?.find((item) => item.netId === Number(newValue));
 
 		depositCryptoRequest.value = null;
 		updateStepStatus(2);
@@ -537,7 +544,7 @@ watch(() => dto.value.blockchainProtocolId, async (newValue) => {
 const currenciesLoading = ref<boolean>(true);
 const initCurrencies = async () => {
 	currenciesLoading.value = true;
-	filteredCurrencies.value = await worker.searchCurrencies('', 400, useEnv('apiBaseUrl'), 'TMN');
+	filteredCurrencies.value = await worker.searchDepositCryptoCurrencies('', 400, useEnv('apiBaseUrl'));
 	currenciesLoading.value = false;
 };
 
@@ -547,10 +554,10 @@ const search = async (q: string) => {
 
 	let inputs: CurrencyBrief[] = [];
 	if (!q) {
-		inputs = await worker.searchCurrencies('', 400, useEnv('apiBaseUrl'), 'TMN');
+		inputs = await worker.searchDepositCryptoCurrencies('', 400, useEnv('apiBaseUrl'));
 	}
 	else {
-		inputs = await worker.searchCurrencies(q.toLowerCase(), 200, useEnv('apiBaseUrl'), 'TMN');
+		inputs = await worker.searchDepositCryptoCurrencies(q.toLowerCase(), 200, useEnv('apiBaseUrl'));
 	}
 
 	if (selectedSymbol.value) {
