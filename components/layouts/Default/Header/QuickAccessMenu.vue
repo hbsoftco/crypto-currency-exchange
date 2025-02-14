@@ -158,7 +158,7 @@ const menuItems = [
 		name: 'withdrawToman',
 		description: useT('transferToBank'),
 		icon: IconWithdrawToman,
-		url: '/wallet/toman-withdrawal',
+		url: '/assets/fiat-withdraw',
 
 	},
 	{

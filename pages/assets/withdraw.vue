@@ -202,7 +202,7 @@
 												<span class="mr-1 text-xs font-normal text-left">{{ selectedCurrency?.cSymbol }}</span>
 											</div>
 											<UButton
-												class="mr-2 text-primary-yellow-light hover:bg-hover-light dark:hover:bg-secondary-gray-dark dark:text-primary-yellow-dark bg-secondary-gray-light dark:bg-secondary-gray-dark py-1 text-xs font-bold"
+												class="mr-2 text-primary-yellow-light hover:bg-hover-light dark:hover:bg-secondary-gray-dark dark:text-primary-yellow-dark bg-hover-light dark:bg-secondary-gray-dark py-1 text-xs font-bold"
 												@click="selectAllBalance()"
 											>
 												{{ $t('selectAll') }}
@@ -323,7 +323,7 @@
 												<span class="mr-1 text-xs font-normal text-left">{{ selectedCurrency?.cSymbol }}</span>
 											</div>
 											<UButton
-												class="mr-2 text-primary-yellow-light hover:bg-hover-light dark:hover:bg-secondary-gray-dark dark:text-primary-yellow-dark bg-secondary-gray-light dark:bg-secondary-gray-dark py-1 text-xs font-bold"
+												class="mr-2 text-primary-yellow-light hover:bg-hover-light dark:hover:bg-secondary-gray-dark dark:text-primary-yellow-dark bg-hover-light dark:bg-secondary-gray-dark py-1 text-xs font-bold"
 												@click="selectAllBalance()"
 											>
 												{{ $t('selectAll') }}

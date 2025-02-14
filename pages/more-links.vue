@@ -99,7 +99,7 @@
 						<span class="text-sm mt-2">{{ $t('sendToUser') }}</span>
 					</ULink>
 					<ULink
-						to="/wallet/toman-withdrawal"
+						to="/assets/fiat-withdraw"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<IconSalary class=" text-primary-yellow-light dark:text-primary-yellow-dark text-2xl" />

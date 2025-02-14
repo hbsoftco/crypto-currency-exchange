@@ -1301,6 +1301,7 @@ const persian = {
 	changeable: 'قابل انتقال',
 	changeValue: 'مقدار انتقال',
 	change2: 'انتفالی',
+	selectBankAccount: 'انتخاب حساب بانکی',
 };
 
 export default persian;
