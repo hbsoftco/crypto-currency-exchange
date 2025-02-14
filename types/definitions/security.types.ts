@@ -131,6 +131,7 @@ type VerifyOutput = {
 	verificationId: number | null;
 	verificationCode: string | null;
 	v2FACode: string | null;
+	withdrawPinCode: string | null;
 };
 
 type WithdrawPinCodeDto = {

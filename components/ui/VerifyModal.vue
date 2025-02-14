@@ -46,6 +46,26 @@
 					</div>
 					<div v-else>
 						<div
+							v-if="authStore.withdrawPinCodeStatus && withdrawStatus"
+							class="my-6"
+						>
+							<OtpFieldInput
+								id="withdrawPinCode"
+								v-model="output.withdrawPinCode"
+								type="text"
+								input-class="text-left"
+								send-type="send"
+								label-dir="rtl"
+								label="pinCodeWithdrawal"
+								placeholder=""
+								icon=""
+								dir="ltr"
+								:count-down-state="false"
+								:error-message="verify$.withdrawPinCode.$error? $t('fieldIsRequired') : ''"
+							/>
+						</div>
+						<!-- withdrawPinCode -->
+						<div
 							v-if="type?.exist === 'email' || !activeMobile"
 							class="my-6"
 						>
@@ -151,6 +171,7 @@ interface PropsDefinition {
 	modelValue: boolean;
 	title: string;
 	submitLoading: boolean;
+	withdrawStatus?: boolean;
 	secretText?: string;
 }
 const props = defineProps<PropsDefinition>();
@@ -176,12 +197,14 @@ const output = ref<VerifyOutput>({
 	verificationId: null,
 	verificationCode: null,
 	v2FACode: null,
+	withdrawPinCode: null,
 });
 
 const outputRules = reactive({
 	verificationId: { required: validations.required },
 	verificationCode: { required: validations.required },
 	v2FACode: {},
+	withdrawPinCode: {},
 });
 
 const verify$ = useVuelidate(outputRules, output);

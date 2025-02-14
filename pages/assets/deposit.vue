@@ -1,5 +1,5 @@
 <template>
-	<div v-if="netWorksLoading">
+	<div v-if="networksLoading">
 		<UiLogoLoading />
 	</div>
 	<div
@@ -486,13 +486,13 @@ const selectedSymbol = ref<string>('BTC');
 const network = ref('');
 const networkItems = ref<KeyValue[]>([]);
 
-const netWorksLoading = ref<boolean>(true);
+const networksLoading = ref<boolean>(true);
 const networks = ref<DepositCurrency[]>([]);
 const networksFullData = ref<DepositCurrency | null>();
 const selectedNetworksFullData = ref<DepositCryptoNetwork | null>();
 const getDepositNetworks = async () => {
 	try {
-		netWorksLoading.value = true;
+		networksLoading.value = true;
 		const cachedItems = await loadFromCache<DepositCurrency[]>(CACHE_KEY_DEPOSIT_CRYPTO_NETWORKS);
 		if (cachedItems && cachedItems.length > 0) {
 			networks.value = cachedItems;
@@ -509,11 +509,11 @@ const getDepositNetworks = async () => {
 			networksFullData.value = networks?.fullData ? networks.fullData : null;
 		}
 
-		netWorksLoading.value = false;
+		networksLoading.value = false;
 	}
 	catch (error) {
 		console.log(error);
-		netWorksLoading.value = false;
+		networksLoading.value = false;
 	}
 };
 

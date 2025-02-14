@@ -1,5 +1,5 @@
 <template>
-	<div v-if="netWorksLoading">
+	<div v-if="networksLoading">
 		<UiLogoLoading />
 	</div>
 	<div
@@ -256,6 +256,11 @@
 									@click="submit()" -->
 									</div>
 
+									<pre dir="ltr" class="text-left">
+										{{ selectedNetworksFullData }}
+										{{ networkSelected }}
+									</pre>
+
 									<div class="mt-8 mb-3 border border-secondary-gray-light dark:border-secondary-gray-dark bg-background-light dark:bg-background-50 p-4 rounded-md">
 										<div class="flex justify-between items-center text-subtle-text-light dark:text-subtle-text-dark text-sm">
 											<label for="final-price">{{ $t('minWithdraw') }}</label>
@@ -494,13 +499,13 @@ const selectedSymbol = ref<string>('BTC');
 const network = ref('');
 const networkItems = ref<KeyValue[]>([]);
 
-const netWorksLoading = ref<boolean>(true);
+const networksLoading = ref<boolean>(true);
 const networks = ref<WithdrawCurrency[]>([]);
 const networksFullData = ref<WithdrawCurrency | null>();
 const selectedNetworksFullData = ref<WorkerWithdrawNetwork | null>();
 const getWithdrawNetworks = async () => {
 	try {
-		netWorksLoading.value = true;
+		networksLoading.value = true;
 		const { result } = await withdrawRepo.getWithdrawCryptoNetworks();
 		await saveToCache(CACHE_KEY_WITHDRAW_CRYPTO_NETWORKS, result.rows);
 		networks.value = result.rows as WithdrawCurrency[];
@@ -514,11 +519,11 @@ const getWithdrawNetworks = async () => {
 			networksFullData.value = networks?.fullData ? networks.fullData : null;
 		}
 
-		netWorksLoading.value = false;
+		networksLoading.value = false;
 	}
 	catch (error) {
 		console.log(error);
-		netWorksLoading.value = false;
+		networksLoading.value = false;
 	}
 };
 
@@ -545,7 +550,7 @@ watch(() => dto.value.blockchainProtocolId, async (newValue) => {
 	if (newValue) {
 		selectedNetworksFullData.value = null;
 		networkSelected.value = networkItems.value.find((item) => item.key === newValue);
-		// selectedNetworksFullData.value = networksFullData.value?.networks?.find((item) => item.netId === Number(newValue));
+		selectedNetworksFullData.value = networksFullData.value?.networks?.find((item) => item.netId === Number(newValue));
 
 		// depositCryptoRequest.value = null;
 		updateStepStatus(2);

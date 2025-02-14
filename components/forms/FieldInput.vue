@@ -108,6 +108,13 @@ const formattedValue = computed({
 const internalValue = ref(props.modelValue);
 const isPasswordVisible = ref(false);
 
+watch(
+	() => props.modelValue,
+	(newValue) => {
+		internalValue.value = newValue;
+	},
+);
+
 watch(internalValue, (newValue: string) => {
 	emit('update:modelValue', newValue);
 });

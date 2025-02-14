@@ -80,6 +80,35 @@ type WithdrawCoinListParams = {
 	pageSize: string;
 };
 
+type WithdrawFiatRequestDto = {
+	verificationId: number;
+	verificationCode: string ;
+	v2FACode: string | null;
+	currencyId: number;
+	bankAccountDesId: number | string;
+	withdrawPinCode: string | null;
+	value: string;
+	tag?: string;
+};
+
+type WithdrawCryptoRequestDto = {
+	verificationId: number;
+	verificationCode: string ;
+	v2FACode: string | null;
+	currencyId: number;
+	blockchainProtocolId: number;
+	addressDes: string;
+	memoDes: string;
+	withdrawPinCode: string | null;
+	value: string;
+	tag?: string;
+};
+
+type WithdrawCryptoRequest = {
+	id: number;
+	factorNo: string;
+};
+
 type WithdrawCoin = {
 	cid: number;
 	chainId: number;
@@ -93,6 +122,11 @@ type WithdrawCoin = {
 	withdrawMin: number;
 	withdrawMax: number;
 	withdrawNote: string;
+};
+
+type WithdrawResponse = {
+	statusCode: number;
+	result: WithdrawCryptoRequest;
 };
 
 type WithdrawListResponse = {
@@ -111,7 +145,7 @@ type WithdrawCurrency = {
 	withdrawable: string;
 	currency?: CurrencyBrief;
 	networks?: WithdrawCryptoNetwork[];
-	bankOperator?: WithdrawFiatNetwork[];
+	bankOperator?: WithdrawFiatNetwork[] | WithdrawFiatNetwork;
 };
 
 type WithdrawFiatNetwork = {
@@ -144,6 +178,7 @@ type WorkerWithdrawNetwork = {
 };
 
 export type {
+	WithdrawResponse,
 	WithdrawListResponse,
 	WithdrawCoinFeesParams,
 	WithdrawCoinFee,
@@ -154,4 +189,6 @@ export type {
 	WithdrawCoinListParams,
 	WithdrawCurrency,
 	WorkerWithdrawNetwork,
+	WithdrawCryptoRequestDto,
+	WithdrawFiatRequestDto,
 };

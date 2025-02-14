@@ -1,5 +1,5 @@
 <template>
-	<div v-if="netWorksLoading">
+	<div v-if="networksLoading">
 		<UiLogoLoading />
 	</div>
 	<div
@@ -72,18 +72,20 @@
 							</ULink>
 						</div>
 						<FormsDropDown
-							id="network"
-							v-model="dto.blockchainProtocolId"
+							id="bankAccountDesId"
+							v-model="dto.bankAccountDesId"
 							:options="accountItems"
 							type="text"
 							input-class="text-right"
 							label="selectBankAccount"
+							:searchable="true"
 							placeholder=""
 							icon=""
 							color-type="transparent"
+							:error-message="v$.bankAccountDesId.$error? $t('fieldIsRequired') : ''"
 						/>
 					</div>
-					<!-- select network -->
+					<!-- bankAccountDesId -->
 
 					<div>
 						<div class="flex justify-end items-center">
@@ -91,8 +93,8 @@
 								<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
 									{{ $t('removable') }}:
 								</span>
-								<span class="mr-1 text-xs font-normal text-left">{{ 1000 }}</span>
-								<span class="mr-1 text-xs font-normal text-left">{{ selectedCurrency?.cSymbol }}</span>
+								<span class="mr-1 text-xs font-normal text-left">{{ withdrawable }}</span>
+								<span class="mr-1 text-xs font-normal text-left">TMN</span>
 							</div>
 							<UButton
 								class="mr-2 text-primary-yellow-light hover:bg-hover-light dark:hover:bg-secondary-gray-dark dark:text-primary-yellow-dark bg-hover-light dark:bg-secondary-gray-dark py-1 text-xs font-bold"
@@ -103,17 +105,18 @@
 						</div>
 						<FormsFieldInput
 							id="withdrawValue"
-							v-model="withdrawValue"
+							v-model="dto.value"
 							mt-class="mt-1"
 							type="text"
 							input-class="text-left"
 							label="withdrawValue"
+							:number="true"
 							placeholder=""
 							icon=""
 							dir="ltr"
 							color-type="transparent"
+							:error-message="v$.value.$error? $t('fieldIsRequired') : ''"
 						/>
-						<!-- :error-message="v$.email.$error? $t('fieldIsRequired') : ''" -->
 					</div>
 					<!-- withdrawValue -->
 
@@ -124,7 +127,7 @@
 								id="final-price"
 								dir="ltr"
 							>
-								{{ 0 }} {{ selectedCurrency?.cSymbol }}
+								{{ 0 }} TMN
 							</p>
 						</div>
 						<div class="flex justify-between items-center text-subtle-text-light dark:text-subtle-text-dark text-sm">
@@ -133,7 +136,7 @@
 								id="final-price"
 								dir="ltr"
 							>
-								{{ 0 }} {{ selectedCurrency?.cSymbol }}
+								{{ 0 }} TMN
 							</p>
 						</div>
 					</div>
@@ -142,13 +145,55 @@
 						<UButton
 							size="lg"
 							block
+							:loading="loading"
+							@click="openVerifyModal()"
 						>
 							{{ $t("confirm") }}
 						</UButton>
-						<!-- :loading="loading"
-									@click="submit()" -->
+					</div>
+
+					<div class="mt-8 mb-3 border border-secondary-gray-light dark:border-secondary-gray-dark bg-background-light dark:bg-background-50 p-4 rounded-md">
+						<div class="flex justify-between items-center text-subtle-text-light dark:text-subtle-text-dark text-sm">
+							<label for="final-price">{{ $t('minWithdraw') }}</label>
+							<p
+								id="final-price"
+								dir="ltr"
+							>
+								{{ priceFormat(bankOperator?.max ?? 0) }} TMN
+							</p>
+						</div>
+						<div class="flex my-2 justify-between items-center text-subtle-text-light dark:text-subtle-text-dark text-sm">
+							<label for="final-price">{{ $t('maxWithdraw') }}</label>
+							<p
+								id="final-price"
+								dir="ltr"
+							>
+								{{ bankOperator?.min }} TMN
+							</p>
+						</div>
+						<div class="flex justify-between items-center text-subtle-text-light dark:text-subtle-text-dark text-sm">
+							<label for="final-price">{{ $t('fee') }}</label>
+							<p
+								id="final-price"
+								dir="ltr"
+							>
+								<span v-if="(bankOperator?.fee ?? 0) > 0">
+									{{ bankOperator?.fee }} TMN
+								</span>
+								<span v-else>{{ $t('free') }}</span>
+							</p>
+						</div>
 					</div>
 				</div>
+
+				<UiVerifyModal
+					v-if="isOpenVerifyModal"
+					v-model="isOpenVerifyModal"
+					:title="$t('withdraw')"
+					:submit-loading="loading"
+					:withdraw-status="true"
+					@confirm="submit($event)"
+				/>
 			</div>
 			<div class="my-8 px-3 md:px-0">
 				<SideGuideBox
@@ -168,20 +213,19 @@
 </template>
 
 <script setup lang="ts">
+import useVuelidate from '@vuelidate/core';
+
+import { priceFormat } from '~/utils/helpers';
 import IconClose from '~/assets/svg-icons/close.svg';
 import SideGuideBox from '~/components/ui/SideGuideBox.vue';
 import RecentWithdrawTransactionsTable from '~/components/pages/Assets/Withdraw/RecentWithdrawTransactionsTable.vue';
-import { saveToCache } from '~/utils/indexeddb';
-import type { DepositCryptoRequestDto } from '~/types/definitions/deposit.types';
-import { CACHE_KEY_WITHDRAW_FIAT_NETWORKS } from '~/utils/constants/common';
 import { DepositType } from '~/utils/enums/deposit.enum';
-import type { CurrencyBrief } from '~/types/definitions/currency.types';
-import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
 import type { KeyValue } from '~/types/definitions/common.types';
 import { withdrawRepository } from '~/repositories/withdraw.repository';
-import type { WithdrawCurrency, WorkerWithdrawNetwork } from '~/types/definitions/withdraw.types';
+import type { WithdrawCurrency, WithdrawFiatNetwork, WithdrawFiatRequestDto } from '~/types/definitions/withdraw.types';
 import type { BankAccount, BankAccountListParams } from '~/types/definitions/user.types';
 import { userRepository } from '~/repositories/user.repository';
+import type { VerifyOutput } from '~/types/definitions/security.types';
 
 const BackHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/BackHeader.vue'));
 
@@ -197,27 +241,67 @@ const userRepo = userRepository($api);
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
 
-const worker = useBaseWorker();
 // const toast = useToast();
-// const { copyText } = useClipboard();
 
-const selectAllBalance = () => {
-	// dto.value.value = selectedCurrency.value.value;
+const dto = ref<WithdrawFiatRequestDto>({
+	verificationId: 0,
+	verificationCode: '',
+	v2FACode: null,
+	currencyId: 1,
+	bankAccountDesId: '',
+	withdrawPinCode: null,
+	value: '',
+});
+const dtoRules = {
+	verificationId: { },
+	verificationCode: { },
+	v2FACode: { },
+	currencyId: { required: validations.required },
+	bankAccountDesId: { required: validations.required },
+	withdrawPinCode: { },
+	value: { required: validations.required },
+};
+const v$ = useVuelidate(dtoRules, dto.value);
+
+const openVerifyModal = () => {
+	v$.value.$touch();
+	if (v$.value.$invalid) {
+		return;
+	}
+
+	isOpenVerifyModal.value = true;
 };
 
-const dto = ref<DepositCryptoRequestDto>({
-	addressTypeId: null,
-	currencyId: null,
-	blockchainProtocolId: '',
-});
+const loading = ref<boolean>(false);
+const submit = async (event: VerifyOutput) => {
+	if (event.verificationCode) {
+		dto.value.verificationCode = event.verificationCode;
+	}
+	if (event.verificationId) {
+		dto.value.verificationId = event.verificationId;
+	}
+	if (event.v2FACode) {
+		dto.value.v2FACode = event.v2FACode;
+	}
 
-const withdrawValue = ref('');
+	loading.value = true;
+	try {
+		// await securityRepo.storeWithdrawPinCode(dto.value);
 
+		// router.push('/user/security');
+		// await authStore.fetchCurrentUser(true);
+	}
+	catch (error) {
+		console.log(error);
+	}
+	finally {
+		loading.value = false;
+	}
+};
+
+const isOpenVerifyModal = ref(false);
 const showGuide = ref(true);
 
-const selectedCurrency = ref<CurrencyBrief>();
-
-const network = ref('');
 const accountItems = ref<KeyValue[]>([]);
 
 const params = ref<BankAccountListParams>({
@@ -243,61 +327,32 @@ const getBankAccountList = async () => {
 	}
 };
 
-const netWorksLoading = ref<boolean>(true);
+const networksLoading = ref<boolean>(true);
 const networks = ref<WithdrawCurrency[]>([]);
-const networksFullData = ref<WithdrawCurrency | null>();
-const selectedNetworksFullData = ref<WorkerWithdrawNetwork | null>();
+const withdrawable = ref('');
+const bankOperator = ref<WithdrawFiatNetwork>();
 const getWithdrawNetworks = async () => {
 	try {
-		netWorksLoading.value = true;
+		networksLoading.value = true;
 		const { result } = await withdrawRepo.getWithdrawFiatNetworks();
-		await saveToCache(CACHE_KEY_WITHDRAW_FIAT_NETWORKS, result.rows);
 		networks.value = result.rows as WithdrawCurrency[];
 
-		if (selectedCurrency.value?.id !== undefined) {
-			const networks = await worker.findWithdrawCurrencyNetworksByCurrencyId(selectedCurrency.value.id);
-			accountItems.value = networks?.networks ? networks.networks : [];
-
-			console.log(accountItems.value);
-
-			networksFullData.value = networks?.fullData ? networks.fullData : null;
+		if (networks.value.length) {
+			bankOperator.value = networks.value[0].bankOperator as WithdrawFiatNetwork;
+			withdrawable.value = networks.value[0].withdrawable;
 		}
 
-		netWorksLoading.value = false;
+		networksLoading.value = false;
 	}
 	catch (error) {
 		console.log(error);
-		netWorksLoading.value = false;
+		networksLoading.value = false;
 	}
 };
 
-watch(() => selectedCurrency.value, async (newValue) => {
-	accountItems.value = [];
-	network.value = '';
-	if (newValue?.id !== undefined) {
-		selectedNetworksFullData.value = null;
-		const networks = await worker.findWithdrawCurrencyNetworksByCurrencyId(newValue.id);
-		accountItems.value = networks?.networks ? networks.networks : [];
-		networksFullData.value = networks?.fullData ? networks.fullData : null;
-
-		dto.value.currencyId = newValue.id;
-		dto.value.addressTypeId = newValue.typeId;
-
-		networkSelected.value = null;
-		// depositCryptoRequest.value = null;
-	}
-});
-
-const networkSelected = ref<KeyValue | null>();
-watch(() => dto.value.blockchainProtocolId, async (newValue) => {
-	if (newValue) {
-		selectedNetworksFullData.value = null;
-		networkSelected.value = accountItems.value.find((item) => item.key === newValue);
-		// selectedNetworksFullData.value = networksFullData.value?.networks?.find((item) => item.netId === Number(newValue));
-
-		// depositCryptoRequest.value = null;
-	}
-}, { deep: true });
+const selectAllBalance = () => {
+	dto.value.value = withdrawable.value;
+};
 
 onMounted(async () => {
 	isMobile.value = !!mobileDetect.mobile();
