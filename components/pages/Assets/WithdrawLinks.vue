@@ -37,6 +37,7 @@
 							</p>
 
 							<UButton
+								to="/assets/withdraw"
 								class="flex justify-center w-[18.8rem] my-4 text-primary-yellow-light dark:text-primary-yellow-dark text-base hover:text-hover-light dark:hover:text-hover-light bg-hover-light dark:bg-hover-dark shadow-none border border-primary-yellow"
 							>
 								<span class="text-base font-extrabold">{{

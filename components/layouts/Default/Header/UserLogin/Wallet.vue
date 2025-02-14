@@ -59,7 +59,7 @@
 								color="white"
 								variant="ghost"
 								class="px-9 font-medium text-sm border-primary-gray-light dark:border-primary-gray-dark border"
-								to="/wallet/withdraw"
+								to="/assets/withdraw"
 							>
 								{{ $t("pickedUp") }}
 								<IconArrowDownRed class="text-accent-red" />

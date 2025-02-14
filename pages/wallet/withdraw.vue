@@ -16,7 +16,7 @@
 				</div>
 			</section>
 			<section>
-				<StepDetail />
+				<!-- <StepDetail /> -->
 			</section>
 			<section>
 				<FormWithdraw />
@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import StepDetail from '~/components/pages/Site/Wallet/Withdraw/StepDetail.vue';
+// import StepDetail from '~/components/pages/Site/Wallet/Withdraw/StepDetail.vue';
 import FormWithdraw from '~/components/pages/Site/Wallet/Withdraw/FormWithdraw.vue';
 import Table from '~/components/pages/Site/Wallet/Withdraw/Table.vue';
 

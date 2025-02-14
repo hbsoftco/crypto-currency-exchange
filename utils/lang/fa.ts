@@ -221,6 +221,7 @@ const persian = {
 	USDT: 'تتر',
 	BTC: 'BTC',
 	freeFees: 'کارمزد رایگان',
+	free: 'رایگان',
 	allItems: 'همه',
 	aboutBitland: 'درباره بیت‌لند',
 	USDTMTransaction: 'معامله USDT-M',
@@ -665,8 +666,8 @@ const persian = {
 	amountCurrenciesProfitLoss: 'میزان سود و زیان ارزها',
 	weeklyProfitLoss: 'سود و زیان هفتگی',
 	mapAssets: 'نقشه دارایی‌های من',
-	howDeposit: 'چطور واریز کنم ؟',
-	howWithdraw: 'چطور برداشت کنم ؟',
+	howDeposit: 'چطور واریز کنم؟',
+	howWithdraw: 'چطور برداشت کنم؟',
 	chooseCurrency: 'انتخاب رمز ارز',
 	chooseCurrencyStepOne: 'رمز ارز و شبکه ای را که می خواهید واریز کنید انتخاب کنید و آدرس کیف پول نشان داده شده از این صفحه را کپی کنید.',
 	depositAddressExchange: 'واریز به آدرس صرافی',
@@ -1288,7 +1289,18 @@ const persian = {
 	offline: 'آفلاین',
 	bankDepositComingSoon: 'کاربر گرامی، به زودی امکان واریز از طریق درگاه بانکی فراهم خواهد شد.',
 	noText: '',
-
+	withdraw: 'برداشت',
+	withdrawPrice: 'برداشت مبلغ',
+	recentWithdraw: 'برداشت‌های اخیر',
+	manageAddresses: 'مدیریت آدرس‌ها',
+	withdrawValue: 'مقدار برداشت',
+	selectAll: 'انتخاب همه',
+	minWithdraw: 'حداقل برداشت',
+	maxWithdraw: 'حداکثر برداشت',
+	emailOrMobile: 'ایمیل یا شماره موبایل کاربر',
+	changeable: 'قابل انتقال',
+	changeValue: 'مقدار انتقال',
+	change2: 'انتفالی',
 };
 
 export default persian;

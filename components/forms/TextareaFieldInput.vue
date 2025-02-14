@@ -3,7 +3,7 @@
 		<UIcon
 			v-if="icon"
 			:name="icon"
-			class="w-5 h-5 text-text-dark dark:text-text-light absolute left-4 top-3"
+			class="w-5 h-5 text-subtle-text-light dark:text-subtle-text-dark absolute left-4 top-3"
 		/>
 		<textarea
 			:id="id"
@@ -11,7 +11,7 @@
 			:class="[
 				inputClass,
 				'block px-2.5 pb-2.5 pt-3 w-full text-sm text-text-dark dark:text-text-light bg-transparent rounded-lg border appearance-none focus:outline-none focus:ring-0 peer',
-				errorMessage ? 'border-accent-red focus:border-accent-red' : 'border-gray-600  focus:border-primary-yellow-light dark:focus:border-primary-yellow-dark',
+				errorMessage ? 'border-accent-red focus:border-accent-red' : 'border-secondary-gray-light dark:border-secondary-gray-dark  focus:border-primary-yellow-light dark:focus:border-primary-yellow-dark',
 				pl,
 			]"
 			:placeholder="placeholder"

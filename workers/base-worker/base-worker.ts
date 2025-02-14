@@ -8,6 +8,7 @@ import {
 	CACHE_KEY_MARKET_BRIEF_ITEMS,
 	CACHE_KEY_QUOTE_ITEMS,
 	CACHE_KEY_TAG_ITEMS,
+	CACHE_KEY_WITHDRAW_CRYPTO_NETWORKS,
 } from '~/utils/constants/common';
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
 import type { MarketBrief, MarketL16, MarketL21, MarketL46, MarketL47, MarketL51, MarketState } from '~/types/definitions/market.types';
@@ -19,6 +20,7 @@ import { MarketType } from '~/utils/enums/market.enum';
 import type { SystemRoot } from '~/types/definitions/system.types';
 import type { Reward, TraderState } from '~/types/definitions/user.types';
 import type { DepositCoinFee, DepositCurrency, WorkerDepositNetwork } from '~/types/definitions/deposit.types';
+import type { WithdrawCurrency, WorkerWithdrawNetwork } from '~/types/definitions/withdraw.types';
 
 let currencyBriefItems: CurrencyBrief[] = [];
 let marketBriefItems: MarketBrief[] = [];
@@ -136,6 +138,32 @@ const searchDepositCryptoCurrencies = async (
 
 	if (depositCryptoCurrencies && depositCryptoCurrencies.length > 0) {
 		for (const item of depositCryptoCurrencies) {
+			const currency = await findCurrencyById(item.cid, baseUrl);
+			if (currency) {
+				currencies.push(currency);
+			}
+		}
+	}
+
+	const filteredCurrencies = currencies.filter(
+		(currency) =>
+			(currency.cName.toLowerCase().includes(search.toLowerCase())
+			|| currency.cSymbol.toLowerCase().includes(search.toLowerCase())),
+	);
+
+	return filteredCurrencies.length > 0 ? filteredCurrencies.slice(0, count) : [];
+};
+
+const searchWithdrawCryptoCurrencies = async (
+	search: string,
+	count: number,
+	baseUrl: string,
+): Promise<CurrencyBrief[] | null> => {
+	const withdrawCryptoCurrencies = await loadFromCache<WithdrawCurrency[]>(CACHE_KEY_WITHDRAW_CRYPTO_NETWORKS);
+	const currencies: CurrencyBrief[] = [];
+
+	if (withdrawCryptoCurrencies && withdrawCryptoCurrencies.length > 0) {
+		for (const item of withdrawCryptoCurrencies) {
 			const currency = await findCurrencyById(item.cid, baseUrl);
 			if (currency) {
 				currencies.push(currency);
@@ -895,6 +923,33 @@ const addCurrenciesHelpToBuyList = async (baseUrl: string, items: SystemRoot[]):
 	return result;
 };
 
+const findWithdrawCurrencyNetworksByCurrencyId = async (currencyId: number): Promise<WorkerWithdrawNetwork | null> => {
+	try {
+		const networks = await loadFromCache<WithdrawCurrency[]>(CACHE_KEY_WITHDRAW_CRYPTO_NETWORKS);
+		if (networks && networks.length > 0) {
+			const data = networks.find((item) => (item.cid === currencyId));
+			if (data) {
+				const networks = data.networks?.map((item) => ({ value: item.netName, key: item.netId.toString() })) ?? null;
+
+				if (networks?.length) {
+					return {
+						networks,
+						fullData: data,
+					};
+				}
+			}
+
+			return null;
+		}
+
+		return null;
+	}
+	catch (error) {
+		console.log(error);
+		return null;
+	}
+};
+
 const findDepositCurrencyNetworksByCurrencyId = async (currencyId: number): Promise<WorkerDepositNetwork | null> => {
 	try {
 		const networks = await loadFromCache<DepositCurrency[]>(CACHE_KEY_DEPOSIT_CRYPTO_NETWORKS);
@@ -944,6 +999,7 @@ Comlink.expose({
 	searchCurrencies,
 	getReadyCurrencyWithIndex,
 	searchDepositCryptoCurrencies,
+	searchWithdrawCryptoCurrencies,
 	// Quotes
 	fetchFuturesQuoteItems,
 	fetchSpotQuoteItems,
@@ -960,4 +1016,5 @@ Comlink.expose({
 	fetchSnapshotData,
 	addCurrenciesHelpToBuyList,
 	findDepositCurrencyNetworksByCurrencyId,
+	findWithdrawCurrencyNetworksByCurrencyId,
 });

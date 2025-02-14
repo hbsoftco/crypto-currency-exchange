@@ -9,7 +9,7 @@ import type { Quote } from '~/types/definitions/quote.types';
 import type { SystemRoot } from '~/types/definitions/system.types';
 import type { Tag } from '~/types/definitions/tag.types';
 import type { Reward, TraderState } from '~/types/definitions/user.types';
-import type { WithdrawCoinFee } from '~/types/definitions/withdraw.types';
+import type { WithdrawCoinFee, WorkerWithdrawNetwork } from '~/types/definitions/withdraw.types';
 
 interface BaseWorker {
 	// Currencies
@@ -32,6 +32,7 @@ interface BaseWorker {
 	findCurrencyBycSymbol: (mSymbol: string, baseUrl: string) => Promise<CurrencyBrief | null>;
 	searchCurrencies: (search: string, count: number, baseUrl: string, ignore?: string) => Promise<CurrencyBrief[] | []>;
 	searchDepositCryptoCurrencies: (search: string, count: number, baseUrl: string) => Promise<CurrencyBrief[] | []>;
+	searchWithdrawCryptoCurrencies: (search: string, count: number, baseUrl: string) => Promise<CurrencyBrief[] | []>;
 	getReadyCurrencyWithIndex: (baseUrl: string, currencies: CurrencyBrief[], currency: string) => Promise<{ updatedCurrencies: CurrencyBrief[]; index: number } | null>;
 	// Quotes
 	fetchSpotQuoteItems: (baseUrl: string) => Promise<Quote[]>;
@@ -50,6 +51,7 @@ interface BaseWorker {
 	fetchSnapshotData: (baseUrl: string, market: string, currency: string, quote: string) => Promise<any>;
 	addCurrenciesHelpToBuyList: (baseUrl: string, items: SystemRoot[]) => Promise<any>;
 	findDepositCurrencyNetworksByCurrencyId: (currencyId: number) => Promise<WorkerDepositNetwork | null>;
+	findWithdrawCurrencyNetworksByCurrencyId: (currencyId: number) => Promise<WorkerWithdrawNetwork | null>;
 }
 
 let worker: Worker | null = null;

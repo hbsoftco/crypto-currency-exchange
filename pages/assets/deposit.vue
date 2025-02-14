@@ -24,7 +24,7 @@
 				<div>
 					<ULink
 						to="/help"
-						class="cursor-pointer text-sm font-normal text-primary-yellow-light dark:text-primary-yellow-dark "
+						class="cursor-pointer text-sm font-normal text-primary-yellow-light dark:text-primary-yellow-dark"
 					>
 						{{ $t('howDeposit') }}
 					</ULink>

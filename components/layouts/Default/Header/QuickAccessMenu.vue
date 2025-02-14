@@ -103,7 +103,7 @@ const menuItems = [
 		name: 'withdrawCrypto',
 		description: useT('transferToExternalAccount'),
 		icon: IconWithdrawCurrency,
-		url: '/wallet/withdraw',
+		url: '/assets/withdraw',
 
 	},
 	{

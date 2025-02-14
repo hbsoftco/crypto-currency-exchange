@@ -12,7 +12,7 @@
 					</div>
 				</div>
 				<div class="my-8">
-					<ImportantPoint />
+					<!-- <ImportantPoint /> -->
 				</div>
 			</div>
 		</UContainer>
@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import ImportantPoint from '~/components/pages/Site/Wallet/Withdraw/ImportantPoint.vue';
+// import ImportantPoint from '~/components/pages/Site/Wallet/Withdraw/ImportantPoint.vue';
 import CryptoName from '~/components/pages/Site/Wallet/Withdraw/Form/CryptoName.vue';
 import TabForm from '~/components/pages/Site/Wallet/Withdraw/Form/index.vue';
 

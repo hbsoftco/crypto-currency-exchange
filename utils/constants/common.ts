@@ -10,3 +10,5 @@ export const CACHE_KEY_COMMISSION_LIST = 'commissionList';
 export const CACHE_KEY_USER_LEVELS = 'userLevels';
 export const CACHE_KEY_DEPOSIT_CRYPTO_NETWORKS = 'depositCryptoNetworks';
 export const CACHE_KEY_DEPOSIT_FIAT_NETWORKS = 'depositFiatNetworks';
+export const CACHE_KEY_WITHDRAW_CRYPTO_NETWORKS = 'withdrawCryptoNetworks';
+export const CACHE_KEY_WITHDRAW_FIAT_NETWORKS = 'withdrawFiatNetworks';

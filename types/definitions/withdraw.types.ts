@@ -1,3 +1,4 @@
+import type { KeyValue } from './common.types';
 import type { CurrencyBrief } from './currency.types';
 
 type WithdrawCoinFeesParams = {
@@ -137,6 +138,11 @@ type WithdrawCryptoNetwork = {
 	max: number;
 };
 
+type WorkerWithdrawNetwork = {
+	networks: KeyValue[] | null;
+	fullData: WithdrawCurrency | null;
+};
+
 export type {
 	WithdrawListResponse,
 	WithdrawCoinFeesParams,
@@ -146,4 +152,6 @@ export type {
 	WithdrawCryptoNetwork,
 	WithdrawFiatNetwork,
 	WithdrawCoinListParams,
+	WithdrawCurrency,
+	WorkerWithdrawNetwork,
 };

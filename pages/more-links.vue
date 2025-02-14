@@ -82,7 +82,7 @@
 						<span class="text-sm mt-2">{{ $t('possibleCurrencies') }}</span>
 					</ULink>
 					<ULink
-						to="/wallet/withdraw"
+						to="/assets/withdraw"
 						class="flex flex-col justify-center items-center  mb-4"
 					>
 						<IconArrowDown class=" text-primary-yellow-light dark:text-primary-yellow-dark text-2xl" />
