@@ -91,6 +91,12 @@ const submit = async () => {
 		}
 	}
 	catch (error: any) {
+		toast.add({
+			title: useT('error'),
+			description: error.response._data.message,
+			timeout: 5000,
+			color: 'red',
+		});
 		console.error('Failed:', error);
 	}
 };
@@ -113,7 +119,15 @@ const uploadSelfy1 = async (image: File) => {
 		router.push(isMobile.value ? '/' : '/user');
 		submitLoading.value = false;
 	}
-	catch (error) {
+	catch (error: any) {
+		toast.add({
+			title: useT('error'),
+			description: error.response._data.message,
+			timeout: 5000,
+			color: 'red',
+		});
+
+		submitLoading.value = false;
 		console.error('Error uploading file:', error);
 	}
 };

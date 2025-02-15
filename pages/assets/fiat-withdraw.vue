@@ -241,7 +241,7 @@ const userRepo = userRepository($api);
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
 
-// const toast = useToast();
+const toast = useToast();
 
 const dto = ref<WithdrawFiatRequestDto>({
 	verificationId: 0,
@@ -283,16 +283,28 @@ const submit = async (event: VerifyOutput) => {
 	if (event.v2FACode) {
 		dto.value.v2FACode = event.v2FACode;
 	}
+	if (event.withdrawPinCode) {
+		dto.value.withdrawPinCode = event.withdrawPinCode;
+	}
 
 	loading.value = true;
 	try {
-		// await securityRepo.storeWithdrawPinCode(dto.value);
+		await withdrawRepo.storeWithdrawFiatRequest(dto.value);
 
-		// router.push('/user/security');
-		// await authStore.fetchCurrentUser(true);
+		toast.add({
+			title: useT('deposit'),
+			description: useT('cardPrintSuccessfully'),
+			timeout: 5000,
+			color: 'green',
+		});
 	}
-	catch (error) {
-		console.log(error);
+	catch (error: any) {
+		toast.add({
+			title: useT('error'),
+			description: error.response._data.message,
+			timeout: 5000,
+			color: 'red',
+		});
 	}
 	finally {
 		loading.value = false;

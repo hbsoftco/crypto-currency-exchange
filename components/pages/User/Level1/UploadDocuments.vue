@@ -106,6 +106,12 @@ const submit = async () => {
 		}
 	}
 	catch (error: any) {
+		toast.add({
+			title: useT('error'),
+			description: error.response._data.message,
+			timeout: 5000,
+			color: 'red',
+		});
 		console.error('Failed:', error);
 	}
 };
@@ -127,7 +133,14 @@ const uploadIdCard = async (image: File) => {
 
 		submitLoading.value = false;
 	}
-	catch (error) {
+	catch (error: any) {
+		submitLoading.value = false;
+		toast.add({
+			title: useT('error'),
+			description: error.response._data.message,
+			timeout: 5000,
+			color: 'red',
+		});
 		console.error('Error uploading file:', error);
 	}
 };

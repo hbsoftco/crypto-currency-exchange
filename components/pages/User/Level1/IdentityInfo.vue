@@ -156,6 +156,7 @@ const { $api } = useNuxtApp();
 const userRepo = userRepository($api);
 const systemRepo = systemRepository($api);
 
+const toast = useToast();
 const authStore = useAuthStore();
 
 const dto = ref({
@@ -223,6 +224,14 @@ const submit = async () => {
 		submitLoading.value = false;
 	}
 	catch (error: any) {
+		toast.add({
+			title: useT('error'),
+			description: error.response._data.message,
+			timeout: 5000,
+			color: 'red',
+		});
+
+		submitLoading.value = false;
 		console.error('Failed:', error);
 	}
 };
