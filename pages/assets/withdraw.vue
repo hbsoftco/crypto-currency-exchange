@@ -124,6 +124,7 @@
 								},
 							},
 						}"
+						@change="onChange"
 					>
 						<template #default="{ item, selected }">
 							<span
@@ -134,30 +135,6 @@
 						<template #item="{ item }">
 							<div class="relative -top-3.5 border-t border-t-secondary-gray-light dark:border-t-secondary-gray-dark py-5">
 								<div v-if="item.key === 'address'">
-									<div class="pt-0">
-										<div class="text-left mb-1">
-											<ULink
-												to="/assets/crypto-addresses"
-												class="text-sm font-normal text-primary-yellow-light dark:text-primary-yellow-dark"
-											>
-												{{ $t('manageAddresses') }}
-											</ULink>
-										</div>
-										<FormsTextareaFieldInput
-											id="address"
-											v-model="address"
-											type="text"
-											input-class="text-left"
-											label="address"
-											placeholder=""
-											icon="i-heroicons-wallet"
-											dir="ltr"
-											rows="2"
-											color-type="transparent"
-										/>
-										<!-- :error-message="v$.txCode.$error? $t('fieldIsRequired') : ''" -->
-									</div>
-									<!-- address -->
 									<div
 										v-if="networkItems.length"
 										class="mb-8"
@@ -172,14 +149,15 @@
 											placeholder=""
 											icon=""
 											color-type="transparent"
+											:error-message="v$.blockchainProtocolId.$error? $t('fieldIsRequired') : ''"
 										/>
 									</div>
-									<!-- select network -->
+									<!-- blockchainProtocolId -->
 
-									<div>
+									<div v-if="memoStatus">
 										<FormsFieldInput
 											id="memo"
-											v-model="memo"
+											v-model="dto.memoDes"
 											type="text"
 											input-class="text-left"
 											label="memoTag"
@@ -187,10 +165,43 @@
 											icon=""
 											dir="ltr"
 											color-type="transparent"
+											:error-message="v$.memoDes.$error? $t('fieldIsRequired') : ''"
 										/>
-										<!-- :error-message="v$.email.$error? $t('fieldIsRequired') : ''" -->
 									</div>
 									<!-- memo -->
+
+									<div class="pt-0">
+										<div class="text-left mb-1">
+											<ULink
+												to="/user/wbl"
+												class="text-sm font-normal text-primary-yellow-light dark:text-primary-yellow-dark"
+											>
+												{{ $t('manageAddresses') }}
+											</ULink>
+										</div>
+										<FormsTextareaFieldInput
+											id="address"
+											v-model="dto.addressDes"
+											type="text"
+											:clickable="true"
+											input-class="text-left"
+											label="address"
+											placeholder=""
+											icon="i-heroicons-wallet"
+											dir="ltr"
+											rows="2"
+											color-type="transparent"
+											:error-message="v$.addressDes.$error? $t('fieldIsRequired') : ''"
+											@icon-clicked="openAddresses()"
+										/>
+									</div>
+									<!-- address -->
+
+									<Addresses
+										v-model="openAddressesModal"
+										:srch-blockchain-id="selectedNetwork ? String(selectedNetwork?.chainId) : ''"
+										@selected-item="getAddress($event)"
+									/>
 
 									<div>
 										<div class="flex justify-end items-center">
@@ -198,7 +209,7 @@
 												<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
 													{{ $t('removable') }}:
 												</span>
-												<span class="mr-1 text-xs font-normal text-left">{{ 1000 }}</span>
+												<span class="mr-1 text-xs font-normal text-left">{{ withdrawable }}</span>
 												<span class="mr-1 text-xs font-normal text-left">{{ selectedCurrency?.cSymbol }}</span>
 											</div>
 											<UButton
@@ -209,8 +220,8 @@
 											</UButton>
 										</div>
 										<FormsFieldInput
-											id="withdrawValue"
-											v-model="withdrawValue"
+											id="value"
+											v-model="dto.value"
 											mt-class="mt-1"
 											type="text"
 											input-class="text-left"
@@ -219,10 +230,10 @@
 											icon=""
 											dir="ltr"
 											color-type="transparent"
+											:error-message="v$.value.$error? $t('fieldIsRequired') : ''"
 										/>
-										<!-- :error-message="v$.email.$error? $t('fieldIsRequired') : ''" -->
 									</div>
-									<!-- withdrawValue -->
+									<!-- value -->
 
 									<div class="mt-8 mb-3">
 										<div class="flex justify-between items-center mb-1">
@@ -249,48 +260,69 @@
 										<UButton
 											size="lg"
 											block
+											:loading="loading"
+											@click="openVerifyModal()"
 										>
 											{{ $t("confirm") }}
 										</UButton>
-									<!-- :loading="loading"
-									@click="submit()" -->
 									</div>
 
-									<pre dir="ltr" class="text-left">
-										{{ selectedNetworksFullData }}
-										{{ networkSelected }}
-									</pre>
-
-									<div class="mt-8 mb-3 border border-secondary-gray-light dark:border-secondary-gray-dark bg-background-light dark:bg-background-50 p-4 rounded-md">
+									<div
+										v-if="selectedNetwork"
+										class="mt-8 mb-3 border border-secondary-gray-light dark:border-secondary-gray-dark bg-background-light dark:bg-background-50 p-4 rounded-md"
+									>
 										<div class="flex justify-between items-center text-subtle-text-light dark:text-subtle-text-dark text-sm">
-											<label for="final-price">{{ $t('minWithdraw') }}</label>
+											<label for="min">{{ $t('minWithdraw') }}</label>
 											<p
-												id="final-price"
+												id="min"
 												dir="ltr"
 											>
-												{{ 0 }} {{ selectedCurrency?.cSymbol }}
+												{{ selectedNetwork?.min }} {{ selectedCurrency?.cSymbol }}
 											</p>
 										</div>
-										<div class="flex my-2 justify-between items-center text-subtle-text-light dark:text-subtle-text-dark text-sm">
-											<label for="final-price">{{ $t('maxWithdraw') }}</label>
+										<!-- min -->
+										<div class="flex mt-3 justify-between items-center text-subtle-text-light dark:text-subtle-text-dark text-sm">
+											<label for="max">{{ $t('maxWithdraw') }}</label>
 											<p
-												id="final-price"
+												id="max"
 												dir="ltr"
 											>
-												{{ 0 }} {{ selectedCurrency?.cSymbol }}
+												{{ selectedNetwork?.max }} {{ selectedCurrency?.cSymbol }}
 											</p>
 										</div>
-										<div class="flex justify-between items-center text-subtle-text-light dark:text-subtle-text-dark text-sm">
-											<label for="final-price">{{ $t('fee') }}</label>
+										<!-- max -->
+										<div class="flex mt-3 justify-between items-center text-subtle-text-light dark:text-subtle-text-dark text-sm">
+											<label for="fee">{{ $t('fee') }}</label>
 											<p
-												id="final-price"
+												id="fee"
 												dir="ltr"
 											>
-												{{ 0 }} {{ selectedCurrency?.cSymbol }}
+												{{ selectedNetwork?.fee }} {{ selectedCurrency?.cSymbol }}
 											</p>
 										</div>
+										<!-- fee -->
+										<div
+											v-if="selectedNetwork?.contractId"
+											class="flex mt-3 justify-between items-center text-subtle-text-light dark:text-subtle-text-dark text-sm"
+										>
+											<label for="fee">{{ $t('contractId') }}</label>
+											<p
+												id="contractId"
+												dir="ltr"
+											>
+												<span
+													class="cursor-pointer"
+													@click="copyText(selectedNetwork?.contractId)"
+												>
+													{{ formatContractId(selectedNetwork.contractId) }}
+												</span>
+											</p>
+										</div>
+										<!-- contractId -->
 									</div>
+									<!-- selected network data -->
 								</div>
+								<!-- First tab -->
 								<div v-else-if="item.key === 'bitlandUsers'">
 									<div class="pt-0">
 										<div class="text-left mb-1">
@@ -302,19 +334,21 @@
 											</ULink>
 										</div>
 										<FormsFieldInput
-											id="emailOrMobile"
-											v-model="address"
+											id="userMobileOrEmail"
+											v-model="internalDto.userMobileOrEmail"
 											mt-class="mt-0"
 											type="text"
 											input-class="text-left"
 											label="emailOrMobile"
 											placeholder=""
 											icon="i-heroicons-user"
+											:clickable="true"
 											dir="ltr"
 											rows="2"
 											color-type="transparent"
+											:error-message="internalV$.userMobileOrEmail.$error? $t('fieldIsRequired') : ''"
+											@icon-clicked="openUsers()"
 										/>
-										<!-- :error-message="v$.txCode.$error? $t('fieldIsRequired') : ''" -->
 									</div>
 									<!-- emailOrMobile -->
 
@@ -324,19 +358,19 @@
 												<span class="text-xs font-normal text-subtle-text-light dark:text-subtle-text-dark">
 													{{ $t('changeable') }}:
 												</span>
-												<span class="mr-1 text-xs font-normal text-left">{{ 1000 }}</span>
+												<span class="mr-1 text-xs font-normal text-left">{{ withdrawable }}</span>
 												<span class="mr-1 text-xs font-normal text-left">{{ selectedCurrency?.cSymbol }}</span>
 											</div>
 											<UButton
 												class="mr-2 text-primary-yellow-light hover:bg-hover-light dark:hover:bg-secondary-gray-dark dark:text-primary-yellow-dark bg-hover-light dark:bg-secondary-gray-dark py-1 text-xs font-bold"
-												@click="selectAllBalance()"
+												@click="selectAllBalance‌BitlandUsers()"
 											>
 												{{ $t('selectAll') }}
 											</UButton>
 										</div>
 										<FormsFieldInput
-											id="withdrawValue"
-											v-model="withdrawValue"
+											id="value"
+											v-model="internalDto.value"
 											mt-class="mt-1"
 											type="text"
 											input-class="text-left"
@@ -345,9 +379,16 @@
 											icon=""
 											dir="ltr"
 											color-type="transparent"
+											:error-message="internalV$.value.$error? $t('fieldIsRequired') : ''"
 										/>
-										<!-- :error-message="v$.email.$error? $t('fieldIsRequired') : ''" -->
 									</div>
+									<!-- Contacts -->
+
+									<Contacts
+										v-model="openUsersModal"
+										:srch-blockchain-id="selectedNetwork ? String(selectedNetwork?.chainId) : ''"
+										@selected-item="getContact($event)"
+									/>
 
 									<div class="mt-8 mb-3">
 										<div class="flex justify-between items-center mb-1">
@@ -371,17 +412,36 @@
 										<UButton
 											size="lg"
 											block
+											:loading="internalLoading"
+											@click="openInternalVerifyModal()"
 										>
 											{{ $t("confirm") }}
 										</UButton>
-									<!-- :loading="loading"
-									@click="submit()" -->
 									</div>
 								</div>
+								<!-- bitlandUsers -->
 							</div>
 						</template>
 					</UTabs>
 				</div>
+
+				<UiVerifyModal
+					v-if="isOpenVerifyModal"
+					v-model="isOpenVerifyModal"
+					:title="$t('withdraw')"
+					:submit-loading="loading"
+					:withdraw-status="true"
+					@confirm="submit($event)"
+				/>
+
+				<UiVerifyModal
+					v-if="isOpenInternalVerifyModal"
+					v-model="isOpenInternalVerifyModal"
+					:title="$t('withdraw')"
+					:submit-loading="internalLoading"
+					:withdraw-status="true"
+					@confirm="internalSubmit($event)"
+				/>
 			</div>
 			<div class="my-8 px-3 md:px-0">
 				<SideGuideBox
@@ -401,21 +461,24 @@
 </template>
 
 <script setup lang="ts">
+import useVuelidate from '@vuelidate/core';
+
 import IconClose from '~/assets/svg-icons/close.svg';
 import IconArrowDown from '~/assets/svg-icons/arrow-down-red.svg';
 import SideGuideBox from '~/components/ui/SideGuideBox.vue';
 import RecentWithdrawTransactionsTable from '~/components/pages/Assets/Withdraw/RecentWithdrawTransactionsTable.vue';
 import { saveToCache } from '~/utils/indexeddb';
-import type { DepositCryptoRequestDto } from '~/types/definitions/deposit.types';
 import { CACHE_KEY_WITHDRAW_CRYPTO_NETWORKS } from '~/utils/constants/common';
 import { DepositType } from '~/utils/enums/deposit.enum';
 import type { CurrencyBrief } from '~/types/definitions/currency.types';
 import { useBaseWorker } from '~/workers/base-worker/base-worker-wrapper';
-import { handleImageError } from '~/utils/helpers';
+import { handleImageError, formatContractId } from '~/utils/helpers';
 import type { KeyValue } from '~/types/definitions/common.types';
-import { systemRepository } from '~/repositories/system.repository';
 import { withdrawRepository } from '~/repositories/withdraw.repository';
-import type { WithdrawCurrency, WorkerWithdrawNetwork } from '~/types/definitions/withdraw.types';
+import type { WithdrawCryptoInternalRequestDto, WithdrawCryptoNetwork, WithdrawCryptoRequestDto, WithdrawCurrency } from '~/types/definitions/withdraw.types';
+import type { Address, Contact, VerifyOutput } from '~/types/definitions/security.types';
+import Addresses from '~/components/pages/Assets/Withdraw/Addresses.vue';
+import Contacts from '~/components/pages/Assets/Withdraw/Contacts.vue';
 
 const BackHeader = defineAsyncComponent(() => import('~/components/layouts/Default/Mobile/BackHeader.vue'));
 
@@ -426,67 +489,174 @@ definePageMeta({
 
 const { $api, $mobileDetect } = useNuxtApp();
 const withdrawRepo = withdrawRepository($api);
-const systemRepo = systemRepository($api);
 
 const isMobile = ref(false);
 const mobileDetect = $mobileDetect as MobileDetect;
 
 const worker = useBaseWorker();
-// const toast = useToast();
-// const { copyText } = useClipboard();
+const toast = useToast();
+const { copyText } = useClipboard();
 
 const selectAllBalance = () => {
-	// dto.value.value = selectedCurrency.value.value;
+	dto.value.value = withdrawable.value;
 };
 
-const dto = ref<DepositCryptoRequestDto>({
-	addressTypeId: null,
-	currencyId: null,
-	blockchainProtocolId: '',
+const selectAllBalance‌BitlandUsers = () => {
+	internalDto.value.value = withdrawable.value;
+};
+
+const withdrawable = ref('0.0');
+const memoStatus = ref(false);
+
+const openAddressesModal = ref(false);
+const openAddresses = () => {
+	openAddressesModal.value = true;
+};
+
+const openUsersModal = ref(false);
+const openUsers = () => {
+	openUsersModal.value = true;
+};
+
+const internalDto = ref<WithdrawCryptoInternalRequestDto>({
+	verificationId: 0,
+	verificationCode: '',
+	v2FACode: null,
+	currencyId: 1,
+	withdrawPinCode: null,
+	value: '',
+	userMobileOrEmail: '',
 });
+const internalDtoRules = {
+	verificationId: { },
+	verificationCode: { },
+	v2FACode: { },
+	currencyId: { required: validations.required },
+	withdrawPinCode: { },
+	value: { required: validations.required },
+	userMobileOrEmail: { required: validations.required },
+};
+const internalV$ = useVuelidate(internalDtoRules, internalDto);
 
-const address = ref('');
-const withdrawValue = ref('');
-const memo = ref('');
-
-// const submitLoading = ref<boolean>(false);
-// const depositCryptoRequest = ref<DepositCryptoRequest | null>();
-// const submit = async () => {
-// 	try {
-// 		submitLoading.value = true;
-// 		const { result } = await depositRepo.storeDepositCryptoRequest(dto.value);
-// 		depositCryptoRequest.value = result as DepositCryptoRequest;
-
-// 		toast.add({
-// 			title: useT('deposit'),
-// 			description: useT('cardPrintSuccessfully'),
-// 			timeout: 5000,
-// 			color: 'green',
-// 		});
-
-// 		updateStepStatus(3);
-// 	}
-// 	catch (error: any) {
-// 		toast.add({
-// 			title: useT('error'),
-// 			description: error.response._data.message,
-// 			timeout: 5000,
-// 			color: 'red',
-// 		});
-// 	}
-// 	finally {
-// 		submitLoading.value = false;
-// 	}
-// };
-
-const systemTime = ref<string>('');
-const getSystemTime = async () => {
-	try {
-		const { result } = await systemRepo.getSystemTime();
-		systemTime.value = result;
+const isOpenInternalVerifyModal = ref(false);
+const openInternalVerifyModal = () => {
+	internalV$.value.$touch();
+	if (internalV$.value.$invalid) {
+		return;
 	}
-	catch (error) {
-		console.log(error);
+
+	isOpenInternalVerifyModal.value = true;
+};
+
+const internalLoading = ref<boolean>(false);
+const internalSubmit = async (event: VerifyOutput) => {
+	if (event.verificationCode) {
+		internalDto.value.verificationCode = event.verificationCode;
+	}
+	if (event.verificationId) {
+		internalDto.value.verificationId = event.verificationId;
+	}
+	if (event.v2FACode) {
+		internalDto.value.v2FACode = event.v2FACode;
+	}
+	if (event.withdrawPinCode) {
+		internalDto.value.withdrawPinCode = event.withdrawPinCode;
+	}
+
+	internalLoading.value = true;
+	try {
+		await withdrawRepo.storeWithdrawInternalRequest(internalDto.value);
+
+		toast.add({
+			title: useT('deposit'),
+			description: useT('cardPrintSuccessfully'),
+			timeout: 5000,
+			color: 'green',
+		});
+	}
+	catch (error: any) {
+		toast.add({
+			title: useT('error'),
+			description: error.response._data.message,
+			timeout: 5000,
+			color: 'red',
+		});
+	}
+	finally {
+		internalLoading.value = false;
+	}
+};
+
+const dto = ref<WithdrawCryptoRequestDto>({
+	verificationId: 0,
+	verificationCode: '',
+	v2FACode: null,
+	currencyId: 1,
+	withdrawPinCode: null,
+	value: '',
+	blockchainProtocolId: '',
+	addressDes: '',
+	memoDes: '',
+});
+const dtoRules = {
+	verificationId: { },
+	verificationCode: { },
+	v2FACode: { },
+	currencyId: { required: validations.required },
+	withdrawPinCode: { },
+	value: { required: validations.required },
+	blockchainProtocolId: { required: validations.required },
+	addressDes: { required: validations.required },
+	memoDes: { },
+};
+const v$ = useVuelidate(dtoRules, dto);
+
+const isOpenVerifyModal = ref(false);
+const openVerifyModal = () => {
+	v$.value.$touch();
+	if (v$.value.$invalid) {
+		return;
+	}
+
+	isOpenVerifyModal.value = true;
+};
+
+const loading = ref<boolean>(false);
+const submit = async (event: VerifyOutput) => {
+	if (event.verificationCode) {
+		dto.value.verificationCode = event.verificationCode;
+	}
+	if (event.verificationId) {
+		dto.value.verificationId = event.verificationId;
+	}
+	if (event.v2FACode) {
+		dto.value.v2FACode = event.v2FACode;
+	}
+	if (event.withdrawPinCode) {
+		dto.value.withdrawPinCode = event.withdrawPinCode;
+	}
+
+	loading.value = true;
+	try {
+		await withdrawRepo.storeWithdrawCryptoRequest(dto.value);
+
+		toast.add({
+			title: useT('deposit'),
+			description: useT('cardPrintSuccessfully'),
+			timeout: 5000,
+			color: 'green',
+		});
+	}
+	catch (error: any) {
+		toast.add({
+			title: useT('error'),
+			description: error.response._data.message,
+			timeout: 5000,
+			color: 'red',
+		});
+	}
+	finally {
+		loading.value = false;
 	}
 };
 
@@ -502,7 +672,7 @@ const networkItems = ref<KeyValue[]>([]);
 const networksLoading = ref<boolean>(true);
 const networks = ref<WithdrawCurrency[]>([]);
 const networksFullData = ref<WithdrawCurrency | null>();
-const selectedNetworksFullData = ref<WorkerWithdrawNetwork | null>();
+const selectedNetwork = ref<WithdrawCryptoNetwork | null>();
 const getWithdrawNetworks = async () => {
 	try {
 		networksLoading.value = true;
@@ -514,9 +684,7 @@ const getWithdrawNetworks = async () => {
 			const networks = await worker.findWithdrawCurrencyNetworksByCurrencyId(selectedCurrency.value.id);
 			networkItems.value = networks?.networks ? networks.networks : [];
 
-			console.log(networkItems.value);
-
-			networksFullData.value = networks?.fullData ? networks.fullData : null;
+			networksFullData.value = networks?.fullData ? networks?.fullData : null;
 		}
 
 		networksLoading.value = false;
@@ -531,28 +699,26 @@ watch(() => selectedCurrency.value, async (newValue) => {
 	networkItems.value = [];
 	network.value = '';
 	if (newValue?.id !== undefined) {
-		selectedNetworksFullData.value = null;
+		selectedNetwork.value = null;
 		const networks = await worker.findWithdrawCurrencyNetworksByCurrencyId(newValue.id);
 		networkItems.value = networks?.networks ? networks.networks : [];
 		networksFullData.value = networks?.fullData ? networks.fullData : null;
 
 		dto.value.currencyId = newValue.id;
-		dto.value.addressTypeId = newValue.typeId;
-
-		networkSelected.value = null;
-		// depositCryptoRequest.value = null;
 	}
 	updateStepStatus(1);
 });
 
-const networkSelected = ref<KeyValue | null>();
 watch(() => dto.value.blockchainProtocolId, async (newValue) => {
 	if (newValue) {
-		selectedNetworksFullData.value = null;
-		networkSelected.value = networkItems.value.find((item) => item.key === newValue);
-		selectedNetworksFullData.value = networksFullData.value?.networks?.find((item) => item.netId === Number(newValue));
+		console.log(networksFullData.value);
 
-		// depositCryptoRequest.value = null;
+		selectedNetwork.value = null;
+		selectedNetwork.value = networksFullData.value?.networks?.find((item) => item.netId === Number(newValue));
+
+		withdrawable.value = networksFullData.value?.withdrawable || '';
+
+		memoStatus.value = selectedNetwork.value?.memoable ?? false;
 		updateStepStatus(2);
 	}
 }, { deep: true });
@@ -596,7 +762,6 @@ onMounted(async () => {
 
 	await Promise.all([
 		getWithdrawNetworks(),
-		getSystemTime(),
 		initCurrencies(),
 	]);
 });
@@ -606,6 +771,17 @@ const updateStepStatus = (index: number) => {
 		step.completed = i < index;
 		step.current = i === index;
 	});
+};
+
+const getAddress = (event: Address) => {
+	dto.value.addressDes = event.address;
+	dto.value.memoDes = event.memo;
+};
+
+const getContact = (event: Contact) => {
+	internalDto.value.userMobileOrEmail = String(event.contactUID);
+
+	updateStepStatus(2);
 };
 
 const items = [
@@ -621,6 +797,8 @@ const items = [
 	},
 ];
 
+const selectedTab = ref('address');
+
 const steps = ref([
 	{ label: useT('chooseCurrency'), completed: true, current: false },
 	{ label: useT('networkSelected'), completed: false, current: true },
@@ -632,4 +810,15 @@ const guideSteps = [
 	{ key: 'guide_2', step: '2', title: useT('withdrawalConfirmation'), description: useT('withdrawalConfirmationStepTwo') },
 	{ key: 'guide_3', step: '3', title: useT('harvestSuccessfully'), description: useT('harvestSuccessfullyStepThree') },
 ];
+
+const onChange = (index: number) => {
+	selectedTab.value = items[index].label;
+
+	if (items[index].label === 'address') {
+		steps.value[1].label = useT('networkSelected');
+	}
+	else {
+		steps.value[1].label = useT('userSelect');
+	}
+};
 </script>

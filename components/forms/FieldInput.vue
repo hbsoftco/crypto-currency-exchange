@@ -3,12 +3,14 @@
 		<UIcon
 			v-if="icon && type !== 'password'"
 			:name="icon"
-			class="w-5 h-5 text-text-dark dark:text-text-light absolute left-4 top-3"
+			class="w-5 h-5 text-subtle-text-light dark:text-subtle-text-dark absolute left-4 top-3"
+			:class="[clickable? 'cursor-pointer' : '']"
+			@click="iconClicked()"
 		/>
 		<UIcon
 			v-if="type === 'password'"
 			:name="isPasswordVisible ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
-			class="w-5 h-5 text-text-dark dark:text-text-light absolute left-4 top-3 cursor-pointer"
+			class="w-5 h-5 text-subtle-text-light dark:text-subtle-text-dark absolute left-4 top-3 cursor-pointer"
 			@click="togglePasswordVisibility"
 		/>
 		<input
@@ -69,6 +71,7 @@ interface PropsDefinition {
 	errorMessage?: string;
 	mtClass?: string;
 	maxlength?: number;
+	clickable?: boolean;
 }
 
 const props = withDefaults(defineProps<PropsDefinition>(), {
@@ -78,6 +81,7 @@ const props = withDefaults(defineProps<PropsDefinition>(), {
 
 interface EmitDefinition {
 	(event: 'update:modelValue', value: unknown): void;
+	(event: 'iconClicked', value: boolean): void;
 }
 const emit = defineEmits<EmitDefinition>();
 
@@ -140,4 +144,11 @@ const colorTypeClass = computed(() => {
 			return 'bg-background-light dark:bg-background-dark';
 	}
 });
+
+const iconClicked = () => {
+	if (props.clickable) {
+		console.log('iconClicked');
+		emit('iconClicked', true);
+	}
+};
 </script>

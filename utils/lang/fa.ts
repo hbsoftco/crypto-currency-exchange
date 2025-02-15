@@ -1297,7 +1297,7 @@ const persian = {
 	selectAll: 'انتخاب همه',
 	minWithdraw: 'حداقل برداشت',
 	maxWithdraw: 'حداکثر برداشت',
-	emailOrMobile: 'ایمیل یا شماره موبایل کاربر',
+	emailOrMobile: 'ایمیل، شماره موبایل یا uuid',
 	changeable: 'قابل انتقال',
 	changeValue: 'مقدار انتقال',
 	change2: 'انتفالی',

@@ -96,9 +96,20 @@ type WithdrawCryptoRequestDto = {
 	verificationCode: string ;
 	v2FACode: string | null;
 	currencyId: number;
-	blockchainProtocolId: number;
+	blockchainProtocolId: number | string;
 	addressDes: string;
 	memoDes: string;
+	withdrawPinCode: string | null;
+	value: string;
+	tag?: string;
+};
+
+type WithdrawCryptoInternalRequestDto = {
+	verificationId: number;
+	verificationCode: string ;
+	v2FACode: string | null;
+	currencyId: number;
+	userMobileOrEmail: string;
 	withdrawPinCode: string | null;
 	value: string;
 	tag?: string;
@@ -107,6 +118,19 @@ type WithdrawCryptoRequestDto = {
 type WithdrawCryptoRequest = {
 	id: number;
 	factorNo: string;
+};
+
+type WithdrawCryptoInternalRequest = {
+	id: number;
+	isOutput: boolean;
+	factorNo: string;
+	uidFrom: number;
+	userFrom: string;
+	uidTo: number;
+	userTo: string;
+	currencyId: number;
+	value: string;
+	doneTime: string;
 };
 
 type WithdrawCoin = {
@@ -126,7 +150,7 @@ type WithdrawCoin = {
 
 type WithdrawResponse = {
 	statusCode: number;
-	result: WithdrawCryptoRequest;
+	result: WithdrawCryptoRequest | WithdrawCryptoInternalRequest;
 };
 
 type WithdrawListResponse = {
@@ -191,4 +215,6 @@ export type {
 	WorkerWithdrawNetwork,
 	WithdrawCryptoRequestDto,
 	WithdrawFiatRequestDto,
+	WithdrawCryptoInternalRequestDto,
+	WithdrawCryptoInternalRequest,
 };

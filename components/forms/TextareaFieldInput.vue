@@ -4,6 +4,8 @@
 			v-if="icon"
 			:name="icon"
 			class="w-5 h-5 text-subtle-text-light dark:text-subtle-text-dark absolute left-4 top-3"
+			:class="[clickable? 'cursor-pointer' : '']"
+			@click="iconClicked()"
 		/>
 		<textarea
 			:id="id"
@@ -47,6 +49,7 @@ interface PropsDefinition {
 	placeholder?: string;
 	placeholderDir?: 'rtl' | 'ltr';
 	required?: boolean;
+	clickable?: boolean;
 	disabled?: boolean;
 	inputClass?: string;
 	labelClass?: string;
@@ -65,10 +68,18 @@ const props = withDefaults(defineProps<PropsDefinition>(), {
 
 interface EmitDefinition {
 	(event: 'update:modelValue', value: unknown): void;
+	(event: 'iconClicked', value: boolean): void;
 }
 const emit = defineEmits<EmitDefinition>();
 
 const internalValue = ref(props.modelValue);
+
+watch(
+	() => props.modelValue,
+	(newValue) => {
+		internalValue.value = newValue;
+	},
+);
 
 watch(internalValue, (newValue: string) => {
 	emit('update:modelValue', newValue);
@@ -76,6 +87,12 @@ watch(internalValue, (newValue: string) => {
 
 const onInput = (event: Event) => {
 	internalValue.value = (event.target as HTMLTextAreaElement).value;
+};
+
+const iconClicked = () => {
+	if (props.clickable) {
+		emit('iconClicked', true);
+	}
 };
 
 const colorTypeClass = computed(() => {

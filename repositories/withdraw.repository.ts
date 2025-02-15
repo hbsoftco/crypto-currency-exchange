@@ -4,6 +4,7 @@ import type { CustomNitroFetchOptions } from '~/types/custom-nitro-fetch-options
 import type {
 	WithdrawCoinFeesParams,
 	WithdrawCoinListParams,
+	WithdrawCryptoInternalRequestDto,
 	WithdrawCryptoRequestDto,
 	WithdrawFiatRequestDto,
 	WithdrawListResponse,
@@ -19,7 +20,7 @@ type WithdrawRepository = {
 	getWithdrawCoinList: (params: WithdrawCoinListParams) => Promise<WithdrawListResponse>;
 	storeWithdrawFiatRequest: (dto: WithdrawFiatRequestDto) => Promise<WithdrawResponse>;
 	storeWithdrawCryptoRequest: (dto: WithdrawCryptoRequestDto) => Promise<WithdrawResponse>;
-
+	storeWithdrawInternalRequest: (dto: WithdrawCryptoInternalRequestDto) => Promise<WithdrawResponse>;
 };
 
 export const withdrawRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): WithdrawRepository => ({
@@ -93,6 +94,16 @@ export const withdrawRepository = (fetch: $Fetch<unknown, NitroFetchRequest>): W
 	},
 	async storeWithdrawCryptoRequest(dto: WithdrawCryptoRequestDto): Promise<WithdrawResponse> {
 		const url = `/v1/withdraw/crypto/request_out`;
+		const response = await fetch<WithdrawResponse>(`${url}`, {
+			noAuth: false,
+			method: 'POST',
+			body: dto,
+		} as CustomNitroFetchOptions);
+
+		return response;
+	},
+	async storeWithdrawInternalRequest(dto: WithdrawCryptoInternalRequestDto): Promise<WithdrawResponse> {
+		const url = `/v1/withdraw/common/request_internal`;
 		const response = await fetch<WithdrawResponse>(`${url}`, {
 			noAuth: false,
 			method: 'POST',
